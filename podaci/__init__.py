@@ -5,11 +5,7 @@ from id.mixins import JSONResponseMixin
 from id.decorators import staff_only
 from id.apis.podaci import *
 import json
-# from settings import PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT
-
-PODACI_SERVERS = [{"host": "localhost"}]
-PODACI_ES_INDEX = "podaci"
-PODACI_FS_ROOT = "/home/smari/Projects/OCCRP/data/"
+from settings import PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT
 
 class PodaciView(TemplateView, JSONResponseMixin):
     def breadcrumb_push(self, id):
