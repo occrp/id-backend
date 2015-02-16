@@ -17,6 +17,7 @@ class Create(PodaciView):
             "tag": tag
         }
 
+
 class List(PodaciView):
     def get_context_data(self):
         # FIXME: What happens if a user has >1000 tags?
@@ -32,11 +33,16 @@ class Details(PodaciView):
     template_name = "podaci/tags/details.html"
 
     def get_context_data(self, id):
+        while self.breadcrumb_exists(id):
+            self.breadcrumb_pop()
+        self.breadcrumb_push(id)
+
         tag = self.fs.get_tag(id)
         num_displayed = 1000
         tag_cnt, tags = self.fs.list_user_tags(self.request.user, root=tag.id, _size=num_displayed)
         file_cnt, files = self.fs.list_user_files(self.request.user, root=tag.id, _size=num_displayed)
         return {
+            "breadcrumbs": self.get_breadcrumbs(),
             "tag": tag,
             "num_files_displayed": min(num_displayed, file_cnt),
             "num_tags": tag_cnt,
