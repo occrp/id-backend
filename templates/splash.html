@@ -43,6 +43,19 @@
                     <a href="{{ url('request') }}" class="btn btn-large btn-primary">{% trans %}Ask an Expert{% endtrans %}</a>
                 </div>
             </div>
+
         </div>
+        {% if user.profile.is_staff or user.profile.is_admin %}
+        <div class="row-fluid" data-equal="p.desc">
+            <div class="span4 splash-item">
+                <img src="{{ static("img/id-dashboard-triangle.png") }}" />
+                <p class="desc">{% trans %}Manage your files, take control of investigations.{% endtrans %}</p>
+                <p class="detail">{% trans %}You've got 99 problems and all of them are files? Use our file manager to plod through the data.{% endtrans %}</p>
+                <div class="button-holder">
+                    <a href="{{ url('podaci_info_home') }}" class="btn btn-large btn-primary">{% trans %}Manage files{% endtrans %}</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 {% endblock %}
