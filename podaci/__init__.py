@@ -12,6 +12,30 @@ PODACI_ES_INDEX = "podaci"
 PODACI_FS_ROOT = "/home/smari/Projects/OCCRP/data/"
 
 class PodaciView(TemplateView, JSONResponseMixin):
+    def breadcrumb_push(self, id):
+        if not self.request.session.get("breadcrumbs", False):
+            self.request.session["breadcrumbs"] = []
+        self.request.session["breadcrumbs"].append(id)
+
+    def breadcrumb_pop(self):
+        self.request.session["breadcrumbs"].pop()
+
+    def breadcrumb_exists(self, id):
+        if not self.request.session.get("breadcrumbs", False):
+            self.request.session["breadcrumbs"] = []
+        return id in self.request.session["breadcrumbs"]
+
+    def breadcrumb_index(self, id):
+        if not self.request.session.get("breadcrumbs", False):
+            self.request.session["breadcrumbs"] = []
+        return self.request.session["breadcrumbs"].index(id)
+
+    def get_breadcrumbs(self):
+        return [Tag(self.fs, bc) for bc in self.request.session.get("breadcrumbs", [])]
+
+    def clear_breadcrumbs(self):
+        self.request.session["breadcrumbs"] = []
+
     def dispatch(self, *args, **kwargs):
         # All of podaci is for staff only.
         staff_only(self.request.user)

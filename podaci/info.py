@@ -4,6 +4,7 @@ class Home(PodaciView):
 	template_name = "podaci/home.html"
 
 	def get_context_data(self):
+		self.clear_breadcrumbs()
 		num_displayed = 40
 		tag_cnt, tags = self.fs.list_user_tags(self.request.user, root=False)
 		file_cnt, files = self.fs.list_user_files(self.request.user, _size=num_displayed)
