@@ -1,0 +1,2566 @@
+# Arabic translations for PROJECT.
+# Copyright (C) 2013 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2013-12-09 10:47+0100\n"
+"PO-Revision-Date: 2014-02-19 15:07+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: ar <LL@li.org>\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 "
+"&& n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: app/fields.py:74
+msgid "Key is invalid or does not exist."
+msgstr "Ключ недействителен или не существует"
+
+#: app/forms.py:59 app/models.py:348 app/models.py:482
+msgid "Comments"
+msgstr "Комментарии"
+
+#: app/forms.py:60 app/templates/crud/item_base.html:32
+msgid "Files"
+msgstr "Файлы"
+
+#: app/forms.py:141 app/models.py:474 app/models.py:478
+msgid "Entity One"
+msgstr "Первая запись"
+
+#: app/forms.py:142 app/models.py:475 app/models.py:479
+msgid "Entity Two"
+msgstr "Вторая запись"
+
+#: app/forms.py:145
+msgid "Entity Two is a"
+msgstr "Вторая запись –"
+
+#: app/forms.py:156
+msgid "The entity below is a"
+msgstr "Запись ниже –"
+
+#: app/forms.py:164
+msgid "Customer"
+msgstr "Клиент"
+
+#: app/forms.py:178 app/forms.py:226 app/models.py:581 app/models.py:1122
+#: app/templates/tickets/request_details.html:251
+msgid "Country"
+msgstr "Страна"
+
+#: app/forms.py:183
+msgid "Person"
+msgstr "Человек"
+
+#: app/forms.py:184 app/templates/company.html:5
+msgid "Company"
+msgstr "Организация"
+
+#: app/forms.py:185 app/templates/crud/fragment.html:5
+#: app/templates/crud/company/edit.html:12
+#: app/templates/crud/relationship/inline_entity.html:5
+#: app/templates/crud/relationship/table_mixin.html:163
+msgid "Relationship"
+msgstr "Связь"
+
+#: app/forms.py:186 app/models.py:912 app/models.py:1258
+#: app/templates/crud/relationship/table_mixin.html:24
+#: app/templates/tickets/request_details.html:155
+msgid "Location"
+msgstr "Местоположение"
+
+#: app/forms.py:188 app/models.py:613
+msgid "Full Name"
+msgstr "Полное имя"
+
+#: app/forms.py:191 app/models.py:343
+msgid "Identifier"
+msgstr "Идентификатор"
+
+#: app/forms.py:202
+msgid "Illegal Identifier. Only lowercase letters and _ are allowed."
+msgstr ""
+"Недопустимый идентификатор. Используйте только строчные буквы и знак "
+"подчеркивания."
+
+#: app/forms.py:209
+msgid "Field with this identifier already exists."
+msgstr "Поле с таким идентификатором уже существует"
+
+#: app/forms.py:224 app/models.py:1128
+msgid "URL"
+msgstr "URL"
+
+#: app/forms.py:240 app/forms.py:262 app/forms.py:293
+msgid "Email"
+msgstr "Адрес электронной почты"
+
+#: app/forms.py:242 app/models.py:1233
+msgid "Media Type"
+msgstr "Вид СМИ"
+
+#: app/forms.py:245 app/models.py:1235
+msgid "Circulation (approximate per month)"
+msgstr "Месячный тираж (приблизительно)"
+
+#: app/forms.py:266 app/models.py:518 app/templates/tickets/request_base.html:8
+#: app/templates/tickets/request_details.html:32
+msgid "Status"
+msgstr "Статус"
+
+#: app/forms.py:268 app/forms.py:275 app/forms.py:535
+msgid "All"
+msgstr "Все"
+
+#: app/forms.py:269 app/models.py:1149
+msgid "Approved"
+msgstr "Одобрено"
+
+#: app/forms.py:270
+msgid "Not Approved"
+msgstr "Не одобрено"
+
+#: app/forms.py:273
+msgid "Type of Request"
+msgstr "Тип запроса"
+
+#: app/forms.py:276 app/templates/tickets/request_charges_base.html:20
+#: app/templates/tickets/request_details.html:164
+msgid "Requester"
+msgstr "Автор запроса"
+
+#: app/forms.py:277 app/templates/request_account_home.html:24
+msgid "Volunteer"
+msgstr "Волонтер"
+
+#: app/forms.py:302
+msgid "Approve (Adds user to groups)"
+msgstr "Одобрить (добавить пользователя в группы)"
+
+#: app/forms.py:303
+msgid "Reject (Removes user from groups)"
+msgstr "Отклонить (удалить пользователя из групп)"
+
+#: app/forms.py:308
+msgid "Action"
+msgstr "Действие"
+
+#: app/forms.py:315
+msgid "Research Goal"
+msgstr "Цель исследования"
+
+#: app/forms.py:324
+msgid ""
+"This is highly sensitive, do not let volunteer research librarians see "
+"this request."
+msgstr "Информация засекречена, волонтеры не должны видеть этот запрос."
+
+#: app/forms.py:339 app/forms.py:362
+msgid "What do you know so far?"
+msgstr "Что известно на данный момент?"
+
+#: app/forms.py:345
+msgid "Any information you already have."
+msgstr "Укажите всю имеющуюся информацию."
+
+#: app/forms.py:348
+msgid "Where are you researching?"
+msgstr "Какая организация проводит исследование?"
+
+#: app/forms.py:366
+msgid "What story are you working on?"
+msgstr "Над каким случаем вы работаете?"
+
+#: app/forms.py:370
+msgid "What sources do you have so far?"
+msgstr "Каковы ваши источники на данный момент?"
+
+#: app/forms.py:391
+msgid "Reason"
+msgstr "Причина"
+
+#: app/forms.py:397 app/forms.py:406
+#: app/templates/tickets/request_details.html:358
+msgid "Comment"
+msgstr "Комментарий"
+
+#: app/forms.py:410
+msgid "Paid Status"
+msgstr "Оплата"
+
+#: app/forms.py:411
+msgid "Marking as paid will reconcile any open charges with the request."
+msgstr ""
+"Статус \"Оплачено\" приведет к пересчету всех невыполненных платежей в "
+"соответствии с запросом."
+
+#: app/forms.py:421
+msgid "Comment to Requester"
+msgstr "Комментарий для автора запроса"
+
+#: app/forms.py:423 app/templates/tickets/request_charges_base.html:21
+msgid "Item"
+msgstr "Элемент"
+
+#: app/forms.py:425 app/forms.py:506
+msgid "Cost (USD)"
+msgstr "Стоимость (в долларах США)"
+
+#: app/forms.py:427 app/forms.py:508
+msgid "Cost (Original Currency)"
+msgstr "Стоимость (в исходной валюте)"
+
+#: app/forms.py:435
+msgid ""
+"Add a comment, visible to the person making this request and the "
+"researcher answering it."
+msgstr ""
+"Добавьте комментарий, который будет виден автору запроса и отвечающему на"
+" него исследователю."
+
+#: app/forms.py:453
+msgid "Assign OCCRP Staff member(s) as the ticket responder"
+msgstr "Назначить сотрудников OCCRP ответственными за обработку заявки"
+
+#: app/forms.py:454 app/templates/tickets/request_details.html:174
+msgid "Staff Responders"
+msgstr "Сотрудники, ответственные за обработку заявки"
+
+#: app/forms.py:457
+msgid "Assign Volunteer Researcher(s)"
+msgstr "Назначить исследователей-волонтеров"
+
+#: app/forms.py:458 app/templates/tickets/request_details.html:186
+msgid "Volunteer Responders"
+msgstr "Волонтеры, ответственные за обработку заявки"
+
+#: app/forms.py:460 app/models.py:618 app/models.py:705
+msgid "Requester Type"
+msgstr "Категория авторов запросов"
+
+#: app/forms.py:463 app/models.py:94
+msgid "Flagged"
+msgstr "Помечено"
+
+#: app/forms.py:464
+msgid "Once user issues are dealt with, un-flag the ticket"
+msgstr ""
+"После того как указанные в этой заявке проблемы будут рассмотрены, "
+"снимите отметку"
+
+#: app/forms.py:466 app/models.py:620 app/models.py:717
+#: app/templates/tickets/request_details.html:202
+msgid "Findings Public"
+msgstr "Общедоступность результатов"
+
+#: app/forms.py:467
+msgid "Whether the findings of the ticket should be publicly visible."
+msgstr "Публикация сведений, обнаруженных в ходе рассмотрения заявки."
+
+#: app/forms.py:469 app/models.py:622 app/models.py:719
+msgid "For-Profit?"
+msgstr "Коммерческая организация?"
+
+#: app/forms.py:471 app/models.py:721
+msgid "Public?"
+msgstr "Общедоступная?"
+
+#: app/forms.py:472
+msgid ""
+"If a ticket is marked as public, volunteers are able toview and "
+"collaborate on the ticket. Making a ticket private will not remove "
+"volunteers as researchers."
+msgstr ""
+"Волонтеры могут совместно работать над общедоступными заявками. Если "
+"сделать заявку частной, она по-прежнему будет доступна "
+"исследователям-волонтерам."
+
+#: app/forms.py:523 app/forms.py:548
+msgid "Entities"
+msgstr "Объекты"
+
+#: app/forms.py:534
+msgid "Result type"
+msgstr "Тип результатов"
+
+#: app/forms.py:536 app/templates/admin_base.html:9
+#: app/templates/crud/company/list.html:2
+msgid "Companies"
+msgstr "Компании"
+
+#: app/forms.py:537 app/templates/admin_base.html:12
+#: app/templates/crud/person/list.html:2
+msgid "People"
+msgstr "Люди"
+
+#: app/forms.py:538 app/templates/admin_base.html:15
+#: app/templates/crud/location/list.html:2
+msgid "Locations"
+msgstr "Местоположения"
+
+#: app/forms.py:545
+msgid "Search Providers"
+msgstr "Поисковые системы"
+
+#: app/forms.py:547
+msgid "Everything"
+msgstr "Все"
+
+#: app/forms.py:549
+msgid "Documents"
+msgstr "Документы"
+
+#: app/forms.py:550
+msgid "Companies from OpenCorporates"
+msgstr "Компании из базы данных OpenCorporates"
+
+#: app/forms.py:594
+msgid "Share With"
+msgstr "Предоставить доступ"
+
+#: app/forms.py:596
+msgid "Everyone (public)"
+msgstr "Всем (общедоступная)"
+
+#: app/forms.py:597
+msgid "Users"
+msgstr "Пользователям"
+
+#: app/forms.py:598 app/templates/about_us.html:20
+msgid "Staff"
+msgstr "Сотрудникам"
+
+#: app/forms.py:605
+msgid "Named Users"
+msgstr "Выбранным пользователям"
+
+#: app/forms.py:608
+msgid "Individual users who should have access as well."
+msgstr "Отдельные пользователи, которым также будет предоставлен доступ"
+
+#: app/models.py:54
+msgid "Limited liability"
+msgstr "Общество с ограниченной ответственностью"
+
+#: app/models.py:55
+msgid "Partnership"
+msgstr "Товарищество"
+
+#: app/models.py:56
+msgid "Stock company"
+msgstr "Акционерное общество"
+
+#: app/models.py:57
+msgid "Foundation"
+msgstr "Фонд"
+
+#: app/models.py:58 app/templates/tickets/request_details.html:215
+msgid "Non-profit"
+msgstr "Некоммерческая организация"
+
+#: app/models.py:59 app/models.py:147
+msgid "Other"
+msgstr "Другое"
+
+#: app/models.py:64
+msgid "Active"
+msgstr "Активная"
+
+#: app/models.py:65
+msgid "Inactive"
+msgstr "Неактивная"
+
+#: app/models.py:69
+msgid "-----------"
+msgstr "-----------"
+
+#: app/models.py:70
+msgid "Male"
+msgstr "Мужской"
+
+#: app/models.py:71
+msgid "Female"
+msgstr "Женский"
+
+#: app/models.py:75
+msgid "Subsidized"
+msgstr "Финансирование"
+
+#: app/models.py:76
+msgid "Covering Cost"
+msgstr "Покрытие расходов"
+
+#: app/models.py:77
+msgid "Covering Cost +"
+msgstr "Покрытие расходов +"
+
+#: app/models.py:81
+msgid "Identify what a person owns"
+msgstr "Определить размер собственности лица"
+
+#: app/models.py:82
+msgid "Determine company ownership"
+msgstr "Определить размер собственности компании"
+
+#: app/models.py:83
+msgid "Any other question"
+msgstr "Другие вопросы"
+
+#: app/models.py:87
+msgid "Updated"
+msgstr "Изменено"
+
+#: app/models.py:88 app/handlers/ticketing.py:389
+msgid "Charge Added"
+msgstr "Платеж добавлен"
+
+#: app/models.py:89 app/handlers/ticketing.py:360
+msgid "Reconciled Charges"
+msgstr "Пересчитанные платежи"
+
+#: app/models.py:90 app/models.py:102
+msgid "Closed"
+msgstr "Закрыта"
+
+#: app/models.py:91 app/models.py:103 app/models.py:112
+msgid "Cancelled"
+msgstr "Отменена"
+
+#: app/models.py:92
+msgid "Re-Opened"
+msgstr "Повторно открыта"
+
+#: app/models.py:93
+msgid "Opened"
+msgstr "Открыта"
+
+#: app/models.py:95
+msgid "Documents Attached"
+msgstr "Прикрепленные документы"
+
+#: app/models.py:96
+msgid "Entities Attached"
+msgstr "Прикрепленные объекты"
+
+#: app/models.py:100
+msgid "New"
+msgstr "Новая"
+
+#: app/models.py:101
+msgid "In Progress"
+msgstr "Выполняется"
+
+#: app/models.py:110
+msgid "Paid"
+msgstr "Оплачено"
+
+#: app/models.py:111
+msgid "Paid by OCCRP"
+msgstr "Оплачено OCCRP"
+
+#: app/models.py:117
+msgid "Parent"
+msgstr "Родитель"
+
+#: app/models.py:118
+msgid "Spouse"
+msgstr "Супруг(-а)"
+
+#: app/models.py:119
+msgid "Other Relative"
+msgstr "Другая степень родства"
+
+#: app/models.py:120
+msgid "Friend or Acquaintance"
+msgstr "Друг или знакомый"
+
+#: app/models.py:121
+msgid "Employer"
+msgstr "Работодатель"
+
+#: app/models.py:122
+msgid "Business Partner"
+msgstr "Деловой партнер"
+
+#: app/models.py:123
+msgid "Proxy"
+msgstr "Доверенное лицо"
+
+#: app/models.py:126 app/templates/tickets/request_details.html:252
+msgid "Birthplace"
+msgstr "Место рождения"
+
+#: app/models.py:127 app/models.py:143
+msgid "Registered Address"
+msgstr "Адрес регистрации"
+
+#: app/models.py:128
+msgid "Home Address"
+msgstr "Домашний адрес"
+
+#: app/models.py:131
+msgid "Director"
+msgstr "Директор"
+
+#: app/models.py:132
+msgid "Secretary"
+msgstr "Секретарь"
+
+#: app/models.py:133
+msgid "Authorized Person"
+msgstr "Уполномоченное лицо"
+
+#: app/models.py:134
+msgid "Representative"
+msgstr "Представитель"
+
+#: app/models.py:135
+msgid "Shareholder"
+msgstr "Акционер"
+
+#: app/models.py:136
+msgid "Employee"
+msgstr "Сотрудник"
+
+#: app/models.py:139
+msgid "Subsidiary"
+msgstr "Дочерняя компания"
+
+#: app/models.py:140
+msgid "Trading Partner"
+msgstr "Торговый партнер"
+
+#: app/models.py:144
+msgid "Place of Business"
+msgstr "Место ведения деятельности"
+
+#: app/models.py:160
+msgid "Media: non-profit"
+msgstr "СМИ: некоммерческие"
+
+#: app/models.py:161
+msgid "Media: for-profit"
+msgstr "СМИ: коммерческие"
+
+#: app/models.py:162
+msgid "Media: freelance"
+msgstr "СМИ: фриланс"
+
+#: app/models.py:163
+msgid "Business: due diligence/investigation"
+msgstr "Бизнес: аудит/расследования"
+
+#: app/models.py:164
+msgid "Business: legal"
+msgstr "Бизнес: юридические услуги"
+
+#: app/models.py:165
+msgid "Business: general"
+msgstr "Бизнес: общие услуги"
+
+#: app/models.py:166
+msgid "Government"
+msgstr "Государственное учреждение"
+
+#: app/models.py:167
+msgid "Civil society/non-profit"
+msgstr "Общественная/некоммерческая организация"
+
+#: app/models.py:168
+msgid "Individual"
+msgstr "Частное лицо"
+
+#: app/models.py:169
+msgid "Other (please specify)"
+msgstr "Другое (укажите)"
+
+#: app/models.py:174 app/templates/tickets/request_details.html:231
+msgid "None"
+msgstr "Нет"
+
+#: app/models.py:175
+msgid "OCCRP"
+msgstr "OCCRP"
+
+#: app/models.py:176
+msgid "ARIJ"
+msgstr "ARIJ"
+
+#: app/models.py:177
+msgid "ANCIR"
+msgstr "ANCIR"
+
+#: app/models.py:178
+msgid "Connectas in the Americas"
+msgstr "Connectas in the Americas"
+
+#: app/models.py:183
+msgid "Website"
+msgstr "Веб-сайт"
+
+#: app/models.py:184
+msgid "Print"
+msgstr "Печатное издание"
+
+#: app/models.py:185
+msgid "Broadcast TV"
+msgstr "Телевещание"
+
+#: app/models.py:186
+msgid "Broadcast Radio"
+msgstr "Радиовещание"
+
+#: app/models.py:187
+msgid "Other or don't know"
+msgstr "Другое или неизвестно"
+
+#: app/models.py:192
+msgid "Less than 10,000"
+msgstr "Менее 10 000"
+
+#: app/models.py:193
+msgid "10,000 to 25,000"
+msgstr "10 000–25 000"
+
+#: app/models.py:194
+msgid "25,000 to 50,000"
+msgstr "25 000–50 000"
+
+#: app/models.py:195
+msgid "50,000 to 100,000"
+msgstr "50 000–100 000"
+
+#: app/models.py:196
+msgid "100,000 to 250,000"
+msgstr "100 000–250 000"
+
+#: app/models.py:197
+msgid "250,000 to 500,000"
+msgstr "250 000–500 000"
+
+#: app/models.py:198
+msgid "More than 500,000"
+msgstr "Более 500 000"
+
+#: app/models.py:203
+msgid "Business Registry"
+msgstr "Реестр юридических лиц"
+
+#: app/models.py:204
+msgid "Regional procurement registry"
+msgstr "Региональный реестр закупок"
+
+#: app/models.py:205
+msgid "Regulatory Agency"
+msgstr "Надзорный орган"
+
+#: app/models.py:206
+msgid "Commercial Register"
+msgstr "Торговый реестр"
+
+#: app/models.py:207
+msgid "Court Registry"
+msgstr "Судебный реестр"
+
+#: app/models.py:208
+msgid "Gazette"
+msgstr "Официальный орган печати"
+
+#: app/models.py:209
+msgid "Land Registry"
+msgstr "Кадастр недвижимости"
+
+#: app/models.py:214
+msgid "All Databases"
+msgstr "Все базы данных"
+
+#: app/models.py:215
+msgid "Global Databases"
+msgstr "Глобальные базы данных"
+
+#: app/models.py:341
+msgid "Label"
+msgstr "Ярлык"
+
+#: app/models.py:344
+msgid "Kind"
+msgstr "Разновидность"
+
+#: app/models.py:476 app/templates/tickets/request_base.html:7
+msgid "Type"
+msgstr "Тип"
+
+#: app/models.py:480 app/templates/crud/relationship/table_mixin.html:25
+#: app/templates/crud/relationship/table_mixin.html:56
+#: app/templates/crud/relationship/table_mixin.html:87
+msgid "Start Date"
+msgstr "Дата начала"
+
+#: app/models.py:481 app/templates/crud/relationship/table_mixin.html:26
+#: app/templates/crud/relationship/table_mixin.html:57
+#: app/templates/crud/relationship/table_mixin.html:88
+msgid "End Date"
+msgstr "Дата окончания"
+
+#: app/models.py:510 app/models.py:576 app/models.py:611 app/models.py:895
+#: app/templates/crud/relationship/table_mixin.html:55
+#: app/templates/crud/relationship/table_mixin.html:86
+#: app/templates/tickets/request_details.html:241
+#: app/templates/tickets/request_details.html:278
+msgid "Name"
+msgstr "Название"
+
+#: app/models.py:511 app/models.py:542
+msgid "Name Variations"
+msgstr "Варианты названия"
+
+#: app/models.py:514
+msgid "Jurisdiction Registered"
+msgstr "Юрисдикция регистрации"
+
+#: app/models.py:516
+msgid "Form of Company"
+msgstr "Организационно-правовая форма"
+
+#: app/models.py:519
+msgid "Date Registered"
+msgstr "Дата регистрации"
+
+#: app/models.py:520
+msgid "Date Dissolved"
+msgstr "Дата прекращения деятельности"
+
+#: app/models.py:539 app/models.py:1139
+msgid "First Name"
+msgstr "Имя"
+
+#: app/models.py:540
+msgid "Middle Name"
+msgstr "Второе имя"
+
+#: app/models.py:541 app/models.py:1140
+#: app/templates/tickets/request_details.html:254
+#: app/templates/tickets/request_details.html:255
+#: app/templates/tickets/request_details.html:256 static/js/widgets.js:188
+#: static/js/widgets.js:230
+msgid "Last Name"
+msgstr "Фамилия"
+
+#: app/models.py:544 app/models.py:903
+#: app/templates/tickets/request_details.html:253
+msgid "Date of Birth"
+msgstr "Дата рождения"
+
+#: app/models.py:545
+msgid "Date of Death"
+msgstr "Дата смерти"
+
+#: app/models.py:546
+msgid "Sex"
+msgstr "Пол"
+
+#: app/models.py:547
+msgid "Nationalities"
+msgstr "Национальность"
+
+#: app/models.py:549
+msgid "ID Numbers"
+msgstr "Идентификационные номера"
+
+#: app/models.py:577 app/models.py:1227
+msgid "Address"
+msgstr "Адрес"
+
+#: app/models.py:578
+msgid "City"
+msgstr "Город"
+
+#: app/models.py:579
+msgid "State/Province/Region"
+msgstr "Регион"
+
+#: app/models.py:580
+msgid "ZIP/Postal Code"
+msgstr "Почтовый индекс"
+
+#: app/models.py:614
+msgid "Admin Notes"
+msgstr "Примечания администратора"
+
+#: app/models.py:680
+msgid "Subsidized (OCCRP pays for everything)"
+msgstr "Финансирование (полностью оплачено OCCRP)"
+
+#: app/models.py:682
+msgid ""
+"Covering cost (OCCRP pays for labor, requester pays costs of buying "
+"documents)"
+msgstr ""
+"Покрытие расходов (трудозатраты оплачены OCCRP, запрашивающая сторона "
+"оплачивает получение документов)"
+
+#: app/models.py:685
+msgid "Covering cost+ (requester pays for documents, and also for our work)"
+msgstr ""
+"Покрытие расходов + (запрашивающая сторона оплачивает получение "
+"документов и трудозатраты)"
+
+#: app/models.py:731 app/templates/tickets/request_base.html:9
+#: app/templates/tickets/request_details.html:146
+msgid "Deadline"
+msgstr "Конечный срок"
+
+#: app/models.py:732
+msgid "Sensitive?"
+msgstr "Секретность"
+
+#: app/models.py:896 app/templates/tickets/request_details.html:256
+msgid "Aliases"
+msgstr "Псевдонимы"
+
+#: app/models.py:897 app/models.py:928
+#: app/templates/tickets/request_details.html:242
+msgid "Background"
+msgstr "Образование"
+
+#: app/models.py:898 app/templates/tickets/request_details.html:243
+msgid "Biography"
+msgstr "Биография"
+
+#: app/models.py:899 app/templates/tickets/request_details.html:254
+msgid "Family"
+msgstr "Семья"
+
+#: app/models.py:902 app/templates/tickets/request_details.html:244
+msgid "Business Activities"
+msgstr "Коммерческая деятельность"
+
+#: app/models.py:906
+msgid "Place of Birth"
+msgstr "Место рождения"
+
+#: app/models.py:909
+msgid "Where have you looked?"
+msgstr "Где вы искали?"
+
+#: app/models.py:924
+msgid "Company Name"
+msgstr "Название компании"
+
+#: app/models.py:927
+msgid "Country Registered"
+msgstr "Страна регистрации"
+
+#: app/models.py:929 app/templates/search/search_base.html:29
+#: app/templates/tickets/request_details.html:246
+msgid "Sources"
+msgstr "Источники"
+
+#: app/models.py:930
+msgid "Your Story"
+msgstr "Расследуемый случай"
+
+#: app/models.py:932 app/templates/tickets/request_details.html:255
+msgid "Connected People"
+msgstr "Связанные лица"
+
+#: app/models.py:943
+msgid "What do you want to know?"
+msgstr "Что вы хотите узнать?"
+
+#: app/models.py:996
+#, python-format
+msgid "[Request %s] - %s"
+msgstr "[Запрос %s ] – %s"
+
+#: app/models.py:1061
+#, python-format
+msgid ""
+"Item: %(item)s\n"
+"Cost: $%(cost)s\n"
+"Converted: %(cost_converted)s"
+msgstr ""
+"Наименование: %(item)s\n"
+"Стоимость: $%(cost)s\n"
+"После конвертации: %(cost_converted)s"
+
+#: app/models.py:1117
+msgid "Agency / Name"
+msgstr "Агентство/имя"
+
+#: app/models.py:1120
+msgid "Type of Database"
+msgstr "Тип базы данных"
+
+#: app/models.py:1123 app/templates/external_databases.html:26
+msgid "Paid Database"
+msgstr "Требуется оплата"
+
+#: app/models.py:1125 app/templates/external_databases.html:29
+msgid "Registration Required"
+msgstr "Требуется регистрация"
+
+#: app/models.py:1127 app/templates/external_databases.html:32
+msgid "Government Database"
+msgstr "Государственная база данных"
+
+#: app/models.py:1129
+msgid "Notes"
+msgstr "Комментарии"
+
+#: app/models.py:1130
+msgid "Blog Post"
+msgstr "Сообщение в блоге"
+
+#: app/models.py:1131
+msgid "YouTube Video Url"
+msgstr "Ссылка на видео YouTube"
+
+#: app/models.py:1141
+msgid "Email Address"
+msgstr "Адрес электронной почты"
+
+#: app/models.py:1143
+msgid "Phone Number"
+msgstr "Номер телефона"
+
+#: app/models.py:1146
+msgid "Organization Membership"
+msgstr "Членство в организации"
+
+#: app/models.py:1148
+msgid "Anything else you would like to tell us"
+msgstr "Дополнительные сведения"
+
+#: app/models.py:1168 app/templates/tickets/request_details.html:203
+#: app/templates/tickets/request_details.html:206
+msgid "Yes"
+msgstr "Да"
+
+#: app/models.py:1169 app/templates/tickets/request_details.html:203
+#: app/templates/tickets/request_details.html:206
+msgid "No"
+msgstr "Нет"
+
+#: app/models.py:1198 app/templates/mail/account_request/received.html:4
+msgid "Your Account Request was received"
+msgstr "Ваш запрос на создание аккаунта получен"
+
+#: app/models.py:1204 app/templates/mail/account_request/received_admin.html:4
+msgid "An Account Request was received"
+msgstr "Запрос на создание аккаунта получен"
+
+#: app/models.py:1212
+msgid "An update to your Account Request"
+msgstr "Сведения о вашем запросе на создание аккаунта"
+
+#: app/models.py:1230
+msgid "Industry"
+msgstr "Отрасль"
+
+#: app/models.py:1231
+msgid "Other Industry"
+msgstr "Другое"
+
+#: app/models.py:1239
+msgid "Name of Employer"
+msgstr "Работодатель"
+
+#: app/models.py:1241
+msgid "Position / Job Title"
+msgstr "Должность"
+
+#: app/models.py:1255
+msgid "Interests"
+msgstr "Интересы"
+
+#: app/models.py:1256
+msgid "Expertise"
+msgstr "Профессиональные знания и навыки"
+
+#: app/models.py:1257
+msgid "Languages"
+msgstr "Языки"
+
+#: app/models.py:1260
+msgid "Availability"
+msgstr "Когда к вам можно обращаться"
+
+#: app/models.py:1261
+msgid "Own Databases"
+msgstr "Собственные базы данных"
+
+#: app/models.py:1263
+msgid "Restrictions / Conflicts of Interest"
+msgstr "Ограничения/конфликт интересов"
+
+#: app/utils.py:43 app/templates/base.html:12
+#: app/templates/oauth_success.html:6 app/templates/mail/mail_base.html:12
+#: app/templates/mail/mail_base.html:37 app/templates/mail/mail_base.html:38
+msgid "Investigative Dashboard"
+msgstr "Investigative Dashboard"
+
+#: app/validators.py:13
+msgid "This field is required."
+msgstr "Это поле является обязательным."
+
+#: app/appengine_modelforms/fields.py:91 app/appengine_modelforms/fields.py:173
+#: app/appengine_modelforms/fields.py:175
+msgid "Not a valid choice"
+msgstr "Недопустимое значение"
+
+#: app/appengine_modelforms/fields.py:194
+msgid "Not a valid list"
+msgstr "Недопустимый список"
+
+#: app/appengine_modelforms/fields.py:213
+msgid "Not a valid integer list"
+msgstr "Необходимо ввести последовательность целых чисел"
+
+#: app/google_apis/drive.py:29
+msgid "Error connecting to Google Drive."
+msgstr "Не удалось подключиться к Google Диску"
+
+#: app/google_apis/drive.py:93
+msgid "Error refreshing Google Drive access token."
+msgstr "Не удалось обновить токен доступа Google Диска"
+
+#: app/google_apis/drive.py:113
+msgid "Your Google Drive private key must be in \"PEM\" format."
+msgstr "Ваш секретный ключ Google Диска должен иметь формат \"PEM\"."
+
+#: app/google_apis/drive.py:116
+msgid ""
+"Error refreshing Google Drive access token. Check your settings and try "
+"again."
+msgstr ""
+"Не удалось обновить токен доступа Google Диска. Проверьте настройки и "
+"повторите попытку."
+
+#: app/google_apis/groups.py:21
+msgid "Error connecting to Google Groups."
+msgstr "Не удалось подключиться к Google Группам"
+
+#: app/google_apis/groups.py:64
+msgid "Your private key must be in \"PEM\" format."
+msgstr "Ваш секретный ключ должен иметь формат \"PEM\"."
+
+#: app/google_apis/groups.py:66
+msgid "Error refreshing the access token. Check your settings and try again."
+msgstr ""
+"Не удалось обновить токен доступа. Проверьте настройки и повторите "
+"попытку."
+
+#: app/handlers/crud.py:78 app/templates/crud/relationship/table_mixin.html:194
+msgid "No entries found."
+msgstr "Записей не найдено."
+
+#: app/handlers/crud.py:223
+#, python-format
+msgid "%(entity)s successfully saved.entity"
+msgstr "Запись %(entity)s сохранена.entity"
+
+#: app/handlers/crud.py:235
+#, python-format
+msgid "%(entity)s successfully deleted.entity"
+msgstr "Запись %(entity)s удалена.entity"
+
+#: app/handlers/crud.py:253
+#, python-format
+msgid "%(entity)s could not deleted because of %(rel_count)d relationsentity"
+msgstr "Нельзя удалить %(entity)s из-за наличия связей (%(rel_count)d).entity"
+
+#: app/handlers/crud.py:284
+msgid "No relationships found. You can create them via other entities."
+msgstr "Связей не найдено. Вы можете создать их из других записей."
+
+#: app/handlers/crud.py:388
+#, python-format
+msgid "Relationship with new %(entity_type)s successfully saved.entity_type"
+msgstr "Связь с новым типом записи %(entity_type)s сохранена.entity_type"
+
+#: app/handlers/crud.py:424
+msgid "No companies found."
+msgstr "Компании не найдены."
+
+#: app/handlers/crud.py:439
+msgid "No people found."
+msgstr "Люди не найдены."
+
+#: app/handlers/crud.py:455
+msgid "No locations found."
+msgstr "Места не найдены."
+
+#: app/handlers/crud.py:469
+msgid "No extra fields found."
+msgstr "Дополнительные поля не найдены."
+
+#: app/handlers/crud.py:480 app/templates/external_databases.html:53
+msgid "No external databases found."
+msgstr "Внешние базы данных не найдены."
+
+#: app/handlers/crud.py:516
+msgid "No account requests found."
+msgstr "Запросы на создание аккаунтов не найдены."
+
+#: app/handlers/crud.py:559
+msgid "No Users found."
+msgstr "Пользователи не найдены."
+
+#: app/handlers/crud.py:632
+msgid "Request submitted. Our staff will evaluate and respond to your request."
+msgstr "Запрос отправлен. Наши сотрудники рассмотрят его и сообщат вам о решении."
+
+#: app/handlers/crud.py:663
+msgid "The user has been notified of the change to their request status."
+msgstr "Пользователь уведомлен об изменениях в статусе запроса."
+
+#: app/handlers/drive.py:57 static/js/drive-picker.js:94
+msgid "File(s) successfully attached."
+msgstr "Файлы прикреплены"
+
+#: app/handlers/drive.py:115
+msgid "Sharing rules applied."
+msgstr "Правила доступа установлены"
+
+#: app/handlers/ticketing.py:50
+msgid ""
+"Your request for an account is pending. Once approved, you can access Ask"
+" an Expert"
+msgstr ""
+"Ваш запрос на создание аккаунта рассматривается. После того как он будет "
+"одобрен, вы получите доступ к функции \"Вопрос эксперту\"."
+
+#: app/handlers/ticketing.py:114 app/handlers/ticketing.py:725
+msgid "Ticket successfully saved."
+msgstr "Заявка сохранена"
+
+#: app/handlers/ticketing.py:116
+msgid "Ticket successfully created."
+msgstr "Заявка создана"
+
+#: app/handlers/ticketing.py:194
+msgid "The specified object could not be found."
+msgstr "Не удалось найти указанный объект"
+
+#: app/handlers/ticketing.py:195
+msgid "The specified object is not attached to this ticket."
+msgstr "Указанный объект не прикреплен к заявке"
+
+#: app/handlers/ticketing.py:197
+msgid "The specified object was successfully removed."
+msgstr "Указанный объект удален"
+
+#: app/handlers/ticketing.py:274
+#, python-format
+msgid "Could not add duplicate(s): %(duplicates)sduplicates, "
+msgstr "Не удалось добавить копии: %(duplicates)sduplicates, "
+
+#: app/handlers/ticketing.py:296
+msgid "Request has been marked as closed & answered."
+msgstr "Запрос закрыт, ответ на него предоставлен."
+
+#: app/handlers/ticketing.py:311
+msgid "Request has been cancelled."
+msgstr "Запрос отменен."
+
+#: app/handlers/ticketing.py:321
+#, python-format
+msgid "Ticket %s has been deleted"
+msgstr "Заявка %s удалена."
+
+#: app/handlers/ticketing.py:337
+msgid ""
+"An Administrator has been notified notified and will update the issue "
+"shortly."
+msgstr "Администратор получил уведомление и вскоре рассмотрит эту проблему."
+
+#: app/handlers/ticketing.py:365
+msgid "Request payment status has been updated."
+msgstr "Сведения об оплате запроса обновлены."
+
+#: app/handlers/ticketing.py:395
+msgid "The new charge was added to the request."
+msgstr "К запросу добавлен новый платеж."
+
+#: app/handlers/ticketing.py:409
+msgid "Request has been re-opened."
+msgstr "Запрос открыт повторно."
+
+#: app/handlers/ticketing.py:432
+msgid "You have joined the ticket."
+msgstr "Вы присоединились к заявке."
+
+#: app/handlers/ticketing.py:433
+msgid "You are already on the ticket."
+msgstr "Вы уже указаны в этой заявке."
+
+#: app/handlers/ticketing.py:446
+msgid "You are no longer part of this ticket."
+msgstr "Вы исключены из этой заявки."
+
+#: app/handlers/ticketing.py:567
+msgid "Charge successfully reconciled."
+msgstr "Платежи пересмотрены"
+
+#: app/handlers/validation.py:30 app/handlers/validation.py:60
+msgid "This may be a duplicate"
+msgstr "Возможный дубликат"
+
+#: app/handlers/validation.py:32 app/handlers/validation.py:48
+#: app/handlers/validation.py:62
+msgid "No duplicates detected"
+msgstr "Дубликатов не найдено."
+
+#: app/handlers/validation.py:46
+msgid "First and last name match another person"
+msgstr "Имя и фамилия совпадают с данными другого человека"
+
+#: app/handlers/validation.py:93
+msgid ""
+"Your request may not be answered, as you have not provided much "
+"background. Please add more context."
+msgstr "Ваш запрос не может быть принят: требуются дополнительные сведения."
+
+#: app/handlers/validation.py:96
+msgid "Your request is of an appropriate length."
+msgstr "Ваш запрос содержит достаточно сведений."
+
+#: app/templates/401.html:4
+msgid "Permission Denied"
+msgstr "Отказано в доступе"
+
+#: app/templates/401.html:8
+msgid ""
+"You do not have permission to access this feature or content. If you "
+"believe this is an error, please contact an administrator."
+msgstr ""
+"Эта функция или информация вам недоступна. Если доступ закрыт по ошибке, "
+"сообщите администратору."
+
+#: app/templates/404.html:4
+msgid "Page Not Found"
+msgstr "Страница не найдена"
+
+#: app/templates/404.html:8
+msgid ""
+"We're sorry, this page is not available. This error has been recorded "
+"will be investigated."
+msgstr ""
+"Страница недоступна. Сведения об ошибке сохранены, мы работаем над ее "
+"устранением."
+
+#: app/templates/500.html:4
+msgid "Application Error"
+msgstr "Ошибка приложения"
+
+#: app/templates/500.html:8
+msgid ""
+"There was an error in the application. This error has been recorded and "
+"should be addressed soon."
+msgstr ""
+"В приложении произошла ошибка. Сведения о ней сохранены, мы работаем над "
+"ее устранением."
+
+#: app/templates/about_us.html:6
+msgid "About Us"
+msgstr "О проекте"
+
+#: app/templates/about_us.html:10
+msgid ""
+"Investigative Dashboard (ID) has been developed by the Organized Crime "
+"and Corruption Reporting Project (OCCRP), the world’s leading cross "
+"border investigative reporting organization. OCCRP designed Investigative"
+" Dashboard as a transnational collaborative effort to help journalists "
+"and civil society researchers expose organized crime and corruption "
+"around the world. It hosts three core tools: a crowd-sourced database of "
+"information and documents on persons of interest and their business "
+"connections, a worldwide list of online databases and business "
+"registries, and a research desk where journalists can go for help in "
+"sourcing hard to find information."
+msgstr ""
+"Онлайн-ресурс Investigative Dashboard был создан Центром по исследованию "
+"коррупции и организованной преступности (OCCRP), крупнейшей в мире "
+"организацией по сбору информации о международных правонарушениях. Этот "
+"международный проект призван помогать журналистам и представителям "
+"общественных организаций разных стран выявлять и расследовать случаи "
+"организованной преступности и коррупции. В рамках Investigative Dashboard"
+" предлагаются три основных инструмента: 1) созданная и поддерживаемая на "
+"основе краудсорсинга база данных, в которой содержатся документы и "
+"сведения о подозреваемых и их деловых связях, 2) список баз данных в "
+"Интернете и реестров юридических лиц во всех странах мира и "
+"3) исследовательский совет, к которому журналисты могут обратиться за "
+"труднодоступной информацией."
+
+#: app/templates/about_us.html:12
+msgid ""
+"With help from dozens of reporters and civic hackers, ID researchers have"
+" created the crowd-sourced database where connections of people and "
+"business can be mapped internationally. Through collecting public records"
+" worldwide in numerous languages and by scraping the business registries "
+"and official gazettes of countries such as Panama, British Virgin "
+"Islands, and Luxembourg among others we have made data searchable and "
+"hence truly transparent and useful. These resources are offered to the "
+"public as a searchable self-serve repository of data and documents."
+msgstr ""
+"Десятки репортеров и хакеров помогли нашим исследователям собрать "
+"огромную базу данных. С ее помощью можно выявить связи между людьми и "
+"организациями, в каких бы странах они ни находились Мы собираем "
+"общедоступные записи по всему миру, на множестве языков, в реестрах "
+"юридических лиц и официальных органах печати даже таких стран, как "
+"Панама, Британские Виргинские острова и Люксембург. Мы обеспечили "
+"возможность поиска по базе данных, что делает ее полностью прозрачной и "
+"полезной для исследовательских целей. Любой может воспользоваться этим "
+"хранилищем сведений и документов."
+
+#: app/templates/about_us.html:14
+msgid ""
+"The Investigative Dashboard also links to more than 400 online databases "
+"in 120 jurisdictions where you can search for information on persons and "
+"businesses of interest."
+msgstr ""
+"Investigative Dashboard также предлагает перечень более 400 доступных "
+"онлайн баз данных о людях и организациях в 120 юрисдикциях."
+
+#: app/templates/about_us.html:16
+msgid ""
+"Above and beyond the databases available on the Dashboard, the research "
+"desk provides access to a global network of expert researchers. "
+"Journalists and researchers working on organized crime and corruption "
+"topics who seek information and documents beyond their own borders and "
+"resources are invited to request the expertise of a network of "
+"information professionals. These professionals can access external "
+"databases and official filings for evidence of corporate ownership and "
+"property holdings that cross borders. For some journalists, these "
+"services are provided pro bono."
+msgstr ""
+"Помимо баз данных на сайте проекта, существует также исследовательский "
+"совет, объединяющий компетентных специалистов из разных стран. Журналисты"
+" и представители общественных организаций по борьбе с организованной "
+"преступностью и коррупцией, которым требуется информация и документация "
+"из зарубежных источников, могут запросить сведения у наших экспертов. "
+"Членам совета доступны внешние базы данных, также они могут подавать "
+"официальные запросы на подтверждение владения собственностью за границей."
+" Некоторым журналистам эти услуги предоставляются безвозмездно."
+
+#: app/templates/about_us.html:18
+msgid ""
+"Journalists have used the Investigative Dashboard to work on stories that"
+" have won more than a dozen international awards, led to indictments, "
+"arrests and seizures, forced the resignation of heads of state, and "
+"exposed the activities of organized crime."
+msgstr ""
+"Проект Investigative Dashboard уже был успешно использован для работы над"
+" репортажами, которые получили более десятка международных наград, "
+"позволили привлечь виновных к ответственности, привели к арестам и "
+"задержаниям, вынудили некоторых глав государств покинуть свой пост и "
+"выявили случаи организованной преступности."
+
+#: app/templates/about_us.html:36
+msgid "Supporters"
+msgstr "Поддержка"
+
+#: app/templates/about_us.html:37
+msgid ""
+"The Investigative Dashboard has been developed in collaboration with <a "
+"href=\"http://www.google.com/ideas/\">Google Ideas</a>. Core support for "
+"the project is generously provided by the Open Society Foundations with "
+"additional assistance from USAID."
+msgstr ""
+"Проект Investigative Dashboard разработан совместно с <a "
+"href=\"http://www.google.com/ideas/\">Google Ideas</a>. Неоценимую "
+"поддержку оказали фонд \"Открытое общество\" (Open Society Foundations) и"
+" Агентство США по международному развитию (USAID)."
+
+#: app/templates/about_us.html:39
+msgid "Partners"
+msgstr "Партнеры"
+
+#: app/templates/about_us.html:40
+msgid ""
+"The Research Desk is managed by OCCRP in co-operation with four partner "
+"Centers - African Network of Centers for Investigative Reporting (ANCIR),"
+" the Arab Reporters for Investigative Journalism (ARIJ), the "
+"International Center for Journalists, and Connectas in the Americas."
+msgstr ""
+"Управлять исследовательским советом OCCRP помогают четыре партнера: "
+"Африканская сеть центров журналистских расследований (ANCIR), Центр "
+"журналистских расследований в арабских странах (ARIJ), Международный "
+"центр журналистов и организация Connectas in the Americas."
+
+#: app/templates/about_us.html:42
+msgid "ID History"
+msgstr "История проекта Investigative Dashboard"
+
+#: app/templates/about_us.html:43
+msgid ""
+"The Investigative Dashboard was developed by Paul Cristian Radu (OCCRP) "
+"and Justin Arenstein (ANCIR) while they both were in residence at "
+"Stanford University as Knight Fellows. The John S. Knight Fellowships for"
+" Professional Journalists made the dashboard possible by providing access"
+" to the know-how of fellow journalists and of experts at Stanford "
+"University and in Silicon Valley."
+msgstr ""
+"Проект Investigative Dashboard был создан Полом Кристианом Раду (OCCRP) и"
+" Джастином Аренстайном (ANCIR), членами Общества журналистики имени Джона"
+" Найта, во время учебы в Стэнфордском университете. Своим существованием "
+"проект во многом обязан этому обществу, благодаря которому удалось "
+"получить доступ к методикам и наработкам журналистов и экспертов "
+"Стэнфордского университета и компаний Кремниевой долины."
+
+#: app/templates/about_us.html:45
+msgid ""
+"This first iteration of the ID website, launched in 2010, shared detailed"
+" methodologies, resources, and links for journalists to track money, "
+"shareholders, and company ownership across international borders. It also"
+" offered video tutorials and other tools to help journalists navigate "
+"rapidly evolving data-sources."
+msgstr ""
+"Первая версия веб-сайта Investigative Dashboard появилась в 2010 году и "
+"содержала подробное описание методик, перечень ресурсов и ссылок, с "
+"помощью которых журналисты могли отслеживать денежные потоки и "
+"устанавливать личность акционеров и владельцев компаний по всему миру. На"
+" сайте были представлены видеоруководства и другие инструменты, "
+"помогающие использовать быстро развивающиеся технологии сбора данных."
+
+#: app/templates/about_us.html:47
+msgid "Advisory Committee"
+msgstr "Консультативный совет"
+
+#: app/templates/about_us.html:105
+msgid "Acknowledgements"
+msgstr "Благодарности"
+
+#: app/templates/about_us.html:107
+msgid ""
+"The Investigative Dashboard is a collaborative project and valuable "
+"information was added by many investigative journalists around the world."
+" Individual members of the Global Investigative Journalism Network in "
+"particular contributed much of the information, explaining how to access "
+"company records in their home countries.\n"
+"\t    "
+msgstr ""
+"Investigative Dashboard развивается совместными усилиями многих "
+"журналистов из разных стран. В частности необходимо отметить неоценимый "
+"вклад участников Глобальной сети журналистских расследований (Global "
+"Investigative Journalism Network), которые помогают получать сведения об "
+"организациях в их странах.\n"
+"\t    "
+
+#: app/templates/about_us.html:110
+msgid ""
+"Valuable information was added by many investigative journalists around "
+"the world."
+msgstr ""
+"Многие журналисты, занимающиеся расследованиями по всему миру, также "
+"предоставляют ценную информацию."
+
+#: app/templates/admin_base.html:7 app/templates/tickets/request_base.html:75
+msgid "Manage"
+msgstr "Настройки"
+
+#: app/templates/admin_base.html:18 app/templates/crud/relationship/list.html:2
+msgid "Relationships"
+msgstr "Связи"
+
+#: app/templates/admin_base.html:22 app/templates/crud/expandofield/list.html:2
+msgid "Extra Fields"
+msgstr "Дополнительные поля"
+
+#: app/templates/admin_base.html:25
+msgid "External Databases"
+msgstr "Внешние базы данных"
+
+#: app/templates/admin_base.html:28
+#: app/templates/crud/accountrequest/list.html:2
+msgid "Account Requests"
+msgstr "Запросы на создание аккаунтов"
+
+#: app/templates/admin_base.html:31 app/templates/crud/profile/list.html:2
+msgid "User Profiles"
+msgstr "Пользовательские профили"
+
+#: app/templates/admin_base.html:34
+msgid "Statistics"
+msgstr "Статистика"
+
+#: app/templates/base.html:38 app/templates/search/search_base.html:6
+#: app/templates/search/search_base.html:21
+#: app/templates/search/search_documents.html:6
+#: app/templates/search/search_documents.html:13
+#: app/templates/search/search_entities.html:7
+#: app/templates/search/search_entities.html:15
+msgid "Search"
+msgstr "Поиск"
+
+#: app/templates/base.html:41 app/templates/external_databases.html:12
+msgid "Business Registries"
+msgstr "Реестры юридических лиц"
+
+#: app/templates/base.html:45
+msgid "Expert Help"
+msgstr "Помощь эксперта"
+
+#: app/templates/base.html:61
+msgid "Admin"
+msgstr "Администратор"
+
+#: app/templates/base.html:64
+msgid "Log out"
+msgstr "Выход"
+
+#: app/templates/base.html:68 app/templates/request_account.html:6
+msgid "Request Account"
+msgstr "Отправить запрос на создание аккаунта"
+
+#: app/templates/base.html:69
+msgid "Log In"
+msgstr "Войти"
+
+#: app/templates/base.html:124
+msgid "&copy; 2013 - OCCRP. All rights reserved."
+msgstr "&copy; OCCRP, 2013. Все права защищены."
+
+#: app/templates/base.html:124
+msgid "About this site"
+msgstr "Об этом сайте"
+
+#: app/templates/company.html:8 app/templates/request_account.html:13
+#: app/templates/accountrequest/volunteer_account.html:13
+#: app/templates/crud/accountrequest/edit.html:20
+#: app/templates/tickets/manage.html:27 app/templates/tickets/request.html:34
+#: app/templates/tickets/request_details.html:379
+#: app/templates/tickets/request_details.html:380
+msgid "Submit"
+msgstr "Отправить"
+
+#: app/templates/drive_success.html:1
+msgid "Successfully connected to Google Drive."
+msgstr "Google Диск подключен"
+
+#: app/templates/drive_success.html:3
+msgid "Current user name:"
+msgstr "Текущее имя пользователя:"
+
+#: app/templates/drive_success.html:4
+msgid "Root folder ID:"
+msgstr "Идентификатор корневой папки:"
+
+#: app/templates/drive_success.html:5
+msgid "Total quota (bytes):"
+msgstr "Общая квота (байт):"
+
+#: app/templates/drive_success.html:6
+msgid "Used quota (bytes):"
+msgstr "Использовано (байт):"
+
+#: app/templates/drive_success.html:7
+msgid "Permission ID:"
+msgstr "Идентификатор разрешения:"
+
+#: app/templates/external_databases.html:14
+msgid ""
+"Here you will find links to more than 450 online databases across 120 "
+"jurisdictions where you can get information on the shareholders, "
+"directors and the financial reports of companies worldwide. They are "
+"organized by country. Many are free of charge and for some you must "
+"register. Databases marked with a \"$\" require a fee.  Not all are "
+"available in English, see the notes column for further details.\t"
+msgstr ""
+"Здесь вы найдете более 450 ссылок на базы данных в 120 юрисдикциях. С их "
+"помощью вы можете получить информацию об акционерах и директорах компаний"
+" по всему миру, а также их финансовые отчеты. Базы данных сгруппированы "
+"по странам. Многие из них доступны бесплатно, за использование остальных "
+"взимается плата (такие базы данных отмечены значком доллара \"$\"). Для "
+"работы с некоторыми источниками необходимо зарегистрироваться. Сведения о"
+" поддерживаемых языках могут быть указаны в описаниях."
+
+#: app/templates/external_databases.html:44
+msgid "Documentation"
+msgstr "Документация"
+
+#: app/templates/external_databases.html:45
+msgid "Video Tutorial"
+msgstr "Видеоруководство"
+
+#: app/templates/external_databases.html:58
+msgid "Didn't find what you were looking for?"
+msgstr "Не нашли нужных сведений?"
+
+#: app/templates/external_databases.html:60
+msgid "Request manual help from our researchers."
+msgstr "Обратитесь за помощью к нашим исследователям."
+
+#: app/templates/oauth_success.html:14
+msgid ""
+"Google Drive successfully authorized. Please close this dialog and attach"
+" your files again."
+msgstr ""
+"Авторизация Google Диска выполнена. Закройте это диалоговое окно и снова "
+"прикрепите файлы."
+
+#: app/templates/pre_login.html:6 app/templates/pre_login.html:21
+msgid "Sign in with Google"
+msgstr "Войти с помощью аккаунта Google"
+
+#: app/templates/pre_login.html:10
+msgid ""
+"In order to log in or request an account on Investigative Dashboard you "
+"must have a Google account. We use your Google account to verify your "
+"identity and obtain a valid email address from you."
+msgstr ""
+"Чтобы выполнить вход или запросить создание аккаунта в Investigative "
+"Dashboard, необходим аккаунт Google. Он будет использован для "
+"установления вашей личности и получения действительного адреса "
+"электронной почты."
+
+#: app/templates/pre_login.html:15
+msgid ""
+"If you do not have a Google account, you can sign up for one on the next "
+"page by clicking \"Sign Up\" in the top right corner."
+msgstr ""
+"Если у вас нет аккаунта Google, вы можете создать его на следующей "
+"странице, нажав на ссылку \"Создать аккаунт\"."
+
+#: app/templates/request_account.html:9
+msgid ""
+"In order to make information requests through Investigative Dashboard, "
+"you must have an account. Please enter your information below and one of "
+"our staff will evaluate and respond to your request."
+msgstr ""
+"Чтобы отправлять запросы на получение информации в Investigative "
+"Dashboard, необходим аккаунт. Для его создания заполните форму и "
+"отправьте ее нашим сотрудникам. Они рассмотрят ваш запрос и ответят на "
+"него."
+
+#: app/templates/request_account_home.html:5
+msgid "Which type of account would you like to apply for?"
+msgstr "Какой аккаунт вам нужен?"
+
+#: app/templates/request_account_home.html:15
+msgid "Information Requester"
+msgstr "Автор запросов"
+
+#: app/templates/request_account_home.html:16
+msgid ""
+"Take advantage of our database of knowledge to find out more information "
+"about companies, individuals, or the relationships between them."
+msgstr ""
+"Используйте нашу базу данных для поиска информации о компаниях, людях и "
+"связях между ними."
+
+#: app/templates/request_account_home.html:18
+msgid "Be a Requester"
+msgstr "Стать автором запросов"
+
+#: app/templates/request_account_home.html:25
+msgid ""
+"We have available public requests that need volunteers. Use your wealth "
+"of information to help others find answers."
+msgstr ""
+"Для обработки некоторых общедоступных запросов нам нужны волонтеры. "
+"Помогите другим, предоставляя данные из собственных баз."
+
+#: app/templates/request_account_home.html:27
+msgid "Be a Volunteer"
+msgstr "Стать волонтером"
+
+#: app/templates/splash.html:9
+msgid ""
+"<span class=\"primary-highlight\">Investigative Dashboard</span> helps "
+"investigators expose illicit ties that cross borders."
+msgstr ""
+"<span class=\"primary-highlight\">Investigative Dashboard</span> помогает"
+" журналистам выявлять международные преступные связи."
+
+#: app/templates/splash.html:22
+msgid "Search for a company or person of interest."
+msgstr "Поиск информации о подозреваемых"
+
+#: app/templates/splash.html:23
+msgid ""
+"We have scraped national business records from Panama, Luxembourg, "
+"Switzerland and many other countries"
+msgstr ""
+"В нашей базе собраны данные из реестров юридических лиц разных стран, в "
+"том числе Панамы, Люксембурга, Швейцарии."
+
+#: app/templates/splash.html:25
+msgid "Start Searching"
+msgstr "Поиск"
+
+#: app/templates/splash.html:31
+msgid "If you need more data, visit recommended databases"
+msgstr "Дополнительные сведения из рекомендуемых баз данных"
+
+#: app/templates/splash.html:32
+msgid "We have assembled a directory of over 300 local databases that might help"
+msgstr "В этом каталоге вы найдете более 300 баз данных разных стран."
+
+#: app/templates/splash.html:34
+msgid "Visit Databases"
+msgstr "Базы данных"
+
+#: app/templates/splash.html:40
+msgid "If you need help, request expert assistance."
+msgstr "Помощь эксперта"
+
+#: app/templates/splash.html:41
+msgid ""
+"We understand investigations are sensitive and we take privacy very "
+"seriously. Requests are only seen by our full-time experts and, if you "
+"are willing, by vetted volunteers"
+msgstr ""
+"В секретных расследованиях важна конфиденциальность. Ваши запросы увидят "
+"только наши сотрудники-эксперты и, если вы пожелаете, проверенные "
+"волонтеры."
+
+#: app/templates/splash.html:43
+msgid "Ask an Expert"
+msgstr "Вопрос эксперту"
+
+#: app/templates/accountrequest/volunteer_account.html:6
+msgid "Become a Volunteer!"
+msgstr "Станьте волонтером!"
+
+#: app/templates/accountrequest/volunteer_account.html:9
+msgid ""
+"If you'd like to volunteer to track down requests, you need to have an "
+"account. Please enter your information below and one of our staff will "
+"review, and respond to your request."
+msgstr ""
+"Если вы хотите предложить безвозмездную помощь в отслеживании запросов, "
+"вам необходим аккаунт. Заполните форму ниже и отправьте ее. Наши "
+"сотрудники рассмотрят вашу заявку и в скором времени ответят вам."
+
+#: app/templates/crud/delete.html:4
+msgid "Confirm Deletion"
+msgstr "Подтвердить удаление"
+
+#: app/templates/crud/delete.html:6
+msgid "Cannot delete this entity."
+msgstr "Ошибка при удалении записи"
+
+#: app/templates/crud/delete_base.html:9
+#, python-format
+msgid ""
+"Are you sure you want to delete %(object_name)s? You will not be able to "
+"undo this action."
+msgstr "Удалить %(object_name)s? Это действие нельзя будет отменить."
+
+#: app/templates/crud/delete_base.html:14
+msgid "Yes, I am sure."
+msgstr "Да, удалить."
+
+#: app/templates/crud/delete_base.html:18
+#, python-format
+msgid "%(object_name)s is attached to the following relationships:"
+msgstr "%(object_name)s имеет следующие связи:"
+
+#: app/templates/crud/delete_base.html:22
+msgid "relationship"
+msgstr "связь"
+
+#: app/templates/crud/entity_details.html:52
+msgid "Close"
+msgstr "Закрыть"
+
+#: app/templates/crud/item_base.html:11
+msgid "Delete"
+msgstr "Удалить"
+
+#: app/templates/crud/item_base.html:20 app/templates/crud/item_base.html:48
+#: app/templates/crud/item_base.html:49 app/templates/crud/item_base.html:50
+#: app/templates/crud/item_base.html:51 app/templates/crud/item_base.html:54
+#: app/templates/tickets/request_details.html:381
+#: app/templates/tickets/request_details.html:384
+#: app/templates/tickets/request_details.html:385
+msgid "Save"
+msgstr "Cохранить"
+
+#: app/templates/crud/item_base.html:29
+#: app/templates/tickets/request_details.html:266
+msgid "Sharing"
+msgstr "Общий доступ"
+
+#: app/templates/crud/item_base.html:48 app/templates/crud/item_base.html:49
+#: app/templates/crud/item_base.html:50 app/templates/crud/item_base.html:51
+msgid "Create Relationship"
+msgstr "Создать связь"
+
+#: app/templates/crud/item_base.html:54
+#: app/templates/tickets/request_details.html:384
+msgid "Share Attached Files"
+msgstr "Поделиться прикрепленными файлами"
+
+#: app/templates/crud/list_base.html:7
+#: app/templates/tickets/request_details.html:382
+#: app/templates/tickets/request_details.html:383
+msgid "Add"
+msgstr "Добавить"
+
+#: app/templates/crud/list_base.html:24
+#: app/templates/tickets/request_admin_base.html:20
+#: app/templates/tickets/request_admin_base.html:23
+#: app/templates/tickets/request_charges_base.html:74
+#: app/templates/tickets/request_charges_base.html:77
+msgid "Prev"
+msgstr "Пред."
+
+#: app/templates/crud/list_base.html:33
+#: app/templates/tickets/request_admin_base.html:29
+#: app/templates/tickets/request_admin_base.html:32
+#: app/templates/tickets/request_charges_base.html:83
+#: app/templates/tickets/request_charges_base.html:86
+msgid "Next"
+msgstr "След."
+
+#: app/templates/crud/accountrequest/add.html:2
+msgid "New Account Request"
+msgstr "Новый запрос на создание аккаунта"
+
+#: app/templates/crud/accountrequest/edit.html:4
+msgid "Edit Volunteer Request"
+msgstr "Изменить запрос волонтера"
+
+#: app/templates/crud/accountrequest/edit.html:6
+msgid "Edit Account Request"
+msgstr "Изменить запрос на создание аккаунта"
+
+#: app/templates/crud/accountrequest/edit.html:13
+#: app/templates/crud/accountrequest/edit.html:20
+msgid "Set Permissions"
+msgstr "Настройка разрешений"
+
+#: app/templates/crud/company/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:9
+msgid "New Company"
+msgstr "Новая компания"
+
+#: app/templates/crud/company/edit.html:2
+msgid "Edit Company"
+msgstr "Изменить компанию"
+
+#: app/templates/crud/company/edit.html:5
+msgid "Registered Offices"
+msgstr "Зарегистрированные офисы"
+
+#: app/templates/crud/company/edit.html:11
+#: app/templates/crud/company/edit.html:13
+#: app/templates/crud/relationship/table_mixin.html:162
+#: app/templates/crud/relationship/table_mixin.html:164
+msgid "Entity"
+msgstr "Запись"
+
+#: app/templates/crud/expandofield/add.html:2
+msgid "New Extra Field"
+msgstr "Новое дополнительное поле"
+
+#: app/templates/crud/expandofield/edit.html:2
+msgid "Edit Extra Field"
+msgstr "Изменить дополнительное поле"
+
+#: app/templates/crud/externaldb/add.html:2
+msgid "New Database"
+msgstr "Новая база данных"
+
+#: app/templates/crud/externaldb/edit.html:2
+msgid "Edit External Database"
+msgstr "Изменить внешнюю базу данных"
+
+#: app/templates/crud/externaldb/list.html:2
+msgid "Databases"
+msgstr "Базы данных"
+
+#: app/templates/crud/location/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:11
+msgid "New Location"
+msgstr "Новое местоположение"
+
+#: app/templates/crud/location/edit.html:2
+msgid "Edit Location"
+msgstr "Изменить местоположение"
+
+#: app/templates/crud/person/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:10
+msgid "New Person"
+msgstr "Новый человек"
+
+#: app/templates/crud/person/edit.html:2
+msgid "Edit Person"
+msgstr "Изменить данные человека"
+
+#: app/templates/crud/profile/edit.html:2
+msgid "Edit User Profile"
+msgstr "Изменить профиль пользователя"
+
+#: app/templates/crud/profile/edit.html:7
+msgid "Account Request for this profile"
+msgstr "Запрос на создание аккаунта для этого профиля"
+
+#: app/templates/crud/profile/edit.html:18
+msgid "Account Request for this profile: "
+msgstr "Запрос на создание аккаунта для этого профиля: "
+
+#: app/templates/crud/relationship/add.html:2
+msgid "New Relationship"
+msgstr "Новая связь"
+
+#: app/templates/crud/relationship/edit.html:2
+#: app/templates/crud/relationship/item.html:2
+msgid "Edit Relationship"
+msgstr "Изменить связь"
+
+#: app/templates/crud/relationship/table_mixin.html:6
+msgid "Add New "
+msgstr "Добавить новую "
+
+#: app/templates/crud/relationship/table_mixin.html:12
+msgid "Add Existing "
+msgstr "Добавить существующую "
+
+#: app/templates/crud/relationship/table_mixin.html:49
+msgid "Directors"
+msgstr "Директора"
+
+#: app/templates/crud/relationship/table_mixin.html:80
+msgid "Shareholders"
+msgstr "Акционеры"
+
+#: app/templates/crud/relationship/table_mixin.html:125
+msgid "Create"
+msgstr "Создать"
+
+#: app/templates/crud/relationship/table_mixin.html:131
+msgid "With New Company"
+msgstr "С новой компанией"
+
+#: app/templates/crud/relationship/table_mixin.html:136
+msgid "With New Person"
+msgstr "С новым человеком"
+
+#: app/templates/crud/relationship/table_mixin.html:141
+msgid "With New Location"
+msgstr "С новым местоположением"
+
+#: app/templates/crud/relationship/table_mixin.html:146
+msgid "With Existing Entity"
+msgstr "С существующей записью"
+
+#: app/templates/crud/relationship/table_mixin.html:154
+msgid "All Relationships"
+msgstr "Все связи"
+
+#: app/templates/crud/relationship/table_mixin.html:178
+#, python-format
+msgid "is a %(type)s of"
+msgstr "– %(type)s компании"
+
+#: app/templates/macros/forms.html:28
+msgid "Select File"
+msgstr "Выбрать файл"
+
+#: app/templates/macros/forms.html:29
+msgid "Change"
+msgstr "Изменить"
+
+#: app/templates/macros/forms.html:32
+msgid "Remove"
+msgstr "Удалить"
+
+#: app/templates/macros/forms.html:46
+#: app/templates/tickets/request_details.html:42
+msgid "Attach Files"
+msgstr "Прикрепить файлы"
+
+#: app/templates/mail/mail_base.html:36
+msgid "This message is automatically generated by "
+msgstr "Это сообщение автоматически создано "
+
+#: app/templates/mail/mail_base.html:36
+msgid "OCCRP Investigative Dashboard"
+msgstr "OCCRP Investigative Dashboard"
+
+#: app/templates/mail/mail_base.html:37
+msgid "If you think it was sent incorrectly, please contact an "
+msgstr "Если вы считаете, что при его отправке произошла ошибка, свяжитесь с "
+
+#: app/templates/mail/mail_base.html:37
+msgid "administrator"
+msgstr "администратором"
+
+#: app/templates/mail/mail_base.html:38
+msgid "For more information on "
+msgstr "За дополнительной информацией по теме "
+
+#: app/templates/mail/mail_base.html:39
+msgid "visit"
+msgstr "обратитесь в"
+
+#: app/templates/mail/mail_simple.html:16
+msgid "The Research Desk"
+msgstr "исследовательский совет"
+
+#: app/templates/mail/mail_simple.html:16
+msgid "at the Investigative Dashboard"
+msgstr "проекта Investigative Dashboard"
+
+#: app/templates/mail/ticket_update.html:8
+msgid "your request. "
+msgstr "ваш запрос. "
+
+#: app/templates/mail/ticket_update.html:31
+msgid "View on Site"
+msgstr "Посмотреть на сайте"
+
+#: app/templates/mail/ticket_update.html:32
+msgid "Add Comment"
+msgstr "Добавить комментарий"
+
+#: app/templates/mail/ticket_update.html:33
+msgid "or reply to this email directly."
+msgstr "или ответьте на это сообщение."
+
+#: app/templates/mail/account_request/approved.html:4
+msgid "Your Account Request was approved"
+msgstr "Ваш запрос на создание аккаунта принят"
+
+#: app/templates/mail/account_request/approved.html:8
+#: app/templates/mail/account_request/received.html:8
+#: app/templates/mail/account_request/rejected.html:8
+#: app/templates/mail/user_profile/requester_type_update.html:8
+#, python-format
+msgid "Dear %(name)s,"
+msgstr "Здравствуйте, %(name)s!"
+
+#: app/templates/mail/account_request/approved.html:9
+msgid ""
+"Your ID registration is complete! Just login in with your Gmail account "
+"that you used to register to get started."
+msgstr ""
+"Поздравляем с регистрацией в Investigative Dashboard! Теперь Вы можете "
+"войти на сайт проекта с помощью аккаунта Gmail, который Вы указали при "
+"регистрации."
+
+#: app/templates/mail/account_request/approved.html:10
+#, python-format
+msgid "Please be advised your account type is: %(account_type)s"
+msgstr "Тип Вашего аккаунта – %(account_type)s"
+
+#: app/templates/mail/account_request/approved.html:11
+msgid "Click here to submit a research request."
+msgstr "Нажмите здесь, чтобы отправить запрос на расследование."
+
+#: app/templates/mail/account_request/approved.html:12
+#: app/templates/mail/user_profile/requester_type_update.html:10
+msgid ""
+"If you do not think this is the correct account type for you, please "
+"contact the research desk:"
+msgstr "Если тип аккаунта указан неверно, свяжитесь с исследовательским советом:"
+
+#: app/templates/mail/account_request/approved.html:13
+msgid "Good luck with your investigation."
+msgstr "Удачи в расследовании!"
+
+#: app/templates/mail/account_request/received.html:9
+msgid ""
+"Thank you for registering with the Investigative Dashboard. We are "
+"reviewing your information and as soon as your registration is complete "
+"you can sign into the Research Desk with the Google account that you used"
+" to register. In the meantime, get started now by searching the ID crowd-"
+"sourced and external databases. We will be in touch shortly."
+msgstr ""
+"Благодарим вас за регистрацию в проекте Investigative Dashboard. После "
+"того как ваша заявка будет удовлетворена, Вы сможете войти на страницу "
+"исследовательского совета с помощью аккаунта Google, который вы указали "
+"при регистрации. Тем временем вы можете выполнять поиск во внешних и "
+"общедоступных базах данных Investigative Dashboard. В скором времени мы "
+"сообщим вам о статусе вашего запроса."
+
+#: app/templates/mail/account_request/received_admin.html:8
+msgid "A new account request has been submitted! Below are the details:"
+msgstr "Запрос на создание аккаунта отправлен. Сведения о нем представлены ниже."
+
+#: app/templates/mail/account_request/received_admin.html:15
+msgid "Click here to review and approve or reject."
+msgstr "Нажмите здесь, чтобы открыть и принять или отклонить запрос."
+
+#: app/templates/mail/account_request/rejected.html:4
+msgid "Your Account Request was rejected"
+msgstr "Ваш запрос на создание аккаунта отклонен"
+
+#: app/templates/mail/account_request/rejected.html:9
+msgid ""
+"I am sorry but we could not register you at this time. The head of the "
+"research desk will contact you with further details."
+msgstr ""
+"К сожалению, в настоящий момент мы не можем предоставить Вам аккаунт. "
+"Глава исследовательского совета сообщит Вам подробные сведения."
+
+#: app/templates/mail/account_request/rejected.html:10
+#: app/templates/mail/user_profile/requester_type_update.html:11
+msgid "Thank you,"
+msgstr "С уважением,"
+
+#: app/templates/mail/user_profile/requester_type_update.html:4
+msgid "Your Account Type has changed"
+msgstr "Тип аккаунта изменен"
+
+#: app/templates/mail/user_profile/requester_type_update.html:9
+#, python-format
+msgid ""
+"Please be advised your account status has changed. Your new account type "
+"is: %(account_type)s"
+msgstr "Статус аккаунта изменен. Новый тип аккаунта – %(account_type)s"
+
+#: app/templates/modals/form_basic.html:3
+msgid "Not Allowed"
+msgstr "Запрещено"
+
+#: app/templates/search/search_base.html:7
+msgid "Results "
+msgstr "Результаты "
+
+#: app/templates/search/search_base.html:16
+msgid "Search terms"
+msgstr "Введите запрос"
+
+#: app/templates/search/search_base.html:31
+msgid "Navigate Results "
+msgstr "Страницы результатов "
+
+#: app/templates/search/search_base.html:32
+msgid "< Previous"
+msgstr "< Пред."
+
+#: app/templates/search/search_base.html:33
+msgid "Next >"
+msgstr "След. >"
+
+#: app/templates/search/search_base.html:41
+#, python-format
+msgid ""
+"Didn't find what you were looking for? Try one of our <a "
+"href=\"%(url)s\">business registries</a>."
+msgstr ""
+"Не нашли нужных сведений? Воспользуйтесь списком <a "
+"href=\"%(url)s\">реестров юридических лиц</a>."
+
+#: app/templates/search/search_combined.html:16
+#: app/templates/search/search_documents.html:38
+#: app/templates/search/search_entities.html:71
+msgid "No search results."
+msgstr "Ничего не найдено."
+
+#: app/templates/search/search_combined.html:20
+msgid "To search, type your query into the search box above."
+msgstr "Введите запрос в окно поиска."
+
+#: app/templates/search/search_documents.html:8
+#: app/templates/search/search_entities.html:9
+msgid "Enter your terms..."
+msgstr "Введите запрос…"
+
+#: app/templates/search/search_entities.html:22
+#, python-format
+msgid "%(num_results)s result found."
+msgid_plural "%(num_results)s results found."
+msgstr[0] "Найдено результатов: %(num_results)s."
+msgstr[1] "Найдено результатов: %(num_results)s."
+msgstr[2] "Найдено результатов: %(num_results)s."
+msgstr[3] "Найдено результатов: %(num_results)s."
+msgstr[4] "Найдено результатов: %(num_results)s."
+msgstr[5] "Найдено результатов: %(num_results)s."
+
+#: app/templates/tickets/manage.html:5
+msgid "Manage Information Request"
+msgstr "Управление запросом на получение информации"
+
+#: app/templates/tickets/public_list.html:5
+#: app/templates/tickets/request_base.html:67
+msgid "Public Requests"
+msgstr "Общедоступные запросы"
+
+#: app/templates/tickets/public_list.html:12
+#: app/templates/tickets/responds_list.html:12
+msgid "No requests found."
+msgstr "Запросов не найдено."
+
+#: app/templates/tickets/request.html:5
+#: app/templates/tickets/request_details.html:162
+msgid "Request Information"
+msgstr "Запрос на получение информации"
+
+#: app/templates/tickets/request.html:10
+msgid ""
+"Your request will be routed to our professional researchers and "
+"volunteers, who will try to help."
+msgstr "Ваш запрос будет передан нашим экспертам и волонтерам."
+
+#: app/templates/tickets/request_admin_base.html:42
+msgid "No tickets found."
+msgstr "Заявок не найдено."
+
+#: app/templates/tickets/request_base.html:6
+msgid "Summary"
+msgstr "Сводная информация"
+
+#: app/templates/tickets/request_base.html:10
+#: app/templates/tickets/request_charges_base.html:26
+#: app/templates/tickets/request_details.html:279
+msgid "Actions"
+msgstr "Действия"
+
+#: app/templates/tickets/request_base.html:25
+msgid " Unassigned "
+msgstr " Не назначено "
+
+#: app/templates/tickets/request_base.html:34
+msgid "No Responder"
+msgstr "Нет ответственных за обработку заявки"
+
+#: app/templates/tickets/request_base.html:38
+msgid "Completed "
+msgstr "Завершено "
+
+#: app/templates/tickets/request_base.html:40
+msgid "Cancelled "
+msgstr "Отменено "
+
+#: app/templates/tickets/request_base.html:62
+msgid "Requests"
+msgstr "Запросы"
+
+#: app/templates/tickets/request_base.html:64
+#: app/templates/tickets/request_list.html:9
+msgid "My Requests"
+msgstr "Мои запросы"
+
+#: app/templates/tickets/request_base.html:71
+#: app/templates/tickets/responds_list.html:5
+msgid "Assigned Requests"
+msgstr "Назначенные запросы"
+
+#: app/templates/tickets/request_base.html:77
+#: app/templates/tickets/admin/admin_unassigned.html:4
+msgid "Unassigned Tickets"
+msgstr "Не назначенные заявки"
+
+#: app/templates/tickets/request_base.html:80
+msgid "Upcoming Deadlines"
+msgstr "Ближайшие сроки"
+
+#: app/templates/tickets/request_base.html:83
+msgid "Flagged Tickets"
+msgstr "Отмеченные заявки"
+
+#: app/templates/tickets/request_base.html:86
+msgid "Closed Tickets"
+msgstr "Закрытые заявки"
+
+#: app/templates/tickets/request_base.html:88
+msgid "Billing"
+msgstr "Оплата"
+
+#: app/templates/tickets/request_base.html:90
+msgid "Customer Report"
+msgstr "Отчет клиента"
+
+#: app/templates/tickets/request_base.html:93
+#: app/templates/tickets/admin/admin_charges_outstanding.html:3
+msgid "Outstanding Charges"
+msgstr "Задолженности"
+
+#: app/templates/tickets/request_charges_base.html:22
+msgid "Cost"
+msgstr "Стоимость"
+
+#: app/templates/tickets/request_charges_base.html:23
+msgid "Converted"
+msgstr "Конвертированная сумма"
+
+#: app/templates/tickets/request_charges_base.html:24
+msgid "Reconciled"
+msgstr "Пересмотрено"
+
+#: app/templates/tickets/request_charges_base.html:25
+msgid "Created"
+msgstr "Создано"
+
+#: app/templates/tickets/request_charges_base.html:96
+msgid "No charges found."
+msgstr "Платежи не найдены."
+
+#: app/templates/tickets/request_charges_base.html:103
+msgid "Reconcile Charge"
+msgstr "Пересмотреть платеж"
+
+#: app/templates/tickets/request_charges_base.html:103
+msgid "Reconcile"
+msgstr "Пересмотреть"
+
+#: app/templates/tickets/request_details.html:21
+msgid "Created on "
+msgstr "Время создания "
+
+#: app/templates/tickets/request_details.html:45
+#: app/templates/tickets/request_details.html:382
+msgid "Attach Entities"
+msgstr "Прикрепить записи"
+
+#: app/templates/tickets/request_details.html:52
+msgid "Watch"
+msgstr "Смотреть"
+
+#: app/templates/tickets/request_details.html:57
+msgid "Leave"
+msgstr "Выйти"
+
+#: app/templates/tickets/request_details.html:64
+#: app/templates/tickets/request_details.html:380
+msgid "Close Request"
+msgstr "Закрыть запрос"
+
+#: app/templates/tickets/request_details.html:71
+#: app/templates/tickets/request_details.html:377
+msgid "Cancel Request"
+msgstr "Отменить запрос"
+
+#: app/templates/tickets/request_details.html:78
+#: app/templates/tickets/request_details.html:383
+msgid "Add Charge"
+msgstr "Добавить платеж"
+
+#: app/templates/tickets/request_details.html:85
+msgid "Delete Request"
+msgstr "Удалить запрос"
+
+#: app/templates/tickets/request_details.html:93
+msgid "Mark Bill Paid"
+msgstr "Отметить счет как оплаченный"
+
+#: app/templates/tickets/request_details.html:100
+msgid "Edit Information"
+msgstr "Изменить информацию"
+
+#: app/templates/tickets/request_details.html:106
+#: app/templates/tickets/request_details.html:385
+msgid "Request Settings"
+msgstr "Настройки запроса"
+
+#: app/templates/tickets/request_details.html:114
+#: app/templates/tickets/request_details.html:378
+msgid "Alert Administrator"
+msgstr "Сообщить администратору"
+
+#: app/templates/tickets/request_details.html:125
+msgid "Re-Open"
+msgstr "Открыть повторно"
+
+#: app/templates/tickets/request_details.html:168
+#: app/templates/tickets/request_details.html:170
+msgid "No Requester"
+msgstr "Нет автора запроса"
+
+#: app/templates/tickets/request_details.html:181
+msgid "No Responders"
+msgstr "Нет ответственных за обработку заявки"
+
+#: app/templates/tickets/request_details.html:194
+msgid "Request Type"
+msgstr "Тип запроса"
+
+#: app/templates/tickets/request_details.html:198
+msgid "Status Updated"
+msgstr "Статус обновлен"
+
+#: app/templates/tickets/request_details.html:205
+msgid "Sensitive"
+msgstr "Секретно"
+
+#: app/templates/tickets/request_details.html:209
+#: app/templates/tickets/request_details.html:211
+msgid "Billing Information"
+msgstr "Платежные данные"
+
+#: app/templates/tickets/request_details.html:215
+msgid "For-profit"
+msgstr "Коммерческая организация"
+
+#: app/templates/tickets/request_details.html:217
+msgid "Charges"
+msgstr "Платежи"
+
+#: app/templates/tickets/request_details.html:229
+msgid "Outstanding Amount:"
+msgstr "Сумма задолженности:"
+
+#: app/templates/tickets/request_details.html:237
+msgid "Request Details"
+msgstr "Запросить дополнительную информацию"
+
+#: app/templates/tickets/request_details.html:245
+msgid "Initial Information"
+msgstr "Первоначальные сведения"
+
+#: app/templates/tickets/request_details.html:247
+msgid "Story"
+msgstr "Случай"
+
+#: app/templates/tickets/request_details.html:248
+msgid "Question"
+msgstr "Вопрос"
+
+#: app/templates/tickets/request_details.html:254
+#: app/templates/tickets/request_details.html:255
+#: app/templates/tickets/request_details.html:256 static/js/widgets.js:189
+#: static/js/widgets.js:231
+msgid "Other Names"
+msgstr "Другие имена"
+
+#: app/templates/tickets/request_details.html:254
+msgid "Relation"
+msgstr "Отношение"
+
+#: app/templates/tickets/request_details.html:262
+msgid "Attached Files"
+msgstr "Прикрепленные файлы"
+
+#: app/templates/tickets/request_details.html:274
+msgid "Attached Entities"
+msgstr "Прикрепленные записи"
+
+#: app/templates/tickets/request_details.html:303
+msgid "Activity"
+msgstr "Действие"
+
+#: app/templates/tickets/request_details.html:337
+msgid "No comment provided."
+msgstr "Комментариев нет."
+
+#: app/templates/tickets/request_details.html:346
+msgid "No updates yet."
+msgstr "Обновлений пока нет."
+
+#: app/templates/tickets/request_details.html:350
+msgid "Leave a Comment"
+msgstr "Оставить комментарий"
+
+#: app/templates/tickets/request_details.html:378
+msgid "Flag Request"
+msgstr "Отметить запрос"
+
+#: app/templates/tickets/request_details.html:379
+msgid "Re-Open Request"
+msgstr "Повторно открыть запрос"
+
+#: app/templates/tickets/request_details.html:381
+msgid "Mark Paid"
+msgstr "Отметить как оплаченные"
+
+#: app/templates/tickets/request_list.html:7
+msgid "New Request"
+msgstr "Новый запрос"
+
+#: app/templates/tickets/request_list.html:13
+msgid "Open Requests"
+msgstr "Открытые запросы"
+
+#: app/templates/tickets/request_list.html:18
+msgid "No open requests found."
+msgstr "Нет открытых запросов."
+
+#: app/templates/tickets/request_list.html:22
+msgid "Closed Requests"
+msgstr "Закрытые запросы"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:6
+msgid "Filter"
+msgstr "Применить фильтр"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:12
+msgid "Customer Charges"
+msgstr "Платежи клиента"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:13
+msgid "View all logged charges against an individual customer."
+msgstr "Открыть все зафиксированные платежи определенного клиента."
+
+#: app/templates/tickets/admin/admin_charges_outstanding.html:4
+msgid "View all outstanding charges for all tickets and requesters. "
+msgstr "Открыть просроченные платежи по всем заявкам и авторам запросов. "
+
+#: app/templates/tickets/admin/admin_deadline.html:3
+msgid "Tickets with Deadlines"
+msgstr "Заявки со сроками"
+
+#: app/templates/tickets/admin/admin_deadline.html:4
+msgid "View open tickets ordered by upcoming deadlines. "
+msgstr "Открытые заявки, упорядоченные по сроку. "
+
+#: app/templates/tickets/admin/admin_flagged.html:3
+msgid "User Flagged Tickets"
+msgstr "Заявки, отмеченные пользователем"
+
+#: app/templates/tickets/admin/admin_flagged.html:4
+msgid ""
+"View tickets which users or staff have deemed requiring administrative "
+"intervention. "
+msgstr ""
+"Открыть заявки, которые пользователи или сотрудники отметили как "
+"требующие внимания администратора. "
+
+#: app/templates/tickets/admin/admin_history.html:3
+msgid "Tickets History"
+msgstr "История заявок"
+
+#: app/templates/tickets/admin/admin_history.html:4
+msgid "A simple list of closed, resolved or cancelled tickets. "
+msgstr "Список закрытых, решенных и отмененных заявок "
+
+#: app/templates/tickets/admin/admin_unassigned.html:5
+msgid "View new tickets that need responders assigned to them."
+msgstr "Открыть новые заявки, для обработки которых нужно назначить ответственных"
+
+#: static/js/drive-picker.js:97
+msgid "Error attaching file(s)."
+msgstr "Не удалось прикрепить файлы"
+
+#: static/js/i18n.js:47 static/js/i18n.js:55
+msgid "x04"
+msgid_plural "x04"
+msgstr[0] "x04"
+msgstr[1] "x04"
+msgstr[2] "x04"
+msgstr[3] "x04"
+msgstr[4] "x04"
+msgstr[5] "x04"
+
+#: static/js/list-files.js:24
+msgid "File successfully removed."
+msgstr "Файл удален"
+
+#: static/js/list-files.js:26
+msgid "Error removing attached file."
+msgstr "Ошибка при удалении прикрепленного файла"
+
+#: static/js/list-files.js:44
+msgid "No files attached."
+msgstr "Нет прикрепленных файлов"
+
+#: static/js/list-files.js:61
+msgid "Error displaying attached files."
+msgstr "Не удалось показать прикрепленные файлы"
+
+#: static/js/validation-forms.js:42
+msgid "There was a problem with validation."
+msgstr "Ошибка при проверке"
+

@@ -1,0 +1,391 @@
+{% extends "base.html" %}
+
+{% import "macros/modals.html" as modal_macros %}
+
+{% block body_class %}request has-full-page-header{% endblock %}
+
+{% block before_content %}
+<div class="page-header full-page-header">
+ <div class="container">
+  <div class="row">
+    <div class="span5">
+        <div class="summary">
+            <div class="icon pull-left">
+                <i class="icon-folder-open-alt primary-highlight"></i>
+            </div>
+            <div class="text">
+                <h3>
+                    {{ ticket.summary }}
+                </h3>
+                <h5 class="yell">
+                    <span class="soft">{% trans %}Created on {% endtrans %}</span>
+                    {{ macros.display_datetime(ticket.created) }}
+                </h5>
+            </div>
+        </div>
+    </div> <!-- span5 -->
+
+    <div class="span7">
+        <div class="header-buttons pull-right">
+            <div class="status-container">
+                 <h5 class="yell soft">
+                    {% trans %}Status{% endtrans %}
+                 </h5>
+                 <h5 class="yell">
+                    <i class="icon-circle">&nbsp;</i> {{ ticket.status }}
+                 </h5>
+            </div>
+            {% if ticket.is_open() %}
+
+            <div class="btn-group">
+                <!--<button type="button" class="btn" data-toggle="drive-picker" data-spinner="before" data-key="{{ ticket.id }}">
+                    <i class="icon-file-alt"></i> {% trans %}Attach Files{% endtrans %}
+                </button>-->
+                <a href="#DirectUploadForm" role="button" class="btn upload_files" data-toggle="modal" data-key="{{ ticket.id }}">
+                    <i class="icon-file-alt"></i> {% trans %}Attach Files{% endtrans %}
+                </a>
+
+                <a href="#EntitySearchForm" role="button" data-toggle="modal" class="btn">
+                    <i class="icon-globe"></i> {% trans %}Attach Entities{% endtrans %}
+                </a>
+            </div>
+            {% if is_volunteer %}
+                {% if profile.key not in ticket.actors() %}
+                <a class='btn' href="{{ url('ticket_join', ticket_id=ticketid) }}">
+                    <i class='icon-eye-open'></i>
+                    {% trans %}Watch{% endtrans %}
+                </a>
+                {% else %}
+                <a class='btn' href="{{ url('ticket_leave', ticket_id=ticket.id) }}">
+                    <i class='icon-eye-close'></i>
+                    {% trans %}Leave{% endtrans %}
+                </a>
+                {% endif %}
+            {% else %}
+
+            <div class="btn-group">
+                   <a href="#ReqCloseForm" class="btn" data-toggle='modal' role='button'>
+                        <i class="icon-ok"></i> {% trans %}Close Request{% endtrans %}
+                    </a>
+                    <button class="btn dropdown-toggle" data-toggle='dropdown'><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    {% if is_admin or not is_staff or ticket.requester == user %}
+                    <li>
+                        <a href="#ReqCancelForm" data-toggle="modal" role="button">
+                            <i class="icon-minus-sign"></i> {% trans %}Cancel Request{% endtrans %}
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if is_admin or is_staff %}
+                    <li>
+                        <a href="#ChargeForm" data-toggle='modal' role='button'>
+                            <i class="icon-money"></i> {% trans %}Add Charge{% endtrans %}
+                        </a>
+                    </li>
+                    {% endif %}
+		    {% if is_admin %}
+                    <li>
+		                            <a href="{{ url('request_delete', ticket_id=ticket.id) }}" role="button">
+                            <i class="icon-minus-sign"></i> {% trans %}Delete Request{% endtrans %}
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if is_admin %}
+                    <li>
+                        <a href="#MarkPaidForm" data-toggle='modal' role='button'>
+                            <i class="icon-check"></i> {% trans %}Mark Bill Paid{% endtrans %}
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if is_admin  %}
+                    <li>
+                        <a href="{{ url('ticket_edit', ticket_id=ticket.id) }}?next={{ request.path_qs }}" role='button'>
+                            <i class="icon-pencil"></i> {% trans %}Edit Information{% endtrans %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#AdminSettingsModal" role='button'
+                           data-modal-url="{{ url('ticket_admin_settings', ticket_id=ticket.id) }}">
+                            <i class="icon-cog"></i> {% trans %}Request Settings{% endtrans %}
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if not is_admin %}
+                    <li>
+                        <a href="#ReqFlagForm" data-toggle='modal' role='button'>
+                            <i class="icon-warning-sign"></i> {% trans %}Alert Administrator{% endtrans %}
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+                {% endif %}
+            </div>
+            {% else %}
+                {% if not is_volunteer %}
+                    <div class="btn-group">
+                        <a href="#ReqReopenForm" class="btn btn-warning" data-toggle='modal' role='button'>
+                            <i class="icon-unlock"></i> {% trans %}Re-Open{% endtrans %}
+                        </a>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>  <!-- class="span7" -->
+  </div> <!-- class="row" -->
+ </div> <!-- class="container" -->
+{% endblock %}
+
+{% block content %}
+<div class="span12">
+<div class="row-fluid">
+    <div class="span3">
+        {% if ticket.deadline or ticket.location %}
+            <div class="important-info-wrapper">
+                {% if ticket.deadline %}
+                    <div class="important-info clearfix">
+                        <i class="icon-calendar primary-highlight pull-left"></i>
+                        <div class="pull-left">
+                            <h5 class="yell soft">{% trans %}Deadline{% endtrans %}</h5>
+                            <h4>{{ macros.display_datetime(ticket.deadline) }}</h4>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if ticket.location %}
+                    <div class="important-info last clearfix">
+                        <i class="icon-map-marker secondary-highlight pull-left"></i>
+                        <div>
+                            <h5 class="yell soft">{% trans %}Location{% endtrans %}</h5>
+                            <h4>{{ ticket.location }}</h4>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+        <h4>{% trans %}Request Information{% endtrans %}</h4>
+        <dl>
+            <dt class="yell soft">{% trans %}Requester{% endtrans %}</dt>
+            <dd>
+                {% if ticket.requester and (is_staff or is_admin) %}
+	      <a href="/admin/userprofile/{{ ticket.requester.id}}/view/">
+              {{ ticket.requester.display_name if ticket.requester else _("No Requester") }} </a>
+	      {% else %}
+	      {{ ticket.requester.display_name if ticket.requester else _("No Requester") }}
+              {% endif %}
+	    </dd>
+
+            <dt class="yell soft">{% trans %}Staff Responders{% endtrans %}</dt>
+            <dd>
+            {% if ticket.responders.count() > 0 %}
+                {% for responder in ticket.responders.all() %}
+                    {{ responder.display_name }} <br />
+                {% endfor %}
+            {% else %}
+                {{ _("No Responders") }}
+            {% endif %}
+            </dd>
+
+            {% if ticket.volunteers.count() > 0 %}
+            <dt class="yell soft">{% trans %}Volunteer Responders{% endtrans %}</dt>
+            <dd>
+                {% for volunteer in ticket.volunteers.all() %}
+                    {{ volunteer.display_name }} <br />
+                {% endfor %}
+            </dd>
+            {% endif %}
+
+            <dt class="yell soft">{% trans %}Request Type{% endtrans %}</dt>
+            <dd>{{ ticket.ticket_type_display() }}</dd>
+
+            {% if ticket.status_updated %}
+                <dt class="yell soft">{% trans %}Status Updated{% endtrans %}</dt>
+                <dd>{{ macros.display_datetime(ticket.status_updated) }}</dd>
+            {% endif %}
+
+            <dt class="yell soft">{% trans %}Findings Public{% endtrans %}</dt>
+            <dd>{{ _("Yes") if ticket.findings_public else _("No") }}</dd>
+
+            <dt class="yell soft">{% trans %}Sensitive{% endtrans %}</dt>
+            <dd>{{ _("Yes") if ticket.sensitive else _("No") }}</dd>
+        </dl>
+
+        <h4>{% trans %}Billing Information{% endtrans %}</h4>
+        <dl>
+            <dt class="yell soft">{% trans %}Billing Information{% endtrans %}</dt>
+            {% if ticket.requester_type %}
+                <dd>{{ ticket.requester_type_display() }}</dd>
+            {% endif %}
+            <dd>{{ _('For-profit') if ticket.is_for_profit else _('Non-profit') }}</dd>
+
+            <dt id="charge-list" class="yell soft">{% trans %}Charges{% endtrans %}</dt>
+            {% if charges %}
+                <dd class='request-charges'>
+                    <table>
+                    {% for charge in charges %}
+                        <tr class="{% if charge.reconciled %}reconciled{% endif %}">
+                            <td class='money'>${{ "%0.2f"|format(charge.cost) }}</td>
+                            <td class='item muted'>{{ charge.item }}</td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                </dd>
+                <dd>{{ _("Outstanding Amount:") }} ${{ "%0.2f"|format(charges_outstanding) }} </dd>
+            {% else %}
+                <dd>{% trans %}None{% endtrans %}</dd>
+            {% endif %}
+        </dl>
+    </div>
+
+    <div class="span9 request-details">
+        <h3 class="primary-highlight">{% trans %}Request Details{% endtrans %}</h3>
+
+        <div class="row-fluid">
+            <div class="span7">
+                {{ macros.request_detail(_('Name'), ticket.name) }}
+                {{ macros.request_detail(_('Background'), ticket.background) }}
+                {{ macros.request_detail(_('Biography'), ticket.biography) }}
+                {{ macros.request_detail(_('Business Activities'), ticket.biography) }}
+                {{ macros.request_detail(_('Initial Information'), ticket.initial_information) }}
+                {{ macros.request_detail(_('Sources'), ticket.sources) }}
+                {{ macros.request_detail(_('Story'), ticket.story) }}
+                {{ macros.request_detail(_('Question'), ticket.question) }}
+            </div>
+            <div class="span5">
+                {{ macros.request_detail(_('Country'), ticket.country) }}
+                {{ macros.request_detail(_('Birthplace'), ticket.birthplace) }}
+                {{ macros.request_detail(_('Date of Birth'), ticket.dob) }}
+                {{ macros.request_detail_multivalue(_('Family'), [_('Last Name'), _('First Names'), _('Relation')], ticket.family) }}
+                {{ macros.request_detail_multivalue(_('Connected People'), [_('Last Name'), _('First Names')], ticket.connections) }}
+                {{ macros.request_detail_multivalue(_('Aliases'), [_('Last Name'), _('First Names')], ticket.aliases) }}
+            </div>
+        </div>
+
+        {% if ticket.drive_folder_id %}
+            <h3 class="primary-highlight">
+                {% trans %}Attached Files{% endtrans %}
+                {% if is_staff or is_admin %}
+                    <a href="#SharingModal" class="btn btn-small pull-right"
+                       data-modal-url="{{ url('share_files', entity_id=ticket.key.urlsafe()) }}">
+                        <i class="icon-group"></i> {% trans %}Sharing{% endtrans %}
+                    </a>
+                {% endif %}
+            </h3>
+            {{ macros.list_files(ticket) }}
+        {% endif %}
+
+        {% if ticket.entities.count() %}
+            <h3 class="primary-highlight">{% trans %}Attached Entities{% endtrans %}</h3>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>{% trans %}Name{% endtrans %}</th>
+                        <th style="width: 55px;">{% trans %}Actions{% endtrans %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for entity in ticket.entities.all() %}
+                    <tr>
+                        <td>
+                            <a href="javascript:void(0)" class="entity-view"
+                               data-url="{{ url('entity_view') }}"
+                               data-key="{{ entity.id }}">{{ entity.name }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ url("request_entity_remove", ticket_id=ticket.id) }}?key={{ entity.id }}" class="btn btn-mini">
+                                <i class="icon-minus-sign"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                    </tbody>
+                </table>
+
+        {% endif %}
+
+        <h3 class="primary-highlight">{% trans %}Activity{% endtrans %}</h3>
+        {% if ticket_updates %}
+            <div class="row-fluid discussion">
+                <div class="span12">
+                {% for tu in ticket_updates %}
+		  {% if tu.comment %}
+                    <div class="request-update">
+                        <i class="icon-caret-right primary-highlight"></i>
+                        <h5>
+                        <strong>
+                        {% if tu.update_type == "update" %}
+                            <i class="icon-pencil"></i>
+                        {% elif tu.update_type == "close" %}
+                            <i class="icon-ok"></i>
+                        {% elif tu.update_type == "cancel" %}
+                            <i class="icon-minus-sign"></i>
+                        {% elif tu.update_type == "reopen" %}
+                            <i class="icon-unlock"></i>
+                        {% elif tu.update_type == "open" %}
+                            <i class="icon-asterisk"></i>
+                        {% elif tu.update_type == "flag" %}
+                            <i class="icon-flag"></i>
+                        {% elif tu.update_type == "charge" %}
+                            <i class="icon-ticket"></i>
+                        {% endif %}
+                        {{ tu.author.display_name }}
+                        </strong>
+
+                        <div class="pull-right soft">
+                            <span class="update-{{ tu.update_type }}">{{ tu.update_type_display() }}</span>
+                            on {{ macros.display_datetime(tu.created) }}
+                        </div>
+
+
+                        </h5>
+                        <p>{{ tu.comment if tu.comment else "" }}</p>
+                        {% if tu.extra_relation -%}
+                            <p>{{ tu.extra_relation.to_ticket_update(tu) }}</p>
+                        {%- endif %}
+                    </div>
+		    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <p class="discussion">{% trans %}No updates yet.{% endtrans %}</p>
+        {% endif %}
+
+        {% if ticket.is_open() %}
+            <h4>{% trans %}Leave a Comment{% endtrans %}</h4>
+            <div class="row-fluid">
+                <form class="comment-form" method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ticket_update_form.as_p()}}
+                    <div class="row-fluid">
+                        <div class="span9">
+                            <button class="btn btn-primary pull-right" type="submit">{% trans %}Comment{% endtrans %}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+</div>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+    <script type="text/javascript" src="{{ static_url }}js/entity-view.js"></script>
+{% endblock %}
+
+{% block after_js %}
+    {{ super() }}
+    <div class="modal hide" id="entity-viewer"></div>
+    {{ modal_macros.render_modal(file_upload_form, url('upload_direct'), "DirectUploadForm",  _("Attach Files"), _("Attach Files"), "multipart/form-data")}}
+    {{ modal_macros.render_modal(flag_form, url('request_flag', ticket_id=ticket.id), "ReqFlagForm", _("Alert Administrator"), _("Flag Request")) }}
+    {{ modal_macros.render_modal(re_open_form, url('request_reopen', ticket_id=ticket.id), "ReqReopenForm", _("Re-Open Request"), _("Submit")) }}
+    {{ modal_macros.render_modal(close_form, url('request_close', ticket_id=ticket.id), "ReqCloseForm", _("Close Request"), _("Submit")) }}
+    {{ modal_macros.render_modal(mark_paid_form, url('request_mark_paid', ticket_id=ticket.id), "MarkPaidForm", _("Mark Paid"), _("Save")) }}
+    {{ modal_macros.render_modal(entity_search_form, url('request_entity_add', ticket_id=ticket.id), "EntitySearchForm", _("Attach Entities"), _("Add")) }}
+    {{ modal_macros.render_modal(charge_form, url('request_charge_add', ticket_id=ticket.id), "ChargeForm", _("Add Charge"), _("Add")) }}
+    {{ modal_macros.render_dynamic_modal('SharingModal', _('Share Attached Files'), _('Save')) }}
+    {{ modal_macros.render_dynamic_modal('AdminSettingsModal', _('Request Settings'), _('Save')) }}
+{% endblock %}

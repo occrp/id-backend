@@ -1,0 +1,2572 @@
+# Arabic translations for PROJECT.
+# Copyright (C) 2013 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2013-12-09 10:47+0100\n"
+"PO-Revision-Date: 2014-01-22 13:28+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: ar <LL@li.org>\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 "
+"&& n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: app/fields.py:74
+msgid "Key is invalid or does not exist."
+msgstr "Ufunguo ni batili au haupo."
+
+#: app/forms.py:59 app/models.py:348 app/models.py:482
+msgid "Comments"
+msgstr "Maoni"
+
+#: app/forms.py:60 app/templates/crud/item_base.html:32
+msgid "Files"
+msgstr "Faili"
+
+#: app/forms.py:141 app/models.py:474 app/models.py:478
+msgid "Entity One"
+msgstr "Huluki la Kwanza"
+
+#: app/forms.py:142 app/models.py:475 app/models.py:479
+msgid "Entity Two"
+msgstr "Huluki la Pili"
+
+#: app/forms.py:145
+msgid "Entity Two is a"
+msgstr "Huluki la pili ni"
+
+#: app/forms.py:156
+msgid "The entity below is a"
+msgstr "Huluki lililo hapa chini ni"
+
+#: app/forms.py:164
+msgid "Customer"
+msgstr "Mteja"
+
+#: app/forms.py:178 app/forms.py:226 app/models.py:581 app/models.py:1122
+#: app/templates/tickets/request_details.html:251
+msgid "Country"
+msgstr "Nchi"
+
+#: app/forms.py:183
+msgid "Person"
+msgstr "Mtu "
+
+#: app/forms.py:184 app/templates/company.html:5
+msgid "Company"
+msgstr "Kampuni"
+
+#: app/forms.py:185 app/templates/crud/fragment.html:5
+#: app/templates/crud/company/edit.html:12
+#: app/templates/crud/relationship/inline_entity.html:5
+#: app/templates/crud/relationship/table_mixin.html:163
+msgid "Relationship"
+msgstr "Uhusiano"
+
+#: app/forms.py:186 app/models.py:912 app/models.py:1258
+#: app/templates/crud/relationship/table_mixin.html:24
+#: app/templates/tickets/request_details.html:155
+msgid "Location"
+msgstr "Mahali"
+
+#: app/forms.py:188 app/models.py:613
+msgid "Full Name"
+msgstr "Jina Kamili"
+
+#: app/forms.py:191 app/models.py:343
+msgid "Identifier"
+msgstr "Kitambulishi"
+
+#: app/forms.py:202
+msgid "Illegal Identifier. Only lowercase letters and _ are allowed."
+msgstr "Kitambulishi kisicho halali. Herufi ndogo tu na_ zinaruhusiwa."
+
+#: app/forms.py:209
+msgid "Field with this identifier already exists."
+msgstr "Tayari kuna sehemu iliyo na kitambulishi hiki."
+
+#: app/forms.py:224 app/models.py:1128
+msgid "URL"
+msgstr "URL"
+
+#: app/forms.py:240 app/forms.py:262 app/forms.py:293
+msgid "Email"
+msgstr "Barua pepe"
+
+#: app/forms.py:242 app/models.py:1233
+msgid "Media Type"
+msgstr "Aina ya Chombo cha Habari"
+
+#: app/forms.py:245 app/models.py:1235
+msgid "Circulation (approximate per month)"
+msgstr "Mzunguko (kadirio kwa mwezi)"
+
+#: app/forms.py:266 app/models.py:518 app/templates/tickets/request_base.html:8
+#: app/templates/tickets/request_details.html:32
+msgid "Status"
+msgstr "Hadhi"
+
+#: app/forms.py:268 app/forms.py:275 app/forms.py:535
+msgid "All"
+msgstr "Yote"
+
+#: app/forms.py:269 app/models.py:1149
+msgid "Approved"
+msgstr "Imeidhinishwa"
+
+#: app/forms.py:270
+msgid "Not Approved"
+msgstr "Haijaidhinishwa"
+
+#: app/forms.py:273
+msgid "Type of Request"
+msgstr "Aina ya Ombi"
+
+#: app/forms.py:276 app/templates/tickets/request_charges_base.html:20
+#: app/templates/tickets/request_details.html:164
+msgid "Requester"
+msgstr "Anyeomba"
+
+#: app/forms.py:277 app/templates/request_account_home.html:24
+msgid "Volunteer"
+msgstr "Wa kujitolea"
+
+#: app/forms.py:302
+msgid "Approve (Adds user to groups)"
+msgstr "Idhinisha (Huongeza mtumiaji kwenye makundi)"
+
+#: app/forms.py:303
+msgid "Reject (Removes user from groups)"
+msgstr "Kataa (Huondoa mtumiaji kwenye makundi)"
+
+#: app/forms.py:308
+msgid "Action"
+msgstr "Vitendo"
+
+#: app/forms.py:315
+msgid "Research Goal"
+msgstr "Lengo la Utafiti"
+
+#: app/forms.py:324
+msgid ""
+"This is highly sensitive, do not let volunteer research librarians see "
+"this request."
+msgstr ""
+"Hii ni nyeti mno, usiruhusu watafiti wa kujitolea wanaofanya kazi "
+"maktabani kuona ombi hili."
+
+#: app/forms.py:339 app/forms.py:362
+msgid "What do you know so far?"
+msgstr "Unajua nini hadi sasa?"
+
+#: app/forms.py:345
+msgid "Any information you already have."
+msgstr "Maelezo yoyote uliyonayo tayari."
+
+#: app/forms.py:348
+msgid "Where are you researching?"
+msgstr "Unatafiti wapi?"
+
+#: app/forms.py:366
+msgid "What story are you working on?"
+msgstr "Je, ni visa gani unavyovishughulikia?"
+
+#: app/forms.py:370
+msgid "What sources do you have so far?"
+msgstr "Je una vyanzo gani kufikia sasa?"
+
+#: app/forms.py:391
+msgid "Reason"
+msgstr "Sababu"
+
+#: app/forms.py:397 app/forms.py:406
+#: app/templates/tickets/request_details.html:358
+msgid "Comment"
+msgstr "Toa maoni"
+
+#: app/forms.py:410
+msgid "Paid Status"
+msgstr "Hadhi ya Kulipwa"
+
+#: app/forms.py:411
+msgid "Marking as paid will reconcile any open charges with the request."
+msgstr "Kuwekea alama kuwa umelipiwa kusawazisha malipo yoyote wazi na ombi."
+
+#: app/forms.py:421
+msgid "Comment to Requester"
+msgstr "Toa maoni kwa Anayeomba"
+
+#: app/forms.py:423 app/templates/tickets/request_charges_base.html:21
+msgid "Item"
+msgstr "Kipengee"
+
+#: app/forms.py:425 app/forms.py:506
+msgid "Cost (USD)"
+msgstr "Gharama (Dola za Marekani)"
+
+#: app/forms.py:427 app/forms.py:508
+msgid "Cost (Original Currency)"
+msgstr "Gharama (Sarafu Asili)"
+
+#: app/forms.py:435
+msgid ""
+"Add a comment, visible to the person making this request and the "
+"researcher answering it."
+msgstr ""
+"Ongeza maoni, yanaonekana kwa mtu anayetuma ombi hili na mtafiti "
+"anayelijibu."
+
+#: app/forms.py:453
+msgid "Assign OCCRP Staff member(s) as the ticket responder"
+msgstr "Wape wafanyakazi wa OCCRP jukumu la kujibu tiketi"
+
+#: app/forms.py:454 app/templates/tickets/request_details.html:174
+msgid "Staff Responders"
+msgstr "Wafanyakazi Wanaotoa majibu"
+
+#: app/forms.py:457
+msgid "Assign Volunteer Researcher(s)"
+msgstr "Wape Watafiti wa Kujitolea"
+
+#: app/forms.py:458 app/templates/tickets/request_details.html:186
+msgid "Volunteer Responders"
+msgstr "Watoa Majibu wa Kujitolea"
+
+#: app/forms.py:460 app/models.py:618 app/models.py:705
+msgid "Requester Type"
+msgstr "Aina ya Anayeomba"
+
+#: app/forms.py:463 app/models.py:94
+msgid "Flagged"
+msgstr "Imetiwa alama"
+
+#: app/forms.py:464
+msgid "Once user issues are dealt with, un-flag the ticket"
+msgstr ""
+"Ondoa alama kwenye tiketi mara tu baada ya matatizo ya watumiaji "
+"kushughulikiwa"
+
+#: app/forms.py:466 app/models.py:620 app/models.py:717
+#: app/templates/tickets/request_details.html:202
+msgid "Findings Public"
+msgstr "Matokeo Hadharani"
+
+#: app/forms.py:467
+msgid "Whether the findings of the ticket should be publicly visible."
+msgstr "Iwapo matokeo ya tiketi yanapaswa kuonekana hadharani."
+
+#: app/forms.py:469 app/models.py:622 app/models.py:719
+msgid "For-Profit?"
+msgstr "Je, ni la Faida?"
+
+#: app/forms.py:471 app/models.py:721
+msgid "Public?"
+msgstr "Je, ni Hadharani?"
+
+#: app/forms.py:472
+msgid ""
+"If a ticket is marked as public, volunteers are able toview and "
+"collaborate on the ticket. Making a ticket private will not remove "
+"volunteers as researchers."
+msgstr ""
+"Iwapo tiketi imewekewa alama kuwa hadharani, wanaojitolea wataweza kuiona"
+" na kushirikiana kwenye tiketi. Kufanya tiketi kuwa ya faragha "
+"hakutaondoa wanaojitolea kama watafiti."
+
+#: app/forms.py:523 app/forms.py:548
+msgid "Entities"
+msgstr "Huluki"
+
+#: app/forms.py:534
+msgid "Result type"
+msgstr "Aina ya matokeo"
+
+#: app/forms.py:536 app/templates/admin_base.html:9
+#: app/templates/crud/company/list.html:2
+msgid "Companies"
+msgstr "Makampuni"
+
+#: app/forms.py:537 app/templates/admin_base.html:12
+#: app/templates/crud/person/list.html:2
+msgid "People"
+msgstr "Watu"
+
+#: app/forms.py:538 app/templates/admin_base.html:15
+#: app/templates/crud/location/list.html:2
+msgid "Locations"
+msgstr "Maeneo"
+
+#: app/forms.py:545
+msgid "Search Providers"
+msgstr "Tafuta Watoaji"
+
+#: app/forms.py:547
+msgid "Everything"
+msgstr "Kila kitu"
+
+#: app/forms.py:549
+msgid "Documents"
+msgstr "Hati"
+
+#: app/forms.py:550
+msgid "Companies from OpenCorporates"
+msgstr "Makampuni kutoka Mashirika Wazi"
+
+#: app/forms.py:594
+msgid "Share With"
+msgstr "Shiriki Na"
+
+#: app/forms.py:596
+msgid "Everyone (public)"
+msgstr "Kila mtu (hadharani)"
+
+#: app/forms.py:597
+msgid "Users"
+msgstr "Watumiaji"
+
+#: app/forms.py:598 app/templates/about_us.html:20
+msgid "Staff"
+msgstr "Wafanyakazi"
+
+#: app/forms.py:605
+msgid "Named Users"
+msgstr "Watumiaji Wenye Majina"
+
+#: app/forms.py:608
+msgid "Individual users who should have access as well."
+msgstr "Waatumiaji binafsi ambao pia wanafaa kufikia."
+
+#: app/models.py:54
+msgid "Limited liability"
+msgstr "Dhima Ndogo"
+
+#: app/models.py:55
+msgid "Partnership"
+msgstr "Ushirikiano"
+
+#: app/models.py:56
+msgid "Stock company"
+msgstr "Kampuni ya hisa"
+
+#: app/models.py:57
+msgid "Foundation"
+msgstr "Wakfu"
+
+#: app/models.py:58 app/templates/tickets/request_details.html:215
+msgid "Non-profit"
+msgstr "Lisilo la faida"
+
+#: app/models.py:59 app/models.py:147
+msgid "Other"
+msgstr "Lingine"
+
+#: app/models.py:64
+msgid "Active"
+msgstr "Linalofanya kazi"
+
+#: app/models.py:65
+msgid "Inactive"
+msgstr "Halifanyi kazi"
+
+#: app/models.py:69
+msgid "-----------"
+msgstr "-----------"
+
+#: app/models.py:70
+msgid "Male"
+msgstr "Mwanamume"
+
+#: app/models.py:71
+msgid "Female"
+msgstr "Mwanamke"
+
+#: app/models.py:75
+msgid "Subsidized"
+msgstr "Bei nafuu"
+
+#: app/models.py:76
+msgid "Covering Cost"
+msgstr "Gharama ya Juu"
+
+#: app/models.py:77
+msgid "Covering Cost +"
+msgstr "Gharama ya Juu +"
+
+#: app/models.py:81
+msgid "Identify what a person owns"
+msgstr "Tambua kinachomilikwa na mtu"
+
+#: app/models.py:82
+msgid "Determine company ownership"
+msgstr "Tambua umiliki wa kampuni"
+
+#: app/models.py:83
+msgid "Any other question"
+msgstr "Swali lingine lolote"
+
+#: app/models.py:87
+msgid "Updated"
+msgstr "Imesasishwa"
+
+#: app/models.py:88 app/handlers/ticketing.py:389
+msgid "Charge Added"
+msgstr "Malipo Yameongezwa"
+
+#: app/models.py:89 app/handlers/ticketing.py:360
+msgid "Reconciled Charges"
+msgstr "Malipo Yaliyosawazishwa"
+
+#: app/models.py:90 app/models.py:102
+msgid "Closed"
+msgstr "Imefungwa"
+
+#: app/models.py:91 app/models.py:103 app/models.py:112
+msgid "Cancelled"
+msgstr "Imeghairiwa"
+
+#: app/models.py:92
+msgid "Re-Opened"
+msgstr "Imefunguliwa Tena"
+
+#: app/models.py:93
+msgid "Opened"
+msgstr "Imefunguliwa"
+
+#: app/models.py:95
+msgid "Documents Attached"
+msgstr "Hati Zimeambatanishwa"
+
+#: app/models.py:96
+msgid "Entities Attached"
+msgstr "Huluki Zimeambatanishwa"
+
+#: app/models.py:100
+msgid "New"
+msgstr "Mpya"
+
+#: app/models.py:101
+msgid "In Progress"
+msgstr "Inaendelea"
+
+#: app/models.py:110
+msgid "Paid"
+msgstr "Imelipwa"
+
+#: app/models.py:111
+msgid "Paid by OCCRP"
+msgstr "Imelipwa na OCCRP"
+
+#: app/models.py:117
+msgid "Parent"
+msgstr "Mzazi"
+
+#: app/models.py:118
+msgid "Spouse"
+msgstr "Mwenzi wa Ndoa"
+
+#: app/models.py:119
+msgid "Other Relative"
+msgstr "Jamaa Mwingine"
+
+#: app/models.py:120
+msgid "Friend or Acquaintance"
+msgstr "Rafiki au Marafiki"
+
+#: app/models.py:121
+msgid "Employer"
+msgstr "Mwajiri"
+
+#: app/models.py:122
+msgid "Business Partner"
+msgstr "Mshirika wa Bishara"
+
+#: app/models.py:123
+msgid "Proxy"
+msgstr "Seva mbadala"
+
+#: app/models.py:126 app/templates/tickets/request_details.html:252
+msgid "Birthplace"
+msgstr "Mahali pa kuzaliwa"
+
+#: app/models.py:127 app/models.py:143
+msgid "Registered Address"
+msgstr "Anwani Iliyosajiliwa"
+
+#: app/models.py:128
+msgid "Home Address"
+msgstr "Anwani ya Nyumbani"
+
+#: app/models.py:131
+msgid "Director"
+msgstr "Mkurugenzi"
+
+#: app/models.py:132
+msgid "Secretary"
+msgstr "Katibu"
+
+#: app/models.py:133
+msgid "Authorized Person"
+msgstr "Mtu Aliye na Mamlaka"
+
+#: app/models.py:134
+msgid "Representative"
+msgstr "Mwakilishi"
+
+#: app/models.py:135
+msgid "Shareholder"
+msgstr "Mwanahisa"
+
+#: app/models.py:136
+msgid "Employee"
+msgstr "Mfanyakazi"
+
+#: app/models.py:139
+msgid "Subsidiary"
+msgstr "Kampuni tanzu"
+
+#: app/models.py:140
+msgid "Trading Partner"
+msgstr "Mshirika wa Biashara"
+
+#: app/models.py:144
+msgid "Place of Business"
+msgstr "Mahali pa Biashara"
+
+#: app/models.py:160
+msgid "Media: non-profit"
+msgstr "Vyombo vya habari: lisilo la faida"
+
+#: app/models.py:161
+msgid "Media: for-profit"
+msgstr "Vyombo vya habari: la faida"
+
+#: app/models.py:162
+msgid "Media: freelance"
+msgstr "Vyombo vya habari: wa kujitegemea"
+
+#: app/models.py:163
+msgid "Business: due diligence/investigation"
+msgstr "Biashara: uchunguzi/upelelezi"
+
+#: app/models.py:164
+msgid "Business: legal"
+msgstr "Biashara: kisheria"
+
+#: app/models.py:165
+msgid "Business: general"
+msgstr "Biashara: jumla"
+
+#: app/models.py:166
+msgid "Government"
+msgstr "Serikali"
+
+#: app/models.py:167
+msgid "Civil society/non-profit"
+msgstr "Mashirika ya kijamii/mashirika yasiyo ya faida"
+
+#: app/models.py:168
+msgid "Individual"
+msgstr "Mtu Binafsi"
+
+#: app/models.py:169
+msgid "Other (please specify)"
+msgstr "Nyingine (tafadhali taja)"
+
+#: app/models.py:174 app/templates/tickets/request_details.html:231
+msgid "None"
+msgstr "Hamna"
+
+#: app/models.py:175
+msgid "OCCRP"
+msgstr "OCCRP"
+
+#: app/models.py:176
+msgid "ARIJ"
+msgstr "ARIJ"
+
+#: app/models.py:177
+msgid "ANCIR"
+msgstr "ANCIR"
+
+#: app/models.py:178
+msgid "Connectas in the Americas"
+msgstr "Connectas Amerika"
+
+#: app/models.py:183
+msgid "Website"
+msgstr "Tovuti"
+
+#: app/models.py:184
+msgid "Print"
+msgstr "Chapisha"
+
+#: app/models.py:185
+msgid "Broadcast TV"
+msgstr "Televisheni ya Matangazo"
+
+#: app/models.py:186
+msgid "Broadcast Radio"
+msgstr "Redio ya Matangazo "
+
+#: app/models.py:187
+msgid "Other or don't know"
+msgstr "Nyingine au haujui"
+
+#: app/models.py:192
+msgid "Less than 10,000"
+msgstr "Chini ya 10,000"
+
+#: app/models.py:193
+msgid "10,000 to 25,000"
+msgstr "10,000 hadi 25,000"
+
+#: app/models.py:194
+msgid "25,000 to 50,000"
+msgstr "25,000 hadi 50,000"
+
+#: app/models.py:195
+msgid "50,000 to 100,000"
+msgstr "50,000 hadi 100,000"
+
+#: app/models.py:196
+msgid "100,000 to 250,000"
+msgstr "100,000 hadi 250,000"
+
+#: app/models.py:197
+msgid "250,000 to 500,000"
+msgstr "250,000 hadi 500,000"
+
+#: app/models.py:198
+msgid "More than 500,000"
+msgstr "Zaidi ya 500,000"
+
+#: app/models.py:203
+msgid "Business Registry"
+msgstr "Sajili ya Biashara"
+
+#: app/models.py:204
+msgid "Regional procurement registry"
+msgstr "Sajili ya kanda ya manunuzi "
+
+#: app/models.py:205
+msgid "Regulatory Agency"
+msgstr "Shirika la Udhibiti"
+
+#: app/models.py:206
+msgid "Commercial Register"
+msgstr "Sajili ya Kibiashara"
+
+#: app/models.py:207
+msgid "Court Registry"
+msgstr "Sajili ya Mahakama"
+
+#: app/models.py:208
+msgid "Gazette"
+msgstr "Gazeti la Serikali"
+
+#: app/models.py:209
+msgid "Land Registry"
+msgstr "Sajili ya Ardhi"
+
+#: app/models.py:214
+msgid "All Databases"
+msgstr "Hifadhidata Zote"
+
+#: app/models.py:215
+msgid "Global Databases"
+msgstr "Hifadhidata Kuu"
+
+#: app/models.py:341
+msgid "Label"
+msgstr "Lebo"
+
+#: app/models.py:344
+msgid "Kind"
+msgstr "Aina"
+
+#: app/models.py:476 app/templates/tickets/request_base.html:7
+msgid "Type"
+msgstr "Aina"
+
+#: app/models.py:480 app/templates/crud/relationship/table_mixin.html:25
+#: app/templates/crud/relationship/table_mixin.html:56
+#: app/templates/crud/relationship/table_mixin.html:87
+msgid "Start Date"
+msgstr "Tarehe ya kuanza"
+
+#: app/models.py:481 app/templates/crud/relationship/table_mixin.html:26
+#: app/templates/crud/relationship/table_mixin.html:57
+#: app/templates/crud/relationship/table_mixin.html:88
+msgid "End Date"
+msgstr "Tarehe ya Mwisho"
+
+#: app/models.py:510 app/models.py:576 app/models.py:611 app/models.py:895
+#: app/templates/crud/relationship/table_mixin.html:55
+#: app/templates/crud/relationship/table_mixin.html:86
+#: app/templates/tickets/request_details.html:241
+#: app/templates/tickets/request_details.html:278
+msgid "Name"
+msgstr "Jina"
+
+#: app/models.py:511 app/models.py:542
+msgid "Name Variations"
+msgstr "Tofauti ya Majina"
+
+#: app/models.py:514
+msgid "Jurisdiction Registered"
+msgstr "Usajili wa Mamlaka"
+
+#: app/models.py:516
+msgid "Form of Company"
+msgstr "Aina ya Kampuni"
+
+#: app/models.py:519
+msgid "Date Registered"
+msgstr "Tarehe ya Kusajiliwa"
+
+#: app/models.py:520
+msgid "Date Dissolved"
+msgstr "Tarehe ya Kuvunjwa"
+
+#: app/models.py:539 app/models.py:1139
+msgid "First Name"
+msgstr "Jina la Kwanza"
+
+#: app/models.py:540
+msgid "Middle Name"
+msgstr "Jina la Kati"
+
+#: app/models.py:541 app/models.py:1140
+#: app/templates/tickets/request_details.html:254
+#: app/templates/tickets/request_details.html:255
+#: app/templates/tickets/request_details.html:256 static/js/widgets.js:188
+#: static/js/widgets.js:230
+msgid "Last Name"
+msgstr "Jina la Mwisho"
+
+#: app/models.py:544 app/models.py:903
+#: app/templates/tickets/request_details.html:253
+msgid "Date of Birth"
+msgstr "Tarehe ya Kuzaliwa"
+
+#: app/models.py:545
+msgid "Date of Death"
+msgstr "Tarehe ya Kufa"
+
+#: app/models.py:546
+msgid "Sex"
+msgstr "Jinsia"
+
+#: app/models.py:547
+msgid "Nationalities"
+msgstr "Uraia"
+
+#: app/models.py:549
+msgid "ID Numbers"
+msgstr "Nambari za Kitambulisho"
+
+#: app/models.py:577 app/models.py:1227
+msgid "Address"
+msgstr "Anwani"
+
+#: app/models.py:578
+msgid "City"
+msgstr "Mji"
+
+#: app/models.py:579
+msgid "State/Province/Region"
+msgstr "Jimbo/Mkoa/Eneo"
+
+#: app/models.py:580
+msgid "ZIP/Postal Code"
+msgstr "Msimbo wa Eneo/Msimbo wa Posta"
+
+#: app/models.py:614
+msgid "Admin Notes"
+msgstr "Daftari za Usimamizi"
+
+#: app/models.py:680
+msgid "Subsidized (OCCRP pays for everything)"
+msgstr "Iliyopunguzwa bei (OCCRP hulipia kila kitu)"
+
+#: app/models.py:682
+msgid ""
+"Covering cost (OCCRP pays for labor, requester pays costs of buying "
+"documents)"
+msgstr ""
+"Gharama ya juu (OCCRP hulipia nguvu-kazi, anayeomba hulipia gharama za "
+"kununua hati)"
+
+#: app/models.py:685
+msgid "Covering cost+ (requester pays for documents, and also for our work)"
+msgstr "Gharama ya juu+ (anayeomba hulipia hati, na pia kazi yetu)"
+
+#: app/models.py:731 app/templates/tickets/request_base.html:9
+#: app/templates/tickets/request_details.html:146
+msgid "Deadline"
+msgstr "Tarehe ya mwisho"
+
+#: app/models.py:732
+msgid "Sensitive?"
+msgstr "Je, ni Nyeti?"
+
+#: app/models.py:896 app/templates/tickets/request_details.html:256
+msgid "Aliases"
+msgstr "Majina bandia"
+
+#: app/models.py:897 app/models.py:928
+#: app/templates/tickets/request_details.html:242
+msgid "Background"
+msgstr "Maelezo msingi"
+
+#: app/models.py:898 app/templates/tickets/request_details.html:243
+msgid "Biography"
+msgstr "Wasifu"
+
+#: app/models.py:899 app/templates/tickets/request_details.html:254
+msgid "Family"
+msgstr "Familia"
+
+#: app/models.py:902 app/templates/tickets/request_details.html:244
+msgid "Business Activities"
+msgstr "Shughuli za Biashara"
+
+#: app/models.py:906
+msgid "Place of Birth"
+msgstr "Mahali pa kuzaliwa"
+
+#: app/models.py:909
+msgid "Where have you looked?"
+msgstr "Je, umetafuta wapi?"
+
+#: app/models.py:924
+msgid "Company Name"
+msgstr "Jina la Kampuni"
+
+#: app/models.py:927
+msgid "Country Registered"
+msgstr "Nchi Ilikosajiliwa"
+
+#: app/models.py:929 app/templates/search/search_base.html:29
+#: app/templates/tickets/request_details.html:246
+msgid "Sources"
+msgstr "Vyanzo"
+
+#: app/models.py:930
+msgid "Your Story"
+msgstr "Hadithi Yako"
+
+#: app/models.py:932 app/templates/tickets/request_details.html:255
+msgid "Connected People"
+msgstr "Watu Waliounganishwa"
+
+#: app/models.py:943
+msgid "What do you want to know?"
+msgstr "Je, unataka kujua nini?"
+
+#: app/models.py:996
+#, python-format
+msgid "[Request %s] - %s"
+msgstr "[Ombi %s] - %s"
+
+#: app/models.py:1061
+#, python-format
+msgid ""
+"Item: %(item)s\n"
+"Cost: $%(cost)s\n"
+"Converted: %(cost_converted)s"
+msgstr ""
+"Bidhaa: %(item)s\n"
+"Cost: $%(cost)s\n"
+"Converted: %(cost_converted)s"
+
+#: app/models.py:1117
+msgid "Agency / Name"
+msgstr "Shirika / Jina"
+
+#: app/models.py:1120
+msgid "Type of Database"
+msgstr "Aina ya Hifadhidata"
+
+#: app/models.py:1123 app/templates/external_databases.html:26
+msgid "Paid Database"
+msgstr "Hifadhidata ya Kulipiwa"
+
+#: app/models.py:1125 app/templates/external_databases.html:29
+msgid "Registration Required"
+msgstr "Usajili Unahitajika"
+
+#: app/models.py:1127 app/templates/external_databases.html:32
+msgid "Government Database"
+msgstr "Hifadhidata ya Serikali"
+
+#: app/models.py:1129
+msgid "Notes"
+msgstr "Vidokezo"
+
+#: app/models.py:1130
+msgid "Blog Post"
+msgstr "Chapisho la Blogu"
+
+#: app/models.py:1131
+msgid "YouTube Video Url"
+msgstr "Url ya video ya YouTube"
+
+#: app/models.py:1141
+msgid "Email Address"
+msgstr "Anwani ya Barua pepe"
+
+#: app/models.py:1143
+msgid "Phone Number"
+msgstr "Nambari ya Simu"
+
+#: app/models.py:1146
+msgid "Organization Membership"
+msgstr "Uanachama wa Shirika"
+
+#: app/models.py:1148
+msgid "Anything else you would like to tell us"
+msgstr "Kitu kingine chochote ambacho ungependa kutuambia"
+
+#: app/models.py:1168 app/templates/tickets/request_details.html:203
+#: app/templates/tickets/request_details.html:206
+msgid "Yes"
+msgstr "Ndiyo"
+
+#: app/models.py:1169 app/templates/tickets/request_details.html:203
+#: app/templates/tickets/request_details.html:206
+msgid "No"
+msgstr "La"
+
+#: app/models.py:1198 app/templates/mail/account_request/received.html:4
+msgid "Your Account Request was received"
+msgstr "Ombi lako la Akaunti limepokelewa"
+
+#: app/models.py:1204 app/templates/mail/account_request/received_admin.html:4
+msgid "An Account Request was received"
+msgstr "Ombi la Akaunti limepokelewa"
+
+#: app/models.py:1212
+msgid "An update to your Account Request"
+msgstr "Sasisho la Ombi la Akaunti yako "
+
+#: app/models.py:1230
+msgid "Industry"
+msgstr "Tasnia"
+
+#: app/models.py:1231
+msgid "Other Industry"
+msgstr "Tasnia Nyingine"
+
+#: app/models.py:1239
+msgid "Name of Employer"
+msgstr "Jina la Mwajiri"
+
+#: app/models.py:1241
+msgid "Position / Job Title"
+msgstr "Nafasi / Cheo"
+
+#: app/models.py:1255
+msgid "Interests"
+msgstr "Yanayokuvutia"
+
+#: app/models.py:1256
+msgid "Expertise"
+msgstr "Utaalamu"
+
+#: app/models.py:1257
+msgid "Languages"
+msgstr "Lugha"
+
+#: app/models.py:1260
+msgid "Availability"
+msgstr "Upatikanaji"
+
+#: app/models.py:1261
+msgid "Own Databases"
+msgstr "Hifadhidata yako Mwenyewe"
+
+#: app/models.py:1263
+msgid "Restrictions / Conflicts of Interest"
+msgstr "Vikwazo / Mgongano wa nia"
+
+#: app/utils.py:43 app/templates/base.html:12
+#: app/templates/oauth_success.html:6 app/templates/mail/mail_base.html:12
+#: app/templates/mail/mail_base.html:37 app/templates/mail/mail_base.html:38
+msgid "Investigative Dashboard"
+msgstr "Dashibodi ya Upelelezi"
+
+#: app/validators.py:13
+msgid "This field is required."
+msgstr "Sehemu hii inahitajika."
+
+#: app/appengine_modelforms/fields.py:91 app/appengine_modelforms/fields.py:173
+#: app/appengine_modelforms/fields.py:175
+msgid "Not a valid choice"
+msgstr "Si uchaguzi halali"
+
+#: app/appengine_modelforms/fields.py:194
+msgid "Not a valid list"
+msgstr "Si orodha halali"
+
+#: app/appengine_modelforms/fields.py:213
+msgid "Not a valid integer list"
+msgstr "Si orodha halali ya nambari kamili"
+
+#: app/google_apis/drive.py:29
+msgid "Error connecting to Google Drive."
+msgstr "Hitilafu wakati wa kuunganisha kwenye Hifadhi ya Google."
+
+#: app/google_apis/drive.py:93
+msgid "Error refreshing Google Drive access token."
+msgstr "Hitilafu ya kuonyesha upya tokeni ya Upatikanaji wa Hifadhi ya Google."
+
+#: app/google_apis/drive.py:113
+msgid "Your Google Drive private key must be in \"PEM\" format."
+msgstr ""
+"Ufunguo wako wa faragha wa Hifadhi ya Google lazima uwe wa muundo wa "
+"\"PEM\"."
+
+#: app/google_apis/drive.py:116
+msgid ""
+"Error refreshing Google Drive access token. Check your settings and try "
+"again."
+msgstr ""
+"Hitilafu ya kuonyesha upya tokeni za kufikia Hifadhi ya Google. Angalia "
+"mipangilio yako na ujaribu tena."
+
+#: app/google_apis/groups.py:21
+msgid "Error connecting to Google Groups."
+msgstr "Hitilafu ya kuunganisha kwenye Makundi ya Google."
+
+#: app/google_apis/groups.py:64
+msgid "Your private key must be in \"PEM\" format."
+msgstr "Ufunguo wako wa faragha lazima uwe wa muundo wa \"PEM\"."
+
+#: app/google_apis/groups.py:66
+msgid "Error refreshing the access token. Check your settings and try again."
+msgstr ""
+"Hitilafu ya kuonyesha upya tokeni za kufikia. Angalia mipangilio yako na "
+"ujaribu tena."
+
+#: app/handlers/crud.py:78 app/templates/crud/relationship/table_mixin.html:194
+msgid "No entries found."
+msgstr "Hakuna maingizo yaliyopatikana."
+
+#: app/handlers/crud.py:223
+#, python-format
+msgid "%(entity)s successfully saved.entity"
+msgstr "%huluki (z)imehifadhiwa.huluki"
+
+#: app/handlers/crud.py:235
+#, python-format
+msgid "%(entity)s successfully deleted.entity"
+msgstr "% (huluki) zimefutwa.huluki"
+
+#: app/handlers/crud.py:253
+#, python-format
+msgid "%(entity)s could not deleted because of %(rel_count)d relationsentity"
+msgstr "% (huluki) hazikuweza kufutwa kwa sababu ya% (rel_count)d relationsentity"
+
+#: app/handlers/crud.py:284
+msgid "No relationships found. You can create them via other entities."
+msgstr "Hakuna uhusiano uliopatikana. Unaweza kuuunda kupitia huluki nyingine."
+
+#: app/handlers/crud.py:388
+#, python-format
+msgid "Relationship with new %(entity_type)s successfully saved.entity_type"
+msgstr "Uhusiano wenye % mpya (entity_type)s imehifadhiwa.entity_type"
+
+#: app/handlers/crud.py:424
+msgid "No companies found."
+msgstr "Hakuna makampuni yaliyopatikana."
+
+#: app/handlers/crud.py:439
+msgid "No people found."
+msgstr "Hakuna watu waliopatikana."
+
+#: app/handlers/crud.py:455
+msgid "No locations found."
+msgstr "Hakuna maeneo yaliyopatikana."
+
+#: app/handlers/crud.py:469
+msgid "No extra fields found."
+msgstr "Hakuna sehemu za ziada zilizopatikana."
+
+#: app/handlers/crud.py:480 app/templates/external_databases.html:53
+msgid "No external databases found."
+msgstr "Hakuna hifadhidata za nje zilizopatikana."
+
+#: app/handlers/crud.py:516
+msgid "No account requests found."
+msgstr "Hakuna maombi ya akaunti yaliyopatikana."
+
+#: app/handlers/crud.py:559
+msgid "No Users found."
+msgstr "Hakuna Watumiaji waliopatikana."
+
+#: app/handlers/crud.py:632
+msgid "Request submitted. Our staff will evaluate and respond to your request."
+msgstr "Ombi limewasilishwa. Wafanyakazi wetu watalitathmini na kujibu ombi lako."
+
+#: app/handlers/crud.py:663
+msgid "The user has been notified of the change to their request status."
+msgstr "Mtumiaji amearifiwa kuhusu mabadiliko ya hali ya ombi lake."
+
+#: app/handlers/drive.py:57 static/js/drive-picker.js:94
+msgid "File(s) successfully attached."
+msgstr "Faili (z)imeambatishwa."
+
+#: app/handlers/drive.py:115
+msgid "Sharing rules applied."
+msgstr "Sheria za kushiriki zimetumiwa."
+
+#: app/handlers/ticketing.py:50
+msgid ""
+"Your request for an account is pending. Once approved, you can access Ask"
+" an Expert"
+msgstr ""
+"Ombi lako la akaunti linasubiri. Mara baada ya kukubaliwa, unaweza "
+"kufikia Mwulize Mtaalamu."
+
+#: app/handlers/ticketing.py:114 app/handlers/ticketing.py:725
+msgid "Ticket successfully saved."
+msgstr "Tiketi imehifadhiwa."
+
+#: app/handlers/ticketing.py:116
+msgid "Ticket successfully created."
+msgstr "Tiketi imeundwa"
+
+#: app/handlers/ticketing.py:194
+msgid "The specified object could not be found."
+msgstr "Kifaa kilichobainishwa hakikuweza kupatikana."
+
+#: app/handlers/ticketing.py:195
+msgid "The specified object is not attached to this ticket."
+msgstr "Kifaa kilichobainishwa hakijaambatanishwa kwenye tiketi hii."
+
+#: app/handlers/ticketing.py:197
+msgid "The specified object was successfully removed."
+msgstr "Kifaa kilichobainishwa kilifanikiwa kuondolewa."
+
+#: app/handlers/ticketing.py:274
+#, python-format
+msgid "Could not add duplicate(s): %(duplicates)sduplicates, "
+msgstr "Haikuweza kuongeza rudufu: %rudufu sduplicates, "
+
+#: app/handlers/ticketing.py:296
+msgid "Request has been marked as closed & answered."
+msgstr "Ombi limewekewa alama kama limefungwa na kujibiwa."
+
+#: app/handlers/ticketing.py:311
+msgid "Request has been cancelled."
+msgstr "Ombi limeghairiwa."
+
+#: app/handlers/ticketing.py:321
+#, python-format
+msgid "Ticket %s has been deleted"
+msgstr "Tiketi %s imefutwa"
+
+#: app/handlers/ticketing.py:337
+msgid ""
+"An Administrator has been notified notified and will update the issue "
+"shortly."
+msgstr "Msimamizi amearifiwa na atasasisha suala hivi karibuni."
+
+#: app/handlers/ticketing.py:365
+msgid "Request payment status has been updated."
+msgstr "Hali ya ombi la malipo imesasishwa."
+
+#: app/handlers/ticketing.py:395
+msgid "The new charge was added to the request."
+msgstr "Ada mpya iliongezwa kwenye ombi hilo."
+
+#: app/handlers/ticketing.py:409
+msgid "Request has been re-opened."
+msgstr "Ombi limefunguliwa tena."
+
+#: app/handlers/ticketing.py:432
+msgid "You have joined the ticket."
+msgstr "Umejiunga kwenye tiketi."
+
+#: app/handlers/ticketing.py:433
+msgid "You are already on the ticket."
+msgstr "Tayari uko kwenye tiketi."
+
+#: app/handlers/ticketing.py:446
+msgid "You are no longer part of this ticket."
+msgstr "Wewe sio sehemu ya tiketi hii tena."
+
+#: app/handlers/ticketing.py:567
+msgid "Charge successfully reconciled."
+msgstr "Ada imefanikiwa kusawazishwa."
+
+#: app/handlers/validation.py:30 app/handlers/validation.py:60
+msgid "This may be a duplicate"
+msgstr "Huenda hii ni rudufu"
+
+#: app/handlers/validation.py:32 app/handlers/validation.py:48
+#: app/handlers/validation.py:62
+msgid "No duplicates detected"
+msgstr "Hakuna rudufu zilizofutwa"
+
+#: app/handlers/validation.py:46
+msgid "First and last name match another person"
+msgstr "Jina la kwanza na la mwisho yanafanana na mtu mwingine"
+
+#: app/handlers/validation.py:93
+msgid ""
+"Your request may not be answered, as you have not provided much "
+"background. Please add more context."
+msgstr ""
+"Huenda ombi lako halitajibiwa, kwa sababu hujatoa usuli wa kutosha. "
+"Tafadhali ongeza muktadha zaidi."
+
+#: app/handlers/validation.py:96
+msgid "Your request is of an appropriate length."
+msgstr "Ombi lako ni la urefu usio sahihi."
+
+#: app/templates/401.html:4
+msgid "Permission Denied"
+msgstr "Hakuna Ruhusa"
+
+#: app/templates/401.html:8
+msgid ""
+"You do not have permission to access this feature or content. If you "
+"believe this is an error, please contact an administrator."
+msgstr ""
+"Huna ruhusa ya kupata kipengele hiki au maudhui. Kama unaamini hii ni "
+"hitilafu, tafadhali wasiliana na msimamizi."
+
+#: app/templates/404.html:4
+msgid "Page Not Found"
+msgstr "Ukurasa Haukupatikana"
+
+#: app/templates/404.html:8
+msgid ""
+"We're sorry, this page is not available. This error has been recorded "
+"will be investigated."
+msgstr ""
+"Tunasikitika, ukurasa huu haupatikani. Hitilafu hii imewekwa kwenye "
+"kumbukumbu na itachunguzwa."
+
+#: app/templates/500.html:4
+msgid "Application Error"
+msgstr "Hitilafu ya programu"
+
+#: app/templates/500.html:8
+msgid ""
+"There was an error in the application. This error has been recorded and "
+"should be addressed soon."
+msgstr ""
+"Kulikuwa na hitilafu katika ombi. Hitilafu hii imewekwwa kwenye "
+"kumbukumbu na lazima ishughulikiwe hivi karibuni."
+
+#: app/templates/about_us.html:6
+msgid "About Us"
+msgstr "Kutuhusu"
+
+#: app/templates/about_us.html:10
+msgid ""
+"Investigative Dashboard (ID) has been developed by the Organized Crime "
+"and Corruption Reporting Project (OCCRP), the world’s leading cross "
+"border investigative reporting organization. OCCRP designed Investigative"
+" Dashboard as a transnational collaborative effort to help journalists "
+"and civil society researchers expose organized crime and corruption "
+"around the world. It hosts three core tools: a crowd-sourced database of "
+"information and documents on persons of interest and their business "
+"connections, a worldwide list of online databases and business "
+"registries, and a research desk where journalists can go for help in "
+"sourcing hard to find information."
+msgstr ""
+"Dashibodi ya Upelelezi (ID) imeundwa na Mradi wa Kuripoti Uhalifu "
+"Uliopangwa na Rushwa (OCCRP), shirika linaloongoza duniani kwa kuripoti "
+"uchunguzi wa kimataifa. OCCRP ilunda Dashibodi ya Upelelezi kama jitihada"
+" ya ushirikiano wa muda ili kuwasaidia wanahabari na watafiti wa "
+"mashirika ya umma kufichua uhalifu wa uliopangwa pamoja na rushwa kote "
+"ulimwenguni. Ina zana tatu kuu: taarifa ya hifadhidata iliyokusanywa "
+"kutoka kwa umma na hati kuhusu watu muhimu na biashara na shughuli za "
+"biashara zao, orodha ya ulimwengu mzima wa hifadhidata ya mtandaoni na "
+"sajili za biashara, na kitengo cha utafiti ambapo wanahabari wanaweza "
+"kutafuta usaidizi wa kupata taarifa ambayo ni vigumu kuipata."
+
+#: app/templates/about_us.html:12
+msgid ""
+"With help from dozens of reporters and civic hackers, ID researchers have"
+" created the crowd-sourced database where connections of people and "
+"business can be mapped internationally. Through collecting public records"
+" worldwide in numerous languages and by scraping the business registries "
+"and official gazettes of countries such as Panama, British Virgin "
+"Islands, and Luxembourg among others we have made data searchable and "
+"hence truly transparent and useful. These resources are offered to the "
+"public as a searchable self-serve repository of data and documents."
+msgstr ""
+"Kwa usaidizi kutoka kwa wanahabari kadhaa na wadukuzi wa kiraia, Watafiti"
+" wa Dashibodi ya Upelelezi (ID) wameunda hifadhidata iliyokusanywa kutoka"
+" kwa umma  ambapo uhusiano wa watu na biashara unaweza kujulikana "
+"kimataifa. Kupitia ukusanyaji kumbukumbu za umma duniani kote kwa lugha "
+"mbalimbali na kwa kudadisi sajili za biashara na magazeti ya serikali ya "
+"nchi kama vile Panama, Visiwa vya Virgin vya Uingereza, na Lusembagi "
+"miongoni mwa nyingine tumefanya data iweze kutafutika kwa hivyo ni ya "
+"uwazi na muhimu. Rasilimali hizi zinazotolewa kwa umma kama hazina ya "
+"data na hati ambayo mtu anaweza kujitafutia."
+
+#: app/templates/about_us.html:14
+msgid ""
+"The Investigative Dashboard also links to more than 400 online databases "
+"in 120 jurisdictions where you can search for information on persons and "
+"businesses of interest."
+msgstr ""
+"Dashibodi ya Upelelezi pia inaunganisha zaidi ya hifadhidata 400 "
+"mtandaoni katika nchi 120 ambapo unaweza kutafuta taarifa kuhusu watu na "
+"biashara ulizo na haja nazo."
+
+#: app/templates/about_us.html:16
+msgid ""
+"Above and beyond the databases available on the Dashboard, the research "
+"desk provides access to a global network of expert researchers. "
+"Journalists and researchers working on organized crime and corruption "
+"topics who seek information and documents beyond their own borders and "
+"resources are invited to request the expertise of a network of "
+"information professionals. These professionals can access external "
+"databases and official filings for evidence of corporate ownership and "
+"property holdings that cross borders. For some journalists, these "
+"services are provided pro bono."
+msgstr ""
+"Mbali na hifadhidata zinazopatikana kwenye Dashibodi, kitengo cha utafiti"
+" kinatoa uwezo wa kufikia mtandao wa ulimwengu wa wataalam watafiti. "
+"Wanahabari wanaoshughulikia mada za uhalifu uliopangwa na ufisadi "
+"wanaotafuta taarifa na hati ambazo hazipatikani katika nchi zao na "
+"wafanyakazi wanahimizwa kuomba utaalam wa mtandao wa taarifa ya "
+"wataalamu. Wataalamu hawa wanaweza kufikia hifadhidata za nje na hati "
+"rasmi kwa ushahidi wa umiliki wa kampuni na mali ya kampuni iliyo nje ya "
+"nchi. Kwa baadhi ya wanahabari, huduma hizi hutolewa bila malipo."
+
+#: app/templates/about_us.html:18
+msgid ""
+"Journalists have used the Investigative Dashboard to work on stories that"
+" have won more than a dozen international awards, led to indictments, "
+"arrests and seizures, forced the resignation of heads of state, and "
+"exposed the activities of organized crime."
+msgstr ""
+"Wanahabari wametumia Dashibodi ya Upelelezi kuandika visa ambavyo "
+"vimeshinda zaidi ya dazani ya tuzo za kimataifa, kusababisha kufunguliwa "
+"mashtaka, kutiwa mbaroni na kupigwa tanji, kulazimisha kujiuzulu kwa "
+"marais wa nchi, na kuonyesha shughuli za uhalifu uliopangwa."
+
+#: app/templates/about_us.html:36
+msgid "Supporters"
+msgstr "Wafuasi"
+
+#: app/templates/about_us.html:37
+msgid ""
+"The Investigative Dashboard has been developed in collaboration with <a "
+"href=\"http://www.google.com/ideas/\">Google Ideas</a>. Core support for "
+"the project is generously provided by the Open Society Foundations with "
+"additional assistance from USAID."
+msgstr ""
+"Dashibodi ya upelelezi imeundwa kwa ushirikiano na <a "
+"href=\"http://www.google.com/ideas/\">Mawazo ya Google</a>. Usadizi "
+"mkubwa unatolewa kwa ukarimu na Wakfu wa Open Society kwa msaada wa ziada"
+" kutoka USAID."
+
+#: app/templates/about_us.html:39
+msgid "Partners"
+msgstr "Washirika"
+
+#: app/templates/about_us.html:40
+msgid ""
+"The Research Desk is managed by OCCRP in co-operation with four partner "
+"Centers - African Network of Centers for Investigative Reporting (ANCIR),"
+" the Arab Reporters for Investigative Journalism (ARIJ), the "
+"International Center for Journalists, and Connectas in the Americas."
+msgstr ""
+"Kitengo cha utafii kinasimamiwa na OCCRP kwa ushirikiano wa vituo vinne "
+"vya washirika - Mtandao wa Afrika wa Vituo vya Uwanahabari Pelelezi "
+"(ANCIR), Wanahabari Pelelezi wa Kiarabu (ARIJ), Kituo cha Kimataifa cha "
+"Wanahabari, na Connectas Amerika."
+
+#: app/templates/about_us.html:42
+msgid "ID History"
+msgstr "Historia ya Dashibodi ya Upelelezi"
+
+#: app/templates/about_us.html:43
+msgid ""
+"The Investigative Dashboard was developed by Paul Cristian Radu (OCCRP) "
+"and Justin Arenstein (ANCIR) while they both were in residence at "
+"Stanford University as Knight Fellows. The John S. Knight Fellowships for"
+" Professional Journalists made the dashboard possible by providing access"
+" to the know-how of fellow journalists and of experts at Stanford "
+"University and in Silicon Valley."
+msgstr ""
+"Dashboard ya Upelelezi ilianzishwa na Paul Cristian Radu (OCCRP) na "
+"Justin Arenstein (ANCIR) wakati wote wawili walikuwa wakiishi katika Chuo"
+" Kikuu cha Stanford kama Wasomi. Ufadhili wa John S. Knight wa Wanahabari"
+" Wataalamu ulifanikisha dashibodi kwa kuwezesha upatikanaji wa ujuzi wa "
+"wanahabari wenza na wa wataalam katika Chuo Kikuu cha Stanford na Silicon"
+" Valley."
+
+#: app/templates/about_us.html:45
+msgid ""
+"This first iteration of the ID website, launched in 2010, shared detailed"
+" methodologies, resources, and links for journalists to track money, "
+"shareholders, and company ownership across international borders. It also"
+" offered video tutorials and other tools to help journalists navigate "
+"rapidly evolving data-sources."
+msgstr ""
+"Uhakiki wa kwanza wa tovuti ya Dashibodi ya Upelelezi, iliyozinduliwa "
+"mwaka 2010, ulionyesha mbinu za kina, rasilimali, na viungo ambavyo "
+"wanahabari wanaweza kufuatilia fedha, wanahisa, na umiliki wa kampuni "
+"kimataifa. Pia ilitoa mafunzo ya video na zana nyingine za kuwasaidia "
+"wanahabari kuenda kwenye vyanzo vya data vinavyobadilika kwa haraka."
+
+#: app/templates/about_us.html:47
+msgid "Advisory Committee"
+msgstr "Kamati ya Ushauri"
+
+#: app/templates/about_us.html:105
+msgid "Acknowledgements"
+msgstr "Shukrani"
+
+#: app/templates/about_us.html:107
+msgid ""
+"The Investigative Dashboard is a collaborative project and valuable "
+"information was added by many investigative journalists around the world."
+" Individual members of the Global Investigative Journalism Network in "
+"particular contributed much of the information, explaining how to access "
+"company records in their home countries.\n"
+"\t    "
+msgstr ""
+"Dashibodi ya Upelelezi ni mradi wa pamoja na taarifa muhimu iliongezwa na"
+" wanahabari wengi wa upelelezaji kutoka kote duniani. Wanachama binafsi "
+"wa Mtandao wa Wanahabari wa Upelelezi Ulimwenguni walichangia habari "
+"nyingi sana, wakielezea jinsi ya kupata kumbukumbu za kampuni katika nchi"
+" zao.\n"
+"\t    "
+
+#: app/templates/about_us.html:110
+msgid ""
+"Valuable information was added by many investigative journalists around "
+"the world."
+msgstr ""
+"Taarifa muhimu iliongezwa na wanahabari wengi wa upelelezaji kutoka kote "
+"duniani."
+
+#: app/templates/admin_base.html:7 app/templates/tickets/request_base.html:75
+msgid "Manage"
+msgstr "Dhibiti"
+
+#: app/templates/admin_base.html:18 app/templates/crud/relationship/list.html:2
+msgid "Relationships"
+msgstr "Mahusiano"
+
+#: app/templates/admin_base.html:22 app/templates/crud/expandofield/list.html:2
+msgid "Extra Fields"
+msgstr "Sehemu Zaidi"
+
+#: app/templates/admin_base.html:25
+msgid "External Databases"
+msgstr "Hifadhidata za Nje"
+
+#: app/templates/admin_base.html:28
+#: app/templates/crud/accountrequest/list.html:2
+msgid "Account Requests"
+msgstr "Maombi ya Akaunti"
+
+#: app/templates/admin_base.html:31 app/templates/crud/profile/list.html:2
+msgid "User Profiles"
+msgstr "Wasifu za Mtumiaji"
+
+#: app/templates/admin_base.html:34
+msgid "Statistics"
+msgstr "Takwimu"
+
+#: app/templates/base.html:38 app/templates/search/search_base.html:6
+#: app/templates/search/search_base.html:21
+#: app/templates/search/search_documents.html:6
+#: app/templates/search/search_documents.html:13
+#: app/templates/search/search_entities.html:7
+#: app/templates/search/search_entities.html:15
+msgid "Search"
+msgstr "Tafuta"
+
+#: app/templates/base.html:41 app/templates/external_databases.html:12
+msgid "Business Registries"
+msgstr "Sajili ya Biashara"
+
+#: app/templates/base.html:45
+msgid "Expert Help"
+msgstr "Usaidizi wa Wataalamu"
+
+#: app/templates/base.html:61
+msgid "Admin"
+msgstr "Msimamizi"
+
+#: app/templates/base.html:64
+msgid "Log out"
+msgstr "Ondoka"
+
+#: app/templates/base.html:68 app/templates/request_account.html:6
+msgid "Request Account"
+msgstr "Omba Akaunti"
+
+#: app/templates/base.html:69
+msgid "Log In"
+msgstr "Ingia Katika Akaunti"
+
+#: app/templates/base.html:124
+msgid "&copy; 2013 - OCCRP. All rights reserved."
+msgstr "&copy; 2013 - OCCRP. Haki zote zimehifadhiwa."
+
+#: app/templates/base.html:124
+msgid "About this site"
+msgstr "Kuhusu tovuti hii"
+
+#: app/templates/company.html:8 app/templates/request_account.html:13
+#: app/templates/accountrequest/volunteer_account.html:13
+#: app/templates/crud/accountrequest/edit.html:20
+#: app/templates/tickets/manage.html:27 app/templates/tickets/request.html:34
+#: app/templates/tickets/request_details.html:379
+#: app/templates/tickets/request_details.html:380
+msgid "Submit"
+msgstr "Wasilisha"
+
+#: app/templates/drive_success.html:1
+msgid "Successfully connected to Google Drive."
+msgstr "Imefanikiwa kuunganisha kwenye Hifadhi ya Google."
+
+#: app/templates/drive_success.html:3
+msgid "Current user name:"
+msgstr "Jina la mtumiaji la sasa:"
+
+#: app/templates/drive_success.html:4
+msgid "Root folder ID:"
+msgstr "Kitambulisho cha folda kuu:"
+
+#: app/templates/drive_success.html:5
+msgid "Total quota (bytes):"
+msgstr "Jumla ya idadi ya juu (baiti):-"
+
+#: app/templates/drive_success.html:6
+msgid "Used quota (bytes):"
+msgstr "Kiasi kilichotumika (baiti):"
+
+#: app/templates/drive_success.html:7
+msgid "Permission ID:"
+msgstr "Kitambulisho cha Ruhusa:"
+
+#: app/templates/external_databases.html:14
+msgid ""
+"Here you will find links to more than 450 online databases across 120 "
+"jurisdictions where you can get information on the shareholders, "
+"directors and the financial reports of companies worldwide. They are "
+"organized by country. Many are free of charge and for some you must "
+"register. Databases marked with a \"$\" require a fee.  Not all are "
+"available in English, see the notes column for further details.\t"
+msgstr ""
+"Hapa utapata viungo vya zaidi ya hifadhidata 450 ya mtandaoni katika nchi"
+" 120 ambapo unaweza kupata taarifa kuhusu wanahisa, wakurugenzi na ripoti"
+" za fedha za makampuni duniani kote. Zimepangwa kulingana na nchi. Nyingi"
+" ya hifadhidata hizi hazilipishwi na zingine lazima ujisajili. "
+"Hifadhidata zilizo na alama \"$\" zinatozwa ada. Sio hifadhidata zote "
+"zinapatikana katika lugha ya Kiingereza, angalia maelezo ya safu wima kwa"
+" maelezo zaidi. \t"
+
+#: app/templates/external_databases.html:44
+msgid "Documentation"
+msgstr "Hati"
+
+#: app/templates/external_databases.html:45
+msgid "Video Tutorial"
+msgstr "Mafunzo kwa Video"
+
+#: app/templates/external_databases.html:58
+msgid "Didn't find what you were looking for?"
+msgstr "Je, hukupata ulichokuwa ukitafuta?"
+
+#: app/templates/external_databases.html:60
+msgid "Request manual help from our researchers."
+msgstr "Omba usaidizi wa mwongozo kutoka kwa watafiti wetu."
+
+#: app/templates/oauth_success.html:14
+msgid ""
+"Google Drive successfully authorized. Please close this dialog and attach"
+" your files again."
+msgstr ""
+"Hifadhi ya Google imefanikiwa kuidhinisha. Tafadhali funga mazungumzo "
+"haya na uambatanishe faili zako tena."
+
+#: app/templates/pre_login.html:6 app/templates/pre_login.html:21
+msgid "Sign in with Google"
+msgstr "Ingia katika akaunti ukitumia Google"
+
+#: app/templates/pre_login.html:10
+msgid ""
+"In order to log in or request an account on Investigative Dashboard you "
+"must have a Google account. We use your Google account to verify your "
+"identity and obtain a valid email address from you."
+msgstr ""
+"Ili uingie katika akaunti ama uombe akaunti kwenye Dashibodi ya Upelelezi"
+" lazima uwe na akaunti ya Google. Sisi hutumia akaunti yako ya Google "
+"kuthibitisha utambulisho wako na kupata anwani ya barua pepe halali "
+"kutoka kwako."
+
+#: app/templates/pre_login.html:15
+msgid ""
+"If you do not have a Google account, you can sign up for one on the next "
+"page by clicking \"Sign Up\" in the top right corner."
+msgstr ""
+"Kama huna akaunti ya Google, unaweza kufungua akaunti kwenye ukurasa "
+"unaofuata kwa kubofya \"Sign Up\" katika kona ya juu kulia."
+
+#: app/templates/request_account.html:9
+msgid ""
+"In order to make information requests through Investigative Dashboard, "
+"you must have an account. Please enter your information below and one of "
+"our staff will evaluate and respond to your request."
+msgstr ""
+"Ili kufanya maombi ya taarifa kupitia Dashibodi ya Upelelezi, lazima uwe "
+"na akaunti. Tafadhali ingiza maelezo yako hapa chini na mmoja wa "
+"wafanyakazi wetu atatathmini ombi lako na kujibu."
+
+#: app/templates/request_account_home.html:5
+msgid "Which type of account would you like to apply for?"
+msgstr "Je, ungependa kuomba akaunti ya aina gani?"
+
+#: app/templates/request_account_home.html:15
+msgid "Information Requester"
+msgstr "Anayeomba Taarifa"
+
+#: app/templates/request_account_home.html:16
+msgid ""
+"Take advantage of our database of knowledge to find out more information "
+"about companies, individuals, or the relationships between them."
+msgstr ""
+"Nufaika na hifadhidata yetu ya maarifa ili upate taarifa zaidi kuhusu "
+"makampuni, watu binafsi au uhusiano baina yao."
+
+#: app/templates/request_account_home.html:18
+msgid "Be a Requester"
+msgstr "Kuwa Anayeomba"
+
+#: app/templates/request_account_home.html:25
+msgid ""
+"We have available public requests that need volunteers. Use your wealth "
+"of information to help others find answers."
+msgstr ""
+"Tuna maombi ya hadharani yaliyopo yanayohitaji watu wa kujitolea. Tumia "
+"maarifa yako kuwasaidia wengine kupata majibu."
+
+#: app/templates/request_account_home.html:27
+msgid "Be a Volunteer"
+msgstr "Jitolee"
+
+#: app/templates/splash.html:9
+msgid ""
+"<span class=\"primary-highlight\">Investigative Dashboard</span> helps "
+"investigators expose illicit ties that cross borders."
+msgstr ""
+"<span class=\"primary-highlight\">Dashibodi ya Upelelezi</span> husaidia "
+"wapelelezi kufichua ushirikiano haramu wa kimataifa."
+
+#: app/templates/splash.html:22
+msgid "Search for a company or person of interest."
+msgstr "Tafuta kampuni au mtu uliye na haja naye."
+
+#: app/templates/splash.html:23
+msgid ""
+"We have scraped national business records from Panama, Luxembourg, "
+"Switzerland and many other countries"
+msgstr ""
+"Tumefuta kumbukumbu za biashara ya kitaifa kutoka Panama, Lusembagi, "
+"Uswisi na nchi nyingine nyingi"
+
+#: app/templates/splash.html:25
+msgid "Start Searching"
+msgstr "Anza Kutafuta"
+
+#: app/templates/splash.html:31
+msgid "If you need more data, visit recommended databases"
+msgstr "Iwapo unahitaji data zaidi, tembelea hifadhidata zilizopendekezwa"
+
+#: app/templates/splash.html:32
+msgid "We have assembled a directory of over 300 local databases that might help"
+msgstr ""
+"Tumekusanya saraka ya zaidi ya hifadhidata 300 za ndani ambazo zinaweza "
+"kukusaidia"
+
+#: app/templates/splash.html:34
+msgid "Visit Databases"
+msgstr "Tembelea Hifadhidata"
+
+#: app/templates/splash.html:40
+msgid "If you need help, request expert assistance."
+msgstr "Iwapo unahitaji usaidizi, omba usaidizi wa mtaalamu."
+
+#: app/templates/splash.html:41
+msgid ""
+"We understand investigations are sensitive and we take privacy very "
+"seriously. Requests are only seen by our full-time experts and, if you "
+"are willing, by vetted volunteers"
+msgstr ""
+"Tunafahamu kwamba uchunguzi huwa nyeti na tunajali sana faragha. Maombi "
+"yanaonwa tu na wataalamu wetu, na iwapo unataka, na wafanyakazi wa "
+"kujitolea waliotathminiwa"
+
+#: app/templates/splash.html:43
+msgid "Ask an Expert"
+msgstr "Uliza Mtaalamu"
+
+#: app/templates/accountrequest/volunteer_account.html:6
+msgid "Become a Volunteer!"
+msgstr "Jitolee!"
+
+#: app/templates/accountrequest/volunteer_account.html:9
+msgid ""
+"If you'd like to volunteer to track down requests, you need to have an "
+"account. Please enter your information below and one of our staff will "
+"review, and respond to your request."
+msgstr ""
+"Kama ungependa kujitolea kufuatilia maombi, unahitaji kuwa na akaunti. "
+"Tafadhali ingiza maelezo yako hapa chini na mmoja wa wafanyakazi wetu "
+"atayapitia na kujibu ombi lako."
+
+#: app/templates/crud/delete.html:4
+msgid "Confirm Deletion"
+msgstr "Thibitisha Ufutaji"
+
+#: app/templates/crud/delete.html:6
+msgid "Cannot delete this entity."
+msgstr "Haiwezi kufuta huluki hii."
+
+#: app/templates/crud/delete_base.html:9
+#, python-format
+msgid ""
+"Are you sure you want to delete %(object_name)s? You will not be able to "
+"undo this action."
+msgstr "Je, una uhakika unataka kufuta% (object_name)s? Hutaweza kutendua hili."
+
+#: app/templates/crud/delete_base.html:14
+msgid "Yes, I am sure."
+msgstr "Ndiyo, nina uhakika."
+
+#: app/templates/crud/delete_base.html:18
+#, python-format
+msgid "%(object_name)s is attached to the following relationships:"
+msgstr "%(Object_name)s yameambatanishwa kwenye mahusiano yafuatayo:"
+
+#: app/templates/crud/delete_base.html:22
+msgid "relationship"
+msgstr "uhusiano"
+
+#: app/templates/crud/entity_details.html:52
+msgid "Close"
+msgstr "Funga"
+
+#: app/templates/crud/item_base.html:11
+msgid "Delete"
+msgstr "Futa"
+
+#: app/templates/crud/item_base.html:20 app/templates/crud/item_base.html:48
+#: app/templates/crud/item_base.html:49 app/templates/crud/item_base.html:50
+#: app/templates/crud/item_base.html:51 app/templates/crud/item_base.html:54
+#: app/templates/tickets/request_details.html:381
+#: app/templates/tickets/request_details.html:384
+#: app/templates/tickets/request_details.html:385
+msgid "Save"
+msgstr "Hifadhi"
+
+#: app/templates/crud/item_base.html:29
+#: app/templates/tickets/request_details.html:266
+msgid "Sharing"
+msgstr "Kushiriki"
+
+#: app/templates/crud/item_base.html:48 app/templates/crud/item_base.html:49
+#: app/templates/crud/item_base.html:50 app/templates/crud/item_base.html:51
+msgid "Create Relationship"
+msgstr "Unda Uhusiano"
+
+#: app/templates/crud/item_base.html:54
+#: app/templates/tickets/request_details.html:384
+msgid "Share Attached Files"
+msgstr "Shiriki Faili Zilizoambatishwa"
+
+#: app/templates/crud/list_base.html:7
+#: app/templates/tickets/request_details.html:382
+#: app/templates/tickets/request_details.html:383
+msgid "Add"
+msgstr "Ongeza"
+
+#: app/templates/crud/list_base.html:24
+#: app/templates/tickets/request_admin_base.html:20
+#: app/templates/tickets/request_admin_base.html:23
+#: app/templates/tickets/request_charges_base.html:74
+#: app/templates/tickets/request_charges_base.html:77
+msgid "Prev"
+msgstr "Awali"
+
+#: app/templates/crud/list_base.html:33
+#: app/templates/tickets/request_admin_base.html:29
+#: app/templates/tickets/request_admin_base.html:32
+#: app/templates/tickets/request_charges_base.html:83
+#: app/templates/tickets/request_charges_base.html:86
+msgid "Next"
+msgstr "Unaofuata"
+
+#: app/templates/crud/accountrequest/add.html:2
+msgid "New Account Request"
+msgstr "Ombi la Akaunti Mpya"
+
+#: app/templates/crud/accountrequest/edit.html:4
+msgid "Edit Volunteer Request"
+msgstr "Badilisha Ombi la Mfanyakazi wa Kujitolea"
+
+#: app/templates/crud/accountrequest/edit.html:6
+msgid "Edit Account Request"
+msgstr "Badilisha Ombi la Akaunti"
+
+#: app/templates/crud/accountrequest/edit.html:13
+#: app/templates/crud/accountrequest/edit.html:20
+msgid "Set Permissions"
+msgstr "Weka Ruhusa"
+
+#: app/templates/crud/company/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:9
+msgid "New Company"
+msgstr "Kampuni Mpya"
+
+#: app/templates/crud/company/edit.html:2
+msgid "Edit Company"
+msgstr "Badilisha Kampuni"
+
+#: app/templates/crud/company/edit.html:5
+msgid "Registered Offices"
+msgstr "Ofisi Zilizosajiliwa"
+
+#: app/templates/crud/company/edit.html:11
+#: app/templates/crud/company/edit.html:13
+#: app/templates/crud/relationship/table_mixin.html:162
+#: app/templates/crud/relationship/table_mixin.html:164
+msgid "Entity"
+msgstr "Huluki"
+
+#: app/templates/crud/expandofield/add.html:2
+msgid "New Extra Field"
+msgstr "Sehemu Mpya Zaidi"
+
+#: app/templates/crud/expandofield/edit.html:2
+msgid "Edit Extra Field"
+msgstr "Badilisha Sehemu ya Ziada"
+
+#: app/templates/crud/externaldb/add.html:2
+msgid "New Database"
+msgstr "Hifadhidata Mpya"
+
+#: app/templates/crud/externaldb/edit.html:2
+msgid "Edit External Database"
+msgstr "Badilisha Hifadhidata ya Nje"
+
+#: app/templates/crud/externaldb/list.html:2
+msgid "Databases"
+msgstr "Hifadhidata"
+
+#: app/templates/crud/location/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:11
+msgid "New Location"
+msgstr "Mahali Papya"
+
+#: app/templates/crud/location/edit.html:2
+msgid "Edit Location"
+msgstr "Badilisha Mahali"
+
+#: app/templates/crud/person/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:10
+msgid "New Person"
+msgstr "Mgeni"
+
+#: app/templates/crud/person/edit.html:2
+msgid "Edit Person"
+msgstr "Badilisha Mtu"
+
+#: app/templates/crud/profile/edit.html:2
+msgid "Edit User Profile"
+msgstr "Badilisha Wasifu wa Mtumiaji"
+
+#: app/templates/crud/profile/edit.html:7
+msgid "Account Request for this profile"
+msgstr "Ombi la Akaunti kwa wasifu huu"
+
+#: app/templates/crud/profile/edit.html:18
+msgid "Account Request for this profile: "
+msgstr "Ombi la Akaunti kwa wasifu huu: "
+
+#: app/templates/crud/relationship/add.html:2
+msgid "New Relationship"
+msgstr "Uhusiano Mpya"
+
+#: app/templates/crud/relationship/edit.html:2
+#: app/templates/crud/relationship/item.html:2
+msgid "Edit Relationship"
+msgstr "Badilisha Uhusiano"
+
+#: app/templates/crud/relationship/table_mixin.html:6
+msgid "Add New "
+msgstr "Ongeza Mpya "
+
+#: app/templates/crud/relationship/table_mixin.html:12
+msgid "Add Existing "
+msgstr "Ongeza Uliopo "
+
+#: app/templates/crud/relationship/table_mixin.html:49
+msgid "Directors"
+msgstr "Wakurugenzi"
+
+#: app/templates/crud/relationship/table_mixin.html:80
+msgid "Shareholders"
+msgstr "Wanahisa"
+
+#: app/templates/crud/relationship/table_mixin.html:125
+msgid "Create"
+msgstr "Unda"
+
+#: app/templates/crud/relationship/table_mixin.html:131
+msgid "With New Company"
+msgstr "Na Kampuni Mpya"
+
+#: app/templates/crud/relationship/table_mixin.html:136
+msgid "With New Person"
+msgstr "Na Mtu Mpya"
+
+#: app/templates/crud/relationship/table_mixin.html:141
+msgid "With New Location"
+msgstr "Na Mahali Papya"
+
+#: app/templates/crud/relationship/table_mixin.html:146
+msgid "With Existing Entity"
+msgstr "Na Huluki Zilizopo"
+
+#: app/templates/crud/relationship/table_mixin.html:154
+msgid "All Relationships"
+msgstr "Mahusiano Yote"
+
+#: app/templates/crud/relationship/table_mixin.html:178
+#, python-format
+msgid "is a %(type)s of"
+msgstr "ni %aina za"
+
+#: app/templates/macros/forms.html:28
+msgid "Select File"
+msgstr "Chagua Faili"
+
+#: app/templates/macros/forms.html:29
+msgid "Change"
+msgstr "Badilisha"
+
+#: app/templates/macros/forms.html:32
+msgid "Remove"
+msgstr "Ondoa"
+
+#: app/templates/macros/forms.html:46
+#: app/templates/tickets/request_details.html:42
+msgid "Attach Files"
+msgstr "Ambatisha Faili"
+
+#: app/templates/mail/mail_base.html:36
+msgid "This message is automatically generated by "
+msgstr "Ujumbe huu unatolewa kiotomatiki na "
+
+#: app/templates/mail/mail_base.html:36
+msgid "OCCRP Investigative Dashboard"
+msgstr "Dashibodi ya Upelelezi ya OCCRP"
+
+#: app/templates/mail/mail_base.html:37
+msgid "If you think it was sent incorrectly, please contact an "
+msgstr "Iwapo unadhani ilitumwa kwa makosa, tafadhali wasiliana na "
+
+#: app/templates/mail/mail_base.html:37
+msgid "administrator"
+msgstr "msimamizi"
+
+#: app/templates/mail/mail_base.html:38
+msgid "For more information on "
+msgstr "Kwa maelezo zaidi kuhusu "
+
+#: app/templates/mail/mail_base.html:39
+msgid "visit"
+msgstr "tembelea"
+
+#: app/templates/mail/mail_simple.html:16
+msgid "The Research Desk"
+msgstr "Dawati la Utafiti"
+
+#: app/templates/mail/mail_simple.html:16
+msgid "at the Investigative Dashboard"
+msgstr "katika Dashibodi ya Upelelezi"
+
+#: app/templates/mail/ticket_update.html:8
+msgid "your request. "
+msgstr "ombi lako. "
+
+#: app/templates/mail/ticket_update.html:31
+msgid "View on Site"
+msgstr "Angalia kwenye tovuti"
+
+#: app/templates/mail/ticket_update.html:32
+msgid "Add Comment"
+msgstr "Ongeza Maoni"
+
+#: app/templates/mail/ticket_update.html:33
+msgid "or reply to this email directly."
+msgstr "au jibu barua pepe hii moja kwa moja."
+
+#: app/templates/mail/account_request/approved.html:4
+msgid "Your Account Request was approved"
+msgstr "Ombi Lako la Akaunti limepitishwa"
+
+#: app/templates/mail/account_request/approved.html:8
+#: app/templates/mail/account_request/received.html:8
+#: app/templates/mail/account_request/rejected.html:8
+#: app/templates/mail/user_profile/requester_type_update.html:8
+#, python-format
+msgid "Dear %(name)s,"
+msgstr "Kwa %(ma)jina,"
+
+#: app/templates/mail/account_request/approved.html:9
+msgid ""
+"Your ID registration is complete! Just login in with your Gmail account "
+"that you used to register to get started."
+msgstr ""
+"Usajili wako wa Dashibodi ya Upelelezi umekamilika! Ingia katika akaunti "
+"yako kwa kutumia akaunti yako ya Gmail ambayo ulitumia kujisajili ili "
+"uanze."
+
+#: app/templates/mail/account_request/approved.html:10
+#, python-format
+msgid "Please be advised your account type is: %(account_type)s"
+msgstr "Tafadhali fahamu kwamba aina ya akaunti yako ni:% (account_type)s"
+
+#: app/templates/mail/account_request/approved.html:11
+msgid "Click here to submit a research request."
+msgstr "Bofya hapa ili uwasilishe ombi la utafiti."
+
+#: app/templates/mail/account_request/approved.html:12
+#: app/templates/mail/user_profile/requester_type_update.html:10
+msgid ""
+"If you do not think this is the correct account type for you, please "
+"contact the research desk:"
+msgstr ""
+"Kama unafikiri kwamba hii sio aina sahihi ya akaunti kwako, tafadhali "
+"wasiliana na dawati la utafiti:"
+
+#: app/templates/mail/account_request/approved.html:13
+msgid "Good luck with your investigation."
+msgstr "Kila la heri katika uchunguzi wako."
+
+#: app/templates/mail/account_request/received.html:9
+msgid ""
+"Thank you for registering with the Investigative Dashboard. We are "
+"reviewing your information and as soon as your registration is complete "
+"you can sign into the Research Desk with the Google account that you used"
+" to register. In the meantime, get started now by searching the ID crowd-"
+"sourced and external databases. We will be in touch shortly."
+msgstr ""
+"Asante kwa kujisajili kwenye Dashibodi ya Upelelezi. Tunapitia maelezo "
+"yako na mara tu usajili wako utakapokamilika unaweza kuingia katika "
+"akaunti ya kitengo cha utafiti kwa kutumia akaunti ya Google ambayo "
+"ulitumia kujisajili. Kwa wakati huu, anza sasa kwa kutafuta hifadhidata "
+"za Dashibodi ya Upelelezi iliyokusanywa kutoka kwa umma na hifadhidata za"
+" nje. Tutawasiliana na wewe hivi karibuni."
+
+#: app/templates/mail/account_request/received_admin.html:8
+msgid "A new account request has been submitted! Below are the details:"
+msgstr "Ombi la akaunti mpya limewasilishwa! Haya ndio maelezo:"
+
+#: app/templates/mail/account_request/received_admin.html:15
+msgid "Click here to review and approve or reject."
+msgstr "Bofya hapa ili upitie na uidhinishe ama ukatae."
+
+#: app/templates/mail/account_request/rejected.html:4
+msgid "Your Account Request was rejected"
+msgstr "Ombi lako la akaunti lilikataliwa"
+
+#: app/templates/mail/account_request/rejected.html:9
+msgid ""
+"I am sorry but we could not register you at this time. The head of the "
+"research desk will contact you with further details."
+msgstr ""
+"Nasikitika hatukuweza kukusajili kwa wakati huu. Mkuu wa kitengo cha "
+"utafiti atawasiliana na wewe kwa maelezo zaidi."
+
+#: app/templates/mail/account_request/rejected.html:10
+#: app/templates/mail/user_profile/requester_type_update.html:11
+msgid "Thank you,"
+msgstr "Asante,"
+
+#: app/templates/mail/user_profile/requester_type_update.html:4
+msgid "Your Account Type has changed"
+msgstr "Aina ya Akaunti yako imebadilishwa"
+
+#: app/templates/mail/user_profile/requester_type_update.html:9
+#, python-format
+msgid ""
+"Please be advised your account status has changed. Your new account type "
+"is: %(account_type)s"
+msgstr ""
+"Tafadhali fahamu kwamba hadhi ya akaunti yako imebadilika. Aina mpya ya "
+"akaunti yako ni:%(account_type)s"
+
+#: app/templates/modals/form_basic.html:3
+msgid "Not Allowed"
+msgstr "Hairuhusiwi"
+
+#: app/templates/search/search_base.html:7
+msgid "Results "
+msgstr "Matokeo "
+
+#: app/templates/search/search_base.html:16
+msgid "Search terms"
+msgstr "Hoja za utafutaji"
+
+#: app/templates/search/search_base.html:31
+msgid "Navigate Results "
+msgstr "Nenda kwenye Matokeo "
+
+#: app/templates/search/search_base.html:32
+msgid "< Previous"
+msgstr "< Yaliyotangulia"
+
+#: app/templates/search/search_base.html:33
+msgid "Next >"
+msgstr "Yanayofuata >"
+
+#: app/templates/search/search_base.html:41
+#, python-format
+msgid ""
+"Didn't find what you were looking for? Try one of our <a "
+"href=\"%(url)s\">business registries</a>."
+msgstr ""
+"Je, hukupata ulichokuwa ukitafuta? Jaribu mojawapo ya <a "
+"href=\"%(url)s\">sajili zetu za biashara</ a>."
+
+#: app/templates/search/search_combined.html:16
+#: app/templates/search/search_documents.html:38
+#: app/templates/search/search_entities.html:71
+msgid "No search results."
+msgstr "Hakuna matokeo ya utafutaji."
+
+#: app/templates/search/search_combined.html:20
+msgid "To search, type your query into the search box above."
+msgstr "Ili utafute, charaza swali lako katika sanduku la kutafuta hapo juu."
+
+#: app/templates/search/search_documents.html:8
+#: app/templates/search/search_entities.html:9
+msgid "Enter your terms..."
+msgstr "Ingiza maneno yako..."
+
+#: app/templates/search/search_entities.html:22
+#, python-format
+msgid "%(num_results)s result found."
+msgid_plural "%(num_results)s results found."
+msgstr[0] "%(num_results)s yamepatikana."
+msgstr[1] "%(num_results)s yamepatikana."
+msgstr[2] "%(num_results)s yamepatikana."
+msgstr[3] "%(num_results)s yamepatikana."
+msgstr[4] "%(num_results)s yamepatikana."
+msgstr[5] "%(num_results)s yamepatikana."
+
+#: app/templates/tickets/manage.html:5
+msgid "Manage Information Request"
+msgstr "Dhibiti Ombi la Maelezo"
+
+#: app/templates/tickets/public_list.html:5
+#: app/templates/tickets/request_base.html:67
+msgid "Public Requests"
+msgstr "Maombi ya Hadharani"
+
+#: app/templates/tickets/public_list.html:12
+#: app/templates/tickets/responds_list.html:12
+msgid "No requests found."
+msgstr "Hakuna maombi yaliyopatikana."
+
+#: app/templates/tickets/request.html:5
+#: app/templates/tickets/request_details.html:162
+msgid "Request Information"
+msgstr "Omba Maelezo"
+
+#: app/templates/tickets/request.html:10
+msgid ""
+"Your request will be routed to our professional researchers and "
+"volunteers, who will try to help."
+msgstr ""
+"Ombi lako litaelekezwa kwa wataalamu wetu wa utafiti na wanaojitolea, "
+"ambao watajaribu kukusaidia."
+
+#: app/templates/tickets/request_admin_base.html:42
+msgid "No tickets found."
+msgstr "Hakuna tiketi zilizopatikana."
+
+#: app/templates/tickets/request_base.html:6
+msgid "Summary"
+msgstr "Muhtasari"
+
+#: app/templates/tickets/request_base.html:10
+#: app/templates/tickets/request_charges_base.html:26
+#: app/templates/tickets/request_details.html:279
+msgid "Actions"
+msgstr "Vitendo"
+
+#: app/templates/tickets/request_base.html:25
+msgid " Unassigned "
+msgstr " Haijapewa mtu "
+
+#: app/templates/tickets/request_base.html:34
+msgid "No Responder"
+msgstr "Hakuna mtu anayetoa majibu"
+
+#: app/templates/tickets/request_base.html:38
+msgid "Completed "
+msgstr "Imekamilika "
+
+#: app/templates/tickets/request_base.html:40
+msgid "Cancelled "
+msgstr "Imeghairiwa "
+
+#: app/templates/tickets/request_base.html:62
+msgid "Requests"
+msgstr "Maombi"
+
+#: app/templates/tickets/request_base.html:64
+#: app/templates/tickets/request_list.html:9
+msgid "My Requests"
+msgstr "Maombi Yangu"
+
+#: app/templates/tickets/request_base.html:71
+#: app/templates/tickets/responds_list.html:5
+msgid "Assigned Requests"
+msgstr "Maombi Yaliyopewa Watu"
+
+#: app/templates/tickets/request_base.html:77
+#: app/templates/tickets/admin/admin_unassigned.html:4
+msgid "Unassigned Tickets"
+msgstr "Tiketi ambazo Hazijapewa watu"
+
+#: app/templates/tickets/request_base.html:80
+msgid "Upcoming Deadlines"
+msgstr "Makataa Yanayokuja"
+
+#: app/templates/tickets/request_base.html:83
+msgid "Flagged Tickets"
+msgstr "Tiketi Zilizotiwa alama"
+
+#: app/templates/tickets/request_base.html:86
+msgid "Closed Tickets"
+msgstr "Tiketi Zilizofungwa"
+
+#: app/templates/tickets/request_base.html:88
+msgid "Billing"
+msgstr "Maelezo ya Ulipaji"
+
+#: app/templates/tickets/request_base.html:90
+msgid "Customer Report"
+msgstr "Ripoti ya Mteja"
+
+#: app/templates/tickets/request_base.html:93
+#: app/templates/tickets/admin/admin_charges_outstanding.html:3
+msgid "Outstanding Charges"
+msgstr "Ada ambayo Haijalipwa"
+
+#: app/templates/tickets/request_charges_base.html:22
+msgid "Cost"
+msgstr "Gharama"
+
+#: app/templates/tickets/request_charges_base.html:23
+msgid "Converted"
+msgstr "Imebadilishwa"
+
+#: app/templates/tickets/request_charges_base.html:24
+msgid "Reconciled"
+msgstr "Imesawazishwa"
+
+#: app/templates/tickets/request_charges_base.html:25
+msgid "Created"
+msgstr "Imeundwa"
+
+#: app/templates/tickets/request_charges_base.html:96
+msgid "No charges found."
+msgstr "Hakuna ada zilizopatikana."
+
+#: app/templates/tickets/request_charges_base.html:103
+msgid "Reconcile Charge"
+msgstr "Sawazisha Ada"
+
+#: app/templates/tickets/request_charges_base.html:103
+msgid "Reconcile"
+msgstr "Sawazisha"
+
+#: app/templates/tickets/request_details.html:21
+msgid "Created on "
+msgstr "Iliundwa mnamo: "
+
+#: app/templates/tickets/request_details.html:45
+#: app/templates/tickets/request_details.html:382
+msgid "Attach Entities"
+msgstr "Ambatanisha Huluki"
+
+#: app/templates/tickets/request_details.html:52
+msgid "Watch"
+msgstr "Tazama"
+
+#: app/templates/tickets/request_details.html:57
+msgid "Leave"
+msgstr "Ondoka"
+
+#: app/templates/tickets/request_details.html:64
+#: app/templates/tickets/request_details.html:380
+msgid "Close Request"
+msgstr "Funga Ombi"
+
+#: app/templates/tickets/request_details.html:71
+#: app/templates/tickets/request_details.html:377
+msgid "Cancel Request"
+msgstr "Ghairi Ombi"
+
+#: app/templates/tickets/request_details.html:78
+#: app/templates/tickets/request_details.html:383
+msgid "Add Charge"
+msgstr "Ongeza Ada"
+
+#: app/templates/tickets/request_details.html:85
+msgid "Delete Request"
+msgstr "Futa Ombi"
+
+#: app/templates/tickets/request_details.html:93
+msgid "Mark Bill Paid"
+msgstr "Wekea Ankara Alama kuwa Imelipwa"
+
+#: app/templates/tickets/request_details.html:100
+msgid "Edit Information"
+msgstr "Badilisha Maelezo"
+
+#: app/templates/tickets/request_details.html:106
+#: app/templates/tickets/request_details.html:385
+msgid "Request Settings"
+msgstr "Omba Mipangilio"
+
+#: app/templates/tickets/request_details.html:114
+#: app/templates/tickets/request_details.html:378
+msgid "Alert Administrator"
+msgstr "Mfahamishe Msimamizi"
+
+#: app/templates/tickets/request_details.html:125
+msgid "Re-Open"
+msgstr "Fungua Tena"
+
+#: app/templates/tickets/request_details.html:168
+#: app/templates/tickets/request_details.html:170
+msgid "No Requester"
+msgstr "Hakuna Anayeomba"
+
+#: app/templates/tickets/request_details.html:181
+msgid "No Responders"
+msgstr "Hakuna Wanaojibu"
+
+#: app/templates/tickets/request_details.html:194
+msgid "Request Type"
+msgstr "Aina ya Ombi"
+
+#: app/templates/tickets/request_details.html:198
+msgid "Status Updated"
+msgstr "Hadhi Imesasishwa"
+
+#: app/templates/tickets/request_details.html:205
+msgid "Sensitive"
+msgstr "Nyeti"
+
+#: app/templates/tickets/request_details.html:209
+#: app/templates/tickets/request_details.html:211
+msgid "Billing Information"
+msgstr "Maelezo ya Ulipaji"
+
+#: app/templates/tickets/request_details.html:215
+msgid "For-profit"
+msgstr "Ya Faida"
+
+#: app/templates/tickets/request_details.html:217
+msgid "Charges"
+msgstr "Ada"
+
+#: app/templates/tickets/request_details.html:229
+msgid "Outstanding Amount:"
+msgstr "Ada Inayosalia:"
+
+#: app/templates/tickets/request_details.html:237
+msgid "Request Details"
+msgstr "Maelezo ya Ombi"
+
+#: app/templates/tickets/request_details.html:245
+msgid "Initial Information"
+msgstr "Maelezo ya Awali"
+
+#: app/templates/tickets/request_details.html:247
+msgid "Story"
+msgstr "Hadithi"
+
+#: app/templates/tickets/request_details.html:248
+msgid "Question"
+msgstr "Swali"
+
+#: app/templates/tickets/request_details.html:254
+#: app/templates/tickets/request_details.html:255
+#: app/templates/tickets/request_details.html:256 static/js/widgets.js:189
+#: static/js/widgets.js:231
+msgid "Other Names"
+msgstr "Majina Mengine"
+
+#: app/templates/tickets/request_details.html:254
+msgid "Relation"
+msgstr "Uhusiano"
+
+#: app/templates/tickets/request_details.html:262
+msgid "Attached Files"
+msgstr "Faili Zilizoambatanishwa"
+
+#: app/templates/tickets/request_details.html:274
+msgid "Attached Entities"
+msgstr "Huluki Zilizoambatanishwa"
+
+#: app/templates/tickets/request_details.html:303
+msgid "Activity"
+msgstr "Shughuli"
+
+#: app/templates/tickets/request_details.html:337
+msgid "No comment provided."
+msgstr "Hakuna maoni yaliyotolewa."
+
+#: app/templates/tickets/request_details.html:346
+msgid "No updates yet."
+msgstr "Hakuna taarifa bado."
+
+#: app/templates/tickets/request_details.html:350
+msgid "Leave a Comment"
+msgstr "Acha Maoni"
+
+#: app/templates/tickets/request_details.html:378
+msgid "Flag Request"
+msgstr "Wekea Ombi Alama"
+
+#: app/templates/tickets/request_details.html:379
+msgid "Re-Open Request"
+msgstr "Fungua Tena Ombi"
+
+#: app/templates/tickets/request_details.html:381
+msgid "Mark Paid"
+msgstr "Wekea Alama Imelipwa"
+
+#: app/templates/tickets/request_list.html:7
+msgid "New Request"
+msgstr "Ombi Jipya"
+
+#: app/templates/tickets/request_list.html:13
+msgid "Open Requests"
+msgstr "Maombi Wazi"
+
+#: app/templates/tickets/request_list.html:18
+msgid "No open requests found."
+msgstr "Hakuna maombi wazi yaliyopatikana."
+
+#: app/templates/tickets/request_list.html:22
+msgid "Closed Requests"
+msgstr "Maombi Yaliyofungwa"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:6
+msgid "Filter"
+msgstr "Kichujio"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:12
+msgid "Customer Charges"
+msgstr "Ada za Mteja"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:13
+msgid "View all logged charges against an individual customer."
+msgstr "Angalia ada zote zilizoingizwa kwa kila mteja binafsi."
+
+#: app/templates/tickets/admin/admin_charges_outstanding.html:4
+msgid "View all outstanding charges for all tickets and requesters. "
+msgstr "Angalia ada zote ambazo hazijalipwa za tiketi na maombi yote. "
+
+#: app/templates/tickets/admin/admin_deadline.html:3
+msgid "Tickets with Deadlines"
+msgstr "Tiketi zilizo na Makataa"
+
+#: app/templates/tickets/admin/admin_deadline.html:4
+msgid "View open tickets ordered by upcoming deadlines. "
+msgstr "Angalia tiketi wazi zilizoagizwa kufika makataa yajayo. "
+
+#: app/templates/tickets/admin/admin_flagged.html:3
+msgid "User Flagged Tickets"
+msgstr "Tiketi za Mtumiaji Zilizowekewa Alama"
+
+#: app/templates/tickets/admin/admin_flagged.html:4
+msgid ""
+"View tickets which users or staff have deemed requiring administrative "
+"intervention. "
+msgstr ""
+"Angalia tiketi ambazo watumiaji na wafanyakazi wameona zinahitaji utatuzi"
+" wa kiusimamizi. "
+
+#: app/templates/tickets/admin/admin_history.html:3
+msgid "Tickets History"
+msgstr "Historia ya Tiketi"
+
+#: app/templates/tickets/admin/admin_history.html:4
+msgid "A simple list of closed, resolved or cancelled tickets. "
+msgstr ""
+"Orodha rahisi ya tiketi zilizofungwa, tiketi zilizosuluhishwa ama "
+"zilizoghairiwa. "
+
+#: app/templates/tickets/admin/admin_unassigned.html:5
+msgid "View new tickets that need responders assigned to them."
+msgstr "Angalia tiketi mpya zinazohitaji kuwekewa wanaotoa majibu."
+
+#: static/js/drive-picker.js:97
+msgid "Error attaching file(s)."
+msgstr "Hitilafu ya kuambatanisha faili."
+
+#: static/js/i18n.js:47 static/js/i18n.js:55
+msgid "x04"
+msgid_plural "x04"
+msgstr[0] "x04"
+msgstr[1] "x04"
+msgstr[2] "x04"
+msgstr[3] "x04"
+msgstr[4] "x04"
+msgstr[5] "x04"
+
+#: static/js/list-files.js:24
+msgid "File successfully removed."
+msgstr "Faili imefanikiwa kuondolewa."
+
+#: static/js/list-files.js:26
+msgid "Error removing attached file."
+msgstr "Hitilafu ya kuondoa faili zilizoambatanishwa."
+
+#: static/js/list-files.js:44
+msgid "No files attached."
+msgstr "Hakuna faili zilizohifadhiwa."
+
+#: static/js/list-files.js:61
+msgid "Error displaying attached files."
+msgstr "Hitilafu ya kuonyesha faili zilizoambatanishwa."
+
+#: static/js/validation-forms.js:42
+msgid "There was a problem with validation."
+msgstr "Kulikuwa na tatizo la uthibitishaji."
+

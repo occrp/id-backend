@@ -1,0 +1,2580 @@
+# Arabic translations for PROJECT.
+# Copyright (C) 2013 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2013-12-09 10:47+0100\n"
+"PO-Revision-Date: 2014-01-22 13:28+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: ar <LL@li.org>\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 "
+"&& n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: app/fields.py:74
+msgid "Key is invalid or does not exist."
+msgstr "Кључ није важећи или не постоји."
+
+#: app/forms.py:59 app/models.py:348 app/models.py:482
+msgid "Comments"
+msgstr "Коментари"
+
+#: app/forms.py:60 app/templates/crud/item_base.html:32
+msgid "Files"
+msgstr "Датотеке"
+
+#: app/forms.py:141 app/models.py:474 app/models.py:478
+msgid "Entity One"
+msgstr "Први ентитет"
+
+#: app/forms.py:142 app/models.py:475 app/models.py:479
+msgid "Entity Two"
+msgstr "Други ентитет"
+
+#: app/forms.py:145
+msgid "Entity Two is a"
+msgstr "Други ентитет је"
+
+#: app/forms.py:156
+msgid "The entity below is a"
+msgstr "Ентитет у наставку је"
+
+#: app/forms.py:164
+msgid "Customer"
+msgstr "Клијент"
+
+#: app/forms.py:178 app/forms.py:226 app/models.py:581 app/models.py:1122
+#: app/templates/tickets/request_details.html:251
+msgid "Country"
+msgstr "Земља"
+
+#: app/forms.py:183
+msgid "Person"
+msgstr "Особа"
+
+#: app/forms.py:184 app/templates/company.html:5
+msgid "Company"
+msgstr "Компанија"
+
+#: app/forms.py:185 app/templates/crud/fragment.html:5
+#: app/templates/crud/company/edit.html:12
+#: app/templates/crud/relationship/inline_entity.html:5
+#: app/templates/crud/relationship/table_mixin.html:163
+msgid "Relationship"
+msgstr "Веза"
+
+#: app/forms.py:186 app/models.py:912 app/models.py:1258
+#: app/templates/crud/relationship/table_mixin.html:24
+#: app/templates/tickets/request_details.html:155
+msgid "Location"
+msgstr "Локација"
+
+#: app/forms.py:188 app/models.py:613
+msgid "Full Name"
+msgstr "Пуно име"
+
+#: app/forms.py:191 app/models.py:343
+msgid "Identifier"
+msgstr "Идентификатор"
+
+#: app/forms.py:202
+msgid "Illegal Identifier. Only lowercase letters and _ are allowed."
+msgstr "Идентификатор није важећи. Дозвољена су само мала слова и знак _."
+
+#: app/forms.py:209
+msgid "Field with this identifier already exists."
+msgstr "Поље са овим идентификатором већ постоји."
+
+#: app/forms.py:224 app/models.py:1128
+msgid "URL"
+msgstr "URL"
+
+#: app/forms.py:240 app/forms.py:262 app/forms.py:293
+msgid "Email"
+msgstr "Е-пошта"
+
+#: app/forms.py:242 app/models.py:1233
+msgid "Media Type"
+msgstr "Тип медија"
+
+#: app/forms.py:245 app/models.py:1235
+msgid "Circulation (approximate per month)"
+msgstr "Тираж (приближан месечни)"
+
+#: app/forms.py:266 app/models.py:518 app/templates/tickets/request_base.html:8
+#: app/templates/tickets/request_details.html:32
+msgid "Status"
+msgstr "Статус"
+
+#: app/forms.py:268 app/forms.py:275 app/forms.py:535
+msgid "All"
+msgstr "Све"
+
+#: app/forms.py:269 app/models.py:1149
+msgid "Approved"
+msgstr "Одобрено"
+
+#: app/forms.py:270
+msgid "Not Approved"
+msgstr "Није одобрено"
+
+#: app/forms.py:273
+msgid "Type of Request"
+msgstr "Тип захтева"
+
+#: app/forms.py:276 app/templates/tickets/request_charges_base.html:20
+#: app/templates/tickets/request_details.html:164
+msgid "Requester"
+msgstr "Подносилац захтева"
+
+#: app/forms.py:277 app/templates/request_account_home.html:24
+msgid "Volunteer"
+msgstr "Волонтер"
+
+#: app/forms.py:302
+msgid "Approve (Adds user to groups)"
+msgstr "Одобри (додаје корисника у групе)"
+
+#: app/forms.py:303
+msgid "Reject (Removes user from groups)"
+msgstr "Одбиј (уклања корисника из група)"
+
+#: app/forms.py:308
+msgid "Action"
+msgstr "Радња"
+
+#: app/forms.py:315
+msgid "Research Goal"
+msgstr "Циљ истраживања"
+
+#: app/forms.py:324
+msgid ""
+"This is highly sensitive, do not let volunteer research librarians see "
+"this request."
+msgstr ""
+"Ово је веома осетљиво, не дозволите да волонтери који се баве "
+"истраживањем у библиотеци виде овај захтев."
+
+#: app/forms.py:339 app/forms.py:362
+msgid "What do you know so far?"
+msgstr "Шта сте сазнали до сада?"
+
+#: app/forms.py:345
+msgid "Any information you already have."
+msgstr "Све информације које већ имате."
+
+#: app/forms.py:348
+msgid "Where are you researching?"
+msgstr "Коју тему истражујете?"
+
+#: app/forms.py:366
+msgid "What story are you working on?"
+msgstr "На којој причи радите?"
+
+#: app/forms.py:370
+msgid "What sources do you have so far?"
+msgstr "Које изворе имате за сада?"
+
+#: app/forms.py:391
+msgid "Reason"
+msgstr "Разлог"
+
+#: app/forms.py:397 app/forms.py:406
+#: app/templates/tickets/request_details.html:358
+msgid "Comment"
+msgstr "Коментар"
+
+#: app/forms.py:410
+msgid "Paid Status"
+msgstr "Статус „Плаћено“"
+
+#: app/forms.py:411
+msgid "Marking as paid will reconcile any open charges with the request."
+msgstr ""
+"Додавањем ознаке „Плаћено“ сводите све отворене трошкове у вези са "
+"захтевом."
+
+#: app/forms.py:421
+msgid "Comment to Requester"
+msgstr "Коментар за подносиоца захтева"
+
+#: app/forms.py:423 app/templates/tickets/request_charges_base.html:21
+msgid "Item"
+msgstr "Ставка"
+
+#: app/forms.py:425 app/forms.py:506
+msgid "Cost (USD)"
+msgstr "Цена (USD)"
+
+#: app/forms.py:427 app/forms.py:508
+msgid "Cost (Original Currency)"
+msgstr "Цена (оригинална валута)"
+
+#: app/forms.py:435
+msgid ""
+"Add a comment, visible to the person making this request and the "
+"researcher answering it."
+msgstr ""
+"Додајте коментар, који може да види особа која подноси овај захтев и "
+"истраживач који одговара на њега."
+
+#: app/forms.py:453
+msgid "Assign OCCRP Staff member(s) as the ticket responder"
+msgstr ""
+"Овласти запослене у оквиру Пројекта за пријављивање организованог "
+"криминала и корупције (OCCRP) да одговоре на пријаву"
+
+#: app/forms.py:454 app/templates/tickets/request_details.html:174
+msgid "Staff Responders"
+msgstr "Запослени задужени за одговоре"
+
+#: app/forms.py:457
+msgid "Assign Volunteer Researcher(s)"
+msgstr "Додели волонтере истраживаче"
+
+#: app/forms.py:458 app/templates/tickets/request_details.html:186
+msgid "Volunteer Responders"
+msgstr "Волонтери задужени за одговоре"
+
+#: app/forms.py:460 app/models.py:618 app/models.py:705
+msgid "Requester Type"
+msgstr "Тип подносиоца захтева"
+
+#: app/forms.py:463 app/models.py:94
+msgid "Flagged"
+msgstr "Означено је"
+
+#: app/forms.py:464
+msgid "Once user issues are dealt with, un-flag the ticket"
+msgstr "Када проблеми корисника буду решени, уклоните ознаку са пријаве"
+
+#: app/forms.py:466 app/models.py:620 app/models.py:717
+#: app/templates/tickets/request_details.html:202
+msgid "Findings Public"
+msgstr "Резултати истраживања су јавни"
+
+#: app/forms.py:467
+msgid "Whether the findings of the ticket should be publicly visible."
+msgstr "Да ли резултати истраживања пријаве треба да буду јавно видљиви."
+
+#: app/forms.py:469 app/models.py:622 app/models.py:719
+msgid "For-Profit?"
+msgstr "Профитабилно?"
+
+#: app/forms.py:471 app/models.py:721
+msgid "Public?"
+msgstr "Јавно?"
+
+#: app/forms.py:472
+msgid ""
+"If a ticket is marked as public, volunteers are able toview and "
+"collaborate on the ticket. Making a ticket private will not remove "
+"volunteers as researchers."
+msgstr ""
+"Ако се пријава означи као јавна, волонтери могу да је прегледају и "
+"сарађују на њој. Означавањем пријаве као приватне не уклањате волонтере "
+"као истраживаче."
+
+#: app/forms.py:523 app/forms.py:548
+msgid "Entities"
+msgstr "Ентитети"
+
+#: app/forms.py:534
+msgid "Result type"
+msgstr "Тип резултата"
+
+#: app/forms.py:536 app/templates/admin_base.html:9
+#: app/templates/crud/company/list.html:2
+msgid "Companies"
+msgstr "Компаније"
+
+#: app/forms.py:537 app/templates/admin_base.html:12
+#: app/templates/crud/person/list.html:2
+msgid "People"
+msgstr "Људи"
+
+#: app/forms.py:538 app/templates/admin_base.html:15
+#: app/templates/crud/location/list.html:2
+msgid "Locations"
+msgstr "Локације"
+
+#: app/forms.py:545
+msgid "Search Providers"
+msgstr "Добављачи претраге"
+
+#: app/forms.py:547
+msgid "Everything"
+msgstr "Све"
+
+#: app/forms.py:549
+msgid "Documents"
+msgstr "Документи"
+
+#: app/forms.py:550
+msgid "Companies from OpenCorporates"
+msgstr "Компаније из базе података OpenCorporates"
+
+#: app/forms.py:594
+msgid "Share With"
+msgstr "Дели са"
+
+#: app/forms.py:596
+msgid "Everyone (public)"
+msgstr "Сви (јавно)"
+
+#: app/forms.py:597
+msgid "Users"
+msgstr "Корисници"
+
+#: app/forms.py:598 app/templates/about_us.html:20
+msgid "Staff"
+msgstr "Запослени"
+
+#: app/forms.py:605
+msgid "Named Users"
+msgstr "Именовани корисници"
+
+#: app/forms.py:608
+msgid "Individual users who should have access as well."
+msgstr "Појединачни корисници који такође треба да имају приступ."
+
+#: app/models.py:54
+msgid "Limited liability"
+msgstr "Ограничена одговорност"
+
+#: app/models.py:55
+msgid "Partnership"
+msgstr "Партнерство"
+
+#: app/models.py:56
+msgid "Stock company"
+msgstr "Акционарско друштво"
+
+#: app/models.py:57
+msgid "Foundation"
+msgstr "Фондација"
+
+#: app/models.py:58 app/templates/tickets/request_details.html:215
+msgid "Non-profit"
+msgstr "Непрофитна организација"
+
+#: app/models.py:59 app/models.py:147
+msgid "Other"
+msgstr "Друго"
+
+#: app/models.py:64
+msgid "Active"
+msgstr "Активно"
+
+#: app/models.py:65
+msgid "Inactive"
+msgstr "Неактивно"
+
+#: app/models.py:69
+msgid "-----------"
+msgstr "-----------"
+
+#: app/models.py:70
+msgid "Male"
+msgstr "Мушко"
+
+#: app/models.py:71
+msgid "Female"
+msgstr "Женскo"
+
+#: app/models.py:75
+msgid "Subsidized"
+msgstr "Субвенционисано"
+
+#: app/models.py:76
+msgid "Covering Cost"
+msgstr "Покрива трошкове"
+
+#: app/models.py:77
+msgid "Covering Cost +"
+msgstr "Покрива трошкове +"
+
+#: app/models.py:81
+msgid "Identify what a person owns"
+msgstr "Идентификујте шта особа поседује"
+
+#: app/models.py:82
+msgid "Determine company ownership"
+msgstr "Утврдите власништво над компанијом"
+
+#: app/models.py:83
+msgid "Any other question"
+msgstr "Било које друго питање"
+
+#: app/models.py:87
+msgid "Updated"
+msgstr "Ажурирано је"
+
+#: app/models.py:88 app/handlers/ticketing.py:389
+msgid "Charge Added"
+msgstr "Додатни трошкови"
+
+#: app/models.py:89 app/handlers/ticketing.py:360
+msgid "Reconciled Charges"
+msgstr "Сведени трошкови"
+
+#: app/models.py:90 app/models.py:102
+msgid "Closed"
+msgstr "Затворено је"
+
+#: app/models.py:91 app/models.py:103 app/models.py:112
+msgid "Cancelled"
+msgstr "Отказано је"
+
+#: app/models.py:92
+msgid "Re-Opened"
+msgstr "Поново је отворено"
+
+#: app/models.py:93
+msgid "Opened"
+msgstr "Отворено је"
+
+#: app/models.py:95
+msgid "Documents Attached"
+msgstr "Приложени документи"
+
+#: app/models.py:96
+msgid "Entities Attached"
+msgstr "Приложени ентитети"
+
+#: app/models.py:100
+msgid "New"
+msgstr "Ново"
+
+#: app/models.py:101
+msgid "In Progress"
+msgstr "У току"
+
+#: app/models.py:110
+msgid "Paid"
+msgstr "Плаћено"
+
+#: app/models.py:111
+msgid "Paid by OCCRP"
+msgstr "Платио је OCCRP"
+
+#: app/models.py:117
+msgid "Parent"
+msgstr "Родитељ"
+
+#: app/models.py:118
+msgid "Spouse"
+msgstr "Супружник"
+
+#: app/models.py:119
+msgid "Other Relative"
+msgstr "Други рођаци"
+
+#: app/models.py:120
+msgid "Friend or Acquaintance"
+msgstr "Пријатељ или познаник"
+
+#: app/models.py:121
+msgid "Employer"
+msgstr "Послодавац"
+
+#: app/models.py:122
+msgid "Business Partner"
+msgstr "Пословни партнер"
+
+#: app/models.py:123
+msgid "Proxy"
+msgstr "Заступник"
+
+#: app/models.py:126 app/templates/tickets/request_details.html:252
+msgid "Birthplace"
+msgstr "Место рођења"
+
+#: app/models.py:127 app/models.py:143
+msgid "Registered Address"
+msgstr "Регистрована адреса"
+
+#: app/models.py:128
+msgid "Home Address"
+msgstr "Адреса"
+
+#: app/models.py:131
+msgid "Director"
+msgstr "Директор"
+
+#: app/models.py:132
+msgid "Secretary"
+msgstr "Секретар"
+
+#: app/models.py:133
+msgid "Authorized Person"
+msgstr "Особа са овлашћењем"
+
+#: app/models.py:134
+msgid "Representative"
+msgstr "Представник"
+
+#: app/models.py:135
+msgid "Shareholder"
+msgstr "Акционар"
+
+#: app/models.py:136
+msgid "Employee"
+msgstr "Запослени"
+
+#: app/models.py:139
+msgid "Subsidiary"
+msgstr "Подружница"
+
+#: app/models.py:140
+msgid "Trading Partner"
+msgstr "Трговински партнер"
+
+#: app/models.py:144
+msgid "Place of Business"
+msgstr "Место пословања"
+
+#: app/models.py:160
+msgid "Media: non-profit"
+msgstr "Медији: непрофитна организација"
+
+#: app/models.py:161
+msgid "Media: for-profit"
+msgstr "Медији: профитабилна организација"
+
+#: app/models.py:162
+msgid "Media: freelance"
+msgstr "Медији: хонорарни рад"
+
+#: app/models.py:163
+msgid "Business: due diligence/investigation"
+msgstr "Област пословања: провера финансијског стања/истрага"
+
+#: app/models.py:164
+msgid "Business: legal"
+msgstr "Област пословања: право"
+
+#: app/models.py:165
+msgid "Business: general"
+msgstr "Област пословања: опште"
+
+#: app/models.py:166
+msgid "Government"
+msgstr "Влада"
+
+#: app/models.py:167
+msgid "Civil society/non-profit"
+msgstr "Грађанско друштво/непрофитна организација"
+
+#: app/models.py:168
+msgid "Individual"
+msgstr "Појединац"
+
+#: app/models.py:169
+msgid "Other (please specify)"
+msgstr "Друго (наведите)"
+
+#: app/models.py:174 app/templates/tickets/request_details.html:231
+msgid "None"
+msgstr "Ништа"
+
+#: app/models.py:175
+msgid "OCCRP"
+msgstr "OCCRP"
+
+#: app/models.py:176
+msgid "ARIJ"
+msgstr "ARIJ"
+
+#: app/models.py:177
+msgid "ANCIR"
+msgstr "ANCIR"
+
+#: app/models.py:178
+msgid "Connectas in the Americas"
+msgstr "Connectas in the Americas"
+
+#: app/models.py:183
+msgid "Website"
+msgstr "Веб-сајт"
+
+#: app/models.py:184
+msgid "Print"
+msgstr "Штампа"
+
+#: app/models.py:185
+msgid "Broadcast TV"
+msgstr "Емитовање на телевизији"
+
+#: app/models.py:186
+msgid "Broadcast Radio"
+msgstr "Емитовање на радију"
+
+#: app/models.py:187
+msgid "Other or don't know"
+msgstr "Друго или непознато"
+
+#: app/models.py:192
+msgid "Less than 10,000"
+msgstr "Мање од 10.000"
+
+#: app/models.py:193
+msgid "10,000 to 25,000"
+msgstr "од 10.000 до 25.000"
+
+#: app/models.py:194
+msgid "25,000 to 50,000"
+msgstr "од 25.000 до 50.000"
+
+#: app/models.py:195
+msgid "50,000 to 100,000"
+msgstr "од 50.000 до 100.000"
+
+#: app/models.py:196
+msgid "100,000 to 250,000"
+msgstr "од 100.000 до 250.000"
+
+#: app/models.py:197
+msgid "250,000 to 500,000"
+msgstr "од 250.000 до 500.000"
+
+#: app/models.py:198
+msgid "More than 500,000"
+msgstr "Преко 500.000"
+
+#: app/models.py:203
+msgid "Business Registry"
+msgstr "Пословни регистар"
+
+#: app/models.py:204
+msgid "Regional procurement registry"
+msgstr "Регистар регионалних предузећа за набавку"
+
+#: app/models.py:205
+msgid "Regulatory Agency"
+msgstr "Регулаторна агенција"
+
+#: app/models.py:206
+msgid "Commercial Register"
+msgstr "Регистар трговинских предузећа"
+
+#: app/models.py:207
+msgid "Court Registry"
+msgstr "Регистар судова"
+
+#: app/models.py:208
+msgid "Gazette"
+msgstr "Службени лист"
+
+#: app/models.py:209
+msgid "Land Registry"
+msgstr "Регистар земљишта"
+
+#: app/models.py:214
+msgid "All Databases"
+msgstr "Све базе података"
+
+#: app/models.py:215
+msgid "Global Databases"
+msgstr "Глобалне базе података"
+
+#: app/models.py:341
+msgid "Label"
+msgstr "Ознака"
+
+#: app/models.py:344
+msgid "Kind"
+msgstr "Врста"
+
+#: app/models.py:476 app/templates/tickets/request_base.html:7
+msgid "Type"
+msgstr "Тип"
+
+#: app/models.py:480 app/templates/crud/relationship/table_mixin.html:25
+#: app/templates/crud/relationship/table_mixin.html:56
+#: app/templates/crud/relationship/table_mixin.html:87
+msgid "Start Date"
+msgstr "Почетни датум"
+
+#: app/models.py:481 app/templates/crud/relationship/table_mixin.html:26
+#: app/templates/crud/relationship/table_mixin.html:57
+#: app/templates/crud/relationship/table_mixin.html:88
+msgid "End Date"
+msgstr "Крајњи датум"
+
+#: app/models.py:510 app/models.py:576 app/models.py:611 app/models.py:895
+#: app/templates/crud/relationship/table_mixin.html:55
+#: app/templates/crud/relationship/table_mixin.html:86
+#: app/templates/tickets/request_details.html:241
+#: app/templates/tickets/request_details.html:278
+msgid "Name"
+msgstr "Назив"
+
+#: app/models.py:511 app/models.py:542
+msgid "Name Variations"
+msgstr "Варијације назива"
+
+#: app/models.py:514
+msgid "Jurisdiction Registered"
+msgstr "Надлежност у којој је обављена регистрација"
+
+#: app/models.py:516
+msgid "Form of Company"
+msgstr "Тип компаније"
+
+#: app/models.py:519
+msgid "Date Registered"
+msgstr "Датум регистрације"
+
+#: app/models.py:520
+msgid "Date Dissolved"
+msgstr "Датум распуштања"
+
+#: app/models.py:539 app/models.py:1139
+msgid "First Name"
+msgstr "Име"
+
+#: app/models.py:540
+msgid "Middle Name"
+msgstr "Средње име"
+
+#: app/models.py:541 app/models.py:1140
+#: app/templates/tickets/request_details.html:254
+#: app/templates/tickets/request_details.html:255
+#: app/templates/tickets/request_details.html:256 static/js/widgets.js:188
+#: static/js/widgets.js:230
+msgid "Last Name"
+msgstr "Презиме"
+
+#: app/models.py:544 app/models.py:903
+#: app/templates/tickets/request_details.html:253
+msgid "Date of Birth"
+msgstr "Датум рођења"
+
+#: app/models.py:545
+msgid "Date of Death"
+msgstr "Датум смрти"
+
+#: app/models.py:546
+msgid "Sex"
+msgstr "Пол"
+
+#: app/models.py:547
+msgid "Nationalities"
+msgstr "Националности"
+
+#: app/models.py:549
+msgid "ID Numbers"
+msgstr "ИД бројеви"
+
+#: app/models.py:577 app/models.py:1227
+msgid "Address"
+msgstr "Адреса"
+
+#: app/models.py:578
+msgid "City"
+msgstr "Град"
+
+#: app/models.py:579
+msgid "State/Province/Region"
+msgstr "Држава/провинција/регион"
+
+#: app/models.py:580
+msgid "ZIP/Postal Code"
+msgstr "Поштански број/ПАК"
+
+#: app/models.py:614
+msgid "Admin Notes"
+msgstr "Напомене администратора"
+
+#: app/models.py:680
+msgid "Subsidized (OCCRP pays for everything)"
+msgstr "Субвенционисано (OCCRP плаћа све трошкове)"
+
+#: app/models.py:682
+msgid ""
+"Covering cost (OCCRP pays for labor, requester pays costs of buying "
+"documents)"
+msgstr ""
+"Покрива трошкове (OCCRP плаћа рад, подносилац захтева плаћа трошкове за "
+"куповину документације)"
+
+#: app/models.py:685
+msgid "Covering cost+ (requester pays for documents, and also for our work)"
+msgstr "Покрива трошкове+ (подносилац захтева плаћа документацију, као и наш рад)"
+
+#: app/models.py:731 app/templates/tickets/request_base.html:9
+#: app/templates/tickets/request_details.html:146
+msgid "Deadline"
+msgstr "Крајњи рок"
+
+#: app/models.py:732
+msgid "Sensitive?"
+msgstr "Осетљиво?"
+
+#: app/models.py:896 app/templates/tickets/request_details.html:256
+msgid "Aliases"
+msgstr "Псеудоними"
+
+#: app/models.py:897 app/models.py:928
+#: app/templates/tickets/request_details.html:242
+msgid "Background"
+msgstr "Позадина"
+
+#: app/models.py:898 app/templates/tickets/request_details.html:243
+msgid "Biography"
+msgstr "Биографија"
+
+#: app/models.py:899 app/templates/tickets/request_details.html:254
+msgid "Family"
+msgstr "Породица"
+
+#: app/models.py:902 app/templates/tickets/request_details.html:244
+msgid "Business Activities"
+msgstr "Пословне активности"
+
+#: app/models.py:906
+msgid "Place of Birth"
+msgstr "Место рођења"
+
+#: app/models.py:909
+msgid "Where have you looked?"
+msgstr "Где сте тражили?"
+
+#: app/models.py:924
+msgid "Company Name"
+msgstr "Назив компаније"
+
+#: app/models.py:927
+msgid "Country Registered"
+msgstr "Земља у којој је регистрована"
+
+#: app/models.py:929 app/templates/search/search_base.html:29
+#: app/templates/tickets/request_details.html:246
+msgid "Sources"
+msgstr "Извори"
+
+#: app/models.py:930
+msgid "Your Story"
+msgstr "Ваша прича"
+
+#: app/models.py:932 app/templates/tickets/request_details.html:255
+msgid "Connected People"
+msgstr "Повезани људи"
+
+#: app/models.py:943
+msgid "What do you want to know?"
+msgstr "Шта желите да знате?"
+
+#: app/models.py:996
+#, python-format
+msgid "[Request %s] - %s"
+msgstr "[Захтев %s] – %s"
+
+#: app/models.py:1061
+#, python-format
+msgid ""
+"Item: %(item)s\n"
+"Cost: $%(cost)s\n"
+"Converted: %(cost_converted)s"
+msgstr ""
+"Ставка: %(item)s\n"
+"Цена: $%(cost)s\n"
+"Конвертовано: %(cost_converted)s"
+
+#: app/models.py:1117
+msgid "Agency / Name"
+msgstr "Агенција/назив"
+
+#: app/models.py:1120
+msgid "Type of Database"
+msgstr "Тип базе података"
+
+#: app/models.py:1123 app/templates/external_databases.html:26
+msgid "Paid Database"
+msgstr "Плаћена база података"
+
+#: app/models.py:1125 app/templates/external_databases.html:29
+msgid "Registration Required"
+msgstr "Неопходна је регистрација"
+
+#: app/models.py:1127 app/templates/external_databases.html:32
+msgid "Government Database"
+msgstr "Владина база података"
+
+#: app/models.py:1129
+msgid "Notes"
+msgstr "Напомене"
+
+#: app/models.py:1130
+msgid "Blog Post"
+msgstr "Пост на блогу"
+
+#: app/models.py:1131
+msgid "YouTube Video Url"
+msgstr "URL YouTube видеа"
+
+#: app/models.py:1141
+msgid "Email Address"
+msgstr "Адреса е-поште"
+
+#: app/models.py:1143
+msgid "Phone Number"
+msgstr "Број телефона"
+
+#: app/models.py:1146
+msgid "Organization Membership"
+msgstr "Чланство у организацији"
+
+#: app/models.py:1148
+msgid "Anything else you would like to tell us"
+msgstr "Друге ствари које желите да нам кажете"
+
+#: app/models.py:1168 app/templates/tickets/request_details.html:203
+#: app/templates/tickets/request_details.html:206
+msgid "Yes"
+msgstr "Да"
+
+#: app/models.py:1169 app/templates/tickets/request_details.html:203
+#: app/templates/tickets/request_details.html:206
+msgid "No"
+msgstr "Не"
+
+#: app/models.py:1198 app/templates/mail/account_request/received.html:4
+msgid "Your Account Request was received"
+msgstr "Примили смо захтев за ваш налог"
+
+#: app/models.py:1204 app/templates/mail/account_request/received_admin.html:4
+msgid "An Account Request was received"
+msgstr "Примили смо захтев за налог"
+
+#: app/models.py:1212
+msgid "An update to your Account Request"
+msgstr "Ажурирање захтева за ваш налог"
+
+#: app/models.py:1230
+msgid "Industry"
+msgstr "Делатност"
+
+#: app/models.py:1231
+msgid "Other Industry"
+msgstr "Секундарна делатност"
+
+#: app/models.py:1239
+msgid "Name of Employer"
+msgstr "Име послодавца"
+
+#: app/models.py:1241
+msgid "Position / Job Title"
+msgstr "Позиција/радно место"
+
+#: app/models.py:1255
+msgid "Interests"
+msgstr "Интересовања"
+
+#: app/models.py:1256
+msgid "Expertise"
+msgstr "Стручна област"
+
+#: app/models.py:1257
+msgid "Languages"
+msgstr "Језици"
+
+#: app/models.py:1260
+msgid "Availability"
+msgstr "Доступност"
+
+#: app/models.py:1261
+msgid "Own Databases"
+msgstr "Сопствене базе података"
+
+#: app/models.py:1263
+msgid "Restrictions / Conflicts of Interest"
+msgstr "Ограничења/сукоби интереса"
+
+#: app/utils.py:43 app/templates/base.html:12
+#: app/templates/oauth_success.html:6 app/templates/mail/mail_base.html:12
+#: app/templates/mail/mail_base.html:37 app/templates/mail/mail_base.html:38
+msgid "Investigative Dashboard"
+msgstr "Investigative Dashboard"
+
+#: app/validators.py:13
+msgid "This field is required."
+msgstr "Ово поље је обавезно."
+
+#: app/appengine_modelforms/fields.py:91 app/appengine_modelforms/fields.py:173
+#: app/appengine_modelforms/fields.py:175
+msgid "Not a valid choice"
+msgstr "Ово није важећи избор"
+
+#: app/appengine_modelforms/fields.py:194
+msgid "Not a valid list"
+msgstr "Ово није важећа листа"
+
+#: app/appengine_modelforms/fields.py:213
+msgid "Not a valid integer list"
+msgstr "Ово није важећа листа целобројних вредности"
+
+#: app/google_apis/drive.py:29
+msgid "Error connecting to Google Drive."
+msgstr "Грешка при повезивању са Google диском."
+
+#: app/google_apis/drive.py:93
+msgid "Error refreshing Google Drive access token."
+msgstr "Грешка при освежавању токена за приступ Google диску."
+
+#: app/google_apis/drive.py:113
+msgid "Your Google Drive private key must be in \"PEM\" format."
+msgstr "Приватни кључ за Google диск мора да буде у формату „PEM“."
+
+#: app/google_apis/drive.py:116
+msgid ""
+"Error refreshing Google Drive access token. Check your settings and try "
+"again."
+msgstr ""
+"Грешка при освежавању токена за приступ Google диску. Проверите "
+"подешавања и покушајте поново."
+
+#: app/google_apis/groups.py:21
+msgid "Error connecting to Google Groups."
+msgstr "Грешка при повезивању са Google групама."
+
+#: app/google_apis/groups.py:64
+msgid "Your private key must be in \"PEM\" format."
+msgstr "Приватни кључ мора да буде у формату „PEM“."
+
+#: app/google_apis/groups.py:66
+msgid "Error refreshing the access token. Check your settings and try again."
+msgstr ""
+"Грешка при освежавању токена за приступ. Проверите подешавања и покушајте"
+" поново."
+
+#: app/handlers/crud.py:78 app/templates/crud/relationship/table_mixin.html:194
+msgid "No entries found."
+msgstr "Нема пронађених уноса."
+
+#: app/handlers/crud.py:223
+#, python-format
+msgid "%(entity)s successfully saved.entity"
+msgstr "Ентитети (%(entity)s) су сачувани.entity"
+
+#: app/handlers/crud.py:235
+#, python-format
+msgid "%(entity)s successfully deleted.entity"
+msgstr "Ентитети (%(entity)s) су избрисани.entity"
+
+#: app/handlers/crud.py:253
+#, python-format
+msgid "%(entity)s could not deleted because of %(rel_count)d relationsentity"
+msgstr "Није успело брисање %(entity)s ентитета због %(rel_count)d relationsentity"
+
+#: app/handlers/crud.py:284
+msgid "No relationships found. You can create them via other entities."
+msgstr "Нема пронађених веза. Можете да их направите преко других ентитета."
+
+#: app/handlers/crud.py:388
+#, python-format
+msgid "Relationship with new %(entity_type)s successfully saved.entity_type"
+msgstr "Веза са новим ентитетима (%(entity_type)s) је сачувана.entity_type"
+
+#: app/handlers/crud.py:424
+msgid "No companies found."
+msgstr "Нема пронађених компанија."
+
+#: app/handlers/crud.py:439
+msgid "No people found."
+msgstr "Нема пронађених људи."
+
+#: app/handlers/crud.py:455
+msgid "No locations found."
+msgstr "Нема пронађених локација."
+
+#: app/handlers/crud.py:469
+msgid "No extra fields found."
+msgstr "Нема пронађених додатних поља."
+
+#: app/handlers/crud.py:480 app/templates/external_databases.html:53
+msgid "No external databases found."
+msgstr "Нема пронађених спољних база података."
+
+#: app/handlers/crud.py:516
+msgid "No account requests found."
+msgstr "Нема пронађених захтева за налог."
+
+#: app/handlers/crud.py:559
+msgid "No Users found."
+msgstr "Нема пронађених корисника."
+
+#: app/handlers/crud.py:632
+msgid "Request submitted. Our staff will evaluate and respond to your request."
+msgstr ""
+"Послали сте захтев. Наши запослени ће прегледати захтев и одговорити на "
+"њега."
+
+#: app/handlers/crud.py:663
+msgid "The user has been notified of the change to their request status."
+msgstr "Корисник је обавештен о промени статуса његовог захтева."
+
+#: app/handlers/drive.py:57 static/js/drive-picker.js:94
+msgid "File(s) successfully attached."
+msgstr "Датотеке су приложене."
+
+#: app/handlers/drive.py:115
+msgid "Sharing rules applied."
+msgstr "Правила за дељење су примењена."
+
+#: app/handlers/ticketing.py:50
+msgid ""
+"Your request for an account is pending. Once approved, you can access Ask"
+" an Expert"
+msgstr ""
+"Захтев за налог је на чекању. Када буде одобрен, можете да приступите "
+"опцији Питајте стручњака"
+
+#: app/handlers/ticketing.py:114 app/handlers/ticketing.py:725
+msgid "Ticket successfully saved."
+msgstr "Пријава је сачувана."
+
+#: app/handlers/ticketing.py:116
+msgid "Ticket successfully created."
+msgstr "Пријава је направљена."
+
+#: app/handlers/ticketing.py:194
+msgid "The specified object could not be found."
+msgstr "Наведени објекат није пронађен."
+
+#: app/handlers/ticketing.py:195
+msgid "The specified object is not attached to this ticket."
+msgstr "Наведени објекат није приложен у ову пријаву."
+
+#: app/handlers/ticketing.py:197
+msgid "The specified object was successfully removed."
+msgstr "Наведени објекат је уклоњен."
+
+#: app/handlers/ticketing.py:274
+#, python-format
+msgid "Could not add duplicate(s): %(duplicates)sduplicates, "
+msgstr "Додавање дупликата није успело: %(duplicates)sduplicates, "
+
+#: app/handlers/ticketing.py:296
+msgid "Request has been marked as closed & answered."
+msgstr "Захтев је означен као затворен захтев на који је одговорено."
+
+#: app/handlers/ticketing.py:311
+msgid "Request has been cancelled."
+msgstr "Захтев је отказан."
+
+#: app/handlers/ticketing.py:321
+#, python-format
+msgid "Ticket %s has been deleted"
+msgstr "Пријава %s је избрисана"
+
+#: app/handlers/ticketing.py:337
+msgid ""
+"An Administrator has been notified notified and will update the issue "
+"shortly."
+msgstr "Администратор је обавештен и убрзо ће ажурирати ово питање."
+
+#: app/handlers/ticketing.py:365
+msgid "Request payment status has been updated."
+msgstr "Статус плаћања захтева је ажуриран."
+
+#: app/handlers/ticketing.py:395
+msgid "The new charge was added to the request."
+msgstr "Нови износ за наплату је додат захтеву."
+
+#: app/handlers/ticketing.py:409
+msgid "Request has been re-opened."
+msgstr "Захтев је поново отворен."
+
+#: app/handlers/ticketing.py:432
+msgid "You have joined the ticket."
+msgstr "Придружили сте се пријави."
+
+#: app/handlers/ticketing.py:433
+msgid "You are already on the ticket."
+msgstr "Већ учествујете у овој пријави."
+
+#: app/handlers/ticketing.py:446
+msgid "You are no longer part of this ticket."
+msgstr "Више не учествујете у овој пријави."
+
+#: app/handlers/ticketing.py:567
+msgid "Charge successfully reconciled."
+msgstr "Трошкови су сведени."
+
+#: app/handlers/validation.py:30 app/handlers/validation.py:60
+msgid "This may be a duplicate"
+msgstr "Ово је можда дупликат"
+
+#: app/handlers/validation.py:32 app/handlers/validation.py:48
+#: app/handlers/validation.py:62
+msgid "No duplicates detected"
+msgstr "Нема откривених дупликата"
+
+#: app/handlers/validation.py:46
+msgid "First and last name match another person"
+msgstr "Име и презиме се подударају са другом особом"
+
+#: app/handlers/validation.py:93
+msgid ""
+"Your request may not be answered, as you have not provided much "
+"background. Please add more context."
+msgstr ""
+"Не можемо да одговоримо на захтев јер нисте послали довољно информација. "
+"Наведите додатан контекст."
+
+#: app/handlers/validation.py:96
+msgid "Your request is of an appropriate length."
+msgstr "Дужина захтева је одговарајућа."
+
+#: app/templates/401.html:4
+msgid "Permission Denied"
+msgstr "Дозвола је одбијена"
+
+#: app/templates/401.html:8
+msgid ""
+"You do not have permission to access this feature or content. If you "
+"believe this is an error, please contact an administrator."
+msgstr ""
+"Немате дозволу за приступ овој функцији или садржају. Ако сматрате да је "
+"у питању грешка, контактирајте администратора."
+
+#: app/templates/404.html:4
+msgid "Page Not Found"
+msgstr "Страница није пронађена"
+
+#: app/templates/404.html:8
+msgid ""
+"We're sorry, this page is not available. This error has been recorded "
+"will be investigated."
+msgstr ""
+"Жао нам је, ова страница није доступна. Забележили смо ову грешку и "
+"испитаћемо је."
+
+#: app/templates/500.html:4
+msgid "Application Error"
+msgstr "Грешка у апликацији"
+
+#: app/templates/500.html:8
+msgid ""
+"There was an error in the application. This error has been recorded and "
+"should be addressed soon."
+msgstr ""
+"Дошло је до грешке у апликацији. Забележили смо ову грешку и ускоро ћемо "
+"је испитати."
+
+#: app/templates/about_us.html:6
+msgid "About Us"
+msgstr "О нама"
+
+#: app/templates/about_us.html:10
+msgid ""
+"Investigative Dashboard (ID) has been developed by the Organized Crime "
+"and Corruption Reporting Project (OCCRP), the world’s leading cross "
+"border investigative reporting organization. OCCRP designed Investigative"
+" Dashboard as a transnational collaborative effort to help journalists "
+"and civil society researchers expose organized crime and corruption "
+"around the world. It hosts three core tools: a crowd-sourced database of "
+"information and documents on persons of interest and their business "
+"connections, a worldwide list of online databases and business "
+"registries, and a research desk where journalists can go for help in "
+"sourcing hard to find information."
+msgstr ""
+"Пројекат Investigative Dashboard (ID) је развијен у оквиру Пројекта за "
+"пријављивање организованог криминала и корупције (OCCRP), водеће светске "
+"међународне организације за истраживачко новинарство. OCCRP је дизајнирао"
+" пројекат Investigative Dashboard да би кроз међународну сарадњу помогао "
+"новинарима и истраживачима из грађанских друштава да открију организовани"
+" криминал и корупцију широм света. Он хостује три кључне алатке: базу "
+"података којој доприносе корисници и која садржи информације и "
+"документацију о важним особама и њиховим пословним контактима, светску "
+"листу онлајн база података и пословних регистара, као и истраживачки "
+"одсек у коме новинари могу да потраже помоћ да би пронашли изворе тешко "
+"доступних информација."
+
+#: app/templates/about_us.html:12
+msgid ""
+"With help from dozens of reporters and civic hackers, ID researchers have"
+" created the crowd-sourced database where connections of people and "
+"business can be mapped internationally. Through collecting public records"
+" worldwide in numerous languages and by scraping the business registries "
+"and official gazettes of countries such as Panama, British Virgin "
+"Islands, and Luxembourg among others we have made data searchable and "
+"hence truly transparent and useful. These resources are offered to the "
+"public as a searchable self-serve repository of data and documents."
+msgstr ""
+"Захваљујући десетинама репортера и цивилних хакера, истраживачи у оквиру "
+"пројекта ID прикупљају базу података којој доприносе корисници и која "
+"омогућава праћење веза људи и предузећа у целом свету. Прикупљањем јавне "
+"евиденције у целом свету на различитим језицима и уврштавањем информација"
+" из пословних регистара и званичних службених листова у земљама као што "
+"су, између осталих, Панама, Британска Девичанска Острва и Луксембург, "
+"омогућили смо претраживање података и учинили их веома транспарентним и "
+"корисним. Нудимо ове ресурсе јавности у виду самоуслужне и претраживе "
+"базе података и документације."
+
+#: app/templates/about_us.html:14
+msgid ""
+"The Investigative Dashboard also links to more than 400 online databases "
+"in 120 jurisdictions where you can search for information on persons and "
+"businesses of interest."
+msgstr ""
+"Пројекат Investigative Dashboard је такође повезан са 400 онлајн база "
+"података у 120 надлежности у којима можете да тражите информације о "
+"важним особама и предузећима."
+
+#: app/templates/about_us.html:16
+msgid ""
+"Above and beyond the databases available on the Dashboard, the research "
+"desk provides access to a global network of expert researchers. "
+"Journalists and researchers working on organized crime and corruption "
+"topics who seek information and documents beyond their own borders and "
+"resources are invited to request the expertise of a network of "
+"information professionals. These professionals can access external "
+"databases and official filings for evidence of corporate ownership and "
+"property holdings that cross borders. For some journalists, these "
+"services are provided pro bono."
+msgstr ""
+"Поред база података доступних у оквиру пројекта Dashboard, истраживачки "
+"одсек такође омогућава приступ глобалној мрежи стручних истраживача. "
+"Новинари и истраживачи који се баве темама организованог криминала и "
+"корупције и који траже информације и документацију изван својих граница и"
+" доступних ресурса могу да захтевају стручну помоћ од мреже стручњака "
+"који се баве проналажењем оваквих информација. Ти стручњаци могу да "
+"приступају спољним базама података и званичним резултатима истраживања да"
+" би пронашли доказе о власништву у корпорацијама и имовинском стању изван"
+" граница своје земље. Одређени новинари добијају ове услуге бесплатно, "
+"као опште добро."
+
+#: app/templates/about_us.html:18
+msgid ""
+"Journalists have used the Investigative Dashboard to work on stories that"
+" have won more than a dozen international awards, led to indictments, "
+"arrests and seizures, forced the resignation of heads of state, and "
+"exposed the activities of organized crime."
+msgstr ""
+"Новинари користе Investigative Dashboard за рад на причама попут оних "
+"које су већ освојиле више од десет међународних награда, довеле до "
+"подизања оптужница, хапшења и заплена, приморале шефове држава на оставке"
+" и откриле организоване криминалне активности."
+
+#: app/templates/about_us.html:36
+msgid "Supporters"
+msgstr "Подршка"
+
+#: app/templates/about_us.html:37
+msgid ""
+"The Investigative Dashboard has been developed in collaboration with <a "
+"href=\"http://www.google.com/ideas/\">Google Ideas</a>. Core support for "
+"the project is generously provided by the Open Society Foundations with "
+"additional assistance from USAID."
+msgstr ""
+"Пројекат Investigative Dashboard је развијен у сарадњи са пројектом <a "
+"href=\"http://www.google.com/ideas/\">Google Ideas</a>. Највећу подршку "
+"пројекту великодушно пружа Фонд за отворено друштво, а додатну помоћ "
+"пружа USAID."
+
+#: app/templates/about_us.html:39
+msgid "Partners"
+msgstr "Партнери"
+
+#: app/templates/about_us.html:40
+msgid ""
+"The Research Desk is managed by OCCRP in co-operation with four partner "
+"Centers - African Network of Centers for Investigative Reporting (ANCIR),"
+" the Arab Reporters for Investigative Journalism (ARIJ), the "
+"International Center for Journalists, and Connectas in the Americas."
+msgstr ""
+"Истраживачким одсеком управља OCCRP у сарадњи са четири партнерска центра"
+" – Афричка мрежа центара за истраживачко новинарство (ANCIR), Арапски "
+"репортери за истраживачко новинарство (ARIJ), Међународни центар за "
+"новинаре (ICFJ) и организација Connectas in the Americas."
+
+#: app/templates/about_us.html:42
+msgid "ID History"
+msgstr "Историја пројекта ID"
+
+#: app/templates/about_us.html:43
+msgid ""
+"The Investigative Dashboard was developed by Paul Cristian Radu (OCCRP) "
+"and Justin Arenstein (ANCIR) while they both were in residence at "
+"Stanford University as Knight Fellows. The John S. Knight Fellowships for"
+" Professional Journalists made the dashboard possible by providing access"
+" to the know-how of fellow journalists and of experts at Stanford "
+"University and in Silicon Valley."
+msgstr ""
+"Пројекат Investigative Dashboard развили су Пол Кристијан Раду (OCCRP) и "
+"Џастин Аренстејн (ANCIR) док су похађали Универзитет Станфорд у оквиру "
+"програма Knight Fellowship. Програм John S. Knight Fellowships for "
+"Professional Journalists је омогућио пројекат Dashboard тако што им је "
+"пружио приступ практичном знању новинара и стручњака са Универзитета "
+"Станфорд и из Силицијумске долине."
+
+#: app/templates/about_us.html:45
+msgid ""
+"This first iteration of the ID website, launched in 2010, shared detailed"
+" methodologies, resources, and links for journalists to track money, "
+"shareholders, and company ownership across international borders. It also"
+" offered video tutorials and other tools to help journalists navigate "
+"rapidly evolving data-sources."
+msgstr ""
+"На првој верзији веб-сајта ID, покренутој 2010, дељене су детаљне "
+"методологије, ресурси и линкови за новинаре који испитују новчано стање, "
+"акционаре и власништво над компанијама у целом свету. Овај сајт је нудио "
+"и видео водиче и друге алатке осмишљене да помогну новинарима да "
+"претражују све бројније изворе података."
+
+#: app/templates/about_us.html:47
+msgid "Advisory Committee"
+msgstr "Саветодавни комитет"
+
+#: app/templates/about_us.html:105
+msgid "Acknowledgements"
+msgstr "Захвалност"
+
+#: app/templates/about_us.html:107
+msgid ""
+"The Investigative Dashboard is a collaborative project and valuable "
+"information was added by many investigative journalists around the world."
+" Individual members of the Global Investigative Journalism Network in "
+"particular contributed much of the information, explaining how to access "
+"company records in their home countries.\n"
+"\t    "
+msgstr ""
+"Investigative Dashboard је пројекат са много сарадника и бројни новинари "
+"истраживачи широм света пружили су допринос у виду важних информација. "
+"Појединачни чланови Глобалне мреже за истраживачко новинарство су "
+"нарочито заслужни јер су дали велики допринос у виду информација које "
+"објашњавају како корисници могу да приступе евиденцијама компанија у "
+"својим земљама.\n"
+"\t    "
+
+#: app/templates/about_us.html:110
+msgid ""
+"Valuable information was added by many investigative journalists around "
+"the world."
+msgstr ""
+"Бројни новинари истраживачи широм света пружили су допринос у виду важних"
+" информација."
+
+#: app/templates/admin_base.html:7 app/templates/tickets/request_base.html:75
+msgid "Manage"
+msgstr "Управљање"
+
+#: app/templates/admin_base.html:18 app/templates/crud/relationship/list.html:2
+msgid "Relationships"
+msgstr "Везе"
+
+#: app/templates/admin_base.html:22 app/templates/crud/expandofield/list.html:2
+msgid "Extra Fields"
+msgstr "Додатна поља"
+
+#: app/templates/admin_base.html:25
+msgid "External Databases"
+msgstr "Спољне базе података"
+
+#: app/templates/admin_base.html:28
+#: app/templates/crud/accountrequest/list.html:2
+msgid "Account Requests"
+msgstr "Захтеви за налог"
+
+#: app/templates/admin_base.html:31 app/templates/crud/profile/list.html:2
+msgid "User Profiles"
+msgstr "Кориснички профили"
+
+#: app/templates/admin_base.html:34
+msgid "Statistics"
+msgstr "Статистички подаци"
+
+#: app/templates/base.html:38 app/templates/search/search_base.html:6
+#: app/templates/search/search_base.html:21
+#: app/templates/search/search_documents.html:6
+#: app/templates/search/search_documents.html:13
+#: app/templates/search/search_entities.html:7
+#: app/templates/search/search_entities.html:15
+msgid "Search"
+msgstr "Претражи"
+
+#: app/templates/base.html:41 app/templates/external_databases.html:12
+msgid "Business Registries"
+msgstr "Пословни регистри"
+
+#: app/templates/base.html:45
+msgid "Expert Help"
+msgstr "Стручна помоћ"
+
+#: app/templates/base.html:61
+msgid "Admin"
+msgstr "Администратор"
+
+#: app/templates/base.html:64
+msgid "Log out"
+msgstr "Одјави ме"
+
+#: app/templates/base.html:68 app/templates/request_account.html:6
+msgid "Request Account"
+msgstr "Захтев за налог"
+
+#: app/templates/base.html:69
+msgid "Log In"
+msgstr "Пријави ме"
+
+#: app/templates/base.html:124
+msgid "&copy; 2013 - OCCRP. All rights reserved."
+msgstr "&copy; 2013. OCCRP. Сва права задржана."
+
+#: app/templates/base.html:124
+msgid "About this site"
+msgstr "О овом сајту"
+
+#: app/templates/company.html:8 app/templates/request_account.html:13
+#: app/templates/accountrequest/volunteer_account.html:13
+#: app/templates/crud/accountrequest/edit.html:20
+#: app/templates/tickets/manage.html:27 app/templates/tickets/request.html:34
+#: app/templates/tickets/request_details.html:379
+#: app/templates/tickets/request_details.html:380
+msgid "Submit"
+msgstr "Пошаљи"
+
+#: app/templates/drive_success.html:1
+msgid "Successfully connected to Google Drive."
+msgstr "Повезани сте са Google диском."
+
+#: app/templates/drive_success.html:3
+msgid "Current user name:"
+msgstr "Име актуелног корисника:"
+
+#: app/templates/drive_success.html:4
+msgid "Root folder ID:"
+msgstr "ИД основног директоријума:"
+
+#: app/templates/drive_success.html:5
+msgid "Total quota (bytes):"
+msgstr "Укупна квота (бајтови):"
+
+#: app/templates/drive_success.html:6
+msgid "Used quota (bytes):"
+msgstr "Искоришћена квота (бајтови):"
+
+#: app/templates/drive_success.html:7
+msgid "Permission ID:"
+msgstr "ИД дозволе:"
+
+#: app/templates/external_databases.html:14
+msgid ""
+"Here you will find links to more than 450 online databases across 120 "
+"jurisdictions where you can get information on the shareholders, "
+"directors and the financial reports of companies worldwide. They are "
+"organized by country. Many are free of charge and for some you must "
+"register. Databases marked with a \"$\" require a fee.  Not all are "
+"available in English, see the notes column for further details.\t"
+msgstr ""
+"Овде ћете пронаћи линкове до више од 450 онлајн база података у 120 "
+"надлежности у којима можете да пронађете информације о акционарима, "
+"директорима и финансијским извештајима компанија из целог света. "
+"Организовали смо информације по земљама. Многе информације су бесплатне, "
+"али неке захтевају регистрацију. За базе података са ознаком „$“ морате "
+"да платите накнаду. Неке информације нису доступне на енглеском. За више "
+"детаља погледајте колону са напоменама.\t"
+
+#: app/templates/external_databases.html:44
+msgid "Documentation"
+msgstr "Документација"
+
+#: app/templates/external_databases.html:45
+msgid "Video Tutorial"
+msgstr "Видео водич"
+
+#: app/templates/external_databases.html:58
+msgid "Didn't find what you were looking for?"
+msgstr "Нисте пронашли оно што тражите?"
+
+#: app/templates/external_databases.html:60
+msgid "Request manual help from our researchers."
+msgstr "Захтевајте директну помоћ од истраживача."
+
+#: app/templates/oauth_success.html:14
+msgid ""
+"Google Drive successfully authorized. Please close this dialog and attach"
+" your files again."
+msgstr ""
+"Добили сте овлашћење за Google диск. Затворите овај дијалог и поново "
+"приложите датотеке."
+
+#: app/templates/pre_login.html:6 app/templates/pre_login.html:21
+msgid "Sign in with Google"
+msgstr "Пријави ме на Google"
+
+#: app/templates/pre_login.html:10
+msgid ""
+"In order to log in or request an account on Investigative Dashboard you "
+"must have a Google account. We use your Google account to verify your "
+"identity and obtain a valid email address from you."
+msgstr ""
+"Да бисте се пријавили или послали захтев за Investigative Dashboard "
+"налог, морате да имате Google налог. Користимо Google налог да бисмо "
+"верификовали ваш идентитет и добили важећу адресу е-поште од вас."
+
+#: app/templates/pre_login.html:15
+msgid ""
+"If you do not have a Google account, you can sign up for one on the next "
+"page by clicking \"Sign Up\" in the top right corner."
+msgstr ""
+"Ако немате Google налог, можете да се региструјете за њега на следећој "
+"страници кликом на „Региструј ме“ у горњем десном углу."
+
+#: app/templates/request_account.html:9
+msgid ""
+"In order to make information requests through Investigative Dashboard, "
+"you must have an account. Please enter your information below and one of "
+"our staff will evaluate and respond to your request."
+msgstr ""
+"Да бисте могли да шаљете захтев за информације у оквиру пројекта "
+"Investigative Dashboard, морате да имате налог. Унесите информације у "
+"наставку и неко од наших запослених ће прегледати захтев и одговорити на "
+"њега."
+
+#: app/templates/request_account_home.html:5
+msgid "Which type of account would you like to apply for?"
+msgstr "За који тип налога желите да се пријавите?"
+
+#: app/templates/request_account_home.html:15
+msgid "Information Requester"
+msgstr "Подносилац захтева за информације"
+
+#: app/templates/request_account_home.html:16
+msgid ""
+"Take advantage of our database of knowledge to find out more information "
+"about companies, individuals, or the relationships between them."
+msgstr ""
+"Искористите предности наше базе података и сазнајте више о компанијама, "
+"појединцима или њиховим односима."
+
+#: app/templates/request_account_home.html:18
+msgid "Be a Requester"
+msgstr "Захтевајте информације"
+
+#: app/templates/request_account_home.html:25
+msgid ""
+"We have available public requests that need volunteers. Use your wealth "
+"of information to help others find answers."
+msgstr ""
+"Имамо јавно доступне захтеве и потребни су нам волонтери. Искористите "
+"своје знање да бисте помогли другима да пронађу одговоре."
+
+#: app/templates/request_account_home.html:27
+msgid "Be a Volunteer"
+msgstr "Постаните волонтер"
+
+#: app/templates/splash.html:9
+msgid ""
+"<span class=\"primary-highlight\">Investigative Dashboard</span> helps "
+"investigators expose illicit ties that cross borders."
+msgstr ""
+"<span class=\"primary-highlight\">Investigative Dashboard</span> помаже "
+"истраживачима да открију нелегалне везе које прелазе границе."
+
+#: app/templates/splash.html:22
+msgid "Search for a company or person of interest."
+msgstr "Потражите компанију или особу која вас занима."
+
+#: app/templates/splash.html:23
+msgid ""
+"We have scraped national business records from Panama, Luxembourg, "
+"Switzerland and many other countries"
+msgstr ""
+"Уврстили смо информације из националних пословних евиденција Панаме, "
+"Луксембурга, Швајцарске и многих других земаља"
+
+#: app/templates/splash.html:25
+msgid "Start Searching"
+msgstr "Започните претрагу"
+
+#: app/templates/splash.html:31
+msgid "If you need more data, visit recommended databases"
+msgstr "Ако вам је потребно више података, посетите препоручене базе података"
+
+#: app/templates/splash.html:32
+msgid "We have assembled a directory of over 300 local databases that might help"
+msgstr ""
+"Саставили смо каталог од преко 300 локалних база података које могу да "
+"вам помогну"
+
+#: app/templates/splash.html:34
+msgid "Visit Databases"
+msgstr "Посетите базе података"
+
+#: app/templates/splash.html:40
+msgid "If you need help, request expert assistance."
+msgstr "Ако вам је потребна помоћ, потражите је од стручњака."
+
+#: app/templates/splash.html:41
+msgid ""
+"We understand investigations are sensitive and we take privacy very "
+"seriously. Requests are only seen by our full-time experts and, if you "
+"are willing, by vetted volunteers"
+msgstr ""
+"Разумемо да су истраге осетљиве и схватамо приватност веома озбиљно. "
+"Захтеве прегледају искључиво стално запослени стручњаци и, ако то желите,"
+" поуздани волонтери"
+
+#: app/templates/splash.html:43
+msgid "Ask an Expert"
+msgstr "Питајте стручњака"
+
+#: app/templates/accountrequest/volunteer_account.html:6
+msgid "Become a Volunteer!"
+msgstr "Постаните волонтер!"
+
+#: app/templates/accountrequest/volunteer_account.html:9
+msgid ""
+"If you'd like to volunteer to track down requests, you need to have an "
+"account. Please enter your information below and one of our staff will "
+"review, and respond to your request."
+msgstr ""
+"Ако желите да постанете волонтер и пратите захтеве, морате да имате "
+"налог. Унесите информације у наставку и неко од наших запослених ће "
+"прегледати захтев и одговорити на њега."
+
+#: app/templates/crud/delete.html:4
+msgid "Confirm Deletion"
+msgstr "Потврдите брисање"
+
+#: app/templates/crud/delete.html:6
+msgid "Cannot delete this entity."
+msgstr "Не можете да избришете овај ентитет."
+
+#: app/templates/crud/delete_base.html:9
+#, python-format
+msgid ""
+"Are you sure you want to delete %(object_name)s? You will not be able to "
+"undo this action."
+msgstr ""
+"Желите ли стварно да избришете %(object_name)s? Нећете моћи да опозовете "
+"ову радњу."
+
+#: app/templates/crud/delete_base.html:14
+msgid "Yes, I am sure."
+msgstr "Да, желим."
+
+#: app/templates/crud/delete_base.html:18
+#, python-format
+msgid "%(object_name)s is attached to the following relationships:"
+msgstr "%(object_name)s је приложен у следеће везе:"
+
+#: app/templates/crud/delete_base.html:22
+msgid "relationship"
+msgstr "веза"
+
+#: app/templates/crud/entity_details.html:52
+msgid "Close"
+msgstr "Затвори"
+
+#: app/templates/crud/item_base.html:11
+msgid "Delete"
+msgstr "Избриши"
+
+#: app/templates/crud/item_base.html:20 app/templates/crud/item_base.html:48
+#: app/templates/crud/item_base.html:49 app/templates/crud/item_base.html:50
+#: app/templates/crud/item_base.html:51 app/templates/crud/item_base.html:54
+#: app/templates/tickets/request_details.html:381
+#: app/templates/tickets/request_details.html:384
+#: app/templates/tickets/request_details.html:385
+msgid "Save"
+msgstr "Сачувај"
+
+#: app/templates/crud/item_base.html:29
+#: app/templates/tickets/request_details.html:266
+msgid "Sharing"
+msgstr "Дељење"
+
+#: app/templates/crud/item_base.html:48 app/templates/crud/item_base.html:49
+#: app/templates/crud/item_base.html:50 app/templates/crud/item_base.html:51
+msgid "Create Relationship"
+msgstr "Направи везу"
+
+#: app/templates/crud/item_base.html:54
+#: app/templates/tickets/request_details.html:384
+msgid "Share Attached Files"
+msgstr "Дели приложене датотеке"
+
+#: app/templates/crud/list_base.html:7
+#: app/templates/tickets/request_details.html:382
+#: app/templates/tickets/request_details.html:383
+msgid "Add"
+msgstr "Додај"
+
+#: app/templates/crud/list_base.html:24
+#: app/templates/tickets/request_admin_base.html:20
+#: app/templates/tickets/request_admin_base.html:23
+#: app/templates/tickets/request_charges_base.html:74
+#: app/templates/tickets/request_charges_base.html:77
+msgid "Prev"
+msgstr "Претходно"
+
+#: app/templates/crud/list_base.html:33
+#: app/templates/tickets/request_admin_base.html:29
+#: app/templates/tickets/request_admin_base.html:32
+#: app/templates/tickets/request_charges_base.html:83
+#: app/templates/tickets/request_charges_base.html:86
+msgid "Next"
+msgstr "Следеће"
+
+#: app/templates/crud/accountrequest/add.html:2
+msgid "New Account Request"
+msgstr "Нови захтев за налог"
+
+#: app/templates/crud/accountrequest/edit.html:4
+msgid "Edit Volunteer Request"
+msgstr "Измени захтев волонтера"
+
+#: app/templates/crud/accountrequest/edit.html:6
+msgid "Edit Account Request"
+msgstr "Измени захтев за налог"
+
+#: app/templates/crud/accountrequest/edit.html:13
+#: app/templates/crud/accountrequest/edit.html:20
+msgid "Set Permissions"
+msgstr "Подеси дозволе"
+
+#: app/templates/crud/company/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:9
+msgid "New Company"
+msgstr "Нова компанија"
+
+#: app/templates/crud/company/edit.html:2
+msgid "Edit Company"
+msgstr "Измени компанију"
+
+#: app/templates/crud/company/edit.html:5
+msgid "Registered Offices"
+msgstr "Регистроване канцеларије"
+
+#: app/templates/crud/company/edit.html:11
+#: app/templates/crud/company/edit.html:13
+#: app/templates/crud/relationship/table_mixin.html:162
+#: app/templates/crud/relationship/table_mixin.html:164
+msgid "Entity"
+msgstr "Ентитет"
+
+#: app/templates/crud/expandofield/add.html:2
+msgid "New Extra Field"
+msgstr "Ново додатно поље"
+
+#: app/templates/crud/expandofield/edit.html:2
+msgid "Edit Extra Field"
+msgstr "Измени додатно поље"
+
+#: app/templates/crud/externaldb/add.html:2
+msgid "New Database"
+msgstr "Нова база података"
+
+#: app/templates/crud/externaldb/edit.html:2
+msgid "Edit External Database"
+msgstr "Измени спољну базу података"
+
+#: app/templates/crud/externaldb/list.html:2
+msgid "Databases"
+msgstr "Базе података"
+
+#: app/templates/crud/location/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:11
+msgid "New Location"
+msgstr "Нова локација"
+
+#: app/templates/crud/location/edit.html:2
+msgid "Edit Location"
+msgstr "Измени локацију"
+
+#: app/templates/crud/person/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:10
+msgid "New Person"
+msgstr "Нова особа"
+
+#: app/templates/crud/person/edit.html:2
+msgid "Edit Person"
+msgstr "Измени особу"
+
+#: app/templates/crud/profile/edit.html:2
+msgid "Edit User Profile"
+msgstr "Измени кориснички профил"
+
+#: app/templates/crud/profile/edit.html:7
+msgid "Account Request for this profile"
+msgstr "Захтев за налог за овај профил"
+
+#: app/templates/crud/profile/edit.html:18
+msgid "Account Request for this profile: "
+msgstr "Захтев за налог за овај профил: "
+
+#: app/templates/crud/relationship/add.html:2
+msgid "New Relationship"
+msgstr "Нова веза"
+
+#: app/templates/crud/relationship/edit.html:2
+#: app/templates/crud/relationship/item.html:2
+msgid "Edit Relationship"
+msgstr "Измени везу"
+
+#: app/templates/crud/relationship/table_mixin.html:6
+msgid "Add New "
+msgstr "Додај ново "
+
+#: app/templates/crud/relationship/table_mixin.html:12
+msgid "Add Existing "
+msgstr "Додај постојеће "
+
+#: app/templates/crud/relationship/table_mixin.html:49
+msgid "Directors"
+msgstr "Директори"
+
+#: app/templates/crud/relationship/table_mixin.html:80
+msgid "Shareholders"
+msgstr "Акционари"
+
+#: app/templates/crud/relationship/table_mixin.html:125
+msgid "Create"
+msgstr "Направи"
+
+#: app/templates/crud/relationship/table_mixin.html:131
+msgid "With New Company"
+msgstr "Са новом компанијом"
+
+#: app/templates/crud/relationship/table_mixin.html:136
+msgid "With New Person"
+msgstr "Са новом особом"
+
+#: app/templates/crud/relationship/table_mixin.html:141
+msgid "With New Location"
+msgstr "Са новом локацијом"
+
+#: app/templates/crud/relationship/table_mixin.html:146
+msgid "With Existing Entity"
+msgstr "Са постојећим ентитетом"
+
+#: app/templates/crud/relationship/table_mixin.html:154
+msgid "All Relationships"
+msgstr "Све везе"
+
+#: app/templates/crud/relationship/table_mixin.html:178
+#, python-format
+msgid "is a %(type)s of"
+msgstr "је тип %(type)s од"
+
+#: app/templates/macros/forms.html:28
+msgid "Select File"
+msgstr "Изаберите датотеку"
+
+#: app/templates/macros/forms.html:29
+msgid "Change"
+msgstr "Промени"
+
+#: app/templates/macros/forms.html:32
+msgid "Remove"
+msgstr "Уклони"
+
+#: app/templates/macros/forms.html:46
+#: app/templates/tickets/request_details.html:42
+msgid "Attach Files"
+msgstr "Приложи датотеке"
+
+#: app/templates/mail/mail_base.html:36
+msgid "This message is automatically generated by "
+msgstr "Ову поруку је аутоматски генерисао "
+
+#: app/templates/mail/mail_base.html:36
+msgid "OCCRP Investigative Dashboard"
+msgstr "OCCRP Investigative Dashboard"
+
+#: app/templates/mail/mail_base.html:37
+msgid "If you think it was sent incorrectly, please contact an "
+msgstr "Ако сматрате да је послата грешком, контактирајте "
+
+#: app/templates/mail/mail_base.html:37
+msgid "administrator"
+msgstr "администратора"
+
+#: app/templates/mail/mail_base.html:38
+msgid "For more information on "
+msgstr "За више информација у вези са "
+
+#: app/templates/mail/mail_base.html:39
+msgid "visit"
+msgstr "посетите"
+
+#: app/templates/mail/mail_simple.html:16
+msgid "The Research Desk"
+msgstr "Истраживачки одсек"
+
+#: app/templates/mail/mail_simple.html:16
+msgid "at the Investigative Dashboard"
+msgstr "у оквиру пројекта Investigative Dashboard"
+
+#: app/templates/mail/ticket_update.html:8
+msgid "your request. "
+msgstr "захтевом "
+
+#: app/templates/mail/ticket_update.html:31
+msgid "View on Site"
+msgstr "Прикажи на сајту"
+
+#: app/templates/mail/ticket_update.html:32
+msgid "Add Comment"
+msgstr "Додајте коментар"
+
+#: app/templates/mail/ticket_update.html:33
+msgid "or reply to this email directly."
+msgstr "или одговорите на ову поруку е-поште директно."
+
+#: app/templates/mail/account_request/approved.html:4
+msgid "Your Account Request was approved"
+msgstr "Одобрили смо захтев за налог"
+
+#: app/templates/mail/account_request/approved.html:8
+#: app/templates/mail/account_request/received.html:8
+#: app/templates/mail/account_request/rejected.html:8
+#: app/templates/mail/user_profile/requester_type_update.html:8
+#, python-format
+msgid "Dear %(name)s,"
+msgstr "Здраво %(name)s,"
+
+#: app/templates/mail/account_request/approved.html:9
+msgid ""
+"Your ID registration is complete! Just login in with your Gmail account "
+"that you used to register to get started."
+msgstr ""
+"Регистрација за ID је довршена! Да бисте започели, само се пријавите "
+"помоћу Gmail налога помоћу кога сте се регистровали."
+
+#: app/templates/mail/account_request/approved.html:10
+#, python-format
+msgid "Please be advised your account type is: %(account_type)s"
+msgstr "Имајте у виду да је тип вашег налога: %(account_type)s"
+
+#: app/templates/mail/account_request/approved.html:11
+msgid "Click here to submit a research request."
+msgstr "Кликните овде да бисте послали захтев за истраживање."
+
+#: app/templates/mail/account_request/approved.html:12
+#: app/templates/mail/user_profile/requester_type_update.html:10
+msgid ""
+"If you do not think this is the correct account type for you, please "
+"contact the research desk:"
+msgstr ""
+"Ако сматрате да вам овај тип налога не одговара, контактирајте "
+"истраживачки одсек:"
+
+#: app/templates/mail/account_request/approved.html:13
+msgid "Good luck with your investigation."
+msgstr "Желимо вам успешно истраживање."
+
+#: app/templates/mail/account_request/received.html:9
+msgid ""
+"Thank you for registering with the Investigative Dashboard. We are "
+"reviewing your information and as soon as your registration is complete "
+"you can sign into the Research Desk with the Google account that you used"
+" to register. In the meantime, get started now by searching the ID crowd-"
+"sourced and external databases. We will be in touch shortly."
+msgstr ""
+"Хвала вам што сте се регистровали за Investigative Dashboard. Прегледамо "
+"информације и чим довршимо регистрацију, моћи ћете да се пријавите у "
+"Истраживачки одсек помоћу Google налога који сте користили за "
+"регистрацију. У међувремену, одмах почните да истражујете корисничке и "
+"спољне базе података за ID. Ускоро ћемо вас контактирати."
+
+#: app/templates/mail/account_request/received_admin.html:8
+msgid "A new account request has been submitted! Below are the details:"
+msgstr "Послат је нов захтев за налог! Детаљи су у наставку:"
+
+#: app/templates/mail/account_request/received_admin.html:15
+msgid "Click here to review and approve or reject."
+msgstr "Кликните овде да бисте прегледали и одобрили или одбили захтев."
+
+#: app/templates/mail/account_request/rejected.html:4
+msgid "Your Account Request was rejected"
+msgstr "Захтев за налог је одбијен"
+
+#: app/templates/mail/account_request/rejected.html:9
+msgid ""
+"I am sorry but we could not register you at this time. The head of the "
+"research desk will contact you with further details."
+msgstr ""
+"Жао нам је, тренутно не можемо да вас региструјемо. Шеф истраживачког "
+"одсека ће вас контактирати и пружити вам више информација."
+
+#: app/templates/mail/account_request/rejected.html:10
+#: app/templates/mail/user_profile/requester_type_update.html:11
+msgid "Thank you,"
+msgstr "Хвала вам,"
+
+#: app/templates/mail/user_profile/requester_type_update.html:4
+msgid "Your Account Type has changed"
+msgstr "Тип налога је промењен"
+
+#: app/templates/mail/user_profile/requester_type_update.html:9
+#, python-format
+msgid ""
+"Please be advised your account status has changed. Your new account type "
+"is: %(account_type)s"
+msgstr ""
+"Имајте у виду да је статус налога промењен. Нови тип налога је: "
+"%(account_type)s"
+
+#: app/templates/modals/form_basic.html:3
+msgid "Not Allowed"
+msgstr "Није дозвољено"
+
+#: app/templates/search/search_base.html:7
+msgid "Results "
+msgstr "Резултати "
+
+#: app/templates/search/search_base.html:16
+msgid "Search terms"
+msgstr "Термини за претрагу"
+
+#: app/templates/search/search_base.html:31
+msgid "Navigate Results "
+msgstr "Прегледајте резултате "
+
+#: app/templates/search/search_base.html:32
+msgid "< Previous"
+msgstr "< Претходно"
+
+#: app/templates/search/search_base.html:33
+msgid "Next >"
+msgstr "Следеће >"
+
+#: app/templates/search/search_base.html:41
+#, python-format
+msgid ""
+"Didn't find what you were looking for? Try one of our <a "
+"href=\"%(url)s\">business registries</a>."
+msgstr ""
+"Нисте пронашли оно што тражите? Покушајте у неком од <a "
+"href=\"%(url)s\">пословних регистара</a>."
+
+#: app/templates/search/search_combined.html:16
+#: app/templates/search/search_documents.html:38
+#: app/templates/search/search_entities.html:71
+msgid "No search results."
+msgstr "Нема пронађених резултата претраге."
+
+#: app/templates/search/search_combined.html:20
+msgid "To search, type your query into the search box above."
+msgstr "За претрагу унесите упит у оквир за претрагу изнад."
+
+#: app/templates/search/search_documents.html:8
+#: app/templates/search/search_entities.html:9
+msgid "Enter your terms..."
+msgstr "Унесите термине..."
+
+#: app/templates/search/search_entities.html:22
+#, python-format
+msgid "%(num_results)s result found."
+msgid_plural "%(num_results)s results found."
+msgstr[0] "Пронађено је %(num_results)s резултата."
+msgstr[1] "Пронађен је %(num_results)s резултат."
+msgstr[2] "Пронађена су %(num_results)s резултата."
+msgstr[3] "Пронађена су %(num_results)s резултата."
+msgstr[4] "Пронађена су %(num_results)s резултата."
+msgstr[5] "Пронађено је %(num_results)s резултата."
+
+#: app/templates/tickets/manage.html:5
+msgid "Manage Information Request"
+msgstr "Управљање захтевом за информације"
+
+#: app/templates/tickets/public_list.html:5
+#: app/templates/tickets/request_base.html:67
+msgid "Public Requests"
+msgstr "Јавни захтеви"
+
+#: app/templates/tickets/public_list.html:12
+#: app/templates/tickets/responds_list.html:12
+msgid "No requests found."
+msgstr "Нема пронађених резултата."
+
+#: app/templates/tickets/request.html:5
+#: app/templates/tickets/request_details.html:162
+msgid "Request Information"
+msgstr "Захтевајте информације"
+
+#: app/templates/tickets/request.html:10
+msgid ""
+"Your request will be routed to our professional researchers and "
+"volunteers, who will try to help."
+msgstr ""
+"Проследићемо захтев стручним истраживачима и волонтерима, који ће "
+"покушати да вам помогну."
+
+#: app/templates/tickets/request_admin_base.html:42
+msgid "No tickets found."
+msgstr "Нема пронађених пријава."
+
+#: app/templates/tickets/request_base.html:6
+msgid "Summary"
+msgstr "Резиме"
+
+#: app/templates/tickets/request_base.html:10
+#: app/templates/tickets/request_charges_base.html:26
+#: app/templates/tickets/request_details.html:279
+msgid "Actions"
+msgstr "Радње"
+
+#: app/templates/tickets/request_base.html:25
+msgid " Unassigned "
+msgstr " Недодељено "
+
+#: app/templates/tickets/request_base.html:34
+msgid "No Responder"
+msgstr "Нема особе задужене за одговор"
+
+#: app/templates/tickets/request_base.html:38
+msgid "Completed "
+msgstr "Довршено је "
+
+#: app/templates/tickets/request_base.html:40
+msgid "Cancelled "
+msgstr "Отказано је "
+
+#: app/templates/tickets/request_base.html:62
+msgid "Requests"
+msgstr "Захтеви"
+
+#: app/templates/tickets/request_base.html:64
+#: app/templates/tickets/request_list.html:9
+msgid "My Requests"
+msgstr "Моји захтеви"
+
+#: app/templates/tickets/request_base.html:71
+#: app/templates/tickets/responds_list.html:5
+msgid "Assigned Requests"
+msgstr "Додељени захтеви"
+
+#: app/templates/tickets/request_base.html:77
+#: app/templates/tickets/admin/admin_unassigned.html:4
+msgid "Unassigned Tickets"
+msgstr "Недодељене пријаве"
+
+#: app/templates/tickets/request_base.html:80
+msgid "Upcoming Deadlines"
+msgstr "Предстојећи крајњи рокови"
+
+#: app/templates/tickets/request_base.html:83
+msgid "Flagged Tickets"
+msgstr "Означене пријаве"
+
+#: app/templates/tickets/request_base.html:86
+msgid "Closed Tickets"
+msgstr "Затворене пријаве"
+
+#: app/templates/tickets/request_base.html:88
+msgid "Billing"
+msgstr "Плаћање"
+
+#: app/templates/tickets/request_base.html:90
+msgid "Customer Report"
+msgstr "Кориснички извештај"
+
+#: app/templates/tickets/request_base.html:93
+#: app/templates/tickets/admin/admin_charges_outstanding.html:3
+msgid "Outstanding Charges"
+msgstr "Преостало задужење"
+
+#: app/templates/tickets/request_charges_base.html:22
+msgid "Cost"
+msgstr "Цена"
+
+#: app/templates/tickets/request_charges_base.html:23
+msgid "Converted"
+msgstr "Конвертовано"
+
+#: app/templates/tickets/request_charges_base.html:24
+msgid "Reconciled"
+msgstr "Сведено"
+
+#: app/templates/tickets/request_charges_base.html:25
+msgid "Created"
+msgstr "Направљено"
+
+#: app/templates/tickets/request_charges_base.html:96
+msgid "No charges found."
+msgstr "Нема пронађених трошкова."
+
+#: app/templates/tickets/request_charges_base.html:103
+msgid "Reconcile Charge"
+msgstr "Сведи трошкове"
+
+#: app/templates/tickets/request_charges_base.html:103
+msgid "Reconcile"
+msgstr "Сведи"
+
+#: app/templates/tickets/request_details.html:21
+msgid "Created on "
+msgstr "Направљено је "
+
+#: app/templates/tickets/request_details.html:45
+#: app/templates/tickets/request_details.html:382
+msgid "Attach Entities"
+msgstr "Приложи ентитете"
+
+#: app/templates/tickets/request_details.html:52
+msgid "Watch"
+msgstr "Прикажи"
+
+#: app/templates/tickets/request_details.html:57
+msgid "Leave"
+msgstr "Изађи"
+
+#: app/templates/tickets/request_details.html:64
+#: app/templates/tickets/request_details.html:380
+msgid "Close Request"
+msgstr "Затвори захтев"
+
+#: app/templates/tickets/request_details.html:71
+#: app/templates/tickets/request_details.html:377
+msgid "Cancel Request"
+msgstr "Откажи захтев"
+
+#: app/templates/tickets/request_details.html:78
+#: app/templates/tickets/request_details.html:383
+msgid "Add Charge"
+msgstr "Додај износ за наплату"
+
+#: app/templates/tickets/request_details.html:85
+msgid "Delete Request"
+msgstr "Избриши захтев"
+
+#: app/templates/tickets/request_details.html:93
+msgid "Mark Bill Paid"
+msgstr "Означи да је плаћено"
+
+#: app/templates/tickets/request_details.html:100
+msgid "Edit Information"
+msgstr "Измени информације"
+
+#: app/templates/tickets/request_details.html:106
+#: app/templates/tickets/request_details.html:385
+msgid "Request Settings"
+msgstr "Подешавања захтева"
+
+#: app/templates/tickets/request_details.html:114
+#: app/templates/tickets/request_details.html:378
+msgid "Alert Administrator"
+msgstr "Обавести администратора"
+
+#: app/templates/tickets/request_details.html:125
+msgid "Re-Open"
+msgstr "Поново отвори"
+
+#: app/templates/tickets/request_details.html:168
+#: app/templates/tickets/request_details.html:170
+msgid "No Requester"
+msgstr "Нема подносиоца захтева"
+
+#: app/templates/tickets/request_details.html:181
+msgid "No Responders"
+msgstr "Нема особа задужених за одговор"
+
+#: app/templates/tickets/request_details.html:194
+msgid "Request Type"
+msgstr "Тип захтева"
+
+#: app/templates/tickets/request_details.html:198
+msgid "Status Updated"
+msgstr "Статус је ажуриран"
+
+#: app/templates/tickets/request_details.html:205
+msgid "Sensitive"
+msgstr "Осетљиво"
+
+#: app/templates/tickets/request_details.html:209
+#: app/templates/tickets/request_details.html:211
+msgid "Billing Information"
+msgstr "Информације за обрачун"
+
+#: app/templates/tickets/request_details.html:215
+msgid "For-profit"
+msgstr "Профитабилно"
+
+#: app/templates/tickets/request_details.html:217
+msgid "Charges"
+msgstr "Трошкови"
+
+#: app/templates/tickets/request_details.html:229
+msgid "Outstanding Amount:"
+msgstr "Преостали износ:"
+
+#: app/templates/tickets/request_details.html:237
+msgid "Request Details"
+msgstr "Детаљи захтева"
+
+#: app/templates/tickets/request_details.html:245
+msgid "Initial Information"
+msgstr "Почетне информације"
+
+#: app/templates/tickets/request_details.html:247
+msgid "Story"
+msgstr "Прича"
+
+#: app/templates/tickets/request_details.html:248
+msgid "Question"
+msgstr "Питање"
+
+#: app/templates/tickets/request_details.html:254
+#: app/templates/tickets/request_details.html:255
+#: app/templates/tickets/request_details.html:256 static/js/widgets.js:189
+#: static/js/widgets.js:231
+msgid "Other Names"
+msgstr "Друга имена"
+
+#: app/templates/tickets/request_details.html:254
+msgid "Relation"
+msgstr "Однос"
+
+#: app/templates/tickets/request_details.html:262
+msgid "Attached Files"
+msgstr "Приложене датотеке"
+
+#: app/templates/tickets/request_details.html:274
+msgid "Attached Entities"
+msgstr "Приложени ентитети"
+
+#: app/templates/tickets/request_details.html:303
+msgid "Activity"
+msgstr "Активности"
+
+#: app/templates/tickets/request_details.html:337
+msgid "No comment provided."
+msgstr "Нема наведених коментара."
+
+#: app/templates/tickets/request_details.html:346
+msgid "No updates yet."
+msgstr "Још увек нема ажурирања."
+
+#: app/templates/tickets/request_details.html:350
+msgid "Leave a Comment"
+msgstr "Оставите коментар"
+
+#: app/templates/tickets/request_details.html:378
+msgid "Flag Request"
+msgstr "Означи захтев"
+
+#: app/templates/tickets/request_details.html:379
+msgid "Re-Open Request"
+msgstr "Поново отвори захтев"
+
+#: app/templates/tickets/request_details.html:381
+msgid "Mark Paid"
+msgstr "Означи као плаћено"
+
+#: app/templates/tickets/request_list.html:7
+msgid "New Request"
+msgstr "Нови захтев"
+
+#: app/templates/tickets/request_list.html:13
+msgid "Open Requests"
+msgstr "Отворени захтеви"
+
+#: app/templates/tickets/request_list.html:18
+msgid "No open requests found."
+msgstr "Нема пронађених отворених захтева."
+
+#: app/templates/tickets/request_list.html:22
+msgid "Closed Requests"
+msgstr "Затворени захтеви"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:6
+msgid "Filter"
+msgstr "Филтрирај"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:12
+msgid "Customer Charges"
+msgstr "Трошкови корисника"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:13
+msgid "View all logged charges against an individual customer."
+msgstr "Погледајте све евидентиране трошкове појединачног корисника."
+
+#: app/templates/tickets/admin/admin_charges_outstanding.html:4
+msgid "View all outstanding charges for all tickets and requesters. "
+msgstr "Погледајте све преостале трошкове за све пријаве и подносиоце захтева. "
+
+#: app/templates/tickets/admin/admin_deadline.html:3
+msgid "Tickets with Deadlines"
+msgstr "Пријаве са крајњим роковима"
+
+#: app/templates/tickets/admin/admin_deadline.html:4
+msgid "View open tickets ordered by upcoming deadlines. "
+msgstr ""
+"Прегледајте отворене пријаве распоређене према предстојећим крајњим "
+"роковима. "
+
+#: app/templates/tickets/admin/admin_flagged.html:3
+msgid "User Flagged Tickets"
+msgstr "Корисничке пријаве са ознаком"
+
+#: app/templates/tickets/admin/admin_flagged.html:4
+msgid ""
+"View tickets which users or staff have deemed requiring administrative "
+"intervention. "
+msgstr ""
+"Погледајте пријаве за које корисници или запослени сматрају да захтевају "
+"интервенцију администратора. "
+
+#: app/templates/tickets/admin/admin_history.html:3
+msgid "Tickets History"
+msgstr "Историја пријава"
+
+#: app/templates/tickets/admin/admin_history.html:4
+msgid "A simple list of closed, resolved or cancelled tickets. "
+msgstr "Једноставна листа затворених, решених или отказаних пријава. "
+
+#: app/templates/tickets/admin/admin_unassigned.html:5
+msgid "View new tickets that need responders assigned to them."
+msgstr ""
+"Погледајте нове пријаве којима треба да се доделе особе задужене за "
+"одговор."
+
+#: static/js/drive-picker.js:97
+msgid "Error attaching file(s)."
+msgstr "Грешка при прилагању датотеке(а)."
+
+#: static/js/i18n.js:47 static/js/i18n.js:55
+msgid "x04"
+msgid_plural "x04"
+msgstr[0] "x04"
+msgstr[1] "x04"
+msgstr[2] "x04"
+msgstr[3] "x04"
+msgstr[4] "x04"
+msgstr[5] "x04"
+
+#: static/js/list-files.js:24
+msgid "File successfully removed."
+msgstr "Датотека је уклоњена."
+
+#: static/js/list-files.js:26
+msgid "Error removing attached file."
+msgstr "Грешка при уклањању приложене датотеке."
+
+#: static/js/list-files.js:44
+msgid "No files attached."
+msgstr "Нема приложених датотека."
+
+#: static/js/list-files.js:61
+msgid "Error displaying attached files."
+msgstr "Грешка при приказивању приложених датотека."
+
+#: static/js/validation-forms.js:42
+msgid "There was a problem with validation."
+msgstr "Дошло је до проблема при валидацији."
+

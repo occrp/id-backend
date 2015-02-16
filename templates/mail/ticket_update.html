@@ -1,0 +1,49 @@
+{% extends 'mail/mail_base.html' %}
+
+{% block title %}
+<div style="font-size:16px;line-height:20px;padding:2px 0 8px 0">
+    <a style="color:#a80907;text-decoration:none" href="{{ url }}" target="_blank"><strong>{{ update.ticket.get().summary }}</strong></a>
+</div>
+<div style="padding:0 0 16px 0;font-size:12px;line-height:18px">
+    {{ update.author.get().display_name }} {{ update.update_type_display() }} {% trans %}your request. {% endtrans %}
+</div>
+{% endblock %}
+
+{% block body %}
+<table border="0" cellpadding="0" cellspacing="0" style="padding:0;text-align:left;width:100%" width="100%">
+    <tbody>
+      <tr>
+	<td>
+	  <ul>
+	  {% for (n, s) in update.ticket.get().most_fields() %}
+<li><b>{{n}}</b>: {{s}} </li>
+	  {% endfor %}
+	    </ul>
+	</td>
+	</tr>
+    <tr valign="top">
+        <td colspan="2" style="width:100%;font-size:12px;font-family:Tahoma, sans-serif;padding:0 0 16px 0">
+            {% if update.extra_relation %}
+                {% set extra_comment = update.extra_relation.get().to_ticket_update(update) %}
+            {% endif %}
+            <div style="background-color:#f5f5f5;padding:12px;border:1px solid #dddddd;white-space:pre-wrap;">
+                <p>{{ update.comment }}{% if extra_comment -%}
+                <br /><br />{{ extra_comment }}    
+                {%- endif %}</p> 
+            </div>
+            <div style="color:#505050;padding:4px 0 0 0"></div>
+        </td>
+    </tr>
+    <tr>
+        <td style="color:#666;padding-top:5px">
+            <div style="padding-bottom:20px">
+                <a style="color:#a80907;font-family:Tahoma, sans-serif;font-size:12px;text-decoration:none" href="{{ url }}" target="_blank">{% trans %}View on Site{% endtrans %}</a> |
+                <a style="color:#a80907;font-family:Tahoma, sans-serif;font-size:12px;text-decoration:none" href="{{ url }}#comment" target="_blank">{% trans %}Add Comment{% endtrans %}</a>
+                <span style="color:#505050;font-size:12px;font-family:Tahoma"> {% trans %}or reply to this email directly.{% endtrans %}</span>
+                
+            </div>
+        </td>
+    </tr>                    
+    </tbody>
+</table>
+{% endblock %}

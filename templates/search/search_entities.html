@@ -1,0 +1,80 @@
+{% extends "search/search_base.html" %}
+
+{% block search_content %}
+
+    <form class="search form-inline">
+        <div class="row">
+            <div class="search-label span2"><i class="icon-search primary-highlight hidden-tablet"></i>{% trans %}Search{% endtrans %}</div>
+            <div class="span6">
+                <input type="text" placeholder="{% trans %}Enter your terms...{% endtrans %}"
+                       name="query" class="span6"
+                       {% if form.query.data %}value="{{ form.query.data }}"{% endif %} />
+            </div>
+            <div class="span2">{{ form.type }}</div>
+            <div class="span2">
+                <button class="btn btn-large btn-primary" type="submit">{% trans %}Search{% endtrans %}</button>
+            </div>
+        </div>
+    </form>
+
+    {% if results %}
+        <p class="muted">
+            {% trans num_results=(results|length) -%}
+                {{ num_results }} result found.
+            {%- pluralize -%}
+                {{ num_results }} results found.
+            {%- endtrans %}
+        </p>
+        <table class="table table-striped">
+            <tbody>
+                {% for entity in results %}
+                    {% if entity %}
+                    {% set kind = entity.key.kind().lower() %}
+                    <tr>
+                        <td>
+                            <div class="result">
+                                {% if is_admin %}
+                                    <div class="pull-right">
+                                        <a class="fade-content" href="{{ uri_for("%s_edit" % entity.key.kind().lower(), obj_id=entity.key.id()) }}">
+                                            <i class="icon-pencil"></i>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <h4><a href="javascript:void(0)"
+                                                class="entity-view"
+                                                data-query="{{ query }}"
+                                                data-url="{{ uri_for('entity_view') }}" 
+                                                data-key="{{ entity.key.urlsafe() }}">
+                                                <i class="icon-{{ icon_classes[kind] }}"></i> {{ macros.highlight(entity, query) }}</a></h4>
+                                    {% if entity.summary %}
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            {% for name, value in entity.summary %}
+                                                <td>
+                                                    <strong>{{ name }}:</strong> {{ macros.highlight(value, query) }}
+                                                </td>
+                                            {% endfor %}
+                                        </tr>
+                                    </table>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% elif query_made %}
+        <div class="alert alert-block">
+            {% trans %}No search results.{% endtrans %}
+        </div>
+    {% endif %}
+    <div class="modal hide" id="entity-viewer"></div>
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+    <script type="text/javascript" src="{{ static_url }}js/entity-view.js"></script>
+{% endblock %}

@@ -1,0 +1,22 @@
+<div class="modal" id="podaci_create_tag_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{% trans %}Create tag{% endtrans %}</h4>
+      </div>
+      <div class="modal-body">
+        <form id="podaci_create_tag_form">
+          {% csrf_token %}
+          <input type="hidden" name="tag_parents" value="{% if tag %}{{tag.id}}{% endif %}"/>
+          <label for="tag_name">Name:</label><input name="tag_name" id="podaci_create_tag_name"/>
+          <div id="podaci_create_tag_error" class="alert alert-danger" style="display:none;"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" data-dismiss="modal">Close</button>
+        <button type="button" id="podaci_create_tag_btn" class="btn btn-default">Add</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>

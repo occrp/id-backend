@@ -1,0 +1,10 @@
+{% extends 'mail/mail_simple.html' %}
+
+{% block simple_title %}
+    {% trans %}Your Account Request was received{% endtrans %}
+{% endblock %}
+
+{% block simple_body %}
+    <p>{% trans name=request.display_name %}Dear {{ name }},{% endtrans %}</p>
+    <p>{% trans %}Thank you for registering with the Investigative Dashboard. We are reviewing your information and as soon as your registration is complete you can sign into the Research Desk with the Google account that you used to register. In the meantime, get started now by searching the ID crowd-sourced and external databases. We will be in touch shortly.{% endtrans %}</p>
+{% endblock %}
