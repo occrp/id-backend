@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>{{object.user.username}}</h1>
+{# FIXME: This is pretty dumb. #}
+<div class="span12">
+	<table>
+		{% for field in object._meta.fields %}
+		<tr>
+			<th>{{field.verbose_name}}</th><td>{{field.value_to_string(object)}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+
+{% endblock %}

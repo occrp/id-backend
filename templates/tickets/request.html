@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{% trans %}Request Information{% endtrans %}</h1>
+    </div>
+
+    {% if not ticket.key %}
+        {% call macros.help_box() %}
+            {% trans -%}
+                Your request will be routed to our professional researchers and volunteers, who will try to help.
+            {%- endtrans %}
+        {% endcall %}
+    {% endif %}
+
+    <form method="POST" class="form-horizontal requestform" enctype="multipart/form-data" 
+        data-validation-url="{{ person_ownership_form.Meta.ajax_validation_url }}">
+        {% csrf_token %}
+        {% if person_ownership_form.Meta and person_ownership_form.Meta.ajax_validation_url and person_ownership_form.instance.key %}
+            <input type="hidden" name="validation_key" value="{{ person_ownership_form.instance.key.urlsafe() }}"/>
+        {% endif %}
+
+        <div class="well span4">
+            {{ ticket_type_form.as_p() }}
+        </div>
+        <div class="span6">
+            <table id="person_ownership_form" class="ticket-form" style="display: none;">
+                {{ person_ownership_form.as_table() }}
+            </table>
+            <table id="company_ownership_form" class="ticket-form" style="display: none;">
+                {{ company_ownership_form.as_table() }}
+            </table>
+            <table id="other_form" class="ticket-form" style="display: none;">
+                {{ other_form.as_table() }}
+            </table>
+            <div class="request-submit" style="display: none;">
+                {{ form_macros.render_submit(_("Submit"), class="btn-primary") }}
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block after_js %}
+    <script type="text/javascript" src="{{static('js/request-form.js')}}"></script>
+{% endblock %}

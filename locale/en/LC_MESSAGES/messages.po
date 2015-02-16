@@ -1,0 +1,2350 @@
+# English translations for PROJECT.
+# Copyright (C) 2013 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2013-07-31 17:00-0300\n"
+"PO-Revision-Date: 2013-08-05 15:16+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: app/countries.py:4 app/models.py:38
+msgid "-----------"
+msgstr ""
+
+#: app/countries.py:5
+msgid "Afghanistan"
+msgstr ""
+
+#: app/countries.py:6
+msgid "Åland Islands"
+msgstr ""
+
+#: app/countries.py:7
+msgid "Albania"
+msgstr ""
+
+#: app/countries.py:8
+msgid "Algeria"
+msgstr ""
+
+#: app/countries.py:9
+msgid "American Samoa"
+msgstr ""
+
+#: app/countries.py:10
+msgid "Andorra"
+msgstr ""
+
+#: app/countries.py:11
+msgid "Angola"
+msgstr ""
+
+#: app/countries.py:12
+msgid "Anguilla"
+msgstr ""
+
+#: app/countries.py:13
+msgid "Antarctica"
+msgstr ""
+
+#: app/countries.py:14
+msgid "Antigua and Barbuda"
+msgstr ""
+
+#: app/countries.py:15
+msgid "Argentina"
+msgstr ""
+
+#: app/countries.py:16
+msgid "Armenia"
+msgstr ""
+
+#: app/countries.py:17
+msgid "Aruba"
+msgstr ""
+
+#: app/countries.py:18
+msgid "Australia"
+msgstr ""
+
+#: app/countries.py:19
+msgid "Austria"
+msgstr ""
+
+#: app/countries.py:20
+msgid "Azerbaijan"
+msgstr ""
+
+#: app/countries.py:21
+msgid "Bahamas"
+msgstr ""
+
+#: app/countries.py:22
+msgid "Bahrain"
+msgstr ""
+
+#: app/countries.py:23
+msgid "Bangladesh"
+msgstr ""
+
+#: app/countries.py:24
+msgid "Barbados"
+msgstr ""
+
+#: app/countries.py:25
+msgid "Belarus"
+msgstr ""
+
+#: app/countries.py:26
+msgid "Belgium"
+msgstr ""
+
+#: app/countries.py:27
+msgid "Belize"
+msgstr ""
+
+#: app/countries.py:28
+msgid "Benin"
+msgstr ""
+
+#: app/countries.py:29
+msgid "Bermuda"
+msgstr ""
+
+#: app/countries.py:30
+msgid "Bhutan"
+msgstr ""
+
+#: app/countries.py:31
+msgid "Bolivia, Plurinational State of"
+msgstr ""
+
+#: app/countries.py:32
+msgid "Bonaire, Sint Eustatius and Saba"
+msgstr ""
+
+#: app/countries.py:33
+msgid "Bosnia and Herzegovina"
+msgstr ""
+
+#: app/countries.py:34
+msgid "Botswana"
+msgstr ""
+
+#: app/countries.py:35
+msgid "Bouvet Island"
+msgstr ""
+
+#: app/countries.py:36
+msgid "Brazil"
+msgstr ""
+
+#: app/countries.py:37
+msgid "British Indian Ocean Territory"
+msgstr ""
+
+#: app/countries.py:38
+msgid "Brunei Darussalam"
+msgstr ""
+
+#: app/countries.py:39
+msgid "Bulgaria"
+msgstr ""
+
+#: app/countries.py:40
+msgid "Burkina Faso"
+msgstr ""
+
+#: app/countries.py:41
+msgid "Burundi"
+msgstr ""
+
+#: app/countries.py:42
+msgid "Cambodia"
+msgstr ""
+
+#: app/countries.py:43
+msgid "Cameroon"
+msgstr ""
+
+#: app/countries.py:44
+msgid "Canada"
+msgstr ""
+
+#: app/countries.py:45
+msgid "Cape Verde"
+msgstr ""
+
+#: app/countries.py:46
+msgid "Cayman Islands"
+msgstr ""
+
+#: app/countries.py:47
+msgid "Central African Republic"
+msgstr ""
+
+#: app/countries.py:48
+msgid "Chad"
+msgstr ""
+
+#: app/countries.py:49
+msgid "Chile"
+msgstr ""
+
+#: app/countries.py:50
+msgid "China"
+msgstr ""
+
+#: app/countries.py:51
+msgid "Christmas Island"
+msgstr ""
+
+#: app/countries.py:52
+msgid "Cocos (Keeling) Islands"
+msgstr ""
+
+#: app/countries.py:53
+msgid "Colombia"
+msgstr ""
+
+#: app/countries.py:54
+msgid "Comoros"
+msgstr ""
+
+#: app/countries.py:55
+msgid "Congo"
+msgstr ""
+
+#: app/countries.py:56
+msgid "Congo, The Democratic Republic of the"
+msgstr ""
+
+#: app/countries.py:57
+msgid "Cook Islands"
+msgstr ""
+
+#: app/countries.py:58
+msgid "Costa Rica"
+msgstr ""
+
+#: app/countries.py:59
+msgid "Côte D'ivoire"
+msgstr ""
+
+#: app/countries.py:60
+msgid "Croatia"
+msgstr ""
+
+#: app/countries.py:61
+msgid "Cuba"
+msgstr ""
+
+#: app/countries.py:62
+msgid "Curaçao"
+msgstr ""
+
+#: app/countries.py:63
+msgid "Cyprus"
+msgstr ""
+
+#: app/countries.py:64
+msgid "Czech Republic"
+msgstr ""
+
+#: app/countries.py:65
+msgid "Denmark"
+msgstr ""
+
+#: app/countries.py:66
+msgid "Djibouti"
+msgstr ""
+
+#: app/countries.py:67
+msgid "Dominica"
+msgstr ""
+
+#: app/countries.py:68
+msgid "Dominican Republic"
+msgstr ""
+
+#: app/countries.py:69
+msgid "Ecuador"
+msgstr ""
+
+#: app/countries.py:70
+msgid "Egypt"
+msgstr ""
+
+#: app/countries.py:71
+msgid "El Salvador"
+msgstr ""
+
+#: app/countries.py:72
+msgid "Equatorial Guinea"
+msgstr ""
+
+#: app/countries.py:73
+msgid "Eritrea"
+msgstr ""
+
+#: app/countries.py:74
+msgid "Estonia"
+msgstr ""
+
+#: app/countries.py:75
+msgid "Ethiopia"
+msgstr ""
+
+#: app/countries.py:76
+msgid "Falkland Islands (Malvinas)"
+msgstr ""
+
+#: app/countries.py:77
+msgid "Faroe Islands"
+msgstr ""
+
+#: app/countries.py:78
+msgid "Fiji"
+msgstr ""
+
+#: app/countries.py:79
+msgid "Finland"
+msgstr ""
+
+#: app/countries.py:80
+msgid "France"
+msgstr ""
+
+#: app/countries.py:81
+msgid "French Guiana"
+msgstr ""
+
+#: app/countries.py:82
+msgid "French Polynesia"
+msgstr ""
+
+#: app/countries.py:83
+msgid "French Southern Territories"
+msgstr ""
+
+#: app/countries.py:84
+msgid "Gabon"
+msgstr ""
+
+#: app/countries.py:85
+msgid "Gambia"
+msgstr ""
+
+#: app/countries.py:86
+msgid "Georgia"
+msgstr ""
+
+#: app/countries.py:87
+msgid "Germany"
+msgstr ""
+
+#: app/countries.py:88
+msgid "Ghana"
+msgstr ""
+
+#: app/countries.py:89
+msgid "Gibraltar"
+msgstr ""
+
+#: app/countries.py:90
+msgid "Greece"
+msgstr ""
+
+#: app/countries.py:91
+msgid "Greenland"
+msgstr ""
+
+#: app/countries.py:92
+msgid "Grenada"
+msgstr ""
+
+#: app/countries.py:93
+msgid "Guadeloupe"
+msgstr ""
+
+#: app/countries.py:94
+msgid "Guam"
+msgstr ""
+
+#: app/countries.py:95
+msgid "Guatemala"
+msgstr ""
+
+#: app/countries.py:96
+msgid "Guernsey"
+msgstr ""
+
+#: app/countries.py:97
+msgid "Guinea"
+msgstr ""
+
+#: app/countries.py:98
+msgid "Guinea-bissau"
+msgstr ""
+
+#: app/countries.py:99
+msgid "Guyana"
+msgstr ""
+
+#: app/countries.py:100
+msgid "Haiti"
+msgstr ""
+
+#: app/countries.py:101
+msgid "Heard Island and McDonald Islands"
+msgstr ""
+
+#: app/countries.py:102
+msgid "Holy See (Vatican City State)"
+msgstr ""
+
+#: app/countries.py:103
+msgid "Honduras"
+msgstr ""
+
+#: app/countries.py:104
+msgid "Hong Kong"
+msgstr ""
+
+#: app/countries.py:105
+msgid "Hungary"
+msgstr ""
+
+#: app/countries.py:106
+msgid "Iceland"
+msgstr ""
+
+#: app/countries.py:107
+msgid "India"
+msgstr ""
+
+#: app/countries.py:108
+msgid "Indonesia"
+msgstr ""
+
+#: app/countries.py:109
+msgid "Iran, Islamic Republic of"
+msgstr ""
+
+#: app/countries.py:110
+msgid "Iraq"
+msgstr ""
+
+#: app/countries.py:111
+msgid "Ireland"
+msgstr ""
+
+#: app/countries.py:112
+msgid "Isle of Man"
+msgstr ""
+
+#: app/countries.py:113
+msgid "Israel"
+msgstr ""
+
+#: app/countries.py:114
+msgid "Italy"
+msgstr ""
+
+#: app/countries.py:115
+msgid "Jamaica"
+msgstr ""
+
+#: app/countries.py:116
+msgid "Japan"
+msgstr ""
+
+#: app/countries.py:117
+msgid "Jersey"
+msgstr ""
+
+#: app/countries.py:118
+msgid "Jordan"
+msgstr ""
+
+#: app/countries.py:119
+msgid "Kazakhstan"
+msgstr ""
+
+#: app/countries.py:120
+msgid "Kenya"
+msgstr ""
+
+#: app/countries.py:121
+msgid "Kiribati"
+msgstr ""
+
+#: app/countries.py:122
+msgid "Korea, Democratic People's Republic of"
+msgstr ""
+
+#: app/countries.py:123
+msgid "Korea, Republic of"
+msgstr ""
+
+#: app/countries.py:124
+msgid "Kuwait"
+msgstr ""
+
+#: app/countries.py:125
+msgid "Kyrgyzstan"
+msgstr ""
+
+#: app/countries.py:126
+msgid "Lao People's Democratic Republic"
+msgstr ""
+
+#: app/countries.py:127
+msgid "Latvia"
+msgstr ""
+
+#: app/countries.py:128
+msgid "Lebanon"
+msgstr ""
+
+#: app/countries.py:129
+msgid "Lesotho"
+msgstr ""
+
+#: app/countries.py:130
+msgid "Liberia"
+msgstr ""
+
+#: app/countries.py:131
+msgid "Libya"
+msgstr ""
+
+#: app/countries.py:132
+msgid "Liechtenstein"
+msgstr ""
+
+#: app/countries.py:133
+msgid "Lithuania"
+msgstr ""
+
+#: app/countries.py:134
+msgid "Luxembourg"
+msgstr ""
+
+#: app/countries.py:135
+msgid "Macao"
+msgstr ""
+
+#: app/countries.py:136
+msgid "Macedonia, The Former Yugoslav Republic of"
+msgstr ""
+
+#: app/countries.py:137
+msgid "Madagascar"
+msgstr ""
+
+#: app/countries.py:138
+msgid "Malawi"
+msgstr ""
+
+#: app/countries.py:139
+msgid "Malaysia"
+msgstr ""
+
+#: app/countries.py:140
+msgid "Maldives"
+msgstr ""
+
+#: app/countries.py:141
+msgid "Mali"
+msgstr ""
+
+#: app/countries.py:142
+msgid "Malta"
+msgstr ""
+
+#: app/countries.py:143
+msgid "Marshall Islands"
+msgstr ""
+
+#: app/countries.py:144
+msgid "Martinique"
+msgstr ""
+
+#: app/countries.py:145
+msgid "Mauritania"
+msgstr ""
+
+#: app/countries.py:146
+msgid "Mauritius"
+msgstr ""
+
+#: app/countries.py:147
+msgid "Mayotte"
+msgstr ""
+
+#: app/countries.py:148
+msgid "Mexico"
+msgstr ""
+
+#: app/countries.py:149
+msgid "Micronesia, Federated States of"
+msgstr ""
+
+#: app/countries.py:150
+msgid "Moldova, Republic of"
+msgstr ""
+
+#: app/countries.py:151
+msgid "Monaco"
+msgstr ""
+
+#: app/countries.py:152
+msgid "Mongolia"
+msgstr ""
+
+#: app/countries.py:153
+msgid "Montenegro"
+msgstr ""
+
+#: app/countries.py:154
+msgid "Montserrat"
+msgstr ""
+
+#: app/countries.py:155
+msgid "Morocco"
+msgstr ""
+
+#: app/countries.py:156
+msgid "Mozambique"
+msgstr ""
+
+#: app/countries.py:157
+msgid "Myanmar"
+msgstr ""
+
+#: app/countries.py:158
+msgid "Namibia"
+msgstr ""
+
+#: app/countries.py:159
+msgid "Nauru"
+msgstr ""
+
+#: app/countries.py:160
+msgid "Nepal"
+msgstr ""
+
+#: app/countries.py:161
+msgid "Netherlands"
+msgstr ""
+
+#: app/countries.py:162
+msgid "New Caledonia"
+msgstr ""
+
+#: app/countries.py:163
+msgid "New Zealand"
+msgstr ""
+
+#: app/countries.py:164
+msgid "Nicaragua"
+msgstr ""
+
+#: app/countries.py:165
+msgid "Niger"
+msgstr ""
+
+#: app/countries.py:166
+msgid "Nigeria"
+msgstr ""
+
+#: app/countries.py:167
+msgid "Niue"
+msgstr ""
+
+#: app/countries.py:168
+msgid "Norfolk Island"
+msgstr ""
+
+#: app/countries.py:169
+msgid "Northern Mariana Islands"
+msgstr ""
+
+#: app/countries.py:170
+msgid "Norway"
+msgstr ""
+
+#: app/countries.py:171
+msgid "Oman"
+msgstr ""
+
+#: app/countries.py:172
+msgid "Pakistan"
+msgstr ""
+
+#: app/countries.py:173
+msgid "Palau"
+msgstr ""
+
+#: app/countries.py:174
+msgid "Palestinian Territory, Occupied"
+msgstr ""
+
+#: app/countries.py:175
+msgid "Panama"
+msgstr ""
+
+#: app/countries.py:176
+msgid "Papua New Guinea"
+msgstr ""
+
+#: app/countries.py:177
+msgid "Paraguay"
+msgstr ""
+
+#: app/countries.py:178
+msgid "Peru"
+msgstr ""
+
+#: app/countries.py:179
+msgid "Philippines"
+msgstr ""
+
+#: app/countries.py:180
+msgid "Pitcairn"
+msgstr ""
+
+#: app/countries.py:181
+msgid "Poland"
+msgstr ""
+
+#: app/countries.py:182
+msgid "Portugal"
+msgstr ""
+
+#: app/countries.py:183
+msgid "Puerto Rico"
+msgstr ""
+
+#: app/countries.py:184
+msgid "Qatar"
+msgstr ""
+
+#: app/countries.py:185
+msgid "Réunion"
+msgstr ""
+
+#: app/countries.py:186
+msgid "Romania"
+msgstr ""
+
+#: app/countries.py:187
+msgid "Russian Federation"
+msgstr ""
+
+#: app/countries.py:188
+msgid "Rwanda"
+msgstr ""
+
+#: app/countries.py:189
+msgid "Saint Barthélemy"
+msgstr ""
+
+#: app/countries.py:190
+msgid "Saint Helena, Ascension and Tristan Da Cunha"
+msgstr ""
+
+#: app/countries.py:191
+msgid "Saint Kitts and Nevis"
+msgstr ""
+
+#: app/countries.py:192
+msgid "Saint Lucia"
+msgstr ""
+
+#: app/countries.py:193
+msgid "Saint Martin (French Part)"
+msgstr ""
+
+#: app/countries.py:194
+msgid "Saint Pierre and Miquelon"
+msgstr ""
+
+#: app/countries.py:195
+msgid "Saint Vincent and the Grenadines"
+msgstr ""
+
+#: app/countries.py:196
+msgid "Samoa"
+msgstr ""
+
+#: app/countries.py:197
+msgid "San Marino"
+msgstr ""
+
+#: app/countries.py:198
+msgid "Sao Tome and Principe"
+msgstr ""
+
+#: app/countries.py:199
+msgid "Saudi Arabia"
+msgstr ""
+
+#: app/countries.py:200
+msgid "Senegal"
+msgstr ""
+
+#: app/countries.py:201
+msgid "Serbia"
+msgstr ""
+
+#: app/countries.py:202
+msgid "Seychelles"
+msgstr ""
+
+#: app/countries.py:203
+msgid "Sierra Leone"
+msgstr ""
+
+#: app/countries.py:204
+msgid "Singapore"
+msgstr ""
+
+#: app/countries.py:205
+msgid "Sint Maarten (Dutch Part)"
+msgstr ""
+
+#: app/countries.py:206
+msgid "Slovakia"
+msgstr ""
+
+#: app/countries.py:207
+msgid "Slovenia"
+msgstr ""
+
+#: app/countries.py:208
+msgid "Solomon Islands"
+msgstr ""
+
+#: app/countries.py:209
+msgid "Somalia"
+msgstr ""
+
+#: app/countries.py:210
+msgid "South Africa"
+msgstr ""
+
+#: app/countries.py:211
+msgid "South Georgia and the South Sandwich Islands"
+msgstr ""
+
+#: app/countries.py:212
+msgid "South Sudan"
+msgstr ""
+
+#: app/countries.py:213
+msgid "Spain"
+msgstr ""
+
+#: app/countries.py:214
+msgid "Sri Lanka"
+msgstr ""
+
+#: app/countries.py:215
+msgid "Sudan"
+msgstr ""
+
+#: app/countries.py:216
+msgid "Suriname"
+msgstr ""
+
+#: app/countries.py:217
+msgid "Svalbard and Jan Mayen"
+msgstr ""
+
+#: app/countries.py:218
+msgid "Swaziland"
+msgstr ""
+
+#: app/countries.py:219
+msgid "Sweden"
+msgstr ""
+
+#: app/countries.py:220
+msgid "Switzerland"
+msgstr ""
+
+#: app/countries.py:221
+msgid "Syrian Arab Republic"
+msgstr ""
+
+#: app/countries.py:222
+msgid "Taiwan, Province of China"
+msgstr ""
+
+#: app/countries.py:223
+msgid "Tajikistan"
+msgstr ""
+
+#: app/countries.py:224
+msgid "Tanzania, United Republic of"
+msgstr ""
+
+#: app/countries.py:225
+msgid "Thailand"
+msgstr ""
+
+#: app/countries.py:226
+msgid "Timor-leste"
+msgstr ""
+
+#: app/countries.py:227
+msgid "Togo"
+msgstr ""
+
+#: app/countries.py:228
+msgid "Tokelau"
+msgstr ""
+
+#: app/countries.py:229
+msgid "Tonga"
+msgstr ""
+
+#: app/countries.py:230
+msgid "Trinidad and Tobago"
+msgstr ""
+
+#: app/countries.py:231
+msgid "Tunisia"
+msgstr ""
+
+#: app/countries.py:232
+msgid "Turkey"
+msgstr ""
+
+#: app/countries.py:233
+msgid "Turkmenistan"
+msgstr ""
+
+#: app/countries.py:234
+msgid "Turks and Caicos Islands"
+msgstr ""
+
+#: app/countries.py:235
+msgid "Tuvalu"
+msgstr ""
+
+#: app/countries.py:236
+msgid "Uganda"
+msgstr ""
+
+#: app/countries.py:237
+msgid "Ukraine"
+msgstr ""
+
+#: app/countries.py:238
+msgid "United Arab Emirates"
+msgstr ""
+
+#: app/countries.py:239
+msgid "United Kingdom"
+msgstr ""
+
+#: app/countries.py:240
+msgid "United States"
+msgstr ""
+
+#: app/countries.py:241
+msgid "United States Minor Outlying Islands"
+msgstr ""
+
+#: app/countries.py:242
+msgid "Uruguay"
+msgstr ""
+
+#: app/countries.py:243
+msgid "Uzbekistan"
+msgstr ""
+
+#: app/countries.py:244
+msgid "Vanuatu"
+msgstr ""
+
+#: app/countries.py:245
+msgid "Venezuela, Bolivarian Republic of"
+msgstr ""
+
+#: app/countries.py:246
+msgid "Viet Nam"
+msgstr ""
+
+#: app/countries.py:247
+msgid "Virgin Islands, British"
+msgstr ""
+
+#: app/countries.py:248
+msgid "Virgin Islands, U.S."
+msgstr ""
+
+#: app/countries.py:249
+msgid "Wallis and Futuna"
+msgstr ""
+
+#: app/countries.py:250
+msgid "Western Sahara"
+msgstr ""
+
+#: app/countries.py:251
+msgid "Yemen"
+msgstr ""
+
+#: app/countries.py:252
+msgid "Zambia"
+msgstr ""
+
+#: app/countries.py:253
+msgid "Zimbabwe"
+msgstr ""
+
+#: app/fields.py:75
+msgid "Key is invalid or does not exist."
+msgstr ""
+
+#: app/forms.py:52 app/models.py:275
+msgid "Comments"
+msgstr ""
+
+#: app/forms.py:53 app/templates/crud/item_base.html:21
+msgid "Files"
+msgstr ""
+
+#: app/forms.py:120 app/models.py:268 app/models.py:270
+msgid "Entity One"
+msgstr ""
+
+#: app/forms.py:121 app/models.py:269 app/models.py:271
+msgid "Entity Two"
+msgstr ""
+
+#: app/forms.py:144
+msgid "Full Name"
+msgstr ""
+
+#: app/forms.py:146 app/models.py:194
+msgid "Identifier"
+msgstr ""
+
+#: app/forms.py:156
+msgid "Illegal Identifier. Only lowercase letters and _ are allowed."
+msgstr ""
+
+#: app/forms.py:163
+msgid "Field with this identifier already exists."
+msgstr ""
+
+#: app/forms.py:197 app/templates/tickets/request_admin_base.html:16
+#: app/templates/tickets/request_list.html:15
+#: app/templates/tickets/request_list.html:47
+#: app/templates/tickets/responds_list.html:12
+#: app/templates/tickets/responds_list.html:44
+msgid "Summary"
+msgstr ""
+
+#: app/forms.py:202
+msgid "Research Goal"
+msgstr ""
+
+#: app/forms.py:206
+msgid "Background"
+msgstr ""
+
+#: app/forms.py:209
+msgid "Any information you already have"
+msgstr ""
+
+#: app/forms.py:213 app/templates/tickets/request_details.html:120
+msgid "Sources"
+msgstr ""
+
+#: app/forms.py:215
+msgid "Where you have already looked for information"
+msgstr ""
+
+#: app/forms.py:218 app/forms.py:308 app/templates/search_base.html:10
+msgid "Entities"
+msgstr ""
+
+#: app/forms.py:221
+msgid "Attach existing known entities to the request."
+msgstr ""
+
+#: app/forms.py:225 app/templates/tickets/request_details.html:92
+msgid "Location"
+msgstr ""
+
+#: app/forms.py:226
+msgid "Where are you researching?"
+msgstr ""
+
+#: app/forms.py:229 app/templates/tickets/request_admin_base.html:19
+#: app/templates/tickets/request_details.html:96
+#: app/templates/tickets/request_list.html:18
+#: app/templates/tickets/request_list.html:50
+#: app/templates/tickets/responds_list.html:15
+#: app/templates/tickets/responds_list.html:47
+msgid "Deadline"
+msgstr ""
+
+#: app/forms.py:231
+msgid "Sensitive?"
+msgstr ""
+
+#: app/forms.py:232
+msgid ""
+"This is highly sensitive, do not let volunteer research librarians see "
+"this request."
+msgstr ""
+
+#: app/forms.py:245
+msgid "Reason"
+msgstr ""
+
+#: app/forms.py:250 app/templates/tickets/request_details.html:167
+msgid "Comment"
+msgstr ""
+
+#: app/forms.py:259
+msgid "Paid Status"
+msgstr ""
+
+#: app/forms.py:268
+msgid "Add Comment"
+msgstr ""
+
+#: app/forms.py:284
+msgid "Manually force the status of the ticket"
+msgstr ""
+
+#: app/forms.py:286 app/models.py:305
+#: app/templates/tickets/request_details.html:75
+msgid "Status"
+msgstr ""
+
+#: app/forms.py:288
+msgid "Assign an OCCRP Staff member as the ticket responder"
+msgstr ""
+
+#: app/forms.py:289 app/templates/tickets/request_admin_base.html:18
+#: app/templates/tickets/request_details.html:83
+#: app/templates/tickets/request_list.html:17
+#: app/templates/tickets/request_list.html:49
+msgid "Responder"
+msgstr ""
+
+#: app/forms.py:291
+msgid "Once user issues are dealt with, un-flag the ticket"
+msgstr ""
+
+#: app/forms.py:292 app/models.py:53
+msgid "Flagged"
+msgstr ""
+
+#: app/forms.py:318
+msgid "Result type"
+msgstr ""
+
+#: app/forms.py:319
+msgid "All"
+msgstr ""
+
+#: app/forms.py:320 app/templates/admin_base.html:9
+#: app/templates/crud/company/list.html:2
+msgid "Companies"
+msgstr ""
+
+#: app/forms.py:321 app/templates/admin_base.html:12
+#: app/templates/crud/person/list.html:2
+msgid "People"
+msgstr ""
+
+#: app/forms.py:322 app/templates/admin_base.html:15
+#: app/templates/crud/location/list.html:2
+msgid "Locations"
+msgstr ""
+
+#: app/models.py:23
+msgid "Limited liability"
+msgstr ""
+
+#: app/models.py:24
+msgid "Partnership"
+msgstr ""
+
+#: app/models.py:25
+msgid "Stock company"
+msgstr ""
+
+#: app/models.py:26
+msgid "Foundation"
+msgstr ""
+
+#: app/models.py:27
+msgid "Non-profit"
+msgstr ""
+
+#: app/models.py:28 app/models.py:109
+msgid "Other"
+msgstr ""
+
+#: app/models.py:33
+msgid "Active"
+msgstr ""
+
+#: app/models.py:34
+msgid "Inactive"
+msgstr ""
+
+#: app/models.py:39
+msgid "Male"
+msgstr ""
+
+#: app/models.py:40
+msgid "Female"
+msgstr ""
+
+#: app/models.py:44
+msgid "Identify what a person owns"
+msgstr ""
+
+#: app/models.py:45
+msgid "Determine company ownership"
+msgstr ""
+
+#: app/models.py:49 app/handlers/ticketing.py:290
+msgid "Updated"
+msgstr ""
+
+#: app/models.py:50
+msgid "Closed"
+msgstr ""
+
+#: app/models.py:51 app/models.py:59 app/models.py:68
+msgid "Cancelled"
+msgstr ""
+
+#: app/models.py:52
+msgid "Re-Opened"
+msgstr ""
+
+#: app/models.py:56
+msgid "New"
+msgstr ""
+
+#: app/models.py:57
+msgid "In Progress"
+msgstr ""
+
+#: app/models.py:58
+msgid "Closed-answered"
+msgstr ""
+
+#: app/models.py:60
+msgid "Finished"
+msgstr ""
+
+#: app/models.py:66
+msgid "Paid"
+msgstr ""
+
+#: app/models.py:67
+msgid "Paid by OCCRP"
+msgstr ""
+
+#: app/models.py:74
+msgid "Parent"
+msgstr ""
+
+#: app/models.py:75
+msgid "Spouse"
+msgstr ""
+
+#: app/models.py:76
+msgid "Other Relative"
+msgstr ""
+
+#: app/models.py:77
+msgid "Friend or Acquaintance"
+msgstr ""
+
+#: app/models.py:78
+msgid "Employer"
+msgstr ""
+
+#: app/models.py:79
+msgid "Business Partner"
+msgstr ""
+
+#: app/models.py:80
+msgid "Proxy"
+msgstr ""
+
+#: app/models.py:84
+msgid "Director"
+msgstr ""
+
+#: app/models.py:85
+msgid "Secretary"
+msgstr ""
+
+#: app/models.py:86
+msgid "Authorized Person"
+msgstr ""
+
+#: app/models.py:87
+msgid "Representative"
+msgstr ""
+
+#: app/models.py:88
+msgid "Shareholder"
+msgstr ""
+
+#: app/models.py:89
+msgid "Employee"
+msgstr ""
+
+#: app/models.py:93
+msgid "Born In"
+msgstr ""
+
+#: app/models.py:94 app/models.py:104
+msgid "Registered Address"
+msgstr ""
+
+#: app/models.py:95
+msgid "Home Address"
+msgstr ""
+
+#: app/models.py:99
+msgid "Subsidiary"
+msgstr ""
+
+#: app/models.py:100
+msgid "Trading Partner"
+msgstr ""
+
+#: app/models.py:105
+msgid "Place of Business"
+msgstr ""
+
+#: app/models.py:125
+msgid "Media: non-profit"
+msgstr ""
+
+#: app/models.py:126
+msgid "Media: for-profit"
+msgstr ""
+
+#: app/models.py:127
+msgid "Media: freelance"
+msgstr ""
+
+#: app/models.py:128
+msgid "Business: due diligence/investigation"
+msgstr ""
+
+#: app/models.py:129
+msgid "Business: legal"
+msgstr ""
+
+#: app/models.py:130
+msgid "Business: general"
+msgstr ""
+
+#: app/models.py:131
+msgid "Government"
+msgstr ""
+
+#: app/models.py:132
+msgid "Civil society/non-profit"
+msgstr ""
+
+#: app/models.py:133
+msgid "Individual"
+msgstr ""
+
+#: app/models.py:134
+msgid "Other (please explain in comments)"
+msgstr ""
+
+#: app/models.py:139
+msgid "Website"
+msgstr ""
+
+#: app/models.py:140
+msgid "Print"
+msgstr ""
+
+#: app/models.py:141
+msgid "Broadcast TV"
+msgstr ""
+
+#: app/models.py:142
+msgid "Broadcast Radio"
+msgstr ""
+
+#: app/models.py:143
+msgid "Other or don't know"
+msgstr ""
+
+#: app/models.py:148
+msgid "Less than 10,000"
+msgstr ""
+
+#: app/models.py:149
+msgid "10,000 to 25,000"
+msgstr ""
+
+#: app/models.py:150
+msgid "25,000 to 50,000"
+msgstr ""
+
+#: app/models.py:151
+msgid "50,000 to 100,000"
+msgstr ""
+
+#: app/models.py:152
+msgid "100,000 to 250,000"
+msgstr ""
+
+#: app/models.py:153
+msgid "250,000 to 500,000"
+msgstr ""
+
+#: app/models.py:154
+msgid "More than 500,000"
+msgstr ""
+
+#: app/models.py:193
+msgid "Label"
+msgstr ""
+
+#: app/models.py:195
+msgid "Kind"
+msgstr ""
+
+#: app/models.py:272 app/templates/tickets/request_admin_base.html:17
+#: app/templates/tickets/request_list.html:16
+#: app/templates/tickets/request_list.html:48
+#: app/templates/tickets/responds_list.html:13
+#: app/templates/tickets/responds_list.html:45
+msgid "Type"
+msgstr ""
+
+#: app/models.py:297 app/models.py:360 app/models.py:538
+msgid "Name"
+msgstr ""
+
+#: app/models.py:298 app/models.py:328
+msgid "Name Variations"
+msgstr ""
+
+#: app/models.py:301
+msgid "Jurisdiction Registered"
+msgstr ""
+
+#: app/models.py:303
+msgid "Form of Company"
+msgstr ""
+
+#: app/models.py:306
+msgid "Date Registered"
+msgstr ""
+
+#: app/models.py:307
+msgid "Date Dissolved"
+msgstr ""
+
+#: app/models.py:325 app/models.py:553
+msgid "First Name"
+msgstr ""
+
+#: app/models.py:326
+msgid "Middle Name"
+msgstr ""
+
+#: app/models.py:327 app/models.py:554
+msgid "Last Name"
+msgstr ""
+
+#: app/models.py:330
+msgid "Date of Birth"
+msgstr ""
+
+#: app/models.py:331
+msgid "Date of Death"
+msgstr ""
+
+#: app/models.py:332
+msgid "Sex"
+msgstr ""
+
+#: app/models.py:333
+msgid "Nationalities"
+msgstr ""
+
+#: app/models.py:335
+msgid "ID Numbers"
+msgstr ""
+
+#: app/models.py:361 app/models.py:557
+msgid "Address"
+msgstr ""
+
+#: app/models.py:362
+msgid "City"
+msgstr ""
+
+#: app/models.py:363
+msgid "State/Province/Region"
+msgstr ""
+
+#: app/models.py:364
+msgid "ZIP/Postal Code"
+msgstr ""
+
+#: app/models.py:365 app/models.py:540 app/templates/external_databases.html:17
+msgid "Country"
+msgstr ""
+
+#: app/models.py:539
+msgid "Continent"
+msgstr ""
+
+#: app/models.py:541
+msgid "Lat"
+msgstr ""
+
+#: app/models.py:542
+msgid "Long"
+msgstr ""
+
+#: app/models.py:543
+msgid "Accessibility"
+msgstr ""
+
+#: app/models.py:544 app/templates/external_databases.html:18
+msgid "Type of Database"
+msgstr ""
+
+#: app/models.py:545 app/templates/external_databases.html:19
+msgid "Type of Data Provided"
+msgstr ""
+
+#: app/models.py:546 app/templates/external_databases.html:16
+msgid "Agency"
+msgstr ""
+
+#: app/models.py:547
+msgid "Database"
+msgstr ""
+
+#: app/models.py:548
+msgid "URL"
+msgstr ""
+
+#: app/models.py:549
+msgid "Notes"
+msgstr ""
+
+#: app/models.py:555
+msgid "Email Address"
+msgstr ""
+
+#: app/models.py:556
+msgid "Phone Number"
+msgstr ""
+
+#: app/models.py:559
+msgid "Industry"
+msgstr ""
+
+#: app/models.py:561
+msgid "Media Type"
+msgstr ""
+
+#: app/models.py:563
+msgid "Circulation (approximate per month)"
+msgstr ""
+
+#: app/models.py:566
+msgid "Anything else you would like to tell us"
+msgstr ""
+
+#: app/validators.py:13
+msgid "This field is required."
+msgstr ""
+
+#: app/appengine_modelforms/fields.py:91 app/appengine_modelforms/fields.py:173
+#: app/appengine_modelforms/fields.py:175
+msgid "Not a valid choice"
+msgstr ""
+
+#: app/appengine_modelforms/fields.py:194
+msgid "Not a valid list"
+msgstr ""
+
+#: app/appengine_modelforms/fields.py:213
+msgid "Not a valid integer list"
+msgstr ""
+
+#: app/google_apis/drive.py:21
+msgid "Error connecting to Google Drive."
+msgstr ""
+
+#: app/google_apis/drive.py:95
+msgid "Your Google Drive private key must be in \"PEM\" format."
+msgstr ""
+
+#: app/google_apis/drive.py:98
+msgid ""
+"Error refreshing Google Drive access token. Check your settings and try "
+"again."
+msgstr ""
+
+#: app/handlers/crud.py:66
+msgid "No entries found."
+msgstr ""
+
+#: app/handlers/crud.py:190
+#, python-format
+msgid "%(entity)s successfully saved.entity"
+msgstr ""
+
+#: app/handlers/crud.py:202
+#, python-format
+msgid "%(entity)s successfully deleted.entity"
+msgstr ""
+
+#: app/handlers/crud.py:214
+msgid "No relationships found."
+msgstr ""
+
+#: app/handlers/crud.py:223
+#, python-format
+msgid "%(entity)s could not deleted because of %(rel_count)d relationsentity"
+msgstr ""
+
+#: app/handlers/crud.py:262
+msgid "No relationships found. You can create them via other entities."
+msgstr ""
+
+#: app/handlers/crud.py:290
+msgid "No companies found."
+msgstr ""
+
+#: app/handlers/crud.py:303
+msgid "No people found."
+msgstr ""
+
+#: app/handlers/crud.py:316
+msgid "No locations found."
+msgstr ""
+
+#: app/handlers/crud.py:329
+msgid "No extra fields found."
+msgstr ""
+
+#: app/handlers/crud.py:342 app/templates/external_databases.html:37
+msgid "No external databases found."
+msgstr ""
+
+#: app/handlers/crud.py:365
+msgid "No account requests found."
+msgstr ""
+
+#: app/handlers/crud.py:385
+msgid "Request submitted. Our staff will evaluate and respond to your request."
+msgstr ""
+
+#: app/handlers/drive.py:55 static/js/drive-picker.js:67
+msgid "File(s) successfully attached."
+msgstr ""
+
+#: app/handlers/ticketing.py:121
+msgid "The specified object could not be found"
+msgstr ""
+
+#: app/handlers/ticketing.py:122
+msgid "The specified object is not attached to this ticket."
+msgstr ""
+
+#: app/handlers/ticketing.py:124
+msgid "The specified object was successfully removed."
+msgstr ""
+
+#: app/handlers/ticketing.py:199
+#, python-format
+msgid "Could not add duplicate(s): %(duplicates)sduplicates, "
+msgstr ""
+
+#: app/handlers/ticketing.py:225
+msgid "Request has been marked as Closed & Answered"
+msgstr ""
+
+#: app/handlers/ticketing.py:247
+msgid "Request has been cancelled."
+msgstr ""
+
+#: app/handlers/ticketing.py:271
+msgid ""
+"An Administrator has been notified notified, and will update the issue "
+"shortly."
+msgstr ""
+
+#: app/handlers/ticketing.py:295
+msgid "Request payment status has been updated"
+msgstr ""
+
+#: app/handlers/ticketing.py:315
+msgid "Request has been Re-opened"
+msgstr ""
+
+#: app/handlers/ticketing.py:483
+msgid "Ticket Saved"
+msgstr ""
+
+#: app/templates/401.html:4
+msgid "Permission Denied"
+msgstr ""
+
+#: app/templates/401.html:8
+msgid ""
+"You do not have permission to access this feature or content. If you "
+"believe this is an error, please contact an administrator."
+msgstr ""
+
+#: app/templates/404.html:4
+msgid "Page Not Found"
+msgstr ""
+
+#: app/templates/404.html:8
+msgid ""
+"We're sorry, this page is not available. This error has been recorded "
+"will be investigated."
+msgstr ""
+
+#: app/templates/500.html:4
+msgid "Application Error"
+msgstr ""
+
+#: app/templates/500.html:8
+msgid ""
+"There was an error in the application. This error has been recorded and "
+"should be addressed soon."
+msgstr ""
+
+#: app/templates/admin_base.html:7 app/templates/tickets/request_base.html:17
+msgid "Manage"
+msgstr ""
+
+#: app/templates/admin_base.html:18 app/templates/crud/item_base.html:43
+#: app/templates/crud/relationship/list.html:2
+msgid "Relationships"
+msgstr ""
+
+#: app/templates/admin_base.html:21 app/templates/crud/expandofield/list.html:2
+msgid "Extra Fields"
+msgstr ""
+
+#: app/templates/admin_base.html:24 app/templates/external_databases.html:6
+#: app/templates/external_databses.html:6
+msgid "External Databases"
+msgstr ""
+
+#: app/templates/admin_base.html:27
+#: app/templates/crud/accountrequest/list.html:2
+msgid "Account Requests"
+msgstr ""
+
+#: app/templates/base.html:12 app/templates/base.html:30
+msgid "Investigative Dashboard"
+msgstr ""
+
+#: app/templates/base.html:35 app/templates/search_base.html:6
+#: app/templates/search_documents.html:11 app/templates/search_entities.html:13
+msgid "Search"
+msgstr ""
+
+#: app/templates/base.html:39 app/templates/tickets/request_base.html:7
+msgid "Requests"
+msgstr ""
+
+#: app/templates/base.html:43
+msgid "Admin"
+msgstr ""
+
+#: app/templates/base.html:56
+msgid "Log out"
+msgstr ""
+
+#: app/templates/base.html:60 app/templates/request_account.html:6
+msgid "Request Account"
+msgstr ""
+
+#: app/templates/base.html:61
+msgid "Log In"
+msgstr ""
+
+#: app/templates/base.html:90
+msgid "Choose Language"
+msgstr ""
+
+#: app/templates/base.html:104
+msgid "&copy; OCCRP 2013"
+msgstr ""
+
+#: app/templates/company.html:5
+msgid "Company"
+msgstr ""
+
+#: app/templates/company.html:8 app/templates/request_account.html:16
+#: app/templates/tickets/request.html:15
+#: app/templates/tickets/request_details.html:188
+#: app/templates/tickets/request_details.html:189
+msgid "Submit"
+msgstr ""
+
+#: app/templates/drive_success.html:1
+msgid "Successfully connected to Google Drive."
+msgstr ""
+
+#: app/templates/drive_success.html:3
+msgid "Current user name:"
+msgstr ""
+
+#: app/templates/drive_success.html:4
+msgid "Root folder ID:"
+msgstr ""
+
+#: app/templates/drive_success.html:5
+msgid "Total quota (bytes):"
+msgstr ""
+
+#: app/templates/drive_success.html:6
+msgid "Used quota (bytes):"
+msgstr ""
+
+#: app/templates/drive_success.html:7
+msgid "Permission ID:"
+msgstr ""
+
+#: app/templates/external_databases.html:8
+#: app/templates/external_databses.html:8
+msgid "These databases might have the records you're looking for."
+msgstr ""
+
+#: app/templates/external_databases.html:9
+#: app/templates/external_databses.html:9
+msgid "Didn't find what you were looking for? "
+msgstr ""
+
+#: app/templates/external_databases.html:9
+msgid "Request manual help from our researchers."
+msgstr ""
+
+#: app/templates/external_databases.html:20
+msgid "Note"
+msgstr ""
+
+#: app/templates/external_databses.html:9
+msgid "Request manual help from our researchers"
+msgstr ""
+
+#: app/templates/request_account.html:9
+msgid ""
+"\n"
+"                In order to make information requests through "
+"Investigative\n"
+"                Dashboard, you must have an account. Please enter your\n"
+"                information below and one of our staff will evaluate and "
+"respond\n"
+"                to your request.\n"
+"            "
+msgstr ""
+
+#: app/templates/search_base.html:13
+msgid "Documents"
+msgstr ""
+
+#: app/templates/search_documents.html:7 app/templates/search_entities.html:8
+msgid "Search terms"
+msgstr ""
+
+#: app/templates/search_documents.html:30 app/templates/search_entities.html:67
+msgid "No search results."
+msgstr ""
+
+#: app/templates/search_entities.html:18
+#, python-format
+msgid ""
+"\n"
+"                %(num_results)s result found.\n"
+"            "
+msgid_plural ""
+"\n"
+"                %(num_results)s results found.\n"
+"            "
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/templates/splash.html:6
+msgid ""
+"Investigative Dashboard helps investigators expose illicit ties that "
+"cross borders."
+msgstr ""
+
+#: app/templates/splash.html:15
+msgid "Search for a company or person of interest."
+msgstr ""
+
+#: app/templates/splash.html:20
+msgid ""
+"We have scraped the national registries of Panama, Cyprus and ten other "
+"countries."
+msgstr ""
+
+#: app/templates/splash.html:28
+msgid "If you need more data, visit recommended databases."
+msgstr ""
+
+#: app/templates/splash.html:33
+msgid "We have assembled a directory of over 300 local databases that might help."
+msgstr ""
+
+#: app/templates/splash.html:53
+msgid "If you still need help, sign in and request expert assistance."
+msgstr ""
+
+#: app/templates/splash.html:58
+msgid ""
+"We understand investigations are sensitive and we take privacy very "
+"seriously. Requests are only seen by our full-time experts and, if you "
+"are willing, by vetted volunteers."
+msgstr ""
+
+#: app/templates/crud/delete.html:4
+msgid "Confirm Deletion"
+msgstr ""
+
+#: app/templates/crud/delete.html:6
+msgid "Cannot delete this entity."
+msgstr ""
+
+#: app/templates/crud/delete_base.html:9
+#, python-format
+msgid ""
+"\n"
+"                Are you sure you want to delete %(object_name)s?\n"
+"                You will not be able to undo this action.\n"
+"            "
+msgstr ""
+
+#: app/templates/crud/delete_base.html:15
+msgid "Yes, I am sure."
+msgstr ""
+
+#: app/templates/crud/delete_base.html:19
+#, python-format
+msgid ""
+"\n"
+"                %(object_name)s is attached to the\n"
+"                following relationships:\n"
+"            "
+msgstr ""
+
+#: app/templates/crud/delete_base.html:24
+msgid "relationship"
+msgstr ""
+
+#: app/templates/crud/entity_details.html:17
+msgid "Close"
+msgstr ""
+
+#: app/templates/crud/item_base.html:9
+msgid "Delete"
+msgstr ""
+
+#: app/templates/crud/item_base.html:17
+#: app/templates/tickets/request_details.html:190
+msgid "Save"
+msgstr ""
+
+#: app/templates/crud/item_base.html:25
+msgid "File"
+msgstr ""
+
+#: app/templates/crud/item_base.html:26
+#: app/templates/tickets/request_details.html:94
+msgid "Created"
+msgstr ""
+
+#: app/templates/crud/item_base.html:27
+msgid "Last Modified"
+msgstr ""
+
+#: app/templates/crud/item_base.html:28
+msgid "Last Modified By"
+msgstr ""
+
+#: app/templates/crud/item_base.html:29
+#: app/templates/tickets/request_admin_base.html:20
+msgid "Actions"
+msgstr ""
+
+#: app/templates/crud/item_base.html:40
+msgid "Create"
+msgstr ""
+
+#: app/templates/crud/list_base.html:7
+#: app/templates/tickets/request_details.html:191
+msgid "Add"
+msgstr ""
+
+#: app/templates/crud/list_base.html:24
+#: app/templates/tickets/request_admin_base.html:56
+#: app/templates/tickets/request_admin_base.html:59
+msgid "Prev"
+msgstr ""
+
+#: app/templates/crud/list_base.html:33
+#: app/templates/tickets/request_admin_base.html:65
+#: app/templates/tickets/request_admin_base.html:68
+msgid "Next"
+msgstr ""
+
+#: app/templates/crud/accountrequest/add.html:2
+msgid "New Account Request"
+msgstr ""
+
+#: app/templates/crud/accountrequest/edit.html:2
+msgid "Edit Account Request"
+msgstr ""
+
+#: app/templates/crud/company/add.html:2
+msgid "New Company"
+msgstr ""
+
+#: app/templates/crud/company/edit.html:2
+msgid "Edit Company"
+msgstr ""
+
+#: app/templates/crud/expandofield/add.html:2
+msgid "New Extra Field"
+msgstr ""
+
+#: app/templates/crud/expandofield/edit.html:2
+msgid "Edit Extra Field"
+msgstr ""
+
+#: app/templates/crud/externaldb/add.html:2
+msgid "New Database"
+msgstr ""
+
+#: app/templates/crud/externaldb/edit.html:2
+msgid "Edit External Database"
+msgstr ""
+
+#: app/templates/crud/externaldb/list.html:2
+msgid "Databases"
+msgstr ""
+
+#: app/templates/crud/location/add.html:2
+msgid "New Location"
+msgstr ""
+
+#: app/templates/crud/location/edit.html:2
+msgid "Edit Location"
+msgstr ""
+
+#: app/templates/crud/person/add.html:2
+msgid "New Person"
+msgstr ""
+
+#: app/templates/crud/person/edit.html:2
+msgid "Edit Person"
+msgstr ""
+
+#: app/templates/crud/relationship/add.html:2
+msgid "New Relationship"
+msgstr ""
+
+#: app/templates/crud/relationship/edit.html:2
+#: app/templates/crud/relationship/item.html:2
+msgid "Edit Relationship"
+msgstr ""
+
+#: app/templates/macros/forms.html:28
+msgid "Select file"
+msgstr ""
+
+#: app/templates/macros/forms.html:29
+msgid "Change"
+msgstr ""
+
+#: app/templates/macros/forms.html:32
+msgid "Remove"
+msgstr ""
+
+#: app/templates/macros/forms.html:46
+msgid "Attach files"
+msgstr ""
+
+#: app/templates/macros/macros.html:6
+msgid "Key"
+msgstr ""
+
+#: app/templates/tickets/request.html:5
+msgid "Request Information"
+msgstr ""
+
+#: app/templates/tickets/request.html:9
+msgid ""
+"\n"
+"            Your request will be routed to our professional researchers "
+"and volunteers, who\n"
+"            will try to help.\n"
+"        "
+msgstr ""
+
+#: app/templates/tickets/request_admin_base.html:36
+#: app/templates/tickets/request_details.html:87
+#: app/templates/tickets/request_list.html:29
+#: app/templates/tickets/request_list.html:61
+msgid "No Responder"
+msgstr ""
+
+#: app/templates/tickets/request_admin_base.html:78
+msgid "No tickets found."
+msgstr ""
+
+#: app/templates/tickets/request_base.html:9
+#: app/templates/tickets/request_list.html:8
+msgid "My Requests"
+msgstr ""
+
+#: app/templates/tickets/request_base.html:13
+#: app/templates/tickets/responds_list.html:5
+msgid "Assigned Requests"
+msgstr ""
+
+#: app/templates/tickets/request_base.html:19
+#: app/templates/tickets/admin/admin_unassigned.html:4
+msgid "Unassigned Tickets"
+msgstr ""
+
+#: app/templates/tickets/request_base.html:22
+msgid "Upcoming Deadlines"
+msgstr ""
+
+#: app/templates/tickets/request_base.html:25
+msgid "Flagged Tickets"
+msgstr ""
+
+#: app/templates/tickets/request_base.html:28
+msgid "Closed Tickets"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:12
+msgid "Attach Document"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:15
+msgid "Attach Entity"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:19
+msgid "Edit Details"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:25
+#: app/templates/tickets/request_details.html:189
+msgid "Close Request"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:32
+#: app/templates/tickets/request_details.html:186
+msgid "Cancel Request"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:39
+msgid "Mark Bill Paid"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:46
+#: app/templates/tickets/request_details.html:187
+msgid "Alert Administrator"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:55
+msgid "Re-Open"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:77
+#: app/templates/tickets/responds_list.html:14
+#: app/templates/tickets/responds_list.html:46
+msgid "Requester"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:90
+msgid "Request Type"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:100
+msgid "Attached Entities"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:110
+msgid "Attached Files"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:116
+msgid "Background Information"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:149
+msgid "No Comment"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:156
+msgid "No updates yet."
+msgstr ""
+
+#: app/templates/tickets/request_details.html:187
+msgid "Flag Request"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:188
+msgid "Re-Open Request"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:190
+msgid "Mark Paid"
+msgstr ""
+
+#: app/templates/tickets/request_details.html:191
+msgid "Add Entities"
+msgstr ""
+
+#: app/templates/tickets/request_list.html:6
+msgid " New Request"
+msgstr ""
+
+#: app/templates/tickets/request_list.html:39
+msgid "No open requests found."
+msgstr ""
+
+#: app/templates/tickets/responds_list.html:26
+#: app/templates/tickets/responds_list.html:58
+msgid "No Requester"
+msgstr ""
+
+#: app/templates/tickets/responds_list.html:36
+msgid "No requests found."
+msgstr ""
+
+#: app/templates/tickets/admin/admin_deadline.html:3
+msgid "Tickets with Deadlines"
+msgstr ""
+
+#: app/templates/tickets/admin/admin_deadline.html:4
+msgid "View open tickets ordered by upcoming deadlines. "
+msgstr ""
+
+#: app/templates/tickets/admin/admin_edit.html:5
+msgid "Administer Ticket Details"
+msgstr ""
+
+#: app/templates/tickets/admin/admin_edit.html:9
+msgid ""
+"In the top half of the form, you can perform administrative\n"
+"        tasks, such as unflagging tickets, assigning responders, and "
+"forcing status changes.\n"
+"        In the bottom half, you can make changes to the core values of "
+"the ticket, including\n"
+"        information that the end user has submitted. Changes to this form"
+" are not reflected\n"
+"        in the Activity Log."
+msgstr ""
+
+#: app/templates/tickets/admin/admin_edit.html:16
+msgid "Apply Changes"
+msgstr ""
+
+#: app/templates/tickets/admin/admin_flagged.html:3
+msgid "User Flagged Tickets"
+msgstr ""
+
+#: app/templates/tickets/admin/admin_flagged.html:4
+msgid ""
+"View tickets which users or staff have deemed requiring administrative "
+"intervention. "
+msgstr ""
+
+#: app/templates/tickets/admin/admin_history.html:3
+msgid "Tickets History"
+msgstr ""
+
+#: app/templates/tickets/admin/admin_history.html:4
+msgid "A simple list of closed, resolved or cancelled tickets. "
+msgstr ""
+
+#: app/templates/tickets/admin/admin_unassigned.html:5
+msgid "View new tickets that need responders assigned to them."
+msgstr ""
+
+#: app/templates/tickets/modals/form_basic.html:2
+msgid "Not Allowed"
+msgstr ""
+
+#: static/js/drive-picker.js:70
+msgid "Error attaching file(s)."
+msgstr ""
+
+#: static/js/i18n.js:47 static/js/i18n.js:55
+msgid "x04"
+msgid_plural "x04"
+msgstr[0] ""
+msgstr[1] ""
+
+#: static/js/list-files.js:32
+msgid "File successfully removed."
+msgstr ""
+
+#: static/js/list-files.js:34
+msgid "Error removing attached file."
+msgstr ""
+
+#: static/js/list-files.js:52
+msgid "No files attached."
+msgstr ""
+
+#: static/js/list-files.js:69 static/js/list-files.js:91
+msgid "Error displaying attached files."
+msgstr ""
+
+#: static/js/list-files.js:81
+msgid "No attachments."
+msgstr ""
+

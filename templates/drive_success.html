@@ -1,0 +1,8 @@
+<strong>{% trans %}Successfully connected to Google Drive.{% endtrans %}</strong>
+<ul>
+    <li>{% trans %}Current user name:{% endtrans %} {{ about.name }}</li>
+    <li>{% trans %}Root folder ID:{% endtrans %} {{ about.rootFolderId }}</li>
+    <li>{% trans %}Total quota (bytes):{% endtrans %} {{ about.quotaBytesTotal }}</li>
+    <li>{% trans %}Used quota (bytes):{% endtrans %} {{ about.quotaBytesUsed }}</li>
+    <li>{% trans %}Permission ID:{% endtrans %} {{ about.permissionId }}</li>
+</ul>

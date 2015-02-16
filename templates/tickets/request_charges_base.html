@@ -1,0 +1,104 @@
+{% extends "tickets/request_base.html" %}
+
+{% import "macros/modals.html" as modal_macros %}
+
+{% block inner_content %}
+    {% block pre_title %}{% endblock %}
+
+    <div class="page-header">
+        <h1>{% block ticket_title %}{% endblock %}</h1>
+    </div>
+
+    {% call macros.help_box() %}
+        {% block ticket_description %}{% endblock %}
+    {% endcall %}
+
+    {% if charges %}
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>{% trans %}Requester{% endtrans %}</th>
+                    <th>{% trans %}Item{% endtrans %}</th>
+                    <th>{% trans %}Cost{% endtrans %}</th>
+                    <th>{% trans %}Cost (original currency){% endtrans %}</th>
+                    <th>{% trans %}Reconciled{% endtrans %}</th>
+                    <th>{% trans %}Created{% endtrans %}</th>
+                    <th>{% trans %}Actions{% endtrans %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for charge in charges %}
+                    <tr>
+                        <td>
+                            <a href="{{ uri_for('ticket_admin_customer_charges') }}?user={{ charge.user.urlsafe() }}">
+                                {{ charge.user.get().display_name }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ uri_for('request_details', ticket_id=charge.ticket.id()) }}#charge-list">
+                                {% if charge.ticket.get().flagged %}
+                                    <i class="icon-warning-sign"></i>
+                                {% elif charge.ticket.get().status in ["new", "in-progress"] %}
+                                    <i class="icon-folder-open"></i>
+                                {% elif charge.ticket.get().status in ["cancelled", "closed"] %}
+                                    <i class="icon-folder-close"></i>
+                                {% endif %}
+                            {{ charge.item }}</a>
+                        </td>
+                        <td>${{ "%0.2f"|format(charge.cost) }}</td>
+                        <td>{{ "%0.2f"|format(charge.cost_original_currency) }} {{ charge.original_currency }}</td>
+                        <td>
+                            {{ macros.display_datetime(charge.reconciled_date) }}
+                            {% if charge.paid_status -%}
+                                ( {{ charge.get_display_value('paid_status') }} )
+                            {%- endif %}
+                        </td>
+                        <td>{{ macros.display_datetime(charge.created ) }}</td>
+                        <td>
+                            <a class='btn btn-mini' href="#reconcile-charge" 
+                                data-modal-url="{{ uri_for('ticket_admin_reconcile_charges', charge_key=charge.key.urlsafe()) }}">
+                                <i class="icon-ok"></i>
+                            </a>
+                        </td>                       
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        {% if next_cursor.urlsafe() != "" or prev_cursor.urlsafe() != "" %}
+            <div class="pagination pull-right">
+                <ul>
+                {% if prev_cursor.urlsafe() != "" and ((current_direction == "prev" and more_results)
+                        or current_direction == "next") %}
+                    <li>
+                        <a href="{{ request.path }}?curs={{ prev_cursor.urlsafe() }}&dir=prev">{% trans %}Prev{% endtrans %}</a>
+                    </li>
+                {% else %}
+                    <li class="disabled"><a href="#">{% trans %}Prev{% endtrans %}</a></li>
+                {% endif %}
+
+                {% if next_cursor.urlsafe() != "" and ((current_direction == "next" and more_results)
+                        or current_direction == "prev") %}
+                    <li>
+                        <a href="{{ request.path }}?curs={{ next_cursor.urlsafe() }}&dir=next">{% trans %}Next{% endtrans %}</a>
+                    </li>
+                {% else %}
+                    <li class="disabled"><a href="#">{% trans %}Next{% endtrans %}</a></li>
+                {% endif %}
+                </ul>
+            </div>
+        
+        {% endif %}
+
+
+    {% else %}
+        <div class="alert alert-block alert-warning">
+            {% trans %}No charges found.{% endtrans %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block after_js %}
+    {{ super() }}
+    {{ modal_macros.render_dynamic_modal('reconcile-charge', _('Reconcile Charge'), _('Reconcile')) }}
+{% endblock %}

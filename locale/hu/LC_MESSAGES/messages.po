@@ -1,0 +1,2583 @@
+# Arabic translations for PROJECT.
+# Copyright (C) 2013 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2013-12-09 10:47+0100\n"
+"PO-Revision-Date: 2014-01-14 18:36+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: ar <LL@li.org>\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 "
+"&& n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: app/fields.py:74
+msgid "Key is invalid or does not exist."
+msgstr "A kulcs érvénytelen vagy nem létezik."
+
+#: app/forms.py:59 app/models.py:348 app/models.py:482
+msgid "Comments"
+msgstr "Megjegyzések"
+
+#: app/forms.py:60 app/templates/crud/item_base.html:32
+msgid "Files"
+msgstr "Fájlok"
+
+#: app/forms.py:141 app/models.py:474 app/models.py:478
+msgid "Entity One"
+msgstr "Első elem"
+
+#: app/forms.py:142 app/models.py:475 app/models.py:479
+msgid "Entity Two"
+msgstr "Második elem"
+
+#: app/forms.py:145
+msgid "Entity Two is a"
+msgstr "A második elem egy"
+
+#: app/forms.py:156
+msgid "The entity below is a"
+msgstr "Az alábbi elem egy"
+
+#: app/forms.py:164
+msgid "Customer"
+msgstr "Ügyfél"
+
+#: app/forms.py:178 app/forms.py:226 app/models.py:581 app/models.py:1122
+#: app/templates/tickets/request_details.html:251
+msgid "Country"
+msgstr "Ország"
+
+#: app/forms.py:183
+msgid "Person"
+msgstr "Személy"
+
+#: app/forms.py:184 app/templates/company.html:5
+msgid "Company"
+msgstr "Cég"
+
+#: app/forms.py:185 app/templates/crud/fragment.html:5
+#: app/templates/crud/company/edit.html:12
+#: app/templates/crud/relationship/inline_entity.html:5
+#: app/templates/crud/relationship/table_mixin.html:163
+msgid "Relationship"
+msgstr "Kapcsolat"
+
+#: app/forms.py:186 app/models.py:912 app/models.py:1258
+#: app/templates/crud/relationship/table_mixin.html:24
+#: app/templates/tickets/request_details.html:155
+msgid "Location"
+msgstr "Helyszín"
+
+#: app/forms.py:188 app/models.py:613
+msgid "Full Name"
+msgstr "Teljes név"
+
+#: app/forms.py:191 app/models.py:343
+msgid "Identifier"
+msgstr "Azonosító"
+
+#: app/forms.py:202
+msgid "Illegal Identifier. Only lowercase letters and _ are allowed."
+msgstr "Szabálytalan azonosító. Csak kisbetűk és az _ jel megengedett."
+
+#: app/forms.py:209
+msgid "Field with this identifier already exists."
+msgstr "Már létezik mező ezzel az azonosítóval."
+
+#: app/forms.py:224 app/models.py:1128
+msgid "URL"
+msgstr "URL"
+
+#: app/forms.py:240 app/forms.py:262 app/forms.py:293
+msgid "Email"
+msgstr "E-mail"
+
+#: app/forms.py:242 app/models.py:1233
+msgid "Media Type"
+msgstr "Médiatípus"
+
+#: app/forms.py:245 app/models.py:1235
+msgid "Circulation (approximate per month)"
+msgstr "Körforgás (körülbelül, havonta)"
+
+#: app/forms.py:266 app/models.py:518 app/templates/tickets/request_base.html:8
+#: app/templates/tickets/request_details.html:32
+msgid "Status"
+msgstr "Állapot"
+
+#: app/forms.py:268 app/forms.py:275 app/forms.py:535
+msgid "All"
+msgstr "Összes"
+
+#: app/forms.py:269 app/models.py:1149
+msgid "Approved"
+msgstr "Jóváhagyva"
+
+#: app/forms.py:270
+msgid "Not Approved"
+msgstr "Nincs jóváhagyva"
+
+#: app/forms.py:273
+msgid "Type of Request"
+msgstr "Kérés típusa"
+
+#: app/forms.py:276 app/templates/tickets/request_charges_base.html:20
+#: app/templates/tickets/request_details.html:164
+msgid "Requester"
+msgstr "Kérelmező"
+
+#: app/forms.py:277 app/templates/request_account_home.html:24
+msgid "Volunteer"
+msgstr "Önkéntes"
+
+#: app/forms.py:302
+msgid "Approve (Adds user to groups)"
+msgstr "Engedélyezés (a felhasználó hozzáadása csoportokhoz)"
+
+#: app/forms.py:303
+msgid "Reject (Removes user from groups)"
+msgstr "Elutasítás (a felhasználó eltávolítása csoportokból)"
+
+#: app/forms.py:308
+msgid "Action"
+msgstr "Művelet"
+
+#: app/forms.py:315
+msgid "Research Goal"
+msgstr "Kutatási cél"
+
+#: app/forms.py:324
+msgid ""
+"This is highly sensitive, do not let volunteer research librarians see "
+"this request."
+msgstr ""
+"Rendkívül bizalmas, a kérés ne jelenjen meg önkéntes kutató könyvtárosok "
+"számára."
+
+#: app/forms.py:339 app/forms.py:362
+msgid "What do you know so far?"
+msgstr "Mit tudunk eddig?"
+
+#: app/forms.py:345
+msgid "Any information you already have."
+msgstr "Az összes információ, amellyel rendelkezik."
+
+#: app/forms.py:348
+msgid "Where are you researching?"
+msgstr "Hol végez kutatómunkát?"
+
+#: app/forms.py:366
+msgid "What story are you working on?"
+msgstr "Milyen történeten dolgozik?"
+
+#: app/forms.py:370
+msgid "What sources do you have so far?"
+msgstr "Eddig milyen forrásokkal rendelkezik?"
+
+#: app/forms.py:391
+msgid "Reason"
+msgstr "Ok"
+
+#: app/forms.py:397 app/forms.py:406
+#: app/templates/tickets/request_details.html:358
+msgid "Comment"
+msgstr "Megjegyzés"
+
+#: app/forms.py:410
+msgid "Paid Status"
+msgstr "Fizetett állapot"
+
+#: app/forms.py:411
+msgid "Marking as paid will reconcile any open charges with the request."
+msgstr ""
+"A fizetettként történő megjelölés által a kéréssel kapcsolatos minden "
+"fennálló díj kiegyenlítődik."
+
+#: app/forms.py:421
+msgid "Comment to Requester"
+msgstr "Megjegyzés küldése a kérelmezőnek"
+
+#: app/forms.py:423 app/templates/tickets/request_charges_base.html:21
+msgid "Item"
+msgstr "Elem"
+
+#: app/forms.py:425 app/forms.py:506
+msgid "Cost (USD)"
+msgstr "Költség (USD)"
+
+#: app/forms.py:427 app/forms.py:508
+msgid "Cost (Original Currency)"
+msgstr "Költség (eredeti pénznem)"
+
+#: app/forms.py:435
+msgid ""
+"Add a comment, visible to the person making this request and the "
+"researcher answering it."
+msgstr ""
+"Adjon hozzá megjegyzést, amely látható lesz a kérést beküldő személy és "
+"az azt megválaszoló kutató számára."
+
+#: app/forms.py:453
+msgid "Assign OCCRP Staff member(s) as the ticket responder"
+msgstr "Jelöljön ki OCCRP-munkatársakat a jegy megválaszolására"
+
+#: app/forms.py:454 app/templates/tickets/request_details.html:174
+msgid "Staff Responders"
+msgstr "Válaszadó munkatársak"
+
+#: app/forms.py:457
+msgid "Assign Volunteer Researcher(s)"
+msgstr "Jelöljön ki önkéntes kutató(ka)t"
+
+#: app/forms.py:458 app/templates/tickets/request_details.html:186
+msgid "Volunteer Responders"
+msgstr "Önkéntes válaszadók"
+
+#: app/forms.py:460 app/models.py:618 app/models.py:705
+msgid "Requester Type"
+msgstr "Kérelmező típusa"
+
+#: app/forms.py:463 app/models.py:94
+msgid "Flagged"
+msgstr "Megjelölve"
+
+#: app/forms.py:464
+msgid "Once user issues are dealt with, un-flag the ticket"
+msgstr "A felhasználói probléma megoldása után távolítsa el a jegy jelölését"
+
+#: app/forms.py:466 app/models.py:620 app/models.py:717
+#: app/templates/tickets/request_details.html:202
+msgid "Findings Public"
+msgstr "Az eredmények nyilvánosak"
+
+#: app/forms.py:467
+msgid "Whether the findings of the ticket should be publicly visible."
+msgstr "Nyilvánosan láthatók legyenek-e a jegy eredményei."
+
+#: app/forms.py:469 app/models.py:622 app/models.py:719
+msgid "For-Profit?"
+msgstr "Nyereségorientált?"
+
+#: app/forms.py:471 app/models.py:721
+msgid "Public?"
+msgstr "Nyilvános?"
+
+#: app/forms.py:472
+msgid ""
+"If a ticket is marked as public, volunteers are able toview and "
+"collaborate on the ticket. Making a ticket private will not remove "
+"volunteers as researchers."
+msgstr ""
+"Ha egy jegy jelölése nyilvános, akkor az önkéntesek megtekinthetik a "
+"jegyet, és közreműködhetnek azon. A jegy privát beállítása nem távolítja "
+"el a kutatóként jelen lévő önkénteseket."
+
+#: app/forms.py:523 app/forms.py:548
+msgid "Entities"
+msgstr "Elemek"
+
+#: app/forms.py:534
+msgid "Result type"
+msgstr "Találat típusa"
+
+#: app/forms.py:536 app/templates/admin_base.html:9
+#: app/templates/crud/company/list.html:2
+msgid "Companies"
+msgstr "Cégek"
+
+#: app/forms.py:537 app/templates/admin_base.html:12
+#: app/templates/crud/person/list.html:2
+msgid "People"
+msgstr "Emberek"
+
+#: app/forms.py:538 app/templates/admin_base.html:15
+#: app/templates/crud/location/list.html:2
+msgid "Locations"
+msgstr "Helyek"
+
+#: app/forms.py:545
+msgid "Search Providers"
+msgstr "Keresésszolgáltatók"
+
+#: app/forms.py:547
+msgid "Everything"
+msgstr "Minden"
+
+#: app/forms.py:549
+msgid "Documents"
+msgstr "Dokumentumok"
+
+#: app/forms.py:550
+msgid "Companies from OpenCorporates"
+msgstr "Az OpenCorporates cégei"
+
+#: app/forms.py:594
+msgid "Share With"
+msgstr "Megosztás a következőkkel:"
+
+#: app/forms.py:596
+msgid "Everyone (public)"
+msgstr "Mindenki (nyilvános)"
+
+#: app/forms.py:597
+msgid "Users"
+msgstr "Felhasználók"
+
+#: app/forms.py:598 app/templates/about_us.html:20
+msgid "Staff"
+msgstr "Alkalmazottak"
+
+#: app/forms.py:605
+msgid "Named Users"
+msgstr "Nevesített felhasználók"
+
+#: app/forms.py:608
+msgid "Individual users who should have access as well."
+msgstr "Egyedi felhasználók, akiknek hozzáféréssel kell rendelkezniük."
+
+#: app/models.py:54
+msgid "Limited liability"
+msgstr "Korlátolt felelősség"
+
+#: app/models.py:55
+msgid "Partnership"
+msgstr "Partnerkapcsolat"
+
+#: app/models.py:56
+msgid "Stock company"
+msgstr "Részvénytársaság"
+
+#: app/models.py:57
+msgid "Foundation"
+msgstr "Alapítvány"
+
+#: app/models.py:58 app/templates/tickets/request_details.html:215
+msgid "Non-profit"
+msgstr "Nonprofit"
+
+#: app/models.py:59 app/models.py:147
+msgid "Other"
+msgstr "Egyéb"
+
+#: app/models.py:64
+msgid "Active"
+msgstr "Aktív"
+
+#: app/models.py:65
+msgid "Inactive"
+msgstr "Inaktív"
+
+#: app/models.py:69
+msgid "-----------"
+msgstr "-----------"
+
+#: app/models.py:70
+msgid "Male"
+msgstr "Férfi"
+
+#: app/models.py:71
+msgid "Female"
+msgstr "Nő"
+
+#: app/models.py:75
+msgid "Subsidized"
+msgstr "Támogatott"
+
+#: app/models.py:76
+msgid "Covering Cost"
+msgstr "Költségek fedezése"
+
+#: app/models.py:77
+msgid "Covering Cost +"
+msgstr "Költségek fedezése +"
+
+#: app/models.py:81
+msgid "Identify what a person owns"
+msgstr "Egy személy tulajdonainak meghatározása"
+
+#: app/models.py:82
+msgid "Determine company ownership"
+msgstr "Egy cég tulajdonosainak meghatározása"
+
+#: app/models.py:83
+msgid "Any other question"
+msgstr "Egyéb kérdés"
+
+#: app/models.py:87
+msgid "Updated"
+msgstr "Frissítve"
+
+#: app/models.py:88 app/handlers/ticketing.py:389
+msgid "Charge Added"
+msgstr "Díj hozzáadva"
+
+#: app/models.py:89 app/handlers/ticketing.py:360
+msgid "Reconciled Charges"
+msgstr "Kiegyenlített díjak"
+
+#: app/models.py:90 app/models.py:102
+msgid "Closed"
+msgstr "Lezárva"
+
+#: app/models.py:91 app/models.py:103 app/models.py:112
+msgid "Cancelled"
+msgstr "Visszavonva"
+
+#: app/models.py:92
+msgid "Re-Opened"
+msgstr "Újra megnyitva"
+
+#: app/models.py:93
+msgid "Opened"
+msgstr "Megnyitva"
+
+#: app/models.py:95
+msgid "Documents Attached"
+msgstr "Dokumentumok csatolva"
+
+#: app/models.py:96
+msgid "Entities Attached"
+msgstr "Elemek csatolva"
+
+#: app/models.py:100
+msgid "New"
+msgstr "Új"
+
+#: app/models.py:101
+msgid "In Progress"
+msgstr "Folyamatban"
+
+#: app/models.py:110
+msgid "Paid"
+msgstr "Fizetett"
+
+#: app/models.py:111
+msgid "Paid by OCCRP"
+msgstr "Az OCCRP által fizetett"
+
+#: app/models.py:117
+msgid "Parent"
+msgstr "Szülő"
+
+#: app/models.py:118
+msgid "Spouse"
+msgstr "Házastárs"
+
+#: app/models.py:119
+msgid "Other Relative"
+msgstr "Egyéb rokon"
+
+#: app/models.py:120
+msgid "Friend or Acquaintance"
+msgstr "Barát vagy ismerős"
+
+#: app/models.py:121
+msgid "Employer"
+msgstr "Munkáltató"
+
+#: app/models.py:122
+msgid "Business Partner"
+msgstr "Üzleti partner"
+
+#: app/models.py:123
+msgid "Proxy"
+msgstr "Meghatalmazott"
+
+#: app/models.py:126 app/templates/tickets/request_details.html:252
+msgid "Birthplace"
+msgstr "Születési hely"
+
+#: app/models.py:127 app/models.py:143
+msgid "Registered Address"
+msgstr "Bejegyzett cím"
+
+#: app/models.py:128
+msgid "Home Address"
+msgstr "Otthoni cím"
+
+#: app/models.py:131
+msgid "Director"
+msgstr "Igazgató"
+
+#: app/models.py:132
+msgid "Secretary"
+msgstr "Titkár"
+
+#: app/models.py:133
+msgid "Authorized Person"
+msgstr "Meghatalmazott személy"
+
+#: app/models.py:134
+msgid "Representative"
+msgstr "Képviselő"
+
+#: app/models.py:135
+msgid "Shareholder"
+msgstr "Részvényes"
+
+#: app/models.py:136
+msgid "Employee"
+msgstr "Alkalmazott"
+
+#: app/models.py:139
+msgid "Subsidiary"
+msgstr "Leányvállalat"
+
+#: app/models.py:140
+msgid "Trading Partner"
+msgstr "Kereskedelmi partner"
+
+#: app/models.py:144
+msgid "Place of Business"
+msgstr "Telephely"
+
+#: app/models.py:160
+msgid "Media: non-profit"
+msgstr "Média: nonprofit"
+
+#: app/models.py:161
+msgid "Media: for-profit"
+msgstr "Média: nyereségorientált"
+
+#: app/models.py:162
+msgid "Media: freelance"
+msgstr "Média: szabadúszó"
+
+#: app/models.py:163
+msgid "Business: due diligence/investigation"
+msgstr "Vállalkozás: átvilágítás/vizsgálat"
+
+#: app/models.py:164
+msgid "Business: legal"
+msgstr "Vállalkozás: jogi"
+
+#: app/models.py:165
+msgid "Business: general"
+msgstr "Vállalkozás: általános"
+
+#: app/models.py:166
+msgid "Government"
+msgstr "Állami"
+
+#: app/models.py:167
+msgid "Civil society/non-profit"
+msgstr "Civil szervezet/nonprofit"
+
+#: app/models.py:168
+msgid "Individual"
+msgstr "Egyéni"
+
+#: app/models.py:169
+msgid "Other (please specify)"
+msgstr "Egyéb (kérjük, részletezze)"
+
+#: app/models.py:174 app/templates/tickets/request_details.html:231
+msgid "None"
+msgstr "Nincs"
+
+#: app/models.py:175
+msgid "OCCRP"
+msgstr "OCCRP"
+
+#: app/models.py:176
+msgid "ARIJ"
+msgstr "ARIJ"
+
+#: app/models.py:177
+msgid "ANCIR"
+msgstr "ANCIR"
+
+#: app/models.py:178
+msgid "Connectas in the Americas"
+msgstr "Connectas in the Americas"
+
+#: app/models.py:183
+msgid "Website"
+msgstr "Webhely"
+
+#: app/models.py:184
+msgid "Print"
+msgstr "Nyomtatás"
+
+#: app/models.py:185
+msgid "Broadcast TV"
+msgstr "Televíziós közvetítés"
+
+#: app/models.py:186
+msgid "Broadcast Radio"
+msgstr "Rádiós közvetítés"
+
+#: app/models.py:187
+msgid "Other or don't know"
+msgstr "Egyéb vagy nem tudom"
+
+#: app/models.py:192
+msgid "Less than 10,000"
+msgstr "Kevesebb mint 10 000"
+
+#: app/models.py:193
+msgid "10,000 to 25,000"
+msgstr "10 000 – 25 000"
+
+#: app/models.py:194
+msgid "25,000 to 50,000"
+msgstr "25 000 – 50 000"
+
+#: app/models.py:195
+msgid "50,000 to 100,000"
+msgstr "50 000 – 100 000"
+
+#: app/models.py:196
+msgid "100,000 to 250,000"
+msgstr "100 000 – 250 000"
+
+#: app/models.py:197
+msgid "250,000 to 500,000"
+msgstr "250 000 – 500 000"
+
+#: app/models.py:198
+msgid "More than 500,000"
+msgstr "Több mint 500 000"
+
+#: app/models.py:203
+msgid "Business Registry"
+msgstr "Cégnyilvántartás"
+
+#: app/models.py:204
+msgid "Regional procurement registry"
+msgstr "Regionális beszerzési nyilvántartás"
+
+#: app/models.py:205
+msgid "Regulatory Agency"
+msgstr "Szabályozó hatóság"
+
+#: app/models.py:206
+msgid "Commercial Register"
+msgstr "Cégjegyzék"
+
+#: app/models.py:207
+msgid "Court Registry"
+msgstr "Bírósági nyilvántartás"
+
+#: app/models.py:208
+msgid "Gazette"
+msgstr "Közlöny"
+
+#: app/models.py:209
+msgid "Land Registry"
+msgstr "Földhivatal"
+
+#: app/models.py:214
+msgid "All Databases"
+msgstr "Minden adatbázis"
+
+#: app/models.py:215
+msgid "Global Databases"
+msgstr "Globális adatbázisok"
+
+#: app/models.py:341
+msgid "Label"
+msgstr "Címke"
+
+#: app/models.py:344
+msgid "Kind"
+msgstr "Fajta"
+
+#: app/models.py:476 app/templates/tickets/request_base.html:7
+msgid "Type"
+msgstr "Típus"
+
+#: app/models.py:480 app/templates/crud/relationship/table_mixin.html:25
+#: app/templates/crud/relationship/table_mixin.html:56
+#: app/templates/crud/relationship/table_mixin.html:87
+msgid "Start Date"
+msgstr "Kezdő dátum"
+
+#: app/models.py:481 app/templates/crud/relationship/table_mixin.html:26
+#: app/templates/crud/relationship/table_mixin.html:57
+#: app/templates/crud/relationship/table_mixin.html:88
+msgid "End Date"
+msgstr "Befejező dátum"
+
+#: app/models.py:510 app/models.py:576 app/models.py:611 app/models.py:895
+#: app/templates/crud/relationship/table_mixin.html:55
+#: app/templates/crud/relationship/table_mixin.html:86
+#: app/templates/tickets/request_details.html:241
+#: app/templates/tickets/request_details.html:278
+msgid "Name"
+msgstr "Név"
+
+#: app/models.py:511 app/models.py:542
+msgid "Name Variations"
+msgstr "Névváltozatok"
+
+#: app/models.py:514
+msgid "Jurisdiction Registered"
+msgstr "Bejegyzett joghatóság"
+
+#: app/models.py:516
+msgid "Form of Company"
+msgstr "Társasági forma"
+
+#: app/models.py:519
+msgid "Date Registered"
+msgstr "Regisztráció dátuma"
+
+#: app/models.py:520
+msgid "Date Dissolved"
+msgstr "Dátum lejárt"
+
+#: app/models.py:539 app/models.py:1139
+msgid "First Name"
+msgstr "Utónév"
+
+#: app/models.py:540
+msgid "Middle Name"
+msgstr "Középső név"
+
+#: app/models.py:541 app/models.py:1140
+#: app/templates/tickets/request_details.html:254
+#: app/templates/tickets/request_details.html:255
+#: app/templates/tickets/request_details.html:256 static/js/widgets.js:188
+#: static/js/widgets.js:230
+msgid "Last Name"
+msgstr "Vezetéknév"
+
+#: app/models.py:544 app/models.py:903
+#: app/templates/tickets/request_details.html:253
+msgid "Date of Birth"
+msgstr "Születési dátum"
+
+#: app/models.py:545
+msgid "Date of Death"
+msgstr "Halála időpontja"
+
+#: app/models.py:546
+msgid "Sex"
+msgstr "Nem"
+
+#: app/models.py:547
+msgid "Nationalities"
+msgstr "Nemzetiségek"
+
+#: app/models.py:549
+msgid "ID Numbers"
+msgstr "Azonosító számok"
+
+#: app/models.py:577 app/models.py:1227
+msgid "Address"
+msgstr "Cím"
+
+#: app/models.py:578
+msgid "City"
+msgstr "Város"
+
+#: app/models.py:579
+msgid "State/Province/Region"
+msgstr "Állam/Tartomány/Régió"
+
+#: app/models.py:580
+msgid "ZIP/Postal Code"
+msgstr "Irányítószám"
+
+#: app/models.py:614
+msgid "Admin Notes"
+msgstr "Adminisztrátori megjegyzések"
+
+#: app/models.py:680
+msgid "Subsidized (OCCRP pays for everything)"
+msgstr "Támogatott (az OCCRP fizet mindent)"
+
+#: app/models.py:682
+msgid ""
+"Covering cost (OCCRP pays for labor, requester pays costs of buying "
+"documents)"
+msgstr ""
+"Költségek fedezése (az OCCRP fizeti a munkaerőt, a kérelmező fizeti a "
+"dokumentumok vásárlásának költségeit)"
+
+#: app/models.py:685
+msgid "Covering cost+ (requester pays for documents, and also for our work)"
+msgstr ""
+"Költségek fedezése+ (a kérelmező fizet a dokumentumokért és a munkánkért "
+"is)"
+
+#: app/models.py:731 app/templates/tickets/request_base.html:9
+#: app/templates/tickets/request_details.html:146
+msgid "Deadline"
+msgstr "Határidő"
+
+#: app/models.py:732
+msgid "Sensitive?"
+msgstr "Bizalmas?"
+
+#: app/models.py:896 app/templates/tickets/request_details.html:256
+msgid "Aliases"
+msgstr "Aliasok"
+
+#: app/models.py:897 app/models.py:928
+#: app/templates/tickets/request_details.html:242
+msgid "Background"
+msgstr "Háttér"
+
+#: app/models.py:898 app/templates/tickets/request_details.html:243
+msgid "Biography"
+msgstr "Életrajz"
+
+#: app/models.py:899 app/templates/tickets/request_details.html:254
+msgid "Family"
+msgstr "Családi"
+
+#: app/models.py:902 app/templates/tickets/request_details.html:244
+msgid "Business Activities"
+msgstr "Üzleti tevékenységek"
+
+#: app/models.py:906
+msgid "Place of Birth"
+msgstr "Születési hely"
+
+#: app/models.py:909
+msgid "Where have you looked?"
+msgstr "Hol keresett eddig?"
+
+#: app/models.py:924
+msgid "Company Name"
+msgstr "Cég neve"
+
+#: app/models.py:927
+msgid "Country Registered"
+msgstr "Nyilvántartás országa"
+
+#: app/models.py:929 app/templates/search/search_base.html:29
+#: app/templates/tickets/request_details.html:246
+msgid "Sources"
+msgstr "Források"
+
+#: app/models.py:930
+msgid "Your Story"
+msgstr "Az Ön története"
+
+#: app/models.py:932 app/templates/tickets/request_details.html:255
+msgid "Connected People"
+msgstr "Kapcsolatban álló személyek"
+
+#: app/models.py:943
+msgid "What do you want to know?"
+msgstr "Mit szeretne tudni?"
+
+#: app/models.py:996
+#, python-format
+msgid "[Request %s] - %s"
+msgstr "[%s kérés] – %s"
+
+#: app/models.py:1061
+#, python-format
+msgid ""
+"Item: %(item)s\n"
+"Cost: $%(cost)s\n"
+"Converted: %(cost_converted)s"
+msgstr ""
+"Elem: %(item)s\n"
+"Költség: $%(cost)s\n"
+"Átváltva: %(cost_converted)s"
+
+#: app/models.py:1117
+msgid "Agency / Name"
+msgstr "Hivatal/Név"
+
+#: app/models.py:1120
+msgid "Type of Database"
+msgstr "Adatbázis típusa"
+
+#: app/models.py:1123 app/templates/external_databases.html:26
+msgid "Paid Database"
+msgstr "Fizetős adatbázis"
+
+#: app/models.py:1125 app/templates/external_databases.html:29
+msgid "Registration Required"
+msgstr "Regisztráció szükséges"
+
+#: app/models.py:1127 app/templates/external_databases.html:32
+msgid "Government Database"
+msgstr "Kormányadatbázis"
+
+#: app/models.py:1129
+msgid "Notes"
+msgstr "Megjegyzések"
+
+#: app/models.py:1130
+msgid "Blog Post"
+msgstr "Blogbejegyzés"
+
+#: app/models.py:1131
+msgid "YouTube Video Url"
+msgstr "YouTube-videó URL-címe"
+
+#: app/models.py:1141
+msgid "Email Address"
+msgstr "E-mail cím"
+
+#: app/models.py:1143
+msgid "Phone Number"
+msgstr "Telefonszám"
+
+#: app/models.py:1146
+msgid "Organization Membership"
+msgstr "Szervezeti tagság"
+
+#: app/models.py:1148
+msgid "Anything else you would like to tell us"
+msgstr "Egyéb, amit meg szeretne osztani velünk"
+
+#: app/models.py:1168 app/templates/tickets/request_details.html:203
+#: app/templates/tickets/request_details.html:206
+msgid "Yes"
+msgstr "Igen"
+
+#: app/models.py:1169 app/templates/tickets/request_details.html:203
+#: app/templates/tickets/request_details.html:206
+msgid "No"
+msgstr "Nem"
+
+#: app/models.py:1198 app/templates/mail/account_request/received.html:4
+msgid "Your Account Request was received"
+msgstr "A fiókkérelme megérkezett"
+
+#: app/models.py:1204 app/templates/mail/account_request/received_admin.html:4
+msgid "An Account Request was received"
+msgstr "Fiókkérelem érkezett"
+
+#: app/models.py:1212
+msgid "An update to your Account Request"
+msgstr "Fiókkérelmének frissítése"
+
+#: app/models.py:1230
+msgid "Industry"
+msgstr "Iparág"
+
+#: app/models.py:1231
+msgid "Other Industry"
+msgstr "Egyéb iparág"
+
+#: app/models.py:1239
+msgid "Name of Employer"
+msgstr "Munkáltató neve"
+
+#: app/models.py:1241
+msgid "Position / Job Title"
+msgstr "Pozíció / beosztás"
+
+#: app/models.py:1255
+msgid "Interests"
+msgstr "Érdeklődés"
+
+#: app/models.py:1256
+msgid "Expertise"
+msgstr "Szakterület"
+
+#: app/models.py:1257
+msgid "Languages"
+msgstr "Nyelvek"
+
+#: app/models.py:1260
+msgid "Availability"
+msgstr "Elérhetőség"
+
+#: app/models.py:1261
+msgid "Own Databases"
+msgstr "Saját adatbázisok"
+
+#: app/models.py:1263
+msgid "Restrictions / Conflicts of Interest"
+msgstr "Korlátozások / összeférhetetlenség"
+
+#: app/utils.py:43 app/templates/base.html:12
+#: app/templates/oauth_success.html:6 app/templates/mail/mail_base.html:12
+#: app/templates/mail/mail_base.html:37 app/templates/mail/mail_base.html:38
+msgid "Investigative Dashboard"
+msgstr "Investigative Dashboard"
+
+#: app/validators.py:13
+msgid "This field is required."
+msgstr "Kötelező mező."
+
+#: app/appengine_modelforms/fields.py:91 app/appengine_modelforms/fields.py:173
+#: app/appengine_modelforms/fields.py:175
+msgid "Not a valid choice"
+msgstr "Érvénytelen választás"
+
+#: app/appengine_modelforms/fields.py:194
+msgid "Not a valid list"
+msgstr "Érvénytelen lista"
+
+#: app/appengine_modelforms/fields.py:213
+msgid "Not a valid integer list"
+msgstr "Érvénytelen listaérték"
+
+#: app/google_apis/drive.py:29
+msgid "Error connecting to Google Drive."
+msgstr "Hiba a Google Drive-hoz történő kapcsolódás során."
+
+#: app/google_apis/drive.py:93
+msgid "Error refreshing Google Drive access token."
+msgstr "Hiba a Google Drive hozzáférési token frissítése során."
+
+#: app/google_apis/drive.py:113
+msgid "Your Google Drive private key must be in \"PEM\" format."
+msgstr "A titkos Google Drive-kulcsnak \\„PEM\\” formátumban kell lennie."
+
+#: app/google_apis/drive.py:116
+msgid ""
+"Error refreshing Google Drive access token. Check your settings and try "
+"again."
+msgstr ""
+"Hiba a Google Drive hozzáférési token frissítése során. Ellenőrizze "
+"beállításait, majd próbálja újra."
+
+#: app/google_apis/groups.py:21
+msgid "Error connecting to Google Groups."
+msgstr "Hiba a Google Csoportokhoz történő kapcsolódás során."
+
+#: app/google_apis/groups.py:64
+msgid "Your private key must be in \"PEM\" format."
+msgstr "A titkos kulcsnak \\„PEM\\” formátumban kell lennie."
+
+#: app/google_apis/groups.py:66
+msgid "Error refreshing the access token. Check your settings and try again."
+msgstr ""
+"Hiba a hozzáférési token frissítése során. Ellenőrizze beállításait, majd"
+" próbálja újra."
+
+#: app/handlers/crud.py:78 app/templates/crud/relationship/table_mixin.html:194
+msgid "No entries found."
+msgstr "Nem található bejegyzés."
+
+#: app/handlers/crud.py:223
+#, python-format
+msgid "%(entity)s successfully saved.entity"
+msgstr "%(entity)s elem mentése sikerült."
+
+#: app/handlers/crud.py:235
+#, python-format
+msgid "%(entity)s successfully deleted.entity"
+msgstr "%(entity)s elem törlése sikerült."
+
+#: app/handlers/crud.py:253
+#, python-format
+msgid "%(entity)s could not deleted because of %(rel_count)d relationsentity"
+msgstr "%(entity) elem törlése %(rel_count)d kapcsolati elem miatt nem sikerült"
+
+#: app/handlers/crud.py:284
+msgid "No relationships found. You can create them via other entities."
+msgstr "Nem található kapcsolat. Egyéb elemeken keresztül létrehozhatja azokat."
+
+#: app/handlers/crud.py:388
+#, python-format
+msgid "Relationship with new %(entity_type)s successfully saved.entity_type"
+msgstr "A kapcsolat mentése az új %(entity_type)s elemekkel sikerült.entity_type"
+
+#: app/handlers/crud.py:424
+msgid "No companies found."
+msgstr "Nem találhatók cégek."
+
+#: app/handlers/crud.py:439
+msgid "No people found."
+msgstr "Nem találhatók személyek."
+
+#: app/handlers/crud.py:455
+msgid "No locations found."
+msgstr "Nem találhatók helyek."
+
+#: app/handlers/crud.py:469
+msgid "No extra fields found."
+msgstr "Nem találhatók extra mezők."
+
+#: app/handlers/crud.py:480 app/templates/external_databases.html:53
+msgid "No external databases found."
+msgstr "Nem találhatók külső adatbázisok."
+
+#: app/handlers/crud.py:516
+msgid "No account requests found."
+msgstr "Nem találhatók fiókkérelmek."
+
+#: app/handlers/crud.py:559
+msgid "No Users found."
+msgstr "Nem találhatók felhasználók."
+
+#: app/handlers/crud.py:632
+msgid "Request submitted. Our staff will evaluate and respond to your request."
+msgstr ""
+"Kérés elküldve. Egyik munkatársunk értékelni fogja azt, majd válaszolni "
+"fog kérésére."
+
+#: app/handlers/crud.py:663
+msgid "The user has been notified of the change to their request status."
+msgstr "A felhasználót értesítettük a kérés állapotának változásáról."
+
+#: app/handlers/drive.py:57 static/js/drive-picker.js:94
+msgid "File(s) successfully attached."
+msgstr "A fájl(ok) csatolása sikerült."
+
+#: app/handlers/drive.py:115
+msgid "Sharing rules applied."
+msgstr "A megosztási szabályok alkalmazása megtörtént."
+
+#: app/handlers/ticketing.py:50
+msgid ""
+"Your request for an account is pending. Once approved, you can access Ask"
+" an Expert"
+msgstr ""
+"Fiókkérelme függőben van. A jóváhagyás után hozzáférhet a Szakértő "
+"megkérdezése funkcióhoz."
+
+#: app/handlers/ticketing.py:114 app/handlers/ticketing.py:725
+msgid "Ticket successfully saved."
+msgstr "A jegy mentése sikerült."
+
+#: app/handlers/ticketing.py:116
+msgid "Ticket successfully created."
+msgstr "A jegy létrehozása sikerült."
+
+#: app/handlers/ticketing.py:194
+msgid "The specified object could not be found."
+msgstr "A megadott objektum nem található."
+
+#: app/handlers/ticketing.py:195
+msgid "The specified object is not attached to this ticket."
+msgstr "A megadott objektumot nem csatolták a jegyhez."
+
+#: app/handlers/ticketing.py:197
+msgid "The specified object was successfully removed."
+msgstr "A megadott objektum eltávolítása sikerült."
+
+#: app/handlers/ticketing.py:274
+#, python-format
+msgid "Could not add duplicate(s): %(duplicates)sduplicates, "
+msgstr "Ismétlődés(ek) hozzáadása nem sikerült: %(duplicates)sduplicates, "
+
+#: app/handlers/ticketing.py:296
+msgid "Request has been marked as closed & answered."
+msgstr "A kérés megjelölése lezárt és megválaszolt lett."
+
+#: app/handlers/ticketing.py:311
+msgid "Request has been cancelled."
+msgstr "A kérés visszavonva."
+
+#: app/handlers/ticketing.py:321
+#, python-format
+msgid "Ticket %s has been deleted"
+msgstr "%s jegy törölve"
+
+#: app/handlers/ticketing.py:337
+msgid ""
+"An Administrator has been notified notified and will update the issue "
+"shortly."
+msgstr "Értesítettek egy adminisztrátort, aki hamarosan foglalkozik a problémával."
+
+#: app/handlers/ticketing.py:365
+msgid "Request payment status has been updated."
+msgstr "A fizetési állapotra vonatkozó kérés frissítése megtörtént."
+
+#: app/handlers/ticketing.py:395
+msgid "The new charge was added to the request."
+msgstr "Az új díjat hozzáadtuk a kéréshez."
+
+#: app/handlers/ticketing.py:409
+msgid "Request has been re-opened."
+msgstr "A kérést újra megnyitottuk."
+
+#: app/handlers/ticketing.py:432
+msgid "You have joined the ticket."
+msgstr "Ön csatlakozott a jegyhez."
+
+#: app/handlers/ticketing.py:433
+msgid "You are already on the ticket."
+msgstr "Ön már szerepel a jegyen."
+
+#: app/handlers/ticketing.py:446
+msgid "You are no longer part of this ticket."
+msgstr "Ön már nem szerepel a jegyen."
+
+#: app/handlers/ticketing.py:567
+msgid "Charge successfully reconciled."
+msgstr "A díj kiegyenlítése megtörtént."
+
+#: app/handlers/validation.py:30 app/handlers/validation.py:60
+msgid "This may be a duplicate"
+msgstr "Lehet, hogy ez ismétlődés"
+
+#: app/handlers/validation.py:32 app/handlers/validation.py:48
+#: app/handlers/validation.py:62
+msgid "No duplicates detected"
+msgstr "Nem észlelhetők ismétlődések"
+
+#: app/handlers/validation.py:46
+msgid "First and last name match another person"
+msgstr "A vezeték- és utónév egyezik egy másik személyével"
+
+#: app/handlers/validation.py:93
+msgid ""
+"Your request may not be answered, as you have not provided much "
+"background. Please add more context."
+msgstr ""
+"Kérését nem tudjuk megválaszolni, mivel nem küldött elegendő "
+"háttér-információt. Kérjük, adjon hozzá további kontextust."
+
+#: app/handlers/validation.py:96
+msgid "Your request is of an appropriate length."
+msgstr "Kérése megfelelő hosszúságú."
+
+#: app/templates/401.html:4
+msgid "Permission Denied"
+msgstr "Engedély megtagadva"
+
+#: app/templates/401.html:8
+msgid ""
+"You do not have permission to access this feature or content. If you "
+"believe this is an error, please contact an administrator."
+msgstr ""
+"Nincs engedélye a funkció vagy tartalom megnyitásához. Ha úgy gondolja, "
+"hogy ezt egy hiba okozza, lépjen kapcsolatba egy adminisztrátorral."
+
+#: app/templates/404.html:4
+msgid "Page Not Found"
+msgstr "Az oldal nem található"
+
+#: app/templates/404.html:8
+msgid ""
+"We're sorry, this page is not available. This error has been recorded "
+"will be investigated."
+msgstr "Sajnáljuk, az oldal nem érhető el. A hibát rögzítettük és kivizsgáljuk."
+
+#: app/templates/500.html:4
+msgid "Application Error"
+msgstr "Alkalmazáshiba"
+
+#: app/templates/500.html:8
+msgid ""
+"There was an error in the application. This error has been recorded and "
+"should be addressed soon."
+msgstr ""
+"Az alkalmazásban hiba történt. A hibát rögzítettük, és hamarosan "
+"felülvizsgáljuk."
+
+#: app/templates/about_us.html:6
+msgid "About Us"
+msgstr "Magunkról"
+
+#: app/templates/about_us.html:10
+msgid ""
+"Investigative Dashboard (ID) has been developed by the Organized Crime "
+"and Corruption Reporting Project (OCCRP), the world’s leading cross "
+"border investigative reporting organization. OCCRP designed Investigative"
+" Dashboard as a transnational collaborative effort to help journalists "
+"and civil society researchers expose organized crime and corruption "
+"around the world. It hosts three core tools: a crowd-sourced database of "
+"information and documents on persons of interest and their business "
+"connections, a worldwide list of online databases and business "
+"registries, and a research desk where journalists can go for help in "
+"sourcing hard to find information."
+msgstr ""
+"Az Investigative Dashboard (Oknyomozói Irányítópult, ID) a Szervezett "
+"Bűnözést és a Korrupciót Feltáró Projekt (Organized Crime and Corruption "
+"Reporting Project, OCCRP) fejlesztése, amely a világ vezető, határokon "
+"átívelő oknyomozói feltáró szervezete. Az OCCRP egy nemzetközi "
+"közreműködési törekvésként hozta létre az ID-t, amely segíti az "
+"újságírókat és a civil társadalomkutatókat a szervezett bűnözés és "
+"korrupció leleplezésében szerte a világon. A rendszer három fő eszközt "
+"tartalmaz: egy felhasználóktól származó adatbázis információkkal és "
+"dokumentumokkal az érdekelt személyekről és üzleti kapcsolataikról, az "
+"internetes adatbázisok és üzleti nyilvántartások világméretű listáját, "
+"valamint egy kutatói platformot, ahol az újságírók segítséget kérhetnek a"
+" nehezen megtalálható információk keresésében."
+
+#: app/templates/about_us.html:12
+msgid ""
+"With help from dozens of reporters and civic hackers, ID researchers have"
+" created the crowd-sourced database where connections of people and "
+"business can be mapped internationally. Through collecting public records"
+" worldwide in numerous languages and by scraping the business registries "
+"and official gazettes of countries such as Panama, British Virgin "
+"Islands, and Luxembourg among others we have made data searchable and "
+"hence truly transparent and useful. These resources are offered to the "
+"public as a searchable self-serve repository of data and documents."
+msgstr ""
+"Riporterek és civil hackerek tucatjainak segítségével az ID kutatói "
+"létrehozták a felhasználók által készített adatbázist, amely lehetővé "
+"teszi az emberi és üzleti kapcsolatok nemzetközi feltérképezését. A "
+"nyilvános adatok gyűjtése világszinten és számos nyelven történik, "
+"emellett pedig összegyűjtöttük az üzleti nyilvántartásokat és hivatalos "
+"közlönyöket az olyan országokban, mint Panama, a Brit Virgin-szigetek, "
+"Luxemburg és mások. Ezáltal az adatok kereshetővé válnak, így azok "
+"valóban átláthatók és hasznosak lesznek. Ezeket a forrásokat kereshető, "
+"önkiszolgáló adat- és dokumentumtárhely formájában biztosítjuk a "
+"nyilvánosság számára."
+
+#: app/templates/about_us.html:14
+msgid ""
+"The Investigative Dashboard also links to more than 400 online databases "
+"in 120 jurisdictions where you can search for information on persons and "
+"businesses of interest."
+msgstr ""
+"Az Investigative Dashboard emellett több mint 400 internetes adatbázist "
+"köt össze 120 joghatósági területen, ahol érdekelt személyekre vagy "
+"cégekre vonatkozó információkat kereshet."
+
+#: app/templates/about_us.html:16
+msgid ""
+"Above and beyond the databases available on the Dashboard, the research "
+"desk provides access to a global network of expert researchers. "
+"Journalists and researchers working on organized crime and corruption "
+"topics who seek information and documents beyond their own borders and "
+"resources are invited to request the expertise of a network of "
+"information professionals. These professionals can access external "
+"databases and official filings for evidence of corporate ownership and "
+"property holdings that cross borders. For some journalists, these "
+"services are provided pro bono."
+msgstr ""
+"A Dashboard rendszerében elérhető adatbázisokon túlmenően a kutatói "
+"platform hozzáférést biztosít a szakértő kutatók globális hálózatához. A "
+"szervezett bűnözés és korrupció témájában dolgozó újságírók és kutatók, "
+"akik saját határaikon túl keresnek információkat és dokumentumokat, "
+"kérhetik egy információs szakemberekből álló hálózat szakértői "
+"segítségét. Ezek a szakemberek olyan külső adatbázisokhoz és hivatalos "
+"beadványokhoz férhetnek hozzá, amelyek bizonyítékot jelenthetnek "
+"határokat átívelő céges tulajdonokra és vagyonkezelésre. Egyes újságírók "
+"számára ezek a szolgáltatások pro bono („a közjóért”) érhetők el."
+
+#: app/templates/about_us.html:18
+msgid ""
+"Journalists have used the Investigative Dashboard to work on stories that"
+" have won more than a dozen international awards, led to indictments, "
+"arrests and seizures, forced the resignation of heads of state, and "
+"exposed the activities of organized crime."
+msgstr ""
+"Az újságírók mostanáig olyan történetek megírásához használták az "
+"Investigative Dashboard rendszerét, amelyek több mint egy tucat "
+"nemzetközi díjat nyertek, vádemeléshez, letartóztatáshoz és lefoglaláshoz"
+" vezettek, államfők visszavonulását kényszerítették, és feltárták a "
+"szervezett bűnözés tevékenységeit."
+
+#: app/templates/about_us.html:36
+msgid "Supporters"
+msgstr "Támogatók"
+
+#: app/templates/about_us.html:37
+msgid ""
+"The Investigative Dashboard has been developed in collaboration with <a "
+"href=\"http://www.google.com/ideas/\">Google Ideas</a>. Core support for "
+"the project is generously provided by the Open Society Foundations with "
+"additional assistance from USAID."
+msgstr ""
+"Az Investigative Dashboard együttműködik a <a "
+"href=\"http://www.google.com/ideas/\">Google Ideas</a> szolgáltatással. A"
+" projekt nagylelkű fő támogatója az Open Society Foundations (Nyílt "
+"Társadalom Alapítvány), a USAID amerikai nemzetközi fejlesztési hivatal "
+"további közreműködésével."
+
+#: app/templates/about_us.html:39
+msgid "Partners"
+msgstr "Partnerek"
+
+#: app/templates/about_us.html:40
+msgid ""
+"The Research Desk is managed by OCCRP in co-operation with four partner "
+"Centers - African Network of Centers for Investigative Reporting (ANCIR),"
+" the Arab Reporters for Investigative Journalism (ARIJ), the "
+"International Center for Journalists, and Connectas in the Americas."
+msgstr ""
+"A Research Desk platformját az OCCRP kezeli a következő négy "
+"partnerközponttal együttműködésben: African Network of Centers for "
+"Investigative Reporting (Afrikai Oknyomozó Újságírói Központok Hálózata, "
+"ANCIR), Arab Reporters for Investigative Journalism (Arab Oknyomozó "
+"Újságírók Szövetsége, ARIJ), International Center for Journalists "
+"(Újságírók Nemzetközi Központja) és Connectas in the Americas (Amerikai "
+"Kapcsolatok)."
+
+#: app/templates/about_us.html:42
+msgid "ID History"
+msgstr "Az ID története"
+
+#: app/templates/about_us.html:43
+msgid ""
+"The Investigative Dashboard was developed by Paul Cristian Radu (OCCRP) "
+"and Justin Arenstein (ANCIR) while they both were in residence at "
+"Stanford University as Knight Fellows. The John S. Knight Fellowships for"
+" Professional Journalists made the dashboard possible by providing access"
+" to the know-how of fellow journalists and of experts at Stanford "
+"University and in Silicon Valley."
+msgstr ""
+"Az Investigative Dashboard rendszerét Paul Cristian Radu (OCCRP) és "
+"Justin Arenstein (ANCIR) fejlesztette ki, miközben a Stanford Egyetem "
+"Knight ösztöndíjas hallgatói voltak. A rendszer létrejöttét John S. "
+"Knight professzionális újságírói ösztöndíja tette lehetővé, azáltal, hogy"
+" elérhetővé tette az újságírótársak, a Stanford Egyetem szakértői és a "
+"Szilícium-völgy szakértelmét."
+
+#: app/templates/about_us.html:45
+msgid ""
+"This first iteration of the ID website, launched in 2010, shared detailed"
+" methodologies, resources, and links for journalists to track money, "
+"shareholders, and company ownership across international borders. It also"
+" offered video tutorials and other tools to help journalists navigate "
+"rapidly evolving data-sources."
+msgstr ""
+"Az ID első webhelye 2010-ben indult, és részletes módszereket, forrásokat"
+" és linkeket tartalmazott az újságírók számára a pénz, a részvényesek és "
+"a céges tulajdonok nyomon követéséhez a nemzetközi határokon átívelően. "
+"Emellett oktatóvideókkal és egyéb eszközökkel segítette az újságírókat a "
+"gyorsan fejlődő adatforrásokban történő keresésben."
+
+#: app/templates/about_us.html:47
+msgid "Advisory Committee"
+msgstr "Tanácsadó bizottság"
+
+#: app/templates/about_us.html:105
+msgid "Acknowledgements"
+msgstr "Köszönetnyilvánítás"
+
+#: app/templates/about_us.html:107
+msgid ""
+"The Investigative Dashboard is a collaborative project and valuable "
+"information was added by many investigative journalists around the world."
+" Individual members of the Global Investigative Journalism Network in "
+"particular contributed much of the information, explaining how to access "
+"company records in their home countries.\n"
+"\t    "
+msgstr ""
+"Az Investigative Dashboard egy együttműködési projekt, melyhez számos "
+"oknyomozó újságíró biztosított értékes információkat a világ minden "
+"tájáról. A Global Investigative Journalism Network (Globális Oknyomozó "
+"Újságírói Hálózat) egyéni tagjai kiemelkedő mennyiségű információt "
+"szolgáltattak, amelyekben leírták, hogyan lehet céges adatokhoz "
+"hozzáférni a saját országukban.\n"
+"\t    "
+
+#: app/templates/about_us.html:110
+msgid ""
+"Valuable information was added by many investigative journalists around "
+"the world."
+msgstr ""
+"Számos oknyomozó újságíró biztosított értékes információkat a világ "
+"minden tájáról."
+
+#: app/templates/admin_base.html:7 app/templates/tickets/request_base.html:75
+msgid "Manage"
+msgstr "Kezelés"
+
+#: app/templates/admin_base.html:18 app/templates/crud/relationship/list.html:2
+msgid "Relationships"
+msgstr "Kapcsolatok"
+
+#: app/templates/admin_base.html:22 app/templates/crud/expandofield/list.html:2
+msgid "Extra Fields"
+msgstr "Extra mezők"
+
+#: app/templates/admin_base.html:25
+msgid "External Databases"
+msgstr "Külső adatbázisok"
+
+#: app/templates/admin_base.html:28
+#: app/templates/crud/accountrequest/list.html:2
+msgid "Account Requests"
+msgstr "Fiókkérelmek"
+
+#: app/templates/admin_base.html:31 app/templates/crud/profile/list.html:2
+msgid "User Profiles"
+msgstr "Felhasználói profilok"
+
+#: app/templates/admin_base.html:34
+msgid "Statistics"
+msgstr "Statisztika"
+
+#: app/templates/base.html:38 app/templates/search/search_base.html:6
+#: app/templates/search/search_base.html:21
+#: app/templates/search/search_documents.html:6
+#: app/templates/search/search_documents.html:13
+#: app/templates/search/search_entities.html:7
+#: app/templates/search/search_entities.html:15
+msgid "Search"
+msgstr "Keresés"
+
+#: app/templates/base.html:41 app/templates/external_databases.html:12
+msgid "Business Registries"
+msgstr "Cégnyilvántartások"
+
+#: app/templates/base.html:45
+msgid "Expert Help"
+msgstr "Szakértői segítség"
+
+#: app/templates/base.html:61
+msgid "Admin"
+msgstr "Adminisztrátor"
+
+#: app/templates/base.html:64
+msgid "Log out"
+msgstr "Kilépés"
+
+#: app/templates/base.html:68 app/templates/request_account.html:6
+msgid "Request Account"
+msgstr "Fiók kérése"
+
+#: app/templates/base.html:69
+msgid "Log In"
+msgstr "Belépés"
+
+#: app/templates/base.html:124
+msgid "&copy; 2013 - OCCRP. All rights reserved."
+msgstr "&copy; 2013 – OCCRP. Minden jog fenntartva."
+
+#: app/templates/base.html:124
+msgid "About this site"
+msgstr "A webhelyről"
+
+#: app/templates/company.html:8 app/templates/request_account.html:13
+#: app/templates/accountrequest/volunteer_account.html:13
+#: app/templates/crud/accountrequest/edit.html:20
+#: app/templates/tickets/manage.html:27 app/templates/tickets/request.html:34
+#: app/templates/tickets/request_details.html:379
+#: app/templates/tickets/request_details.html:380
+msgid "Submit"
+msgstr "Küldés"
+
+#: app/templates/drive_success.html:1
+msgid "Successfully connected to Google Drive."
+msgstr "Sikeres csatlakozás a Google Drive-hoz."
+
+#: app/templates/drive_success.html:3
+msgid "Current user name:"
+msgstr "Aktuális felhasználónév:"
+
+#: app/templates/drive_success.html:4
+msgid "Root folder ID:"
+msgstr "Gyökérmappa azonosítója:"
+
+#: app/templates/drive_success.html:5
+msgid "Total quota (bytes):"
+msgstr "Teljes kvóta (bájt):"
+
+#: app/templates/drive_success.html:6
+msgid "Used quota (bytes):"
+msgstr "Használt kvóta (bájt):"
+
+#: app/templates/drive_success.html:7
+msgid "Permission ID:"
+msgstr "Engedély-azonosító:"
+
+#: app/templates/external_databases.html:14
+msgid ""
+"Here you will find links to more than 450 online databases across 120 "
+"jurisdictions where you can get information on the shareholders, "
+"directors and the financial reports of companies worldwide. They are "
+"organized by country. Many are free of charge and for some you must "
+"register. Databases marked with a \"$\" require a fee.  Not all are "
+"available in English, see the notes column for further details.\t"
+msgstr ""
+"Itt több mint 120 joghatósági terület 450 internetes adatbázisához talál "
+"linkeket, amelyeken információkat talál a cégek részvényeseiről, "
+"igazgatóiról és pénzügyi jelentéseiről világszerte. Az adatok ország "
+"szerint vannak rendezve. Számos adatbázis ingyenes, de néhányhoz "
+"regisztráció szükséges. A \\„$\\” jelölésű adatbázisoknál díj fizetése "
+"szükséges. Nem mindegyik érhető el angol nyelven, a további "
+"információkért tekintse meg a Megjegyzések (Notes) oszlopot.\t"
+
+#: app/templates/external_databases.html:44
+msgid "Documentation"
+msgstr "Dokumentáció"
+
+#: app/templates/external_databases.html:45
+msgid "Video Tutorial"
+msgstr "Oktatóvideók"
+
+#: app/templates/external_databases.html:58
+msgid "Didn't find what you were looking for?"
+msgstr "Nem találta meg, amit keresett?"
+
+#: app/templates/external_databases.html:60
+msgid "Request manual help from our researchers."
+msgstr "Kérjen manuális segítséget kutatóinktól."
+
+#: app/templates/oauth_success.html:14
+msgid ""
+"Google Drive successfully authorized. Please close this dialog and attach"
+" your files again."
+msgstr ""
+"A Google Drive engedélyezése sikerült. Kérjük, zárja be ezt a "
+"párbeszédablakot, és csatolja újra a fájlokat."
+
+#: app/templates/pre_login.html:6 app/templates/pre_login.html:21
+msgid "Sign in with Google"
+msgstr "Bejelentkezés Google-fiókkal"
+
+#: app/templates/pre_login.html:10
+msgid ""
+"In order to log in or request an account on Investigative Dashboard you "
+"must have a Google account. We use your Google account to verify your "
+"identity and obtain a valid email address from you."
+msgstr ""
+"Az Investigative Dashboard rendszerébe történő bejelentkezéshez, illetve "
+"fiók kérelmezéséhez Google-fiókkal kell rendelkeznie. Google-fiókját "
+"személyazonosságának ellenőrzéséhez használjuk, valamint ahhoz, hogy "
+"érvényes e-mail címet kaphassunk Öntől."
+
+#: app/templates/pre_login.html:15
+msgid ""
+"If you do not have a Google account, you can sign up for one on the next "
+"page by clicking \"Sign Up\" in the top right corner."
+msgstr ""
+"Ha nem rendelkezik Google-fiókkal, akkor a következő oldalon létrehozhat "
+"egyet a \\„Regisztráció\\” lehetőségre kattintva a jobb felső sarokban."
+
+#: app/templates/request_account.html:9
+msgid ""
+"In order to make information requests through Investigative Dashboard, "
+"you must have an account. Please enter your information below and one of "
+"our staff will evaluate and respond to your request."
+msgstr ""
+"Ahhoz, hogy információt kérhessen az Investigative Dashboard rendszerén "
+"keresztül, fiókkal kell rendelkeznie. Kérjük, adja meg az alábbi "
+"információkat, és egyik munkatársunk értékelni fogja azt, majd válaszol "
+"kérésére."
+
+#: app/templates/request_account_home.html:5
+msgid "Which type of account would you like to apply for?"
+msgstr "Melyik fióktípust szeretné kérni?"
+
+#: app/templates/request_account_home.html:15
+msgid "Information Requester"
+msgstr "Információ kérelmezője"
+
+#: app/templates/request_account_home.html:16
+msgid ""
+"Take advantage of our database of knowledge to find out more information "
+"about companies, individuals, or the relationships between them."
+msgstr ""
+"Használja ki tudásadatbázisunkat, és keressen további információkat "
+"cégekről, egyénekről vagy az azok közötti kapcsolatokról."
+
+#: app/templates/request_account_home.html:18
+msgid "Be a Requester"
+msgstr "Legyen kérelmező"
+
+#: app/templates/request_account_home.html:25
+msgid ""
+"We have available public requests that need volunteers. Use your wealth "
+"of information to help others find answers."
+msgstr ""
+"Olyan nyilvános kérésekkel rendelkezünk, amelyekhez önkéntesek "
+"szükségesek. Információit felhasználva segítsen másoknak megtalálni a "
+"válaszokat."
+
+#: app/templates/request_account_home.html:27
+msgid "Be a Volunteer"
+msgstr "Legyen önkéntes"
+
+#: app/templates/splash.html:9
+msgid ""
+"<span class=\"primary-highlight\">Investigative Dashboard</span> helps "
+"investigators expose illicit ties that cross borders."
+msgstr ""
+"Az <span class=\"primary-highlight\">Investigative Dashboard</span> "
+"segíti az oknyomozókat a határokon átívelő illegális kapcsolatok "
+"feltárásában."
+
+#: app/templates/splash.html:22
+msgid "Search for a company or person of interest."
+msgstr "Keressen egy gyanúsított céget vagy személyt."
+
+#: app/templates/splash.html:23
+msgid ""
+"We have scraped national business records from Panama, Luxembourg, "
+"Switzerland and many other countries"
+msgstr ""
+"Nemzetközi üzleti nyilvántartásokat gyűjtöttünk össze Panamából, "
+"Luxemburgból, Svájcból és számos további országból."
+
+#: app/templates/splash.html:25
+msgid "Start Searching"
+msgstr "Kezdjen el keresni"
+
+#: app/templates/splash.html:31
+msgid "If you need more data, visit recommended databases"
+msgstr "Ha további adatokra van szüksége, keresse fel a javasolt adatbázisokat"
+
+#: app/templates/splash.html:32
+msgid "We have assembled a directory of over 300 local databases that might help"
+msgstr ""
+"Egy több mint 300 helyi adatbázisból álló jegyzéket állítottunk össze, "
+"amely segíthet Önnek"
+
+#: app/templates/splash.html:34
+msgid "Visit Databases"
+msgstr "Adatbázisok felkeresése"
+
+#: app/templates/splash.html:40
+msgid "If you need help, request expert assistance."
+msgstr "Ha segítségre van szüksége, kérjen szakértői segítséget."
+
+#: app/templates/splash.html:41
+msgid ""
+"We understand investigations are sensitive and we take privacy very "
+"seriously. Requests are only seen by our full-time experts and, if you "
+"are willing, by vetted volunteers"
+msgstr ""
+"Megértjük, hogy az oknyomozás igen érzékeny terület, ezért az "
+"adatvédelmet nagyon komolyan vesszük. A kéréseket csak főállású "
+"szakemberek, és, ha úgy dönt, ellenőrzött önkéntesek láthatják."
+
+#: app/templates/splash.html:43
+msgid "Ask an Expert"
+msgstr "Szakértő megkérdezése"
+
+#: app/templates/accountrequest/volunteer_account.html:6
+msgid "Become a Volunteer!"
+msgstr "Legyen önkéntes!"
+
+#: app/templates/accountrequest/volunteer_account.html:9
+msgid ""
+"If you'd like to volunteer to track down requests, you need to have an "
+"account. Please enter your information below and one of our staff will "
+"review, and respond to your request."
+msgstr ""
+"Ha szeretne önkéntesként kéréseket kezelni, ahhoz fiókkal kell "
+"rendelkeznie. Kérjük, az alábbiakban adja meg adatait, és egyik "
+"munkatársunk áttekinti kérését, majd megválaszolja azt."
+
+#: app/templates/crud/delete.html:4
+msgid "Confirm Deletion"
+msgstr "Törlés megerősítése"
+
+#: app/templates/crud/delete.html:6
+msgid "Cannot delete this entity."
+msgstr "Nem lehet törölni az elemet."
+
+#: app/templates/crud/delete_base.html:9
+#, python-format
+msgid ""
+"Are you sure you want to delete %(object_name)s? You will not be able to "
+"undo this action."
+msgstr ""
+"Biztosan törli a következőt: %(object_name)s? A műveletet nem lehet "
+"visszavonni."
+
+#: app/templates/crud/delete_base.html:14
+msgid "Yes, I am sure."
+msgstr "Igen, biztos vagyok benne."
+
+#: app/templates/crud/delete_base.html:18
+#, python-format
+msgid "%(object_name)s is attached to the following relationships:"
+msgstr "A(z) %(object_name)s a következő kapcsolatokhoz csatlakozik:"
+
+#: app/templates/crud/delete_base.html:22
+msgid "relationship"
+msgstr "kapcsolat"
+
+#: app/templates/crud/entity_details.html:52
+msgid "Close"
+msgstr "Bezárás"
+
+#: app/templates/crud/item_base.html:11
+msgid "Delete"
+msgstr "Törlés"
+
+#: app/templates/crud/item_base.html:20 app/templates/crud/item_base.html:48
+#: app/templates/crud/item_base.html:49 app/templates/crud/item_base.html:50
+#: app/templates/crud/item_base.html:51 app/templates/crud/item_base.html:54
+#: app/templates/tickets/request_details.html:381
+#: app/templates/tickets/request_details.html:384
+#: app/templates/tickets/request_details.html:385
+msgid "Save"
+msgstr "Mentés"
+
+#: app/templates/crud/item_base.html:29
+#: app/templates/tickets/request_details.html:266
+msgid "Sharing"
+msgstr "Megosztás"
+
+#: app/templates/crud/item_base.html:48 app/templates/crud/item_base.html:49
+#: app/templates/crud/item_base.html:50 app/templates/crud/item_base.html:51
+msgid "Create Relationship"
+msgstr "Kapcsolat létrehozása"
+
+#: app/templates/crud/item_base.html:54
+#: app/templates/tickets/request_details.html:384
+msgid "Share Attached Files"
+msgstr "Csatolt fájlok megosztása"
+
+#: app/templates/crud/list_base.html:7
+#: app/templates/tickets/request_details.html:382
+#: app/templates/tickets/request_details.html:383
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: app/templates/crud/list_base.html:24
+#: app/templates/tickets/request_admin_base.html:20
+#: app/templates/tickets/request_admin_base.html:23
+#: app/templates/tickets/request_charges_base.html:74
+#: app/templates/tickets/request_charges_base.html:77
+msgid "Prev"
+msgstr "Előző"
+
+#: app/templates/crud/list_base.html:33
+#: app/templates/tickets/request_admin_base.html:29
+#: app/templates/tickets/request_admin_base.html:32
+#: app/templates/tickets/request_charges_base.html:83
+#: app/templates/tickets/request_charges_base.html:86
+msgid "Next"
+msgstr "Tovább"
+
+#: app/templates/crud/accountrequest/add.html:2
+msgid "New Account Request"
+msgstr "Új fiókkérelem"
+
+#: app/templates/crud/accountrequest/edit.html:4
+msgid "Edit Volunteer Request"
+msgstr "Önkénteskérelem szerkesztése"
+
+#: app/templates/crud/accountrequest/edit.html:6
+msgid "Edit Account Request"
+msgstr "Fiókkérelem szerkesztése"
+
+#: app/templates/crud/accountrequest/edit.html:13
+#: app/templates/crud/accountrequest/edit.html:20
+msgid "Set Permissions"
+msgstr "Engedélyek beállítása"
+
+#: app/templates/crud/company/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:9
+msgid "New Company"
+msgstr "Új cég"
+
+#: app/templates/crud/company/edit.html:2
+msgid "Edit Company"
+msgstr "Cég szerkesztése"
+
+#: app/templates/crud/company/edit.html:5
+msgid "Registered Offices"
+msgstr "Bejegyzett irodák"
+
+#: app/templates/crud/company/edit.html:11
+#: app/templates/crud/company/edit.html:13
+#: app/templates/crud/relationship/table_mixin.html:162
+#: app/templates/crud/relationship/table_mixin.html:164
+msgid "Entity"
+msgstr "Elem"
+
+#: app/templates/crud/expandofield/add.html:2
+msgid "New Extra Field"
+msgstr "Új extra mező"
+
+#: app/templates/crud/expandofield/edit.html:2
+msgid "Edit Extra Field"
+msgstr "Extra mező szerkesztése"
+
+#: app/templates/crud/externaldb/add.html:2
+msgid "New Database"
+msgstr "Új adatbázis"
+
+#: app/templates/crud/externaldb/edit.html:2
+msgid "Edit External Database"
+msgstr "Külső adatbázis szerkesztése"
+
+#: app/templates/crud/externaldb/list.html:2
+msgid "Databases"
+msgstr "Adatbázisok"
+
+#: app/templates/crud/location/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:11
+msgid "New Location"
+msgstr "Új hely"
+
+#: app/templates/crud/location/edit.html:2
+msgid "Edit Location"
+msgstr "Hely szerkesztése"
+
+#: app/templates/crud/person/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:10
+msgid "New Person"
+msgstr "Új személy"
+
+#: app/templates/crud/person/edit.html:2
+msgid "Edit Person"
+msgstr "Személy adatainak szerkesztése"
+
+#: app/templates/crud/profile/edit.html:2
+msgid "Edit User Profile"
+msgstr "Felhasználói profil szerkesztése"
+
+#: app/templates/crud/profile/edit.html:7
+msgid "Account Request for this profile"
+msgstr "Fiókkérelem ehhez a profilhoz"
+
+#: app/templates/crud/profile/edit.html:18
+msgid "Account Request for this profile: "
+msgstr "Fiókkérelem ehhez a profilhoz: "
+
+#: app/templates/crud/relationship/add.html:2
+msgid "New Relationship"
+msgstr "Új kapcsolat"
+
+#: app/templates/crud/relationship/edit.html:2
+#: app/templates/crud/relationship/item.html:2
+msgid "Edit Relationship"
+msgstr "Kapcsolat szerkesztése"
+
+#: app/templates/crud/relationship/table_mixin.html:6
+msgid "Add New "
+msgstr "Új hozzáadása "
+
+#: app/templates/crud/relationship/table_mixin.html:12
+msgid "Add Existing "
+msgstr "Meglévő hozzáadása "
+
+#: app/templates/crud/relationship/table_mixin.html:49
+msgid "Directors"
+msgstr "Igazgatók"
+
+#: app/templates/crud/relationship/table_mixin.html:80
+msgid "Shareholders"
+msgstr "Részvényesek"
+
+#: app/templates/crud/relationship/table_mixin.html:125
+msgid "Create"
+msgstr "Létrehozás"
+
+#: app/templates/crud/relationship/table_mixin.html:131
+msgid "With New Company"
+msgstr "Új céggel"
+
+#: app/templates/crud/relationship/table_mixin.html:136
+msgid "With New Person"
+msgstr "Új személlyel"
+
+#: app/templates/crud/relationship/table_mixin.html:141
+msgid "With New Location"
+msgstr "Új hellyel"
+
+#: app/templates/crud/relationship/table_mixin.html:146
+msgid "With Existing Entity"
+msgstr "Meglévő elemmel"
+
+#: app/templates/crud/relationship/table_mixin.html:154
+msgid "All Relationships"
+msgstr "Összes kapcsolat"
+
+#: app/templates/crud/relationship/table_mixin.html:178
+#, python-format
+msgid "is a %(type)s of"
+msgstr "egy %(type)s típusú"
+
+#: app/templates/macros/forms.html:28
+msgid "Select File"
+msgstr "Fájl kiválasztása"
+
+#: app/templates/macros/forms.html:29
+msgid "Change"
+msgstr "Megváltoztatás"
+
+#: app/templates/macros/forms.html:32
+msgid "Remove"
+msgstr "Eltávolítás"
+
+#: app/templates/macros/forms.html:46
+#: app/templates/tickets/request_details.html:42
+msgid "Attach Files"
+msgstr "Fájlok csatolása"
+
+#: app/templates/mail/mail_base.html:36
+msgid "This message is automatically generated by "
+msgstr "Ezt az üzenetet automatikusan generálta: "
+
+#: app/templates/mail/mail_base.html:36
+msgid "OCCRP Investigative Dashboard"
+msgstr "OCCRP Investigative Dashboard"
+
+#: app/templates/mail/mail_base.html:37
+msgid "If you think it was sent incorrectly, please contact an "
+msgstr "Ha úgy gondolja, ezt tévesen küldtük, kérjük, lépjen kapcsolatba egy "
+
+#: app/templates/mail/mail_base.html:37
+msgid "administrator"
+msgstr "adminisztrátorral"
+
+#: app/templates/mail/mail_base.html:38
+msgid "For more information on "
+msgstr "További információért a következőről: "
+
+#: app/templates/mail/mail_base.html:39
+msgid "visit"
+msgstr "látogasson el"
+
+#: app/templates/mail/mail_simple.html:16
+msgid "The Research Desk"
+msgstr "a Kutatói platformra"
+
+#: app/templates/mail/mail_simple.html:16
+msgid "at the Investigative Dashboard"
+msgstr "az Investigative Dashboard rendszerében"
+
+#: app/templates/mail/ticket_update.html:8
+msgid "your request. "
+msgstr "kérését. "
+
+#: app/templates/mail/ticket_update.html:31
+msgid "View on Site"
+msgstr "Megtekintés a webhelyen"
+
+#: app/templates/mail/ticket_update.html:32
+msgid "Add Comment"
+msgstr "Megjegyzés hozzáadása"
+
+#: app/templates/mail/ticket_update.html:33
+msgid "or reply to this email directly."
+msgstr "vagy válaszoljon közvetlenül erre az e-mailre."
+
+#: app/templates/mail/account_request/approved.html:4
+msgid "Your Account Request was approved"
+msgstr "Fiókkérelmét jóváhagytuk"
+
+#: app/templates/mail/account_request/approved.html:8
+#: app/templates/mail/account_request/received.html:8
+#: app/templates/mail/account_request/rejected.html:8
+#: app/templates/mail/user_profile/requester_type_update.html:8
+#, python-format
+msgid "Dear %(name)s,"
+msgstr "Tisztelt %(name)s!"
+
+#: app/templates/mail/account_request/approved.html:9
+msgid ""
+"Your ID registration is complete! Just login in with your Gmail account "
+"that you used to register to get started."
+msgstr ""
+"ID-regisztrációja elkészült! Egyszerűen jelentkezzen be a regisztrációhoz"
+" használt Gmail-fiókkal a kezdéshez."
+
+#: app/templates/mail/account_request/approved.html:10
+#, python-format
+msgid "Please be advised your account type is: %(account_type)s"
+msgstr "Tájékoztatjuk, hogy fiókjának típusa: %(account_type)s"
+
+#: app/templates/mail/account_request/approved.html:11
+msgid "Click here to submit a research request."
+msgstr "Kattintson ide kutatási kérés benyújtásához."
+
+#: app/templates/mail/account_request/approved.html:12
+#: app/templates/mail/user_profile/requester_type_update.html:10
+msgid ""
+"If you do not think this is the correct account type for you, please "
+"contact the research desk:"
+msgstr ""
+"Ha úgy gondolja, hogy ez a fióktípus nem megfelelő az Ön számára, kérjük,"
+" lépjen kapcsolatba a kutatói platformmal:"
+
+#: app/templates/mail/account_request/approved.html:13
+msgid "Good luck with your investigation."
+msgstr "Minden jót kívánunk nyomozásához."
+
+#: app/templates/mail/account_request/received.html:9
+msgid ""
+"Thank you for registering with the Investigative Dashboard. We are "
+"reviewing your information and as soon as your registration is complete "
+"you can sign into the Research Desk with the Google account that you used"
+" to register. In the meantime, get started now by searching the ID crowd-"
+"sourced and external databases. We will be in touch shortly."
+msgstr ""
+"Köszönjük, hogy regisztrált az Investigative Dashboard rendszerében. "
+"Adatait áttekintjük, és regisztrációjának befejezése után bejelentkezhet "
+"a Kutatói platformra azzal a Google-fiókkal, amelyet a regisztrációhoz "
+"használt. Addig is ismerkedjen meg az ID felhasználók által létrehozott "
+"és külső adatbázisaival. Hamarosan kapcsolatba lépünk Önnel."
+
+#: app/templates/mail/account_request/received_admin.html:8
+msgid "A new account request has been submitted! Below are the details:"
+msgstr "Új fiókkérelem érkezett! A részletek az alábbiakban láthatók:"
+
+#: app/templates/mail/account_request/received_admin.html:15
+msgid "Click here to review and approve or reject."
+msgstr "Kattintson ide az áttekintéshez, jóváhagyáshoz vagy elutasításhoz."
+
+#: app/templates/mail/account_request/rejected.html:4
+msgid "Your Account Request was rejected"
+msgstr "Fiókkérelmét elutasították"
+
+#: app/templates/mail/account_request/rejected.html:9
+msgid ""
+"I am sorry but we could not register you at this time. The head of the "
+"research desk will contact you with further details."
+msgstr ""
+"Jelenleg sajnos nem tudtuk regisztrálni. A kutatói platform vezetője fel "
+"fogja venni Önnel a kapcsolatot a további információkkal."
+
+#: app/templates/mail/account_request/rejected.html:10
+#: app/templates/mail/user_profile/requester_type_update.html:11
+msgid "Thank you,"
+msgstr "Köszönjük:"
+
+#: app/templates/mail/user_profile/requester_type_update.html:4
+msgid "Your Account Type has changed"
+msgstr "Fióktípusa megváltozott"
+
+#: app/templates/mail/user_profile/requester_type_update.html:9
+#, python-format
+msgid ""
+"Please be advised your account status has changed. Your new account type "
+"is: %(account_type)s"
+msgstr ""
+"Tájékoztatjuk, hogy fiókjának állapota megváltozott. Új fióktípusa a "
+"következő: %(account_type)s"
+
+#: app/templates/modals/form_basic.html:3
+msgid "Not Allowed"
+msgstr "Nem engedélyezett"
+
+#: app/templates/search/search_base.html:7
+msgid "Results "
+msgstr "Eredmények "
+
+#: app/templates/search/search_base.html:16
+msgid "Search terms"
+msgstr "Keresett kifejezések"
+
+#: app/templates/search/search_base.html:31
+msgid "Navigate Results "
+msgstr "Eredmények keresése "
+
+#: app/templates/search/search_base.html:32
+msgid "< Previous"
+msgstr "< Előző"
+
+#: app/templates/search/search_base.html:33
+msgid "Next >"
+msgstr "Tovább >"
+
+#: app/templates/search/search_base.html:41
+#, python-format
+msgid ""
+"Didn't find what you were looking for? Try one of our <a "
+"href=\"%(url)s\">business registries</a>."
+msgstr ""
+"Nem találta meg, amit keresett? Próbálja ki valamelyik <a "
+"href=\"%(url)s\">cégnyilvántartásunkat</a>."
+
+#: app/templates/search/search_combined.html:16
+#: app/templates/search/search_documents.html:38
+#: app/templates/search/search_entities.html:71
+msgid "No search results."
+msgstr "Nincsenek keresési eredmények."
+
+#: app/templates/search/search_combined.html:20
+msgid "To search, type your query into the search box above."
+msgstr "A kereséshez írja be a keresett kifejezést a fenti keresőmezőbe."
+
+#: app/templates/search/search_documents.html:8
+#: app/templates/search/search_entities.html:9
+msgid "Enter your terms..."
+msgstr "Adja meg a keresett kifejezéseket..."
+
+#: app/templates/search/search_entities.html:22
+#, python-format
+msgid "%(num_results)s result found."
+msgid_plural "%(num_results)s results found."
+msgstr[0] "%(num_results)s találat."
+msgstr[1] "%(num_results)s találat."
+msgstr[2] "%(num_results)s találat."
+msgstr[3] "%(num_results)s találat."
+msgstr[4] "%(num_results)s találat."
+msgstr[5] "%(num_results)s találat."
+
+#: app/templates/tickets/manage.html:5
+msgid "Manage Information Request"
+msgstr "Információkérés kezelése"
+
+#: app/templates/tickets/public_list.html:5
+#: app/templates/tickets/request_base.html:67
+msgid "Public Requests"
+msgstr "Nyilvános kérések"
+
+#: app/templates/tickets/public_list.html:12
+#: app/templates/tickets/responds_list.html:12
+msgid "No requests found."
+msgstr "Nem találhatók kérések."
+
+#: app/templates/tickets/request.html:5
+#: app/templates/tickets/request_details.html:162
+msgid "Request Information"
+msgstr "Információ kérése"
+
+#: app/templates/tickets/request.html:10
+msgid ""
+"Your request will be routed to our professional researchers and "
+"volunteers, who will try to help."
+msgstr ""
+"Kérése professzionális kutatóinkhoz és önkénteseinkhez kerül, akik "
+"megpróbálnak segíteni."
+
+#: app/templates/tickets/request_admin_base.html:42
+msgid "No tickets found."
+msgstr "Nem találhatók jegyek."
+
+#: app/templates/tickets/request_base.html:6
+msgid "Summary"
+msgstr "Összegzés"
+
+#: app/templates/tickets/request_base.html:10
+#: app/templates/tickets/request_charges_base.html:26
+#: app/templates/tickets/request_details.html:279
+msgid "Actions"
+msgstr "Műveletek"
+
+#: app/templates/tickets/request_base.html:25
+msgid " Unassigned "
+msgstr " Megoldatlan "
+
+#: app/templates/tickets/request_base.html:34
+msgid "No Responder"
+msgstr "Nincs válaszadó"
+
+#: app/templates/tickets/request_base.html:38
+msgid "Completed "
+msgstr "Elkészült "
+
+#: app/templates/tickets/request_base.html:40
+msgid "Cancelled "
+msgstr "Visszavonva "
+
+#: app/templates/tickets/request_base.html:62
+msgid "Requests"
+msgstr "Kérések"
+
+#: app/templates/tickets/request_base.html:64
+#: app/templates/tickets/request_list.html:9
+msgid "My Requests"
+msgstr "Kéréseim"
+
+#: app/templates/tickets/request_base.html:71
+#: app/templates/tickets/responds_list.html:5
+msgid "Assigned Requests"
+msgstr "Hozzárendelt kérések"
+
+#: app/templates/tickets/request_base.html:77
+#: app/templates/tickets/admin/admin_unassigned.html:4
+msgid "Unassigned Tickets"
+msgstr "Nem hozzárendelt jegyek"
+
+#: app/templates/tickets/request_base.html:80
+msgid "Upcoming Deadlines"
+msgstr "Közelgő határidők"
+
+#: app/templates/tickets/request_base.html:83
+msgid "Flagged Tickets"
+msgstr "Megjelölt jegyek"
+
+#: app/templates/tickets/request_base.html:86
+msgid "Closed Tickets"
+msgstr "Lezárt jegyek"
+
+#: app/templates/tickets/request_base.html:88
+msgid "Billing"
+msgstr "Számlázás"
+
+#: app/templates/tickets/request_base.html:90
+msgid "Customer Report"
+msgstr "Ügyféljelentés"
+
+#: app/templates/tickets/request_base.html:93
+#: app/templates/tickets/admin/admin_charges_outstanding.html:3
+msgid "Outstanding Charges"
+msgstr "Fennálló díjak"
+
+#: app/templates/tickets/request_charges_base.html:22
+msgid "Cost"
+msgstr "Költség"
+
+#: app/templates/tickets/request_charges_base.html:23
+msgid "Converted"
+msgstr "Átváltva"
+
+#: app/templates/tickets/request_charges_base.html:24
+msgid "Reconciled"
+msgstr "Kiegyenlítve"
+
+#: app/templates/tickets/request_charges_base.html:25
+msgid "Created"
+msgstr "Létrehozva"
+
+#: app/templates/tickets/request_charges_base.html:96
+msgid "No charges found."
+msgstr "Nem találhatók díjak."
+
+#: app/templates/tickets/request_charges_base.html:103
+msgid "Reconcile Charge"
+msgstr "Díj kiegyenlítése"
+
+#: app/templates/tickets/request_charges_base.html:103
+msgid "Reconcile"
+msgstr "Kiegyenlítés"
+
+#: app/templates/tickets/request_details.html:21
+msgid "Created on "
+msgstr "Létrehozva: "
+
+#: app/templates/tickets/request_details.html:45
+#: app/templates/tickets/request_details.html:382
+msgid "Attach Entities"
+msgstr "Elemek csatolása"
+
+#: app/templates/tickets/request_details.html:52
+msgid "Watch"
+msgstr "Megtekintés"
+
+#: app/templates/tickets/request_details.html:57
+msgid "Leave"
+msgstr "Kilépés"
+
+#: app/templates/tickets/request_details.html:64
+#: app/templates/tickets/request_details.html:380
+msgid "Close Request"
+msgstr "Kérés lezárása"
+
+#: app/templates/tickets/request_details.html:71
+#: app/templates/tickets/request_details.html:377
+msgid "Cancel Request"
+msgstr "Kérés visszavonása"
+
+#: app/templates/tickets/request_details.html:78
+#: app/templates/tickets/request_details.html:383
+msgid "Add Charge"
+msgstr "Díj hozzáadása"
+
+#: app/templates/tickets/request_details.html:85
+msgid "Delete Request"
+msgstr "Kérés törlése"
+
+#: app/templates/tickets/request_details.html:93
+msgid "Mark Bill Paid"
+msgstr "Számla megjelölése fizetettként"
+
+#: app/templates/tickets/request_details.html:100
+msgid "Edit Information"
+msgstr "Adatok szerkesztése"
+
+#: app/templates/tickets/request_details.html:106
+#: app/templates/tickets/request_details.html:385
+msgid "Request Settings"
+msgstr "A kérés beállításai"
+
+#: app/templates/tickets/request_details.html:114
+#: app/templates/tickets/request_details.html:378
+msgid "Alert Administrator"
+msgstr "Adminisztrátor értesítése"
+
+#: app/templates/tickets/request_details.html:125
+msgid "Re-Open"
+msgstr "Újbóli megnyitás"
+
+#: app/templates/tickets/request_details.html:168
+#: app/templates/tickets/request_details.html:170
+msgid "No Requester"
+msgstr "Nincs kérelmező"
+
+#: app/templates/tickets/request_details.html:181
+msgid "No Responders"
+msgstr "Nincsenek válaszadók"
+
+#: app/templates/tickets/request_details.html:194
+msgid "Request Type"
+msgstr "Kérés típusa"
+
+#: app/templates/tickets/request_details.html:198
+msgid "Status Updated"
+msgstr "Állapot frissítve"
+
+#: app/templates/tickets/request_details.html:205
+msgid "Sensitive"
+msgstr "Bizalmas"
+
+#: app/templates/tickets/request_details.html:209
+#: app/templates/tickets/request_details.html:211
+msgid "Billing Information"
+msgstr "Számlázási információ"
+
+#: app/templates/tickets/request_details.html:215
+msgid "For-profit"
+msgstr "Nyereségorientált"
+
+#: app/templates/tickets/request_details.html:217
+msgid "Charges"
+msgstr "Díjak"
+
+#: app/templates/tickets/request_details.html:229
+msgid "Outstanding Amount:"
+msgstr "Fennmaradó összeg:"
+
+#: app/templates/tickets/request_details.html:237
+msgid "Request Details"
+msgstr "Kérés részletei"
+
+#: app/templates/tickets/request_details.html:245
+msgid "Initial Information"
+msgstr "Elsődleges adatok"
+
+#: app/templates/tickets/request_details.html:247
+msgid "Story"
+msgstr "Történet"
+
+#: app/templates/tickets/request_details.html:248
+msgid "Question"
+msgstr "Kérdés"
+
+#: app/templates/tickets/request_details.html:254
+#: app/templates/tickets/request_details.html:255
+#: app/templates/tickets/request_details.html:256 static/js/widgets.js:189
+#: static/js/widgets.js:231
+msgid "Other Names"
+msgstr "Egyéb nevek"
+
+#: app/templates/tickets/request_details.html:254
+msgid "Relation"
+msgstr "Kapcsolat"
+
+#: app/templates/tickets/request_details.html:262
+msgid "Attached Files"
+msgstr "Csatolt fájlok"
+
+#: app/templates/tickets/request_details.html:274
+msgid "Attached Entities"
+msgstr "Csatolt elemek"
+
+#: app/templates/tickets/request_details.html:303
+msgid "Activity"
+msgstr "Tevékenység"
+
+#: app/templates/tickets/request_details.html:337
+msgid "No comment provided."
+msgstr "Nincs hozzáadott megjegyzés."
+
+#: app/templates/tickets/request_details.html:346
+msgid "No updates yet."
+msgstr "Még nincsenek frissítések."
+
+#: app/templates/tickets/request_details.html:350
+msgid "Leave a Comment"
+msgstr "Megjegyzés írása"
+
+#: app/templates/tickets/request_details.html:378
+msgid "Flag Request"
+msgstr "Kérés megjelölése"
+
+#: app/templates/tickets/request_details.html:379
+msgid "Re-Open Request"
+msgstr "Kérés újbóli megnyitása"
+
+#: app/templates/tickets/request_details.html:381
+msgid "Mark Paid"
+msgstr "Megjelölés fizetettként"
+
+#: app/templates/tickets/request_list.html:7
+msgid "New Request"
+msgstr "Új kérés"
+
+#: app/templates/tickets/request_list.html:13
+msgid "Open Requests"
+msgstr "Nyitott kérések"
+
+#: app/templates/tickets/request_list.html:18
+msgid "No open requests found."
+msgstr "Nem találhatók nyitott kérések."
+
+#: app/templates/tickets/request_list.html:22
+msgid "Closed Requests"
+msgstr "Lezárt kérések"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:6
+msgid "Filter"
+msgstr "Szűrő"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:12
+msgid "Customer Charges"
+msgstr "Ügyféldíjak"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:13
+msgid "View all logged charges against an individual customer."
+msgstr "Egy egyedi ügyfélhez tartozó összes rögzített díj megtekintése."
+
+#: app/templates/tickets/admin/admin_charges_outstanding.html:4
+msgid "View all outstanding charges for all tickets and requesters. "
+msgstr "Az összes jegyhez és kérelmezőhöz tartozó összes díj megtekintése. "
+
+#: app/templates/tickets/admin/admin_deadline.html:3
+msgid "Tickets with Deadlines"
+msgstr "Határidős jegyek"
+
+#: app/templates/tickets/admin/admin_deadline.html:4
+msgid "View open tickets ordered by upcoming deadlines. "
+msgstr "A nyílt jegyek megtekintése a közelgő határidők szerint rendezve. "
+
+#: app/templates/tickets/admin/admin_flagged.html:3
+msgid "User Flagged Tickets"
+msgstr "Felhasználó által megjelölt jegyek"
+
+#: app/templates/tickets/admin/admin_flagged.html:4
+msgid ""
+"View tickets which users or staff have deemed requiring administrative "
+"intervention. "
+msgstr ""
+"Jegyek megtekintése, amelyeknél egy felhasználó vagy munkatárs úgy ítélte"
+" meg, hogy azok adminisztratív beavatkozást igényelnek. "
+
+#: app/templates/tickets/admin/admin_history.html:3
+msgid "Tickets History"
+msgstr "Jegyek előzményei"
+
+#: app/templates/tickets/admin/admin_history.html:4
+msgid "A simple list of closed, resolved or cancelled tickets. "
+msgstr "Lezárt, megoldott vagy törölt jegyek egyszerű listája. "
+
+#: app/templates/tickets/admin/admin_unassigned.html:5
+msgid "View new tickets that need responders assigned to them."
+msgstr "Új jegyek megtekintése, amelyeknél válaszadó kijelölése szükséges."
+
+#: static/js/drive-picker.js:97
+msgid "Error attaching file(s)."
+msgstr "Hiba a fájl(ok) csatolása során."
+
+#: static/js/i18n.js:47 static/js/i18n.js:55
+msgid "x04"
+msgid_plural "x04"
+msgstr[0] "x04"
+msgstr[1] "x04"
+msgstr[2] "x04"
+msgstr[3] "x04"
+msgstr[4] "x04"
+msgstr[5] "x04"
+
+#: static/js/list-files.js:24
+msgid "File successfully removed."
+msgstr "A fájlok eltávolítása sikerült."
+
+#: static/js/list-files.js:26
+msgid "Error removing attached file."
+msgstr "A csatolt fájl eltávolítása során hiba történt."
+
+#: static/js/list-files.js:44
+msgid "No files attached."
+msgstr "Nincsenek csatolt fájlok."
+
+#: static/js/list-files.js:61
+msgid "Error displaying attached files."
+msgstr "A csatolt fájlok megjelenítése során hiba történt."
+
+#: static/js/validation-forms.js:42
+msgid "There was a problem with validation."
+msgstr "Probléma lépett fel az ellenőrzés során."
+

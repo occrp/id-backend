@@ -1,0 +1,25 @@
+{% extends "tickets/request_base.html" %}
+
+
+{% block inner_content %}
+    <div class="page-header">
+        <a href="{{ url('request') }}" class="btn btn-primary pull-right">
+            <i class="icon-plus-sign icon-white"></i> {% trans %}New Request{% endtrans %}
+        </a>
+        <h1>{% trans %}My Requests{% endtrans %}</h1>
+    </div>
+
+    {% if requests %}
+        <h4>{% trans %}Open Requests{% endtrans %}</h4>
+    {{ render_ticket_table(requests) }}
+
+    {% else %}
+        <div class="alert alert-block alert-warning">
+            {% trans %}No open requests found.{% endtrans %}
+        </div>
+    {% endif %}
+    {% if closed_requests %}
+        <h4>{% trans %}Closed Requests{% endtrans %}</h4>
+     {{ render_ticket_table(closed_requests) }}
+    {% endif %}
+{% endblock %}

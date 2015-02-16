@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="span12">
+        <div class="page-header">
+            <h1>{% trans %}Search{% endtrans %}</h1>
+	    {% if query_made and result_count > 0%}
+	  <h4>{% trans %}Results {% endtrans %} {{ start}}
+       - {{ end }}</h4>
+            {% endif %}
+	</div>
+
+        <form class="search form-inline">
+            <div class="row">
+                <div class="search-label span1"><i class="icon-search primary-highlight hidden-phone"></i></div>
+                <div class="span8">
+                    {{form.offset}}
+                    {{form.limit}}
+                    {{form.query}}
+                </div>
+                <div class="span2">
+                    <button id="newsearch" class="btn btn-large btn-primary" type="button">{% trans %}Search{% endtrans %}</button>
+                </div>
+            </div>
+
+
+        <div class="row">
+            <div class="span3">
+                <div class="well controls">
+                    <h4>{% trans %}Sources{% endtrans %}</h4>
+                    {{ form.search_providers }}
+		    <h4>{% trans %}Navigate Results {% endtrans %}</h4>
+		  <button id="results_prev" class="btn btn-primary" type="button">{% trans %}< Previous{% endtrans %}</button>
+		  <button id="results_next" class="btn btn-primary" type="button">{% trans %}Next >{% endtrans %}</button>
+                </div>
+            </div>
+            <div class="span9">{% block search_content %}{% endblock %}</div>
+        </div>
+
+        </form>
+	<p>
+            {% trans bis_url=url('externaldb_list') -%}
+                Didn't find what you were looking for? Try one of our <a href="{{ bis_url }}">business registries</a>.
+            {%- endtrans %}
+        </p>
+    </div>
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+    <script type="text/javascript">
+     var result_count = {{result_count}};
+    </script>
+    <script type="text/javascript" src="{{ static("js/entity-view.js") }}"></script>
+    <script type="text/javascript" src="{{ static("js/search.js") }}"></script>
+{% endblock %}

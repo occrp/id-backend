@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>{% trans %}Register{% endtrans %}</h1>
+<div class="span12">
+<form action="/accounts/register/" method="POST">
+{%csrf_token%}
+<fieldset> 
+{{form.as_table()}}
+<label></label><input class="btn primary" type="submit" value="Save"/>
+</fieldset>
+</form>
+</div>
+
+{% endblock %}

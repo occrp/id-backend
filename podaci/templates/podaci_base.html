@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
+
+<nav class="navbar navbar-podaci">
+    <div class="container-fluid navbar-inner">
+        <ul class="nav navbar-nav">
+            <li><a href="/podaci/"><i class="icon-file"></i></a></li>
+            <li><a class="podaci_upload">Upload</a></li>
+            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Create</a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a class="podaci_create_tag">New tag</a></li>
+                    <li><a class="FIXME podaci_create_text_file">New text file</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav pull-right">
+            <li class="dropdown"><a id="podaci_select_menu" href="#" class="dropdown-toggle" data-toggle="dropdown">Select</a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a class="podaci_btn_select_all">Select all</a></li>
+                    <li><a class="podaci_btn_select_none">Select none</a></li>
+                    <li><a class="podaci_btn_select_invert">Invert selection</a></li>
+                </ul>
+            </li>
+            <li class="dropdown"><a id="podaci_selection_menu" href="#" class="dropdown-toggle" data-toggle="dropdown">Selection</a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a class="FIXME podaci_selection_tags_edit">Add/remove tags</a></li>
+                    <li><a class="FIXME podaci_selection_users_edit">Edit users</a></li>
+                    <li><a class="FIXME podaci_selection_make_public">Make public</a></li>
+                    <li><a class="podaci_selection_download_zip">Download as Zip</a></li>
+                    <li><a class="FIXME podaci_selection_delete">Delete</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="row">
+	{% block podaci_content %}{% endblock %}
+</div>
+
+{% include "podaci/partials/_podaci_upload_model.html" %}
+{% include "podaci/partials/_podaci_edit_users.html" %}
+{% include "podaci/partials/_podaci_edit_groups.html" %}
+{% include "podaci/partials/_podaci_edit_tags.html" %}
+{% include "podaci/partials/_podaci_create_tag.html" %}
+
+{% endblock %}
+
+{% block after_js %}
+	<script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/vendor/jquery.ui.widget.js')}}"></script>
+	<script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
+	<script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
+	<script type="text/javascript" src="{{ static('js/podaci.js') }}"></script>
+{% endblock %}

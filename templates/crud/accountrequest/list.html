@@ -1,0 +1,18 @@
+{% extends "crud/list_base.html" %}
+{% block crud_title %}{% trans %}Account Requests{% endtrans %}{% endblock %}
+
+{% block filter_form %}
+<div class="page-header">
+        <div class="pull-right header-form">
+            <form action="" method="GET" class="ext-db-filter">
+	  <table>
+	  <tr>
+                {% for field in filter_form %}
+	      <td>     {{ form_macros.render_field(field) }}</td>
+	        {% endfor %}
+	      <td> {{form_macros.render_submit('filter', 'submit')}}</td>
+	      </tr>
+	      </table>
+            </form>
+        </div>
+{% endblock %}
