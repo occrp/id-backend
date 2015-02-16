@@ -116,7 +116,7 @@ from django.utils.translation import ugettext_lazy as _
 
 DEFAULTS = {
     'search' : {
-        'result_limit': 10,
+        'result_limit': 100,
         'index_version': '1',
     },
 
