@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.views.generic import TemplateView
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from id.mixins import JSONResponseMixin
+from id.decorators import staff_only
 from id.apis.podaci import *
 import json
 # from settings import PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT
@@ -13,6 +13,8 @@ PODACI_FS_ROOT = "/home/smari/Projects/OCCRP/data/"
 
 class PodaciView(TemplateView, JSONResponseMixin):
     def dispatch(self, *args, **kwargs):
+        # All of podaci is for staff only.
+        staff_only(self.request.user)
         self.fs = FileSystem(
             PODACI_SERVERS, PODACI_ES_INDEX, 
             PODACI_FS_ROOT, self.request.user)
