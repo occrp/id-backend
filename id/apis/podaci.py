@@ -436,7 +436,7 @@ class FileSystem:
             return False
         return res["exists"]
 
-    def list_user_tags(self, user, root=None, _from=0, _size=10):
+    def list_user_tags(self, user, root=None, _from=0, _size=1000):
         if root:
             body = {
                     "query": {
@@ -462,7 +462,7 @@ class FileSystem:
         res = self.es.search(index=self.es_index, doc_type="tag", body=body, from_=_from, size=_size)
         return res["hits"]["total"], [Tag(self, tagmeta["_id"], prepopulate_meta=tagmeta["_source"]) for tagmeta in res["hits"]["hits"]]
 
-    def list_user_files(self, user, root=None, _from=0, _size=10):
+    def list_user_files(self, user, root=None, _from=0, _size=1000):
         if root:
             body = {"query":{"bool":
                     {"must":
@@ -477,12 +477,12 @@ class FileSystem:
         res = self.es.search(index=self.es_index, doc_type="file", body=body, from_=_from, size=_size)
         return res["hits"]["total"], [File(self, filemeta["_id"], prepopulate_meta=filemeta["_source"]) for filemeta in res["hits"]["hits"]]
 
-    def list_files(self, tag, _from=0, _size=10):
+    def list_files(self, tag, _from=0, _size=1000):
         body = {"query":{"term":{"tags": tag.lower()}}}
         res = self.es.search(index=self.es_index, doc_type="file", body=body, from_=_from, size=_size)
         return res["hits"]["total"], [File(self, filemeta["_id"], prepopulate_meta=filemeta["_source"]) for filemeta in res["hits"]["hits"]]
 
-    def search_files(self, query, _from=0, _size=10):
+    def search_files(self, query, _from=0, _size=1000):
         res = self.es.search(index=self.es_index, doc_type="file", body=query, from_=_from, size=_size)
         return res["hits"]["total"], [File(self, filemeta["_id"], prepopulate_meta=filemeta["_source"]) for filemeta in res["hits"]["hits"]]
 
