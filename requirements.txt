@@ -3,3 +3,7 @@ Babel==0.9.6
 pycountry
 transifex-client==0.9.1
 mock==1.0.1
+python-magic
+elasticsearch
+django-jinja
+django-registration
