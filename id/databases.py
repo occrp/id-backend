@@ -34,9 +34,12 @@ class ExternalDatabaseList(ListView):
         context = super(ExternalDatabaseList, self).get_context_data(**kwargs)
         context["filter_form"] = CountryFilterForm()
         context["count"] = ExternalDatabase.objects.count()
-        context["jurisdictions"] = (ExternalDatabase.objects.values("country")
-                                    .annotate(total=Count('country'))
-                                    .order_by('-total')[0]["total"])
+        try:
+            context["jurisdictions"] = (ExternalDatabase.objects.values("country")
+                                        .annotate(total=Count('country'))
+                                        .order_by('-total')[0]["total"])
+        except IndexError, e:
+            context["jurisdictions"] = 0
 
         return context
 
