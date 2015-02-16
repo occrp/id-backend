@@ -1,6 +1,19 @@
 {% extends "podaci_base.html" %}
 
 {% block podaci_content %}
+<div class="span12" style="margin-top: -20px">
+    <div class="pull-right btn-group" role="group">
+        <button id="podaci-list-mode-icons" class="btn"><i class="icon-folder-open"></i></button>
+        <button id="podaci-list-mode-list" class="btn"><i class="icon-list"></i></button>
+    </div>
+
+    <div class="breadcrumbs">
+        <a href="{{url('podaci_info_home')}}">Tags</a>{% if breadcrumbs %} &gt; {% endif %}
+        {% for bc in breadcrumbs %}
+        <a href="{{url('podaci_tags_details', bc.id)}}">{{bc.name}}</a>{% if not loop.last %} &gt; {% endif %}
+        {% endfor %}
+    </div>
+</div>
 
 <div class="span2 well">
     <h4>{% if tag %}Subtags{% else %}Your tags{% endif %}</h4>
@@ -13,10 +26,6 @@
 </div>
 
 <div class="span9">
-    <div class="pull-right btn-group" role="group">
-        <button id="podaci-list-mode-icons" class="btn"><i class="icon-folder-open"></i></button>
-        <button id="podaci-list-mode-list" class="btn"><i class="icon-list"></i></button>
-    </div>
 
     <h3>{% if tag %}{{tag.name}}{% else %}Your files{% endif %}</h3>
     <h6>{{num_files}} files / <span id="num_files_displayed">{{num_files_displayed}} shown</span></h6>

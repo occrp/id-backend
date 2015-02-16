@@ -171,10 +171,8 @@ class Tag(MetaMixin, PermissionsMixin):
         self.id = tid
         self.meta = deepcopy(self.METADATA_TEMPLATE)
         self.meta.update(prepopulate_meta)
-        if not self.id:
-            # Try to find tag by name. 
-            # If there is none, then we're making a new tag.
-            pass
+        if self.id and not prepopulate_meta:
+            self.get_metadata()
 
     def create(self, name):
         self._create_metadata()
