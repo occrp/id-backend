@@ -1,9 +1,9 @@
 from django.conf.urls import patterns, include, url
-from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 
 from id import databases, requests, search, accounts
-from id import validation, admin, tasks, files
+from id import validation, admin, tasks, files, errors
+from id.decorators import admin_only, staff_only, volunteers_only, users_only
 # from id.google_apis.drive import drive_decorator
 
 from django.contrib import admin as django_admin
@@ -73,12 +73,13 @@ urlpatterns = patterns('',
     url(r'^accounts/users/$', accounts.UserList.as_view(), name='userprofile_list'),
     url(r'^accounts/request/$', accounts.AccountRequestHome.as_view(), name='request_account_home'),
     url(r'^accounts/request/list/$', accounts.AccountRequestList.as_view(), name='request_account_list'),
-    url(r'^accounts/profile/$', login_required(accounts.ProfileUpdate.as_view()), name='profile'),
-    url(r'^accounts/profile/(?P<pk>[0-9]+)/$', login_required(accounts.ProfileView.as_view()), name='profile'),
-    url(r'^accounts/profile/(?P<username>.+)/$', login_required(accounts.ProfileView.as_view()), name='profile'),
-    url(r'^accounts/requester/$', login_required(accounts.AccountRequest.as_view()), name='request_account'),
-    url(r'^accounts/volunteer/$', login_required(accounts.AccountVolunteer.as_view()), name='volunteer_account'),
+    url(r'^accounts/profile/$', accounts.ProfileUpdate.as_view(), name='profile'),
+    url(r'^accounts/profile/(?P<pk>[0-9]+)/$', accounts.ProfileView.as_view(), name='profile'),
+    url(r'^accounts/profile/(?P<username>.+)/$', accounts.ProfileView.as_view(), name='profile'),
+    url(r'^accounts/requester/$', accounts.AccountRequest.as_view(), name='request_account'),
+    url(r'^accounts/volunteer/$', accounts.AccountVolunteer.as_view(), name='volunteer_account'),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name='login'),
+    url(r'^accounts/logout/', 'django.contrib.auth.views.logout', {'template_name': 'logout.html'}, name='logout'),
     # url(r'/post_login_redirect', accounts.PostLoginRedirectHandler, name='post_login_redirect'),
     # url(r'/complete_login', h.CompleteLoginHandler, name="complete_login"),
 
@@ -96,6 +97,11 @@ urlpatterns = patterns('',
     url(r'^json/all_users/$', requests.Select2AllHandler.as_view(), name='select2_all_users'),
 
 )
+
+handler400 = errors._400
+handler403 = errors._403
+handler404 = errors._403
+handler500 = errors._500
 
 
 """
