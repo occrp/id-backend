@@ -134,3 +134,7 @@ DEFAULTS = {
     },
 }
 
+PODACI_SERVERS = [{"host": "localhost"}]
+PODACI_ES_INDEX = "podaci"
+PODACI_FS_ROOT = "/home/id/data/"
+
