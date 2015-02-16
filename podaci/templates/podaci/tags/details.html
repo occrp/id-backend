@@ -13,32 +13,42 @@
 </div>
 
 <div class="span9">
+    <div class="pull-right btn-group" role="group">
+        <button id="podaci-list-mode-icons" class="btn"><i class="icon-folder-open"></i></button>
+        <button id="podaci-list-mode-list" class="btn"><i class="icon-list"></i></button>
+    </div>
+
     <h3>{% if tag %}{{tag.name}}{% else %}Your files{% endif %}</h3>
     <h6>{{num_files}} files / <span id="num_files_displayed">{{num_files_displayed}} shown</span></h6>
+
     <div class="podaci_upload_dropzone">
-        <ul class="podaci-files"{% if tag %} data-tag="{{tag.id}}"{% endif %}>
+        <ul class="podaci-files podaci-files-icons"{% if tag %} data-tag="{{tag.id}}"{% endif %}>
         {% for file in result_files %}
             <li class="podaci-file" data-mime="{{file.mimetype}}" data-size="{{file.size}}" data-id="{{file.id}}">
                 <a href="{{url('podaci_files_details', file.id)}}"><i class="icon-file podaci-icon-big"></i>{{file.filename}}</a>
             </li>
         {% endfor %}
         </ul>
-    </div>
-</div>
 
-<div class="span9">
-    <h3>{% if tag %}{{tag.name}}{% else %}Your files{% endif %}</h3>
-    <h6>{{num_files}} files / <span id="num_files_displayed">{{num_files_displayed}} shown</span></h6>
-    <div class="podaci_upload_dropzone">
-        <table class="podaci-files"{% if tag %} data-tag="{{tag.id}}"{% endif %}>
+        <table class="podaci-files podaci-files-list table table-striped table-hover"{% if tag %} data-tag="{{tag.id}}"{% endif %}>
+            <tr>
+                <th><input type="checkbox" class="podaci_file_select_all"/></th>
+                <th>{% trans %}Identifier{% endtrans %}</th>
+                <th>{% trans %}Filename{% endtrans %}</th>
+                <th>{% trans %}Size{% endtrans %}</th>
+                <th>{% trans %}Type{% endtrans %}</th>
+            </tr>
         {% for file in result_files %}
             <tr class="podaci-file" data-mime="{{file.mimetype}}" data-size="{{file.size}}" data-id="{{file.id}}">
-                <td><a href="{{url('podaci_files_details', file.id)}}">{{file.identifier}}</a></td>
-                <td><a href="{{url('podaci_files_details', file.id)}}"><i class="icon-file"></i>{{file.filename}}</a></td>
-                <td>...</td>
+                <td><input type="checkbox" class="podaci_file_select_box"/></td>
+                <td nowrap><a href="{{url('podaci_files_details', file.id)}}">{{file.identifier}}</a></td>
+                <td class="overflow-hidden"><a href="{{url('podaci_files_details', file.id)}}"><i class="icon-file"></i>{{file.filename}}</a></td>
+                <td nowrap>{{file.size|filesizeformat}}</td>
+                <td nowrap>{{file.mimetype}}</td>
             </tr>
         {% endfor %}
         </table>
+
     </div>
 </div>
 

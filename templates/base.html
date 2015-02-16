@@ -67,7 +67,7 @@
                                 <a href="{{ url('admin_panel') }}">{% trans %}Admin{% endtrans %}</a>
                             </li>
                             {% endif %}
-                            <li><a tabindex="-1" href="{{ logout_url }}">{% trans %}Log out{% endtrans %}</a></li>
+                            <li><a tabindex="-1" href="{{ url('logout') }}">{% trans %}Sign out{% endtrans %}</a></li>
                         </ul>
                     </li>
                 {% else %}

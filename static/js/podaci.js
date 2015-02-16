@@ -13,51 +13,95 @@ Podaci.init = function() {
     Podaci.selection = [];
     Podaci.update_selection();
     Podaci.init_fileupload();
+    Podaci.init_listmode();
+};
+
+Podaci.init_listmode = function() {
+    $(".podaci-files-icons").hide();
+    $(".podaci-files-list").show();
+    $("#podaci-list-mode-list").addClass("active");
+    $("#podaci-list-mode-icons").removeClass("active");
+};
+
+Podaci.listmode_icons = function() {
+    $(".podaci-files-list").hide();   
+    $(".podaci-files-icons").show();
+    $("#podaci-list-mode-icons").addClass("active");
+    $("#podaci-list-mode-list").removeClass("active");
+};
+
+Podaci.listmode_list = function() {
+    $(".podaci-files-icons").hide();
+    $(".podaci-files-list").show();   
+    $("#podaci-list-mode-list").addClass("active");
+    $("#podaci-list-mode-icons").removeClass("active");
 };
 
 Podaci.update_selection = function() {
     var not_selected = _.difference(
-        $.map($(".podaci-file"), function(e) { return $(e).data("id") }, 
+        $.map($(".podaci-files-list .podaci-file"), function(e) { return $(e).data("id") }, 
         Podaci.selection));
 
     for (idx in not_selected) { // It might be faster to just apply this to $(".podaci-file"), without a loop?
-        $(".podaci-file[data-id='" + not_selected[idx] + "'").removeClass("podaci-file-selected");
+        $(".podaci-file[data-id='" + not_selected[idx] + "']").removeClass("podaci-file-selected");
+        $(".podaci-file[data-id='" + not_selected[idx] + "'] .podaci_file_select_box").prop("checked", false);
     }
     for (idx in Podaci.selection) {
-        $(".podaci-file[data-id='" + Podaci.selection[idx] + "'").addClass("podaci-file-selected");
+        $(".podaci-file[data-id='" + Podaci.selection[idx] + "']").addClass("podaci-file-selected");
+        $(".podaci-file[data-id='" + Podaci.selection[idx] + "'] .podaci_file_select_box").prop("checked", true);
     }
-    if (Podaci.selection.length == 0) {
+
+    if (Podaci.selection.length == 0 && not_selected.length == 0) {
+        $("#podaci_selection_menu").text("No files");
+        $("#podaci_selection_menu")
+    } else if (Podaci.selection.length == 0) {
         $("#podaci_selection_menu").text("All files");
     } else {
         $("#podaci_selection_menu").text("Selection (" + Podaci.selection.length + ")");
     }
-}
+};
 
 Podaci.select = function(selection) {
     Podaci.selection = _.union(Podaci.selection, selection);
     Podaci.update_selection();
-}
+};
 
 Podaci.deselect = function(selection) {
     Podaci.selection = _.difference(Podaci.selection, selection);
     Podaci.update_selection();
-}
+};
+
+Podaci.select_toggle = function(id) {
+    if (Podaci.selection.indexOf(id) == -1) {
+        console.log("Selecting " + id);
+        Podaci.select([id]);
+    } else {
+        console.log("Deselecting " + id);
+        Podaci.deselect([id]);
+    }
+};
 
 Podaci.select_invert = function() {
     Podaci.selection = _.difference(
-        $.map($(".podaci-file"), function(e) { return $(e).data("id") }), 
+        $.map($(".podaci-files-list .podaci-file"), function(e) { return $(e).data("id") }), 
         Podaci.selection);
     Podaci.update_selection();
-}
+};
 
 Podaci.select_all = function() {
     Podaci.selection = $.map($(".podaci-file"), function(e) { return $(e).data("id") });
     Podaci.update_selection();
-}
+};
 
 Podaci.select_none = function() {
     Podaci.selection = [];
     Podaci.update_selection();
+};
+
+Podaci.select_toggle_checkbox = function(e) {
+    id = $(e.target).parent().parent().data("id");
+    console.log("Toggling " + id);
+    Podaci.select_toggle(id);
 }
 
 Podaci.init_fileupload = function() {
@@ -189,8 +233,7 @@ Podaci.refresh_tags = function() {
             }
         });
     });
-}
-
+};
 
 Podaci.refresh_files = function() {
     // FIXME: This currently fetches tag info, but discards it.
@@ -224,7 +267,7 @@ Podaci.refresh_files = function() {
             }
         });
     });
-}
+};
 
 Podaci.download_zip = function() {
     if (Podaci.selection.length == 0 && Podaci.tagid) {
@@ -237,7 +280,7 @@ Podaci.download_zip = function() {
         src = "/podaci/tag/selection/zip/?files=" + Podaci.selection.join("&files=");
     }
     window.location = src;
-}
+};
 
 Podaci.file_click = function(e) {
     id = $(e.target).closest("li").data("id");
@@ -248,19 +291,19 @@ Podaci.file_click = function(e) {
     } else {
         Podaci.deselect([id]);        
     }
-}
+};
 
 Podaci.file_doubleclick = function(e) {
     window.location = $(e.target).closest("a")[0].href;
-}
+};
 
 Podaci.get_user_tags = function(callback) {
     $.getJSON("/podaci/tag/list/", {format:"json"}, callback);
-}
+};
 
 Podaci.get_user_tags_url = function(callback) {
     return "/podaci/tag/list/?format=json";
-}
+};
 
 
 Podaci.callbacks = {
@@ -275,10 +318,15 @@ Podaci.callbacks = {
     ".podaci_btn_select_all click": Podaci.select_all,
     ".podaci_btn_select_none click": Podaci.select_none,
     ".podaci_btn_select_invert click": Podaci.select_invert,
+    ".podaci_file_select_all change": Podaci.select_invert,
+    ".podaci_file_select_box change": Podaci.select_toggle_checkbox,
     ".podaci_selection_download_zip click": Podaci.download_zip,
 
-    ".podaci-file click": Podaci.file_click,
-    ".podaci-file dblclick": Podaci.file_doubleclick,
+    ".podaci-files-icons > .podaci-file click": Podaci.file_click,
+    ".podaci-files-icons > .podaci-file dblclick": Podaci.file_doubleclick,
+
+    "#podaci-list-mode-icons click": Podaci.listmode_icons,
+    "#podaci-list-mode-list click": Podaci.listmode_list,
 };
 
 
