@@ -1,0 +1,18 @@
+{% extends "crud/item_base.html" %}
+{% block crud_title %}{% trans %}Edit User Profile{% endtrans %}
+
+{% endblock %}
+{% block subhead %}
+{% if user_profile.get_account_request() %}
+<a href="{{ user_profile.get_account_request().url() }}">{%trans %}Account Request for this profile{% endtrans %}</a>
+{% endif %}
+{% endblock %}
+
+
+
+{% block post_form_content %}
+    {{ macro.render_table(rels, rel_fields, request, no_rels) }}
+
+
+{% endblock %}
+{% trans %}Account Request for this profile: {% endtrans %}

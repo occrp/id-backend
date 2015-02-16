@@ -1,0 +1,46 @@
+{% extends "podaci_base.html" %}
+
+{% block podaci_content %}
+
+<div class="span2 well">
+    <h4>{% if tag %}Subtags{% else %}Your tags{% endif %}</h4>
+    <h6>{{num_tags}} tags</h6>
+    <ul class="podaci-tags" {% if tag %} data-tag="{{tag.id}}"{% endif %}>
+    {% for tag in result_tags %}
+        <li><a href="{{url('podaci_tags_details', tag.id)}}"><i class="icon-tag"></i> {{tag.meta.name}}</a></li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div class="span9">
+    <h3>{% if tag %}{{tag.name}}{% else %}Your files{% endif %}</h3>
+    <h6>{{num_files}} files / <span id="num_files_displayed">{{num_files_displayed}} shown</span></h6>
+    <div class="podaci_upload_dropzone">
+        <ul class="podaci-files"{% if tag %} data-tag="{{tag.id}}"{% endif %}>
+        {% for file in result_files %}
+            <li class="podaci-file" data-mime="{{file.mimetype}}" data-size="{{file.size}}" data-id="{{file.id}}">
+                <a href="{{url('podaci_files_details', file.id)}}"><i class="icon-file podaci-icon-big"></i>{{file.filename}}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="span9">
+    <h3>{% if tag %}{{tag.name}}{% else %}Your files{% endif %}</h3>
+    <h6>{{num_files}} files / <span id="num_files_displayed">{{num_files_displayed}} shown</span></h6>
+    <div class="podaci_upload_dropzone">
+        <table class="podaci-files"{% if tag %} data-tag="{{tag.id}}"{% endif %}>
+        {% for file in result_files %}
+            <tr class="podaci-file" data-mime="{{file.mimetype}}" data-size="{{file.size}}" data-id="{{file.id}}">
+                <td><a href="{{url('podaci_files_details', file.id)}}">{{file.identifier}}</a></td>
+                <td><a href="{{url('podaci_files_details', file.id)}}"><i class="icon-file"></i>{{file.filename}}</a></td>
+                <td>...</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}

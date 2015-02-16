@@ -1,0 +1,32 @@
+<div class="modal" id="podaci_upload_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Upload</h4>
+      </div>
+      <div class="modal-body">
+        <div id="podaci_upload_dropzone">
+        	<form id="podaci_upload_files_form" action="/podaci/file/create" method="POST" enctype="multipart/form-data">
+        		{% csrf_token %}
+            <input id="podaci_tag_id" type="hidden" name="tag" value="{% if tag %}{{tag.id}}{% endif %}"/>
+	        	<input type="file" class="podaci_upload_files" name="files[]" multiple />
+	        	<div class="podaci_upload_progress progress">
+			        <div class="progress-bar progress-bar-success"></div>
+	    		</div>
+	        	<table id="podaci_upload_list" class="podaci-files">
+              <tr>
+                <th>File name</th>
+                <th>Summary</th>
+              </tr>
+	        	</table>
+	        </form>
+        </div>
+		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>

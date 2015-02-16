@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="span12">
+    <div class="page-header">
+        <div class="pull-right header-form">
+            <form action="{{ url('externaldb_list') }}" method="GET" class="ext-db-filter">
+                {{ filter_form.as_p() }}
+            </form>
+        </div>
+
+        <h1>{% trans %}Business Registries{% endtrans %}</h1>
+    </div>
+    <p>{% trans %}Here you will find links to {{count}} online databases across {{jurisdictions}} jurisdictions where you can get information on the shareholders, directors and the financial reports of companies worldwide. They are organized by country. Many are free of charge and for some you must register. Databases marked with a "$" require a fee.  Not all are available in English, see the notes column for further details.	{% endtrans %}</p>
+    <br />
+
+    {% if object_list %}
+        {% for row in object_list|batch(4) %}
+            <div class="row" data-equal="div.ext-db">
+            {% for db in row %}
+                <div class="span3 ext-db">
+                    <div class="well">
+                        <div class="db-title">
+                            <div class="pull-right">
+                                {% if db.paid %}
+                                    <i class="icon-dollar text-success" data-toggle='tooltip' title='{{ _("Paid Database") }}'></i>
+                                {% endif %}
+                                {% if db.registration_required %}
+                                    <i class="icon-edit text-success" data-toggle='tooltip' title='{{ _("Registration Required") }}'></i>
+                                {% endif %}
+                                {% if db.government_db %}
+                                    <i class="icon-building text-success" data-toggle='tooltip' title='{{ _("Government Database") }}'></i>
+                                {% endif %}
+                            </div>
+                            <a href="{{ db.url }}" target="_blank">{{ db.agency }}</a>
+                        </div>
+                        <ul>
+                            <li>{{ macros.display_field(db, 'db_type') }}</li>
+                            {% if db.country != request.GET['country'] %}
+                                <li><strong>{{ macros.display_field(db, 'country') }}</strong></li>
+                            {% endif %}
+                        </ul>
+                        <p class="preserve_whitespace">{{ db.notes }}</p>
+                        {% if db.blog_post %}<a href="{{ db.blog_post }}" target='_blank'><i class="icon-file-text" data-toggle='tooltip' title='{{ _("Documentation") }}'></i></a>{% endif %}
+                        {% if db.video_url %}<a href="{{ db.video_url }}" target='_blank'><i class="icon-youtube-play" data-toggle='tooltip' title='{{ _("Video Tutorial") }}'></i></a>{% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        {% endfor %}
+    {% else %}
+    <div class="alert alert-block alert-warning">
+        {% trans %}No external databases found.{% endtrans %}
+    </div>
+    {% endif %}
+
+    <p>
+    {% trans %}Didn't find what you were looking for?{% endtrans %}
+    <a href="{{ url('request') }}">
+        {% trans %}Request manual help from our researchers.{% endtrans %}
+    </a>
+    </p>
+
+</div>
+{% endblock %}

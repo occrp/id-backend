@@ -1,0 +1,9 @@
+{% extends "admin_base.html" %}
+
+{% block admin_content %}
+    <div class="page-header">
+        <h1>{% trans %}Company{% endtrans %}</h1>
+    </div>
+
+    {{ form_macros.render_form(form, submit_title=_("Submit")) }}
+{% endblock %}

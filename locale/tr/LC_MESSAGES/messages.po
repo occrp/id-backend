@@ -1,0 +1,2581 @@
+# Arabic translations for PROJECT.
+# Copyright (C) 2013 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2013-12-09 10:47+0100\n"
+"PO-Revision-Date: 2014-01-22 13:28+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: ar <LL@li.org>\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 "
+"&& n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: app/fields.py:74
+msgid "Key is invalid or does not exist."
+msgstr "Anahtar geçersiz veya mevcut değil."
+
+#: app/forms.py:59 app/models.py:348 app/models.py:482
+msgid "Comments"
+msgstr "Yorumlar"
+
+#: app/forms.py:60 app/templates/crud/item_base.html:32
+msgid "Files"
+msgstr "Dosyalar"
+
+#: app/forms.py:141 app/models.py:474 app/models.py:478
+msgid "Entity One"
+msgstr "Varlık 1"
+
+#: app/forms.py:142 app/models.py:475 app/models.py:479
+msgid "Entity Two"
+msgstr "Varlık 2"
+
+#: app/forms.py:145
+msgid "Entity Two is a"
+msgstr "Varlık 2, bir"
+
+#: app/forms.py:156
+msgid "The entity below is a"
+msgstr "Aşağıdaki varlık, bir"
+
+#: app/forms.py:164
+msgid "Customer"
+msgstr "Müşteri"
+
+#: app/forms.py:178 app/forms.py:226 app/models.py:581 app/models.py:1122
+#: app/templates/tickets/request_details.html:251
+msgid "Country"
+msgstr "Ülke"
+
+#: app/forms.py:183
+msgid "Person"
+msgstr "Kişi"
+
+#: app/forms.py:184 app/templates/company.html:5
+msgid "Company"
+msgstr "Şirket"
+
+#: app/forms.py:185 app/templates/crud/fragment.html:5
+#: app/templates/crud/company/edit.html:12
+#: app/templates/crud/relationship/inline_entity.html:5
+#: app/templates/crud/relationship/table_mixin.html:163
+msgid "Relationship"
+msgstr "İlişki"
+
+#: app/forms.py:186 app/models.py:912 app/models.py:1258
+#: app/templates/crud/relationship/table_mixin.html:24
+#: app/templates/tickets/request_details.html:155
+msgid "Location"
+msgstr "Konum"
+
+#: app/forms.py:188 app/models.py:613
+msgid "Full Name"
+msgstr "Tam Ad"
+
+#: app/forms.py:191 app/models.py:343
+msgid "Identifier"
+msgstr "Tanımlayıcı"
+
+#: app/forms.py:202
+msgid "Illegal Identifier. Only lowercase letters and _ are allowed."
+msgstr "Kuraldışı Tanımlayıcı. Sadece küçük harfler ve _ karakteri kullanılabilir."
+
+#: app/forms.py:209
+msgid "Field with this identifier already exists."
+msgstr "Bu tanımlayıcıya ait bir alan zaten var."
+
+#: app/forms.py:224 app/models.py:1128
+msgid "URL"
+msgstr "URL"
+
+#: app/forms.py:240 app/forms.py:262 app/forms.py:293
+msgid "Email"
+msgstr "E-posta"
+
+#: app/forms.py:242 app/models.py:1233
+msgid "Media Type"
+msgstr "Medya Türü"
+
+#: app/forms.py:245 app/models.py:1235
+msgid "Circulation (approximate per month)"
+msgstr "Tiraj (aylık yaklaşık)"
+
+#: app/forms.py:266 app/models.py:518 app/templates/tickets/request_base.html:8
+#: app/templates/tickets/request_details.html:32
+msgid "Status"
+msgstr "Durum"
+
+#: app/forms.py:268 app/forms.py:275 app/forms.py:535
+msgid "All"
+msgstr "Tümü"
+
+#: app/forms.py:269 app/models.py:1149
+msgid "Approved"
+msgstr "Onaylandı"
+
+#: app/forms.py:270
+msgid "Not Approved"
+msgstr "Onaylanmadı"
+
+#: app/forms.py:273
+msgid "Type of Request"
+msgstr "Talep Türü"
+
+#: app/forms.py:276 app/templates/tickets/request_charges_base.html:20
+#: app/templates/tickets/request_details.html:164
+msgid "Requester"
+msgstr "Talep Eden"
+
+#: app/forms.py:277 app/templates/request_account_home.html:24
+msgid "Volunteer"
+msgstr "Gönüllü"
+
+#: app/forms.py:302
+msgid "Approve (Adds user to groups)"
+msgstr "Onayla (Kullanıcıyı gruplara ekler)"
+
+#: app/forms.py:303
+msgid "Reject (Removes user from groups)"
+msgstr "Reddet (Kullanıcıyı gruplardan çıkarır)"
+
+#: app/forms.py:308
+msgid "Action"
+msgstr "İşlem"
+
+#: app/forms.py:315
+msgid "Research Goal"
+msgstr "Araştırma Hedefi"
+
+#: app/forms.py:324
+msgid ""
+"This is highly sensitive, do not let volunteer research librarians see "
+"this request."
+msgstr ""
+"Bu bilgi son derece hassastır, gönüllü araştırma kütüphanecilerinin bu "
+"talebi görmelerine izin vermeyin."
+
+#: app/forms.py:339 app/forms.py:362
+msgid "What do you know so far?"
+msgstr "Şu ana kadar neler öğrendiniz?"
+
+#: app/forms.py:345
+msgid "Any information you already have."
+msgstr "Şu ana kadar sahip olduğunuz bilgiler."
+
+#: app/forms.py:348
+msgid "Where are you researching?"
+msgstr "Araştırmanızı nerede yapıyorsunuz?"
+
+#: app/forms.py:366
+msgid "What story are you working on?"
+msgstr "Hangi hikaye üzerinde çalışıyorsunuz?"
+
+#: app/forms.py:370
+msgid "What sources do you have so far?"
+msgstr "Şimdiye kadar hangi kaynaklara ulaştınız?"
+
+#: app/forms.py:391
+msgid "Reason"
+msgstr "Neden"
+
+#: app/forms.py:397 app/forms.py:406
+#: app/templates/tickets/request_details.html:358
+msgid "Comment"
+msgstr "Yorum"
+
+#: app/forms.py:410
+msgid "Paid Status"
+msgstr "Ödendi Durumu"
+
+#: app/forms.py:411
+msgid "Marking as paid will reconcile any open charges with the request."
+msgstr ""
+"Ödendi olarak işaretlemek bu taleple ilgili tüm ödenmemiş ücretleri "
+"mutabık duruma getirir."
+
+#: app/forms.py:421
+msgid "Comment to Requester"
+msgstr "Talep Edene Yorum Yap"
+
+#: app/forms.py:423 app/templates/tickets/request_charges_base.html:21
+msgid "Item"
+msgstr "Öğe"
+
+#: app/forms.py:425 app/forms.py:506
+msgid "Cost (USD)"
+msgstr "Maliyet (USD)"
+
+#: app/forms.py:427 app/forms.py:508
+msgid "Cost (Original Currency)"
+msgstr "Maliyet (Asıl Para Birimi)"
+
+#: app/forms.py:435
+msgid ""
+"Add a comment, visible to the person making this request and the "
+"researcher answering it."
+msgstr ""
+"Bu talepte bulunan kişinin ve bunu yanıtlayan araştırmacının görebileceği"
+" bir yorum ekleyin."
+
+#: app/forms.py:453
+msgid "Assign OCCRP Staff member(s) as the ticket responder"
+msgstr "Bileti yanıtlaması için OCCRP Çalışanı atayın"
+
+#: app/forms.py:454 app/templates/tickets/request_details.html:174
+msgid "Staff Responders"
+msgstr "Yanıtlayan Çalışan"
+
+#: app/forms.py:457
+msgid "Assign Volunteer Researcher(s)"
+msgstr "Gönüllü Araştırmacı(lar) atayın"
+
+#: app/forms.py:458 app/templates/tickets/request_details.html:186
+msgid "Volunteer Responders"
+msgstr "Yanıtlayan Gönüllüler"
+
+#: app/forms.py:460 app/models.py:618 app/models.py:705
+msgid "Requester Type"
+msgstr "Talep Türü"
+
+#: app/forms.py:463 app/models.py:94
+msgid "Flagged"
+msgstr "İşaretli"
+
+#: app/forms.py:464
+msgid "Once user issues are dealt with, un-flag the ticket"
+msgstr "Kullanıcının sorunları giderildiğinde, biletin işaretlemesini kaldırın"
+
+#: app/forms.py:466 app/models.py:620 app/models.py:717
+#: app/templates/tickets/request_details.html:202
+msgid "Findings Public"
+msgstr "Bulgular Herkese Açık"
+
+#: app/forms.py:467
+msgid "Whether the findings of the ticket should be publicly visible."
+msgstr "Bilet bulgularının herkese açık olup olmayacağını belirtir."
+
+#: app/forms.py:469 app/models.py:622 app/models.py:719
+msgid "For-Profit?"
+msgstr "Kâr amacı güdüyor mu?"
+
+#: app/forms.py:471 app/models.py:721
+msgid "Public?"
+msgstr "Herkese açık mı?"
+
+#: app/forms.py:472
+msgid ""
+"If a ticket is marked as public, volunteers are able toview and "
+"collaborate on the ticket. Making a ticket private will not remove "
+"volunteers as researchers."
+msgstr ""
+"Bir biletin durumu herkese açık olarak işaretlenmişse, gönüllüler bileti "
+"görüntüleyebilir ve bilet üzerinde ortak çalışabilir. Bir biletin gizli "
+"duruma getirilmesi gönüllülerin araştırmacı durumunu kaldırmayacaktır."
+
+#: app/forms.py:523 app/forms.py:548
+msgid "Entities"
+msgstr "Varlıklar"
+
+#: app/forms.py:534
+msgid "Result type"
+msgstr "Sonuç türü"
+
+#: app/forms.py:536 app/templates/admin_base.html:9
+#: app/templates/crud/company/list.html:2
+msgid "Companies"
+msgstr "Şirketler"
+
+#: app/forms.py:537 app/templates/admin_base.html:12
+#: app/templates/crud/person/list.html:2
+msgid "People"
+msgstr "Kişiler"
+
+#: app/forms.py:538 app/templates/admin_base.html:15
+#: app/templates/crud/location/list.html:2
+msgid "Locations"
+msgstr "Konumlar"
+
+#: app/forms.py:545
+msgid "Search Providers"
+msgstr "Arama Sağlayıcıları"
+
+#: app/forms.py:547
+msgid "Everything"
+msgstr "Herşey"
+
+#: app/forms.py:549
+msgid "Documents"
+msgstr "Dokümanlar"
+
+#: app/forms.py:550
+msgid "Companies from OpenCorporates"
+msgstr "OpenCorporates'ten Şirketler"
+
+#: app/forms.py:594
+msgid "Share With"
+msgstr "Şununla Paylaş:"
+
+#: app/forms.py:596
+msgid "Everyone (public)"
+msgstr "Herkes (herkese açık)"
+
+#: app/forms.py:597
+msgid "Users"
+msgstr "Kullanıcılar"
+
+#: app/forms.py:598 app/templates/about_us.html:20
+msgid "Staff"
+msgstr "Çalışanlar"
+
+#: app/forms.py:605
+msgid "Named Users"
+msgstr "Adı Kayıtlı Kullanıcılar"
+
+#: app/forms.py:608
+msgid "Individual users who should have access as well."
+msgstr "Erişimi de olması gereken bireysel kullanıcılar."
+
+#: app/models.py:54
+msgid "Limited liability"
+msgstr "Sınırlı sorumluluk"
+
+#: app/models.py:55
+msgid "Partnership"
+msgstr "İş ortaklığı"
+
+#: app/models.py:56
+msgid "Stock company"
+msgstr "Anonim şirket"
+
+#: app/models.py:57
+msgid "Foundation"
+msgstr "Vakıf"
+
+#: app/models.py:58 app/templates/tickets/request_details.html:215
+msgid "Non-profit"
+msgstr "Kâr amacı gütmeyen kuruluşlar"
+
+#: app/models.py:59 app/models.py:147
+msgid "Other"
+msgstr "Diğer"
+
+#: app/models.py:64
+msgid "Active"
+msgstr "Aktif"
+
+#: app/models.py:65
+msgid "Inactive"
+msgstr "Aktif değil"
+
+#: app/models.py:69
+msgid "-----------"
+msgstr "----------"
+
+#: app/models.py:70
+msgid "Male"
+msgstr "Erkek"
+
+#: app/models.py:71
+msgid "Female"
+msgstr "Kadın"
+
+#: app/models.py:75
+msgid "Subsidized"
+msgstr "Sübvansiyonlu"
+
+#: app/models.py:76
+msgid "Covering Cost"
+msgstr "Maliyeti Karşılama"
+
+#: app/models.py:77
+msgid "Covering Cost +"
+msgstr "Maliyeti Karşılama +"
+
+#: app/models.py:81
+msgid "Identify what a person owns"
+msgstr "Bir kişinin sahip olduklarını tanımlayın"
+
+#: app/models.py:82
+msgid "Determine company ownership"
+msgstr "Şirket sahipliğini belirleyin"
+
+#: app/models.py:83
+msgid "Any other question"
+msgstr "Başka soru var mı"
+
+#: app/models.py:87
+msgid "Updated"
+msgstr "Güncellendi"
+
+#: app/models.py:88 app/handlers/ticketing.py:389
+msgid "Charge Added"
+msgstr "Ücret Eklendi"
+
+#: app/models.py:89 app/handlers/ticketing.py:360
+msgid "Reconciled Charges"
+msgstr "Mutabık Ücretler"
+
+#: app/models.py:90 app/models.py:102
+msgid "Closed"
+msgstr "Kapandı"
+
+#: app/models.py:91 app/models.py:103 app/models.py:112
+msgid "Cancelled"
+msgstr "İptal Edildi"
+
+#: app/models.py:92
+msgid "Re-Opened"
+msgstr "Yeniden Açıldı"
+
+#: app/models.py:93
+msgid "Opened"
+msgstr "Açıldı"
+
+#: app/models.py:95
+msgid "Documents Attached"
+msgstr "Ekli Dokümanlar"
+
+#: app/models.py:96
+msgid "Entities Attached"
+msgstr "Ekli Varlıklar"
+
+#: app/models.py:100
+msgid "New"
+msgstr "Yeni"
+
+#: app/models.py:101
+msgid "In Progress"
+msgstr "Devam eden"
+
+#: app/models.py:110
+msgid "Paid"
+msgstr "Ödendi"
+
+#: app/models.py:111
+msgid "Paid by OCCRP"
+msgstr "OCCRP tarafından ödendi"
+
+#: app/models.py:117
+msgid "Parent"
+msgstr "Ebeveyn"
+
+#: app/models.py:118
+msgid "Spouse"
+msgstr "Eşi"
+
+#: app/models.py:119
+msgid "Other Relative"
+msgstr "Diğer Yakını"
+
+#: app/models.py:120
+msgid "Friend or Acquaintance"
+msgstr "Arkadaş veya Tanıdık"
+
+#: app/models.py:121
+msgid "Employer"
+msgstr "İşveren"
+
+#: app/models.py:122
+msgid "Business Partner"
+msgstr "İş Ortağı"
+
+#: app/models.py:123
+msgid "Proxy"
+msgstr "Vekil"
+
+#: app/models.py:126 app/templates/tickets/request_details.html:252
+msgid "Birthplace"
+msgstr "Doğum Yeri"
+
+#: app/models.py:127 app/models.py:143
+msgid "Registered Address"
+msgstr "Kayıtlı Adres"
+
+#: app/models.py:128
+msgid "Home Address"
+msgstr "Ev Adresi"
+
+#: app/models.py:131
+msgid "Director"
+msgstr "Direktör"
+
+#: app/models.py:132
+msgid "Secretary"
+msgstr "Sekreter"
+
+#: app/models.py:133
+msgid "Authorized Person"
+msgstr "Yetkili Kişi"
+
+#: app/models.py:134
+msgid "Representative"
+msgstr "Temsilci"
+
+#: app/models.py:135
+msgid "Shareholder"
+msgstr "Hissedar"
+
+#: app/models.py:136
+msgid "Employee"
+msgstr "Çalışan"
+
+#: app/models.py:139
+msgid "Subsidiary"
+msgstr "Yan Kuruluş"
+
+#: app/models.py:140
+msgid "Trading Partner"
+msgstr "Ticaret Ortağı"
+
+#: app/models.py:144
+msgid "Place of Business"
+msgstr "İşletmenin Bulunduğu Yer"
+
+#: app/models.py:160
+msgid "Media: non-profit"
+msgstr "Medya: kâr amacı gütmeyen"
+
+#: app/models.py:161
+msgid "Media: for-profit"
+msgstr "Medya: kâr amacı güden"
+
+#: app/models.py:162
+msgid "Media: freelance"
+msgstr "Medya: serbest"
+
+#: app/models.py:163
+msgid "Business: due diligence/investigation"
+msgstr "İşletme: detaylı araştırma/soruşturma"
+
+#: app/models.py:164
+msgid "Business: legal"
+msgstr "İşletme: hukuk"
+
+#: app/models.py:165
+msgid "Business: general"
+msgstr "İşletme: genel"
+
+#: app/models.py:166
+msgid "Government"
+msgstr "Devlet"
+
+#: app/models.py:167
+msgid "Civil society/non-profit"
+msgstr "Sivil toplum örgütü/kâr amacı gütmeyen kuruluş"
+
+#: app/models.py:168
+msgid "Individual"
+msgstr "Bağımsız"
+
+#: app/models.py:169
+msgid "Other (please specify)"
+msgstr "Diğer (lütfen belirtin)"
+
+#: app/models.py:174 app/templates/tickets/request_details.html:231
+msgid "None"
+msgstr "Yok"
+
+#: app/models.py:175
+msgid "OCCRP"
+msgstr "OCCRP"
+
+#: app/models.py:176
+msgid "ARIJ"
+msgstr "ARIJ"
+
+#: app/models.py:177
+msgid "ANCIR"
+msgstr "ANCIR"
+
+#: app/models.py:178
+msgid "Connectas in the Americas"
+msgstr "Amerika Kıtalarında Connectas"
+
+#: app/models.py:183
+msgid "Website"
+msgstr "Web sitesi"
+
+#: app/models.py:184
+msgid "Print"
+msgstr "Basılı"
+
+#: app/models.py:185
+msgid "Broadcast TV"
+msgstr "TV Yayını"
+
+#: app/models.py:186
+msgid "Broadcast Radio"
+msgstr "Radyo Yayını"
+
+#: app/models.py:187
+msgid "Other or don't know"
+msgstr "Diğer veya bilmiyorum"
+
+#: app/models.py:192
+msgid "Less than 10,000"
+msgstr "10.000'den az"
+
+#: app/models.py:193
+msgid "10,000 to 25,000"
+msgstr "10.000 - 25.000"
+
+#: app/models.py:194
+msgid "25,000 to 50,000"
+msgstr "25.000 - 50.000"
+
+#: app/models.py:195
+msgid "50,000 to 100,000"
+msgstr "50.000 - 100.000"
+
+#: app/models.py:196
+msgid "100,000 to 250,000"
+msgstr "100.000 - 250.000"
+
+#: app/models.py:197
+msgid "250,000 to 500,000"
+msgstr "250.000 - 500.000"
+
+#: app/models.py:198
+msgid "More than 500,000"
+msgstr "500.000'den fazla"
+
+#: app/models.py:203
+msgid "Business Registry"
+msgstr "İşletme Kaydı"
+
+#: app/models.py:204
+msgid "Regional procurement registry"
+msgstr "Bölgesel ihale kayıt defteri"
+
+#: app/models.py:205
+msgid "Regulatory Agency"
+msgstr "Düzenleyici Kurum"
+
+#: app/models.py:206
+msgid "Commercial Register"
+msgstr "Ticari Sicil"
+
+#: app/models.py:207
+msgid "Court Registry"
+msgstr "Mahkeme Kayıt Defteri"
+
+#: app/models.py:208
+msgid "Gazette"
+msgstr "Resmi Gazete"
+
+#: app/models.py:209
+msgid "Land Registry"
+msgstr "Tapu Kadastro"
+
+#: app/models.py:214
+msgid "All Databases"
+msgstr "Tüm Veritabanları"
+
+#: app/models.py:215
+msgid "Global Databases"
+msgstr "Küresel Veritabanları"
+
+#: app/models.py:341
+msgid "Label"
+msgstr "Etiket"
+
+#: app/models.py:344
+msgid "Kind"
+msgstr "Çeşit"
+
+#: app/models.py:476 app/templates/tickets/request_base.html:7
+msgid "Type"
+msgstr "Tür"
+
+#: app/models.py:480 app/templates/crud/relationship/table_mixin.html:25
+#: app/templates/crud/relationship/table_mixin.html:56
+#: app/templates/crud/relationship/table_mixin.html:87
+msgid "Start Date"
+msgstr "Başlangıç Tarihi"
+
+#: app/models.py:481 app/templates/crud/relationship/table_mixin.html:26
+#: app/templates/crud/relationship/table_mixin.html:57
+#: app/templates/crud/relationship/table_mixin.html:88
+msgid "End Date"
+msgstr "Bitiş Tarihi"
+
+#: app/models.py:510 app/models.py:576 app/models.py:611 app/models.py:895
+#: app/templates/crud/relationship/table_mixin.html:55
+#: app/templates/crud/relationship/table_mixin.html:86
+#: app/templates/tickets/request_details.html:241
+#: app/templates/tickets/request_details.html:278
+msgid "Name"
+msgstr "Ad"
+
+#: app/models.py:511 app/models.py:542
+msgid "Name Variations"
+msgstr "Ad Varyasyonları"
+
+#: app/models.py:514
+msgid "Jurisdiction Registered"
+msgstr "Kayıtlı Olduğu Yargı Birimi"
+
+#: app/models.py:516
+msgid "Form of Company"
+msgstr "Şirketin Biçimi"
+
+#: app/models.py:519
+msgid "Date Registered"
+msgstr "Kaydolduğu Tarih"
+
+#: app/models.py:520
+msgid "Date Dissolved"
+msgstr "Feshetme Tarihi"
+
+#: app/models.py:539 app/models.py:1139
+msgid "First Name"
+msgstr "Adı"
+
+#: app/models.py:540
+msgid "Middle Name"
+msgstr "İkinci Adı"
+
+#: app/models.py:541 app/models.py:1140
+#: app/templates/tickets/request_details.html:254
+#: app/templates/tickets/request_details.html:255
+#: app/templates/tickets/request_details.html:256 static/js/widgets.js:188
+#: static/js/widgets.js:230
+msgid "Last Name"
+msgstr "Soyadı"
+
+#: app/models.py:544 app/models.py:903
+#: app/templates/tickets/request_details.html:253
+msgid "Date of Birth"
+msgstr "Doğum Tarihi"
+
+#: app/models.py:545
+msgid "Date of Death"
+msgstr "Ölüm Tarihi"
+
+#: app/models.py:546
+msgid "Sex"
+msgstr "Cinsiyet"
+
+#: app/models.py:547
+msgid "Nationalities"
+msgstr "Uyruklar"
+
+#: app/models.py:549
+msgid "ID Numbers"
+msgstr "Kimlik Numaraları"
+
+#: app/models.py:577 app/models.py:1227
+msgid "Address"
+msgstr "Adres"
+
+#: app/models.py:578
+msgid "City"
+msgstr "Şehir"
+
+#: app/models.py:579
+msgid "State/Province/Region"
+msgstr "Eyalet/İl/Bölge"
+
+#: app/models.py:580
+msgid "ZIP/Postal Code"
+msgstr "Posta Kodu"
+
+#: app/models.py:614
+msgid "Admin Notes"
+msgstr "Yönetici Notları"
+
+#: app/models.py:680
+msgid "Subsidized (OCCRP pays for everything)"
+msgstr "Sübvansiyonlu (OCCRP her şeyi öder)"
+
+#: app/models.py:682
+msgid ""
+"Covering cost (OCCRP pays for labor, requester pays costs of buying "
+"documents)"
+msgstr ""
+"Maliyeti karşılama (OCCRP iş gücü maliyetlerini; talep sahibi ise "
+"belgeleri satın alma maliyetini karşılar)"
+
+#: app/models.py:685
+msgid "Covering cost+ (requester pays for documents, and also for our work)"
+msgstr ""
+"Maliyeti karşılama+ (talep sahibi, belgelerin ve çalışmalarımızın "
+"karşılığını öder)"
+
+#: app/models.py:731 app/templates/tickets/request_base.html:9
+#: app/templates/tickets/request_details.html:146
+msgid "Deadline"
+msgstr "Son teslim tarihi"
+
+#: app/models.py:732
+msgid "Sensitive?"
+msgstr "Hassas bilgi mi?"
+
+#: app/models.py:896 app/templates/tickets/request_details.html:256
+msgid "Aliases"
+msgstr "Diğer Adlar"
+
+#: app/models.py:897 app/models.py:928
+#: app/templates/tickets/request_details.html:242
+msgid "Background"
+msgstr "Geçmişi"
+
+#: app/models.py:898 app/templates/tickets/request_details.html:243
+msgid "Biography"
+msgstr "Biyografi"
+
+#: app/models.py:899 app/templates/tickets/request_details.html:254
+msgid "Family"
+msgstr "Aile"
+
+#: app/models.py:902 app/templates/tickets/request_details.html:244
+msgid "Business Activities"
+msgstr "Ticari Faaliyetler"
+
+#: app/models.py:906
+msgid "Place of Birth"
+msgstr "Doğum Yeri"
+
+#: app/models.py:909
+msgid "Where have you looked?"
+msgstr "Nerede aradınız?"
+
+#: app/models.py:924
+msgid "Company Name"
+msgstr "Şirket Adı"
+
+#: app/models.py:927
+msgid "Country Registered"
+msgstr "Kayıtlı Ülke"
+
+#: app/models.py:929 app/templates/search/search_base.html:29
+#: app/templates/tickets/request_details.html:246
+msgid "Sources"
+msgstr "Kaynaklar"
+
+#: app/models.py:930
+msgid "Your Story"
+msgstr "Hikayeniz"
+
+#: app/models.py:932 app/templates/tickets/request_details.html:255
+msgid "Connected People"
+msgstr "Bağlı Kişiler"
+
+#: app/models.py:943
+msgid "What do you want to know?"
+msgstr "Ne bilmek istiyorsunuz?"
+
+#: app/models.py:996
+#, python-format
+msgid "[Request %s] - %s"
+msgstr "[Talep %s] - %s"
+
+#: app/models.py:1061
+#, python-format
+msgid ""
+"Item: %(item)s\n"
+"Cost: $%(cost)s\n"
+"Converted: %(cost_converted)s"
+msgstr ""
+"Öğe: %(item)s\n"
+"Maliyet: $%(cost)s\n"
+"Dönüşen: %(cost_converted)s"
+
+#: app/models.py:1117
+msgid "Agency / Name"
+msgstr "Aracı / Adı"
+
+#: app/models.py:1120
+msgid "Type of Database"
+msgstr "Veritabanı Türü"
+
+#: app/models.py:1123 app/templates/external_databases.html:26
+msgid "Paid Database"
+msgstr "Ücretli Veritabanı"
+
+#: app/models.py:1125 app/templates/external_databases.html:29
+msgid "Registration Required"
+msgstr "Kayıt Gereklidir"
+
+#: app/models.py:1127 app/templates/external_databases.html:32
+msgid "Government Database"
+msgstr "Hükümet Veritabanı"
+
+#: app/models.py:1129
+msgid "Notes"
+msgstr "Notlar"
+
+#: app/models.py:1130
+msgid "Blog Post"
+msgstr "Blog Yayını"
+
+#: app/models.py:1131
+msgid "YouTube Video Url"
+msgstr "YouTube Video URL'si"
+
+#: app/models.py:1141
+msgid "Email Address"
+msgstr "E-posta Adresi"
+
+#: app/models.py:1143
+msgid "Phone Number"
+msgstr "Telefon Numarası"
+
+#: app/models.py:1146
+msgid "Organization Membership"
+msgstr "Kuruluş Üyeliği"
+
+#: app/models.py:1148
+msgid "Anything else you would like to tell us"
+msgstr "Bize söylemek istediğiniz başka bir şey var mı?"
+
+#: app/models.py:1168 app/templates/tickets/request_details.html:203
+#: app/templates/tickets/request_details.html:206
+msgid "Yes"
+msgstr "Evet"
+
+#: app/models.py:1169 app/templates/tickets/request_details.html:203
+#: app/templates/tickets/request_details.html:206
+msgid "No"
+msgstr "Hayır"
+
+#: app/models.py:1198 app/templates/mail/account_request/received.html:4
+msgid "Your Account Request was received"
+msgstr "Hesap Talebiniz alındı"
+
+#: app/models.py:1204 app/templates/mail/account_request/received_admin.html:4
+msgid "An Account Request was received"
+msgstr "Bir Hesap Talebi alındı"
+
+#: app/models.py:1212
+msgid "An update to your Account Request"
+msgstr "Hesap Talebinizde güncelleme"
+
+#: app/models.py:1230
+msgid "Industry"
+msgstr "Sektör"
+
+#: app/models.py:1231
+msgid "Other Industry"
+msgstr "Diğer Sektörler"
+
+#: app/models.py:1239
+msgid "Name of Employer"
+msgstr "İşverenin Adı"
+
+#: app/models.py:1241
+msgid "Position / Job Title"
+msgstr "Pozisyon / İş Unvanı"
+
+#: app/models.py:1255
+msgid "Interests"
+msgstr "İlgi Alanları"
+
+#: app/models.py:1256
+msgid "Expertise"
+msgstr "Uzmanlık"
+
+#: app/models.py:1257
+msgid "Languages"
+msgstr "Diller"
+
+#: app/models.py:1260
+msgid "Availability"
+msgstr "Kullanılabilirlik"
+
+#: app/models.py:1261
+msgid "Own Databases"
+msgstr "Kendi Veritabanları"
+
+#: app/models.py:1263
+msgid "Restrictions / Conflicts of Interest"
+msgstr "Kısıtlamalar / Çıkar Çatışmaları"
+
+#: app/utils.py:43 app/templates/base.html:12
+#: app/templates/oauth_success.html:6 app/templates/mail/mail_base.html:12
+#: app/templates/mail/mail_base.html:37 app/templates/mail/mail_base.html:38
+msgid "Investigative Dashboard"
+msgstr "Investigative Dashboard"
+
+#: app/validators.py:13
+msgid "This field is required."
+msgstr "Bu alan gereklidir."
+
+#: app/appengine_modelforms/fields.py:91 app/appengine_modelforms/fields.py:173
+#: app/appengine_modelforms/fields.py:175
+msgid "Not a valid choice"
+msgstr "Geçerli bir seçim değil"
+
+#: app/appengine_modelforms/fields.py:194
+msgid "Not a valid list"
+msgstr "Geçerli bir liste değil"
+
+#: app/appengine_modelforms/fields.py:213
+msgid "Not a valid integer list"
+msgstr "Geçerli bir tam sayı listesi değil"
+
+#: app/google_apis/drive.py:29
+msgid "Error connecting to Google Drive."
+msgstr "Google Drive'a bağlanırken hata oluştu."
+
+#: app/google_apis/drive.py:93
+msgid "Error refreshing Google Drive access token."
+msgstr "Google Drive erişim kodu yenilenirken hata oluştu."
+
+#: app/google_apis/drive.py:113
+msgid "Your Google Drive private key must be in \"PEM\" format."
+msgstr "Google Drive özel anahtarınız \"PEM\" biçiminde olmalıdır."
+
+#: app/google_apis/drive.py:116
+msgid ""
+"Error refreshing Google Drive access token. Check your settings and try "
+"again."
+msgstr ""
+"Google Drive erişim kodu yenilenirken hata oluştu. Ayarlarınızı kontrol "
+"edin ve tekrar deneyin."
+
+#: app/google_apis/groups.py:21
+msgid "Error connecting to Google Groups."
+msgstr "Google Grupları'na bağlanırken hata oluştu."
+
+#: app/google_apis/groups.py:64
+msgid "Your private key must be in \"PEM\" format."
+msgstr "Özel anahtarınız \"PEM\" biçiminde olmalıdır."
+
+#: app/google_apis/groups.py:66
+msgid "Error refreshing the access token. Check your settings and try again."
+msgstr ""
+"Erişim kodu yenilenirken hata oluştu. Ayarlarınızı kontrol edin ve tekrar"
+" deneyin."
+
+#: app/handlers/crud.py:78 app/templates/crud/relationship/table_mixin.html:194
+msgid "No entries found."
+msgstr "Hiç giriş bulunamadı."
+
+#: app/handlers/crud.py:223
+#, python-format
+msgid "%(entity)s successfully saved.entity"
+msgstr "%(entity)s varlığı başarıyla kaydedildi.entity"
+
+#: app/handlers/crud.py:235
+#, python-format
+msgid "%(entity)s successfully deleted.entity"
+msgstr "%(entity)s varlığı başarıyla silindi.entity"
+
+#: app/handlers/crud.py:253
+#, python-format
+msgid "%(entity)s could not deleted because of %(rel_count)d relationsentity"
+msgstr ""
+"%(rel_count)s relationsentity öğesinden dolayı %(entity)d varlığı "
+"silinemedi"
+
+#: app/handlers/crud.py:284
+msgid "No relationships found. You can create them via other entities."
+msgstr ""
+"Hiç ilişki bulunamadı. Diğer varlıkları kullanarak ilişki "
+"oluşturabilirsiniz."
+
+#: app/handlers/crud.py:388
+#, python-format
+msgid "Relationship with new %(entity_type)s successfully saved.entity_type"
+msgstr ""
+"Yeni varlık türü %(entity_type)s olan ilişki başarıyla "
+"kaydedildi.entity_type"
+
+#: app/handlers/crud.py:424
+msgid "No companies found."
+msgstr "Hiç şirket bulunamadı."
+
+#: app/handlers/crud.py:439
+msgid "No people found."
+msgstr "Hiç kimse bulunamadı."
+
+#: app/handlers/crud.py:455
+msgid "No locations found."
+msgstr "Hiç konum bulunamadı."
+
+#: app/handlers/crud.py:469
+msgid "No extra fields found."
+msgstr "Hiç ekstra alan bulunamadı."
+
+#: app/handlers/crud.py:480 app/templates/external_databases.html:53
+msgid "No external databases found."
+msgstr "Hiç harici veritabanı bulunamadı."
+
+#: app/handlers/crud.py:516
+msgid "No account requests found."
+msgstr "Hiç hesap talebi bulunamadı."
+
+#: app/handlers/crud.py:559
+msgid "No Users found."
+msgstr "Hiç kullanıcı bulunamadı."
+
+#: app/handlers/crud.py:632
+msgid "Request submitted. Our staff will evaluate and respond to your request."
+msgstr "Talep gönderildi. Çalışanlarımız talebinizi değerlendirip yanıtlayacaktır."
+
+#: app/handlers/crud.py:663
+msgid "The user has been notified of the change to their request status."
+msgstr "Kullanıcı, talebinin durumundaki değişiklikle ilgili bilgilendirildi."
+
+#: app/handlers/drive.py:57 static/js/drive-picker.js:94
+msgid "File(s) successfully attached."
+msgstr "Dosya(lar) başarıyla eklendi."
+
+#: app/handlers/drive.py:115
+msgid "Sharing rules applied."
+msgstr "Paylaşım kuralları uygulandı."
+
+#: app/handlers/ticketing.py:50
+msgid ""
+"Your request for an account is pending. Once approved, you can access Ask"
+" an Expert"
+msgstr ""
+"Hesap talebiniz beklemededir. Onaylandığında, Bir Uzmana Sorun bölümüne "
+"erişebilirsiniz"
+
+#: app/handlers/ticketing.py:114 app/handlers/ticketing.py:725
+msgid "Ticket successfully saved."
+msgstr "Bilet başarıyla kaydedildi."
+
+#: app/handlers/ticketing.py:116
+msgid "Ticket successfully created."
+msgstr "Bilet başarıyla oluşturuldu."
+
+#: app/handlers/ticketing.py:194
+msgid "The specified object could not be found."
+msgstr "Belirtilen nesne bulunamadı."
+
+#: app/handlers/ticketing.py:195
+msgid "The specified object is not attached to this ticket."
+msgstr "Belirtilen nesne bu bilete ekli değildir."
+
+#: app/handlers/ticketing.py:197
+msgid "The specified object was successfully removed."
+msgstr "Belirtilen nesne başarıyla kaldırıldı."
+
+#: app/handlers/ticketing.py:274
+#, python-format
+msgid "Could not add duplicate(s): %(duplicates)sduplicates, "
+msgstr "Şu mükerrer kopya(lar) eklenemedi: %(duplicates)sduplicates, "
+
+#: app/handlers/ticketing.py:296
+msgid "Request has been marked as closed & answered."
+msgstr "Talep kapatıldı ve yanıtlandı olarak işaretlendi."
+
+#: app/handlers/ticketing.py:311
+msgid "Request has been cancelled."
+msgstr "Talep iptal edildi."
+
+#: app/handlers/ticketing.py:321
+#, python-format
+msgid "Ticket %s has been deleted"
+msgstr "%s bileti silindi"
+
+#: app/handlers/ticketing.py:337
+msgid ""
+"An Administrator has been notified notified and will update the issue "
+"shortly."
+msgstr "Bir Yönetici bilgilendirildi ve sorunu kısa sürede güncelleyecek."
+
+#: app/handlers/ticketing.py:365
+msgid "Request payment status has been updated."
+msgstr "Talep ödeme durumu güncellendi."
+
+#: app/handlers/ticketing.py:395
+msgid "The new charge was added to the request."
+msgstr "Yeni ücret talebe eklendi."
+
+#: app/handlers/ticketing.py:409
+msgid "Request has been re-opened."
+msgstr "Talep yeniden açıldı."
+
+#: app/handlers/ticketing.py:432
+msgid "You have joined the ticket."
+msgstr "Bilete katıldınız."
+
+#: app/handlers/ticketing.py:433
+msgid "You are already on the ticket."
+msgstr "Zaten bilete dahilsiniz."
+
+#: app/handlers/ticketing.py:446
+msgid "You are no longer part of this ticket."
+msgstr "Artık bu biletin bir parçası değilsiniz."
+
+#: app/handlers/ticketing.py:567
+msgid "Charge successfully reconciled."
+msgstr "Ücret başarıyla mutabık kılındı."
+
+#: app/handlers/validation.py:30 app/handlers/validation.py:60
+msgid "This may be a duplicate"
+msgstr "Bu bir mükerrer kopya olabilir"
+
+#: app/handlers/validation.py:32 app/handlers/validation.py:48
+#: app/handlers/validation.py:62
+msgid "No duplicates detected"
+msgstr "Herhangi bir mükerrer kopya algılanmadı"
+
+#: app/handlers/validation.py:46
+msgid "First and last name match another person"
+msgstr "Ad ve soyad başka birisiyle eşleşiyor"
+
+#: app/handlers/validation.py:93
+msgid ""
+"Your request may not be answered, as you have not provided much "
+"background. Please add more context."
+msgstr ""
+"Geçmişe yönelik çok fazla bilgi vermediğiniz için talebiniz "
+"yanıtlanmayabilir. Lütfen bağlam için biraz daha ayrıntı verin."
+
+#: app/handlers/validation.py:96
+msgid "Your request is of an appropriate length."
+msgstr "Talebinizin uzunluğu uygundur."
+
+#: app/templates/401.html:4
+msgid "Permission Denied"
+msgstr "İzin Verilmedi"
+
+#: app/templates/401.html:8
+msgid ""
+"You do not have permission to access this feature or content. If you "
+"believe this is an error, please contact an administrator."
+msgstr ""
+"Bu özelliğe ya da içeriğe erişmek için izniniz yok. Bunun bir hata "
+"olduğunu düşünüyorsanız, lütfen bir yöneticiyle iletişime geçin."
+
+#: app/templates/404.html:4
+msgid "Page Not Found"
+msgstr "Sayfa Bulunamadı"
+
+#: app/templates/404.html:8
+msgid ""
+"We're sorry, this page is not available. This error has been recorded "
+"will be investigated."
+msgstr ""
+"Maalesef bu sayfa mevcut değildir. Bu hata kaydedilmiş olup "
+"incelenecektir."
+
+#: app/templates/500.html:4
+msgid "Application Error"
+msgstr "Uygulama Hatası"
+
+#: app/templates/500.html:8
+msgid ""
+"There was an error in the application. This error has been recorded and "
+"should be addressed soon."
+msgstr ""
+"Uygulamada bir hata oluştu. Bu hata kaydedildi ve kısa sürede ele "
+"alınacaktır."
+
+#: app/templates/about_us.html:6
+msgid "About Us"
+msgstr "Hakkımızda"
+
+#: app/templates/about_us.html:10
+msgid ""
+"Investigative Dashboard (ID) has been developed by the Organized Crime "
+"and Corruption Reporting Project (OCCRP), the world’s leading cross "
+"border investigative reporting organization. OCCRP designed Investigative"
+" Dashboard as a transnational collaborative effort to help journalists "
+"and civil society researchers expose organized crime and corruption "
+"around the world. It hosts three core tools: a crowd-sourced database of "
+"information and documents on persons of interest and their business "
+"connections, a worldwide list of online databases and business "
+"registries, and a research desk where journalists can go for help in "
+"sourcing hard to find information."
+msgstr ""
+"Investigative Dashboard (ID) dünyanın önde gelen, sınırlar ötesi çalışan "
+"araştırma raporlama kuruluşu Organize Suç ve Yolsuzluk Bildirme Projesi "
+"(OCCRP) tarafından geliştirilmiştir. OCCRP, Investigative Dashboard "
+"uluslar ötesi bir işbirliği girişimi olarak, gazeteci ve sivil toplum "
+"kuruluşu araştırmacılarının dünyanın dört bir yanındaki organize suç ve "
+"yolsuzlukları ortaya çıkarmalarına yardımcı olmak üzere geliştirdi. "
+"İlgili kişiler ve onların ticari bağlantılarıyla ilgili kitle kaynaklı "
+"oluşturulmuş bilgi ve belgeler, çevrimiçi veritabanları ve işletme "
+"kayıtlarından oluşan dünya genelinde bir liste ve gazetecilerin bulunması"
+" zor bilgilere ulaşmak için başvurabilecekleri bir araştırma masasından "
+"oluşan üç temel aracı barındırır."
+
+#: app/templates/about_us.html:12
+msgid ""
+"With help from dozens of reporters and civic hackers, ID researchers have"
+" created the crowd-sourced database where connections of people and "
+"business can be mapped internationally. Through collecting public records"
+" worldwide in numerous languages and by scraping the business registries "
+"and official gazettes of countries such as Panama, British Virgin "
+"Islands, and Luxembourg among others we have made data searchable and "
+"hence truly transparent and useful. These resources are offered to the "
+"public as a searchable self-serve repository of data and documents."
+msgstr ""
+"Düzinelerce muhabir ve kamuya açık bilgileri kullanan bilgisayar "
+"korsanlarının yardımıyla, ID araştırmacıları kişilerin ve şirketlerin "
+"bağlantılarının uluslararası olarak eşleştirildiği bir kitle kaynaklı "
+"veritabanı oluşturdu. Çok sayıda dilde kamuya açık bilgileri toplayarak "
+"ve Panama, İngiliz Virgin Adaları ve Lüksemburg gibi ve daha birçok "
+"ülkedeki işletme kayıtlarını ve resmi gazeteleri tarayarak, bu verileri "
+"arama yapılabilir ve böylece şeffaf ve faydalı hale getirdik. Bu "
+"kaynaklar kamuya arama yapılabilen, doğrudan hizmet alınabilecek veri ve "
+"doküman deposu olarak sunulmaktadır."
+
+#: app/templates/about_us.html:14
+msgid ""
+"The Investigative Dashboard also links to more than 400 online databases "
+"in 120 jurisdictions where you can search for information on persons and "
+"businesses of interest."
+msgstr ""
+"Investigative Dashboard ayrıca ilgili kişi ve şirketler hakkında bilgi "
+"araması yapabileceğiniz 120 yargı alanında 400'den fazla çevrimiçi "
+"veritabanı bağlantısı içerir."
+
+#: app/templates/about_us.html:16
+msgid ""
+"Above and beyond the databases available on the Dashboard, the research "
+"desk provides access to a global network of expert researchers. "
+"Journalists and researchers working on organized crime and corruption "
+"topics who seek information and documents beyond their own borders and "
+"resources are invited to request the expertise of a network of "
+"information professionals. These professionals can access external "
+"databases and official filings for evidence of corporate ownership and "
+"property holdings that cross borders. For some journalists, these "
+"services are provided pro bono."
+msgstr ""
+"Araştırma masası, Investigative Dashboard'daki mevcut veritabanlarının "
+"ötesinde, uzman araştırmacıların küresel ağına erişim sağlar. "
+"Sınırlarının ve kaynaklarının dışında organize suç ve yolsuzluk "
+"konularında bilgi ve belge arayan gazeteci ve araştırmacıları bilgi "
+"profesyonelleri ağının uzmanlığına başvurmaya davet ediyoruz. Bu "
+"profesyoneller sınırları aşan kurumsal şirket sahiplikleri ve emlak "
+"varlıkları hakkında delil bulmak amacıyla harici veritabanlarına ve resmi"
+" dosyalara erişebilir. Bazı gazeteciler için bu hizmetler karşılıksız "
+"olarak sağlanır."
+
+#: app/templates/about_us.html:18
+msgid ""
+"Journalists have used the Investigative Dashboard to work on stories that"
+" have won more than a dozen international awards, led to indictments, "
+"arrests and seizures, forced the resignation of heads of state, and "
+"exposed the activities of organized crime."
+msgstr ""
+"Gazeteciler, Investigative Dashboard'u düzinelerce uluslararası ödül "
+"kazandıran, boyutları davalara, tutuklamalara ve el koymalara varan, "
+"devlet başkanlarını istifaya zorlayan ve organize suç faaliyetlerini ifşa"
+" eden hikayeler üzerinde çalışırken kullanmıştır."
+
+#: app/templates/about_us.html:36
+msgid "Supporters"
+msgstr "Destekleyenler"
+
+#: app/templates/about_us.html:37
+msgid ""
+"The Investigative Dashboard has been developed in collaboration with <a "
+"href=\"http://www.google.com/ideas/\">Google Ideas</a>. Core support for "
+"the project is generously provided by the Open Society Foundations with "
+"additional assistance from USAID."
+msgstr ""
+"Investigative Dashboard <a href=\"http://www.google.com/ideas/\">Google "
+"Ideas</a> ile işbirliği içinde geliştirildi. Projenin temel desteği "
+"cömert bir şekilde Açık Toplum Vakfı tarafından sağlanmakta olup USAID "
+"desteği de alınmaktadır."
+
+#: app/templates/about_us.html:39
+msgid "Partners"
+msgstr "İş Ortakları"
+
+#: app/templates/about_us.html:40
+msgid ""
+"The Research Desk is managed by OCCRP in co-operation with four partner "
+"Centers - African Network of Centers for Investigative Reporting (ANCIR),"
+" the Arab Reporters for Investigative Journalism (ARIJ), the "
+"International Center for Journalists, and Connectas in the Americas."
+msgstr ""
+"Araştırma Masası, OCCRP tarafından, Afrika Araştırmacı Muhabirlik "
+"Merkezleri Ağı (ANCIR), Araştırmacı Gazeteci Arap Muhabirleri (ARIJ), "
+"Gazeteciler Uluslararası Merkezi ve Amerika kıtasında Connectas olmak "
+"üzere dört iş ortağı merkezle işbirliği içinde yönetilmektedir."
+
+#: app/templates/about_us.html:42
+msgid "ID History"
+msgstr "ID Geçmişi"
+
+#: app/templates/about_us.html:43
+msgid ""
+"The Investigative Dashboard was developed by Paul Cristian Radu (OCCRP) "
+"and Justin Arenstein (ANCIR) while they both were in residence at "
+"Stanford University as Knight Fellows. The John S. Knight Fellowships for"
+" Professional Journalists made the dashboard possible by providing access"
+" to the know-how of fellow journalists and of experts at Stanford "
+"University and in Silicon Valley."
+msgstr ""
+"Investigative Dashboard, her ikisi de Stanford Üniversitesi'nde Knight "
+"Araştırma Görevlisi olan Paul Cristian Radu (OCCRP) ve Justin Arenstein "
+"(ANCIR) tarafından geliştirildi. John S. Profesyonel Gazeteciler Knight "
+"Araştırma Görevliliği Bursu bu panelin Stanford Üniversitesi ve Silikon "
+"Vadisindeki meslektaşları olan gazetecilerin ve uzmanların bilgi ve "
+"becerilerine erişebilmesine imkan tanıdı."
+
+#: app/templates/about_us.html:45
+msgid ""
+"This first iteration of the ID website, launched in 2010, shared detailed"
+" methodologies, resources, and links for journalists to track money, "
+"shareholders, and company ownership across international borders. It also"
+" offered video tutorials and other tools to help journalists navigate "
+"rapidly evolving data-sources."
+msgstr ""
+"2010 yılında açılan ID web sitesinin ilk etkinliğinde gazetecilerin para "
+"aktarımlarını, hissedarları ve şirket sahipliklerini uluslararası "
+"sınırların ötesinde de takip edebilmeleri için onlarla detaylı yöntemler,"
+" kaynaklar ve bağlantılar paylaştı. Ayrıca, sürekli gelişmekte olan veri "
+"kaynaklarını hızla gözden geçirebilmeleri için onlara eğitici videolar ve"
+" başka araçlar da sundu."
+
+#: app/templates/about_us.html:47
+msgid "Advisory Committee"
+msgstr "Danışma Kurulu"
+
+#: app/templates/about_us.html:105
+msgid "Acknowledgements"
+msgstr "Teşekkür"
+
+#: app/templates/about_us.html:107
+msgid ""
+"The Investigative Dashboard is a collaborative project and valuable "
+"information was added by many investigative journalists around the world."
+" Individual members of the Global Investigative Journalism Network in "
+"particular contributed much of the information, explaining how to access "
+"company records in their home countries.\n"
+"\t    "
+msgstr ""
+"Investigative Dashboard bir işbirliği projesidir ve dünyanın dört bir "
+"yanından birçok araştırmacı gazeteci bu projeye kıymetli bilgiler "
+"eklemiştir. Küresel Araştırmacı Gazetecilik Ağının üyeleri, özellikle "
+"kendi ülkelerinde şirket kayıtlarına nasıl ulaşılabileceğini açıklayarak "
+"kendi adlarına bu bilgilere katkı sağlamıştır.\n"
+"\t    "
+
+#: app/templates/about_us.html:110
+msgid ""
+"Valuable information was added by many investigative journalists around "
+"the world."
+msgstr ""
+"Dünyanın dört bir yanından birçok araştırmacı gazeteci bu projeye değerli"
+" bilgiler eklemiştir."
+
+#: app/templates/admin_base.html:7 app/templates/tickets/request_base.html:75
+msgid "Manage"
+msgstr "Yönetin"
+
+#: app/templates/admin_base.html:18 app/templates/crud/relationship/list.html:2
+msgid "Relationships"
+msgstr "İlişkiler"
+
+#: app/templates/admin_base.html:22 app/templates/crud/expandofield/list.html:2
+msgid "Extra Fields"
+msgstr "Ekstra Alanlar"
+
+#: app/templates/admin_base.html:25
+msgid "External Databases"
+msgstr "Harici Veritabanları"
+
+#: app/templates/admin_base.html:28
+#: app/templates/crud/accountrequest/list.html:2
+msgid "Account Requests"
+msgstr "Hesap Talepleri"
+
+#: app/templates/admin_base.html:31 app/templates/crud/profile/list.html:2
+msgid "User Profiles"
+msgstr "Kullanıcı Profilleri"
+
+#: app/templates/admin_base.html:34
+msgid "Statistics"
+msgstr "İstatistikler"
+
+#: app/templates/base.html:38 app/templates/search/search_base.html:6
+#: app/templates/search/search_base.html:21
+#: app/templates/search/search_documents.html:6
+#: app/templates/search/search_documents.html:13
+#: app/templates/search/search_entities.html:7
+#: app/templates/search/search_entities.html:15
+msgid "Search"
+msgstr "Arama"
+
+#: app/templates/base.html:41 app/templates/external_databases.html:12
+msgid "Business Registries"
+msgstr "İşletme Kayıtları"
+
+#: app/templates/base.html:45
+msgid "Expert Help"
+msgstr "Uzman Yardımı"
+
+#: app/templates/base.html:61
+msgid "Admin"
+msgstr "Yönetici"
+
+#: app/templates/base.html:64
+msgid "Log out"
+msgstr "Çıkış"
+
+#: app/templates/base.html:68 app/templates/request_account.html:6
+msgid "Request Account"
+msgstr "Hesap Talep Edin"
+
+#: app/templates/base.html:69
+msgid "Log In"
+msgstr "Giriş Yapın"
+
+#: app/templates/base.html:124
+msgid "&copy; 2013 - OCCRP. All rights reserved."
+msgstr "© 2013 - OCCRP. Tüm hakları saklıdır."
+
+#: app/templates/base.html:124
+msgid "About this site"
+msgstr "Bu site hakkında"
+
+#: app/templates/company.html:8 app/templates/request_account.html:13
+#: app/templates/accountrequest/volunteer_account.html:13
+#: app/templates/crud/accountrequest/edit.html:20
+#: app/templates/tickets/manage.html:27 app/templates/tickets/request.html:34
+#: app/templates/tickets/request_details.html:379
+#: app/templates/tickets/request_details.html:380
+msgid "Submit"
+msgstr "Gönder"
+
+#: app/templates/drive_success.html:1
+msgid "Successfully connected to Google Drive."
+msgstr "Google Drive'a başarıyla bağlanıldı."
+
+#: app/templates/drive_success.html:3
+msgid "Current user name:"
+msgstr "Geçerli kullanıcı adı:"
+
+#: app/templates/drive_success.html:4
+msgid "Root folder ID:"
+msgstr "Kök klasör kimliği:"
+
+#: app/templates/drive_success.html:5
+msgid "Total quota (bytes):"
+msgstr "Toplam kota (bayt):"
+
+#: app/templates/drive_success.html:6
+msgid "Used quota (bytes):"
+msgstr "Kullanılan kota (bayt):"
+
+#: app/templates/drive_success.html:7
+msgid "Permission ID:"
+msgstr "İzin kimliği:"
+
+#: app/templates/external_databases.html:14
+msgid ""
+"Here you will find links to more than 450 online databases across 120 "
+"jurisdictions where you can get information on the shareholders, "
+"directors and the financial reports of companies worldwide. They are "
+"organized by country. Many are free of charge and for some you must "
+"register. Databases marked with a \"$\" require a fee.  Not all are "
+"available in English, see the notes column for further details.\t"
+msgstr ""
+"Burada, dünya çapındaki şirketlerin hissedarları, yöneticileri ve mali "
+"raporları hakkında bilgi alabileceğiniz, 120 yargı alanındaki 450'den "
+"fazla çevrimiçi veritabanı bağlantısı bulacaksınız. Bunlar ülkelere göre "
+"düzenlenmiştir. Birçoğu ücretsiz olup bazılarınaysa kayıt olmanız "
+"gerekir. Ücret gerektiren veritabanları \"$\" işaretini taşır. Tamamı "
+"İngilizce değildir, daha fazla ayrıntı için notlar sütununa bakın.\t"
+
+#: app/templates/external_databases.html:44
+msgid "Documentation"
+msgstr "Belgeler"
+
+#: app/templates/external_databases.html:45
+msgid "Video Tutorial"
+msgstr "Eğitici Video"
+
+#: app/templates/external_databases.html:58
+msgid "Didn't find what you were looking for?"
+msgstr "Aradığınız bilgileri bulamadınız mı?"
+
+#: app/templates/external_databases.html:60
+msgid "Request manual help from our researchers."
+msgstr "Araştırmacılarımızdan yardım isteyin."
+
+#: app/templates/oauth_success.html:14
+msgid ""
+"Google Drive successfully authorized. Please close this dialog and attach"
+" your files again."
+msgstr ""
+"Google Drive başarıyla yetkilendirildi. Lütfen bu iletişim kutusunu "
+"kapatın ve dosyalarınızı tekrar ekleyin."
+
+#: app/templates/pre_login.html:6 app/templates/pre_login.html:21
+msgid "Sign in with Google"
+msgstr "Google+ ile oturum açın"
+
+#: app/templates/pre_login.html:10
+msgid ""
+"In order to log in or request an account on Investigative Dashboard you "
+"must have a Google account. We use your Google account to verify your "
+"identity and obtain a valid email address from you."
+msgstr ""
+"Giriş yapmak veya Investigative Dashboard hesabı talebinde bulunmak için "
+"bir Google hesabınız olmalıdır. Google hesabınızı, kimliğinizi doğrulamak"
+" ve sizden geçerli bir e-posta adresi almak için kullanırız."
+
+#: app/templates/pre_login.html:15
+msgid ""
+"If you do not have a Google account, you can sign up for one on the next "
+"page by clicking \"Sign Up\" in the top right corner."
+msgstr ""
+"Google hesabınız yoksa, sağ üst köşedeki \"Kaydol\" öğesine tıklayıp "
+"sonraki sayfaya geçerek hesap kaydınızı yapabilirsiniz."
+
+#: app/templates/request_account.html:9
+msgid ""
+"In order to make information requests through Investigative Dashboard, "
+"you must have an account. Please enter your information below and one of "
+"our staff will evaluate and respond to your request."
+msgstr ""
+"Investigative Dashboard aracılığıyla bilgi talebinde bulunmak için bir "
+"hesabınızın olması gerekir. Lütfen bilgilerinizi aşağıya girin, ardından "
+"çalışanlarımızdan biri isteğinizi değerlendirip yanıtlayacaktır."
+
+#: app/templates/request_account_home.html:5
+msgid "Which type of account would you like to apply for?"
+msgstr "Hangi hesap türü için başvurmak istersiniz?"
+
+#: app/templates/request_account_home.html:15
+msgid "Information Requester"
+msgstr "Bilgi Talep Eden"
+
+#: app/templates/request_account_home.html:16
+msgid ""
+"Take advantage of our database of knowledge to find out more information "
+"about companies, individuals, or the relationships between them."
+msgstr ""
+"Şirketler, bireyler ya da bunlar arasındaki ilişkiler hakkında daha fazla"
+" bilgi edinmek için bilgi veritabanımızdan yararlanın."
+
+#: app/templates/request_account_home.html:18
+msgid "Be a Requester"
+msgstr "Talep Eden Olun"
+
+#: app/templates/request_account_home.html:25
+msgid ""
+"We have available public requests that need volunteers. Use your wealth "
+"of information to help others find answers."
+msgstr ""
+"Gönüllülerin ilgilenmesi gereken genel talepler var. Zengin bilgi "
+"dağarcığınızı kullanarak başkalarının yanıt bulmasına yardımcı olun."
+
+#: app/templates/request_account_home.html:27
+msgid "Be a Volunteer"
+msgstr "Gönüllü Olun"
+
+#: app/templates/splash.html:9
+msgid ""
+"<span class=\"primary-highlight\">Investigative Dashboard</span> helps "
+"investigators expose illicit ties that cross borders."
+msgstr ""
+"<span class=\"primary-highlight\">Investigative Dashboard</span> "
+"araştırmacılara, sınırların ötesine geçen yasa dışı ilişkileri açığa "
+"çıkarmalarında yardımcı olur."
+
+#: app/templates/splash.html:22
+msgid "Search for a company or person of interest."
+msgstr "İlgili bir şirket veya kişi hakkında arama yapın."
+
+#: app/templates/splash.html:23
+msgid ""
+"We have scraped national business records from Panama, Luxembourg, "
+"Switzerland and many other countries"
+msgstr ""
+"Panama, Lüksemburg, İsviçre ve diğer birçok ülkeden ulusal şirket "
+"kayıtlarını topladık"
+
+#: app/templates/splash.html:25
+msgid "Start Searching"
+msgstr "Aramaya Başlayın"
+
+#: app/templates/splash.html:31
+msgid "If you need more data, visit recommended databases"
+msgstr "Daha fazla veriye ihtiyacınız varsa, önerilen veritabanlarını ziyaret edin"
+
+#: app/templates/splash.html:32
+msgid "We have assembled a directory of over 300 local databases that might help"
+msgstr ""
+"Yardımcı olabilecek 300'ün üzerinde yerel veritabanını içeren bir dizin "
+"derledik"
+
+#: app/templates/splash.html:34
+msgid "Visit Databases"
+msgstr "Veritabanlarını Ziyaret Edin"
+
+#: app/templates/splash.html:40
+msgid "If you need help, request expert assistance."
+msgstr "Yardıma ihtiyacınız varsa, uzman yardımı isteyin."
+
+#: app/templates/splash.html:41
+msgid ""
+"We understand investigations are sensitive and we take privacy very "
+"seriously. Requests are only seen by our full-time experts and, if you "
+"are willing, by vetted volunteers"
+msgstr ""
+"Soruşturmaların hassasiyetini anlıyoruz ve gizliliği çok ciddiye "
+"alıyoruz. Talepler sadece tam zamanlı çalışan uzmanlarımız tarafından (ve"
+" istediğiniz takdirde onay almış gönüllüler tarafından) görülür"
+
+#: app/templates/splash.html:43
+msgid "Ask an Expert"
+msgstr "Bir Uzmana Sorun"
+
+#: app/templates/accountrequest/volunteer_account.html:6
+msgid "Become a Volunteer!"
+msgstr "Gönüllü Olun!"
+
+#: app/templates/accountrequest/volunteer_account.html:9
+msgid ""
+"If you'd like to volunteer to track down requests, you need to have an "
+"account. Please enter your information below and one of our staff will "
+"review, and respond to your request."
+msgstr ""
+"Talepleri takip etmek üzere gönüllü olmak istiyorsanız, bir hesabınızın "
+"olması gerekir. Lütfen aşağıda bilgilerinizi girin, çalışanlarımızdan "
+"biri talebinizi inceleyip yanıtlayacaktır."
+
+#: app/templates/crud/delete.html:4
+msgid "Confirm Deletion"
+msgstr "Silmeyi Onayla"
+
+#: app/templates/crud/delete.html:6
+msgid "Cannot delete this entity."
+msgstr "Bu varlık silinemiyor."
+
+#: app/templates/crud/delete_base.html:9
+#, python-format
+msgid ""
+"Are you sure you want to delete %(object_name)s? You will not be able to "
+"undo this action."
+msgstr ""
+"%(object_name)s nesnesini silmek istediğinizden emin misiniz? Bu eylemi "
+"geri alamazsınız."
+
+#: app/templates/crud/delete_base.html:14
+msgid "Yes, I am sure."
+msgstr "Evet, eminim."
+
+#: app/templates/crud/delete_base.html:18
+#, python-format
+msgid "%(object_name)s is attached to the following relationships:"
+msgstr "%(object_name)s aşağıdaki ilişkilere bağlı:"
+
+#: app/templates/crud/delete_base.html:22
+msgid "relationship"
+msgstr "ilişki"
+
+#: app/templates/crud/entity_details.html:52
+msgid "Close"
+msgstr "Kapat"
+
+#: app/templates/crud/item_base.html:11
+msgid "Delete"
+msgstr "Sil"
+
+#: app/templates/crud/item_base.html:20 app/templates/crud/item_base.html:48
+#: app/templates/crud/item_base.html:49 app/templates/crud/item_base.html:50
+#: app/templates/crud/item_base.html:51 app/templates/crud/item_base.html:54
+#: app/templates/tickets/request_details.html:381
+#: app/templates/tickets/request_details.html:384
+#: app/templates/tickets/request_details.html:385
+msgid "Save"
+msgstr "Kaydet"
+
+#: app/templates/crud/item_base.html:29
+#: app/templates/tickets/request_details.html:266
+msgid "Sharing"
+msgstr "Paylaşım"
+
+#: app/templates/crud/item_base.html:48 app/templates/crud/item_base.html:49
+#: app/templates/crud/item_base.html:50 app/templates/crud/item_base.html:51
+msgid "Create Relationship"
+msgstr "İlişki Oluştur"
+
+#: app/templates/crud/item_base.html:54
+#: app/templates/tickets/request_details.html:384
+msgid "Share Attached Files"
+msgstr "Ekli Dosyaları Paylaş"
+
+#: app/templates/crud/list_base.html:7
+#: app/templates/tickets/request_details.html:382
+#: app/templates/tickets/request_details.html:383
+msgid "Add"
+msgstr "Ekle"
+
+#: app/templates/crud/list_base.html:24
+#: app/templates/tickets/request_admin_base.html:20
+#: app/templates/tickets/request_admin_base.html:23
+#: app/templates/tickets/request_charges_base.html:74
+#: app/templates/tickets/request_charges_base.html:77
+msgid "Prev"
+msgstr "Önceki"
+
+#: app/templates/crud/list_base.html:33
+#: app/templates/tickets/request_admin_base.html:29
+#: app/templates/tickets/request_admin_base.html:32
+#: app/templates/tickets/request_charges_base.html:83
+#: app/templates/tickets/request_charges_base.html:86
+msgid "Next"
+msgstr "Sonraki"
+
+#: app/templates/crud/accountrequest/add.html:2
+msgid "New Account Request"
+msgstr "Yeni Hesap Talebi"
+
+#: app/templates/crud/accountrequest/edit.html:4
+msgid "Edit Volunteer Request"
+msgstr "Gönüllü Talebini Düzenle"
+
+#: app/templates/crud/accountrequest/edit.html:6
+msgid "Edit Account Request"
+msgstr "Hesap Talebini Düzenle"
+
+#: app/templates/crud/accountrequest/edit.html:13
+#: app/templates/crud/accountrequest/edit.html:20
+msgid "Set Permissions"
+msgstr "İzinleri Ayarla"
+
+#: app/templates/crud/company/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:9
+msgid "New Company"
+msgstr "Yeni Şirket"
+
+#: app/templates/crud/company/edit.html:2
+msgid "Edit Company"
+msgstr "Şirketi Düzenle"
+
+#: app/templates/crud/company/edit.html:5
+msgid "Registered Offices"
+msgstr "Kayıtlı Ofisleri"
+
+#: app/templates/crud/company/edit.html:11
+#: app/templates/crud/company/edit.html:13
+#: app/templates/crud/relationship/table_mixin.html:162
+#: app/templates/crud/relationship/table_mixin.html:164
+msgid "Entity"
+msgstr "Varlık"
+
+#: app/templates/crud/expandofield/add.html:2
+msgid "New Extra Field"
+msgstr "Yeni Ekstra Alan"
+
+#: app/templates/crud/expandofield/edit.html:2
+msgid "Edit Extra Field"
+msgstr "Ekstra Alan Düzenle"
+
+#: app/templates/crud/externaldb/add.html:2
+msgid "New Database"
+msgstr "Yeni Veritabanı"
+
+#: app/templates/crud/externaldb/edit.html:2
+msgid "Edit External Database"
+msgstr "Harici Veritabanını Düzenle"
+
+#: app/templates/crud/externaldb/list.html:2
+msgid "Databases"
+msgstr "Veritabanları"
+
+#: app/templates/crud/location/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:11
+msgid "New Location"
+msgstr "Yeni Konum"
+
+#: app/templates/crud/location/edit.html:2
+msgid "Edit Location"
+msgstr "Konumu Düzenle"
+
+#: app/templates/crud/person/add.html:2
+#: app/templates/crud/relationship/inline_entity.html:10
+msgid "New Person"
+msgstr "Yeni Kişi"
+
+#: app/templates/crud/person/edit.html:2
+msgid "Edit Person"
+msgstr "Kişiyi Düzenle"
+
+#: app/templates/crud/profile/edit.html:2
+msgid "Edit User Profile"
+msgstr "Kullanıcı Profilini Düzenle"
+
+#: app/templates/crud/profile/edit.html:7
+msgid "Account Request for this profile"
+msgstr "Bu profil için Hesap Talebi"
+
+#: app/templates/crud/profile/edit.html:18
+msgid "Account Request for this profile: "
+msgstr "Bu profil için Hesap Talebi: "
+
+#: app/templates/crud/relationship/add.html:2
+msgid "New Relationship"
+msgstr "Yeni İlişki"
+
+#: app/templates/crud/relationship/edit.html:2
+#: app/templates/crud/relationship/item.html:2
+msgid "Edit Relationship"
+msgstr "İlişkiyi Düzenle"
+
+#: app/templates/crud/relationship/table_mixin.html:6
+msgid "Add New "
+msgstr "Yeni Ekle "
+
+#: app/templates/crud/relationship/table_mixin.html:12
+msgid "Add Existing "
+msgstr "Mevcut Olanı Ekle "
+
+#: app/templates/crud/relationship/table_mixin.html:49
+msgid "Directors"
+msgstr "Yöneticiler"
+
+#: app/templates/crud/relationship/table_mixin.html:80
+msgid "Shareholders"
+msgstr "Hissedarlar"
+
+#: app/templates/crud/relationship/table_mixin.html:125
+msgid "Create"
+msgstr "Oluştur"
+
+#: app/templates/crud/relationship/table_mixin.html:131
+msgid "With New Company"
+msgstr "Yeni Şirket ile"
+
+#: app/templates/crud/relationship/table_mixin.html:136
+msgid "With New Person"
+msgstr "Yeni Kişi ile"
+
+#: app/templates/crud/relationship/table_mixin.html:141
+msgid "With New Location"
+msgstr "Yeni Konum ile"
+
+#: app/templates/crud/relationship/table_mixin.html:146
+msgid "With Existing Entity"
+msgstr "Mevcut Varlık ile"
+
+#: app/templates/crud/relationship/table_mixin.html:154
+msgid "All Relationships"
+msgstr "Tüm İlişkiler"
+
+#: app/templates/crud/relationship/table_mixin.html:178
+#, python-format
+msgid "is a %(type)s of"
+msgstr "şunun %(type)s türüdür:"
+
+#: app/templates/macros/forms.html:28
+msgid "Select File"
+msgstr "Dosya Seç"
+
+#: app/templates/macros/forms.html:29
+msgid "Change"
+msgstr "Değiştir"
+
+#: app/templates/macros/forms.html:32
+msgid "Remove"
+msgstr "Kaldır"
+
+#: app/templates/macros/forms.html:46
+#: app/templates/tickets/request_details.html:42
+msgid "Attach Files"
+msgstr "Dosya Ekle"
+
+#: app/templates/mail/mail_base.html:36
+msgid "This message is automatically generated by "
+msgstr "Bu mesajı otomatik olarak oluşturan: "
+
+#: app/templates/mail/mail_base.html:36
+msgid "OCCRP Investigative Dashboard"
+msgstr "OCCRP Investigative Dashboard"
+
+#: app/templates/mail/mail_base.html:37
+msgid "If you think it was sent incorrectly, please contact an "
+msgstr "Bunun yanlışlıkla gönderildiğini düşünüyorsanız, lütfen "
+
+#: app/templates/mail/mail_base.html:37
+msgid "administrator"
+msgstr "yönetici ile iletişime geçin"
+
+#: app/templates/mail/mail_base.html:38
+msgid "For more information on "
+msgstr "Hakkında daha fazla bilgi için "
+
+#: app/templates/mail/mail_base.html:39
+msgid "visit"
+msgstr "ziyaret edin"
+
+#: app/templates/mail/mail_simple.html:16
+msgid "The Research Desk"
+msgstr "Araştırma Masası"
+
+#: app/templates/mail/mail_simple.html:16
+msgid "at the Investigative Dashboard"
+msgstr "Investigative Dashboard'da"
+
+#: app/templates/mail/ticket_update.html:8
+msgid "your request. "
+msgstr "talebiniz. "
+
+#: app/templates/mail/ticket_update.html:31
+msgid "View on Site"
+msgstr "Sitede Görüntüle"
+
+#: app/templates/mail/ticket_update.html:32
+msgid "Add Comment"
+msgstr "Yorum Ekle"
+
+#: app/templates/mail/ticket_update.html:33
+msgid "or reply to this email directly."
+msgstr "ya da doğrudan bu e-postayı yanıtlayın."
+
+#: app/templates/mail/account_request/approved.html:4
+msgid "Your Account Request was approved"
+msgstr "Hesap Talebiniz onaylandı"
+
+#: app/templates/mail/account_request/approved.html:8
+#: app/templates/mail/account_request/received.html:8
+#: app/templates/mail/account_request/rejected.html:8
+#: app/templates/mail/user_profile/requester_type_update.html:8
+#, python-format
+msgid "Dear %(name)s,"
+msgstr "Sayın %(name)s,"
+
+#: app/templates/mail/account_request/approved.html:9
+msgid ""
+"Your ID registration is complete! Just login in with your Gmail account "
+"that you used to register to get started."
+msgstr ""
+"ID kaydınız tamamlandı! Başlamak için kayıt sırasında kullandığınız Gmail"
+" hesabınızla giriş yapmanız yeterlidir."
+
+#: app/templates/mail/account_request/approved.html:10
+#, python-format
+msgid "Please be advised your account type is: %(account_type)s"
+msgstr "Lütfen hesap türünüzü not edin: %(account_type)s"
+
+#: app/templates/mail/account_request/approved.html:11
+msgid "Click here to submit a research request."
+msgstr "Bir araştırma talebi göndermek için burayı tıklayın."
+
+#: app/templates/mail/account_request/approved.html:12
+#: app/templates/mail/user_profile/requester_type_update.html:10
+msgid ""
+"If you do not think this is the correct account type for you, please "
+"contact the research desk:"
+msgstr ""
+"Bunun sizin için doğru hesap türü olduğunu düşünmüyorsanız lütfen "
+"araştırma masasıyla iletişime geçin:"
+
+#: app/templates/mail/account_request/approved.html:13
+msgid "Good luck with your investigation."
+msgstr "Araştırmalarınızda iyi şanslar dileriz."
+
+#: app/templates/mail/account_request/received.html:9
+msgid ""
+"Thank you for registering with the Investigative Dashboard. We are "
+"reviewing your information and as soon as your registration is complete "
+"you can sign into the Research Desk with the Google account that you used"
+" to register. In the meantime, get started now by searching the ID crowd-"
+"sourced and external databases. We will be in touch shortly."
+msgstr ""
+"Investigative Dashboard'a kaydolduğunuz için teşekkür ederiz. "
+"Bilgilerinizi gözden geçiriyoruz ve kaydınız tamamlanır tamamlanmaz kayıt"
+" sırasında kullandığınız Google hesabınızla Araştırma Masası'na giriş "
+"yapabilirsiniz. Bu süre zarfında, ID kitle kaynaklı ve harici "
+"veritabanlarında arama yapmaya hemen başlayabilirsiniz. Sizinle en kısa "
+"sürede iletişime geçeceğiz."
+
+#: app/templates/mail/account_request/received_admin.html:8
+msgid "A new account request has been submitted! Below are the details:"
+msgstr "Yeni bir hesap talebi gönderildi! Ayrıntıları aşağıda:"
+
+#: app/templates/mail/account_request/received_admin.html:15
+msgid "Click here to review and approve or reject."
+msgstr "İncelemek ve onaylamak veya reddetmek için buraya tıklayın."
+
+#: app/templates/mail/account_request/rejected.html:4
+msgid "Your Account Request was rejected"
+msgstr "Hesap Talebiniz reddedildi"
+
+#: app/templates/mail/account_request/rejected.html:9
+msgid ""
+"I am sorry but we could not register you at this time. The head of the "
+"research desk will contact you with further details."
+msgstr ""
+"Maalesef şu anda sizi kaydedemiyoruz. Araştırma masasının müdürü daha "
+"fazla bilgi için sizinle iletişime geçecektir."
+
+#: app/templates/mail/account_request/rejected.html:10
+#: app/templates/mail/user_profile/requester_type_update.html:11
+msgid "Thank you,"
+msgstr "Teşekkür ederiz,"
+
+#: app/templates/mail/user_profile/requester_type_update.html:4
+msgid "Your Account Type has changed"
+msgstr "Hesap Türünüz değişti"
+
+#: app/templates/mail/user_profile/requester_type_update.html:9
+#, python-format
+msgid ""
+"Please be advised your account status has changed. Your new account type "
+"is: %(account_type)s"
+msgstr "Hesap durumunuz değişmiştir. Yeni hesap türünüz: %(account_type)s"
+
+#: app/templates/modals/form_basic.html:3
+msgid "Not Allowed"
+msgstr "İzin Verilmedi"
+
+#: app/templates/search/search_base.html:7
+msgid "Results "
+msgstr "Sonuçlar "
+
+#: app/templates/search/search_base.html:16
+msgid "Search terms"
+msgstr "Arama terimleri"
+
+#: app/templates/search/search_base.html:31
+msgid "Navigate Results "
+msgstr "Sonuçlarda Gezin "
+
+#: app/templates/search/search_base.html:32
+msgid "< Previous"
+msgstr "< Önceki"
+
+#: app/templates/search/search_base.html:33
+msgid "Next >"
+msgstr "Sonraki >"
+
+#: app/templates/search/search_base.html:41
+#, python-format
+msgid ""
+"Didn't find what you were looking for? Try one of our <a "
+"href=\"%(url)s\">business registries</a>."
+msgstr ""
+"Aradığınız bilgileri bulamadınız mı? <a href=\"%(url)s\">İşletme "
+"kayıtlarımızdan</a> birini deneyin."
+
+#: app/templates/search/search_combined.html:16
+#: app/templates/search/search_documents.html:38
+#: app/templates/search/search_entities.html:71
+msgid "No search results."
+msgstr "Arama sonucu yok."
+
+#: app/templates/search/search_combined.html:20
+msgid "To search, type your query into the search box above."
+msgstr "Arama yapmak için sorgunuzu yukarıdaki arama kutusuna yazın."
+
+#: app/templates/search/search_documents.html:8
+#: app/templates/search/search_entities.html:9
+msgid "Enter your terms..."
+msgstr "Terimlerinizi girin..."
+
+#: app/templates/search/search_entities.html:22
+#, python-format
+msgid "%(num_results)s result found."
+msgid_plural "%(num_results)s results found."
+msgstr[0] "%(num_results)s sonuç bulundu."
+msgstr[1] "%(num_results)s sonuç bulundu."
+msgstr[2] "%(num_results)s sonuç bulundu."
+msgstr[3] "%(num_results)s sonuç bulundu."
+msgstr[4] "%(num_results)s sonuç bulundu."
+msgstr[5] "%(num_results)s sonuç bulundu."
+
+#: app/templates/tickets/manage.html:5
+msgid "Manage Information Request"
+msgstr "Bilgi Talebini Yönet"
+
+#: app/templates/tickets/public_list.html:5
+#: app/templates/tickets/request_base.html:67
+msgid "Public Requests"
+msgstr "Genel Talepler"
+
+#: app/templates/tickets/public_list.html:12
+#: app/templates/tickets/responds_list.html:12
+msgid "No requests found."
+msgstr "Hiç talep bulunamadı."
+
+#: app/templates/tickets/request.html:5
+#: app/templates/tickets/request_details.html:162
+msgid "Request Information"
+msgstr "Bilgi Talebi"
+
+#: app/templates/tickets/request.html:10
+msgid ""
+"Your request will be routed to our professional researchers and "
+"volunteers, who will try to help."
+msgstr ""
+"Talebiniz size yardımcı olmaya çalışacak profesyonel araştırmacılarımıza "
+"ve gönüllülerimize yönlendirilecek."
+
+#: app/templates/tickets/request_admin_base.html:42
+msgid "No tickets found."
+msgstr "Hiç bilet bulunamadı."
+
+#: app/templates/tickets/request_base.html:6
+msgid "Summary"
+msgstr "Özet"
+
+#: app/templates/tickets/request_base.html:10
+#: app/templates/tickets/request_charges_base.html:26
+#: app/templates/tickets/request_details.html:279
+msgid "Actions"
+msgstr "İşlemler"
+
+#: app/templates/tickets/request_base.html:25
+msgid " Unassigned "
+msgstr " Atanmayanlar "
+
+#: app/templates/tickets/request_base.html:34
+msgid "No Responder"
+msgstr "Hiç Yanıtlayan yok"
+
+#: app/templates/tickets/request_base.html:38
+msgid "Completed "
+msgstr "Tamamlandı "
+
+#: app/templates/tickets/request_base.html:40
+msgid "Cancelled "
+msgstr "İptal edildi "
+
+#: app/templates/tickets/request_base.html:62
+msgid "Requests"
+msgstr "Talepler"
+
+#: app/templates/tickets/request_base.html:64
+#: app/templates/tickets/request_list.html:9
+msgid "My Requests"
+msgstr "Taleplerim"
+
+#: app/templates/tickets/request_base.html:71
+#: app/templates/tickets/responds_list.html:5
+msgid "Assigned Requests"
+msgstr "Atanan Talepler"
+
+#: app/templates/tickets/request_base.html:77
+#: app/templates/tickets/admin/admin_unassigned.html:4
+msgid "Unassigned Tickets"
+msgstr "Atanmayan Biletler"
+
+#: app/templates/tickets/request_base.html:80
+msgid "Upcoming Deadlines"
+msgstr "Yaklaşan Son Teslim Tarihleri"
+
+#: app/templates/tickets/request_base.html:83
+msgid "Flagged Tickets"
+msgstr "İşaretlenmiş Biletler"
+
+#: app/templates/tickets/request_base.html:86
+msgid "Closed Tickets"
+msgstr "Kapanmış Biletler"
+
+#: app/templates/tickets/request_base.html:88
+msgid "Billing"
+msgstr "Faturalandırma"
+
+#: app/templates/tickets/request_base.html:90
+msgid "Customer Report"
+msgstr "Müşteri Raporu"
+
+#: app/templates/tickets/request_base.html:93
+#: app/templates/tickets/admin/admin_charges_outstanding.html:3
+msgid "Outstanding Charges"
+msgstr "Ödenmemiş Ücretler"
+
+#: app/templates/tickets/request_charges_base.html:22
+msgid "Cost"
+msgstr "Maliyet"
+
+#: app/templates/tickets/request_charges_base.html:23
+msgid "Converted"
+msgstr "Dönüştürüldü"
+
+#: app/templates/tickets/request_charges_base.html:24
+msgid "Reconciled"
+msgstr "Mutabık"
+
+#: app/templates/tickets/request_charges_base.html:25
+msgid "Created"
+msgstr "Oluşturuldu"
+
+#: app/templates/tickets/request_charges_base.html:96
+msgid "No charges found."
+msgstr "Hiç ücret bulunamadı."
+
+#: app/templates/tickets/request_charges_base.html:103
+msgid "Reconcile Charge"
+msgstr "Ücreti Mutabık Kıl"
+
+#: app/templates/tickets/request_charges_base.html:103
+msgid "Reconcile"
+msgstr "Mutabık Kıl"
+
+#: app/templates/tickets/request_details.html:21
+msgid "Created on "
+msgstr "Oluşturulma tarihi: "
+
+#: app/templates/tickets/request_details.html:45
+#: app/templates/tickets/request_details.html:382
+msgid "Attach Entities"
+msgstr "Varlıkları Ekle"
+
+#: app/templates/tickets/request_details.html:52
+msgid "Watch"
+msgstr "İzle"
+
+#: app/templates/tickets/request_details.html:57
+msgid "Leave"
+msgstr "Ayrıl"
+
+#: app/templates/tickets/request_details.html:64
+#: app/templates/tickets/request_details.html:380
+msgid "Close Request"
+msgstr "Talebi Kapat"
+
+#: app/templates/tickets/request_details.html:71
+#: app/templates/tickets/request_details.html:377
+msgid "Cancel Request"
+msgstr "Talebi İptal Et"
+
+#: app/templates/tickets/request_details.html:78
+#: app/templates/tickets/request_details.html:383
+msgid "Add Charge"
+msgstr "Ücret Ekle"
+
+#: app/templates/tickets/request_details.html:85
+msgid "Delete Request"
+msgstr "Talebi Sil"
+
+#: app/templates/tickets/request_details.html:93
+msgid "Mark Bill Paid"
+msgstr "Faturayı Ödendi Olarak İşaretle"
+
+#: app/templates/tickets/request_details.html:100
+msgid "Edit Information"
+msgstr "Bilgileri Düzenle"
+
+#: app/templates/tickets/request_details.html:106
+#: app/templates/tickets/request_details.html:385
+msgid "Request Settings"
+msgstr "Talep Ayarları"
+
+#: app/templates/tickets/request_details.html:114
+#: app/templates/tickets/request_details.html:378
+msgid "Alert Administrator"
+msgstr "Yöneticiyi Uyar"
+
+#: app/templates/tickets/request_details.html:125
+msgid "Re-Open"
+msgstr "Tekrar Aç"
+
+#: app/templates/tickets/request_details.html:168
+#: app/templates/tickets/request_details.html:170
+msgid "No Requester"
+msgstr "Talep Eden Yok"
+
+#: app/templates/tickets/request_details.html:181
+msgid "No Responders"
+msgstr "Yanıtlayan Yok"
+
+#: app/templates/tickets/request_details.html:194
+msgid "Request Type"
+msgstr "Talep Türü"
+
+#: app/templates/tickets/request_details.html:198
+msgid "Status Updated"
+msgstr "Durum Güncellendi"
+
+#: app/templates/tickets/request_details.html:205
+msgid "Sensitive"
+msgstr "Hassas bilgi"
+
+#: app/templates/tickets/request_details.html:209
+#: app/templates/tickets/request_details.html:211
+msgid "Billing Information"
+msgstr "Faturalandırma Bilgileri"
+
+#: app/templates/tickets/request_details.html:215
+msgid "For-profit"
+msgstr "Kâr amacı güden"
+
+#: app/templates/tickets/request_details.html:217
+msgid "Charges"
+msgstr "Ücretler"
+
+#: app/templates/tickets/request_details.html:229
+msgid "Outstanding Amount:"
+msgstr "Ödenmemiş Tutar:"
+
+#: app/templates/tickets/request_details.html:237
+msgid "Request Details"
+msgstr "Talep Ayrıntıları"
+
+#: app/templates/tickets/request_details.html:245
+msgid "Initial Information"
+msgstr "İlk Bilgiler"
+
+#: app/templates/tickets/request_details.html:247
+msgid "Story"
+msgstr "Hikaye"
+
+#: app/templates/tickets/request_details.html:248
+msgid "Question"
+msgstr "Soru"
+
+#: app/templates/tickets/request_details.html:254
+#: app/templates/tickets/request_details.html:255
+#: app/templates/tickets/request_details.html:256 static/js/widgets.js:189
+#: static/js/widgets.js:231
+msgid "Other Names"
+msgstr "Diğer Adlar"
+
+#: app/templates/tickets/request_details.html:254
+msgid "Relation"
+msgstr "İlişki"
+
+#: app/templates/tickets/request_details.html:262
+msgid "Attached Files"
+msgstr "Eklenen Dosyalar"
+
+#: app/templates/tickets/request_details.html:274
+msgid "Attached Entities"
+msgstr "Ekli Varlıklar"
+
+#: app/templates/tickets/request_details.html:303
+msgid "Activity"
+msgstr "Etkinlik"
+
+#: app/templates/tickets/request_details.html:337
+msgid "No comment provided."
+msgstr "Hiç yorum yapılmamış."
+
+#: app/templates/tickets/request_details.html:346
+msgid "No updates yet."
+msgstr "Henüz güncelleme yok."
+
+#: app/templates/tickets/request_details.html:350
+msgid "Leave a Comment"
+msgstr "Yorum Ekleyin"
+
+#: app/templates/tickets/request_details.html:378
+msgid "Flag Request"
+msgstr "Talebi İşaretle"
+
+#: app/templates/tickets/request_details.html:379
+msgid "Re-Open Request"
+msgstr "Talebi Yeniden Aç"
+
+#: app/templates/tickets/request_details.html:381
+msgid "Mark Paid"
+msgstr "Ödendi Olarak İşaretle"
+
+#: app/templates/tickets/request_list.html:7
+msgid "New Request"
+msgstr "Yeni Talep"
+
+#: app/templates/tickets/request_list.html:13
+msgid "Open Requests"
+msgstr "Açık Talepler"
+
+#: app/templates/tickets/request_list.html:18
+msgid "No open requests found."
+msgstr "Hiç açık talep bulunamadı."
+
+#: app/templates/tickets/request_list.html:22
+msgid "Closed Requests"
+msgstr "Kapalı Talepler"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:6
+msgid "Filter"
+msgstr "Filtrele"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:12
+msgid "Customer Charges"
+msgstr "Müşteri Ücretleri"
+
+#: app/templates/tickets/admin/admin_charges_customer.html:13
+msgid "View all logged charges against an individual customer."
+msgstr "Bireysel bir müşterinin tüm kayıtlı ücretlerini görüntüleyin."
+
+#: app/templates/tickets/admin/admin_charges_outstanding.html:4
+msgid "View all outstanding charges for all tickets and requesters. "
+msgstr ""
+"Tüm biletler ve talep edenler için bütün ödenmemiş ücretleri "
+"görüntüleyin. "
+
+#: app/templates/tickets/admin/admin_deadline.html:3
+msgid "Tickets with Deadlines"
+msgstr "Son Teslim Tarihli Biletler"
+
+#: app/templates/tickets/admin/admin_deadline.html:4
+msgid "View open tickets ordered by upcoming deadlines. "
+msgstr ""
+"Açık biletleri, yaklaşan son teslim tarihlerine göre sıralanmış şekilde "
+"görüntüleyin. "
+
+#: app/templates/tickets/admin/admin_flagged.html:3
+msgid "User Flagged Tickets"
+msgstr "Kullanıcının İşaretlediği Biletler"
+
+#: app/templates/tickets/admin/admin_flagged.html:4
+msgid ""
+"View tickets which users or staff have deemed requiring administrative "
+"intervention. "
+msgstr ""
+"Kullanıcıların ya da çalışanların yönetici müdahalesi gerektiğini "
+"düşündüğü biletleri görüntüleyin. "
+
+#: app/templates/tickets/admin/admin_history.html:3
+msgid "Tickets History"
+msgstr "Bilet Geçmişi"
+
+#: app/templates/tickets/admin/admin_history.html:4
+msgid "A simple list of closed, resolved or cancelled tickets. "
+msgstr "Kapalı, çözülmüş ya da iptal edilmiş biletlerin basit bir listesi. "
+
+#: app/templates/tickets/admin/admin_unassigned.html:5
+msgid "View new tickets that need responders assigned to them."
+msgstr "Kendilerine yanıtlayan atanması gereken yeni biletleri görüntüleyin."
+
+#: static/js/drive-picker.js:97
+msgid "Error attaching file(s)."
+msgstr "Dosya(lar) eklenirken hata oluştu."
+
+#: static/js/i18n.js:47 static/js/i18n.js:55
+msgid "x04"
+msgid_plural "x04"
+msgstr[0] "x04"
+msgstr[1] "x04"
+msgstr[2] "x04"
+msgstr[3] "x04"
+msgstr[4] "x04"
+msgstr[5] "x04"
+
+#: static/js/list-files.js:24
+msgid "File successfully removed."
+msgstr "Dosya başarıyla kaldırıldı."
+
+#: static/js/list-files.js:26
+msgid "Error removing attached file."
+msgstr "Ekli dosyayı kaldırırken hata oluştu."
+
+#: static/js/list-files.js:44
+msgid "No files attached."
+msgstr "Hiç dosya eklenmedi."
+
+#: static/js/list-files.js:61
+msgid "Error displaying attached files."
+msgstr "Ekli dosyalar görüntülenirken hata oluştu."
+
+#: static/js/validation-forms.js:42
+msgid "There was a problem with validation."
+msgstr "Doğrulama ile ilgili bir sorun vardı."
+

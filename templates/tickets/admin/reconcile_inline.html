@@ -1,0 +1,5 @@
+{% import "macros/forms.html" as form_macros with context %}
+
+<form action="{{ form_action }}" class="form-horizontal" method="POST">
+    {{ form_macros.render_form_fragment(reconcile_form) }}
+</form>
