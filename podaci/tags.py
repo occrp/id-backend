@@ -33,12 +33,12 @@ class Details(PodaciView):
 
     def get_context_data(self, id):
         tag = self.fs.get_tag(id)
-        num_displayed = 40
+        num_displayed = 1000
         tag_cnt, tags = self.fs.list_user_tags(self.request.user, root=tag.id, _size=num_displayed)
         file_cnt, files = self.fs.list_user_files(self.request.user, root=tag.id, _size=num_displayed)
         return {
             "tag": tag,
-            "num_files_displayed": min(40, file_cnt),
+            "num_files_displayed": min(num_displayed, file_cnt),
             "num_tags": tag_cnt,
             "num_files": file_cnt,
             "result_tags": tags,
