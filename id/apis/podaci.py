@@ -391,6 +391,17 @@ class FileSystem:
 
     def connect(self):
         self.es = elasticsearch.Elasticsearch(self.es_servers)
+        try:
+            self.es.indices.create(index=self.es_index, ignore=)
+
+            print "#"*50
+            print "## %44s ##" % ""
+            print "## %44s ##" % "Initialized ElasticSearch Index"
+            print "## %44s ##" % ""
+            print "#"*50
+        except elasticsearch.IndexAlreadyExistsException:
+            pass
+
 
     def create_file_from_url(self, url):
         f = File(self)
