@@ -392,7 +392,7 @@ class FileSystem:
     def connect(self):
         self.es = elasticsearch.Elasticsearch(self.es_servers)
         try:
-            self.es.indices.create(index=self.es_index, ignore=)
+            self.es.indices.create(index=self.es_index, ignore=400)
 
             print "#"*50
             print "## %44s ##" % ""
