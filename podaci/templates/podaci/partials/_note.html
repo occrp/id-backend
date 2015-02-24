@@ -1,0 +1,9 @@
+<div class="note">
+    <div class="note_content">
+        <span class="note_user"><a href="{{url('profile', username=note.user_details.username)}}">{{note.user_details.username}}</a></span>
+        <span class="note_text">{{note.text}}</span>
+    </div>
+    <div class="note_actions">
+        <a class="note_date">{{note.modified}}</a>
+    </div>
+</div>
