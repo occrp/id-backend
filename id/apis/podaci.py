@@ -55,6 +55,7 @@ FILE_METADATA_V2 = {
     "text":                 "",     # Extracted 
     "annotations":          [],
     "is_indexed":           False,
+    "extra":                {},     # Any extra structured metadata
 }
 FILE_METADATA_V2.update(COMMON_METADATA_V1)
 
@@ -277,7 +278,7 @@ class File(MetaMixin, PermissionsMixin):
         filename = fh.name
         self.meta["filename"] = filename
         self.meta["hash"] = sha256sum(fh)
-        self.meta["identifier"] = "%s-%s-%6s" % ("KJ", self.fs.user.profile.abbr, self.meta["hash"][-6:])
+        self.meta["identifier"] = "%s-%s-%6s" % ("KP", self.fs.user.profile.abbr, self.meta["hash"][-6:])
         self.meta["mimetype"] = magic.Magic(mime=True).from_buffer(fh.read(100))
         if self.fs.file_exists_by_hash(self.meta["hash"]):
             print "Warning: File exists!"
@@ -340,6 +341,18 @@ class File(MetaMixin, PermissionsMixin):
         self.log("Removed tag '%s'" % tagid)
         self._sync()
 
+    def add_note(self, text):
+        note = {
+            "user": self.fs.user.id,
+            "created": datetime.now().isoformat(),
+            "modified": datetime.now().isoformat(),
+            "text": text,
+            "score": 0,
+        }
+        self.meta["notes"].append(note)
+        self.log("Added note")
+        return self._sync()
+
     def get_thumbnail(self, width=680, height=460):
         if self.meta["mimetype"]:
             basetype, subtype = self.meta["mimetype"].split("/")
@@ -375,16 +388,16 @@ class FileSystem:
 
     def connect(self):
         self.es = elasticsearch.Elasticsearch(self.es_servers)
-        try:
-            self.es.indices.create(index=self.es_index, ignore=400)
+        #try:
+        #    self.es.indices.create(index=self.es_index, ignore=400)
 
-            print "#"*50
-            print "## %44s ##" % ""
-            print "## %44s ##" % "Initialized ElasticSearch Index"
-            print "## %44s ##" % ""
-            print "#"*50
-        except elasticsearch.IndexAlreadyExistsException:
-            pass
+        #    print "#"*50
+        #    print "## %-44s ##" % ""
+        #    print "## %-44s ##" % "Initialized ElasticSearch Index"
+        #    print "## %-44s ##" % ""
+        #    print "#"*50
+        #except elasticsearch.IndexAlreadyExistsException:
+        #    pass
 
 
     def create_file_from_url(self, url):
