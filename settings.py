@@ -90,6 +90,18 @@ DATABASES = {
     }
 }
 
+
+NEO4J_DATABASES = {
+    'default' : {
+        'HOST':'localhost',
+        'PORT':7474,
+        'ENDPOINT':'/db/data'
+    }
+}
+
+DATABASE_ROUTERS = ['neo4django.utils.Neo4djangoIntegrationRouter']
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
