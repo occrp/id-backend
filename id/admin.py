@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView
+from django.views.generic import *
 from id.models import *
 
 class Panel(TemplateView):
@@ -45,3 +45,11 @@ class LocationList(TemplateView):
 class RelationshipList(TemplateView):
 	template_name = "crud/relationship/list.html"
 
+
+class DatabaseScrapeRequestCreate(CreateView):
+	model = DatabaseScrapeRequest
+	template_name = "admin/database_scrape_request.html"
+
+class DatabaseScrapeRequestList(ListView):
+	model = DatabaseScrapeRequest
+	template_name = "admin/database_scrape_request.html"
