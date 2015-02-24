@@ -64,12 +64,12 @@ class Update(PodaciView):
 
 
 class NoteAdd(PodaciView):
-    template_name = "NO_TEMPLATE"
+    template_name = None
 
     def get_context_data(self, id):
         self.file = self.fs.get_file_by_id(id)
         print self.request.POST
-        text = self.request.POST.get("note_text", "")
+        text = self.request.POST.get("note_text_markedup", "")
         if not text:
             return {"success": False, "error": "A comment cannot be empty."}
 
@@ -83,9 +83,7 @@ class NoteAdd(PodaciView):
                 "first_name": u.profile.first_name,
                 "last_name": u.profile.first_name,
             }
-            print "RENDERING HTML!!!!-------------------"
             note["html"] = render_to_string("podaci/partials/_note.html", {"note": note})
-            print note["html"]
 
         return {
             "success": True,
@@ -94,14 +92,17 @@ class NoteAdd(PodaciView):
         }
 
 class NoteUpdate(PodaciView):
-    template_name = "NO_TEMPLATE"
+    template_name = None
 
     def get_context_data(self, id):
         pass
 
 class NoteDelete(PodaciView):
-    template_name = "NO_TEMPLATE"
+    template_name = None
 
     def get_context_data(self, id):
         pass
+
+class MetaDataAdd(PodaciView):
+    template_name = None
 

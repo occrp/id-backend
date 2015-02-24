@@ -7,6 +7,7 @@ urlpatterns = patterns('',
     url(r'^$', info.Home.as_view(), name='podaci_info_home'),
     url(r'^help/$', info.Help.as_view(), name='podaci_info_help'),
     url(r'^search/$', search.Search.as_view(), name='podaci_search'),
+    url(r'^search/mention/$', search.SearchMention.as_view(), name='podaci_search_mention'),
 
     url(r'^info/status/$', info.Status.as_view(), name='podaci_info_status'),
     url(r'^info/statistics/$', info.Statistics.as_view(), name='podaci_info_statistics'),

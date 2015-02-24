@@ -74,6 +74,7 @@ DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.html'
 
 JINJA_EXTS = (
     'jinja2.ext.i18n',
+    'podaci.templatetags.mentions'
 )
 
 
