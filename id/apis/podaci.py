@@ -37,8 +37,6 @@ COMMON_METADATA_V1 = {
     "public_read":          False,
     "allowed_users":        [],
     "allowed_write_users":  [],
-    "allowed_groups":       [],
-    "allowed_write_groups": [],
 }
 
 FILE_METADATA_V2 = {
@@ -123,7 +121,6 @@ class PermissionsMixin:
                 id=self.id, 
                 body={"doc": self.meta, "detect_noop": True}
             )
-        print "Sync: %s: %s" % (result, self.meta)
         return result
 
     def add_user(self, user, write=False):
@@ -135,31 +132,18 @@ class PermissionsMixin:
         self.log("Added user '%s' [%d] (write=%s)" % (user.username, user.id, write))
         self._sync()
 
-    def add_group(self, groupid, write=False):
-        if groupid not in self.meta["allowed_groups"]:
-            self.meta["allowed_groups"].append(groupid)
-        if write and groupid not in self.meta["allowed_write_groups"]:
-            self.meta["allowed_write_groups"].append(groupid)
-        self.log("Added group '%s' (write=%s)" % (groupid, write))
-        self._sync()
-
     def remove_user(self, user):
         if not user: return
         self.meta["allowed_users"].remove(user.id)
         self.meta["allowed_write_users"].remove(user.id)
         self._sync()
 
-    def remove_group(self, groupid):
-        self.meta["allowed_groups"].remove(groupid)
-        self.meta["allowed_write_groups"].remove(groupid)
-        self._sync()
-
     def has_permission(self, user):
-        # FIXME: Add group support!
+        # FIXME: Add tag support!
         return user.id in self.meta["allowed_users"]
 
     def has_write_permission(self, user):
-        # FIXME: Add group support!
+        # FIXME: Add tag support!
         return user.id in self.meta["allowed_write_users"]
 
 
@@ -312,7 +296,7 @@ class File(MetaMixin, PermissionsMixin):
         self._build_index()
         self._create_index()
 
-        return self.id, self.meta, True    
+        return self.id, self.meta, True
 
     def create_from_file(self, filename):
         if not os.path.isfile(filename): raise ValueError("File does not exist")
