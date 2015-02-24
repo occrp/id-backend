@@ -100,7 +100,7 @@ NEO4J_DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = ['neo4django.utils.Neo4djangoIntegrationRouter']
+# DATABASE_ROUTERS = ['neo4django.utils.Neo4djangoIntegrationRouter']
 
 
 # Internationalization
