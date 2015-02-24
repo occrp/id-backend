@@ -31,6 +31,7 @@ def sha256sum(filename, blocksize=65536):
     return hash.hexdigest()
 
 COMMON_METADATA_V1 = {
+    "name":                 "",     # Everything should have a name
     "date_added":           "",
     "changelog":            [],
     "notes":                [],
@@ -60,7 +61,6 @@ FILE_METADATA_V2 = {
 FILE_METADATA_V2.update(COMMON_METADATA_V1)
 
 TAG_METADATA_V1 = {
-    "name":                 "",
     "parents":              [],
     "icon":                 "default",
 }
@@ -491,6 +491,28 @@ class FileSystem:
     def search_files(self, query, _from=0, _size=1000):
         res = self.es.search(index=self.es_index, doc_type="file", body=query, from_=_from, size=_size)
         return res["hits"]["total"], [File(self, filemeta["_id"], prepopulate_meta=filemeta["_source"]) for filemeta in res["hits"]["hits"]]
+
+    def search_all_by_name(self, query, _from=0, _size=1000):
+        body = {
+                "query": { 
+                    "fuzzy_like_this": { 
+                        "like_text": query,
+                        "fields": [ "name", "title", "identifier", "description", "filename"],
+                    }
+                },
+            }
+        res = self.es.search(index=self.es_index, body=body, from_=_from, size=_size)
+        items = []
+        for item in res["hits"]["hits"]:
+            x = {}
+            x["id"] = item["_id"]
+            x["type"] = item["_type"]
+            if item["_source"].has_key("name"):
+                x["name"] = item["_source"]["name"]
+            else:
+                x["name"] = item["_source"]["filename"]
+            items.append(x)
+        return items
 
     def get_tag(self, tagid):
         t = Tag(self, tagid)
