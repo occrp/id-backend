@@ -1045,3 +1045,16 @@ class VolunteerRequest(AccountRequest, UserDetailsVolunteerMixin):
         pass
         # fields = AccountRequest.Meta.fields + UserDetailsVolunteerMixin.Meta.fields
         # user_visible_fields = tuple(x for x in fields if x not in AccountRequest.admin_only_fields)
+
+
+class DatabaseScrapeRequest(models.Model):
+    url = models.URLField(blank=False)
+    name = models.CharField(max_length=200)
+    plusone = models.ManyToManyField(User)
+
+    def plusone(self, user):
+        self.plusone.add(user)
+
+    def minusone(self, user):
+        self.plusone.remove(user)
+
