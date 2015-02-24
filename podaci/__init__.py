@@ -40,8 +40,8 @@ class PodaciView(TemplateView, JSONResponseMixin):
             PODACI_FS_ROOT, self.request.user)
         return super(PodaciView, self).dispatch(*args, **kwargs)
 
-    def post(self, request):
-        return self.json_response()
+    def post(self, request, **kwargs):
+        return self.json_response(**kwargs)
 
     def get(self, request, **kwargs):
         format = request.GET.get("format", "html")
