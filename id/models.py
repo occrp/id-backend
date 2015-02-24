@@ -1048,13 +1048,14 @@ class VolunteerRequest(AccountRequest, UserDetailsVolunteerMixin):
 
 
 class DatabaseScrapeRequest(models.Model):
-    url = models.URLField(blank=False)
-    name = models.CharField(max_length=200)
-    plusone = models.ManyToManyField(User)
+    url = models.URLField(blank=False, verbose_name=_("URL"))
+    name = models.CharField(max_length=200, verbose_name=_("Name"))
+    description = models.TextField(verbose_name=_("Description"))
+    # plusones = models.ManyToManyField(User)
 
-    def plusone(self, user):
-        self.plusone.add(user)
+    # def plusone(self, user):
+    #    self.plusone.add(user)
 
-    def minusone(self, user):
-        self.plusone.remove(user)
+    #def minusone(self, user):
+    #    self.plusone.remove(user)
 
