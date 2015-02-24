@@ -23,6 +23,8 @@ urlpatterns = patterns('',
     url(r'^admin/location/list$', admin.LocationList.as_view(), name='location_list'),
     url(r'^admin/relationship/list$', admin.RelationshipList.as_view(), name='relationship_list'),
 
+    url(r'^admin/scrapers/request/$', admin.DatabaseScrapeRequestCreate.as_view(), name='admin_scrapers_request'),
+
     url(r'^admin/storage/$', admin.Storage.as_view(), name='admin_storage'),
     url(r'^admin/statistics/$', admin.Statistics.as_view(), name='statistics'),
     url(r'^admin/django/', include(django_admin.site.urls)),

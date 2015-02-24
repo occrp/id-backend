@@ -202,3 +202,8 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Profile
 
+
+class ScraperRequestForm(forms.ModelForm):
+    class Meta:
+        model = models.DatabaseScrapeRequest
+    
