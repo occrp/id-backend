@@ -10,6 +10,7 @@ Podaci.init = function() {
     }
 
     Podaci.tagid = $("#podaci_tag_id").val();
+    Podaci.fileid = $("#podaci_file_id").val();
     Podaci.selection = [];
     Podaci.update_selection();
     Podaci.init_fileupload();
@@ -204,7 +205,6 @@ Podaci.create_tag_submit = function() {
     $.post('/podaci/tag/create/', 
            $("#podaci_create_tag_form").serialize(), 
            function(data) {
-        console.log(data);
         if (data.error) {
             console.log("ERROR: ", data.error);
             $("#podaci_create_tag_error").html(data.error);
@@ -305,6 +305,27 @@ Podaci.get_user_tags_url = function(callback) {
     return "/podaci/tag/list/?format=json";
 };
 
+Podaci.update_notes = function(meta) {
+    $("#file_notes").empty();
+    for (i in meta.notes) {
+        n = meta.notes[i];
+        $("#file_notes").append(n.html);
+    }
+}
+
+Podaci.file_add_note = function() {
+    console.log("Adding note...", $("#note_add_form").serialize());
+    fileid = $("#podaci_file_id").val();
+    $.post('/podaci/file/' + fileid + '/note/add/', 
+        $("#note_add_form").serialize(),
+        function(data) {
+            if (data.success) {
+                $("#note_text").val("");
+            }
+            Podaci.update_notes(data.meta);
+        });
+}
+
 
 Podaci.callbacks = {
     ".podaci_upload click": Podaci.upload_click,
@@ -327,6 +348,8 @@ Podaci.callbacks = {
 
     "#podaci-list-mode-icons click": Podaci.listmode_icons,
     "#podaci-list-mode-list click": Podaci.listmode_list,
+
+    "#podaci_note_save click": Podaci.file_add_note,
 };
 
 
