@@ -10,3 +10,4 @@ django-jinja
 django-registration
 pyes
 requests
+neo4django
