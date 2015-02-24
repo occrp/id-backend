@@ -51,8 +51,8 @@
             <tr class="podaci-file" data-mime="{{file.mimetype}}" data-size="{{file.size}}" data-id="{{file.id}}">
                 <td><input type="checkbox" class="podaci_file_select_box"/></td>
                 <td nowrap><a href="{{url('podaci_files_details', file.id)}}">{{file.identifier}}</a></td>
-                <td class="overflow-hidden"><a href="{{url('podaci_files_details', file.id)}}"><i class="icon-file"></i>{{file.filename}}</a></td>
-                <td nowrap>{{file.size|filesizeformat}}</td>
+                <td nowrap class="overflow-hidden"><a href="{{url('podaci_files_details', file.id)}}"><i class="icon-file"></i>{{file.filename}}</a></td>
+                <td nowrap style="text-align: right;">{{file.size|filesizeformat}}</td>
                 <td nowrap>{{file.mimetype}}</td>
             </tr>
         {% endfor %}
