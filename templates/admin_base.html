@@ -18,8 +18,11 @@
                     <a href="{{ url('relationship_list') }}"><i class="icon-link"></i> {% trans %}Relationships{% endtrans %}</a>
                 </li>
 		{% if user.profile.is_admin or user.profile.is_staff %}
-		<li class="{% if 'externaldb_list' in ROUTE_NAME %}active{% endif %}">
+        		<li class="{% if 'externaldb_list' in ROUTE_NAME %}active{% endif %}">
                     <a href="{{ url('externaldb_list') }}"><i class="icon-list-alt"></i> {% trans %}External Databases{% endtrans %}</a>
+                </li>
+                <li class="{% if 'externaldb_list' in ROUTE_NAME %}active{% endif %}">
+                    <a href="{{ url('admin_scrapers_request') }}"><i class="icon-list-alt"></i> {% trans %}Scraper requests{% endtrans %}</a>
                 </li>
 		{% endif %}
 
