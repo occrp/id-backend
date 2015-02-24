@@ -14,6 +14,7 @@
     <meta name="viewport" content="width=device-width">
 
     <link rel="stylesheet" href="{{ static("css/main.css") }}">
+    <link href="{{ static("components/jquery-mentions-input/jquery.mentionsInput.css") }}" rel="stylesheet" type="text/css">
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
@@ -153,6 +154,8 @@
     {% endif %}
     <script type="text/javascript" src="{{ static("components/spin.js/dist/spin.min.js") }}"></script>
     <script type="text/javascript" src="{{ static("components/jquery.scrollTo/jquery.scrollTo.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static("components/jquery-mentions-input/lib/jquery.elastic.js") }}"></script>
+    <script type="text/javascript" src="{{ static("components/jquery-mentions-input/jquery.mentionsInput.js") }}"></script>
     <script type="text/javascript" src="{{ static("js/equalheights.js") }}"></script>
     <script type="text/javascript" src="{{ static("js/bootstrap-fileupload.js") }}"></script>
     <script type="text/javascript">

@@ -15,7 +15,18 @@ Podaci.init = function() {
     Podaci.update_selection();
     Podaci.init_fileupload();
     Podaci.init_listmode();
+    Podaci.init_taggedtext();
 };
+
+Podaci.init_taggedtext = function() {
+    $('textarea.tagged_text').mentionsInput({
+        onDataRequest: function (mode, query, callback) {
+            $.getJSON('/podaci/search/mention/', { "format": "json", "q": query }, function(data) {
+                callback.call(this, data);
+            });
+        }
+    });
+}
 
 Podaci.init_listmode = function() {
     $(".podaci-files-icons").hide();
@@ -314,10 +325,25 @@ Podaci.update_notes = function(meta) {
 }
 
 Podaci.file_add_note = function() {
-    console.log("Adding note...", $("#note_add_form").serialize());
     fileid = $("#podaci_file_id").val();
-    $.post('/podaci/file/' + fileid + '/note/add/', 
-        $("#note_add_form").serialize(),
+    $("#note_text").mentionsInput('val', function(text) {
+        $.post('/podaci/file/' + fileid + '/note/add/', 
+            $("#note_add_form").serialize() + "&note_text_markedup=" + encodeURIComponent(text),
+            function(data) {
+                if (data.success) {
+                    $("#note_text").val("");
+                    $("#note_text").mentionsInput("reset");
+                }
+                Podaci.update_notes(data.meta);
+            }
+        );
+    });
+}
+
+Podaci.metadata_save = function() {
+    fileid = $("#podaci_file_id").val();
+    $.post('/podaci/file/' + fileid + '/metadata/update/', 
+        $("#extra_metadata_form").serialize(),
         function(data) {
             if (data.success) {
                 $("#note_text").val("");
@@ -350,6 +376,7 @@ Podaci.callbacks = {
     "#podaci-list-mode-list click": Podaci.listmode_list,
 
     "#podaci_note_save click": Podaci.file_add_note,
+    "#extra_metadata_save click": Podaci.metadata_save,
 };
 
 

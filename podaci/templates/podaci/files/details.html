@@ -67,20 +67,37 @@
         </div>
         <form id="note_add_form"/>
             {% csrf_token %}
-            <textarea name="note_text" id="note_text" class="span4"></textarea>
+            <textarea name="note_text" id="note_text" class="tagged_text span4"></textarea>
             <input type="hidden" name="podaci_file_id" id="podaci_file_id" value="{{file.id}}"/>
             <a id="podaci_note_save" class="btn">Save note</a>
         </form>
     </div>
     <div class="span4" id="extra_metadata">
         <h3>Extra metadata</h3>
-        <table class="table" id="extra_metadata">
-            <tr>
-                <td>Field</td>
-                <td>Value</td>
-            </tr>
-        </table>
-        <button id="extra_metadata_save" class="btn">Save metadata</button>
+        <form id="extra_metadata_form">
+            {% csrf_token %}
+            <table class="table" id="extra_metadata">
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <th><input id="extra_key" name="extra_key" style="width: 100px"/></th>
+                    <th><textarea id="extra_value" class="tagged_text" name="extra_value"></textarea></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for k,v in file.meta.extra.iteritems() %}
+                <tr>
+                    <td>{{k}}</td>
+                    <td><textarea name="{{k}}">{{v}}</textarea></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+            <button id="extra_metadata_save" class="btn">Save metadata</button>
+        </form>
     </div>
 </div>
 
