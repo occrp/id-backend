@@ -39,6 +39,15 @@ li > a.FIXME {
 
 }
 
+.podaci-tags {
+	margin-left: 0px;
+}
+
+.podaci-tags li {
+	display: block;
+	margin-left: 0px;
+}
+
 .podaci-details table tr td {
 	max-width: 200px;
 	overflow: auto;
@@ -82,4 +91,27 @@ li > a.FIXME {
 
 .overflow-hidden {
 	overflow: hidden;
+}
+
+
+#file_notes {
+
+}
+
+.note {
+	position: relative;
+	border-bottom: 1px solid #eee;
+	padding: 5px;
+}
+
+.note_user {
+	margin-right: 5px;
+}
+
+.note_date {
+	color: #aaa;
+}
+
+.note_text {
+	font-size: 120%;
 }
