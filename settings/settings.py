@@ -7,24 +7,25 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(__file__)
-print "Working directory: %s" % (BASE_DIR)
+here = lambda x: os.path.realpath(os.path.join(os.path.realpath(os.path.dirname(__file__)), x))
+BASE_DIR = here('../')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '^!#g4j-0$=%2pzv@f+^!+4ovq@e_gctly)924jgskq(sd!y(6*'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+ALLOWED_HOSTS = []
 
-TEMPLATE_DEBUG = True
+try:
+    from settings_local import *
+except ImportError:
+    raise Exception('You need to set up settings_local.py (see settings_local.py-example')
 
-ALLOWED_HOSTS = ["127.0.0.1:8020"]
+# Some error checking for local_settings
+if not SECRET_KEY:
+    raise Exception('You need to specify Django SECRET_KEY in the settings_local.py!')
 
 TEMPLATE_LOADERS = (
     'django_jinja.loaders.FileSystemLoader',
@@ -44,7 +45,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'registration',
     'django_jinja',
-
     'id',
     'podaci',
 )
@@ -66,7 +66,7 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     "id.context_processors.userprofile",
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'settings.urls'
 
 # FIXME: Move existing templates to .jinja, start writing
 #        new templates as .html with Django template engine
@@ -83,20 +83,23 @@ JINJA_EXTS = (
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': DATABASE_ENGINE,
+        'NAME': DATABASE_NAME,
+        'USER': DATABASE_USER,
+        'PASSWORD': DATABASE_PASSWORD,
+        'HOST': DATABASE_HOST,
+        'PORT': DATABASE_PORT,
     }
 }
 
 
 NEO4J_DATABASES = {
-    'default' : {
-        'HOST':'localhost',
-        'PORT':7474,
-        'ENDPOINT':'/db/data'
+    'default': {
+        'HOST': NEO4J_HOST,
+        'PORT': NEO4J_PORT,
+        'ENDPOINT': NEO4J_ENDPOINT
     }
 }
 
@@ -105,10 +108,6 @@ NEO4J_DATABASES = {
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -124,11 +123,11 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 STATIC_URL = '/static/'
 
 
-## Investigative Dashboard Default Settings!
+# Investigative Dashboard Default Settings!
 from django.utils.translation import ugettext_lazy as _
 
 DEFAULTS = {
-    'search' : {
+    'search': {
         'result_limit': 100,
         'index_version': '1',
     },
@@ -148,6 +147,5 @@ DEFAULTS = {
 }
 
 PODACI_SERVERS = [{"host": "localhost"}]
-PODACI_ES_INDEX = "podaci"
-PODACI_FS_ROOT = "/home/id/data/"
-
+PODACI_ES_INDEX = 'podaci'
+PODACI_FS_ROOT = '/home/id/data/'
