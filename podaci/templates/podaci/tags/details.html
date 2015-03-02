@@ -33,7 +33,7 @@
     <div class="podaci_upload_dropzone">
         <ul class="podaci-files podaci-files-icons"{% if tag %} data-tag="{{tag.id}}"{% endif %}>
         {% for file in result_files %}
-            <li class="podaci-file" data-mime="{{file.mimetype}}" data-size="{{file.size}}" data-id="{{file.id}}">
+            <li class="podaci-file" data-mime="{{file.mimetype}}" data-size="{{file.size}}" data-id="{{file.id}}" data-tags="{{file.tags}}">
                 <a href="{{url('podaci_files_details', file.id)}}"><i class="icon-file podaci-icon-big"></i>{{file.filename}}</a>
             </li>
         {% endfor %}
@@ -48,7 +48,7 @@
                 <th>{% trans %}Type{% endtrans %}</th>
             </tr>
         {% for file in result_files %}
-            <tr class="podaci-file" data-mime="{{file.mimetype}}" data-size="{{file.size}}" data-id="{{file.id}}">
+            <tr class="podaci-file" data-mime="{{file.mimetype}}" data-size="{{file.size}}" data-id="{{file.id}}" data-tags="{{file.tags}}">
                 <td><input type="checkbox" class="podaci_file_select_box"/></td>
                 <td nowrap><a href="{{url('podaci_files_details', file.id)}}">{{file.identifier}}</a></td>
                 <td nowrap class="overflow-hidden"><a href="{{url('podaci_files_details', file.id)}}"><i class="icon-file"></i>{{file.filename}}</a></td>
