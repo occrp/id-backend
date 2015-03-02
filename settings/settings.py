@@ -19,7 +19,11 @@ BASE_DIR = here('../')
 ALLOWED_HOSTS = []
 
 try:
-    from settings_local import *
+    if os.environ.get('BUILD_TEST'):
+        from settings_build_test import *
+    else:
+        from settings_local import *
+
 except ImportError:
     raise Exception('You need to set up settings_local.py (see settings_local.py-example')
 
