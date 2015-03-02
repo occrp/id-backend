@@ -278,7 +278,8 @@ class File(MetaMixin, PermissionsMixin):
         filename = fh.name
         self.meta["filename"] = filename
         self.meta["hash"] = sha256sum(fh)
-        self.meta["identifier"] = "%s-%s-%6s" % ("KP", self.fs.user.profile.abbr, self.meta["hash"][-6:])
+        # FIXME: "ID" is a temporary identifier. At some point, we need some kind of "project" notion.
+        self.meta["identifier"] = "%s-%s-%6s" % ("ID", self.fs.user.profile.abbr, self.meta["hash"][-6:])
         self.meta["mimetype"] = magic.Magic(mime=True).from_buffer(fh.read(100))
         if self.fs.file_exists_by_hash(self.meta["hash"]):
             print "Warning: File exists!"
