@@ -126,25 +126,6 @@ STATIC_URL = '/static/'
 # Investigative Dashboard Default Settings!
 from django.utils.translation import ugettext_lazy as _
 
-DEFAULTS = {
-    'search': {
-        'result_limit': 100,
-        'index_version': '1',
-    },
-
-    'ticket_notifications': {
-        'update': ['requester', 'responders', 'admin'],
-        'charge': ['requester', 'responders', 'admin'],
-        'paid': ['requester', 'responders', 'admin'],
-        'close': ['requester', 'responders', 'admin'],
-        'cancel': ['requester', 'responders', 'admin'],
-        'reopen': ['requester', 'responders', 'admin'],
-        'open': ['requester', 'responders', 'admin'],
-        'flag': ['requester', 'responders', 'admin'],
-        'docs_changed': ['requester', 'responder', 'admin'],
-        'entities_attached': ['requester', 'responder', 'admin']
-    },
-}
 
 PODACI_SERVERS = [{"host": "localhost"}]
 PODACI_ES_INDEX = 'podaci'
