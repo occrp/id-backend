@@ -11,17 +11,14 @@ import os
 here = lambda x: os.path.realpath(os.path.join(os.path.realpath(os.path.dirname(__file__)), x))
 BASE_DIR = here('../')
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
-
-
-ALLOWED_HOSTS = []
-
+# Import local settings or production settings
 try:
     from settings_local import *
 except ImportError:
     raise Exception('You need to set up settings_local.py (see settings_local.py-example')
+
+# Allowed hosts:
+ALLOWED_HOSTS = []
 
 # Some error checking for local_settings
 if not SECRET_KEY:
