@@ -2,7 +2,7 @@ Django==1.6.1
 Jinja2==2.7
 Babel==0.9.6
 pycountry
-transifex-client==0.9.1
+transifex-client==0.10
 mock==1.0.1
 python-magic
 elasticsearch
@@ -11,3 +11,4 @@ django-registration
 pyes
 requests
 neo4django
+flup
