@@ -16,6 +16,21 @@ Podaci.init = function() {
     Podaci.init_fileupload();
     Podaci.init_listmode();
     Podaci.init_taggedtext();
+    Podaci.init_edit_tags();
+};
+
+Podaci.init_edit_tags = function() {
+    $("#podaci_add_tags_input").select2({
+        ajax: {
+            url: "/podaci/tag/list/?format=json&structure=select2",
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data, page) {
+                return data;
+            }
+        },
+        minimumInputLength: 1,
+    });
 };
 
 Podaci.init_taggedtext = function() {
@@ -26,7 +41,7 @@ Podaci.init_taggedtext = function() {
             });
         }
     });
-}
+};
 
 Podaci.init_listmode = function() {
     $(".podaci-files-icons").hide();
@@ -204,12 +219,15 @@ Podaci.edit_users = function() {
     });
 };
 
-Podaci.edit_groups = function() {
-    $("#podaci_edit_groups_modal").modal();
+Podaci.add_tags = function() {
+    $("#podaci_add_tags_modal").modal();
 };
 
-Podaci.edit_tags = function() {
-    $("#podaci_edit_tags_modal").modal();
+Podaci.remove_tags = function() {
+    for (i in self.selection) {
+
+    }
+    $("#podaci_remove_tags_modal").modal();
 };
 
 Podaci.create_tag_submit = function() {
@@ -269,6 +287,7 @@ Podaci.refresh_files = function() {
                     li.data("mime", file.meta.mimetype);
                     li.data("size", file.meta.size);
                     li.data("id", file.meta.id);
+                    li.data("tags", file.meta.tags);
                     $(el).append(li);
                     var a = $("<a/>");
                     a.attr("href", "/podaci/podaci/file/" + file.id + "/");
@@ -352,13 +371,13 @@ Podaci.metadata_save = function() {
         });
 }
 
-
+// FIXME: Normalize on _ or - .. using both is silly.
 Podaci.callbacks = {
     ".podaci_upload click": Podaci.upload_click,
     ".podaci_upload_dropzone drop": Podaci.upload_click,
     ".podaci_edit_users click": Podaci.edit_users,
-    ".podaci_edit_groups click": Podaci.edit_groups,
-    ".podaci_edit_tags click": Podaci.edit_tags,
+    ".podaci_add_tags click": Podaci.add_tags,
+    ".podaci_remove_tags click": Podaci.remove_tags,
     ".podaci_create_tag click": Podaci.create_tag,
     "#podaci_create_tag_btn click": Podaci.create_tag_submit,
 

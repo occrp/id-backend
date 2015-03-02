@@ -19,14 +19,19 @@ class Create(PodaciView):
 
 
 class List(PodaciView):
+    template_name = None
+
     def get_context_data(self):
         # FIXME: What happens if a user has >1000 tags?
         num_displayed = 1000
         tag_cnt, tags = self.fs.list_user_tags(self.request.user, root=None, _size=num_displayed)
-        return {
-            "num_tags": tag_cnt,
-            "result_tags": tags,
-        }
+        if self.request.GET.get("structure", "") == "select2":
+            return {"pagination": {"more": False}, "results": [{"id": x.id, "text": x["name"]} for x in tags]}
+        else:
+            return {
+                "num_tags": tag_cnt,
+                "result_tags": tags,
+            }
 
 
 class Details(PodaciView):

@@ -27,9 +27,9 @@
 <table class="table table-border">
 <thead>
 	<tr>
-		<th>Name</th>
-		<th>URL</th>
-		<th>Description</th>
+		<th>{{ _("Name") }}</th>
+		<th>{{ _("URL") }}</th>
+		<th>{{ _("Description") }}</th>
 	</tr>
 </thead>
 <tbody>
@@ -41,7 +41,7 @@
 	</tr>
 	{% else %}
 	<tr>
-		<td colspan="3"><div style="margin: 3em; text-align: center;">No pending requests</div></td>
+		<td colspan="3"><div style="margin: 3em; text-align: center;">{{ _("No pending requests") }}</div></td>
 	{% endfor %}
 </tbody>
 </table>

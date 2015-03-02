@@ -25,7 +25,8 @@
             </li>
             <li class="dropdown"><a id="podaci_selection_menu" href="#" class="dropdown-toggle" data-toggle="dropdown">Selection</a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a class="FIXME podaci_selection_tags_edit">Add/remove tags</a></li>
+                    <li><a class="podaci_add_tags">Add tags</a></li>
+                    <li><a class="podaci_remove_tags">Remove tags</a></li>
                     <li><a class="FIXME podaci_selection_users_edit">Edit users</a></li>
                     <li><a class="FIXME podaci_selection_make_public">Make public</a></li>
                     <li><a class="podaci_selection_download_zip">Download as Zip</a></li>
@@ -42,7 +43,6 @@
 
 {% include "podaci/partials/_podaci_upload_model.html" %}
 {% include "podaci/partials/_podaci_edit_users.html" %}
-{% include "podaci/partials/_podaci_edit_groups.html" %}
 {% include "podaci/partials/_podaci_edit_tags.html" %}
 {% include "podaci/partials/_podaci_create_tag.html" %}
 
