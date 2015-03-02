@@ -162,7 +162,7 @@ class Profile(models.Model):
 
 ######## External databases ############
 class ExternalDatabase(models.Model, DisplayMixin):
-    agency = models.CharField(max_length=80, blank=False, verbose_name=_('Agency / Name'))
+    agency = models.CharField(max_length=500, blank=False, verbose_name=_('Agency / Name'))
     # agency_lower = models.ComputedProperty(lambda self: self.agency.lower())
     db_type = models.CharField(max_length=20, choices=DATABASE_TYPES,
                                verbose_name=_('Type of Database'))
