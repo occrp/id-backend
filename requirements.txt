@@ -12,3 +12,4 @@ pyes
 requests
 neo4django
 flup
+mysqldb
