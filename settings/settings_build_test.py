@@ -6,7 +6,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-# SECURITY WARNING: keep the secret key used in production secret! Change for your local setup!
+# SECURITY WARNING:  keep the secret key used in production secret! Change for your local setup!
 SECRET_KEY = '2342##_1DFAKJkja;lkjs_117854*((*(!_sdfajkkj728k'
 
 ALLOWED_HOSTS = ["127.0.0.1:8000"]
