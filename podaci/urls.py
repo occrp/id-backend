@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     url(r'^file/(?P<id>.+)/$', files.Details.as_view(), name='podaci_files_details'),
 
     url(r'^tag/create/$', tags.Create.as_view(), name='podaci_tags_create'),
-    url(r'^tag/list/$', tags.List.as_view(), name='podaci_tags_delete'),
+    url(r'^tag/list/$', tags.List.as_view(), name='podaci_tags_list'),
     url(r'^tag/(?P<id>.+)/delete/$', tags.Delete.as_view(), name='podaci_tags_delete'),
     url(r'^tag/(?P<id>.+)/update/$', tags.Update.as_view(), name='podaci_tags_upload'),
     url(r'^tag/selection/zip/$', tags.Zip.as_view(), name='podaci_tags_zip'),

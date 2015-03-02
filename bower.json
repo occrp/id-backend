@@ -10,6 +10,7 @@
         "moment": "2.1.0",
         "font-awesome": "3.2.1",
         "jquery.scrollTo": "1.4.6",
+        "jquery-mentions-input": "1.6.0",
         "blueimp-file-upload": "9.9.3"
     }
 }
