@@ -420,6 +420,8 @@ class Ticket(models.Model, DriveMixin, ModelDiffMixin, DisplayMixin):  # polymod
     flagged = models.BooleanField(default=False)
     user_pays = models.BooleanField(default=True)
     entities = models.ManyToManyField(Entity)
+    deadline = models.DateField(blank=False, verbose_name=_('Deadline'))
+    sensitive = models.BooleanField(default=False, verbose_name=_('Sensitive?'))
 
     def most_fields(self):
         '''Return an iterator of tuples (verbose name, display value)
@@ -434,9 +436,6 @@ class Ticket(models.Model, DriveMixin, ModelDiffMixin, DisplayMixin):  # polymod
     @property
     def summary(self):
         return ""
-
-    deadline = models.DateField(blank=False, verbose_name=_('Deadline'))
-    sensitive = models.BooleanField(verbose_name=_('Sensitive?'), default=False)
 
     def _pre_put_hook(self, future=None):
         # Copy default requester settings into the ticket if it's not been
