@@ -7,6 +7,7 @@ import logging
 from datetime import datetime
 from copy import deepcopy
 import elasticsearch
+from distutils.version import StrictVersion
 
 class AuthenticationError(Exception):
     pass
@@ -389,6 +390,12 @@ class FileSystem:
 
     def connect(self):
         self.es = elasticsearch.Elasticsearch(self.es_servers)
+        # Get version info:
+        info = self.es.info()
+        ver = StrictVersion(info["version"]["number"])
+        if ver < StrictVersion("1.4.0"):
+            raise Exception("Podaci requires an ElasticSearch server version >= 1.4.0")
+
         # Guarantee that the index exists...
         if not self.es.indices.exists(index=self.es_index):
             self.es.indices.create(index=self.es_index, ignore=400)
