@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AnonymousUser, User
 from django.test import TestCase
-from id.apis.podaci import *
+from settings.settings import *
+from podaci.filesystem import *
 import os, shutil
 
 class Strawman:
@@ -11,13 +12,13 @@ class Strawman:
 
 class PodaciAPITest(TestCase):
     def setUp(self):
-        SERVERS = [{"host": "localhost", "port": 9200}]
-        if not os.path.isdir("test_data"):
-            os.mkdir("test_data")
-        self.fs = FileSystem(SERVERS, "podaci_test", "test_data", user=Strawman("smari"))
+        if not os.path.isdir(PODACI_FS_ROOT):
+            os.mkdir(PODACI_FS_ROOT)
+        self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
+                             user=Strawman("smari"))
 
     def tearDown(self):
-        shutil.rmtree("test_data")
+        shutil.rmtree(PODACI_FS_ROOT)
 
     def test_create_and_delete_file(self):
         ## Create a file!

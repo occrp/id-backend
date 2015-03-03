@@ -25,6 +25,10 @@ NEO4J_HOST = 'localhost'
 NEO4J_PORT = '7474'
 NEO4J_ENDPOINT = '/db/data'
 
+PODACI_SERVERS = [{"host": "localhost", "port": "9333"}]
+PODACI_ES_INDEX = 'podaci_test'
+PODACI_FS_ROOT = 'data_test'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 TIME_ZONE = 'UTC'

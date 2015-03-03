@@ -126,8 +126,3 @@ STATIC_URL = '/static/'
 
 # Investigative Dashboard Default Settings!
 from django.utils.translation import ugettext_lazy as _
-
-
-PODACI_SERVERS = [{"host": "localhost"}]
-PODACI_ES_INDEX = 'podaci'
-PODACI_FS_ROOT = '/home/id/data/'
