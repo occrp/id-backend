@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
 from id.forms import CombinedSearchForm
-from settings import DEFAULTS
+from settings.settings import DEFAULTS
 import searchproviders
 import logging
 import traceback
