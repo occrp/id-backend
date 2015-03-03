@@ -171,7 +171,7 @@ class ExternalDatabase(models.Model, DisplayMixin):
     paid = models.BooleanField(default=False, verbose_name=_('Paid Database'))
     registration_required = models.BooleanField(default=False, verbose_name=_('Registration Required'))
     government_db = models.BooleanField(default=False, verbose_name=_('Government Database'))
-    url = models.URLField(max_length=2000, blank=False, verbose_name=_('URL'))
+    url = models.URLField(max_length=2000   , blank=False, verbose_name=_('URL'))
     notes = models.TextField(verbose_name=_('Notes'))
     blog_post = models.URLField(verbose_name=_('Blog Post'))
     video_url = models.URLField(verbose_name=_('YouTube Video Url'))
@@ -310,14 +310,13 @@ class Entity(models.Model, DisplayMixin, DriveMixin): # Expando
             x for x in self.relationships(cls_on_left=False).iter() if x.left.get().kind == entity_kind] + [
             x for x in self.relationships(cls_on_right=False).iter() if x.right.get().kind == entity_kind]
 
-
     class Meta:
         pass
         #search_fields = None
         #summary_fields = None
         #modal_ignored_fields = None
 
-class Relationship(models.Model, DisplayMixin, DriveMixin): # Expando
+class Relationship(models.Model, DisplayMixin, DriveMixin):  # Expando
     left = models.ForeignKey('Entity', blank=False, verbose_name=_('Entity One'), related_name="right_link")
     right = models.ForeignKey('Entity', blank=False, verbose_name=_('Entity Two'), related_name="left_link")
     type = models.CharField(max_length=70, blank=False, verbose_name=_('Type'),
@@ -355,7 +354,7 @@ class Relationship(models.Model, DisplayMixin, DriveMixin): # Expando
 
 class Company(Entity):
     name = models.CharField(max_length=50, blank=False, verbose_name=_('Name'))
-    name_variations = models.CharField(max_length=50, verbose_name=_('Name Variations')) # Repeated
+    name_variations = models.CharField(max_length=50, verbose_name=_('Name Variations'))  # Repeated
     jurisdiction = models.CharField(max_length=70, choices=COUNTRIES,
                                   verbose_name=_('Jurisdiction Registered'))
     type = models.CharField(max_length=70, choices=COMPANY_TYPES,
@@ -371,12 +370,12 @@ class Person(Entity):
                                     verbose_name=_('First Name'))
     middle_name = models.CharField(max_length=50, verbose_name=_('Middle Name'))
     last_name = models.CharField(max_length=50, verbose_name=_('Last Name'))
-    name_variations = models.CharField(max_length=50, verbose_name=_('Name Variations')) # Repeated
+    name_variations = models.CharField(max_length=50, verbose_name=_('Name Variations'))  # Repeated
     birth = models.DateField(verbose_name=_('Date of Birth'))
     death = models.DateField(verbose_name=_('Date of Death'))
     sex = models.CharField(max_length=70, choices=SEX, verbose_name=_('Sex'))
-    nationalities = models.CharField(max_length=50, verbose_name=_('Nationalities')) # Repeated
-    id_numbers = models.CharField(max_length=50, verbose_name=_('ID Numbers')) # Repeated
+    nationalities = models.CharField(max_length=50, verbose_name=_('Nationalities'))  # Repeated
+    id_numbers = models.CharField(max_length=50, verbose_name=_('ID Numbers'))  # Repeated
 
     def __unicode__(self):
         name = filter(None, [self.first_name, self.middle_name,
@@ -394,7 +393,7 @@ class Location(Entity, AddressMixin):
 
 
 ######## Data requests #################
-class Ticket(models.Model, DriveMixin, ModelDiffMixin, DisplayMixin): # polymodel.PolyModel
+class Ticket(models.Model, DriveMixin, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
     """
     Common fields for all ticket types
 
@@ -422,16 +421,14 @@ class Ticket(models.Model, DriveMixin, ModelDiffMixin, DisplayMixin): # polymode
     user_pays = models.BooleanField(default=True)
     entities = models.ManyToManyField(Entity)
 
-
     def most_fields(self):
         '''Return an iterator of tuples (verbose name, display value)
         for all fields which can be shown to everybody on the ticket'''
         output = [
             (_('Summary'), self.summary),
             (_('Requested by'), self.requester.get().display_name),
-            ]
+        ]
         return output
-
 
     # User-facing fields
     @property
@@ -439,7 +436,7 @@ class Ticket(models.Model, DriveMixin, ModelDiffMixin, DisplayMixin): # polymode
         return ""
 
     deadline = models.DateField(blank=False, verbose_name=_('Deadline'))
-    sensitive = models.BooleanField(verbose_name=_('Sensitive?'))
+    sensitive = models.BooleanField(verbose_name=_('Sensitive?'), default=False)
 
     def _pre_put_hook(self, future=None):
         # Copy default requester settings into the ticket if it's not been
@@ -633,13 +630,13 @@ class PersonTicket(Ticket):
         blank=False,
         verbose_name=_('Business Activities'))
     dob = models.DateField(blank=False, verbose_name=_('Date of Birth'))
-    birthplace = models.CharField(max_length=50, 
+    birthplace = models.CharField(max_length=50,
         blank=False,
         verbose_name=_('Place of Birth'))
     initial_information = models.TextField(
         blank=False,
         verbose_name=_('Where have you looked?'))
-    location = models.CharField(max_length=50, 
+    location = models.CharField(max_length=50,
         blank=False,
         verbose_name=_('Location'))
 
@@ -662,7 +659,7 @@ class PersonTicket(Ticket):
 class CompanyTicket(Ticket):
     """ Company ownership request """
     ticket_type = 'company_ownership'
-    name = models.CharField(max_length=50, 
+    name = models.CharField(max_length=50,
         blank=False,
         verbose_name=_('Company Name'))
     country = models.CharField(max_length=70, choices=COUNTRIES,
