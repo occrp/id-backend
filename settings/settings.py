@@ -11,6 +11,9 @@ import os
 here = lambda x: os.path.realpath(os.path.join(os.path.realpath(os.path.dirname(__file__)), x))
 BASE_DIR = here('../')
 
+# Allowed hosts:
+ALLOWED_HOSTS = []
+
 # Import local settings or production settings
 try:
     if os.environ.get('BUILD_TEST'):
@@ -21,8 +24,6 @@ try:
 except ImportError:
     raise Exception('You need to set up settings_local.py (see settings_local.py-example')
 
-# Allowed hosts:
-ALLOWED_HOSTS = []
 
 # Some error checking for local_settings
 if not SECRET_KEY:
