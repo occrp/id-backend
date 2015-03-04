@@ -41,6 +41,19 @@ COMMON_METADATA_V1 = {
     "allowed_write_users":  [],
 }
 
+FILE_METADATA_V1 = {
+    "schema_version":       1,
+    "url":                  "",
+    "title":                "",
+    "date_added":           "",
+    "tags":                 [],
+    "text":                 "",
+    "allowed_users":        [],
+    "allowed_groups":       [],
+    "metadata":             {},
+}
+
+
 FILE_METADATA_V2 = {
     "identifier":           "",     # Project-User-6 digits of SHA256
     "created_by":           "",     # User ID
@@ -85,9 +98,14 @@ class MetaMixin:
 
 class PermissionsMixin:
     def log(self, message, sync=False):
+        if self.fs.user:
+            uid = self.fs.user.id
+        else:
+            uid = None
+
         self.meta["changelog"].append({
                 "date": datetime.now().isoformat(), 
-                "user": self.fs.user.id, 
+                "user": uid,
                 "message": message
             })
         if sync:
@@ -525,6 +543,10 @@ class FileSystem:
         t = Tag(self, tagid)
         t.get_metadata()
         return t
+
+    def get_or_create_tag(self, tagname):
+        # t = Tag(self,)
+        pass
 
     def create_tag(self, tagname):
         t = Tag(self)
