@@ -1,0 +1,12 @@
+{% extends "crud/list_base.jinja" %}
+{% block crud_title %}{% trans %}Databases{% endtrans %}
+{% endblock %}
+
+{% block filter_form %}
+<div class="page-header">
+        <div class="pull-right header-form">
+            <form action="" method="GET" class="ext-db-filter">
+                {{ filter_form.country }}
+            </form>
+        </div>
+{% endblock %}

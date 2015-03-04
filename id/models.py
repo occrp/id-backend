@@ -757,7 +757,7 @@ class TicketUpdate(models.Model):
                     sender_suffix=ticket.key.id(),
                     to=user.email,
                     subject=subject,
-                    template='mail/ticket_update.html',
+                    template='mail/ticket_update.jinja',
                     context={
                         'update': self,
                         'url': ticket.permalink()
@@ -881,7 +881,7 @@ class AccountRequest(models.Model, DisplayMixin, AddressMixin, UserDetailsGeneri
     # so that they can be shared with UserProfile
 
     GROUPS = []
-    MAIL_TEMPLATE = 'accountrequest/mail_notification.html'
+    MAIL_TEMPLATE = 'accountrequest/mail_notification.jinja'
 
     class Meta:
         pass
@@ -985,7 +985,7 @@ class AccountRequest(models.Model, DisplayMixin, AddressMixin, UserDetailsGeneri
         email_notification(
             to=self.email,
             subject=unicode(_('Your Account Request was received')),
-            template='mail/account_request/received.html',
+            template='mail/account_request/received.jinja',
             context={'request': self}
         )
         for admin in UserProfile.query(UserProfile.is_admin == True).fetch():
@@ -993,7 +993,7 @@ class AccountRequest(models.Model, DisplayMixin, AddressMixin, UserDetailsGeneri
                 email_notification(
                     to=admin.email,
                     subject=unicode(_('An Account Request was received')),
-                    template='mail/account_request/received_admin.html',
+                    template='mail/account_request/received_admin.jinja',
                     context={'request': self}
                     )
 
@@ -1001,7 +1001,7 @@ class AccountRequest(models.Model, DisplayMixin, AddressMixin, UserDetailsGeneri
         email_notification(
             to=self.email,
             subject=unicode(_('An update to your Account Request')),
-            template='mail/account_request/approved.html',
+            template='mail/account_request/approved.jinja',
             context={'request': self}
         )
 
@@ -1009,7 +1009,7 @@ class AccountRequest(models.Model, DisplayMixin, AddressMixin, UserDetailsGeneri
         email_notification(
             to=self.email,
             subject=unicode(_('Your Account Request was rejected')),
-            template='mail/account_request/rejected.html',
+            template='mail/account_request/rejected.jinja',
             context={'request': self}
         )
 

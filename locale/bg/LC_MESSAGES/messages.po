@@ -27,7 +27,7 @@ msgstr "Ключът е невалиден или не съществува."
 msgid "Comments"
 msgstr "Коментари"
 
-#: app/forms.py:60 app/templates/crud/item_base.html:32
+#: app/forms.py:60 app/templates/crud/item_base.jinja:32
 msgid "Files"
 msgstr "Файлове"
 
@@ -52,7 +52,7 @@ msgid "Customer"
 msgstr "Клиент"
 
 #: app/forms.py:178 app/forms.py:226 app/models.py:581 app/models.py:1122
-#: app/templates/tickets/request_details.html:251
+#: app/templates/tickets/request_details.jinja:251
 msgid "Country"
 msgstr "Държава"
 
@@ -60,20 +60,20 @@ msgstr "Държава"
 msgid "Person"
 msgstr "Човек"
 
-#: app/forms.py:184 app/templates/company.html:5
+#: app/forms.py:184 app/templates/company.jinja:5
 msgid "Company"
 msgstr "Компания"
 
-#: app/forms.py:185 app/templates/crud/fragment.html:5
-#: app/templates/crud/company/edit.html:12
-#: app/templates/crud/relationship/inline_entity.html:5
-#: app/templates/crud/relationship/table_mixin.html:163
+#: app/forms.py:185 app/templates/crud/fragment.jinja:5
+#: app/templates/crud/company/edit.jinja:12
+#: app/templates/crud/relationship/inline_entity.jinja:5
+#: app/templates/crud/relationship/table_mixin.jinja:163
 msgid "Relationship"
 msgstr "Отношение"
 
 #: app/forms.py:186 app/models.py:912 app/models.py:1258
-#: app/templates/crud/relationship/table_mixin.html:24
-#: app/templates/tickets/request_details.html:155
+#: app/templates/crud/relationship/table_mixin.jinja:24
+#: app/templates/tickets/request_details.jinja:155
 msgid "Location"
 msgstr "Местоположение"
 
@@ -109,8 +109,8 @@ msgstr "Тип медия"
 msgid "Circulation (approximate per month)"
 msgstr "Тираж (приблизително на месец)"
 
-#: app/forms.py:266 app/models.py:518 app/templates/tickets/request_base.html:8
-#: app/templates/tickets/request_details.html:32
+#: app/forms.py:266 app/models.py:518 app/templates/tickets/request_base.jinja:8
+#: app/templates/tickets/request_details.jinja:32
 msgid "Status"
 msgstr "Състояние"
 
@@ -130,12 +130,12 @@ msgstr "Неодобрени"
 msgid "Type of Request"
 msgstr "Тип заявка"
 
-#: app/forms.py:276 app/templates/tickets/request_charges_base.html:20
-#: app/templates/tickets/request_details.html:164
+#: app/forms.py:276 app/templates/tickets/request_charges_base.jinja:20
+#: app/templates/tickets/request_details.jinja:164
 msgid "Requester"
 msgstr "Заявител"
 
-#: app/forms.py:277 app/templates/request_account_home.html:24
+#: app/forms.py:277 app/templates/request_account_home.jinja:24
 msgid "Volunteer"
 msgstr "Доброволец"
 
@@ -188,7 +188,7 @@ msgid "Reason"
 msgstr "Причина"
 
 #: app/forms.py:397 app/forms.py:406
-#: app/templates/tickets/request_details.html:358
+#: app/templates/tickets/request_details.jinja:358
 msgid "Comment"
 msgstr "Коментар"
 
@@ -204,7 +204,7 @@ msgstr "Означаването като платено ще изравни в�
 msgid "Comment to Requester"
 msgstr "Коментар към заявителя"
 
-#: app/forms.py:423 app/templates/tickets/request_charges_base.html:21
+#: app/forms.py:423 app/templates/tickets/request_charges_base.jinja:21
 msgid "Item"
 msgstr "Елемент"
 
@@ -228,7 +228,7 @@ msgstr ""
 msgid "Assign OCCRP Staff member(s) as the ticket responder"
 msgstr "Възлагане на отговора на заявката на служител/и на OCCRP"
 
-#: app/forms.py:454 app/templates/tickets/request_details.html:174
+#: app/forms.py:454 app/templates/tickets/request_details.jinja:174
 msgid "Staff Responders"
 msgstr "Отговарящи служители"
 
@@ -236,7 +236,7 @@ msgstr "Отговарящи служители"
 msgid "Assign Volunteer Researcher(s)"
 msgstr "Възлагане на проучването на доброволец или съответно доброволци"
 
-#: app/forms.py:458 app/templates/tickets/request_details.html:186
+#: app/forms.py:458 app/templates/tickets/request_details.jinja:186
 msgid "Volunteer Responders"
 msgstr "Отговарящи доброволци"
 
@@ -255,7 +255,7 @@ msgstr ""
 "заявката"
 
 #: app/forms.py:466 app/models.py:620 app/models.py:717
-#: app/templates/tickets/request_details.html:202
+#: app/templates/tickets/request_details.jinja:202
 msgid "Findings Public"
 msgstr "Обществени резултати"
 
@@ -289,18 +289,18 @@ msgstr "Обекти"
 msgid "Result type"
 msgstr "Тип резултат"
 
-#: app/forms.py:536 app/templates/admin_base.html:9
-#: app/templates/crud/company/list.html:2
+#: app/forms.py:536 app/templates/admin_base.jinja:9
+#: app/templates/crud/company/list.jinja:2
 msgid "Companies"
 msgstr "Компании"
 
-#: app/forms.py:537 app/templates/admin_base.html:12
-#: app/templates/crud/person/list.html:2
+#: app/forms.py:537 app/templates/admin_base.jinja:12
+#: app/templates/crud/person/list.jinja:2
 msgid "People"
 msgstr "Хора"
 
-#: app/forms.py:538 app/templates/admin_base.html:15
-#: app/templates/crud/location/list.html:2
+#: app/forms.py:538 app/templates/admin_base.jinja:15
+#: app/templates/crud/location/list.jinja:2
 msgid "Locations"
 msgstr "Местоположения"
 
@@ -332,7 +332,7 @@ msgstr "Всички (обществено)"
 msgid "Users"
 msgstr "Потребителите"
 
-#: app/forms.py:598 app/templates/about_us.html:20
+#: app/forms.py:598 app/templates/about_us.jinja:20
 msgid "Staff"
 msgstr "Служителите"
 
@@ -360,7 +360,7 @@ msgstr "Акционерно дружество"
 msgid "Foundation"
 msgstr "Фондация"
 
-#: app/models.py:58 app/templates/tickets/request_details.html:215
+#: app/models.py:58 app/templates/tickets/request_details.jinja:215
 msgid "Non-profit"
 msgstr "С нестопанска цел"
 
@@ -492,7 +492,7 @@ msgstr "Бизнес партньор"
 msgid "Proxy"
 msgstr "Пълномощник"
 
-#: app/models.py:126 app/templates/tickets/request_details.html:252
+#: app/models.py:126 app/templates/tickets/request_details.jinja:252
 msgid "Birthplace"
 msgstr "Място на раждане"
 
@@ -580,7 +580,7 @@ msgstr "Физическо лице"
 msgid "Other (please specify)"
 msgstr "Друго (моля, посочете)"
 
-#: app/models.py:174 app/templates/tickets/request_details.html:231
+#: app/models.py:174 app/templates/tickets/request_details.jinja:231
 msgid "None"
 msgstr "Няма"
 
@@ -692,27 +692,27 @@ msgstr "Етикет"
 msgid "Kind"
 msgstr "Вид"
 
-#: app/models.py:476 app/templates/tickets/request_base.html:7
+#: app/models.py:476 app/templates/tickets/request_base.jinja:7
 msgid "Type"
 msgstr "Тип"
 
-#: app/models.py:480 app/templates/crud/relationship/table_mixin.html:25
-#: app/templates/crud/relationship/table_mixin.html:56
-#: app/templates/crud/relationship/table_mixin.html:87
+#: app/models.py:480 app/templates/crud/relationship/table_mixin.jinja:25
+#: app/templates/crud/relationship/table_mixin.jinja:56
+#: app/templates/crud/relationship/table_mixin.jinja:87
 msgid "Start Date"
 msgstr "Начална дата"
 
-#: app/models.py:481 app/templates/crud/relationship/table_mixin.html:26
-#: app/templates/crud/relationship/table_mixin.html:57
-#: app/templates/crud/relationship/table_mixin.html:88
+#: app/models.py:481 app/templates/crud/relationship/table_mixin.jinja:26
+#: app/templates/crud/relationship/table_mixin.jinja:57
+#: app/templates/crud/relationship/table_mixin.jinja:88
 msgid "End Date"
 msgstr "Крайна дата"
 
 #: app/models.py:510 app/models.py:576 app/models.py:611 app/models.py:895
-#: app/templates/crud/relationship/table_mixin.html:55
-#: app/templates/crud/relationship/table_mixin.html:86
-#: app/templates/tickets/request_details.html:241
-#: app/templates/tickets/request_details.html:278
+#: app/templates/crud/relationship/table_mixin.jinja:55
+#: app/templates/crud/relationship/table_mixin.jinja:86
+#: app/templates/tickets/request_details.jinja:241
+#: app/templates/tickets/request_details.jinja:278
 msgid "Name"
 msgstr "Име"
 
@@ -745,15 +745,15 @@ msgid "Middle Name"
 msgstr "Бащино име"
 
 #: app/models.py:541 app/models.py:1140
-#: app/templates/tickets/request_details.html:254
-#: app/templates/tickets/request_details.html:255
-#: app/templates/tickets/request_details.html:256 static/js/widgets.js:188
+#: app/templates/tickets/request_details.jinja:254
+#: app/templates/tickets/request_details.jinja:255
+#: app/templates/tickets/request_details.jinja:256 static/js/widgets.js:188
 #: static/js/widgets.js:230
 msgid "Last Name"
 msgstr "Фамилно име"
 
 #: app/models.py:544 app/models.py:903
-#: app/templates/tickets/request_details.html:253
+#: app/templates/tickets/request_details.jinja:253
 msgid "Date of Birth"
 msgstr "Дата на раждане"
 
@@ -811,8 +811,8 @@ msgstr ""
 "Покриване на разходите+ (заявителят плаща за документите, както и за "
 "работата ни)"
 
-#: app/models.py:731 app/templates/tickets/request_base.html:9
-#: app/templates/tickets/request_details.html:146
+#: app/models.py:731 app/templates/tickets/request_base.jinja:9
+#: app/templates/tickets/request_details.jinja:146
 msgid "Deadline"
 msgstr "Краен срок"
 
@@ -820,24 +820,24 @@ msgstr "Краен срок"
 msgid "Sensitive?"
 msgstr "Поверително ли е?"
 
-#: app/models.py:896 app/templates/tickets/request_details.html:256
+#: app/models.py:896 app/templates/tickets/request_details.jinja:256
 msgid "Aliases"
 msgstr "Псевдоними"
 
 #: app/models.py:897 app/models.py:928
-#: app/templates/tickets/request_details.html:242
+#: app/templates/tickets/request_details.jinja:242
 msgid "Background"
 msgstr "Предистория"
 
-#: app/models.py:898 app/templates/tickets/request_details.html:243
+#: app/models.py:898 app/templates/tickets/request_details.jinja:243
 msgid "Biography"
 msgstr "Биография"
 
-#: app/models.py:899 app/templates/tickets/request_details.html:254
+#: app/models.py:899 app/templates/tickets/request_details.jinja:254
 msgid "Family"
 msgstr "Семейство"
 
-#: app/models.py:902 app/templates/tickets/request_details.html:244
+#: app/models.py:902 app/templates/tickets/request_details.jinja:244
 msgid "Business Activities"
 msgstr "Фирмена дейност"
 
@@ -857,8 +857,8 @@ msgstr "Име на компанията"
 msgid "Country Registered"
 msgstr "Държава на регистрация"
 
-#: app/models.py:929 app/templates/search/search_base.html:29
-#: app/templates/tickets/request_details.html:246
+#: app/models.py:929 app/templates/search/search_base.jinja:29
+#: app/templates/tickets/request_details.jinja:246
 msgid "Sources"
 msgstr "Източници"
 
@@ -866,7 +866,7 @@ msgstr "Източници"
 msgid "Your Story"
 msgstr "Вашата история"
 
-#: app/models.py:932 app/templates/tickets/request_details.html:255
+#: app/models.py:932 app/templates/tickets/request_details.jinja:255
 msgid "Connected People"
 msgstr "Свързани хора"
 
@@ -898,15 +898,15 @@ msgstr "Агенция/име"
 msgid "Type of Database"
 msgstr "Тип база от данни"
 
-#: app/models.py:1123 app/templates/external_databases.html:26
+#: app/models.py:1123 app/templates/external_databases.jinja:26
 msgid "Paid Database"
 msgstr "Платена база от данни"
 
-#: app/models.py:1125 app/templates/external_databases.html:29
+#: app/models.py:1125 app/templates/external_databases.jinja:29
 msgid "Registration Required"
 msgstr "Изисква се регистрация"
 
-#: app/models.py:1127 app/templates/external_databases.html:32
+#: app/models.py:1127 app/templates/external_databases.jinja:32
 msgid "Government Database"
 msgstr "Правителствена база от данни"
 
@@ -938,21 +938,21 @@ msgstr "Членство в организация"
 msgid "Anything else you would like to tell us"
 msgstr "Нещо друго, което искате да ни кажете"
 
-#: app/models.py:1168 app/templates/tickets/request_details.html:203
-#: app/templates/tickets/request_details.html:206
+#: app/models.py:1168 app/templates/tickets/request_details.jinja:203
+#: app/templates/tickets/request_details.jinja:206
 msgid "Yes"
 msgstr "Да"
 
-#: app/models.py:1169 app/templates/tickets/request_details.html:203
-#: app/templates/tickets/request_details.html:206
+#: app/models.py:1169 app/templates/tickets/request_details.jinja:203
+#: app/templates/tickets/request_details.jinja:206
 msgid "No"
 msgstr "Не"
 
-#: app/models.py:1198 app/templates/mail/account_request/received.html:4
+#: app/models.py:1198 app/templates/mail/account_request/received.jinja:4
 msgid "Your Account Request was received"
 msgstr "Заявката ви за профил бе получена"
 
-#: app/models.py:1204 app/templates/mail/account_request/received_admin.html:4
+#: app/models.py:1204 app/templates/mail/account_request/received_admin.jinja:4
 msgid "An Account Request was received"
 msgstr "Получена бе заявка за профил"
 
@@ -1000,9 +1000,9 @@ msgstr "Собствени бази от данни"
 msgid "Restrictions / Conflicts of Interest"
 msgstr "Ограничения/конфликти на интереси"
 
-#: app/utils.py:43 app/templates/base.html:12
-#: app/templates/oauth_success.html:6 app/templates/mail/mail_base.html:12
-#: app/templates/mail/mail_base.html:37 app/templates/mail/mail_base.html:38
+#: app/utils.py:43 app/templates/base.jinja:12
+#: app/templates/oauth_success.jinja:6 app/templates/mail/mail_base.jinja:12
+#: app/templates/mail/mail_base.jinja:37 app/templates/mail/mail_base.jinja:38
 msgid "Investigative Dashboard"
 msgstr "Investigative Dashboard"
 
@@ -1057,7 +1057,7 @@ msgstr ""
 "Грешка при опресняването на означението за достъп. Проверете настройките "
 "си и опитайте отново."
 
-#: app/handlers/crud.py:78 app/templates/crud/relationship/table_mixin.html:194
+#: app/handlers/crud.py:78 app/templates/crud/relationship/table_mixin.jinja:194
 msgid "No entries found."
 msgstr "Няма намерени записи."
 
@@ -1103,7 +1103,7 @@ msgstr "Няма намерени местоположения."
 msgid "No extra fields found."
 msgstr "Няма намерени допълнителни полета."
 
-#: app/handlers/crud.py:480 app/templates/external_databases.html:53
+#: app/handlers/crud.py:480 app/templates/external_databases.jinja:53
 msgid "No external databases found."
 msgstr "Няма намерени външни бази от данни."
 
@@ -1238,11 +1238,11 @@ msgstr ""
 msgid "Your request is of an appropriate length."
 msgstr "Заявката ви е с подходяща дължина."
 
-#: app/templates/401.html:4
+#: app/templates/401.jinja:4
 msgid "Permission Denied"
 msgstr "Разрешението е отказано"
 
-#: app/templates/401.html:8
+#: app/templates/401.jinja:8
 msgid ""
 "You do not have permission to access this feature or content. If you "
 "believe this is an error, please contact an administrator."
@@ -1250,11 +1250,11 @@ msgstr ""
 "Нямате разрешение за достъп до тази функция или съдържание. Ако смятате, "
 "че това е грешка, моля, свържете се с администратор."
 
-#: app/templates/404.html:4
+#: app/templates/404.jinja:4
 msgid "Page Not Found"
 msgstr "Страницата не е намерена"
 
-#: app/templates/404.html:8
+#: app/templates/404.jinja:8
 msgid ""
 "We're sorry, this page is not available. This error has been recorded "
 "will be investigated."
@@ -1262,11 +1262,11 @@ msgstr ""
 "За съжаление тази страница не е налице. Грешката е регистрирана и ще бъде"
 " проучена."
 
-#: app/templates/500.html:4
+#: app/templates/500.jinja:4
 msgid "Application Error"
 msgstr "Грешка в приложението"
 
-#: app/templates/500.html:8
+#: app/templates/500.jinja:8
 msgid ""
 "There was an error in the application. This error has been recorded and "
 "should be addressed soon."
@@ -1274,11 +1274,11 @@ msgstr ""
 "Възникна грешка в приложението. Тя бе регистрирана и скоро ще бъде "
 "разгледана."
 
-#: app/templates/about_us.html:6
+#: app/templates/about_us.jinja:6
 msgid "About Us"
 msgstr "Всичко за нас"
 
-#: app/templates/about_us.html:10
+#: app/templates/about_us.jinja:10
 msgid ""
 "Investigative Dashboard (ID) has been developed by the Organized Crime "
 "and Corruption Reporting Project (OCCRP), the world’s leading cross "
@@ -1303,7 +1303,7 @@ msgstr ""
 "свят и бюро за проучвания, където журналистите могат да получат помощ при"
 " намирането на труднодостъпна информация."
 
-#: app/templates/about_us.html:12
+#: app/templates/about_us.jinja:12
 msgid ""
 "With help from dozens of reporters and civic hackers, ID researchers have"
 " created the crowd-sourced database where connections of people and "
@@ -1325,7 +1325,7 @@ msgstr ""
 "с информация и документи, в което потребителите могат да търсят "
 "самостоятелно."
 
-#: app/templates/about_us.html:14
+#: app/templates/about_us.jinja:14
 msgid ""
 "The Investigative Dashboard also links to more than 400 online databases "
 "in 120 jurisdictions where you can search for information on persons and "
@@ -1335,7 +1335,7 @@ msgstr ""
 " данни в 120 юрисдикции, чрез които можете да търсите информация за хора "
 "и фирми, представляващи интерес."
 
-#: app/templates/about_us.html:16
+#: app/templates/about_us.jinja:16
 msgid ""
 "Above and beyond the databases available on the Dashboard, the research "
 "desk provides access to a global network of expert researchers. "
@@ -1358,7 +1358,7 @@ msgstr ""
 "международен план. За някои журналисти тези услуги се предоставят "
 "безвъзмездно."
 
-#: app/templates/about_us.html:18
+#: app/templates/about_us.jinja:18
 msgid ""
 "Journalists have used the Investigative Dashboard to work on stories that"
 " have won more than a dozen international awards, led to indictments, "
@@ -1370,11 +1370,11 @@ msgstr ""
 " обвинителни актове, арести и конфискации, оставки на държавни глави и "
 "разкриване на действията на организираната престъпност."
 
-#: app/templates/about_us.html:36
+#: app/templates/about_us.jinja:36
 msgid "Supporters"
 msgstr "Поддръжници"
 
-#: app/templates/about_us.html:37
+#: app/templates/about_us.jinja:37
 msgid ""
 "The Investigative Dashboard has been developed in collaboration with <a "
 "href=\"http://www.google.com/ideas/\">Google Ideas</a>. Core support for "
@@ -1386,11 +1386,11 @@ msgstr ""
 "подкрепа за него е щедро предоставена от фондации „Отворено общество“ с "
 "допълнителното съдействие на USAID."
 
-#: app/templates/about_us.html:39
+#: app/templates/about_us.jinja:39
 msgid "Partners"
 msgstr "Партньори"
 
-#: app/templates/about_us.html:40
+#: app/templates/about_us.jinja:40
 msgid ""
 "The Research Desk is managed by OCCRP in co-operation with four partner "
 "Centers - African Network of Centers for Investigative Reporting (ANCIR),"
@@ -1402,11 +1402,11 @@ msgstr ""
 "Reporting (ANCIR), Arab Reporters for Investigative Journalism (ARIJ), "
 "Международния център за журналисти и Connectas в Северна и Южна Америка."
 
-#: app/templates/about_us.html:42
+#: app/templates/about_us.jinja:42
 msgid "ID History"
 msgstr "История на ID"
 
-#: app/templates/about_us.html:43
+#: app/templates/about_us.jinja:43
 msgid ""
 "The Investigative Dashboard was developed by Paul Cristian Radu (OCCRP) "
 "and Justin Arenstein (ANCIR) while they both were in residence at "
@@ -1423,7 +1423,7 @@ msgstr ""
 "уменията на колеги журналисти и експерти от университета „Станфорд“ и "
 "Силициевата долина."
 
-#: app/templates/about_us.html:45
+#: app/templates/about_us.jinja:45
 msgid ""
 "This first iteration of the ID website, launched in 2010, shared detailed"
 " methodologies, resources, and links for journalists to track money, "
@@ -1437,15 +1437,15 @@ msgstr ""
 "също така предлага видеоуроци и други инструменти, с които помага на "
 "журналистите да ползват бързо развиващите се източници на данни."
 
-#: app/templates/about_us.html:47
+#: app/templates/about_us.jinja:47
 msgid "Advisory Committee"
 msgstr "Консултативен комитет"
 
-#: app/templates/about_us.html:105
+#: app/templates/about_us.jinja:105
 msgid "Acknowledgements"
 msgstr "Благодарности"
 
-#: app/templates/about_us.html:107
+#: app/templates/about_us.jinja:107
 msgid ""
 "The Investigative Dashboard is a collaborative project and valuable "
 "information was added by many investigative journalists around the world."
@@ -1461,7 +1461,7 @@ msgstr ""
 "данните за компаниите в държавите им.\n"
 "\t    "
 
-#: app/templates/about_us.html:110
+#: app/templates/about_us.jinja:110
 msgid ""
 "Valuable information was added by many investigative journalists around "
 "the world."
@@ -1469,110 +1469,110 @@ msgstr ""
 "Ценна информация бе добавена от много разследващи журналисти от целия "
 "свят."
 
-#: app/templates/admin_base.html:7 app/templates/tickets/request_base.html:75
+#: app/templates/admin_base.jinja:7 app/templates/tickets/request_base.jinja:75
 msgid "Manage"
 msgstr "Управление"
 
-#: app/templates/admin_base.html:18 app/templates/crud/relationship/list.html:2
+#: app/templates/admin_base.jinja:18 app/templates/crud/relationship/list.jinja:2
 msgid "Relationships"
 msgstr "Отношения"
 
-#: app/templates/admin_base.html:22 app/templates/crud/expandofield/list.html:2
+#: app/templates/admin_base.jinja:22 app/templates/crud/expandofield/list.jinja:2
 msgid "Extra Fields"
 msgstr "Допълнителни полета"
 
-#: app/templates/admin_base.html:25
+#: app/templates/admin_base.jinja:25
 msgid "External Databases"
 msgstr "Външни бази от данни"
 
-#: app/templates/admin_base.html:28
-#: app/templates/crud/accountrequest/list.html:2
+#: app/templates/admin_base.jinja:28
+#: app/templates/crud/accountrequest/list.jinja:2
 msgid "Account Requests"
 msgstr "Заявки за профили"
 
-#: app/templates/admin_base.html:31 app/templates/crud/profile/list.html:2
+#: app/templates/admin_base.jinja:31 app/templates/crud/profile/list.jinja:2
 msgid "User Profiles"
 msgstr "Потребителски профили"
 
-#: app/templates/admin_base.html:34
+#: app/templates/admin_base.jinja:34
 msgid "Statistics"
 msgstr "Статистика"
 
-#: app/templates/base.html:38 app/templates/search/search_base.html:6
-#: app/templates/search/search_base.html:21
-#: app/templates/search/search_documents.html:6
-#: app/templates/search/search_documents.html:13
-#: app/templates/search/search_entities.html:7
-#: app/templates/search/search_entities.html:15
+#: app/templates/base.jinja:38 app/templates/search/search_base.jinja:6
+#: app/templates/search/search_base.jinja:21
+#: app/templates/search/search_documents.jinja:6
+#: app/templates/search/search_documents.jinja:13
+#: app/templates/search/search_entities.jinja:7
+#: app/templates/search/search_entities.jinja:15
 msgid "Search"
 msgstr "Търсене"
 
-#: app/templates/base.html:41 app/templates/external_databases.html:12
+#: app/templates/base.jinja:41 app/templates/external_databases.jinja:12
 msgid "Business Registries"
 msgstr "Фирмени регистри"
 
-#: app/templates/base.html:45
+#: app/templates/base.jinja:45
 msgid "Expert Help"
 msgstr "Експертна помощ"
 
-#: app/templates/base.html:61
+#: app/templates/base.jinja:61
 msgid "Admin"
 msgstr "Администриране"
 
-#: app/templates/base.html:64
+#: app/templates/base.jinja:64
 msgid "Log out"
 msgstr "Изход"
 
-#: app/templates/base.html:68 app/templates/request_account.html:6
+#: app/templates/base.jinja:68 app/templates/request_account.jinja:6
 msgid "Request Account"
 msgstr "Заявка за профил"
 
-#: app/templates/base.html:69
+#: app/templates/base.jinja:69
 msgid "Log In"
 msgstr "Вход"
 
-#: app/templates/base.html:124
+#: app/templates/base.jinja:124
 msgid "&copy; 2013 - OCCRP. All rights reserved."
 msgstr "&copy; 2013 – OCCRP. Всички права запазени."
 
-#: app/templates/base.html:124
+#: app/templates/base.jinja:124
 msgid "About this site"
 msgstr "Всичко за този сайт"
 
-#: app/templates/company.html:8 app/templates/request_account.html:13
-#: app/templates/accountrequest/volunteer_account.html:13
-#: app/templates/crud/accountrequest/edit.html:20
-#: app/templates/tickets/manage.html:27 app/templates/tickets/request.html:34
-#: app/templates/tickets/request_details.html:379
-#: app/templates/tickets/request_details.html:380
+#: app/templates/company.jinja:8 app/templates/request_account.jinja:13
+#: app/templates/accountrequest/volunteer_account.jinja:13
+#: app/templates/crud/accountrequest/edit.jinja:20
+#: app/templates/tickets/manage.jinja:27 app/templates/tickets/request.jinja:34
+#: app/templates/tickets/request_details.jinja:379
+#: app/templates/tickets/request_details.jinja:380
 msgid "Submit"
 msgstr "Изпращане"
 
-#: app/templates/drive_success.html:1
+#: app/templates/drive_success.jinja:1
 msgid "Successfully connected to Google Drive."
 msgstr "Свързването с Google Диск е успешно."
 
-#: app/templates/drive_success.html:3
+#: app/templates/drive_success.jinja:3
 msgid "Current user name:"
 msgstr "Текущо потребителско име:"
 
-#: app/templates/drive_success.html:4
+#: app/templates/drive_success.jinja:4
 msgid "Root folder ID:"
 msgstr "Идент. № на основната папка:"
 
-#: app/templates/drive_success.html:5
+#: app/templates/drive_success.jinja:5
 msgid "Total quota (bytes):"
 msgstr "Обща квота (байтове):"
 
-#: app/templates/drive_success.html:6
+#: app/templates/drive_success.jinja:6
 msgid "Used quota (bytes):"
 msgstr "Използвана квота (байтове):"
 
-#: app/templates/drive_success.html:7
+#: app/templates/drive_success.jinja:7
 msgid "Permission ID:"
 msgstr "Идент. № на разрешението:"
 
-#: app/templates/external_databases.html:14
+#: app/templates/external_databases.jinja:14
 msgid ""
 "Here you will find links to more than 450 online databases across 120 "
 "jurisdictions where you can get information on the shareholders, "
@@ -1588,23 +1588,23 @@ msgstr ""
 "се регистрирате. За означените с „$“ се изисква такса. Не всички данни са"
 " налице на английски. Вижте графата с бележки за още подробности.\t"
 
-#: app/templates/external_databases.html:44
+#: app/templates/external_databases.jinja:44
 msgid "Documentation"
 msgstr "Документация"
 
-#: app/templates/external_databases.html:45
+#: app/templates/external_databases.jinja:45
 msgid "Video Tutorial"
 msgstr "Видеоурок"
 
-#: app/templates/external_databases.html:58
+#: app/templates/external_databases.jinja:58
 msgid "Didn't find what you were looking for?"
 msgstr "Не намерихте това, което търсите?"
 
-#: app/templates/external_databases.html:60
+#: app/templates/external_databases.jinja:60
 msgid "Request manual help from our researchers."
 msgstr "Заявете ръчна помощ от изследователите ни."
 
-#: app/templates/oauth_success.html:14
+#: app/templates/oauth_success.jinja:14
 msgid ""
 "Google Drive successfully authorized. Please close this dialog and attach"
 " your files again."
@@ -1612,11 +1612,11 @@ msgstr ""
 "Упълномощаването на Google Диск е успешно. Моля, затворете този диалогов "
 "прозорец и прикачете отново файловете си."
 
-#: app/templates/pre_login.html:6 app/templates/pre_login.html:21
+#: app/templates/pre_login.jinja:6 app/templates/pre_login.jinja:21
 msgid "Sign in with Google"
 msgstr "Вход с Google"
 
-#: app/templates/pre_login.html:10
+#: app/templates/pre_login.jinja:10
 msgid ""
 "In order to log in or request an account on Investigative Dashboard you "
 "must have a Google account. We use your Google account to verify your "
@@ -1626,7 +1626,7 @@ msgstr ""
 " трябва да имате профил в Google. Използваме го, за да потвърдим "
 "самоличността ви и да получим валиден имейл адрес от вас."
 
-#: app/templates/pre_login.html:15
+#: app/templates/pre_login.jinja:15
 msgid ""
 "If you do not have a Google account, you can sign up for one on the next "
 "page by clicking \"Sign Up\" in the top right corner."
@@ -1634,7 +1634,7 @@ msgstr ""
 "Ако нямате профил в Google, можете да си регистрирате такъв на следващата"
 " страница, като кликнете върху „Регистрация“ в горния десен ъгъл."
 
-#: app/templates/request_account.html:9
+#: app/templates/request_account.jinja:9
 msgid ""
 "In order to make information requests through Investigative Dashboard, "
 "you must have an account. Please enter your information below and one of "
@@ -1644,15 +1644,15 @@ msgstr ""
 " да имате профил. Моля, въведете информацията по-долу и някой от "
 "служителите ни ще прегледа заявката ви и ще ви отговори."
 
-#: app/templates/request_account_home.html:5
+#: app/templates/request_account_home.jinja:5
 msgid "Which type of account would you like to apply for?"
 msgstr "За какъв тип профил искате да кандидатствате?"
 
-#: app/templates/request_account_home.html:15
+#: app/templates/request_account_home.jinja:15
 msgid "Information Requester"
 msgstr "Заявител на информация"
 
-#: app/templates/request_account_home.html:16
+#: app/templates/request_account_home.jinja:16
 msgid ""
 "Take advantage of our database of knowledge to find out more information "
 "about companies, individuals, or the relationships between them."
@@ -1660,11 +1660,11 @@ msgstr ""
 "Възползвайте се от възможностите на базата ни от данни, за да намерите "
 "повече информация за компании, физически лица или отношенията между тях."
 
-#: app/templates/request_account_home.html:18
+#: app/templates/request_account_home.jinja:18
 msgid "Be a Requester"
 msgstr "Станете заявител"
 
-#: app/templates/request_account_home.html:25
+#: app/templates/request_account_home.jinja:25
 msgid ""
 "We have available public requests that need volunteers. Use your wealth "
 "of information to help others find answers."
@@ -1673,11 +1673,11 @@ msgstr ""
 "Използвайте богатата си информация, за да помогнете на други хора да "
 "намерят отговори."
 
-#: app/templates/request_account_home.html:27
+#: app/templates/request_account_home.jinja:27
 msgid "Be a Volunteer"
 msgstr "Станете доброволец"
 
-#: app/templates/splash.html:9
+#: app/templates/splash.jinja:9
 msgid ""
 "<span class=\"primary-highlight\">Investigative Dashboard</span> helps "
 "investigators expose illicit ties that cross borders."
@@ -1685,11 +1685,11 @@ msgstr ""
 "<span class=\"primary-highlight\">Investigative Dashboard</span> помага "
 "на изследователите да разкриват незаконни връзки в международен план."
 
-#: app/templates/splash.html:22
+#: app/templates/splash.jinja:22
 msgid "Search for a company or person of interest."
 msgstr "Търсене на компания или лице, представляващи интерес."
 
-#: app/templates/splash.html:23
+#: app/templates/splash.jinja:23
 msgid ""
 "We have scraped national business records from Panama, Luxembourg, "
 "Switzerland and many other countries"
@@ -1697,29 +1697,29 @@ msgstr ""
 "Извлекли сме информацията от националните фирмени регистри на Панама, "
 "Люксембург, Швейцария и много други държави."
 
-#: app/templates/splash.html:25
+#: app/templates/splash.jinja:25
 msgid "Start Searching"
 msgstr "Започнете да търсите"
 
-#: app/templates/splash.html:31
+#: app/templates/splash.jinja:31
 msgid "If you need more data, visit recommended databases"
 msgstr "Ако имате нужда от още информация, посетете препоръчаните бази от данни"
 
-#: app/templates/splash.html:32
+#: app/templates/splash.jinja:32
 msgid "We have assembled a directory of over 300 local databases that might help"
 msgstr ""
 "Събрахме в една директория над 300 локални бази от данни, които може да "
 "ви помогнат"
 
-#: app/templates/splash.html:34
+#: app/templates/splash.jinja:34
 msgid "Visit Databases"
 msgstr "Посетете базите от данни"
 
-#: app/templates/splash.html:40
+#: app/templates/splash.jinja:40
 msgid "If you need help, request expert assistance."
 msgstr "Ако имате нужда от помощ, поискайте експертно съдействие."
 
-#: app/templates/splash.html:41
+#: app/templates/splash.jinja:41
 msgid ""
 "We understand investigations are sensitive and we take privacy very "
 "seriously. Requests are only seen by our full-time experts and, if you "
@@ -1729,15 +1729,15 @@ msgstr ""
 "към това. Заявките се виждат само от щатните ни експерти и ако искате – "
 "от проверени доброволци."
 
-#: app/templates/splash.html:43
+#: app/templates/splash.jinja:43
 msgid "Ask an Expert"
 msgstr "Попитайте експерт"
 
-#: app/templates/accountrequest/volunteer_account.html:6
+#: app/templates/accountrequest/volunteer_account.jinja:6
 msgid "Become a Volunteer!"
 msgstr "Станете доброволец!"
 
-#: app/templates/accountrequest/volunteer_account.html:9
+#: app/templates/accountrequest/volunteer_account.jinja:9
 msgid ""
 "If you'd like to volunteer to track down requests, you need to have an "
 "account. Please enter your information below and one of our staff will "
@@ -1747,15 +1747,15 @@ msgstr ""
 "Моля, въведете информацията по-долу и един от служителите ни ще прегледа "
 "заявката ви и ще ви отговори."
 
-#: app/templates/crud/delete.html:4
+#: app/templates/crud/delete.jinja:4
 msgid "Confirm Deletion"
 msgstr "Потвърждаване на изтриването"
 
-#: app/templates/crud/delete.html:6
+#: app/templates/crud/delete.jinja:6
 msgid "Cannot delete this entity."
 msgstr "Този обект не може да се изтрие."
 
-#: app/templates/crud/delete_base.html:9
+#: app/templates/crud/delete_base.jinja:9
 #, python-format
 msgid ""
 "Are you sure you want to delete %(object_name)s? You will not be able to "
@@ -1764,292 +1764,292 @@ msgstr ""
 "Наистина ли искате да изтриете „%(object_name)s“? Няма да можете да "
 "отмените това действие."
 
-#: app/templates/crud/delete_base.html:14
+#: app/templates/crud/delete_base.jinja:14
 msgid "Yes, I am sure."
 msgstr "Да, искам."
 
-#: app/templates/crud/delete_base.html:18
+#: app/templates/crud/delete_base.jinja:18
 #, python-format
 msgid "%(object_name)s is attached to the following relationships:"
 msgstr "Обектът „%(object_name)s“ е прикачен към следните отношения:"
 
-#: app/templates/crud/delete_base.html:22
+#: app/templates/crud/delete_base.jinja:22
 msgid "relationship"
 msgstr "отношение"
 
-#: app/templates/crud/entity_details.html:52
+#: app/templates/crud/entity_details.jinja:52
 msgid "Close"
 msgstr "Затваряне"
 
-#: app/templates/crud/item_base.html:11
+#: app/templates/crud/item_base.jinja:11
 msgid "Delete"
 msgstr "Изтриване"
 
-#: app/templates/crud/item_base.html:20 app/templates/crud/item_base.html:48
-#: app/templates/crud/item_base.html:49 app/templates/crud/item_base.html:50
-#: app/templates/crud/item_base.html:51 app/templates/crud/item_base.html:54
-#: app/templates/tickets/request_details.html:381
-#: app/templates/tickets/request_details.html:384
-#: app/templates/tickets/request_details.html:385
+#: app/templates/crud/item_base.jinja:20 app/templates/crud/item_base.jinja:48
+#: app/templates/crud/item_base.jinja:49 app/templates/crud/item_base.jinja:50
+#: app/templates/crud/item_base.jinja:51 app/templates/crud/item_base.jinja:54
+#: app/templates/tickets/request_details.jinja:381
+#: app/templates/tickets/request_details.jinja:384
+#: app/templates/tickets/request_details.jinja:385
 msgid "Save"
 msgstr "Запазване"
 
-#: app/templates/crud/item_base.html:29
-#: app/templates/tickets/request_details.html:266
+#: app/templates/crud/item_base.jinja:29
+#: app/templates/tickets/request_details.jinja:266
 msgid "Sharing"
 msgstr "Споделяне"
 
-#: app/templates/crud/item_base.html:48 app/templates/crud/item_base.html:49
-#: app/templates/crud/item_base.html:50 app/templates/crud/item_base.html:51
+#: app/templates/crud/item_base.jinja:48 app/templates/crud/item_base.jinja:49
+#: app/templates/crud/item_base.jinja:50 app/templates/crud/item_base.jinja:51
 msgid "Create Relationship"
 msgstr "Създаване на отношение"
 
-#: app/templates/crud/item_base.html:54
-#: app/templates/tickets/request_details.html:384
+#: app/templates/crud/item_base.jinja:54
+#: app/templates/tickets/request_details.jinja:384
 msgid "Share Attached Files"
 msgstr "Споделяне на прикачените файлове"
 
-#: app/templates/crud/list_base.html:7
-#: app/templates/tickets/request_details.html:382
-#: app/templates/tickets/request_details.html:383
+#: app/templates/crud/list_base.jinja:7
+#: app/templates/tickets/request_details.jinja:382
+#: app/templates/tickets/request_details.jinja:383
 msgid "Add"
 msgstr "Добавяне"
 
-#: app/templates/crud/list_base.html:24
-#: app/templates/tickets/request_admin_base.html:20
-#: app/templates/tickets/request_admin_base.html:23
-#: app/templates/tickets/request_charges_base.html:74
-#: app/templates/tickets/request_charges_base.html:77
+#: app/templates/crud/list_base.jinja:24
+#: app/templates/tickets/request_admin_base.jinja:20
+#: app/templates/tickets/request_admin_base.jinja:23
+#: app/templates/tickets/request_charges_base.jinja:74
+#: app/templates/tickets/request_charges_base.jinja:77
 msgid "Prev"
 msgstr "Назад"
 
-#: app/templates/crud/list_base.html:33
-#: app/templates/tickets/request_admin_base.html:29
-#: app/templates/tickets/request_admin_base.html:32
-#: app/templates/tickets/request_charges_base.html:83
-#: app/templates/tickets/request_charges_base.html:86
+#: app/templates/crud/list_base.jinja:33
+#: app/templates/tickets/request_admin_base.jinja:29
+#: app/templates/tickets/request_admin_base.jinja:32
+#: app/templates/tickets/request_charges_base.jinja:83
+#: app/templates/tickets/request_charges_base.jinja:86
 msgid "Next"
 msgstr "Напред"
 
-#: app/templates/crud/accountrequest/add.html:2
+#: app/templates/crud/accountrequest/add.jinja:2
 msgid "New Account Request"
 msgstr "Нова заявка за профил"
 
-#: app/templates/crud/accountrequest/edit.html:4
+#: app/templates/crud/accountrequest/edit.jinja:4
 msgid "Edit Volunteer Request"
 msgstr "Редактиране на заявката за доброволец"
 
-#: app/templates/crud/accountrequest/edit.html:6
+#: app/templates/crud/accountrequest/edit.jinja:6
 msgid "Edit Account Request"
 msgstr "Редактиране на заявката за профил"
 
-#: app/templates/crud/accountrequest/edit.html:13
-#: app/templates/crud/accountrequest/edit.html:20
+#: app/templates/crud/accountrequest/edit.jinja:13
+#: app/templates/crud/accountrequest/edit.jinja:20
 msgid "Set Permissions"
 msgstr "Задаване на разрешения"
 
-#: app/templates/crud/company/add.html:2
-#: app/templates/crud/relationship/inline_entity.html:9
+#: app/templates/crud/company/add.jinja:2
+#: app/templates/crud/relationship/inline_entity.jinja:9
 msgid "New Company"
 msgstr "Нова компания"
 
-#: app/templates/crud/company/edit.html:2
+#: app/templates/crud/company/edit.jinja:2
 msgid "Edit Company"
 msgstr "Редактиране на компанията"
 
-#: app/templates/crud/company/edit.html:5
+#: app/templates/crud/company/edit.jinja:5
 msgid "Registered Offices"
 msgstr "Регистрирани офиси"
 
-#: app/templates/crud/company/edit.html:11
-#: app/templates/crud/company/edit.html:13
-#: app/templates/crud/relationship/table_mixin.html:162
-#: app/templates/crud/relationship/table_mixin.html:164
+#: app/templates/crud/company/edit.jinja:11
+#: app/templates/crud/company/edit.jinja:13
+#: app/templates/crud/relationship/table_mixin.jinja:162
+#: app/templates/crud/relationship/table_mixin.jinja:164
 msgid "Entity"
 msgstr "Обект"
 
-#: app/templates/crud/expandofield/add.html:2
+#: app/templates/crud/expandofield/add.jinja:2
 msgid "New Extra Field"
 msgstr "Ново допълнително поле"
 
-#: app/templates/crud/expandofield/edit.html:2
+#: app/templates/crud/expandofield/edit.jinja:2
 msgid "Edit Extra Field"
 msgstr "Редактиране на допълнителното поле"
 
-#: app/templates/crud/externaldb/add.html:2
+#: app/templates/crud/externaldb/add.jinja:2
 msgid "New Database"
 msgstr "Нова база от данни"
 
-#: app/templates/crud/externaldb/edit.html:2
+#: app/templates/crud/externaldb/edit.jinja:2
 msgid "Edit External Database"
 msgstr "Редактиране на външната база от данни"
 
-#: app/templates/crud/externaldb/list.html:2
+#: app/templates/crud/externaldb/list.jinja:2
 msgid "Databases"
 msgstr "Бази от данни"
 
-#: app/templates/crud/location/add.html:2
-#: app/templates/crud/relationship/inline_entity.html:11
+#: app/templates/crud/location/add.jinja:2
+#: app/templates/crud/relationship/inline_entity.jinja:11
 msgid "New Location"
 msgstr "Ново местоположение"
 
-#: app/templates/crud/location/edit.html:2
+#: app/templates/crud/location/edit.jinja:2
 msgid "Edit Location"
 msgstr "Редактиране на местоположението"
 
-#: app/templates/crud/person/add.html:2
-#: app/templates/crud/relationship/inline_entity.html:10
+#: app/templates/crud/person/add.jinja:2
+#: app/templates/crud/relationship/inline_entity.jinja:10
 msgid "New Person"
 msgstr "Нов човек"
 
-#: app/templates/crud/person/edit.html:2
+#: app/templates/crud/person/edit.jinja:2
 msgid "Edit Person"
 msgstr "Редактиране на човека"
 
-#: app/templates/crud/profile/edit.html:2
+#: app/templates/crud/profile/edit.jinja:2
 msgid "Edit User Profile"
 msgstr "Редактиране на потребителския профил"
 
-#: app/templates/crud/profile/edit.html:7
+#: app/templates/crud/profile/edit.jinja:7
 msgid "Account Request for this profile"
 msgstr "Заявка за профил за този потребителски профил"
 
-#: app/templates/crud/profile/edit.html:18
+#: app/templates/crud/profile/edit.jinja:18
 msgid "Account Request for this profile: "
 msgstr "Заявка за профил за този потребителски профил: "
 
-#: app/templates/crud/relationship/add.html:2
+#: app/templates/crud/relationship/add.jinja:2
 msgid "New Relationship"
 msgstr "Ново отношение"
 
-#: app/templates/crud/relationship/edit.html:2
-#: app/templates/crud/relationship/item.html:2
+#: app/templates/crud/relationship/edit.jinja:2
+#: app/templates/crud/relationship/item.jinja:2
 msgid "Edit Relationship"
 msgstr "Редактиране на отношението"
 
-#: app/templates/crud/relationship/table_mixin.html:6
+#: app/templates/crud/relationship/table_mixin.jinja:6
 msgid "Add New "
 msgstr "Добавяне на нова "
 
-#: app/templates/crud/relationship/table_mixin.html:12
+#: app/templates/crud/relationship/table_mixin.jinja:12
 msgid "Add Existing "
 msgstr "Добавяне на съществуваща "
 
-#: app/templates/crud/relationship/table_mixin.html:49
+#: app/templates/crud/relationship/table_mixin.jinja:49
 msgid "Directors"
 msgstr "Директори"
 
-#: app/templates/crud/relationship/table_mixin.html:80
+#: app/templates/crud/relationship/table_mixin.jinja:80
 msgid "Shareholders"
 msgstr "Собственици на дялове"
 
-#: app/templates/crud/relationship/table_mixin.html:125
+#: app/templates/crud/relationship/table_mixin.jinja:125
 msgid "Create"
 msgstr "Създаване"
 
-#: app/templates/crud/relationship/table_mixin.html:131
+#: app/templates/crud/relationship/table_mixin.jinja:131
 msgid "With New Company"
 msgstr "С нова компания"
 
-#: app/templates/crud/relationship/table_mixin.html:136
+#: app/templates/crud/relationship/table_mixin.jinja:136
 msgid "With New Person"
 msgstr "С нов човек"
 
-#: app/templates/crud/relationship/table_mixin.html:141
+#: app/templates/crud/relationship/table_mixin.jinja:141
 msgid "With New Location"
 msgstr "С ново местоположение"
 
-#: app/templates/crud/relationship/table_mixin.html:146
+#: app/templates/crud/relationship/table_mixin.jinja:146
 msgid "With Existing Entity"
 msgstr "Със съществуващ обект"
 
-#: app/templates/crud/relationship/table_mixin.html:154
+#: app/templates/crud/relationship/table_mixin.jinja:154
 msgid "All Relationships"
 msgstr "Всички отношения"
 
-#: app/templates/crud/relationship/table_mixin.html:178
+#: app/templates/crud/relationship/table_mixin.jinja:178
 #, python-format
 msgid "is a %(type)s of"
 msgstr "е %(type)s на"
 
-#: app/templates/macros/forms.html:28
+#: app/templates/macros/forms.jinja:28
 msgid "Select File"
 msgstr "Избиране на файл"
 
-#: app/templates/macros/forms.html:29
+#: app/templates/macros/forms.jinja:29
 msgid "Change"
 msgstr "Промяна"
 
-#: app/templates/macros/forms.html:32
+#: app/templates/macros/forms.jinja:32
 msgid "Remove"
 msgstr "Премахване"
 
-#: app/templates/macros/forms.html:46
-#: app/templates/tickets/request_details.html:42
+#: app/templates/macros/forms.jinja:46
+#: app/templates/tickets/request_details.jinja:42
 msgid "Attach Files"
 msgstr "Прикачване на файлове"
 
-#: app/templates/mail/mail_base.html:36
+#: app/templates/mail/mail_base.jinja:36
 msgid "This message is automatically generated by "
 msgstr "Това съобщение e автоматично генерирано от "
 
-#: app/templates/mail/mail_base.html:36
+#: app/templates/mail/mail_base.jinja:36
 msgid "OCCRP Investigative Dashboard"
 msgstr "Investigative Dashboard на OCCRP"
 
-#: app/templates/mail/mail_base.html:37
+#: app/templates/mail/mail_base.jinja:37
 msgid "If you think it was sent incorrectly, please contact an "
 msgstr "Ако смятате, че е изпратено неправилно, моля, свържете се с "
 
-#: app/templates/mail/mail_base.html:37
+#: app/templates/mail/mail_base.jinja:37
 msgid "administrator"
 msgstr "администратор"
 
-#: app/templates/mail/mail_base.html:38
+#: app/templates/mail/mail_base.jinja:38
 msgid "For more information on "
 msgstr "За повече информация относно "
 
-#: app/templates/mail/mail_base.html:39
+#: app/templates/mail/mail_base.jinja:39
 msgid "visit"
 msgstr "посетете"
 
-#: app/templates/mail/mail_simple.html:16
+#: app/templates/mail/mail_simple.jinja:16
 msgid "The Research Desk"
 msgstr "бюрото за проучвания"
 
-#: app/templates/mail/mail_simple.html:16
+#: app/templates/mail/mail_simple.jinja:16
 msgid "at the Investigative Dashboard"
 msgstr "в Investigative Dashboard"
 
-#: app/templates/mail/ticket_update.html:8
+#: app/templates/mail/ticket_update.jinja:8
 msgid "your request. "
 msgstr "заявката си "
 
-#: app/templates/mail/ticket_update.html:31
+#: app/templates/mail/ticket_update.jinja:31
 msgid "View on Site"
 msgstr "Преглед в сайта"
 
-#: app/templates/mail/ticket_update.html:32
+#: app/templates/mail/ticket_update.jinja:32
 msgid "Add Comment"
 msgstr "Добавяне на коментар"
 
-#: app/templates/mail/ticket_update.html:33
+#: app/templates/mail/ticket_update.jinja:33
 msgid "or reply to this email directly."
 msgstr "или отговорете директно на този имейл."
 
-#: app/templates/mail/account_request/approved.html:4
+#: app/templates/mail/account_request/approved.jinja:4
 msgid "Your Account Request was approved"
 msgstr "Заявката Ви за профил бе одобрена"
 
-#: app/templates/mail/account_request/approved.html:8
-#: app/templates/mail/account_request/received.html:8
-#: app/templates/mail/account_request/rejected.html:8
-#: app/templates/mail/user_profile/requester_type_update.html:8
+#: app/templates/mail/account_request/approved.jinja:8
+#: app/templates/mail/account_request/received.jinja:8
+#: app/templates/mail/account_request/rejected.jinja:8
+#: app/templates/mail/user_profile/requester_type_update.jinja:8
 #, python-format
 msgid "Dear %(name)s,"
 msgstr "Здравейте, %(name)s,"
 
-#: app/templates/mail/account_request/approved.html:9
+#: app/templates/mail/account_request/approved.jinja:9
 msgid ""
 "Your ID registration is complete! Just login in with your Gmail account "
 "that you used to register to get started."
@@ -2057,17 +2057,17 @@ msgstr ""
 "Регистрацията Ви в ID завърши! Трябва само да влезете с профила си в "
 "Gmail, с който сте се регистрирали в началото."
 
-#: app/templates/mail/account_request/approved.html:10
+#: app/templates/mail/account_request/approved.jinja:10
 #, python-format
 msgid "Please be advised your account type is: %(account_type)s"
 msgstr "Моля, обърнете внимание, че профилът Ви е от тип: %(account_type)s"
 
-#: app/templates/mail/account_request/approved.html:11
+#: app/templates/mail/account_request/approved.jinja:11
 msgid "Click here to submit a research request."
 msgstr "Кликнете тук, за да изпратите заявка за проучване."
 
-#: app/templates/mail/account_request/approved.html:12
-#: app/templates/mail/user_profile/requester_type_update.html:10
+#: app/templates/mail/account_request/approved.jinja:12
+#: app/templates/mail/user_profile/requester_type_update.jinja:10
 msgid ""
 "If you do not think this is the correct account type for you, please "
 "contact the research desk:"
@@ -2075,11 +2075,11 @@ msgstr ""
 "Ако не смятате, че този тип профил е правилният за Вас, моля, свържете се"
 " с бюрото за проучвания:"
 
-#: app/templates/mail/account_request/approved.html:13
+#: app/templates/mail/account_request/approved.jinja:13
 msgid "Good luck with your investigation."
 msgstr "Успех в проучването Ви."
 
-#: app/templates/mail/account_request/received.html:9
+#: app/templates/mail/account_request/received.jinja:9
 msgid ""
 "Thank you for registering with the Investigative Dashboard. We are "
 "reviewing your information and as soon as your registration is complete "
@@ -2094,19 +2094,19 @@ msgstr ""
 "външните бази от данни и в базите от данни на ID, получени чрез „масово "
 "възлагане“. Ще се свържем с Вас скоро."
 
-#: app/templates/mail/account_request/received_admin.html:8
+#: app/templates/mail/account_request/received_admin.jinja:8
 msgid "A new account request has been submitted! Below are the details:"
 msgstr "Изпратена е нова заявка за профил! По-долу са подробностите:"
 
-#: app/templates/mail/account_request/received_admin.html:15
+#: app/templates/mail/account_request/received_admin.jinja:15
 msgid "Click here to review and approve or reject."
 msgstr "Кликнете тук, за да я прегледате и одобрите или отхвърлите."
 
-#: app/templates/mail/account_request/rejected.html:4
+#: app/templates/mail/account_request/rejected.jinja:4
 msgid "Your Account Request was rejected"
 msgstr "Заявката Ви за профил бе отхвърлена"
 
-#: app/templates/mail/account_request/rejected.html:9
+#: app/templates/mail/account_request/rejected.jinja:9
 msgid ""
 "I am sorry but we could not register you at this time. The head of the "
 "research desk will contact you with further details."
@@ -2114,16 +2114,16 @@ msgstr ""
 "За съжаление не можахме да Ви регистрираме понастоящем. Ръководителят на "
 "бюрото за проучвания ще се свърже с Вас с повече подробности."
 
-#: app/templates/mail/account_request/rejected.html:10
-#: app/templates/mail/user_profile/requester_type_update.html:11
+#: app/templates/mail/account_request/rejected.jinja:10
+#: app/templates/mail/user_profile/requester_type_update.jinja:11
 msgid "Thank you,"
 msgstr "Благодарим Ви!"
 
-#: app/templates/mail/user_profile/requester_type_update.html:4
+#: app/templates/mail/user_profile/requester_type_update.jinja:4
 msgid "Your Account Type has changed"
 msgstr "Типът на профила Ви е променен"
 
-#: app/templates/mail/user_profile/requester_type_update.html:9
+#: app/templates/mail/user_profile/requester_type_update.jinja:9
 #, python-format
 msgid ""
 "Please be advised your account status has changed. Your new account type "
@@ -2132,31 +2132,31 @@ msgstr ""
 "Моля, обърнете внимание, че състоянието на профила Ви е променено. Новият"
 " му тип е: %(account_type)s"
 
-#: app/templates/modals/form_basic.html:3
+#: app/templates/modals/form_basic.jinja:3
 msgid "Not Allowed"
 msgstr "Не е разрешено"
 
-#: app/templates/search/search_base.html:7
+#: app/templates/search/search_base.jinja:7
 msgid "Results "
 msgstr "Резултати "
 
-#: app/templates/search/search_base.html:16
+#: app/templates/search/search_base.jinja:16
 msgid "Search terms"
 msgstr "Думи за търсене"
 
-#: app/templates/search/search_base.html:31
+#: app/templates/search/search_base.jinja:31
 msgid "Navigate Results "
 msgstr "Придвижване в резултатите "
 
-#: app/templates/search/search_base.html:32
+#: app/templates/search/search_base.jinja:32
 msgid "< Previous"
 msgstr "< Назад"
 
-#: app/templates/search/search_base.html:33
+#: app/templates/search/search_base.jinja:33
 msgid "Next >"
 msgstr "Напред >"
 
-#: app/templates/search/search_base.html:41
+#: app/templates/search/search_base.jinja:41
 #, python-format
 msgid ""
 "Didn't find what you were looking for? Try one of our <a "
@@ -2165,22 +2165,22 @@ msgstr ""
 "Не намерихте това, което търсите? Опитайте с някой от <a "
 "href=\"%(url)s\">фирмените ни регистри</a>."
 
-#: app/templates/search/search_combined.html:16
-#: app/templates/search/search_documents.html:38
-#: app/templates/search/search_entities.html:71
+#: app/templates/search/search_combined.jinja:16
+#: app/templates/search/search_documents.jinja:38
+#: app/templates/search/search_entities.jinja:71
 msgid "No search results."
 msgstr "Няма намерени резултати от търсенето."
 
-#: app/templates/search/search_combined.html:20
+#: app/templates/search/search_combined.jinja:20
 msgid "To search, type your query into the search box above."
 msgstr "За да търсите, въведете заявката си в съответното поле по-горе."
 
-#: app/templates/search/search_documents.html:8
-#: app/templates/search/search_entities.html:9
+#: app/templates/search/search_documents.jinja:8
+#: app/templates/search/search_entities.jinja:9
 msgid "Enter your terms..."
 msgstr "Въведете думите си за търсене..."
 
-#: app/templates/search/search_entities.html:22
+#: app/templates/search/search_entities.jinja:22
 #, python-format
 msgid "%(num_results)s result found."
 msgid_plural "%(num_results)s results found."
@@ -2191,26 +2191,26 @@ msgstr[3] "Намерени резултати: %(num_results)s."
 msgstr[4] "Намерени резултати: %(num_results)s."
 msgstr[5] "Намерени резултати: %(num_results)s."
 
-#: app/templates/tickets/manage.html:5
+#: app/templates/tickets/manage.jinja:5
 msgid "Manage Information Request"
 msgstr "Управление на заявката за информация"
 
-#: app/templates/tickets/public_list.html:5
-#: app/templates/tickets/request_base.html:67
+#: app/templates/tickets/public_list.jinja:5
+#: app/templates/tickets/request_base.jinja:67
 msgid "Public Requests"
 msgstr "Обществени заявки"
 
-#: app/templates/tickets/public_list.html:12
-#: app/templates/tickets/responds_list.html:12
+#: app/templates/tickets/public_list.jinja:12
+#: app/templates/tickets/responds_list.jinja:12
 msgid "No requests found."
 msgstr "Няма намерени заявки."
 
-#: app/templates/tickets/request.html:5
-#: app/templates/tickets/request_details.html:162
+#: app/templates/tickets/request.jinja:5
+#: app/templates/tickets/request_details.jinja:162
 msgid "Request Information"
 msgstr "Заявка за информация"
 
-#: app/templates/tickets/request.html:10
+#: app/templates/tickets/request.jinja:10
 msgid ""
 "Your request will be routed to our professional researchers and "
 "volunteers, who will try to help."
@@ -2218,312 +2218,312 @@ msgstr ""
 "Заявката ви ще бъде пренасочена към професионалните ни изследователи и "
 "доброволците ни, които ще се опитат да помогнат."
 
-#: app/templates/tickets/request_admin_base.html:42
+#: app/templates/tickets/request_admin_base.jinja:42
 msgid "No tickets found."
 msgstr "Няма намерени заявки."
 
-#: app/templates/tickets/request_base.html:6
+#: app/templates/tickets/request_base.jinja:6
 msgid "Summary"
 msgstr "Обобщена информация"
 
-#: app/templates/tickets/request_base.html:10
-#: app/templates/tickets/request_charges_base.html:26
-#: app/templates/tickets/request_details.html:279
+#: app/templates/tickets/request_base.jinja:10
+#: app/templates/tickets/request_charges_base.jinja:26
+#: app/templates/tickets/request_details.jinja:279
 msgid "Actions"
 msgstr "Действия"
 
-#: app/templates/tickets/request_base.html:25
+#: app/templates/tickets/request_base.jinja:25
 msgid " Unassigned "
 msgstr " Невъзложено "
 
-#: app/templates/tickets/request_base.html:34
+#: app/templates/tickets/request_base.jinja:34
 msgid "No Responder"
 msgstr "Няма лице за отговор"
 
-#: app/templates/tickets/request_base.html:38
+#: app/templates/tickets/request_base.jinja:38
 msgid "Completed "
 msgstr "Завършено "
 
-#: app/templates/tickets/request_base.html:40
+#: app/templates/tickets/request_base.jinja:40
 msgid "Cancelled "
 msgstr "Анулирано "
 
-#: app/templates/tickets/request_base.html:62
+#: app/templates/tickets/request_base.jinja:62
 msgid "Requests"
 msgstr "Заявки"
 
-#: app/templates/tickets/request_base.html:64
-#: app/templates/tickets/request_list.html:9
+#: app/templates/tickets/request_base.jinja:64
+#: app/templates/tickets/request_list.jinja:9
 msgid "My Requests"
 msgstr "Моите заявки"
 
-#: app/templates/tickets/request_base.html:71
-#: app/templates/tickets/responds_list.html:5
+#: app/templates/tickets/request_base.jinja:71
+#: app/templates/tickets/responds_list.jinja:5
 msgid "Assigned Requests"
 msgstr "Възложени заявки"
 
-#: app/templates/tickets/request_base.html:77
-#: app/templates/tickets/admin/admin_unassigned.html:4
+#: app/templates/tickets/request_base.jinja:77
+#: app/templates/tickets/admin/admin_unassigned.jinja:4
 msgid "Unassigned Tickets"
 msgstr "Невъзложени заявки"
 
-#: app/templates/tickets/request_base.html:80
+#: app/templates/tickets/request_base.jinja:80
 msgid "Upcoming Deadlines"
 msgstr "Предстоящи крайни срокове"
 
-#: app/templates/tickets/request_base.html:83
+#: app/templates/tickets/request_base.jinja:83
 msgid "Flagged Tickets"
 msgstr "Означени заявки"
 
-#: app/templates/tickets/request_base.html:86
+#: app/templates/tickets/request_base.jinja:86
 msgid "Closed Tickets"
 msgstr "Затворени заявки"
 
-#: app/templates/tickets/request_base.html:88
+#: app/templates/tickets/request_base.jinja:88
 msgid "Billing"
 msgstr "Таксуване"
 
-#: app/templates/tickets/request_base.html:90
+#: app/templates/tickets/request_base.jinja:90
 msgid "Customer Report"
 msgstr "Клиентски отчет"
 
-#: app/templates/tickets/request_base.html:93
-#: app/templates/tickets/admin/admin_charges_outstanding.html:3
+#: app/templates/tickets/request_base.jinja:93
+#: app/templates/tickets/admin/admin_charges_outstanding.jinja:3
 msgid "Outstanding Charges"
 msgstr "Дължими такси"
 
-#: app/templates/tickets/request_charges_base.html:22
+#: app/templates/tickets/request_charges_base.jinja:22
 msgid "Cost"
 msgstr "Цена"
 
-#: app/templates/tickets/request_charges_base.html:23
+#: app/templates/tickets/request_charges_base.jinja:23
 msgid "Converted"
 msgstr "Конвертирано"
 
-#: app/templates/tickets/request_charges_base.html:24
+#: app/templates/tickets/request_charges_base.jinja:24
 msgid "Reconciled"
 msgstr "Изравнено"
 
-#: app/templates/tickets/request_charges_base.html:25
+#: app/templates/tickets/request_charges_base.jinja:25
 msgid "Created"
 msgstr "Създадено"
 
-#: app/templates/tickets/request_charges_base.html:96
+#: app/templates/tickets/request_charges_base.jinja:96
 msgid "No charges found."
 msgstr "Няма намерени такси."
 
-#: app/templates/tickets/request_charges_base.html:103
+#: app/templates/tickets/request_charges_base.jinja:103
 msgid "Reconcile Charge"
 msgstr "Изравняване на таксата"
 
-#: app/templates/tickets/request_charges_base.html:103
+#: app/templates/tickets/request_charges_base.jinja:103
 msgid "Reconcile"
 msgstr "Изравняване"
 
-#: app/templates/tickets/request_details.html:21
+#: app/templates/tickets/request_details.jinja:21
 msgid "Created on "
 msgstr "Дата на създаване "
 
-#: app/templates/tickets/request_details.html:45
-#: app/templates/tickets/request_details.html:382
+#: app/templates/tickets/request_details.jinja:45
+#: app/templates/tickets/request_details.jinja:382
 msgid "Attach Entities"
 msgstr "Прикачване на обекти"
 
-#: app/templates/tickets/request_details.html:52
+#: app/templates/tickets/request_details.jinja:52
 msgid "Watch"
 msgstr "Гледайте"
 
-#: app/templates/tickets/request_details.html:57
+#: app/templates/tickets/request_details.jinja:57
 msgid "Leave"
 msgstr "Напускане"
 
-#: app/templates/tickets/request_details.html:64
-#: app/templates/tickets/request_details.html:380
+#: app/templates/tickets/request_details.jinja:64
+#: app/templates/tickets/request_details.jinja:380
 msgid "Close Request"
 msgstr "Затваряне на заявката"
 
-#: app/templates/tickets/request_details.html:71
-#: app/templates/tickets/request_details.html:377
+#: app/templates/tickets/request_details.jinja:71
+#: app/templates/tickets/request_details.jinja:377
 msgid "Cancel Request"
 msgstr "Анулиране на заявката"
 
-#: app/templates/tickets/request_details.html:78
-#: app/templates/tickets/request_details.html:383
+#: app/templates/tickets/request_details.jinja:78
+#: app/templates/tickets/request_details.jinja:383
 msgid "Add Charge"
 msgstr "Добавяне на такса"
 
-#: app/templates/tickets/request_details.html:85
+#: app/templates/tickets/request_details.jinja:85
 msgid "Delete Request"
 msgstr "Изтриване на заявката"
 
-#: app/templates/tickets/request_details.html:93
+#: app/templates/tickets/request_details.jinja:93
 msgid "Mark Bill Paid"
 msgstr "Маркиране като платено"
 
-#: app/templates/tickets/request_details.html:100
+#: app/templates/tickets/request_details.jinja:100
 msgid "Edit Information"
 msgstr "Редактиране на информацията"
 
-#: app/templates/tickets/request_details.html:106
-#: app/templates/tickets/request_details.html:385
+#: app/templates/tickets/request_details.jinja:106
+#: app/templates/tickets/request_details.jinja:385
 msgid "Request Settings"
 msgstr "Настройки за заявките"
 
-#: app/templates/tickets/request_details.html:114
-#: app/templates/tickets/request_details.html:378
+#: app/templates/tickets/request_details.jinja:114
+#: app/templates/tickets/request_details.jinja:378
 msgid "Alert Administrator"
 msgstr "Сигнал до администратора"
 
-#: app/templates/tickets/request_details.html:125
+#: app/templates/tickets/request_details.jinja:125
 msgid "Re-Open"
 msgstr "Повторно отваряне"
 
-#: app/templates/tickets/request_details.html:168
-#: app/templates/tickets/request_details.html:170
+#: app/templates/tickets/request_details.jinja:168
+#: app/templates/tickets/request_details.jinja:170
 msgid "No Requester"
 msgstr "Няма заявител"
 
-#: app/templates/tickets/request_details.html:181
+#: app/templates/tickets/request_details.jinja:181
 msgid "No Responders"
 msgstr "Няма лица за отговор"
 
-#: app/templates/tickets/request_details.html:194
+#: app/templates/tickets/request_details.jinja:194
 msgid "Request Type"
 msgstr "Тип заявка"
 
-#: app/templates/tickets/request_details.html:198
+#: app/templates/tickets/request_details.jinja:198
 msgid "Status Updated"
 msgstr "Състоянието е актуализирано"
 
-#: app/templates/tickets/request_details.html:205
+#: app/templates/tickets/request_details.jinja:205
 msgid "Sensitive"
 msgstr "Поверително"
 
-#: app/templates/tickets/request_details.html:209
-#: app/templates/tickets/request_details.html:211
+#: app/templates/tickets/request_details.jinja:209
+#: app/templates/tickets/request_details.jinja:211
 msgid "Billing Information"
 msgstr "Информация за плащане"
 
-#: app/templates/tickets/request_details.html:215
+#: app/templates/tickets/request_details.jinja:215
 msgid "For-profit"
 msgstr "С търговска цел"
 
-#: app/templates/tickets/request_details.html:217
+#: app/templates/tickets/request_details.jinja:217
 msgid "Charges"
 msgstr "Такси"
 
-#: app/templates/tickets/request_details.html:229
+#: app/templates/tickets/request_details.jinja:229
 msgid "Outstanding Amount:"
 msgstr "Дължима сума:"
 
-#: app/templates/tickets/request_details.html:237
+#: app/templates/tickets/request_details.jinja:237
 msgid "Request Details"
 msgstr "Подробности за заявката"
 
-#: app/templates/tickets/request_details.html:245
+#: app/templates/tickets/request_details.jinja:245
 msgid "Initial Information"
 msgstr "Първоначална информация"
 
-#: app/templates/tickets/request_details.html:247
+#: app/templates/tickets/request_details.jinja:247
 msgid "Story"
 msgstr "История"
 
-#: app/templates/tickets/request_details.html:248
+#: app/templates/tickets/request_details.jinja:248
 msgid "Question"
 msgstr "Въпрос"
 
-#: app/templates/tickets/request_details.html:254
-#: app/templates/tickets/request_details.html:255
-#: app/templates/tickets/request_details.html:256 static/js/widgets.js:189
+#: app/templates/tickets/request_details.jinja:254
+#: app/templates/tickets/request_details.jinja:255
+#: app/templates/tickets/request_details.jinja:256 static/js/widgets.js:189
 #: static/js/widgets.js:231
 msgid "Other Names"
 msgstr "Други имена"
 
-#: app/templates/tickets/request_details.html:254
+#: app/templates/tickets/request_details.jinja:254
 msgid "Relation"
 msgstr "Отношение"
 
-#: app/templates/tickets/request_details.html:262
+#: app/templates/tickets/request_details.jinja:262
 msgid "Attached Files"
 msgstr "Прикачени файлове"
 
-#: app/templates/tickets/request_details.html:274
+#: app/templates/tickets/request_details.jinja:274
 msgid "Attached Entities"
 msgstr "Прикачени обекти"
 
-#: app/templates/tickets/request_details.html:303
+#: app/templates/tickets/request_details.jinja:303
 msgid "Activity"
 msgstr "Дейност"
 
-#: app/templates/tickets/request_details.html:337
+#: app/templates/tickets/request_details.jinja:337
 msgid "No comment provided."
 msgstr "Няма оставен коментар."
 
-#: app/templates/tickets/request_details.html:346
+#: app/templates/tickets/request_details.jinja:346
 msgid "No updates yet."
 msgstr "Още няма актуализации."
 
-#: app/templates/tickets/request_details.html:350
+#: app/templates/tickets/request_details.jinja:350
 msgid "Leave a Comment"
 msgstr "Оставете коментар"
 
-#: app/templates/tickets/request_details.html:378
+#: app/templates/tickets/request_details.jinja:378
 msgid "Flag Request"
 msgstr "Означаване на заявката"
 
-#: app/templates/tickets/request_details.html:379
+#: app/templates/tickets/request_details.jinja:379
 msgid "Re-Open Request"
 msgstr "Повторно отваряне на заявката"
 
-#: app/templates/tickets/request_details.html:381
+#: app/templates/tickets/request_details.jinja:381
 msgid "Mark Paid"
 msgstr "Маркиране като платено"
 
-#: app/templates/tickets/request_list.html:7
+#: app/templates/tickets/request_list.jinja:7
 msgid "New Request"
 msgstr "Нова заявка"
 
-#: app/templates/tickets/request_list.html:13
+#: app/templates/tickets/request_list.jinja:13
 msgid "Open Requests"
 msgstr "Отворени заявки"
 
-#: app/templates/tickets/request_list.html:18
+#: app/templates/tickets/request_list.jinja:18
 msgid "No open requests found."
 msgstr "Няма намерени отворени заявки."
 
-#: app/templates/tickets/request_list.html:22
+#: app/templates/tickets/request_list.jinja:22
 msgid "Closed Requests"
 msgstr "Затворени заявки"
 
-#: app/templates/tickets/admin/admin_charges_customer.html:6
+#: app/templates/tickets/admin/admin_charges_customer.jinja:6
 msgid "Filter"
 msgstr "Филтриране"
 
-#: app/templates/tickets/admin/admin_charges_customer.html:12
+#: app/templates/tickets/admin/admin_charges_customer.jinja:12
 msgid "Customer Charges"
 msgstr "Клиентски такси"
 
-#: app/templates/tickets/admin/admin_charges_customer.html:13
+#: app/templates/tickets/admin/admin_charges_customer.jinja:13
 msgid "View all logged charges against an individual customer."
 msgstr "Преглед на всички регистрирани такси за отделен клиент."
 
-#: app/templates/tickets/admin/admin_charges_outstanding.html:4
+#: app/templates/tickets/admin/admin_charges_outstanding.jinja:4
 msgid "View all outstanding charges for all tickets and requesters. "
 msgstr "Преглед на всички дължими такси за всички заявки и заявители. "
 
-#: app/templates/tickets/admin/admin_deadline.html:3
+#: app/templates/tickets/admin/admin_deadline.jinja:3
 msgid "Tickets with Deadlines"
 msgstr "Заявки с крайни срокове"
 
-#: app/templates/tickets/admin/admin_deadline.html:4
+#: app/templates/tickets/admin/admin_deadline.jinja:4
 msgid "View open tickets ordered by upcoming deadlines. "
 msgstr "Преглед на отворените заявки, подредени по предстоящи крайни срокове. "
 
-#: app/templates/tickets/admin/admin_flagged.html:3
+#: app/templates/tickets/admin/admin_flagged.jinja:3
 msgid "User Flagged Tickets"
 msgstr "Заявки, означени от потребители"
 
-#: app/templates/tickets/admin/admin_flagged.html:4
+#: app/templates/tickets/admin/admin_flagged.jinja:4
 msgid ""
 "View tickets which users or staff have deemed requiring administrative "
 "intervention. "
@@ -2531,17 +2531,17 @@ msgstr ""
 "Преглед на заявките, за които потребителите или служителите считат, че е "
 "необходима административна намеса. "
 
-#: app/templates/tickets/admin/admin_history.html:3
+#: app/templates/tickets/admin/admin_history.jinja:3
 msgid "Tickets History"
 msgstr "История на заявките"
 
-#: app/templates/tickets/admin/admin_history.html:4
+#: app/templates/tickets/admin/admin_history.jinja:4
 msgid "A simple list of closed, resolved or cancelled tickets. "
 msgstr ""
 "Обикновен списък със затворените, анулираните или получилите отговор "
 "заявки. "
 
-#: app/templates/tickets/admin/admin_unassigned.html:5
+#: app/templates/tickets/admin/admin_unassigned.jinja:5
 msgid "View new tickets that need responders assigned to them."
 msgstr "Преглед на новите заявки, които трябва да се възложат на лица за отговор."
 

@@ -1,0 +1,27 @@
+{% extends "search/search_base.jinja" %}
+
+{% import "search/search_macros.jinja" as search_macros %}
+
+{% block search_content %}
+    {% if results %}
+        <table class="table table-striped">
+            <tbody>
+            {% for handler_result in results %}
+	      {% if handler_result.result_count > 0 %}
+                {{ search_macros.handler_result_block(handler_result, show_header_row=True) }}
+	      {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% elif query_made %}
+        <div class="alert alert-block">
+            {% trans %}No search results.{% endtrans %}
+        </div>
+    {% else %}
+        <div class="alert alert-info alert-block">
+            {% trans %}To search, type your query into the search box above.{% endtrans %}
+        </div>
+    {% endif %}
+    <div class="modal hide" id="entity-viewer"></div>
+
+{% endblock %}

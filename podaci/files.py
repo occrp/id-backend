@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from copy import copy
 
 class Create(PodaciView):
-    template_name = "podaci/files/create.html"
+    template_name = "podaci/files/create.jinja"
 
     def get_context_data(self):
         res = self.fs.create_file(self.request.FILES["files[]"])
@@ -17,7 +17,7 @@ class Create(PodaciView):
 
 
 class Details(PodaciView):
-    template_name = "podaci/files/details.html"
+    template_name = "podaci/files/details.jinja"
 
     def get_context_data(self, id):
         self.file = self.fs.get_file_by_id(id)
@@ -46,7 +46,7 @@ class Details(PodaciView):
         }
 
 class Delete(PodaciView):
-    template_name = "podaci/files/create.html"
+    template_name = "podaci/files/create.jinja"
 
 
 class Download(PodaciView):
@@ -60,7 +60,7 @@ class Download(PodaciView):
         return response
 
 class Update(PodaciView):
-    template_name = "podaci/files/create.html"
+    template_name = "podaci/files/create.jinja"
 
 
 class NoteAdd(PodaciView):
@@ -83,7 +83,7 @@ class NoteAdd(PodaciView):
                 "first_name": u.profile.first_name,
                 "last_name": u.profile.first_name,
             }
-            note["html"] = render_to_string("podaci/partials/_note.html", {"note": note})
+            note["html"] = render_to_string("podaci/partials/_note.jinja", {"note": note})
 
         return {
             "success": True,

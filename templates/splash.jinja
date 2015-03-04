@@ -1,0 +1,61 @@
+{% extends "base.jinja" %}
+
+{% block body_class %}splash has-full-page-header{% endblock %}
+
+{% block before_content %}
+    <div class="page-header full-page-header">
+        <div class="container">
+        <h2>
+            {% trans -%}
+                <span class="primary-highlight">Investigative Dashboard</span> helps investigators expose illicit ties that cross borders.
+            {%- endtrans %}
+        </h2>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="span12" data-equal="p.detail">
+        <div class="row-fluid" data-equal="p.desc">
+            <div class="span4 splash-item">
+                <img src="{{ static("img/id-dashboard-search.png") }}" />
+                <p class="desc">{% trans %}Search for a company or person of interest.{% endtrans %}</p>
+                <p class="detail">{% trans %}We have scraped national business records from Panama, Luxembourg, Switzerland and many other countries{% endtrans %}</p>
+                <div class="button-holder">
+                    <a href="{{ url('search') }}" class="btn btn-large btn-primary">{% trans %}Start Searching{% endtrans %}</a>
+                </div>
+            </div>
+
+            <div class="span4 splash-item">
+                <img src="{{ static("img/id-dashboard-databases.png") }}" />
+                <p class="desc">{% trans %}If you need more data, visit recommended databases{% endtrans %}</p>
+                <p class="detail">{% trans %}We have assembled a directory of over 300 local databases that might help{% endtrans %}</p>
+                <div class="button-holder">
+                    <a href="{{ url('externaldb_list') }}" class="btn btn-large btn-primary">{% trans %}Visit Databases{% endtrans %}</a>
+                </div>
+            </div>
+
+            <div class="span4 splash-item">
+                <img src="{{ static("img/id-dashboard-assistance.png") }}" />
+                <p class="desc">{% trans %}If you need help, request expert assistance.{% endtrans %}</p>
+                <p class="detail">{% trans %}We understand investigations are sensitive and we take privacy very seriously. Requests are only seen by our full-time experts and, if you are willing, by vetted volunteers{% endtrans %}</p>
+                <div class="button-holder">
+                    <a href="{{ url('request') }}" class="btn btn-large btn-primary">{% trans %}Ask an Expert{% endtrans %}</a>
+                </div>
+            </div>
+
+        </div>
+        {% if user.is_staff or user.is_superuser %}
+        <div class="row-fluid" data-equal="p.desc">
+            <div class="span4 splash-item">
+                <img src="{{ static("img/id-dashboard-triangle.png") }}" />
+                <p class="desc">{% trans %}Manage your files, take control of investigations.{% endtrans %}</p>
+                <p class="detail">{% trans %}You've got 99 problems and all of them are files? Use our file manager to plod through the data.{% endtrans %}</p>
+                <div class="button-holder">
+                    <a href="{{ url('podaci_info_home') }}" class="btn btn-large btn-primary">{% trans %}Manage files{% endtrans %}</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
