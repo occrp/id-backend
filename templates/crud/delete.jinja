@@ -1,0 +1,8 @@
+{% extends "crud/delete_base.jinja" %}
+{% block crud_title %}
+    {% if not rels %}
+        {% trans %}Confirm Deletion{% endtrans %}
+    {% else %}
+        {% trans %}Cannot delete this entity.{% endtrans %}
+    {% endif %}
+{% endblock %}

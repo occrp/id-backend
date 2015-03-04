@@ -34,6 +34,7 @@ TEMPLATE_LOADERS = (
     'django_jinja.loaders.AppLoader',
 )
 
+
 TEMPLATE_DIRS = ('templates',)
 
 # Application definition
@@ -71,8 +72,8 @@ TEMPLATE_CONTEXT_PROCESSORS += (
 ROOT_URLCONF = 'settings.urls'
 
 # FIXME: Move existing templates to .jinja, start writing
-#        new templates as .html with Django template engine
-DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.html'
+#        new templates as .jinja with Django template engine
+DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja'
 
 JINJA_EXTS = (
     'jinja2.ext.i18n',

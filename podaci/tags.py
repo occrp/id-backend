@@ -2,7 +2,7 @@ from podaci import PodaciView
 from django.http import StreamingHttpResponse
 
 class Create(PodaciView):
-    template_name = "podaci/tags/create.html"
+    template_name = "podaci/tags/create.jinja"
 
     def get_context_data(self):
         tagname = self.request.POST.get("tag_name", None)
@@ -35,7 +35,7 @@ class List(PodaciView):
 
 
 class Details(PodaciView):
-    template_name = "podaci/tags/details.html"
+    template_name = "podaci/tags/details.jinja"
 
     def get_context_data(self, id):
         while self.breadcrumb_exists(id):
@@ -58,11 +58,11 @@ class Details(PodaciView):
 
 
 class Delete(PodaciView):
-    template_name = "podaci/tags/delete.html"
+    template_name = "podaci/tags/delete.jinja"
 
 
 class Update(PodaciView):
-    template_name = "podaci/tas/update.html"
+    template_name = "podaci/tas/update.jinja"
 
 
 class Zip(PodaciView):

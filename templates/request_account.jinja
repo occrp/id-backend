@@ -1,0 +1,19 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+    <div class="span12">
+        <div class="page-header">
+            <h1>{% trans %}Request Account{% endtrans %}</h1>
+        </div>
+        {% call macros.help_box() %}
+            {% trans -%}
+                In order to make information requests through Investigative Dashboard, you must have an account. Please enter your information below and one of our staff will evaluate and respond to your request.
+            {%- endtrans %}
+        {% endcall %}
+        {{ form_macros.render_form(form, submit_title=_("Submit")) }}
+    </div>
+{% endblock %}
+
+{% block after_js %}
+<script type="text/javascript" src="{{ static('js/request-account.js')}}"></script>
+{% endblock %}

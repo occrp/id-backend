@@ -1,0 +1,9 @@
+{% extends "error_base.jinja" %}
+
+{% block page_header %}
+    {% trans %}Permission Denied{% endtrans %}
+{% endblock %}
+
+{% block error_content %}
+    {% trans %}Sorry, but you don't have access to this part of the system.{% endtrans %}
+{% endblock %}

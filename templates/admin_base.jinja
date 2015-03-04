@@ -1,0 +1,48 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+    <div class="span3">
+        <div class="well sidebar-nav admin-nav">
+            <ul class="nav nav-list">
+                <li class="nav-header">{% trans %}Manage{% endtrans %}</li>
+                <li class="{% if 'company' in ROUTE_NAME %}active{% endif %}">
+                    <a href="{{ url('company_list') }}"><i class="icon-building"></i> {% trans %}Companies{% endtrans %}</a>
+                </li>
+                <li class="{% if 'person' in ROUTE_NAME %}active{% endif %}">
+                    <a href="{{ url('person_list') }}"><i class="icon-group"></i> {% trans %}People{% endtrans %}</a>
+                </li>
+                <li class="{% if 'location' in ROUTE_NAME %}active{% endif %}">
+                    <a href="{{ url('location_list') }}"><i class="icon-pushpin"></i> {% trans %}Locations{% endtrans %}</a>
+                </li>
+                <li class="{% if 'relationship' in ROUTE_NAME %}active{% endif %}">
+                    <a href="{{ url('relationship_list') }}"><i class="icon-link"></i> {% trans %}Relationships{% endtrans %}</a>
+                </li>
+		{% if user.profile.is_admin or user.profile.is_staff %}
+        		<li class="{% if 'externaldb_list' in ROUTE_NAME %}active{% endif %}">
+                    <a href="{{ url('externaldb_list') }}"><i class="icon-list-alt"></i> {% trans %}External Databases{% endtrans %}</a>
+                </li>
+                <li class="{% if 'externaldb_list' in ROUTE_NAME %}active{% endif %}">
+                    <a href="{{ url('admin_scrapers_request') }}"><i class="icon-list-alt"></i> {% trans %}Scraper requests{% endtrans %}</a>
+                </li>
+		{% endif %}
+
+		{% if user.profile.is_admin %}
+                <li class="{% if 'accountrequest' in ROUTE_NAME %}active{% endif %}">
+                    <a href="{{ url('request_account_list') }}"><i class="icon-key"></i> {% trans %}Account Requests{% endtrans %}</a>
+                </li>
+                <li class="{% if 'userprofile' in ROUTE_NAME %}active{% endif %}">
+                    <a href="{{ url('userprofile_list') }}"><i class="icon-user"></i> {% trans %}User Profiles{% endtrans %}</a>
+                </li>
+                <li class="{% if 'statistics' in ROUTE_NAME %}active{% endif %}">
+                    <a href="{{ url('statistics') }}"><i class="icon-signal"></i> {% trans %}Statistics{% endtrans %}</a>
+                </li>
+
+		{% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="span9">
+        {% block admin_content %}{% endblock %}
+    </div>
+{% endblock %}

@@ -5,11 +5,11 @@ from id.models import Profile, AccountRequest
 from id.forms import ProfileUpdateForm
 
 class ProfileView(DetailView):
-    template_name = 'registration/profile_view.html'
+    template_name = 'registration/profile_view.jinja'
     model = Profile
 
 class ProfileUpdate(UpdateView):
-    template_name = 'registration/profile.html'
+    template_name = 'registration/profile.jinja'
     model = Profile
     form = ProfileUpdateForm
 
@@ -21,7 +21,7 @@ class UserList(ListView):
     paginate_by = 50
 
 class AccountRequestHome(TemplateView):
-    template_name = 'request_account_home.html'
+    template_name = 'request_account_home.jinja'
 
     def message(self, where, message):
         self.add_message(message)
@@ -50,7 +50,7 @@ class AccountRequestList(ListView):
 
 class AccountRequest(AccountRequestHome):
     # form_class = forms.modelform_factory(forms.AccountRequestForm)
-    template_name = 'request_account.html'
+    template_name = 'request_account.jinja'
 
     @login_required
     def _get(self):
@@ -81,5 +81,5 @@ class AccountRequest(AccountRequestHome):
 
 class AccountVolunteer(AccountRequest):
     # form_class = forms.modelform_factory(forms.AccountVolunteerForm)
-    template_name = 'accountrequest/volunteer_account.html'
+    template_name = 'accountrequest/volunteer_account.jinja'
 

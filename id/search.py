@@ -30,7 +30,7 @@ def search(providers, query, offset, limit):
 
 
 class CombinedSearchHandler(TemplateView):
-    template_name = "search/search_combined.html"
+    template_name = "search/search_combined.jinja"
 
     def get_context_data(self, **kwargs):
         context = super(CombinedSearchHandler, self).get_context_data(**kwargs)

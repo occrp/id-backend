@@ -5,7 +5,7 @@ from id.forms import CountryFilterForm
 import re
 
 class ExternalDatabaseList(ListView):
-    template_name = "external_databases.html"
+    template_name = "external_databases.jinja"
     model = ExternalDatabase
 
     badre = re.compile("\[\'(.*)\'\]")

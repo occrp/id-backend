@@ -14,8 +14,8 @@ js_info_dict = {
 }
 
 urlpatterns = patterns('',
-    url(r'^$', TemplateView.as_view(template_name="splash.html"), name="home"),
-    url(r'^about/$', TemplateView.as_view(template_name="about_us.html"), name='about_us'),
+    url(r'^$', TemplateView.as_view(template_name="splash.jinja"), name="home"),
+    url(r'^about/$', TemplateView.as_view(template_name="about_us.jinja"), name='about_us'),
 
     url(r'^admin/$', admin.Panel.as_view(), name='admin_panel'),
     url(r'^admin/company/list$', admin.CompanyList.as_view(), name='company_list'),
@@ -80,8 +80,8 @@ urlpatterns = patterns('',
     url(r'^accounts/profile/(?P<username>.+)/$', accounts.ProfileView.as_view(), name='profile'),
     url(r'^accounts/requester/$', accounts.AccountRequest.as_view(), name='request_account'),
     url(r'^accounts/volunteer/$', accounts.AccountVolunteer.as_view(), name='volunteer_account'),
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name='login'),
-    url(r'^accounts/logout/', 'django.contrib.auth.views.logout', {'template_name': 'logout.html'}, name='logout'),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.jinja'}, name='login'),
+    url(r'^accounts/logout/', 'django.contrib.auth.views.logout', {'template_name': 'logout.jinja'}, name='logout'),
     # url(r'/post_login_redirect', accounts.PostLoginRedirectHandler, name='post_login_redirect'),
     # url(r'/complete_login', h.CompleteLoginHandler, name="complete_login"),
 
