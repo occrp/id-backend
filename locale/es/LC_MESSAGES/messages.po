@@ -29,7 +29,7 @@ msgstr "Clave es inválida o no existe."
 msgid "Comments"
 msgstr "Comentarios"
 
-#: app/forms.py:57 app/templates/crud/item_base.html:30
+#: app/forms.py:57 app/templates/crud/item_base.jinja:30
 msgid "Files"
 msgstr "Archivos"
 
@@ -77,11 +77,11 @@ msgstr "Rechazar (Remover usuario de los grupos)"
 msgid "Action"
 msgstr "Acción"
 
-#: app/forms.py:245 app/templates/tickets/request_admin_base.html:16
-#: app/templates/tickets/request_list.html:15
-#: app/templates/tickets/request_list.html:47
-#: app/templates/tickets/responds_list.html:12
-#: app/templates/tickets/responds_list.html:44
+#: app/forms.py:245 app/templates/tickets/request_admin_base.jinja:16
+#: app/templates/tickets/request_list.jinja:15
+#: app/templates/tickets/request_list.jinja:47
+#: app/templates/tickets/responds_list.jinja:12
+#: app/templates/tickets/responds_list.jinja:44
 msgid "Summary"
 msgstr "Resumen"
 
@@ -89,7 +89,7 @@ msgstr "Resumen"
 msgid "Any information you already have."
 msgstr "¿Alguna información que usted ya tiene?"
 
-#: app/forms.py:261 app/templates/tickets/request_details.html:171
+#: app/forms.py:261 app/templates/tickets/request_details.jinja:171
 msgid "Sources"
 msgstr "Fuentes"
 
@@ -97,7 +97,7 @@ msgstr "Fuentes"
 msgid "Where have you looked?"
 msgstr " ¿Dónde usted ya ha buscado información?"
 
-#: app/forms.py:266 app/forms.py:407 app/templates/search_base.html:10
+#: app/forms.py:266 app/forms.py:407 app/templates/search_base.jinja:10
 msgid "Entities"
 msgstr "Entidades"
 
@@ -105,16 +105,16 @@ msgstr "Entidades"
 msgid "Attach Entities"
 msgstr "Adjunte a esta solicitud las entidades conocidas ya existentes."
 
-#: app/forms.py:273 app/templates/tickets/request_details.html:98
+#: app/forms.py:273 app/templates/tickets/request_details.jinja:98
 msgid "Watch"
 msgstr "Ubicación"
 
-#: app/forms.py:277 app/templates/tickets/request_admin_base.html:19
-#: app/templates/tickets/request_details.html:104
-#: app/templates/tickets/request_list.html:18
-#: app/templates/tickets/request_list.html:50
-#: app/templates/tickets/responds_list.html:15
-#: app/templates/tickets/responds_list.html:47
+#: app/forms.py:277 app/templates/tickets/request_admin_base.jinja:19
+#: app/templates/tickets/request_details.jinja:104
+#: app/templates/tickets/request_list.jinja:18
+#: app/templates/tickets/request_list.jinja:50
+#: app/templates/tickets/responds_list.jinja:15
+#: app/templates/tickets/responds_list.jinja:47
 msgid "Deadline"
 msgstr "Deadline"
 
@@ -136,7 +136,7 @@ msgid "Research Goal"
 msgstr "Razón"
 
 #: app/forms.py:300 app/forms.py:309
-#: app/templates/tickets/request_details.html:223
+#: app/templates/tickets/request_details.jinja:223
 msgid "Comment"
 msgstr "Comentario"
 
@@ -154,7 +154,7 @@ msgstr ""
 msgid "Comment to Requester"
 msgstr "Comentario para el solicitante"
 
-#: app/forms.py:326 app/templates/tickets/request_charges_base.html:21
+#: app/forms.py:326 app/templates/tickets/request_charges_base.jinja:21
 msgid "Item"
 msgstr "Item"
 
@@ -175,7 +175,7 @@ msgstr ""
 "para los investigadores que la atienden."
 
 #: app/forms.py:358 app/models.py:397
-#: app/templates/tickets/request_details.html:81
+#: app/templates/tickets/request_details.jinja:81
 msgid "Status"
 msgstr "Estado"
 
@@ -217,18 +217,18 @@ msgstr "Tipo de resultado"
 msgid "Everything"
 msgstr "Todos"
 
-#: app/forms.py:419 app/templates/admin_base.html:9
-#: app/templates/crud/company/list.html:2
+#: app/forms.py:419 app/templates/admin_base.jinja:9
+#: app/templates/crud/company/list.jinja:2
 msgid "Companies"
 msgstr "Compañías"
 
-#: app/forms.py:420 app/templates/admin_base.html:12
-#: app/templates/crud/person/list.html:2
+#: app/forms.py:420 app/templates/admin_base.jinja:12
+#: app/templates/crud/person/list.jinja:2
 msgid "People"
 msgstr "Gente"
 
-#: app/forms.py:421 app/templates/admin_base.html:15
-#: app/templates/crud/location/list.html:2
+#: app/forms.py:421 app/templates/admin_base.jinja:15
+#: app/templates/crud/location/list.jinja:2
 msgid "Locations"
 msgstr "Ubicaciones"
 
@@ -272,7 +272,7 @@ msgstr "Sociedad Anónima"
 msgid "Foundation"
 msgstr "Fundación"
 
-#: app/models.py:56 app/templates/tickets/request_details.html:145
+#: app/models.py:56 app/templates/tickets/request_details.jinja:145
 msgid "Non-profit"
 msgstr "Sin fines de lucro"
 
@@ -527,12 +527,12 @@ msgstr "Mas de 500,000"
 msgid "Kind"
 msgstr "Etiqueta"
 
-#: app/models.py:357 app/templates/crud/relationship/table_mixin.html:42
-#: app/templates/tickets/request_admin_base.html:17
-#: app/templates/tickets/request_list.html:16
-#: app/templates/tickets/request_list.html:48
-#: app/templates/tickets/responds_list.html:13
-#: app/templates/tickets/responds_list.html:45
+#: app/models.py:357 app/templates/crud/relationship/table_mixin.jinja:42
+#: app/templates/tickets/request_admin_base.jinja:17
+#: app/templates/tickets/request_list.jinja:16
+#: app/templates/tickets/request_list.jinja:48
+#: app/templates/tickets/responds_list.jinja:13
+#: app/templates/tickets/responds_list.jinja:45
 msgid "Type"
 msgstr "Tipo"
 
@@ -616,7 +616,7 @@ msgstr "Estado/Provincia/Región"
 msgid "ZIP/Postal Code"
 msgstr "Código Postal/ZIP"
 
-#: app/models.py:458 app/models.py:790 app/templates/external_databases.html:17
+#: app/models.py:458 app/models.py:790 app/templates/external_databases.jinja:17
 msgid "Country"
 msgstr "País"
 
@@ -650,9 +650,9 @@ msgstr "Long"
 msgid "Availability"
 msgstr "Accesibilidad"
 
-#: app/models.py:794 app/templates/external_databases.html:18 app/models.py:795
-#: app/templates/external_databases.html:19 app/models.py:796
-#: app/templates/external_databases.html:16
+#: app/models.py:794 app/templates/external_databases.jinja:18 app/models.py:795
+#: app/templates/external_databases.jinja:19 app/models.py:796
+#: app/templates/external_databases.jinja:16
 msgid "Agency / Name"
 msgstr "Agencia"
 
@@ -688,9 +688,9 @@ msgstr "Aprobado"
 msgid "An update to your Account Request"
 msgstr "No"
 
-#: app/models.py:863 app/templates/base.html:12 app/templates/base.html:30
-#: app/templates/mail_base.html:11 app/templates/mail_base.html:36
-#: app/templates/mail_base.html:37 app/templates/oauth_success.html:6
+#: app/models.py:863 app/templates/base.jinja:12 app/templates/base.jinja:30
+#: app/templates/mail_base.jinja:11 app/templates/mail_base.jinja:36
+#: app/templates/mail_base.jinja:37 app/templates/oauth_success.jinja:6
 msgid "Investigative Dashboard"
 msgstr "Investigative Dashboard"
 
@@ -746,7 +746,7 @@ msgstr ""
 "Error refrescando el token de acceso. Revise sus entradas y trate "
 "nuevamente."
 
-#: app/handlers/crud.py:72 app/templates/crud/relationship/table_mixin.html:79
+#: app/handlers/crud.py:72 app/templates/crud/relationship/table_mixin.jinja:79
 msgid "No entries found."
 msgstr "No entradas encontradas."
 
@@ -792,7 +792,7 @@ msgstr "No lugares encontrados."
 msgid "No extra fields found."
 msgstr "No campos encontrados."
 
-#: app/handlers/crud.py:424 app/templates/external_databases.html:37
+#: app/handlers/crud.py:424 app/templates/external_databases.jinja:37
 msgid "No external databases found."
 msgstr "No bases de datos externos encontrados."
 
@@ -886,11 +886,11 @@ msgstr "No se detectaron duplicados"
 msgid "First and last name match another person"
 msgstr "El primero y segundo nombre coinciden con otra persona"
 
-#: app/templates/401.html:4
+#: app/templates/401.jinja:4
 msgid "Permission Denied"
 msgstr "Permiso negado"
 
-#: app/templates/401.html:8
+#: app/templates/401.jinja:8
 msgid ""
 "You do not have permission to access this feature or content. If you "
 "believe this is an error, please contact an administrator."
@@ -899,11 +899,11 @@ msgstr ""
 " cree\"\n"
 "\"esto es un error, por favor contacte a un administrador."
 
-#: app/templates/404.html:4
+#: app/templates/404.jinja:4
 msgid "Page Not Found"
 msgstr "Página no encontrada"
 
-#: app/templates/404.html:8
+#: app/templates/404.jinja:8
 msgid ""
 "We're sorry, this page is not available. This error has been recorded "
 "will be investigated."
@@ -911,11 +911,11 @@ msgstr ""
 "Lo sentimos, esta página no está disponible. Este error ha sido grabado y"
 " seráinvestigado."
 
-#: app/templates/500.html:4
+#: app/templates/500.jinja:4
 msgid "Application Error"
 msgstr "Error de aplicación"
 
-#: app/templates/500.html:8
+#: app/templates/500.jinja:8
 msgid ""
 "There was an error in the application. This error has been recorded and "
 "should be addressed soon."
@@ -923,94 +923,94 @@ msgstr ""
 "\"Hubo un error en la aplicación. Este error ha sido registrado y\"\n"
 "\"debe ser atendido pronto."
 
-#: app/templates/admin_base.html:7 app/templates/tickets/request_base.html:17
+#: app/templates/admin_base.jinja:7 app/templates/tickets/request_base.jinja:17
 msgid "Manage"
 msgstr "Administre"
 
-#: app/templates/admin_base.html:18 app/templates/crud/relationship/list.html:2
-#: app/templates/crud/relationship/table_mixin.html:35
+#: app/templates/admin_base.jinja:18 app/templates/crud/relationship/list.jinja:2
+#: app/templates/crud/relationship/table_mixin.jinja:35
 msgid "Relationships"
 msgstr "Relaciones"
 
-#: app/templates/admin_base.html:21 app/templates/crud/expandofield/list.html:2
+#: app/templates/admin_base.jinja:21 app/templates/crud/expandofield/list.jinja:2
 msgid "Extra Fields"
 msgstr "Campos extras"
 
-#: app/templates/admin_base.html:24 app/templates/external_databases.html:6
-#: app/templates/external_databses.html:6
+#: app/templates/admin_base.jinja:24 app/templates/external_databases.jinja:6
+#: app/templates/external_databses.jinja:6
 msgid "External Databases"
 msgstr "Bases de datos externos"
 
-#: app/templates/admin_base.html:27
-#: app/templates/crud/accountrequest/list.html:2
+#: app/templates/admin_base.jinja:27
+#: app/templates/crud/accountrequest/list.jinja:2
 msgid "Account Requests"
 msgstr "Solicitud de cuenta "
 
-#: app/templates/admin_base.html:30 app/templates/crud/profile/list.html:2
+#: app/templates/admin_base.jinja:30 app/templates/crud/profile/list.jinja:2
 msgid "User Profiles"
 msgstr "Perfiles de usuarios"
 
-#: app/templates/base.html:36 app/templates/search_base.html:6
-#: app/templates/search_documents.html:11 app/templates/search_entities.html:13
-#: app/templates/base.html:41 app/templates/tickets/request_base.html:7
+#: app/templates/base.jinja:36 app/templates/search_base.jinja:6
+#: app/templates/search_documents.jinja:11 app/templates/search_entities.jinja:13
+#: app/templates/base.jinja:41 app/templates/tickets/request_base.jinja:7
 msgid "Search"
 msgstr "Búsqueda"
 
-#: app/templates/base.html:45
+#: app/templates/base.jinja:45
 msgid "Admin"
 msgstr "Admin"
 
-#: app/templates/base.html:53 app/templates/base.html:66
-#: app/templates/request_account.html:6
+#: app/templates/base.jinja:53 app/templates/base.jinja:66
+#: app/templates/request_account.jinja:6
 msgid "Request Account"
 msgstr "Solicitud de cuenta"
 
-#: app/templates/base.html:62
+#: app/templates/base.jinja:62
 msgid "Log out"
 msgstr "Salir"
 
-#: app/templates/base.html:67
+#: app/templates/base.jinja:67
 msgid "Log In"
 msgstr "Ingresar"
 
-#: app/templates/base.html:98 app/templates/base.html:112
+#: app/templates/base.jinja:98 app/templates/base.jinja:112
 msgid "&copy; 2013 - OCCRP. All rights reserved."
 msgstr "&copy; OCCRP 2013"
 
-#: app/templates/company.html:5 app/templates/company.html:8
-#: app/templates/request_account.html:16
-#: app/templates/crud/accountrequest/edit.html:14
-#: app/templates/tickets/request.html:15
-#: app/templates/tickets/request_details.html:244
-#: app/templates/tickets/request_details.html:245
+#: app/templates/company.jinja:5 app/templates/company.jinja:8
+#: app/templates/request_account.jinja:16
+#: app/templates/crud/accountrequest/edit.jinja:14
+#: app/templates/tickets/request.jinja:15
+#: app/templates/tickets/request_details.jinja:244
+#: app/templates/tickets/request_details.jinja:245
 msgid "Submit"
 msgstr "Compañía"
 
-#: app/templates/drive_success.html:1
+#: app/templates/drive_success.jinja:1
 msgid "Successfully connected to Google Drive."
 msgstr "Conectado exitosamente a Google Drive."
 
-#: app/templates/drive_success.html:3
+#: app/templates/drive_success.jinja:3
 msgid "Current user name:"
 msgstr "Nombre de usuario actual:"
 
-#: app/templates/drive_success.html:4
+#: app/templates/drive_success.jinja:4
 msgid "Root folder ID:"
 msgstr "Root folder ID:"
 
-#: app/templates/drive_success.html:5
+#: app/templates/drive_success.jinja:5
 msgid "Total quota (bytes):"
 msgstr "Cuota total (bytes):"
 
-#: app/templates/drive_success.html:6
+#: app/templates/drive_success.jinja:6
 msgid "Used quota (bytes):"
 msgstr "Cuota usada (bytes):"
 
-#: app/templates/drive_success.html:7
+#: app/templates/drive_success.jinja:7
 msgid "Permission ID:"
 msgstr "Permiso ID:"
 
-#: app/templates/external_databases.html:8
+#: app/templates/external_databases.jinja:8
 msgid ""
 "Here you will find links to more than 450 online databases across 120 "
 "jurisdictions where you can get information on the shareholders, "
@@ -1028,24 +1028,24 @@ msgstr ""
 "disponibles en inglés, verlas notas de la columna para mayores detalles."
 "\t"
 
-#: app/templates/external_databases.html:9
-#: app/templates/external_databses.html:9
+#: app/templates/external_databases.jinja:9
+#: app/templates/external_databses.jinja:9
 msgid "Didn't find what you were looking for?"
 msgstr "¿No encontró lo que está buscando? "
 
-#: app/templates/external_databases.html:9
-#: app/templates/external_databases.html:20
-#: app/templates/external_databses.html:8
-#: app/templates/external_databses.html:9
+#: app/templates/external_databases.jinja:9
+#: app/templates/external_databases.jinja:20
+#: app/templates/external_databses.jinja:8
+#: app/templates/external_databses.jinja:9
 msgid "Request manual help from our researchers."
 msgstr "Solicite ayuda manual de nuestros investigadores."
 
-#: app/templates/mail_base.html:35
+#: app/templates/mail_base.jinja:35
 msgid "OCCRP Investigative Dashboard"
 msgstr "Este mensaje es generado automáticamente por "
 
-#: app/templates/mail_base.html:36 app/templates/mail_base.html:37
-#: app/templates/mail_base.html:38 app/templates/oauth_success.html:14
+#: app/templates/mail_base.jinja:36 app/templates/mail_base.jinja:37
+#: app/templates/mail_base.jinja:38 app/templates/oauth_success.jinja:14
 msgid ""
 "Google Drive successfully authorized. Please close this dialog and attach"
 " your files again."
@@ -1053,11 +1053,11 @@ msgstr ""
 "Google Drive autorizado exitosamente. Por favor cierre este diálogo y "
 "adjuntesus archivos nuevamente."
 
-#: app/templates/pre_login.html:6 app/templates/pre_login.html:24
+#: app/templates/pre_login.jinja:6 app/templates/pre_login.jinja:24
 msgid "Sign in with Google"
 msgstr "Iniciar con Google"
 
-#: app/templates/pre_login.html:10
+#: app/templates/pre_login.jinja:10
 msgid ""
 "In order to log in or request an account on Investigative Dashboard you "
 "must have a Google account. We use your Google account to verify your "
@@ -1071,7 +1071,7 @@ msgstr ""
 " de usted.\n"
 "            "
 
-#: app/templates/pre_login.html:17
+#: app/templates/pre_login.jinja:17
 msgid ""
 "If you do not have a Google account, you can sign up for one on the next "
 "page by clicking \"Sign Up\" in the top right corner."
@@ -1082,7 +1082,7 @@ msgstr ""
 " esquina superior izquierda.\n"
 "            "
 
-#: app/templates/request_account.html:9
+#: app/templates/request_account.jinja:9
 msgid ""
 "In order to make information requests through Investigative Dashboard, "
 "you must have an account. Please enter your information below and one of "
@@ -1097,7 +1097,7 @@ msgstr ""
 "                su solicitud.\n"
 "            "
 
-#: app/templates/search_base.html:13
+#: app/templates/search_base.jinja:13
 msgid "Documentation"
 msgstr "Documentos"
 
@@ -1108,9 +1108,9 @@ msgstr "Documentos"
 # "                %(num_results)s results found.\n"
 # msgstr[0] ""
 # msgstr[1] ""
-#: app/templates/search_documents.html:7 app/templates/search_entities.html:8
-#: app/templates/search_documents.html:34 app/templates/search_entities.html:67
-#: app/templates/search_entities.html:18 app/templates/splash.html:6
+#: app/templates/search_documents.jinja:7 app/templates/search_entities.jinja:8
+#: app/templates/search_documents.jinja:34 app/templates/search_entities.jinja:67
+#: app/templates/search_entities.jinja:18 app/templates/splash.jinja:6
 msgid ""
 "<span class=\"primary-highlight\">Investigative Dashboard</span> helps "
 "investigators expose illicit ties that cross borders."
@@ -1119,11 +1119,11 @@ msgstr ""
 "los investigadores a exponer las conexiones ilícitas a través\"\n"
 "\"de fronteras."
 
-#: app/templates/splash.html:15
+#: app/templates/splash.jinja:15
 msgid "Search for a company or person of interest."
 msgstr "Búsqueda de una compañía o persona de interés."
 
-#: app/templates/splash.html:20
+#: app/templates/splash.jinja:20
 msgid ""
 "We have scraped national business records from Panama, Luxembourg, "
 "Switzerland and many other countries"
@@ -1132,23 +1132,23 @@ msgstr ""
 " diez\"\n"
 "\"países."
 
-#: app/templates/splash.html:28
+#: app/templates/splash.jinja:28
 msgid "If you need more data, visit recommended databases"
 msgstr "Si usted necesita más data, visite las bases de datos recomendadas."
 
-#: app/templates/splash.html:33
+#: app/templates/splash.jinja:33
 msgid "We have assembled a directory of over 300 local databases that might help"
 msgstr ""
 "Nosotros hemos armado un directorio con más de 300 bases de datos locales"
 " que pueden ayudar."
 
-#: app/templates/splash.html:43
+#: app/templates/splash.jinja:43
 msgid "If you need help, request expert assistance."
 msgstr ""
 "Si usted todavía necesita ayuda, ingrese al sitio y solicite la "
 "asistencia de un experto"
 
-#: app/templates/splash.html:48
+#: app/templates/splash.jinja:48
 msgid ""
 "We understand investigations are sensitive and we take privacy very "
 "seriously. Requests are only seen by our full-time experts and, if you "
@@ -1160,18 +1160,18 @@ msgstr ""
 "tiempo completo y, si usted está\"\n"
 "\"dispuesto, por voluntarios seleccionados."
 
-#: app/templates/accountrequest/mail_notification.html:5
-#: app/templates/accountrequest/mail_notification.html:16
-#: app/templates/accountrequest/mail_notification.html:18
-#: app/templates/crud/delete.html:4
+#: app/templates/accountrequest/mail_notification.jinja:5
+#: app/templates/accountrequest/mail_notification.jinja:16
+#: app/templates/accountrequest/mail_notification.jinja:18
+#: app/templates/crud/delete.jinja:4
 msgid "Confirm Deletion"
 msgstr "Confirme eliminación"
 
-#: app/templates/crud/delete.html:6
+#: app/templates/crud/delete.jinja:6
 msgid "Cannot delete this entity."
 msgstr "No puede borrar esta entidad."
 
-#: app/templates/crud/delete_base.html:9
+#: app/templates/crud/delete_base.jinja:9
 #, python-format
 msgid ""
 "Are you sure you want to delete %(object_name)s? You will not be able to "
@@ -1182,11 +1182,11 @@ msgstr ""
 "                Usted no está capacitado para.\n"
 " deshacer esta acción"
 
-#: app/templates/crud/delete_base.html:15
+#: app/templates/crud/delete_base.jinja:15
 msgid "Yes, I am sure."
 msgstr "Sí, estoy seguro."
 
-#: app/templates/crud/delete_base.html:19
+#: app/templates/crud/delete_base.jinja:19
 #, python-format
 msgid "%(object_name)s is attached to the following relationships:"
 msgstr ""
@@ -1196,267 +1196,267 @@ msgstr ""
 "\"\n"
 "\"            "
 
-#: app/templates/crud/delete_base.html:24
-#: app/templates/crud/entity_details.html:17
+#: app/templates/crud/delete_base.jinja:24
+#: app/templates/crud/entity_details.jinja:17
 msgid "Close"
 msgstr "Cerrado"
 
-#: app/templates/crud/fragment.html:5
-#: app/templates/crud/relationship/inline_entity.html:5
+#: app/templates/crud/fragment.jinja:5
+#: app/templates/crud/relationship/inline_entity.jinja:5
 msgid "relationship"
 msgstr "Relación"
 
-#: app/templates/crud/item_base.html:11
+#: app/templates/crud/item_base.jinja:11
 msgid "Delete"
 msgstr "Eliminar"
 
-#: app/templates/crud/item_base.html:19 app/templates/crud/item_base.html:55
-#: app/templates/crud/item_base.html:56 app/templates/crud/item_base.html:57
-#: app/templates/crud/item_base.html:58 app/templates/crud/item_base.html:61
-#: app/templates/tickets/request_details.html:246
-#: app/templates/tickets/request_details.html:249
+#: app/templates/crud/item_base.jinja:19 app/templates/crud/item_base.jinja:55
+#: app/templates/crud/item_base.jinja:56 app/templates/crud/item_base.jinja:57
+#: app/templates/crud/item_base.jinja:58 app/templates/crud/item_base.jinja:61
+#: app/templates/tickets/request_details.jinja:246
+#: app/templates/tickets/request_details.jinja:249
 msgid "Save"
 msgstr "Salvar"
 
-#: app/templates/crud/item_base.html:27
-#: app/templates/tickets/request_details.html:130
+#: app/templates/crud/item_base.jinja:27
+#: app/templates/tickets/request_details.jinja:130
 msgid "Sharing"
 msgstr "Compartir"
 
-#: app/templates/crud/item_base.html:35 app/templates/crud/item_base.html:36
-#: app/templates/tickets/request_charges_base.html:25
-#: app/templates/tickets/request_details.html:100
+#: app/templates/crud/item_base.jinja:35 app/templates/crud/item_base.jinja:36
+#: app/templates/tickets/request_charges_base.jinja:25
+#: app/templates/tickets/request_details.jinja:100
 msgid "Add"
 msgstr "Archivo"
 
-#: app/templates/crud/item_base.html:37 app/templates/crud/item_base.html:38
-#: app/templates/crud/item_base.html:39
-#: app/templates/tickets/request_admin_base.html:20
-#: app/templates/tickets/request_charges_base.html:26
-#: app/templates/crud/item_base.html:55 app/templates/crud/item_base.html:56
-#: app/templates/crud/item_base.html:57 app/templates/crud/item_base.html:58
-#: app/templates/crud/item_base.html:61
-#: app/templates/tickets/request_details.html:249
-#: app/templates/crud/list_base.html:7
-#: app/templates/tickets/request_details.html:247
-#: app/templates/tickets/request_details.html:248
-#: app/templates/crud/list_base.html:24
-#: app/templates/tickets/request_admin_base.html:56
-#: app/templates/tickets/request_admin_base.html:59
-#: app/templates/tickets/request_charges_base.html:74
-#: app/templates/tickets/request_charges_base.html:77
+#: app/templates/crud/item_base.jinja:37 app/templates/crud/item_base.jinja:38
+#: app/templates/crud/item_base.jinja:39
+#: app/templates/tickets/request_admin_base.jinja:20
+#: app/templates/tickets/request_charges_base.jinja:26
+#: app/templates/crud/item_base.jinja:55 app/templates/crud/item_base.jinja:56
+#: app/templates/crud/item_base.jinja:57 app/templates/crud/item_base.jinja:58
+#: app/templates/crud/item_base.jinja:61
+#: app/templates/tickets/request_details.jinja:249
+#: app/templates/crud/list_base.jinja:7
+#: app/templates/tickets/request_details.jinja:247
+#: app/templates/tickets/request_details.jinja:248
+#: app/templates/crud/list_base.jinja:24
+#: app/templates/tickets/request_admin_base.jinja:56
+#: app/templates/tickets/request_admin_base.jinja:59
+#: app/templates/tickets/request_charges_base.jinja:74
+#: app/templates/tickets/request_charges_base.jinja:77
 msgid "Prev"
 msgstr "Acciones"
 
-#: app/templates/crud/list_base.html:33
-#: app/templates/tickets/request_admin_base.html:65
-#: app/templates/tickets/request_admin_base.html:68
-#: app/templates/tickets/request_charges_base.html:83
-#: app/templates/tickets/request_charges_base.html:86
+#: app/templates/crud/list_base.jinja:33
+#: app/templates/tickets/request_admin_base.jinja:65
+#: app/templates/tickets/request_admin_base.jinja:68
+#: app/templates/tickets/request_charges_base.jinja:83
+#: app/templates/tickets/request_charges_base.jinja:86
 msgid "Next"
 msgstr "Próximo"
 
-#: app/templates/crud/accountrequest/add.html:2
+#: app/templates/crud/accountrequest/add.jinja:2
 msgid "New Account Request"
 msgstr "Solicitud de nueva cuenta"
 
-#: app/templates/crud/accountrequest/edit.html:2
+#: app/templates/crud/accountrequest/edit.jinja:2
 msgid "Edit Account Request"
 msgstr "Editar solicitud de cuenta"
 
-#: app/templates/crud/accountrequest/edit.html:7
-#: app/templates/crud/accountrequest/edit.html:14
+#: app/templates/crud/accountrequest/edit.jinja:7
+#: app/templates/crud/accountrequest/edit.jinja:14
 msgid "Set Permissions"
 msgstr "Establecer permiso"
 
-#: app/templates/crud/company/add.html:2
-#: app/templates/crud/relationship/inline_entity.html:9
+#: app/templates/crud/company/add.jinja:2
+#: app/templates/crud/relationship/inline_entity.jinja:9
 msgid "New Company"
 msgstr "Nueva compañía"
 
-#: app/templates/crud/company/edit.html:2
+#: app/templates/crud/company/edit.jinja:2
 msgid "Edit Company"
 msgstr "Editar compañía"
 
-#: app/templates/crud/expandofield/add.html:2
+#: app/templates/crud/expandofield/add.jinja:2
 msgid "New Extra Field"
 msgstr "Nuevo área extra"
 
-#: app/templates/crud/expandofield/edit.html:2
+#: app/templates/crud/expandofield/edit.jinja:2
 msgid "Edit Extra Field"
 msgstr "Editar nueva área"
 
-#: app/templates/crud/externaldb/add.html:2
+#: app/templates/crud/externaldb/add.jinja:2
 msgid "New Database"
 msgstr "Nueva base de datos"
 
-#: app/templates/crud/externaldb/edit.html:2
+#: app/templates/crud/externaldb/edit.jinja:2
 msgid "Edit External Database"
 msgstr "Editar base de dato externa"
 
-#: app/templates/crud/externaldb/list.html:2
+#: app/templates/crud/externaldb/list.jinja:2
 msgid "Databases"
 msgstr "Bases de datos"
 
-#: app/templates/crud/location/add.html:2
-#: app/templates/crud/relationship/inline_entity.html:11
+#: app/templates/crud/location/add.jinja:2
+#: app/templates/crud/relationship/inline_entity.jinja:11
 msgid "New Location"
 msgstr "Nueva ubicación"
 
-#: app/templates/crud/location/edit.html:2
+#: app/templates/crud/location/edit.jinja:2
 msgid "Edit Location"
 msgstr "Editar ubicación"
 
-#: app/templates/crud/person/add.html:2
-#: app/templates/crud/relationship/inline_entity.html:10
+#: app/templates/crud/person/add.jinja:2
+#: app/templates/crud/relationship/inline_entity.jinja:10
 msgid "New Person"
 msgstr "Nueva persona"
 
-#: app/templates/crud/person/edit.html:2
+#: app/templates/crud/person/edit.jinja:2
 msgid "Edit Person"
 msgstr "Editar persona"
 
-#: app/templates/crud/profile/edit.html:2
+#: app/templates/crud/profile/edit.jinja:2
 msgid "Edit User Profile"
 msgstr "Editar perfil de usuario"
 
-#: app/templates/crud/relationship/add.html:2
+#: app/templates/crud/relationship/add.jinja:2
 msgid "New Relationship"
 msgstr "Nueva relación"
 
-#: app/templates/crud/relationship/edit.html:2
-#: app/templates/crud/relationship/item.html:2
+#: app/templates/crud/relationship/edit.jinja:2
+#: app/templates/crud/relationship/item.jinja:2
 msgid "Edit Relationship"
 msgstr "Editar relación"
 
-#: app/templates/crud/relationship/table_mixin.html:7
+#: app/templates/crud/relationship/table_mixin.jinja:7
 msgid "Add New "
 msgstr "Crear"
 
-#: app/templates/crud/relationship/table_mixin.html:13
+#: app/templates/crud/relationship/table_mixin.jinja:13
 msgid "With New Company"
 msgstr "Con nueva compañía"
 
-#: app/templates/crud/relationship/table_mixin.html:18
+#: app/templates/crud/relationship/table_mixin.jinja:18
 msgid "With New Person"
 msgstr "Con nueva persona"
 
-#: app/templates/crud/relationship/table_mixin.html:23
+#: app/templates/crud/relationship/table_mixin.jinja:23
 msgid "With New Location"
 msgstr "Con nueva ubicación"
 
-#: app/templates/crud/relationship/table_mixin.html:28
+#: app/templates/crud/relationship/table_mixin.jinja:28
 msgid "With Existing Entity"
 msgstr "Con entidad existente"
 
-#: app/templates/crud/relationship/table_mixin.html:41
-#: app/templates/macros/macros.html:6
-#: app/templates/crud/relationship/table_mixin.html:43
-#: app/templates/macros/forms.html:28
+#: app/templates/crud/relationship/table_mixin.jinja:41
+#: app/templates/macros/macros.jinja:6
+#: app/templates/crud/relationship/table_mixin.jinja:43
+#: app/templates/macros/forms.jinja:28
 msgid "Select File"
 msgstr "Entidad"
 
-#: app/templates/macros/forms.html:29
+#: app/templates/macros/forms.jinja:29
 msgid "Change"
 msgstr "Cambiar"
 
-#: app/templates/macros/forms.html:32
+#: app/templates/macros/forms.jinja:32
 msgid "Remove"
 msgstr "Remover"
 
-#: app/templates/macros/forms.html:46
-#: app/templates/tickets/request_details.html:12
+#: app/templates/macros/forms.jinja:46
+#: app/templates/tickets/request_details.jinja:12
 msgid "Attach Files"
 msgstr "Adjuntar archivos"
 
-#: app/templates/modals/form_basic.html:3 app/templates/tickets/request.html:5
-#: app/templates/tickets/request.html:9
-#: app/templates/tickets/request_admin_base.html:36
-#: app/templates/tickets/request_details.html:93
-#: app/templates/tickets/request_list.html:29
-#: app/templates/tickets/request_list.html:61
-#: app/templates/tickets/request_admin_base.html:78
-#: app/templates/tickets/request_base.html:9
-#: app/templates/tickets/request_list.html:8
-#: app/templates/tickets/request_base.html:13
-#: app/templates/tickets/responds_list.html:5
-#: app/templates/tickets/request_base.html:19
-#: app/templates/tickets/admin/admin_unassigned.html:4
-#: app/templates/tickets/request_base.html:22
-#: app/templates/tickets/request_base.html:25
-#: app/templates/tickets/request_base.html:28
-#: app/templates/tickets/request_base.html:30
-#: app/templates/tickets/request_base.html:32
-#: app/templates/tickets/request_base.html:35
-#: app/templates/tickets/admin/admin_charges_outstanding.html:3
-#: app/templates/tickets/request_charges_base.html:20
-#: app/templates/tickets/request_details.html:83
-#: app/templates/tickets/responds_list.html:14
-#: app/templates/tickets/responds_list.html:46
-#: app/templates/tickets/request_charges_base.html:22
-#: app/templates/tickets/request_charges_base.html:23
-#: app/templates/tickets/request_charges_base.html:24
-#: app/templates/tickets/request_charges_base.html:96
-#: app/templates/tickets/request_charges_base.html:103
-#: app/templates/tickets/request_details.html:15
-#: app/templates/tickets/request_details.html:19
-#: app/templates/tickets/request_details.html:25
-#: app/templates/tickets/request_details.html:245
-#: app/templates/tickets/request_details.html:32
-#: app/templates/tickets/request_details.html:242
-#: app/templates/tickets/request_details.html:39
-#: app/templates/tickets/request_details.html:248
-#: app/templates/tickets/request_details.html:46
-#: app/templates/tickets/request_details.html:53
-#: app/templates/tickets/request_details.html:243
-#: app/templates/tickets/request_details.html:62
-#: app/templates/tickets/request_details.html:96
-#: app/templates/tickets/request_details.html:109
-#: app/templates/tickets/request_details.html:124
-#: app/templates/tickets/request_details.html:137
-#: app/templates/tickets/request_details.html:143
-#: app/templates/tickets/request_details.html:148
-#: app/templates/tickets/request_details.html:160
-#: app/templates/tickets/request_details.html:162
-#: app/templates/tickets/request_details.html:167
-#: app/templates/tickets/request_details.html:175
-#: app/templates/tickets/request_details.html:202
-#: app/templates/tickets/request_details.html:212
-#: app/templates/tickets/request_details.html:244
-#: app/templates/tickets/request_details.html:246
-#: app/templates/tickets/request_details.html:247
-#: app/templates/tickets/request_list.html:6
-#: app/templates/tickets/request_list.html:39
-#: app/templates/tickets/responds_list.html:26
-#: app/templates/tickets/responds_list.html:58
-#: app/templates/tickets/responds_list.html:36
-#: app/templates/tickets/admin/admin_charges_customer.html:6
-#: app/templates/tickets/admin/admin_charges_customer.html:12
-#: app/templates/tickets/admin/admin_charges_customer.html:13
-#: app/templates/tickets/admin/admin_charges_outstanding.html:4
-#: app/templates/tickets/admin/admin_deadline.html:3
-#: app/templates/tickets/admin/admin_deadline.html:4
-#: app/templates/tickets/admin/admin_edit.html:5
-#: app/templates/tickets/admin/admin_edit.html:9
-#: app/templates/tickets/admin/admin_edit.html:16
-#: app/templates/tickets/admin/admin_flagged.html:3
-#: app/templates/tickets/admin/admin_flagged.html:4
-#: app/templates/tickets/admin/admin_history.html:3
-#: app/templates/tickets/admin/admin_history.html:4
-#: app/templates/tickets/admin/admin_unassigned.html:5
-#: app/templates/tickets/mail/mail_template.html:8
+#: app/templates/modals/form_basic.jinja:3 app/templates/tickets/request.jinja:5
+#: app/templates/tickets/request.jinja:9
+#: app/templates/tickets/request_admin_base.jinja:36
+#: app/templates/tickets/request_details.jinja:93
+#: app/templates/tickets/request_list.jinja:29
+#: app/templates/tickets/request_list.jinja:61
+#: app/templates/tickets/request_admin_base.jinja:78
+#: app/templates/tickets/request_base.jinja:9
+#: app/templates/tickets/request_list.jinja:8
+#: app/templates/tickets/request_base.jinja:13
+#: app/templates/tickets/responds_list.jinja:5
+#: app/templates/tickets/request_base.jinja:19
+#: app/templates/tickets/admin/admin_unassigned.jinja:4
+#: app/templates/tickets/request_base.jinja:22
+#: app/templates/tickets/request_base.jinja:25
+#: app/templates/tickets/request_base.jinja:28
+#: app/templates/tickets/request_base.jinja:30
+#: app/templates/tickets/request_base.jinja:32
+#: app/templates/tickets/request_base.jinja:35
+#: app/templates/tickets/admin/admin_charges_outstanding.jinja:3
+#: app/templates/tickets/request_charges_base.jinja:20
+#: app/templates/tickets/request_details.jinja:83
+#: app/templates/tickets/responds_list.jinja:14
+#: app/templates/tickets/responds_list.jinja:46
+#: app/templates/tickets/request_charges_base.jinja:22
+#: app/templates/tickets/request_charges_base.jinja:23
+#: app/templates/tickets/request_charges_base.jinja:24
+#: app/templates/tickets/request_charges_base.jinja:96
+#: app/templates/tickets/request_charges_base.jinja:103
+#: app/templates/tickets/request_details.jinja:15
+#: app/templates/tickets/request_details.jinja:19
+#: app/templates/tickets/request_details.jinja:25
+#: app/templates/tickets/request_details.jinja:245
+#: app/templates/tickets/request_details.jinja:32
+#: app/templates/tickets/request_details.jinja:242
+#: app/templates/tickets/request_details.jinja:39
+#: app/templates/tickets/request_details.jinja:248
+#: app/templates/tickets/request_details.jinja:46
+#: app/templates/tickets/request_details.jinja:53
+#: app/templates/tickets/request_details.jinja:243
+#: app/templates/tickets/request_details.jinja:62
+#: app/templates/tickets/request_details.jinja:96
+#: app/templates/tickets/request_details.jinja:109
+#: app/templates/tickets/request_details.jinja:124
+#: app/templates/tickets/request_details.jinja:137
+#: app/templates/tickets/request_details.jinja:143
+#: app/templates/tickets/request_details.jinja:148
+#: app/templates/tickets/request_details.jinja:160
+#: app/templates/tickets/request_details.jinja:162
+#: app/templates/tickets/request_details.jinja:167
+#: app/templates/tickets/request_details.jinja:175
+#: app/templates/tickets/request_details.jinja:202
+#: app/templates/tickets/request_details.jinja:212
+#: app/templates/tickets/request_details.jinja:244
+#: app/templates/tickets/request_details.jinja:246
+#: app/templates/tickets/request_details.jinja:247
+#: app/templates/tickets/request_list.jinja:6
+#: app/templates/tickets/request_list.jinja:39
+#: app/templates/tickets/responds_list.jinja:26
+#: app/templates/tickets/responds_list.jinja:58
+#: app/templates/tickets/responds_list.jinja:36
+#: app/templates/tickets/admin/admin_charges_customer.jinja:6
+#: app/templates/tickets/admin/admin_charges_customer.jinja:12
+#: app/templates/tickets/admin/admin_charges_customer.jinja:13
+#: app/templates/tickets/admin/admin_charges_outstanding.jinja:4
+#: app/templates/tickets/admin/admin_deadline.jinja:3
+#: app/templates/tickets/admin/admin_deadline.jinja:4
+#: app/templates/tickets/admin/admin_edit.jinja:5
+#: app/templates/tickets/admin/admin_edit.jinja:9
+#: app/templates/tickets/admin/admin_edit.jinja:16
+#: app/templates/tickets/admin/admin_flagged.jinja:3
+#: app/templates/tickets/admin/admin_flagged.jinja:4
+#: app/templates/tickets/admin/admin_history.jinja:3
+#: app/templates/tickets/admin/admin_history.jinja:4
+#: app/templates/tickets/admin/admin_unassigned.jinja:5
+#: app/templates/tickets/mail/mail_template.jinja:8
 msgid "your request. "
 msgstr " Nueva solicitud"
 
-#: app/templates/tickets/mail/mail_template.html:31
+#: app/templates/tickets/mail/mail_template.jinja:31
 msgid "View on Site"
 msgstr "Ver en sitio"
 
-#: app/templates/tickets/mail/mail_template.html:32
+#: app/templates/tickets/mail/mail_template.jinja:32
 msgid "Add Comment"
 msgstr "Agregar comentario"
 
-#: app/templates/tickets/mail/mail_template.html:33
+#: app/templates/tickets/mail/mail_template.jinja:33
 msgid "or reply to this email directly."
 msgstr "o conteste a este correo electrónico directamente."
 

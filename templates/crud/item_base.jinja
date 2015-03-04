@@ -1,0 +1,56 @@
+{% extends "admin_base.jinja" %}
+
+{% import "macros/modals.jinja" as modal_macros %}
+
+{% block admin_content %}
+    <div class="page-header">
+        {% if action == 'edit' and not hide_delete_item %}
+            <div class="pull-right">
+                <a href="{{ uri_for('%s_delete' % model_name, obj_id=instance.key.urlsafe()) }}" class="btn">
+                    <i class="icon-minus-sign icon-white"></i>
+                    {% trans %}Delete{% endtrans %}
+                </a>
+            </div>
+        {% endif %}
+        {% block actions %}{% endblock %} 
+        <h1>{% block crud_title %}{% endblock %}</h1>
+	{% block subhead %} {%endblock%}
+    </div>
+
+    {{ form_macros.render_form(form, submit_title=_('Save')) }}
+
+
+    {% if action == 'edit' %}
+        {% if instance and instance.drive_folder_id %}
+            <h2>
+                {% if is_staff or is_admin %}
+                    <a href="#sharing-modal" class="pull-right btn" data-modal-url="{{ uri_for('share_files', entity_id=instance.key.urlsafe() ) }}">
+                        <i class="icon-group"></i>
+                        {% trans %}Sharing{% endtrans %}
+                    </a>
+                {% endif %}
+                {% trans %}Files{% endtrans %}
+            </h2>
+            {{ macros.list_files(instance) }}
+        {% endif %}
+
+        {% if rels_enabled %}
+            {% include 'crud/relationship/table_mixin.jinja' %}
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+
+    
+{% block after_js %}
+    {{ super() }}
+    {% if rels_enabled %}
+        {{ modal_macros.render_dynamic_modal('company-modal', _('Create Relationship'), _('Save')) }}
+        {{ modal_macros.render_dynamic_modal('person-modal', _('Create Relationship'), _('Save')) }}
+        {{ modal_macros.render_dynamic_modal('location-modal', _('Create Relationship'), _('Save')) }}
+        {{ modal_macros.render_dynamic_modal('existing-modal', _('Create Relationship'), _('Save')) }}
+    {% endif %}
+    {% if instance and instance.drive_folder_id %}
+        {{ modal_macros.render_dynamic_modal('sharing-modal', _('Share Attached Files'), _('Save')) }}
+    {% endif %}
+{% endblock %}

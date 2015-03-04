@@ -1,0 +1,20 @@
+{% extends "tickets/request_base.jinja" %}
+
+{% block inner_content %}
+    <div class="page-header">
+        <h1>{% trans %}Public Requests{% endtrans %}</h1>
+    </div>
+
+    {% if requests %}
+    {{ render_ticket_table(requests) }}
+    {% else %}
+        <div class="alert alert-block alert-warning">
+            {% trans %}No requests found.{% endtrans %}
+        </div>
+    {% endif %}
+    {% if closed_requests %}
+    <div class="page-header"><h4>Closed Requests</h4></div>
+    {{ render_ticket_table(requests) }}
+    {% endif %}
+
+{% endblock %}

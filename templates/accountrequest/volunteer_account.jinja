@@ -1,0 +1,15 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+    <div class="span12">
+        <div class="page-header">
+            <h1>{% trans %}Become a Volunteer!{% endtrans %}</h1>
+        </div>
+        {% call macros.help_box() %}
+            {% trans -%}
+                If you'd like to volunteer to track down requests, you need to have an account. Please enter your information below and one of our staff will review, and respond to your request.
+            {%- endtrans %}
+        {% endcall %}
+        {{ form_macros.render_form(form, submit_title=_("Submit")) }}
+    </div>
+{% endblock %}

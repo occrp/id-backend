@@ -27,7 +27,7 @@ class RequestUnauthorized(TemplateView, MessageMixin):
 
 
 class RequestHandler(TemplateView, MessageMixin):
-    template_name = "tickets/request.html"
+    template_name = "tickets/request.jinja"
 
     """ Some registered user submits a ticket for response by a responder. """
     def dispatch(self, request):
@@ -103,7 +103,7 @@ class RequestHandler(TemplateView, MessageMixin):
 
 
 class RequestDetailsHandler(TemplateView):
-    template_name = "tickets/request_details.html"
+    template_name = "tickets/request_details.jinja"
     """
     View for the requester of a ticket to view what is currently going on,
     and provide feedback / close the request / etc
@@ -248,7 +248,7 @@ class RequestDetailsActionHandler(JSONResponseMixin, TemplateView):
             # save new update & add message
             self.form_valid(ticket, form)
         else:
-            t = self.render_template('modals/form_basic.html', form=form,
+            t = self.render_template('modals/form_basic.jinja', form=form,
                                      not_allowed=not_allowed)
             self.render_json_response({'status': 'error', 'html': t})
 
@@ -412,7 +412,7 @@ class RequestReopenHandler(RequestDetailsActionHandler):
 
 
 class RequestListHandler(TemplateView):
-    template_name = "tickets/request_list.html"
+    template_name = "tickets/request_list.jinja"
 
     """Display a list of requests which the currently logged in user has out in
     the wild."""
@@ -429,7 +429,7 @@ class RequestListHandler(TemplateView):
             'requests': open_tickets,
             'closed_requests': closed_tickets
         }
-        self.render_response('tickets/request_list.html', **context)
+        self.render_response('tickets/request_list.jinja', **context)
 
 
 class RequestJoinHandler(RedirectView): #FIXME: Verify
@@ -462,7 +462,7 @@ class RequestLeaveHandler(RedirectView): #FIXME: Verify
 
 
 class ResponseListHandler(TemplateView):
-    template_name = "tickets/responds_list.html"
+    template_name = "tickets/responds_list.jinja"
     """Display a list of tickets in which the logged in user should be
     responding to. """
 
@@ -481,7 +481,7 @@ class ResponseListHandler(TemplateView):
 
 
 class PublicListHandler(TemplateView):
-    template_name = "tickets/public_list.html"
+    template_name = "tickets/public_list.jinja"
     """ Display a list of tickets which are open for volunteers to
     collaborate on.
 
@@ -555,7 +555,7 @@ class AdminChargeReconcileInlineHandler(JSONResponseMixin, TemplateView):
         return forms.TicketChargeReconcileForm(self.request.POST, instance=self.charge)
 
     def render_form(self, form):
-        return self.render_template('tickets/admin/reconcile_inline.html',
+        return self.render_template('tickets/admin/reconcile_inline.jinja',
             reconcile_form=form,
             form_action=self.request.url,
             charge=self.charge)
@@ -586,7 +586,7 @@ class AdminChargeReconcileInlineHandler(JSONResponseMixin, TemplateView):
 
 class AdminCustomerChargesHandler(AdminTicketListTemplateView):
     object_name = 'charges'
-    template_name = 'tickets/admin/admin_charges_customer.html'
+    template_name = 'tickets/admin/admin_charges_customer.jinja'
 
     #FIXME: Auth
     #@role_in('admin')
@@ -639,7 +639,7 @@ class AdminCustomerChargesHandler(AdminTicketListTemplateView):
 
 class AdminOutstandingChargesHandler(AdminTicketListTemplateView):
     object_name = 'charges'
-    template_name = 'tickets/admin/admin_charges_outstanding.html'
+    template_name = 'tickets/admin/admin_charges_outstanding.jinja'
 
     def get_queryset(self):
         return models.TicketCharge.query().filter(
@@ -664,7 +664,7 @@ class AdminOutstandingChargesHandler(AdminTicketListTemplateView):
 
 
 class AdminDeadlineTicketsHandler(AdminTicketListTemplateView):
-    template_name = 'tickets/admin/admin_deadline.html'
+    template_name = 'tickets/admin/admin_deadline.jinja'
     get_queryset = lambda _: (models.Ticket.query()
                               .filter(models.Ticket.status.IN(models.OPEN_TICKET_STATUSES)))
 
@@ -676,7 +676,7 @@ class AdminDeadlineTicketsHandler(AdminTicketListTemplateView):
 
 
 class AdminUnassignedTicketsHandler(AdminTicketListTemplateView):
-    template_name = 'tickets/admin/admin_unassigned.html'
+    template_name = 'tickets/admin/admin_unassigned.jinja'
     get_queryset = lambda _: (models.Ticket.query()
                               .filter(models.Ticket.responders_len == 0)
                               .filter(
@@ -691,7 +691,7 @@ class AdminUnassignedTicketsHandler(AdminTicketListTemplateView):
 
 
 class AdminFlaggedTicketsHandler(AdminTicketListTemplateView):
-    template_name = 'tickets/admin/admin_flagged.html'
+    template_name = 'tickets/admin/admin_flagged.jinja'
     get_queryset = lambda _: (models.Ticket.query()
                               .filter(models.Ticket.flagged == True))
 
@@ -703,7 +703,7 @@ class AdminFlaggedTicketsHandler(AdminTicketListTemplateView):
 
 
 class AdminHistoryTicketsHandler(AdminTicketListTemplateView):
-    template_name = 'tickets/admin/admin_history.html'
+    template_name = 'tickets/admin/admin_history.jinja'
     get_queryset = lambda _: (models.Ticket.query()
                               .filter(models.Ticket.status.IN(models.CLOSED_TICKET_STATUSES)))
 
@@ -715,7 +715,7 @@ class AdminHistoryTicketsHandler(AdminTicketListTemplateView):
 
 
 class AdminSettingsHandler(JSONResponseMixin, TemplateView):
-    template_name = "modals/form_basic.html"
+    template_name = "modals/form_basic.jinja"
     """
     Administrator edits a ticket's properties (re-assignment, closing, etc)
     """
@@ -731,7 +731,7 @@ class AdminSettingsHandler(JSONResponseMixin, TemplateView):
     #FIXME: Auth
     #@role_in('admin')
     def _get(self, ticket_id, status='success'):
-        t = self.render_template('modals/form_basic.html',
+        t = self.render_template('modals/form_basic.jinja',
                                  form=self.form,
                                  form_action=self.request.url)
         self.render_json_response({'status': status, 'html': t})

@@ -3,13 +3,13 @@ from id.models import *
 from id.forms import ScraperRequestForm
 
 class Panel(TemplateView):
-    template_name = "admin/panel.html"
+    template_name = "admin/panel.jinja"
 
 class Storage(TemplateView):
-    template_name = "admin/storage.html"
+    template_name = "admin/storage.jinja"
 
 class Statistics(TemplateView):
-    template_name = "admin/statistics.html"
+    template_name = "admin/statistics.jinja"
 
     def get_context_data(self):
         return {
@@ -35,21 +35,21 @@ class Statistics(TemplateView):
         }
 
 class CompanyList(TemplateView):
-    template_name = "crud/company/list.html"
+    template_name = "crud/company/list.jinja"
 
 class PersonList(TemplateView):
-    template_name = "crud/person/list.html"
+    template_name = "crud/person/list.jinja"
 
 class LocationList(TemplateView):
-    template_name = "crud/location/list.html"
+    template_name = "crud/location/list.jinja"
 
 class RelationshipList(TemplateView):
-    template_name = "crud/relationship/list.html"
+    template_name = "crud/relationship/list.jinja"
 
 
 class DatabaseScrapeRequestCreate(CreateView):
     form_class = ScraperRequestForm
-    template_name = "admin/database_scrape_request.html"
+    template_name = "admin/database_scrape_request.jinja"
     success_url = '/admin/scrapers/request/'
 
     def get_context_data(self, **kwargs):

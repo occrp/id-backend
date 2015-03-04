@@ -1,7 +1,7 @@
 from podaci import PodaciView
 
 class Home(PodaciView):
-	template_name = "podaci/home.html"
+	template_name = "podaci/home.jinja"
 
 	def get_context_data(self):
 		self.clear_breadcrumbs()
@@ -18,17 +18,17 @@ class Home(PodaciView):
 
 
 class Help(PodaciView):
-	template_name = "podaci/help.html"
+	template_name = "podaci/help.jinja"
 
 
 class Status(PodaciView):
-	template_name = "podaci/status.html"
+	template_name = "podaci/status.jinja"
 
 	def get_context_data(self):
 		pass
 
 class Statistics(PodaciView):
-	template_name = "podaci/statistics.html"
+	template_name = "podaci/statistics.jinja"
 
 	def get_context_data(self):
 		pass

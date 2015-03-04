@@ -1,7 +1,0 @@
-
-{% import "macros/forms.html" as form_macros with context %}
-
-<form action="{{ form_action }}" class="form-horizontal" method="POST">
-    <h4>{% trans %}Relationship{% endtrans %}</h4>
-    {{ form_macros.render_form_fragment(form) }}
-</form>
