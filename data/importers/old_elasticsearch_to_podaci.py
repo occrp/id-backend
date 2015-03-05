@@ -121,7 +121,7 @@ class OldESImporter:
                 fh = open(old_path)
                 f.meta["hash"] = sha256sum(fh)
                 fh.close()
-                shutil.copy(filename, f.resident_location())
+                shutil.copy(old_path, f.resident_location())
                 done = True
                 sys.stdout.write(".")
 
