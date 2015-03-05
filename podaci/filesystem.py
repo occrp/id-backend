@@ -97,12 +97,13 @@ class MetaMixin:
         return {"id": self.id, "meta": self.meta}
 
     def details_string(self):
-        s = "%s %3dU %3dW %3dN %4dF" % (
+        s = "%s %3dU %3dW %3dN" % (
             ["-","P"][self["public_read"]], 
             len(self["allowed_users"]), 
             len(self["allowed_write_users"]), 
-            len(self["notes"]),
-            self.fs.list_files(self.id)[0])
+            len(self["notes"]))
+        if self.DOCTYPE == "tag":
+            s += " %4dF" % (self.fs.list_files(self.id)[0])
         return s
 
 class PermissionsMixin:
@@ -523,7 +524,7 @@ class FileSystem:
         return res["hits"]["total"], [File(self, filemeta["_id"], prepopulate_meta=filemeta["_source"]) for filemeta in res["hits"]["hits"]]
 
     def list_files(self, tag, _from=0, _size=1000):
-        body = {"query":{"term":{"tags": tag}}}
+        body = {"query":{"match":{"tags": tag.lower()}}}
         res = self.es.search(index=self.es_index, doc_type="file", body=body, from_=_from, size=_size)
         return res["hits"]["total"], [File(self, filemeta["_id"], prepopulate_meta=filemeta["_source"]) for filemeta in res["hits"]["hits"]]
 
