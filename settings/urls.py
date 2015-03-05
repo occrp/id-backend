@@ -4,6 +4,10 @@ from django.views.generic import TemplateView
 from id import databases, requests, search, accounts
 from id import validation, admin, tasks, files, errors
 from id.decorators import admin_only, staff_only, volunteers_only, users_only
+
+import ticket.validators
+import ticket.views
+
 # from id.google_apis.drive import drive_decorator
 
 from django.contrib import admin as django_admin
@@ -41,8 +45,6 @@ urlpatterns = patterns('',
     url(r'^request/(?P<ticket_id>[0-9]+)/reopen/$', requests.RequestReopenHandler.as_view(), name='request_reopen'),
     url(r'^request/(?P<ticket_id>[0-9]+)/pay/$', requests.RequestPaidHandler.as_view(), name='request_mark_paid'),
     url(r'^request/(?P<ticket_id>[0-9]+)/charge/$', requests.RequestAddChargeHandler.as_view(), name='request_charge_add'),
-    url(r'^request/(?P<ticket_id>[0-9]+)/entity/add/$', requests.RequestAddEntityHandler.as_view(), name='request_entity_add'),
-    url(r'^request/(?P<ticket_id>[0-9]+)/entity/remove/$', requests.RequestRemoveEntityHandler.as_view(), name='request_entity_remove'),
     url(r'^request/(?P<ticket_id>[0-9]+)/join/$', requests.RequestJoinHandler.as_view(), name='ticket_join'),
     url(r'^request/(?P<ticket_id>[0-9]+)/leave/$', requests.RequestLeaveHandler.as_view(), name='ticket_leave'),
     url(r'^request/submit/$', requests.RequestHandler.as_view(), name='request'),
@@ -60,10 +62,12 @@ urlpatterns = patterns('',
     url(r'^request/charges/outstanding/$', requests.AdminOutstandingChargesHandler.as_view(), name='ticket_admin_outstanding_charges'),
     url(r'^request/submit/$', requests.RequestHandler.as_view(), name='request'),
 
+    url(r'^ticket/submit/$', ticket.views.TicketRequest.as_view(), name='ticket_submit'),
+
     url(r'^_validation/company/$', validation.ValidateCompany.as_view(), name='ajax_validate_company'),
     url(r'^_validation/person/$', validation.ValidatePerson.as_view(), name='ajax_validate_person'),
     url(r'^_validation/location/$', validation.ValidateLocation.as_view(), name='ajax_validate_location'),
-    url(r'^_validation/request/$', validation.ValidateRequest.as_view(), name='ajax_validate_request'),
+    url(r'^_validation/request/$', ticket.validators.ValidateTicketRequest.as_view(), name='ajax_validate_request'),
 
     url(r'^databases/$', databases.ExternalDatabaseList.as_view(), name='externaldb_list'),
     url(r'^databases/add/$', databases.ExternalDatabaseAdd.as_view(), name='externaldb_add'),
@@ -71,6 +75,8 @@ urlpatterns = patterns('',
     url(r'^databases/view/(?P<id>[0-9]+)/$', databases.ExternalDatabaseDetail.as_view(), name='externaldb_detail'),
     url(r'^databases/delete/(?P<id>[0-9]+)/$', databases.ExternalDatabaseDelete.as_view(), name='externaldb_delete'),
 
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'registration/login.jinja'}, name='login'),
+    url(r'^accounts/logout/', 'django.contrib.auth.views.logout', {'template_name': 'registration/logout.jinja'}, name='logout'),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^accounts/users/$', accounts.UserList.as_view(), name='userprofile_list'),
     url(r'^accounts/request/$', accounts.AccountRequestHome.as_view(), name='request_account_home'),
@@ -80,8 +86,6 @@ urlpatterns = patterns('',
     url(r'^accounts/profile/(?P<username>.+)/$', accounts.ProfileView.as_view(), name='profile'),
     url(r'^accounts/requester/$', accounts.AccountRequest.as_view(), name='request_account'),
     url(r'^accounts/volunteer/$', accounts.AccountVolunteer.as_view(), name='volunteer_account'),
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.jinja'}, name='login'),
-    url(r'^accounts/logout/', 'django.contrib.auth.views.logout', {'template_name': 'logout.jinja'}, name='logout'),
     # url(r'/post_login_redirect', accounts.PostLoginRedirectHandler, name='post_login_redirect'),
     # url(r'/complete_login', h.CompleteLoginHandler, name="complete_login"),
 
