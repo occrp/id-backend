@@ -28,9 +28,8 @@ class OldESImporter:
         self.old_es = elasticsearch.Elasticsearch(OLD_SERVERS, retry_on_timeout=True)
         self.fs = FileSystem(NEW_SERVERS, NEW_ES_INDEX, NEW_DATA_ROOT, 
             Strawman("1000000001", "OldElasticSearchImporterBot"))
-        self.tagcache = {
-            "olddatavault": self.fs.create_tag("Imported from old Datavault")
-        }
+        self.tagcache = self.fs.get_tag_dict()
+        self.tagcache["olddatavault"] = self.tagcache["Imported from old Datavault"]
         self.threadpool = []
         self.taglock = threading.Lock()
 
@@ -39,7 +38,7 @@ class OldESImporter:
         print " Old ElasticSearch database importer starting..."
         print "=" * 50
         count = 20
-        offset = 0
+        offset = 86920
         total = 0
 
         while True:

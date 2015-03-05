@@ -64,6 +64,9 @@ class PodaciShell(cmd.Cmd):
                 print f.meta["name"]
 
         print "%d files" % count
+
+    def do_exit(self, line):
+        return True
     
     def do_EOF(self, line):
         return True
