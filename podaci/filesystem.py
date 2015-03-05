@@ -558,6 +558,13 @@ class FileSystem:
         t.get_metadata()
         return t
 
+    def get_tag_dict(self):
+        cnt, tags = self.list_tags()
+        d = {}
+        for tag in tags:
+            d[tag["name"]] = tag
+        return d
+
     def get_or_create_tag(self, tagname):
         # t = Tag(self,)
         pass
