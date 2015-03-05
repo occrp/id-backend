@@ -55,9 +55,10 @@ class PersonTicketForm(TicketForm):
         model = models.PersonTicket
         fields = ('name', 'aliases', 'background', 'biography',
                   'family', 'business_activities', 'dob', 'birthplace',
-                  'initial_information', 'location', 'deadline', 'sensitive')
+                  'initial_information', 'location', 'deadline',
+                  'sensitive')
         field_args = {
-            'aliases': {'description': _("Other names they are known by") },
+            'aliases': {'description': _("Other names they are known by")},
             'background': {
                 'placeholder': _('What do you know so far?'),
                 'css_class': 'span8',
@@ -72,6 +73,11 @@ class PersonTicketForm(TicketForm):
         }
         ajax_validation_url = "/_validation/request/"
     Meta.field_args.update(TicketForm.Meta.field_args)
+
+    def __init__(self, *args, **kwargs):
+        super(PersonTicketForm, self).__init__(*args, **kwargs)
+        self.fields['deadline'].widget.attrs.update({'class': 'datepicker'})
+        self.fields['dob'].widget.attrs.update({'class': 'datepicker'})
 
 
 class CompanyTicketForm(TicketForm):
