@@ -163,15 +163,11 @@ class Profile(models.Model):
 from django.db.models.signals import post_save
 
 def profile_create(sender, instance, created, **kwargs):
-    print "user create singal fired"
     if created:
         profile = Profile(user=instance)
         profile.save()
 
-print "Adding post_save hook for User"
 post_save.connect(profile_create, sender=User)
-
-
 
 
 ######## External databases ############
