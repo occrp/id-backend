@@ -1,8 +1,12 @@
 from django.views.generic import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+
+from registration.signals import user_registered
+
 from id.models import Profile, AccountRequest
 from id.forms import ProfileUpdateForm
+
 
 class ProfileView(DetailView):
     template_name = 'registration/profile_view.jinja'

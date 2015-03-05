@@ -5,9 +5,10 @@ from django.views.generic import (
         CreateView, FormView, View)
 from django.utils.translation import ugettext_lazy as _
 from id.mixins import JSONResponseMixin, MessageMixin
-from id import forms, models
-from id.models import (
-    Ticket, TicketUpdate, TicketCharge, 
+from id import models
+from ticket import forms
+from ticket.models import (
+    Ticket, TicketUpdate, TicketCharge,
     PersonTicket, CompanyTicket, OtherTicket
 )
 
@@ -154,7 +155,6 @@ class RequestDetailsHandler(TemplateView):
             'ticket_updates': ticket_updates,
             'charges': charges,
             'charges_outstanding': sum(outstanding),
-            'entity_search_form': forms.EntityAjaxSearchForm(),
             'ticket_update_form': self.form,
             'cancel_form': forms.RequestCancelForm(),
             'mark_paid_form': forms.TicketPaidForm(),
@@ -221,14 +221,6 @@ class RemoveObjectHandler(TemplateView):
             'request_details', ticket_id=ticket_id))
 
 
-class RequestRemoveEntityHandler(RemoveObjectHandler):
-
-    field_name = 'entities'
-
-    def get_obj(self, obj_key):
-        return ndb.Key(urlsafe=obj_key)
-
-
 class RequestDetailsActionHandler(JSONResponseMixin, TemplateView):
     """
     Base class for actions such as Cancel / Close / Etc from fragments to
@@ -251,36 +243,6 @@ class RequestDetailsActionHandler(JSONResponseMixin, TemplateView):
             t = self.render_template('modals/form_basic.jinja', form=form,
                                      not_allowed=not_allowed)
             self.render_json_response({'status': 'error', 'html': t})
-
-
-class RequestAddEntityHandler(RequestDetailsActionHandler):
-
-    form_class = forms.EntityAjaxSearchForm
-
-    def user_can(self, ticket):
-        return self.profile.is_admin or ticket.is_public or profile_in(
-            self.profile,
-            [ticket.requester, ticket.responders, ticket.volunteers])
-
-    def form_valid(self, ticket, form):
-
-        duplicates = []
-        for key in form.search_results.data:
-            if key not in ticket.entities:
-                ticket.entities.append(key)
-            else:
-                duplicates.append(key)
-
-        if duplicates:
-            dups = [d.name for d in ndb.get_multi(duplicates)]
-            self.add_message(_("Could not add duplicate(s): %(duplicates)s" % {
-                'duplicates': ', '.join(dups)}), 'warning')
-
-        ticket.put()
-
-        # should be added as a user if they've added an entity.
-        if not self.profile.key in ticket.actors():
-            ticket.join_user(self.profile)
 
 
 class RequestCloseHandler(RequestDetailsActionHandler):
