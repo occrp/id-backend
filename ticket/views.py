@@ -1,13 +1,14 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView, ListView, RedirectView, UpdateView, CreateView, FormView, View
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from django.views.generic import TemplateView
 from django.utils.translation import ugettext_lazy as _
 
-from core.mixins import MessageMixin
+#  from core.mixins import MessageMixin
 
 from ticket.models import Ticket
 from ticket import forms
 
-class TicketRequest(TemplateView, MessageMixin):
+class TicketRequest(TemplateView):
     template_name = "tickets/request.jinja"
 
     """ Some registered user submits a ticket for response by a responder. """
@@ -59,15 +60,23 @@ class TicketRequest(TemplateView, MessageMixin):
     #FIXME: Auth
     #@role_in('user', 'staff', 'admin', 'volunteer')
     def post(self, ticket_id=None):
+        print "ticket post"
         if not self.forms["ticket_type_form"].is_valid():
-            self.add_message("Error")
+            # self.add_message("Error")
             return
 
         ticket_type = self.forms["ticket_type_form"].cleaned_data["ticket_type"]
         form = self.forms[ticket_type+"_form"]
 
+        print "ticket info"
+        print " "
+        print " "
+        print ticket_type
+        print form.errors.as_data()
+        print "end form"
+
         if not form.is_valid():
-            self.add_message(_("Error: Form was not valid"))
+            # self.add_message(_("Error: Form was not valid"))
             print "FORM ERROR NOT VALID!!!"
             return self.get(None)
 
@@ -75,9 +84,9 @@ class TicketRequest(TemplateView, MessageMixin):
         ticket.requester = self.request.user
         ticket.save()
 
-        if ticket_id:
-            self.add_message(_('Ticket successfully saved.'))
-        else:
-            self.add_message(_('Ticket successfully created.'))
+        # if ticket_id:
+        #     self.add_message(_('Ticket successfully saved.'))
+        # else:
+        #     self.add_message(_('Ticket successfully created.'))
 
         return HttpResponseRedirect(reverse('request_details', kwargs={"ticket_id": ticket.id}))
