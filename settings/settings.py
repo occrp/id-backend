@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'django_jinja',
     'id',
     'podaci',
+    'ticket'
 )
 
 MIDDLEWARE_CLASSES = (
