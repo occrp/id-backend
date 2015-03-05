@@ -96,6 +96,15 @@ class MetaMixin:
     def to_json(self):
         return {"id": self.id, "meta": self.meta}
 
+    def details_string(self):
+        s = "%s %3dU %3dW %3dN %4dF" % (
+            ["-","P"][self["public_read"]], 
+            len(self["allowed_users"]), 
+            len(self["allowed_write_users"]), 
+            len(self["notes"]),
+            self.fs.list_files(self.id)[0])
+        return s
+
 class PermissionsMixin:
     def log(self, message, sync=False):
         if self.fs.user:
@@ -493,6 +502,11 @@ class FileSystem:
         res = self.es.search(index=self.es_index, doc_type="tag", body=body, from_=_from, size=_size)
         return res["hits"]["total"], [Tag(self, tagmeta["_id"], prepopulate_meta=tagmeta["_source"]) for tagmeta in res["hits"]["hits"]]
 
+    def list_tags(self, _from=0, _size=1000):
+        body = {}
+        res = self.es.search(index=self.es_index, doc_type="tag", body=body, from_=_from, size=_size)
+        return res["hits"]["total"], [Tag(self, tagmeta["_id"], prepopulate_meta=tagmeta["_source"]) for tagmeta in res["hits"]["hits"]]
+
     def list_user_files(self, user, root=None, _from=0, _size=1000):
         if root:
             body = {"query":{"bool":
@@ -509,7 +523,7 @@ class FileSystem:
         return res["hits"]["total"], [File(self, filemeta["_id"], prepopulate_meta=filemeta["_source"]) for filemeta in res["hits"]["hits"]]
 
     def list_files(self, tag, _from=0, _size=1000):
-        body = {"query":{"term":{"tags": tag.lower()}}}
+        body = {"query":{"term":{"tags": tag}}}
         res = self.es.search(index=self.es_index, doc_type="file", body=body, from_=_from, size=_size)
         return res["hits"]["total"], [File(self, filemeta["_id"], prepopulate_meta=filemeta["_source"]) for filemeta in res["hits"]["hits"]]
 
