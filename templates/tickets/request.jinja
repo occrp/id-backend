@@ -14,7 +14,7 @@
     {% endif %}
 
     <form method="POST" class="form-horizontal requestform" enctype="multipart/form-data" 
-        data-validation-url="{{ person_ownership_form.Meta.ajax_validation_url }}">
+        >
         {% csrf_token %}
         {% if person_ownership_form.Meta and person_ownership_form.Meta.ajax_validation_url and person_ownership_form.instance.key %}
             <input type="hidden" name="validation_key" value="{{ person_ownership_form.instance.key.urlsafe() }}"/>
@@ -43,3 +43,5 @@
 {% block after_js %}
     <script type="text/javascript" src="{{static('js/request-form.js')}}"></script>
 {% endblock %}
+
+{# data-validation-url="{{ person_ownership_form.Meta.ajax_validation_url }}" #}
