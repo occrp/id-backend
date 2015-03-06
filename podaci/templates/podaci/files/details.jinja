@@ -1,4 +1,4 @@
-{% extends "podaci_base.html" %}
+{% extends "podaci_base.jinja" %}
 
 {% block podaci_content %}
 <div class="span3 podaci-details">
@@ -62,7 +62,7 @@
         <h3>Notes</h3>
         <div id="file_notes">
             {% for note in notes %}
-            {% include("podaci/partials/_note.html") %}
+            {% include("podaci/partials/_note.jinja") %}
             {% endfor %}
         </div>
         <form id="note_add_form"/>
