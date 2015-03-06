@@ -1,12 +1,45 @@
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
+
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+
+from ticket.utils import *
 
 #  from core.mixins import MessageMixin
 
-from ticket.models import Ticket
+from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket
 from ticket import forms
+
+class TicketList(TemplateView):
+    template_name = "tickets/request_list.jinja"
+
+    """Display a list of requests which the currently logged in user has out in
+    the wild."""
+
+    #FIXME: Auth
+    #@role_in('user', 'staff', 'admin', 'volunteer')
+    def get_context_data(self):
+        print "get ticket list asfda';fda"
+        my_tickets_base = (Ticket.objects
+                           .filter(requester=self.request.user)
+                           .order_by('-created'))
+        my_tickets = []
+        for i in my_tickets_base:
+            my_tickets.append(get_actual_ticket(i))
+        open_tickets, closed_tickets = split_open_tickets(my_tickets)
+        context = {
+            'requests': open_tickets,
+            'closed_requests': closed_tickets
+        }
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(TicketList, self).dispatch(*args, **kwargs)
 
 class TicketRequest(TemplateView):
     template_name = "tickets/request.jinja"

@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from core.mixins import ModelDiffMixin, DisplayMixin
 
 from constants import *
+from utils import *
 
 ######## Data requests #################
 class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
@@ -14,6 +15,7 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
     Note: Implement volunteers as a separate list of fields from responders,
     so that permissions stay simple.
     """
+    ticket_type = ""
     # Staff-facing fields
     requester = models.ForeignKey(User, related_name="ticket_requests")
     requester_type = models.CharField(max_length=70, choices=REQUESTER_TYPES,

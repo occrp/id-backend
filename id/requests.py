@@ -373,27 +373,6 @@ class RequestReopenHandler(RequestDetailsActionHandler):
         self.add_message(_('Request has been re-opened.'))
 
 
-class RequestListHandler(TemplateView):
-    template_name = "tickets/request_list.jinja"
-
-    """Display a list of requests which the currently logged in user has out in
-    the wild."""
-
-    #FIXME: Auth
-    #@role_in('user', 'staff', 'admin', 'volunteer')
-    def _get(self):
-        my_tickets = (models.Ticket.query()
-                      .filter(models.Ticket.requester == self.profile.key)
-                      .order(models.Ticket.created)
-                      .fetch())
-        open_tickets, closed_tickets = split_open_tickets(my_tickets)
-        context = {
-            'requests': open_tickets,
-            'closed_requests': closed_tickets
-        }
-        self.render_response('tickets/request_list.jinja', **context)
-
-
 class RequestJoinHandler(RedirectView): #FIXME: Verify
     pattern_name = 'request_details'
     join_message = _("You have joined the ticket.")
