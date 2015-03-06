@@ -90,7 +90,10 @@ class MetaMixin:
 
     def get_metadata(self):
         if not self.id: raise ValueError("Cannot get descriptor without an id")
-        self.meta.update(self.fs.es.get(index=self.fs.es_index, doc_type=self.DOCTYPE, id=self.id)["_source"])
+        try:
+            self.meta.update(self.fs.es.get(index=self.fs.es_index, doc_type=self.DOCTYPE, id=self.id)["_source"])
+        except:
+            raise FileNotFound()
         return self.meta
 
     def to_json(self):
@@ -162,11 +165,25 @@ class PermissionsMixin:
         self.log("Added user '%s' [%d] (write=%s)" % (user.username, user.id, write))
         self._sync()
 
+    def make_public(self):
+        self.meta["public_read"] = True
+        self.log("Made file public.")
+        self._sync()
+
+    def make_private(self):
+        self.meta["public_read"] = False
+        self.log("Made file private.")
+        self._sync()
+
     def remove_user(self, user):
         if not user: return
-        self.meta["allowed_users"].remove(user.id)
-        self.meta["allowed_write_users"].remove(user.id)
-        self._sync()
+        try:
+            self.meta["allowed_users"].remove(user.id)
+            self.meta["allowed_write_users"].remove(user.id)
+            self.log("Removed user '%s' [%d]" % (user.username, user.id))
+            self._sync()
+        except ValueError:
+            pass
 
     def has_permission(self, user):
         # FIXME: Add tag support!
