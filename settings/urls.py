@@ -36,7 +36,7 @@ urlpatterns = patterns('',
     url(r'^search/$', search.CombinedSearchHandler.as_view(), name="search"),
     url(r'^search/entities/$', search.CombinedSearchHandler.as_view(), name='search_entities'), # still needed for ajax only
 
-    url(r'^request/$', requests.RequestListHandler.as_view(), name='request_list'),
+    #url(r'^request/$', requests.RequestListHandler.as_view(), name='request_list'),
     url(r'^request/(?P<ticket_id>[0-9]+)/details/$', requests.RequestDetailsHandler.as_view(), name='request_details'),
     url(r'^request/(?P<ticket_id>[0-9]+)/close/$', requests.RequestCloseHandler.as_view(), name='request_close'),
     url(r'^request/(?P<ticket_id>[0-9]+)/cancel/$', requests.RequestCancelHandler.as_view(), name='request_cancel'),
@@ -62,7 +62,9 @@ urlpatterns = patterns('',
     url(r'^request/charges/outstanding/$', requests.AdminOutstandingChargesHandler.as_view(), name='ticket_admin_outstanding_charges'),
     url(r'^request/submit/$', requests.RequestHandler.as_view(), name='request'),
 
+    url(r'^ticket/$', ticket.views.TicketList.as_view(), name='request_list'),
     url(r'^ticket/submit/$', ticket.views.TicketRequest.as_view(), name='ticket_submit'),
+    url(r'^request/(?P<ticket_id>[0-9]+)/details/$', requests.RequestDetailsHandler.as_view(), name='request_details')
 
     url(r'^_validation/company/$', validation.ValidateCompany.as_view(), name='ajax_validate_company'),
     url(r'^_validation/person/$', validation.ValidatePerson.as_view(), name='ajax_validate_person'),

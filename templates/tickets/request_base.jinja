@@ -15,7 +15,7 @@
                 {% for ticket in tickets %}
                     <tr>
                         <td>
-                            <a href="{{ url('request_details', ticket_id=ticket.key.id()) }}">
+                            <a href="{{ url('request_details', ticket_id=ticket.id) }}">
                                 {{ ticket.summary }}
                             </a>
                         </td>
@@ -45,11 +45,11 @@
                         </td>
                         <td>{{ macros.display_datetime(ticket.deadline) }}</td>
                         <td>
-                            <a class='btn btn-mini' href="{{ url('ticket_edit', ticket_id=ticket.key.id()) }}?next={{ request.path_qs }}">
+                            <a class='btn btn-mini' href="{{ url('ticket_edit', ticket_id=ticket.id) }}?next={{ request.path_qs }}">
                                 <i class="icon-pencil"></i>
                             </a>
                         <a href="#AdminSettingsModal" class='btn btn-mini'
-                           data-modal-url="{{ url('ticket_admin_settings', ticket_id=ticket.key.id()) }}">
+                           data-modal-url="{{ url('ticket_admin_settings', ticket_id=ticket.id) }}">
                             <i class="icon-cog"></i>
                         </a>
 
