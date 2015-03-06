@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.jinja" %}
 
 {% block content %}
 <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
@@ -41,10 +41,10 @@
 	{% block podaci_content %}{% endblock %}
 </div>
 
-{% include "podaci/partials/_podaci_upload_model.html" %}
-{% include "podaci/partials/_podaci_edit_users.html" %}
-{% include "podaci/partials/_podaci_edit_tags.html" %}
-{% include "podaci/partials/_podaci_create_tag.html" %}
+{% include "podaci/partials/_podaci_upload_model.jinja" %}
+{% include "podaci/partials/_podaci_edit_users.jinja" %}
+{% include "podaci/partials/_podaci_edit_tags.jinja" %}
+{% include "podaci/partials/_podaci_create_tag.jinja" %}
 
 {% endblock %}
 
