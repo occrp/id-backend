@@ -1,6 +1,9 @@
 # http://occrp-elasticsearch-1:9200/id_prod/_search/
 import sys
 import os
+import time
+import json
+from datetime import datetime
 sys.path.append("../../")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 
@@ -29,30 +32,55 @@ class OldESImporter:
         self.fs = FileSystem(NEW_SERVERS, NEW_ES_INDEX, NEW_DATA_ROOT, 
             Strawman("1000000001", "OldElasticSearchImporterBot"))
         self.tagcache = self.fs.get_tag_dict()
+        if "Imported from old Datavault" not in self.tagcache:
+            self.tagcache["Imported from old Datavault"] = self.fs.create_tag("Imported from old Datavault")
         self.tagcache["olddatavault"] = self.tagcache["Imported from old Datavault"]
         self.threadpool = []
         self.taglock = threading.Lock()
+        self.local_imports = 0
+        self.skipped_imports = 0
+        self.downloaded_imports = 0
 
     def scrape(self):
         print "=" * 50
         print " Old ElasticSearch database importer starting..."
         print "=" * 50
-        count = 20
-        offset = 86920
+        self.start_time = datetime.now()
+        self.runtime = datetime.now() - self.start_time
+        count = 50
+        offset = 0
+        if os.path.isfile("old_elasticsearch.status"):
+            offset = json.loads(open("old_elasticsearch.status").read())["offset"]
         total = 0
+        delay = 2
+
+        print "Starting at %d, doing %d per run" % (offset, count)
 
         while True:
-            res = self.old_es.search(index=OLD_ES_INDEX, body={}, from_=offset, size=count)
+            query = {"query": {"match_all": {}}, "from": offset, "size": count}
+            try:
+                res = self.old_es.search(index=OLD_ES_INDEX, body=query)
+            except elasticsearch.exceptions.ConnectionTimeout:
+                print "\nTimeout on connection. Cooling off for %d seconds." % delay
+                sys.stdout.flush()
+                time.sleep(delay)
+                continue
+
             total = res["hits"]["total"]
 
             perc = 100 * float(offset) / float(total)
             print "\r",
             print " "*100,
-            print "\rParsing %d-%d of %d (%d%%): " % (offset, offset+count, total, perc),
+            print "\r[%s] Parsing %d-%d of %d (%d%%) [%dL %dD %dS]" % (self.runtime, offset, offset+count, total, perc, self.local_imports, self.downloaded_imports, self.skipped_imports),
+            sys.stdout.flush()
             self.parse_hits(res["hits"]["hits"])
             offset += count
+            f = open("old_elasticsearch.status", "w")
+            f.write(json.dumps({"offset": offset}))
+            f.close()
             if offset > total:
                 break
+            self.runtime = datetime.now() - self.start_time
 
         print "=" * 50
         print " Old ElasticSearch database importer done."
@@ -121,9 +149,12 @@ class OldESImporter:
                 fh = open(old_path)
                 f.meta["hash"] = sha256sum(fh)
                 fh.close()
-                shutil.copy(old_path, f.resident_location())
+                if not os.path.isfile(f.resident_location()):
+                    shutil.copy(old_path, f.resident_location())
+                    self.local_imports += 1
+                else:
+                    self.skipped_imports += 1
                 done = True
-                sys.stdout.write(".")
 
         if not OLD_DATA_ROOT or not done:
             # Fallback: If we failed to get the file through normal means..
@@ -133,13 +164,15 @@ class OldESImporter:
             fh.close()
             sio.seek(0)
             f.meta["hash"] = sha256sum(sio)
-            wt = open(f.resident_location(), "w+")
-            wt.write(sio.read())
-            wt.close()
-            sys.stdout.write("!")
+            if not os.path.isfile(f.resident_location()):
+                wt = open(f.resident_location(), "w+")
+                wt.write(sio.read())
+                wt.close()
+                self.downloaded_imports += 1
+            else:
+                self.skipped_imports += 1
 
         f._create_index()
-        sys.stdout.flush()
 
 
 if __name__ == "__main__":
