@@ -15,9 +15,12 @@ from argparse import ArgumentParser
 sys.path.append("../")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 
+import django
 from settings.settings import *
 from podaci.filesystem import *
 from django.contrib.auth.models import User
+
+django.setup()
 
 def getuser(u):
     if not u.isdigit():
@@ -34,10 +37,6 @@ def getuser(u):
             return None
     return user
 
-class Strawman:
-    def __init__(self, id, username):
-        self.id = id
-        self.username = username
 
 class PodaciShell(cmd.Cmd):
     """Simple command processor example."""
@@ -45,9 +44,11 @@ class PodaciShell(cmd.Cmd):
 
     def __init__(self):
         cmd.Cmd.__init__(self)
+        username = raw_input("Username? ")
+        user = User.objects.get(username=username)
         self.fs = FileSystem(
             PODACI_SERVERS, PODACI_ES_INDEX, 
-            PODACI_FS_ROOT, Strawman('0', 'Podaci superuser'))
+            PODACI_FS_ROOT, user)
 
     def do_tags(self, line):
         params = line.split(" ")
