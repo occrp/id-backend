@@ -19,6 +19,7 @@ import django
 from settings.settings import *
 from podaci.filesystem import *
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 
 django.setup()
 
@@ -45,7 +46,19 @@ class PodaciShell(cmd.Cmd):
     def __init__(self):
         cmd.Cmd.__init__(self)
         username = raw_input("Username? ")
-        user = User.objects.get(username=username)
+        password = raw_input("Password? ")
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                print("User is valid, active and authenticated")
+            else:
+                print("The password is valid, but the account has been disabled!")
+                sys.exit()
+        else:
+            print("The username and password were incorrect.")
+            sys.exit()
+
         self.fs = FileSystem(
             PODACI_SERVERS, PODACI_ES_INDEX, 
             PODACI_FS_ROOT, user)
