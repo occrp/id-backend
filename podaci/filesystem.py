@@ -186,12 +186,23 @@ class PermissionsMixin:
             pass
 
     def has_permission(self, user):
-        # FIXME: Add tag support!
-        return user.id in self.meta["allowed_users"]
+        if self.meta["public_read"]: return True
+        if user.id in self.meta["allowed_users"]: return True
+        if self.DOCTYPE == "file":
+            for t in self.meta["tags"]:
+                tag = Tag(self.fs, tid=t)
+                if tag.has_permission(user):
+                    return True
+        return False
 
     def has_write_permission(self, user):
-        # FIXME: Add tag support!
-        return user.id in self.meta["allowed_write_users"]
+        if user.id in self.meta["allowed_write_users"]: return True
+        if self.DOCTYPE == "file":
+            for t in self.meta["tags"]:
+                tag = Tag(self.fs, tid=t)
+                if tag.has_write_permission(user):
+                    return True
+        return False
 
 
 class Tag(MetaMixin, PermissionsMixin):
