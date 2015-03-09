@@ -3,18 +3,14 @@ import sys
 import os
 import time
 import json
+import ijson
 from datetime import datetime
 sys.path.append("../../")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 
 import elasticsearch
 import urllib2
-import threading
 from podaci.filesystem import *
-
-OLD_SERVERS = [{"host": "54.227.243.186"}]
-OLD_ES_INDEX = "id_prod"
-OLD_DATA_ROOT = "/home/datatrac/indexed/public"
 
 NEW_SERVERS = [{"host": "localhost"}]
 NEW_ES_INDEX = "podaci"
@@ -28,15 +24,12 @@ class Strawman:
 
 class OldESImporter:
     def __init__(self):
-        self.old_es = elasticsearch.Elasticsearch(OLD_SERVERS, retry_on_timeout=True)
         self.fs = FileSystem(NEW_SERVERS, NEW_ES_INDEX, NEW_DATA_ROOT, 
             Strawman("1000000001", "OldElasticSearchImporterBot"))
         self.tagcache = self.fs.get_tag_dict()
         if "Imported from old Datavault" not in self.tagcache:
             self.tagcache["Imported from old Datavault"] = self.fs.create_tag("Imported from old Datavault")
         self.tagcache["olddatavault"] = self.tagcache["Imported from old Datavault"]
-        self.threadpool = []
-        self.taglock = threading.Lock()
         self.local_imports = 0
         self.skipped_imports = 0
         self.downloaded_imports = 0
@@ -45,60 +38,35 @@ class OldESImporter:
         print "=" * 50
         print " Old ElasticSearch database importer starting..."
         print "=" * 50
+        self.objects = ijson.items(open("id_prod-data.json"), '')
         self.start_time = datetime.now()
         self.runtime = datetime.now() - self.start_time
-        count = 50
+        count = 500
         offset = 0
         if os.path.isfile("old_elasticsearch.status"):
             offset = json.loads(open("old_elasticsearch.status").read())["offset"]
-        total = 0
+        total = 549000
         delay = 2
 
         print "Starting at %d, doing %d per run" % (offset, count)
 
-        while True:
-            query = {"query": {"match_all": {}}, "from": offset, "size": count}
-            try:
-                res = self.old_es.search(index=OLD_ES_INDEX, body=query)
-            except elasticsearch.exceptions.ConnectionTimeout:
-                print "\nTimeout on connection. Cooling off for %d seconds." % delay
-                sys.stdout.flush()
-                time.sleep(delay)
-                continue
-
-            total = res["hits"]["total"]
-
+        for obj in self.objects:
             perc = 100 * float(offset) / float(total)
-            print "\r",
-            print " "*100,
-            print "\r[%s] Parsing %d-%d of %d (%d%%) [%dL %dD %dS]" % (self.runtime, offset, offset+count, total, perc, self.local_imports, self.downloaded_imports, self.skipped_imports),
-            sys.stdout.flush()
-            self.parse_hits(res["hits"]["hits"])
-            offset += count
-            f = open("old_elasticsearch.status", "w")
-            f.write(json.dumps({"offset": offset}))
-            f.close()
-            if offset > total:
-                break
-            self.runtime = datetime.now() - self.start_time
+            self.parse_hit(obj)
+            offset += 1
+            if offset % 100 == 0:
+                print "\r",
+                print " "*100,
+                print "\r[%s] Parsing %d-%d of %d (%d%%) [%dL %dD %dS]" % (self.runtime, offset, offset+count, total, perc, self.local_imports, self.downloaded_imports, self.skipped_imports),
+                sys.stdout.flush()
+                f = open("old_elasticsearch.status", "w")
+                f.write(json.dumps({"offset": offset}))
+                f.close()
+                self.runtime = datetime.now() - self.start_time
 
         print "=" * 50
         print " Old ElasticSearch database importer done."
         print "=" * 50
-
-    def parse_hits(self, hits):
-        for hit in hits:
-            t = threading.Thread(target=self.parse_hit, args=(hit,))
-            t.daemon = True
-            t.start()
-            self.threadpool.append(t)
-
-        if len(self.threadpool) > 50:
-            # We never want more than 50 threads running at a time.
-            for t in self.threadpool:
-                t.join()
-
-        self.threadpool = []
 
 
     def parse_hit(self, hit):
@@ -112,6 +80,7 @@ class OldESImporter:
 
             f.meta[nkey] = hit["_source"][key]
 
+        f.id = hit["_id"]
         f.meta["is_resident"] = True
         f.meta["is_indexed"] = True
         f.meta["filename"] = f.meta["url"].split("/")[-1]
@@ -123,17 +92,13 @@ class OldESImporter:
         # Handle tags separately
         tags = f.meta["tags"]
         f.meta["tags"] = [self.tagcache["olddatavault"].id]
-        self.taglock.acquire()
-        try:
-            for tag in tags:
-                if tag in self.tagcache.keys():
-                    f.meta["tags"].append(self.tagcache[tag].id)
-                else:
-                    self.tagcache[tag] = self.fs.create_tag(tag)
-                    f.meta["tags"].append(self.tagcache[tag].id)
-                    print "Created new tag: '%s'" % tag
-        finally:
-            self.taglock.release()
+        for tag in tags:
+            if tag in self.tagcache.keys():
+                f.meta["tags"].append(self.tagcache[tag].id)
+            else:
+                self.tagcache[tag] = self.fs.create_tag(tag)
+                f.meta["tags"].append(self.tagcache[tag].id)
+                print "Created new tag: '%s'" % tag
 
         # Pull in the actual file
         # (Here we can use a trick: We are copying this internally, 
@@ -172,7 +137,7 @@ class OldESImporter:
             else:
                 self.skipped_imports += 1
 
-        f._create_index()
+        f._create_index_lazy()
 
 
 if __name__ == "__main__":
