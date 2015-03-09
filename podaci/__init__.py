@@ -7,7 +7,7 @@ from podaci.filesystem import *
 import json
 from settings.settings import PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT
 
-class PodaciView(TemplateView, JSONResponseMixin):
+class PodaciMixin:
     def breadcrumb_push(self, id):
         if not self.request.session.get("breadcrumbs", False):
             self.request.session["breadcrumbs"] = []
@@ -32,12 +32,17 @@ class PodaciView(TemplateView, JSONResponseMixin):
     def clear_breadcrumbs(self):
         self.request.session["breadcrumbs"] = []
 
-    def dispatch(self, *args, **kwargs):
-        # All of podaci is for staff only.
-        staff_only(self.request.user)
+    def podaci_setup(self):
         self.fs = FileSystem(
             PODACI_SERVERS, PODACI_ES_INDEX, 
             PODACI_FS_ROOT, self.request.user)
+
+
+class PodaciView(TemplateView, PodaciMixin, JSONResponseMixin):
+    def dispatch(self, *args, **kwargs):
+        # All of podaci is for staff only.
+        staff_only(self.request.user)
+        self.podaci_setup()
         return super(PodaciView, self).dispatch(*args, **kwargs)
 
     def post(self, request, **kwargs):
@@ -45,7 +50,6 @@ class PodaciView(TemplateView, JSONResponseMixin):
 
     def get(self, request, **kwargs):
         format = request.GET.get("format", "html")
-        print format
         if format != "json":
             return TemplateView.get(self, request, **kwargs)
         else:
