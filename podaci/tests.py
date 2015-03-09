@@ -44,3 +44,67 @@ class PodaciAPITest(TestCase):
         ## Search for files...
         self.fs.search_files({"query":{"term":{"public_read":False}}})
 
+
+class PodaciPermissionTest(TestCase):
+    def setUp(self):
+        if not os.path.isdir(PODACI_FS_ROOT):
+            os.mkdir(PODACI_FS_ROOT)
+
+    def tearDown(self):
+        shutil.rmtree(PODACI_FS_ROOT)
+
+    def test_anonymous_with_access(self):
+        ## Verify that an anonymous user can access a public file
+        u = AnonymousUser()
+        self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
+                             user=u)
+        
+
+    def test_anonymous_without_access(self):
+        ## Verify that an anonymous user can't access a non-public file
+        u = AnonymousUser()
+        self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
+                             user=u)
+        pass
+
+    def test_logged_in_without_access(self):
+        ## Verify that a logged in user cannot access a non-public file
+        ## they have no permission for
+        u = User(username="testuser")
+        u.save()
+        self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
+                             user=u)
+
+        pass
+
+    def test_logged_in_with_direct_access(self):
+        ## Verify that a logged in user can access a non-public file they
+        ## have explicit access to
+        u = User(username="testuser")
+        u.save()
+        self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
+                             user=u)
+
+        pass
+
+    def test_logged_in_with_indirect_access(self):
+        ## Verify that a logged in user can access a non-public file they
+        ## have access to through a tag they are allowed on
+        u = User(username="testuser")
+        u.save()
+        self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
+                             user=u)
+
+        pass
+
+    def test_admin_access(self):
+        ## Verify that an admin user always has access
+        u = User(username="testuser")
+        u.is_superuser = True
+        u.save()
+        self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
+                             user=u)
+
+        pass
+
+
