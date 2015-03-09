@@ -295,6 +295,16 @@ class Tag(MetaMixin, PermissionsMixin):
         zstr.seek(0)
         return zstr
 
+    def has_files(self):
+        body = {"query":{"match":{"tags": self.id}}}
+        res = self.fs.es.search(index=self.fs.es_index, doc_type="file", body=body, from_=0, size=0)
+        return res["hits"]["total"]
+
+    def list_files(self, _from=0, _size=1000):
+        body = {"query":{"match":{"tags": self.id}}}
+        res = self.fs.es.search(index=self.fs.es_index, doc_type="file", body=body, from_=_from, size=_size)
+        return res["hits"]["total"], [File(self, filemeta["_id"], prepopulate_meta=filemeta["_source"]) for filemeta in res["hits"]["hits"]]
+
 
 class File(MetaMixin, PermissionsMixin):
     DOCTYPE = "file"
@@ -514,7 +524,7 @@ class FileSystem:
         return f
 
     def get_file_by_hash(self, sha):
-        body = {"query":{"term":{"hash":sha}}}
+        body = {"query":{"match":{"hash":sha}}}
         res = self.es.search(index=self.es_index, doc_type="file", body=body)
         print res
         if len(res["hits"]["hits"]) == 0: return FileNotFound()
@@ -524,7 +534,7 @@ class FileSystem:
         return File(self, fid)
 
     def file_exists_by_hash(self, sha):
-        body = {"query":{"term":{"hash":sha}}}
+        body = {"query":{"match":{"hash":sha}}}
         try:
             res = self.es.search_exists(index=self.es_index, doc_type="file", body=body)
         except elasticsearch.exceptions.NotFoundError, e:
@@ -532,7 +542,7 @@ class FileSystem:
         return res["exists"]
 
     def file_exists_by_url(self, url):
-        body = {"query":{"term":{"url":url}}}
+        body = {"query":{"match":{"url":url}}}
         try:
             res = self.es.search_exists(index=self.es_index, doc_type="file", body=body)
         except elasticsearch.exceptions.NotFoundError, e:
@@ -554,14 +564,14 @@ class FileSystem:
         elif root == False: # Explicitly disallow non-root items
             body = {
                     "query": {
-                        "term": {"allowed_users": user.id}
+                        "match": {"allowed_users": user.id}
                     },
                     "filter": {
                         "missing": {"field": "parents"}
                     }
                 }
         else:
-            body = {"query":{"term":{"allowed_users":user.id}}}
+            body = {"query":{"match":{"allowed_users":user.id}}}
         res = self.es.search(index=self.es_index, doc_type="tag", body=body, from_=_from, size=_size)
         return res["hits"]["total"], [Tag(self, tagmeta["_id"], prepopulate_meta=tagmeta["_source"]) for tagmeta in res["hits"]["hits"]]
 
@@ -581,7 +591,7 @@ class FileSystem:
                     }
                 }}
         else:
-            body = {"query":{"term":{"allowed_users":user.id}}}
+            body = {"query":{"match":{"allowed_users":user.id}}}
         res = self.es.search(index=self.es_index, doc_type="file", body=body, from_=_from, size=_size)
         return res["hits"]["total"], [File(self, filemeta["_id"], prepopulate_meta=filemeta["_source"]) for filemeta in res["hits"]["hits"]]
 
@@ -650,7 +660,7 @@ if __name__ == "__main__":
     # SERVERS = [{"host": "54.227.243.186", "port": 9200}]
     fs = FileSystem(SERVERS, "podaci", "/home/smari/Projects/OCCRP/data/", user=Strawman("smari"))
 
-    for fe in fs.search_files({"query":{"term":{"is_resident":True}}}):
+    for fe in fs.search_files({"query":{"match":{"is_resident":True}}}):
         fe.delete(sure=True)
 
     ## Test 1: Create a file!
@@ -681,5 +691,5 @@ if __name__ == "__main__":
 
     ## Test 7: Make sure data store is empty:
     print "Checking for files:"
-    print fs.search_files({"query":{"term":{"public_read":False}}})
+    print fs.search_files({"query":{"match":{"public_read":False}}})
 
