@@ -132,6 +132,14 @@ class PermissionsMixin:
             self.id = res["_id"]
             self.version = res["_version"]
 
+    def _index_get_json(self):
+        act = {
+            "_index": self.fs.es_index,
+            "_type": self.DOCTYPE,
+            "_id": self.id,
+            "_source": self.meta,
+        }
+
     def _create_index_lazy(self):
         """Instead of creating the index right now, we add it to a bulk loader."""
         if not self.fs.user:
@@ -141,12 +149,7 @@ class PermissionsMixin:
         if not hasattr(self, "lazy_index_cache"):
             self.lazy_index_cache = []
 
-        act = {
-            "_index": self.fs.es_index,
-            "_type": self.DOCTYPE,
-            "_id": self.id,
-            "_source": self.meta,
-        }
+        act = self._index_get_json()
         self.lazy_index_cache.append(act)
 
         if len(self.lazy_index_cache) >= 500:
