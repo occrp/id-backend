@@ -53,7 +53,6 @@ FILE_METADATA_V1 = {
     "metadata":             {},
 }
 
-
 FILE_METADATA_V2 = {
     "identifier":           "",     # Project-User-6 digits of SHA256
     "created_by":           "",     # User ID
@@ -132,6 +131,34 @@ class PermissionsMixin:
         if res["created"]:
             self.id = res["_id"]
             self.version = res["_version"]
+
+    def _create_index_lazy(self):
+        """Instead of creating the index right now, we add it to a bulk loader."""
+        if not self.fs.user:
+            raise AuthenticationError()
+        if not self.id:
+            raise ValueError("ID must be set when doing bulk loads.")
+        if not hasattr(self, "lazy_index_cache"):
+            self.lazy_index_cache = []
+
+        act = {
+            "_index": self.fs.es_index,
+            "_type": self.DOCTYPE,
+            "_id": self.id,
+            "_source": self.meta,
+        }
+        self.lazy_index_cache.append(act)
+
+        if len(self.lazy_index_cache) >= 500:
+            self._flush_lazy_indexer()
+
+    def _flush_lazy_indexer(self):
+        """Make sure bulk indexing comands have fired."""
+        res = elasticsearch.helpers.streaming_bulk(
+                    client=self.fs.es, 
+                    actions=self.lazy_index_cache)
+        print "Performed %d actions lazily" % len(self.lazy_index_cache)
+        self.lazy_index_cache = []
 
     def _create_metadata(self):
         """Creates a default metadata template for a new entry."""
