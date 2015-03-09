@@ -160,7 +160,7 @@
     <script type="text/javascript" src="{{ static("js/bootstrap-fileupload.js") }}"></script>
     <script type="text/javascript">
         $('[data-toggle=tooltip]').tooltip();
-        $.fn.datepicker.defaults = $.extend({}, $.fn.datepicker.defaults, {language: "{{ LANGUAGE_LC }}"});
+        $.fn.datepicker.defaults = $.extend({}, $.fn.datepicker.defaults, {language: "{{ LANGUAGE_LC }}", format: "yyyy-mm-dd" });
         moment.lang("{{ LANGUAGE_LC }}");
         _.templateSettings = {
             interpolate: /\{\{(.+?)\}\}/g

@@ -17,7 +17,7 @@
       if (date) {
         $el.val(moment(date).format('l'));
       }
-      $el.datepicker({format: 'd/m/yyyy'}); // TODO: Figure out how to get datepicker to use Moment.js
+      $el.datepicker({format: 'yyyy-m-d'}); // TODO: Figure out how to get datepicker to use Moment.js
     });
   };
 
@@ -26,7 +26,8 @@
     $('span.date').each(function() {
       var $el = $(this);
       var datetime = $el.data('date');
-      var format = $el.data('format');
+      // var format = $el.data('format');
+      var format = 'YYYY-MM-DD'
       $el.text(moment(datetime).format(format));
     });
 
@@ -34,7 +35,8 @@
     $('span.datetime').each(function() {
       var $el = $(this);
       var datetime = $el.data('datetime');
-      var format = $el.data('format');
+      // var format = $el.data('format');
+      var format = 'YYYY-MM-DD hh:mm a'
 
       // Display datetimes in local time
       $el.text(moment.utc(datetime).local().format(format));
