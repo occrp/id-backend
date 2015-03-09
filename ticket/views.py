@@ -126,6 +126,19 @@ class TicketList(TemplateView):
 class TicketRequest(TemplateView):
     template_name = "tickets/request.jinja"
 
+    # runs when django forms clean the data but before django saves the object
+    def clean_family(self):
+        data = self.cleaned_data['family']
+        return data.strip()
+
+    def clean_aliases(self):
+        data = self.cleaned_data['aliases']
+        return data.strip()
+
+    def clean_connections(self):
+        data = self.cleaned_data['connections']
+        return data.strip()
+
     """ Some registered user submits a ticket for response by a responder. """
     def dispatch(self, request):
         self.ticket = None
@@ -183,18 +196,12 @@ class TicketRequest(TemplateView):
         ticket_type = self.forms["ticket_type_form"].cleaned_data["ticket_type"]
         form = self.forms[ticket_type+"_form"]
 
-        if form is forms.PersonTicketForm:
-            form.family = form.family.strip()
-            form.aliases = form.aliases.strip()
-        if form is forms.CompanyTicketForm:
-            form.connections = form.connections.strip()
-
         print "ticket info"
         print " "
         print " "
         print ticket_type
         print form.errors.as_data()
-        print form.connections
+        print form.cleaned_data
         print "end form"
 
         if not form.is_valid():
