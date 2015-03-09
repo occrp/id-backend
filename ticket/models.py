@@ -282,7 +282,8 @@ class CompanyTicket(Ticket):
     background = models.TextField(blank=False, verbose_name=_('Background'))
     sources = models.TextField(blank=False, verbose_name=_('Sources'))
     story = models.TextField(blank=False, verbose_name=_('Your Story'))
-    connections = models.CharField(max_length=50, verbose_name=_('Connected People')) # Repeated
+    #connections = models.CharField(max_length=50, verbose_name=_('Connected People')) # Repeated
+    connections = models.TextField(blank=True, verbose_name=_('Connected People'))
 
     @property
     def summary(self):
