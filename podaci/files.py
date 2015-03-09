@@ -54,7 +54,7 @@ class Download(PodaciView):
 
     def get(self, request, id, **kwargs):
         self.file = self.fs.get_file_by_id(id)
-        response = StreamingHttpResponse(self.file.get(), mimetype=self.file.meta["mimetype"])
+        response = StreamingHttpResponse(self.file.get(), content_type=self.file.meta["mimetype"])
         if not bool(request.GET.get("download", True)):
             response['Content-Disposition'] = 'attachment; filename=' + self.file.meta["filename"] 
         return response
