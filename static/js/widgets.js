@@ -186,7 +186,7 @@
     this.base.empty();
 
     var lname = $('<input type="text" class="lastname" placeholder="' + i18n.gettext('Last Name') + '" />');
-    var other = $('<input type="text" class="othername" placeholder="' + i18n.gettext('Other Names') + '" />');
+    var other = $('<input type="text" class="othername" placeholder="' + i18n.gettext('First/Other Names') + '" />');
 
     lname.val(this.initial.lname);
     other.val(this.initial.other);

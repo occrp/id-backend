@@ -86,12 +86,17 @@
                 {% endfor %}
             </tr>
         </thead>
-    {% for row in value %}
+    {%set rows = value.split('\n') %}
+    {% for row in rows %}
         <tr>
             {% with %}
                 {% set fields = row.split('\t') %}
                 {% for i in range(0, cols|length) %}
-                    <td>{{ fields[i] }}</td>
+                    <td>
+                        {% if fields[i] is defined %}
+                        {{ fields[i] }}
+                        {% endif %}
+                    </td>
                 {% endfor %}
             {% endwith %}
         </tr>
