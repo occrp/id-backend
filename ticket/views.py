@@ -11,8 +11,90 @@ from ticket.utils import *
 
 #  from core.mixins import MessageMixin
 
-from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket
+from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, TicketUpdate, TicketCharge
 from ticket import forms
+
+class TicketDetail(TemplateView):
+    template_name = "tickets/request_details.jinja"
+    """
+    View for the requester of a ticket to view what is currently going on,
+    and provide feedback / close the request / etc
+    """
+    #FIXME: Auth
+    #@role_in('user', 'staff', 'admin', 'volunteer')
+    def dispatch(self, request, ticket_id=None):
+        self.ticket = Ticket.objects.get(id=int(ticket_id))
+        if hasattr(self.ticket, "personticket"):
+            self.ticket = self.ticket.personticket
+        elif hasattr(self.ticket, "companyticket"):
+            self.ticket = self.ticket.companyticket
+        elif hasattr(self.ticket, "otherticket"):
+            self.ticket = self.ticket.otherticket
+        else:
+            print dir(self.ticket)
+            raise ValueError("Unknown ticket type")
+
+        if not self.ticket:
+            return self.abort(404)
+
+        if not self.ticket.is_public and not (
+            request.user.profile.is_admin or
+            request.user == self.ticket.requester or
+            request.user in self.ticket.responders.objects.all() or
+            request.user in self.ticket.volunteers.objects.all()):
+                return self.abort(401)
+
+        self.form = forms.CommentForm()
+        #form.author.data = request.user.id
+        # form.ticket.data = ticket.id
+        return super(TicketDetail, self).dispatch(request)
+
+    def get_context_data(self):
+        ticket_updates = (TicketUpdate.objects
+                          .filter(ticket=self.ticket)
+                          .order_by("created"))
+
+        charges = (TicketCharge.objects.filter(ticket=self.ticket)
+                   .order_by("created"))
+
+        outstanding = TicketCharge.outstanding_charges(
+            charges, pluck="cost")
+
+        return {
+            'ticket': self.ticket,
+            'ticket_updates': ticket_updates,
+            'charges': charges,
+            'charges_outstanding': sum(outstanding),
+            'ticket_update_form': self.form,
+            'cancel_form': forms.RequestCancelForm(),
+            'mark_paid_form': forms.TicketPaidForm(),
+            'close_form': forms.RequestCancelForm(),
+            're_open_form': forms.RequestCancelForm(),
+            'flag_form': forms.RequestFlagForm(),
+            'file_upload_form': forms.DirectUploadForm(initial={
+                "key":self.ticket.id,
+                "redirect_to":'/request/%s/details' % self.ticket.id}),
+            'charge_form': forms.RequestChargeForm()
+        }
+
+    #FIXME: AJAXize!
+    #FIXME: Auth
+    #@role_in('user', 'staff', 'admin', 'volunteer')
+    def post(self, request):
+        print self.ticket
+        form = forms.CommentForm(self.request.POST)
+
+        if not form.is_valid():
+            print "FORM WAS INVALID!!!"
+            return self.get(request)
+
+        comment = form.save(commit=False)
+        print comment
+        comment.ticket = self.ticket
+        comment.author = request.user
+        print "YAAY SAVING!!"
+        comment.save()
+        return HttpResponseRedirect(reverse('request_details', kwargs={ "ticket_id":self.ticket.id}))
 
 class TicketList(TemplateView):
     template_name = "tickets/request_list.jinja"
@@ -101,11 +183,18 @@ class TicketRequest(TemplateView):
         ticket_type = self.forms["ticket_type_form"].cleaned_data["ticket_type"]
         form = self.forms[ticket_type+"_form"]
 
+        if form is forms.PersonTicketForm:
+            form.family = form.family.strip()
+            form.aliases = form.aliases.strip()
+        if form is forms.CompanyTicketForm:
+            form.connections = form.connections.strip()
+
         print "ticket info"
         print " "
         print " "
         print ticket_type
         print form.errors.as_data()
+        print form.connections
         print "end form"
 
         if not form.is_valid():

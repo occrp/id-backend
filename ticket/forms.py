@@ -4,6 +4,13 @@ from django.utils.translation import ugettext_lazy as _
 from ticket import constants
 from ticket import models
 
+class DirectUploadForm(forms.Form):
+    key = forms.HiddenInput()
+    redirect_to = forms.HiddenInput()
+    file1 = forms.FileField(label='')
+    file2 = forms.FileField(label='')
+    file3 = forms.FileField(label='')
+
 class TicketPaidForm(forms.Form):
     """
     Update a ticket with it's payment status (from within the ticket).
@@ -103,6 +110,10 @@ class CompanyTicketForm(TicketForm):
         ajax_validation_url = "/_validation/request/"
     Meta.field_args.update(TicketForm.Meta.field_args)
 
+    def __init__(self, *args, **kwargs):
+        super(CompanyTicketForm, self).__init__(*args, **kwargs)
+        self.fields['deadline'].widget.attrs.update({'class': 'datepicker'})
+
 
 class OtherTicketForm(TicketForm):
     class Meta(TicketForm.Meta):
@@ -115,6 +126,10 @@ class OtherTicketForm(TicketForm):
         }
         ajax_validation_url = "/_validation/request/"
     Meta.field_args.update(TicketForm.Meta.field_args)
+
+    def __init__(self, *args, **kwargs):
+        super(OtherTicketForm, self).__init__(*args, **kwargs)
+        self.fields['deadline'].widget.attrs.update({'class': 'datepicker'})
 
 
 class RequestCancelForm(forms.Form):

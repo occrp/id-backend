@@ -37,7 +37,7 @@ urlpatterns = patterns('',
     url(r'^search/entities/$', search.CombinedSearchHandler.as_view(), name='search_entities'), # still needed for ajax only
 
     #url(r'^request/$', requests.RequestListHandler.as_view(), name='request_list'),
-    url(r'^request/(?P<ticket_id>[0-9]+)/details/$', requests.RequestDetailsHandler.as_view(), name='request_details'),
+    #url(r'^request/(?P<ticket_id>[0-9]+)/details/$', requests.RequestDetailsHandler.as_view(), name='request_details'),
     url(r'^request/(?P<ticket_id>[0-9]+)/close/$', requests.RequestCloseHandler.as_view(), name='request_close'),
     url(r'^request/(?P<ticket_id>[0-9]+)/cancel/$', requests.RequestCancelHandler.as_view(), name='request_cancel'),
     url(r'^request/(?P<ticket_id>[0-9]+)/delete/$', requests.RequestDeleteHandler.as_view(), name='request_delete'),
@@ -47,7 +47,7 @@ urlpatterns = patterns('',
     url(r'^request/(?P<ticket_id>[0-9]+)/charge/$', requests.RequestAddChargeHandler.as_view(), name='request_charge_add'),
     url(r'^request/(?P<ticket_id>[0-9]+)/join/$', requests.RequestJoinHandler.as_view(), name='ticket_join'),
     url(r'^request/(?P<ticket_id>[0-9]+)/leave/$', requests.RequestLeaveHandler.as_view(), name='ticket_leave'),
-    url(r'^request/submit/$', requests.RequestHandler.as_view(), name='request'),
+    #url(r'^request/submit/$', requests.RequestHandler.as_view(), name='request'),
     url(r'^request/request_unauthorized/$', requests.RequestUnauthorized.as_view(), name='request_unauthorized'),
     url(r'^request/respond/$', requests.ResponseListHandler.as_view(), name='response_list'),
     url(r'^request/public/$', requests.PublicListHandler.as_view(), name='public_list'),
@@ -64,7 +64,7 @@ urlpatterns = patterns('',
 
     url(r'^ticket/$', ticket.views.TicketList.as_view(), name='request_list'),
     url(r'^ticket/submit/$', ticket.views.TicketRequest.as_view(), name='ticket_submit'),
-    url(r'^request/(?P<ticket_id>[0-9]+)/details/$', requests.RequestDetailsHandler.as_view(), name='request_details')
+    url(r'^ticket/(?P<ticket_id>[0-9]+)/details/$', ticket.views.TicketDetail.as_view(), name='request_details'),
 
     url(r'^_validation/company/$', validation.ValidateCompany.as_view(), name='ajax_validate_company'),
     url(r'^_validation/person/$', validation.ValidatePerson.as_view(), name='ajax_validate_person'),
