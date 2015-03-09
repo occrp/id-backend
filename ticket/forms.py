@@ -115,6 +115,7 @@ class CompanyTicketForm(TicketForm):
         self.fields['deadline'].widget.attrs.update({'class': 'datepicker'})
 
 
+
 class OtherTicketForm(TicketForm):
     class Meta(TicketForm.Meta):
         model = models.OtherTicket

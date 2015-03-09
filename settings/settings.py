@@ -119,6 +119,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+from django.conf.global_settings import DATE_INPUT_FORMATS
+DATE_INPUT_FORMATS += ('%d/%m/%y',)
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
