@@ -16,6 +16,8 @@ NEW_SERVERS = [{"host": "localhost"}]
 NEW_ES_INDEX = "podaci"
 NEW_DATA_ROOT = "/home/smari/Projects/OCCRP/data/"
 
+OLD_DATA_ROOT = "/home/datatrac/indexed/public"
+
 class Strawman:
     def __init__(self, id, username):
         self.id = id
