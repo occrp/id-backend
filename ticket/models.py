@@ -38,6 +38,8 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
     deadline = models.DateField(blank=False, verbose_name=_('Deadline'))
     sensitive = models.BooleanField(default=False, verbose_name=_('Sensitive?'))
 
+    tag_id = models.CharField(max_length=60, blank=True)    # Refers to this Ticket's Podaci tag.
+
     def most_fields(self):
         '''Return an iterator of tuples (verbose name, display value)
         for all fields which can be shown to everybody on the ticket'''

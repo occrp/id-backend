@@ -5,6 +5,8 @@
 {% block body_class %}request has-full-page-header{% endblock %}
 
 {% block before_content %}
+<link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
+
 <div class="page-header full-page-header">
  <div class="container">
   <div class="row">
@@ -38,10 +40,7 @@
             {% if ticket.is_open() %}
 
             <div class="btn-group">
-                <!--<button type="button" class="btn" data-toggle="drive-picker" data-spinner="before" data-key="{{ ticket.id }}">
-                    <i class="icon-file-alt"></i> {% trans %}Attach Files{% endtrans %}
-                </button>-->
-                <a href="#DirectUploadForm" role="button" class="btn upload_files" data-toggle="modal" data-key="{{ ticket.id }}">
+                <a href="#DirectUploadForm" role="button" class="btn podaci_upload" data-toggle="modal" data-key="{{ ticket.id }}">
                     <i class="icon-file-alt"></i> {% trans %}Attach Files{% endtrans %}
                 </a>
 
@@ -261,7 +260,7 @@
             </div>
         </div>
 
-        {% if ticket.drive_folder_id %}
+        {% if tag.has_files() %}
             <h3 class="primary-highlight">
                 {% trans %}Attached Files{% endtrans %}
                 {% if is_staff or is_admin %}
@@ -271,7 +270,7 @@
                     </a>
                 {% endif %}
             </h3>
-            {{ macros.list_files(ticket) }}
+            {% include "podaci/partials/_podaci_file_list.jinja" %}
         {% endif %}
 
         {#
@@ -376,12 +375,16 @@
 {% block js %}
     {{ super() }}
     <script type="text/javascript" src="{{ static_url }}js/entity-view.js"></script>
+    <script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/vendor/jquery.ui.widget.js')}}"></script>
+    <script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
+    <script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
+    <script type="text/javascript" src="{{ static('js/podaci.js') }}"></script>
 {% endblock %}
 
 {% block after_js %}
     {{ super() }}
     <div class="modal hide" id="entity-viewer"></div>
-    {{ modal_macros.render_modal(file_upload_form, url('upload_direct'), "DirectUploadForm",  _("Attach Files"), _("Attach Files"), "multipart/form-data")}}
+    {% include "podaci/partials/_podaci_upload_model.jinja" %}
     {{ modal_macros.render_modal(flag_form, url('request_flag', ticket_id=ticket.id), "ReqFlagForm", _("Alert Administrator"), _("Flag Request")) }}
     {{ modal_macros.render_modal(re_open_form, url('request_reopen', ticket_id=ticket.id), "ReqReopenForm", _("Re-Open Request"), _("Submit")) }}
     {{ modal_macros.render_modal(close_form, url('request_close', ticket_id=ticket.id), "ReqCloseForm", _("Close Request"), _("Submit")) }}
