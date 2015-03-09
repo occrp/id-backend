@@ -14,7 +14,10 @@ from ticket.utils import *
 from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, TicketUpdate, TicketCharge
 from ticket import forms
 
-class TicketDetail(TemplateView):
+from podaci import PodaciMixin
+
+
+class TicketDetail(TemplateView, PodaciMixin):
     template_name = "tickets/request_details.jinja"
     """
     View for the requester of a ticket to view what is currently going on,
@@ -60,6 +63,17 @@ class TicketDetail(TemplateView):
         outstanding = TicketCharge.outstanding_charges(
             charges, pluck="cost")
 
+        self.podaci_setup()
+
+        if self.ticket.tag_id == "":
+            # Create Podaci tag for this ticket.
+            tag_name = "Ticket %d" % (self.ticket.id)
+            tag = self.fs.create_tag(tag_name)
+            self.ticket.tag_id = tag.id
+            self.ticket.save()
+        else:
+            tag = self.fs.get_tag(self.ticket.tag_id)
+
         return {
             'ticket': self.ticket,
             'ticket_updates': ticket_updates,
@@ -71,9 +85,8 @@ class TicketDetail(TemplateView):
             'close_form': forms.RequestCancelForm(),
             're_open_form': forms.RequestCancelForm(),
             'flag_form': forms.RequestFlagForm(),
-            'file_upload_form': forms.DirectUploadForm(initial={
-                "key":self.ticket.id,
-                "redirect_to":'/request/%s/details' % self.ticket.id}),
+            'tag': tag,
+            'result_files': tag.list_files()[1],
             'charge_form': forms.RequestChargeForm()
         }
 
@@ -96,7 +109,7 @@ class TicketDetail(TemplateView):
         comment.save()
         return HttpResponseRedirect(reverse('request_details', kwargs={ "ticket_id":self.ticket.id}))
 
-class TicketList(TemplateView):
+class TicketList(TemplateView, PodaciMixin):
     template_name = "tickets/request_list.jinja"
 
     """Display a list of requests which the currently logged in user has out in
@@ -123,7 +136,7 @@ class TicketList(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(TicketList, self).dispatch(*args, **kwargs)
 
-class TicketRequest(TemplateView):
+class TicketRequest(TemplateView, PodaciMixin):
     template_name = "tickets/request.jinja"
 
     # runs when django forms clean the data but before django saves the object
@@ -201,7 +214,6 @@ class TicketRequest(TemplateView):
         print " "
         print ticket_type
         print form.errors.as_data()
-        print form.cleaned_data
         print "end form"
 
         if not form.is_valid():
@@ -211,6 +223,15 @@ class TicketRequest(TemplateView):
 
         ticket = form.save(commit=False)
         ticket.requester = self.request.user
+        ticket.save()
+
+        self.podaci_setup()
+
+        # Create Podaci tag for this ticket.
+        tag_name = "Ticket %d" % (ticket.id)
+        tag = self.fs.create_tag(tag_name)
+        # TODO: Put this tag in a nice root tag.
+        ticket.tag_id = tag.id
         ticket.save()
 
         # if ticket_id:
