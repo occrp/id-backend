@@ -133,7 +133,7 @@ class PermissionsMixin:
             self.version = res["_version"]
 
     def _index_get_json(self):
-        act = {
+        return {
             "_index": self.fs.es_index,
             "_type": self.DOCTYPE,
             "_id": self.id,
