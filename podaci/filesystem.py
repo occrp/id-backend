@@ -300,11 +300,6 @@ class Tag(MetaMixin, PermissionsMixin):
         res = self.fs.es.search(index=self.fs.es_index, doc_type="file", body=body, from_=0, size=0)
         return res["hits"]["total"]
 
-    def list_files(self, _from=0, _size=1000):
-        body = {"query":{"match":{"tags": self.id}}}
-        res = self.fs.es.search(index=self.fs.es_index, doc_type="file", body=body, from_=_from, size=_size)
-        return res["hits"]["total"], [File(self, filemeta["_id"], prepopulate_meta=filemeta["_source"]) for filemeta in res["hits"]["hits"]]
-
 
 class File(MetaMixin, PermissionsMixin):
     DOCTYPE = "file"
