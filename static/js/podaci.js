@@ -79,12 +79,12 @@ Podaci.update_selection = function() {
     }
 
     if (Podaci.selection.length == 0 && not_selected.length == 0) {
-        $("#podaci_selection_menu").text("No files");
-        $("#podaci_selection_menu")
+        $("#podaci_selection_menu").html("No files <span class=\"caret\"></span>");
+        // $("#podaci_selection_menu")
     } else if (Podaci.selection.length == 0) {
-        $("#podaci_selection_menu").text("All files");
+        $("#podaci_selection_menu").html("All files <span class=\"caret\"></span>");
     } else {
-        $("#podaci_selection_menu").text("Selection (" + Podaci.selection.length + ")");
+        $("#podaci_selection_menu").html("Selection (" + Podaci.selection.length + ") <span class=\"caret\"></span>");
     }
 };
 

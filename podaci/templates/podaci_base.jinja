@@ -16,22 +16,11 @@
             </li>
         </ul>
         <ul class="nav navbar-nav pull-right">
-            <li class="dropdown"><a id="podaci_select_menu" href="#" class="dropdown-toggle" data-toggle="dropdown">Select</a>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a class="podaci_btn_select_all">Select all</a></li>
-                    <li><a class="podaci_btn_select_none">Select none</a></li>
-                    <li><a class="podaci_btn_select_invert">Invert selection</a></li>
-                </ul>
+            <li class="dropdown"><a id="podaci_select_menu" href="#" class="dropdown-toggle" data-toggle="dropdown">Select <span class="caret"></span></a>
+                {% include "podaci/partials/_podaci_selection_tools.jinja" %}
             </li>
-            <li class="dropdown"><a id="podaci_selection_menu" href="#" class="dropdown-toggle" data-toggle="dropdown">Selection</a>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a class="podaci_add_tags">Add tags</a></li>
-                    <li><a class="podaci_remove_tags">Remove tags</a></li>
-                    <li><a class="FIXME podaci_selection_users_edit">Edit users</a></li>
-                    <li><a class="FIXME podaci_selection_make_public">Make public</a></li>
-                    <li><a class="podaci_selection_download_zip">Download as Zip</a></li>
-                    <li><a class="FIXME podaci_selection_delete">Delete</a></li>
-                </ul>
+            <li class="dropdown"><a id="podaci_selection_menu" href="#" class="dropdown-toggle" data-toggle="dropdown">Selection <span class="caret"></span></a>
+                {% include "podaci/partials/_podaci_selection_actions.jinja" %}
             </li>
         </ul>
     </div>
