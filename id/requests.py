@@ -286,7 +286,7 @@ class RequestDeleteHandler(RequestDetailsActionHandler):
         ticket.key.delete()
         self.add_message(_(
             'Ticket %s has been deleted' % ticket_id))
-        self.redirect(self.uri_for('request_list'))
+        self.redirect(self.uri_for('ticket_list'))
 
 
 class RequestFlagHandler(RequestDetailsActionHandler):
