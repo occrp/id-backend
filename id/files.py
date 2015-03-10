@@ -94,7 +94,7 @@ class DirectUploadFileHandler(TemplateView, MessageMixin):
         #     obj._add_file(fh = field.file, title = field.filename)
         #     self.add_message(_('Successfully attached %s' % field.filename), 'success')
         #     filenum += 1
-        return HttpResponseRedirect(reverse('request_list'))
+        return HttpResponseRedirect(reverse('ticket_list'))
 
 class UploadCheck(TemplateView, JSONResponseMixin):
 
