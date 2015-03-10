@@ -2,11 +2,7 @@
 
 {% block podaci_content %}
 <div class="span12" style="margin-top: -20px">
-    <div class="pull-right btn-group" role="group">
-        <button id="podaci-list-mode-icons" class="btn"><i class="icon-folder-open"></i></button>
-        <button id="podaci-list-mode-list" class="btn"><i class="icon-list"></i></button>
-    </div>
-
+    {% include "podaci/partials/_podaci_tag_view_type_selection.jinja" %}
     <div class="breadcrumbs">
         <a href="{{url('podaci_info_home')}}">Tags</a>{% if breadcrumbs %} &gt; {% endif %}
         {% for bc in breadcrumbs %}
