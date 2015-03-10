@@ -5,7 +5,7 @@
         <h1>{% trans %}Request Information{% endtrans %}</h1>
     </div>
 
-    {% if not ticket.key %}
+    {% if not ticket.id %}
         {% call macros.help_box() %}
             {% trans -%}
                 Your request will be routed to our professional researchers and volunteers, who will try to help.
@@ -16,24 +16,34 @@
     <form method="POST" class="form-horizontal requestform" enctype="multipart/form-data" 
         >
         {% csrf_token %}
-        {% if person_ownership_form.Meta and person_ownership_form.Meta.ajax_validation_url and person_ownership_form.instance.key %}
-            <input type="hidden" name="validation_key" value="{{ person_ownership_form.instance.key.urlsafe() }}"/>
+        {% if person_ownership_form is defined %}
+            {% if person_ownership_form.Meta and person_ownership_form.Meta.ajax_validation_url and person_ownership_form.instance.key %}
+                <input type="hidden" name="validation_key" value="{{ person_ownership_form.instance.key.urlsafe() }}"/>
+            {% endif %}
         {% endif %}
 
-        <div class="well span4">
-            {{ ticket_type_form.as_p() }}
+        <div class="well span4" style="{% if not ticket_type_form is defined %}display: none;{% endif %}">
+            {% if ticket_type_form is defined %}
+                {{ ticket_type_form.as_p() }}
+            {% endif %}
         </div>
         <div class="span6">
-            <table id="person_ownership_form" class="ticket-form" style="display: none;">
-                {{ person_ownership_form.as_table() }}
-            </table>
-            <table id="company_ownership_form" class="ticket-form" style="display: none;">
-                {{ company_ownership_form.as_table() }}
-            </table>
-            <table id="other_form" class="ticket-form" style="display: none;">
-                {{ other_form.as_table() }}
-            </table>
-            <div class="request-submit" style="display: none;">
+            {% if person_ownership_form is defined %}
+                <table id="person_ownership_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
+                    {{ person_ownership_form.as_table() }}
+                </table>
+            {% endif %}
+            {% if company_ownership_form is defined %}
+                <table id="company_ownership_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
+                    {{ company_ownership_form.as_table() }}
+                </table>
+            {% endif %}
+            {% if other_form is defined %}
+                <table id="other_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
+                    {{ other_form.as_table() }}
+                </table>
+            {% endif %}
+            <div class="request-submit" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
                 {{ form_macros.render_submit(_("Submit"), class="btn-primary") }}
             </div>
         </div>

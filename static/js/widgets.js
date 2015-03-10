@@ -228,7 +228,7 @@
     this.base.empty();
 
     var lname = $('<input type="text" class="lastname" placeholder="' + i18n.gettext('Last Name') + '" />');
-    var other = $('<input type="text" class="othername" placeholder="' + i18n.gettext('Other Names') + '" />');
+    var other = $('<input type="text" class="othername" placeholder="' + i18n.gettext('First/Other Names') + '" />');
     var sel2 = $('<select class="relation"><select>');
 
     // hard coded relations for now for expediency
