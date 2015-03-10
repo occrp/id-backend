@@ -42,8 +42,8 @@
                         <a href="{{ url('externaldb_list') }}"><i class="icon-list-alt"></i> {% trans %}Business Registries{% endtrans %}</a>
                     </li>
                     {% if user.is_authenticated() %}
-                    <li class="{% if url('request_list') in request.path %}active{% endif %}">
-                        <a href="{{ url('request_list') }}"><i class="icon-comments-alt"></i> {% trans %}Expert Help{% endtrans %}</a>
+                    <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
+                        <a href="{{ url('ticket_list') }}"><i class="icon-comments-alt"></i> {% trans %}Expert Help{% endtrans %}</a>
                     </li>
                         {% if user.profile.is_staff or user.profile.is_admin %}
                         <li class="{% if url('podaci_info_home') in request.path %}active{% endif %}">

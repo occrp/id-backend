@@ -46,6 +46,12 @@ class TicketTypeForm(forms.Form):
         required=True,
         widget=forms.RadioSelect)
 
+    def __init__(self, *args, **kwargs):
+        if 'ticket_type' in kwargs:
+            self.ticket_type = kwargs.pop('ticket_type')
+
+        super(TicketTypeForm, self).__init__(*args, **kwargs)
+
 
 class TicketForm(forms.ModelForm):
     class Meta:
@@ -85,6 +91,7 @@ class PersonTicketForm(TicketForm):
         super(PersonTicketForm, self).__init__(*args, **kwargs)
         self.fields['deadline'].widget.attrs.update({'class': 'datepicker'})
         self.fields['dob'].widget.attrs.update({'class': 'datepicker'})
+        self.prefix = "person"
 
 
 class CompanyTicketForm(TicketForm):
@@ -113,6 +120,7 @@ class CompanyTicketForm(TicketForm):
     def __init__(self, *args, **kwargs):
         super(CompanyTicketForm, self).__init__(*args, **kwargs)
         self.fields['deadline'].widget.attrs.update({'class': 'datepicker'})
+        self.prefix = "company"
 
 
 
@@ -131,6 +139,7 @@ class OtherTicketForm(TicketForm):
     def __init__(self, *args, **kwargs):
         super(OtherTicketForm, self).__init__(*args, **kwargs)
         self.fields['deadline'].widget.attrs.update({'class': 'datepicker'})
+        self.prefix = "other"
 
 
 class RequestCancelForm(forms.Form):
