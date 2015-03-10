@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
-from django.core.urlresolvers import reverse
-from django.views.generic import TemplateView
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.views.generic import TemplateView, UpdateView
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -15,6 +15,51 @@ from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, Tick
 from ticket import forms
 
 from podaci import PodaciMixin
+
+class CompanyTicketUpdate(UpdateView, PodaciMixin):
+    model = CompanyTicket
+    template_name = 'tickets/request.jinja'
+    form_class = forms.CompanyTicketForm
+    success_url = reverse_lazy('ticket_list')
+
+    def get_context_data(self, **kwargs):
+        context = super(CompanyTicketUpdate, self).get_context_data(**kwargs)
+        context['ticket'] = self.get_object()
+        context['company_ownership_form'] = context['form']
+        return context
+
+    def __init__(self, *args, **kwargs):
+        super(CompanyTicketUpdate, self).__init__(*args, **kwargs)
+
+class OtherTicketUpdate(UpdateView, PodaciMixin):
+    model = OtherTicket
+    template_name = 'tickets/request.jinja'
+    form_class = forms.OtherTicketForm
+    success_url = reverse_lazy('ticket_list')
+
+    def get_context_data(self, **kwargs):
+        context = super(OtherTicketUpdate, self).get_context_data(**kwargs)
+        context['ticket'] = self.get_object()
+        context['other_form'] = context['form']
+        return context
+
+    def __init__(self, *args, **kwargs):
+        super(OtherTicketUpdate, self).__init__(*args, **kwargs)
+
+class PersonTicketUpdate(UpdateView, PodaciMixin):
+    model = PersonTicket
+    template_name = 'tickets/request.jinja'
+    form_class = forms.PersonTicketForm
+    success_url = reverse_lazy('ticket_list')
+
+    def get_context_data(self, **kwargs):
+        context = super(PersonTicketUpdate, self).get_context_data(**kwargs)
+        context['ticket'] = self.get_object()
+        context['person_ownership_form'] = context['form']
+        return context
+
+    def __init__(self, *args, **kwargs):
+        super(PersonTicketUpdate, self).__init__(*args, **kwargs)
 
 
 class TicketDetail(TemplateView, PodaciMixin):
@@ -107,7 +152,7 @@ class TicketDetail(TemplateView, PodaciMixin):
         comment.author = request.user
         print "YAAY SAVING!!"
         comment.save()
-        return HttpResponseRedirect(reverse('request_details', kwargs={ "ticket_id":self.ticket.id}))
+        return HttpResponseRedirect(reverse('ticket_details', kwargs={ "ticket_id":self.ticket.id}))
 
 class TicketList(TemplateView, PodaciMixin):
     template_name = "tickets/request_list.jinja"
@@ -153,31 +198,23 @@ class TicketRequest(TemplateView, PodaciMixin):
         return data.strip()
 
     """ Some registered user submits a ticket for response by a responder. """
-    def dispatch(self, request):
-        self.ticket = None
-        if request.method == 'POST':
+    def dispatch(self, *args, **kwargs):
+
+        if self.request.method == 'POST':
             self.ticket_type_form = forms.TicketTypeForm(self.request.POST,
                                                          prefix='ticket_type')
-
-            if 'ticket_id' in self.kwargs:
-                ticket_id = int(self.kwargs['ticket_id'])
-                self.ticket = models.Ticket.objects.get_by_id(ticket_id)
-                self.ticket_type_form.ticket_type.data = self.ticket.ticket_type
 
             self.forms = {
                 'ticket_type_form': self.ticket_type_form,
                 'person_ownership_form': forms.PersonTicketForm(
                     self.request.POST,
-                    prefix='person',
-                    instance=self.ticket),
+                    prefix='person'),
                 'company_ownership_form': forms.CompanyTicketForm(
                     self.request.POST,
-                    prefix='company',
-                    instance=self.ticket),
+                    prefix='company'),
                 'other_form': forms.OtherTicketForm(
                     self.request.POST,
-                    prefix='other',
-                    instance=self.ticket)
+                    prefix='other')
             }
         else:
             self.forms = {
@@ -186,14 +223,14 @@ class TicketRequest(TemplateView, PodaciMixin):
                 'company_ownership_form': forms.CompanyTicketForm(prefix='company'),
                 'other_form': forms.OtherTicketForm(prefix='other'),
             }
-        return super(TicketRequest, self).dispatch(request)
+        return super(TicketRequest, self).dispatch(self.request)
 
     #FIXME: Auth
     #@role_in('user', 'staff', 'admin', 'volunteer',
     #         fail_redirect=('request_unauthorized',))  # Reversed by role_in
     def get_context_data(self, ticket_id=None):
         ctx = {
-            'ticket': self.ticket
+            'ticket': None
         }
         ctx.update(self.forms)
         return ctx
@@ -203,6 +240,7 @@ class TicketRequest(TemplateView, PodaciMixin):
     def post(self, ticket_id=None):
         print "ticket post"
         if not self.forms["ticket_type_form"].is_valid():
+            print self.forms["ticket_type_form"].errors.as_data()
             # self.add_message("Error")
             return
 
@@ -239,4 +277,4 @@ class TicketRequest(TemplateView, PodaciMixin):
         # else:
         #     self.add_message(_('Ticket successfully created.'))
 
-        return HttpResponseRedirect(reverse('request_details', kwargs={"ticket_id": ticket.id}))
+        return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": ticket.id}))

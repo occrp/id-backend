@@ -238,7 +238,7 @@ class PersonTicket(Ticket):
     """ Person ownership request """
     ticket_type = 'person_ownership'
     name = models.CharField(max_length=50, blank=False, verbose_name=_('Name'))
-    aliases = models.CharField(max_length=100, blank=True, verbose_name=_('Aliases'))
+    aliases = models.TextField(blank=True, verbose_name=_('Aliases'))
     background = models.TextField(blank=False, verbose_name=_('Background'))
     biography = models.TextField(blank=False, verbose_name=_('Biography'))
     family = models.TextField(blank=True, verbose_name=_('Family'))
@@ -317,7 +317,7 @@ class OtherTicket(Ticket):
 
 class TicketUpdate(models.Model):
     update_type = models.CharField(max_length=70, choices=TICKET_UPDATE_TYPES,
-                                 default=TICKET_UPDATE_TYPES[0][0])
+                                   default=TICKET_UPDATE_TYPES[0][0])
     author = models.ForeignKey(User, blank=False)  # requester or responder
     ticket = models.ForeignKey(Ticket, blank=False)
     created = models.DateTimeField(auto_now_add=True)

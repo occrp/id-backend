@@ -15,7 +15,7 @@
                 {% for ticket in tickets %}
                     <tr>
                         <td>
-                            <a href="{{ url('request_details', ticket_id=ticket.id) }}">
+                            <a href="{{ url('ticket_details', ticket_id=ticket.id) }}">
                                 {{ ticket.summary }}
                             </a>
                         </td>
@@ -45,7 +45,7 @@
                         </td>
                         <td>{{ macros.display_datetime(ticket.deadline) }}</td>
                         <td>
-                            <a class='btn btn-mini' href="{{ url('ticket_edit', ticket_id=ticket.id) }}?next={{ request.path_qs }}">
+                            <a class='btn btn-mini' href="{{ url(ticket.ticket_type ~ '_ticket_edit', pk=ticket.id) }}?next={{ url('ticket_list') }}">
                                 <i class="icon-pencil"></i>
                             </a>
                         <a href="#AdminSettingsModal" class='btn btn-mini'
@@ -66,8 +66,8 @@
         <div class="well sidebar-nav">
             <ul class="nav nav-list">
                 <li class="nav-header">{% trans %}Requests{% endtrans %}</li>
-                <li class='{% if 'request_list' in ROUTE_NAME %}active{% endif %}'>
-                    <a href="{{ url('request_list') }}"><i class="icon-folder-open-alt"></i> {% trans %}My Requests{% endtrans %}</a>
+                <li class='{% if 'ticket_list' in ROUTE_NAME %}active{% endif %}'>
+                    <a href="{{ url('ticket_list') }}"><i class="icon-folder-open-alt"></i> {% trans %}My Requests{% endtrans %}</a>
                 </li>
 		{% if user.profile.is_staff or user.profile.is_volunteer or user.profile.is_admin %}
                 <li class='{% if 'public_list' in ROUTE_NAME %}active{% endif %}'>
