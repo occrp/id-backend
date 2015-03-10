@@ -113,6 +113,7 @@ class TicketDetail(TemplateView, PodaciMixin):
         if self.ticket.tag_id == "":
             # Create Podaci tag for this ticket.
             tag_name = "Ticket %d" % (self.ticket.id)
+            
             tag = self.fs.create_tag(tag_name)
             self.ticket.tag_id = tag.id
             self.ticket.save()
@@ -131,7 +132,7 @@ class TicketDetail(TemplateView, PodaciMixin):
             're_open_form': forms.RequestCancelForm(),
             'flag_form': forms.RequestFlagForm(),
             'tag': tag,
-            'result_files': tag.list_files()[1],
+            'result_files': tag.get_files()[1],
             'charge_form': forms.RequestChargeForm()
         }
 
