@@ -50,7 +50,8 @@ INSTALLED_APPS = (
     'django_jinja',
     'id',
     'podaci',
-    'ticket'
+    'ticket',
+    'core'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -79,7 +80,8 @@ DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja'
 
 JINJA_EXTS = (
     'jinja2.ext.i18n',
-    'podaci.templatetags.mentions'
+    'podaci.templatetags.mentions',
+    'core.templatetags.form_helpers'
 )
 
 
