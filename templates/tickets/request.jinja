@@ -6,46 +6,43 @@
     </div>
 
     {% if not ticket.id %}
+        {% set button_text = 'Submit' %}
         {% call macros.help_box() %}
             {% trans -%}
                 Your request will be routed to our professional researchers and volunteers, who will try to help.
             {%- endtrans %}
         {% endcall %}
+    {% else %}
+        {% set button_text = 'Save' %}
     {% endif %}
 
-    <form method="POST" class="form-horizontal requestform" enctype="multipart/form-data" 
-        >
+    <form method="POST" class="form-horizontal requestform" enctype="multipart/form-data">
         {% csrf_token %}
-        {% if person_ownership_form is defined %}
-            {% if person_ownership_form.Meta and person_ownership_form.Meta.ajax_validation_url and person_ownership_form.instance.key %}
-                <input type="hidden" name="validation_key" value="{{ person_ownership_form.instance.key.urlsafe() }}"/>
-            {% endif %}
-        {% endif %}
 
-        <div class="well span4" style="{% if not ticket_type_form is defined %}display: none;{% endif %}">
+        <div class="control-group" style="{% if not ticket_type_form is defined %}display: none;{% endif %}">
             {% if ticket_type_form is defined %}
-                {{ ticket_type_form.as_p() }}
+                {{ form_macros.render_form_fragment(ticket_type_form) }}
             {% endif %}
         </div>
-        <div class="span6">
-            {% if person_ownership_form is defined %}
-                <table id="person_ownership_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
-                    {{ person_ownership_form.as_table() }}
-                </table>
-            {% endif %}
-            {% if company_ownership_form is defined %}
-                <table id="company_ownership_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
-                    {{ company_ownership_form.as_table() }}
-                </table>
-            {% endif %}
-            {% if other_form is defined %}
-                <table id="other_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
-                    {{ other_form.as_table() }}
-                </table>
-            {% endif %}
-            <div class="request-submit" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
-                {{ form_macros.render_submit(_("Submit"), class="btn-primary") }}
+
+        {% if person_ownership_form is defined %}
+            <div id="person_ownership_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
+                {{ form_macros.render_form_fragment(person_ownership_form) }}
             </div>
+        {% endif %}
+        {% if company_ownership_form is defined %}
+            <div id="company_ownership_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
+                {{ form_macros.render_form_fragment(company_ownership_form) }}
+            </div>
+        {% endif %}
+        {% if other_form is defined %}
+            <div id="other_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
+                {{ form_macros.render_form_fragment(other_form) }}
+            </div>
+
+        {% endif %}
+        <div class="request-submit" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
+            {{ form_macros.render_submit(_(button_text), class="btn-primary") }}
         </div>
     </form>
 {% endblock %}

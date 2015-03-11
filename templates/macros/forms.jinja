@@ -1,8 +1,8 @@
 {% macro render_radiofield(field) %}
-    {% for value, label in field.choices %}
+    {% for value, label in field.field.choices %}
         <label class="radio">
-            <input type="radio" name="{{ field.id }}" {% if field.data == value %}checked="checked"{% endif %}
-                   id="{{ field.id }}-{{ loop.index }}" value="{{ value }}">
+            <input type="radio" name="{{ field.html_name }}" {% if field.data == value %}checked="checked"{% endif %}
+                   id="{{ field.auto_id }}-{{ loop.index }}" value="{{ value }}">
             {{ label }}
         </label>
     {% endfor %}
@@ -10,9 +10,9 @@
 
 {% macro render_datefield(field) %}
     <div class="input-append">
-        <input type="text" name="{{ field.id }}" id="{{ field.id }}"
+        <input type="text" name="{{ field.html_name }}" id="{{ field.auto_id }}"
                {% if field.data %}data-date="{{ field.data }}"{% endif %}
-               class="datepicker" />
+               class="{{ get_widget_classes(field) }}" />
         <span class="add-on"><i class="icon-calendar"></i></span>
     </div>
 {% endmacro %}
@@ -38,7 +38,7 @@
 {% macro render_classedtextareafield(field) %}
     <textarea class="{{ field.css_class }}" 
             {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %}
-            name="{{ field.name }}" id="{{ field.name }}" rows="{{ field.rows }}">{{ field.data if field.data else '' }}</textarea>
+            name="{{ field.name }}" id="{{ field.name }}" rows="{{ field.rows }}">{{ field.value if field.value else '' }}</textarea>
 {% endmacro %}
 
 {% macro render_drivefield(field) %}
@@ -55,31 +55,31 @@
 {% endmacro %}
 
 {% macro render_keyfield(field) %}
-    <input type="hidden" name="{{ field.id }}" id="{{ field.id }}-1" value="{{ field.data.urlsafe() }}" />
-    <input type="text" disabled="disabled" name="{{ field.id }}" id="{{ field.id }}-2" value="{% if field.data -%}
-        {{ field.data.get().name }}
+    <input type="hidden" name="{{ field.html_name }}" id="{{ field.auto_id }}-1" value="{{ field.value.urlsafe() }}" />
+    <input type="text" disabled="disabled" name="{{ field.html_name }}" id="{{ field.auto_id }}-2" value="{% if field.value -%}
+        {{ field.value.get().name }}
     {%- endif %}" />
 {% endmacro %}
 
 {% macro render_hiddenkeyfield(field) %}
-    <input type="hidden" name="{{ field.id }}" id="{{ field.id }}" value="{{ field.get_value() }}" />
+    <input type="hidden" name="{{ field.html_name }}" id="{{ field.auto_id }}" value="{{ field.get_value() }}" />
 {% endmacro %}
 
 {% macro render_select2field(field) %}
-    <input type="hidden" name="{{ field.id }}" id="{{ field.id }}" 
-            value="{% if field.data %}{{ field.get_value() }}{% endif %}"
+    <input type="hidden" name="{{ field.html_name }}" id="{{ field.auto_id }}" 
+            value="{% if field.value %}{{ field.get_value() }}{% endif %}"
            data-provide="select2-field" 
-           data-placeholder="{% if field.data %}{{ field.placeholder }}{% endif %}" 
+           data-placeholder="{% if field.value %}{{ field.placeholder }}{% endif %}" 
            data-ajax-url="{{ field.ajax_url }}"
            data-multiple="{{ field.multiple }}"
            {% if field.options %}
-            data-options="{{ field.id }}_options"
+            data-options="{{ field.auto_id }}_options"
            {% endif %}
-           data-text="{% if field.data %}{{ field.get_text() }}{% endif %}"/>
+           data-text="{% if field.value %}{{ field.get_text() }}{% endif %}"/>
 
     {% if field.options %}
     <script type="text/javascript">
-        var {{ field.id }}_options = JSON.parse('{{ field.options|safe }}');
+        var {{ field.auto_id }}_options = JSON.parse('{{ field.options|safe }}');
     </script>
     {% endif %}
 {% endmacro %}
@@ -107,33 +107,33 @@
         {{ render_hiddenkeyfield(field) }}
     {% else %}
         <div class="control-group {% if field.errors %}error{% endif %}">
-            {% if field.label.text != "" %}
-            <label class="control-label" for="{{ field.id }}">
-                {{ field.label.text }}{% if field.required %}*{% endif %}
+            {% if field.name != "" %}
+            <label class="control-label" for="{{ field.auto_id }}">
+                {{ get_verbose_or_field_name(field) }}{% if field.field.required %}*{% endif %}
             </label>
             {% endif %}
             <div class="controls">
-                {% if field.type == 'RadioField' %}
+                {% if get_field_type(field) == 'RadioField' or get_field_type(field) == 'RadioSelect'  %}
                     {{ render_radiofield(field) }}
-                {% elif field.type == 'DateField' %}
+                {% elif get_field_type(field) == 'DateField' or get_field_type(field) == 'DateInput' %}
                     {{ render_datefield(field) }}
-                {% elif field.type == 'FileField' %}
+                {% elif get_field_type(field) == 'FileField' %}
                     {{ render_filefield(field) }}
-                {% elif field.type == 'HiddenDriveField' %}
+                {% elif get_field_type(field) == 'HiddenDriveField' %}
                     {{ render_hiddendrivefield(field) }}
-                {% elif field.type == 'DriveField' %}
+                {% elif get_field_type(field) == 'DriveField' %}
                     {{ render_drivefield(field) }}
-                {% elif field.type == 'KeyField' %}
+                {% elif get_field_type(field) == 'KeyField' %}
                     {{ render_keyfield(field) }}
-                {% elif field.type == 'Select2Field' %}
+                {% elif get_field_type(field) == 'Select2Field' %}
                     {{ render_select2field(field) }}
-                {% elif field.type == 'ClassedTextAreaField' %}
+                {% elif get_field_type(field) == 'ClassedTextAreaField' %}
                     {{ render_classedtextareafield(field) }}
                 {% else %}
                     {{ field }}
                 {% endif %}
-                {% if field.type != 'FileField'
-                    and field.type != 'HiddenFileField' %}
+                {% if get_field_type(field) != 'FileField'
+                    and get_field_type(field) != 'HiddenFileField' %}
                     {{ render_errors(field) }}
                     {{ render_helptext(field) }}
                 {% endif %}
@@ -151,7 +151,7 @@
 {% macro render_form_fragment(form) %}
     {% if form.Meta and form.Meta.fields %}
         {# Render all fields in a defined order #}
-        {% for name in form.get_all_field_names() %}
+        {% for name in form.fields %}
             {{ render_field(form[name]) }}
         {% endfor %}
     {% else %}

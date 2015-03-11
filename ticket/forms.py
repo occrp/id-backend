@@ -51,6 +51,7 @@ class TicketTypeForm(forms.Form):
             self.ticket_type = kwargs.pop('ticket_type')
 
         super(TicketTypeForm, self).__init__(*args, **kwargs)
+        self.prefix = 'ticket_type'
 
 
 class TicketForm(forms.ModelForm):
@@ -70,27 +71,32 @@ class PersonTicketForm(TicketForm):
                   'family', 'business_activities', 'dob', 'birthplace',
                   'initial_information', 'location', 'deadline',
                   'sensitive')
-        field_args = {
-            'aliases': {'description': _("Other names they are known by")},
-            'background': {
-                'placeholder': _('What do you know so far?'),
-                'css_class': 'span8',
-            },
-            'biography': {'css_class': 'span8'},
-            'business_activities': {'css_class': 'span8'},
-            'initial_information': {
-                'placeholder': _('Any information you already have.'),
-                'css_class': 'span8',
-            },
-            'location': {'description': _('Where are you researching?')},
-        }
-        ajax_validation_url = "/_validation/request/"
+        # field_args = {
+        #     'aliases': {'description': _("Other names they are known by")},
+        #     'background': {
+        #         'placeholder': _('What do you know so far?'),
+        #         'css_class': 'span8',
+        #     },
+        #     'biography': {'css_class': 'span8'},
+        #     'business_activities': {'css_class': 'span8'},
+        #     'initial_information': {
+        #         'placeholder': _('Any information you already have.'),
+        #         'css_class': 'span8',
+        #     },
+        #     'location': {'description': _('Where are you researching?')},
+        # }
+        # ajax_validation_url = "/_validation/request/"
     Meta.field_args.update(TicketForm.Meta.field_args)
 
     def __init__(self, *args, **kwargs):
         super(PersonTicketForm, self).__init__(*args, **kwargs)
-        self.fields['deadline'].widget.attrs.update({'class': 'datepicker'})
-        self.fields['dob'].widget.attrs.update({'class': 'datepicker'})
+        self.fields['deadline'].widget.attrs.update({'class': 'datepicker deadline'})
+        self.fields['dob'].widget.attrs.update({'class': 'datepicker dob'})
+        self.fields['background'].widget.attrs.update({'class': 'span8', 'placeholder': _('What do you know so far?'), 'rows': '6'})
+        self.fields['biography'].widget.attrs.update({'class': 'span8', 'rows': '6'})
+        self.fields['business_activities'].widget.attrs.update({'class': 'span8', 'rows': '6'})
+        self.fields['initial_information'].widget.attrs.update({'class': 'span8', 'placeholder': _('Any information you already have.'), 'rows': '6'})
+        self.fields['location'].widget.attrs.update({'placeholder': _('Where are you researching?')})
         self.prefix = "person"
 
 
@@ -99,27 +105,30 @@ class CompanyTicketForm(TicketForm):
         model = models.CompanyTicket
         fields = ('name', 'country', 'background', 'sources',
                   'story', 'connections', 'deadline', 'sensitive')
-        field_args = {
-            'country': {'choices': constants.COUNTRIES},
-            'background': {
-                'placeholder': _('What do you know so far?'),
-                'css_class': 'span8',
-            },
-            'story': {
-                'placeholder': _('What story are you working on?'),
-                'css_class': 'span8'
-            },
-            'sources': {
-                'placeholder': _('What sources do you have so far?'),
-                'css_class': 'span8',
-            },
-        }
-        ajax_validation_url = "/_validation/request/"
+        # field_args = {
+        #     'country': {'choices': constants.COUNTRIES},
+        #     'background': {
+        #         'placeholder': _('What do you know so far?'),
+        #         'css_class': 'span8',
+        #     },
+        #     'story': {
+        #         'placeholder': _('What story are you working on?'),
+        #         'css_class': 'span8'
+        #     },
+        #     'sources': {
+        #         'placeholder': _('What sources do you have so far?'),
+        #         'css_class': 'span8',
+        #     },
+        # }
+        # ajax_validation_url = "/_validation/request/"
     Meta.field_args.update(TicketForm.Meta.field_args)
 
     def __init__(self, *args, **kwargs):
         super(CompanyTicketForm, self).__init__(*args, **kwargs)
-        self.fields['deadline'].widget.attrs.update({'class': 'datepicker'})
+        self.fields['deadline'].widget.attrs.update({'class': 'datepicker deadline'})
+        self.fields['background'].widget.attrs.update({'class': 'span8', 'placeholder': _('What do you know so far?'), 'rows': '6'})
+        self.fields['story'].widget.attrs.update({'class': 'span8', 'placeholder': _('What story are you working on?'), 'rows': '6'})
+        self.fields['sources'].widget.attrs.update({'class': 'span8', 'placeholder': _('What sources do you have so far?'), 'rows': '6'})
         self.prefix = "company"
 
 
@@ -138,7 +147,8 @@ class OtherTicketForm(TicketForm):
 
     def __init__(self, *args, **kwargs):
         super(OtherTicketForm, self).__init__(*args, **kwargs)
-        self.fields['deadline'].widget.attrs.update({'class': 'datepicker'})
+        self.fields['deadline'].widget.attrs.update({'class': 'datepicker deadline'})
+        self.fields['question'].widget.attrs.update({'class': 'span8', 'rows': '6'})
         self.prefix = "other"
 
 
