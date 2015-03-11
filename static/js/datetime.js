@@ -17,7 +17,16 @@
       if (date) {
         $el.val(moment(date).format('l'));
       }
-      $el.datepicker({format: 'yyyy-m-d'}); // TODO: Figure out how to get datepicker to use Moment.js
+
+      props = {format: 'yyyy-mm-dd'}
+      if($el.hasClass('deadline')) {
+        props['startDate'] = '+2d'
+      }
+      if($el.hasClass('dob')) {
+        props['endDate'] = '+0d'
+      }
+
+      $el.datepicker(props); // TODO: Figure out how to get datepicker to use Moment.js
     });
   };
 
