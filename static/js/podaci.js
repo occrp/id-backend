@@ -1,4 +1,17 @@
 
+function filesizeformat(fileSizeInBytes) {
+    // Purloined from http://stackoverflow.com/questions/10420352/converting-file-size-in-bytes-to-human-readable
+    var i = -1;
+    var byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+    do {
+        fileSizeInBytes = fileSizeInBytes / 1024;
+        i++;
+    } while (fileSizeInBytes > 1024);
+
+    return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
+};
+
+
 Podaci = {};
 
 Podaci.init = function() {
@@ -136,9 +149,7 @@ Podaci.init_fileupload = function() {
         url: '/podaci/file/create/',
         dataType: 'json',
         done: function (e, data) {
-            $.each(data.result.files, function (index, file) {
-                $('<p/>').text(file.name).appendTo(document.body);
-            });
+            setTimeout(Podaci.refresh_files, 300);
         },
         dropzone: $(".podaci_upload_dropzone"),
         disableImageResize: /Android(?!.*Chrome)|Opera/
@@ -268,32 +279,74 @@ Podaci.refresh_files = function() {
     // FIXME: This currently fetches tag info, but discards it.
     //        We should opportunistically update the tag sets
     //        since we have the data anyway.
+    // FIXME: This currently does one database hit per .podaci-files
+    //        entry in the document. That is smart if there are many
+    //        with different views, but is stupid if there is more
+    //        than one with the same view.
+    console.log("Refreshing...");
     $(".podaci-files").each(function(index, el) {
         var tag = $(el).data("tag");
         if (tag == undefined || tag == null || tag == "") {
+            console.log("No tag, so no action.");
             return;
         } else {
             console.log("Refreshing files on ", el);
             url = "/podaci/tag/" + tag + "/";
         }
         $.getJSON(url, {"format": "json"}, function(data) {
+            console.log("Got data: ", data);
             if (!data || data.error) {
                 // FIXME: Handle error.
             } else {
-                $(el).empty();
-                for (index in data.result_files) {
-                    file = data.result_files[index];
-                    var li = $('<li class="podaci-file"/>');
-                    li.data("mime", file.meta.mimetype);
-                    li.data("size", file.meta.size);
-                    li.data("id", file.meta.id);
-                    li.data("tags", file.meta.tags);
-                    $(el).append(li);
-                    var a = $("<a/>");
-                    a.attr("href", "/podaci/podaci/file/" + file.id + "/");
-                    a.html('<i class="icon-file podaci-icon-big"></i>' + file.meta.filename);
-                    li.append(a);
+                if ($(el).hasClass("podaci-files-list")) {
+                    el = $(el).find("tbody");
+                    $(el).empty();
+                    for (index in data.result_files) {
+                        file = data.result_files[index];
+                        var tr = $('<tr class="podaci-file"/>');
+                        tr.data("mime", file.meta.mimetype);
+                        tr.data("size", file.meta.size);
+                        tr.data("id", file.meta.id);
+                        tr.data("tags", file.meta.tags);
+                        $(el).append(tr);
+                        
+                        tr.append($('<td><input type="checkbox" class="podaci_file_select_box"/></td>'));
+                        
+                        var td = $("<td nowrap/>");
+                        var a = $("<a/>");
+                        a.attr("href", "/podaci/podaci/file/" + file.id + "/");
+                        a.text(file.meta.identifier);
+                        td.append(a);
+                        tr.append(td);
+
+                        td = $("<td nowrap/>");
+                        a = $("<a/>");
+                        a.attr("href", "/podaci/podaci/file/" + file.id + "/");
+                        a.html('<i class="icon-file"></i>' + file.meta.filename);
+                        td.append(a);
+                        td.addClass("overflow-hidden");
+                        tr.append(td);
+
+                        tr.append($('<td nowrap style="text-align: right;">'+ filesizeformat(file.meta.size) + '</td>'));
+                        tr.append($('<td nowrap>'+ file.meta.mimetype + '</td>'));
+                    }
+                } else {
+                    $(el).empty();
+                    for (index in data.result_files) {
+                        file = data.result_files[index];
+                        var li = $('<li class="podaci-file"/>');
+                        li.data("mime", file.meta.mimetype);
+                        li.data("size", file.meta.size);
+                        li.data("id", file.meta.id);
+                        li.data("tags", file.meta.tags);
+                        $(el).append(li);
+                        var a = $("<a/>");
+                        a.attr("href", "/podaci/podaci/file/" + file.id + "/");
+                        a.html('<i class="icon-file podaci-icon-big"></i>' + file.meta.filename);
+                        li.append(a);
+                    }
                 }
+
             }
         });
     });

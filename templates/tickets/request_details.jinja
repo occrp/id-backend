@@ -261,6 +261,7 @@
         </div>
 
         {% if tag.has_files() %}
+        <div class="attached-files">
             <h3 class="primary-highlight">
                  <div class="btn-group pull-right" role="group" aria-label="...">
                     {% include "podaci/partials/_podaci_tag_view_type_selection.jinja" %}
@@ -282,6 +283,7 @@
                 {% endif %}
             </h3>
             {% include "podaci/partials/_podaci_file_list.jinja" %}
+        </div>
         {% endif %}
 
         {#
