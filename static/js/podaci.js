@@ -116,7 +116,7 @@ Podaci.select_invert = function() {
 };
 
 Podaci.select_all = function() {
-    Podaci.selection = $.map($(".podaci-file"), function(e) { return $(e).data("id") });
+    Podaci.selection = $.map($(".podaci-files-list .podaci-file"), function(e) { return $(e).data("id") });
     Podaci.update_selection();
 };
 
