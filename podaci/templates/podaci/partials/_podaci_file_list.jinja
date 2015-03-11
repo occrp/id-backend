@@ -8,6 +8,7 @@
     </ul>
 
     <table class="podaci-files podaci-files-list table table-striped table-hover"{% if tag %} data-tag="{{tag.id}}"{% endif %}>
+        <thead>
         <tr>
             <th><input type="checkbox" class="podaci_file_select_all"/></th>
             <th>{% trans %}Identifier{% endtrans %}</th>
@@ -15,14 +16,17 @@
             <th>{% trans %}Size{% endtrans %}</th>
             <th>{% trans %}Type{% endtrans %}</th>
         </tr>
-    {% for file in result_files %}
-        <tr class="podaci-file" data-mime="{{file.mimetype}}" data-size="{{file.size}}" data-id="{{file.id}}" data-tags="{{file.tags}}">
-            <td><input type="checkbox" class="podaci_file_select_box"/></td>
-            <td nowrap><a href="{{url('podaci_files_details', file.id)}}">{{file.identifier}}</a></td>
-            <td nowrap class="overflow-hidden"><a href="{{url('podaci_files_details', file.id)}}"><i class="icon-file"></i>{{file.filename}}</a></td>
-            <td nowrap style="text-align: right;">{{file.size|filesizeformat}}</td>
-            <td nowrap>{{file.mimetype}}</td>
-        </tr>
-    {% endfor %}
+        </thead>
+        <tbody>
+        {% for file in result_files %}
+            <tr class="podaci-file" data-mime="{{file.mimetype}}" data-size="{{file.size}}" data-id="{{file.id}}" data-tags="{{file.tags}}">
+                <td><input type="checkbox" class="podaci_file_select_box"/></td>
+                <td nowrap><a href="{{url('podaci_files_details', file.id)}}">{{file.identifier}}</a></td>
+                <td nowrap class="overflow-hidden"><a href="{{url('podaci_files_details', file.id)}}"><i class="icon-file"></i>{{file.filename}}</a></td>
+                <td nowrap style="text-align: right;">{{file.size|filesizeformat}}</td>
+                <td nowrap>{{file.mimetype}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
 </div>
