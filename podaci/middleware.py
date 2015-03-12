@@ -1,15 +1,16 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 import elasticsearch
 
 
 class PodaciExceptionMiddleware(object):
     def process_exception(self, request, exception):
+    	cr = {"request": request, "user": request.user}
         if isinstance(exception, elasticsearch.ConnectionError):
-            return render_to_response("podaci/errors/connectionerror.jinja", {"request": request, "user": request.user})
+            return render(request, "podaci/errors/connectionerror.jinja", cr)
         elif isinstance(exception, elasticsearch.ConnectionTimeout):
-            return render_to_response("podaci/errors/connectiontimeout.jinja", {"request": request, "user": request.user})
+            return render(request, "podaci/errors/connectiontimeout.jinja", cr)
         elif isinstance(exception, elasticsearch.NotFoundError):
-            return render_to_response("podaci/errors/notfound.jinja", {"request": request, "user": request.user})
+            return render(request, "podaci/errors/notfound.jinja", cr)
         elif isinstance(exception, elasticsearch.RequestError):
-            return render_to_response("podaci/errors/requesterror.jinja", {"request": request, "user": request.user})
+            return render(request, "podaci/errors/requesterror.jinja", cr)
 
