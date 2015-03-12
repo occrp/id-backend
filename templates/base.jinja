@@ -104,11 +104,11 @@
 <div id="content">
     <div class="before-content">
         <div id="alerts" class="container">
-            {% if messages %}
+            {% if messages and ticket_detail_view is not defined %}
                 {% for message in messages %}
-                    <div class="alert alert-block alert-{{ message[1] }}">
+                    <div class="alert alert-block alert-{{ message.tags }}">
                         <a class="close" data-dismiss="alert">×</a>
-                        {{ message[0] }}
+                        {{ message }}
                     </div>
                 {% endfor %}
             {% endif %}
