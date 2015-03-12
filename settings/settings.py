@@ -1,3 +1,4 @@
+#coding:utf-8
 """
 Django settings for id project.
 
@@ -40,8 +41,8 @@ TEMPLATE_DIRS = ('templates',)
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -117,10 +118,30 @@ NEO4J_DATABASES = {
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
+
+LANGUAGES = (
+  ('ar', u'العربية'),
+  ('bg', u'Български'),
+  ('de', u'Deutsch'),
+  ('en', u'English'),
+  ('es', u'Español'),
+  ('fr', u'Français'),
+  ('hr', u'Hrvatski'),
+  ('hu', u'Magyar'),
+  ('mk', u'Македонски'),
+  ('pt', u'Português'),
+  ('ro', u'Românește'),
+  ('ru', u'Русский'),
+  ('sl', u'Slovenski'),
+  ('sq', u'Shqip'),
+  ('sr', u'Српски'),
+  ('sw', u'Kiswahili'),
+  ('tr', u'Türkçe'),
+  ('uk', u'Українська'),
+)
+
 
 from django.conf.global_settings import DATE_INPUT_FORMATS
 DATE_INPUT_FORMATS += ('%d/%m/%y',)
