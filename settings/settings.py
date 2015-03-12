@@ -68,6 +68,7 @@ MIDDLEWARE_CLASSES = (
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 TEMPLATE_CONTEXT_PROCESSORS += (
     "django.core.context_processors.request",
+    "django.contrib.messages.context_processors.messages",
     "id.context_processors.locale",
     "id.context_processors.routename",
     "id.context_processors.userprofile",
