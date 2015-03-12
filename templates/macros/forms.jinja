@@ -1,7 +1,7 @@
 {% macro render_radiofield(field) %}
     {% for value, label in field.field.choices %}
         <label class="radio">
-            <input type="radio" name="{{ field.html_name }}" {% if field.data == value %}checked="checked"{% endif %}
+            <input type="radio" name="{{ field.html_name }}" {% if field.value() == value %}checked="checked"{% endif %}
                    id="{{ field.auto_id }}-{{ loop.index }}" value="{{ value }}">
             {{ label }}
         </label>
@@ -11,7 +11,7 @@
 {% macro render_datefield(field) %}
     <div class="input-append">
         <input type="text" name="{{ field.html_name }}" id="{{ field.auto_id }}"
-               {% if field.data %}data-date="{{ field.data }}"{% endif %}
+               {% if field.value() %}value="{{ field.value() }}"{% endif %}
                class="{{ get_widget_classes(field) }}" />
         <span class="add-on"><i class="icon-calendar"></i></span>
     </div>
