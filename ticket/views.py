@@ -4,10 +4,12 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import TemplateView, UpdateView
 
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 
 from ticket.utils import *
+from ticket.mixins import *
 
 #  from core.mixins import MessageMixin
 
@@ -16,11 +18,11 @@ from ticket import forms
 
 from podaci import PodaciMixin
 
-class CompanyTicketUpdate(UpdateView, PodaciMixin):
+class CompanyTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
     model = CompanyTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.CompanyTicketForm
-    success_url = reverse_lazy('ticket_list')
+    #success_url = reverse_lazy('ticket_')
 
     def get_context_data(self, **kwargs):
         context = super(CompanyTicketUpdate, self).get_context_data(**kwargs)
@@ -31,7 +33,7 @@ class CompanyTicketUpdate(UpdateView, PodaciMixin):
     def __init__(self, *args, **kwargs):
         super(CompanyTicketUpdate, self).__init__(*args, **kwargs)
 
-class OtherTicketUpdate(UpdateView, PodaciMixin):
+class OtherTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
     model = OtherTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.OtherTicketForm
@@ -46,7 +48,7 @@ class OtherTicketUpdate(UpdateView, PodaciMixin):
     def __init__(self, *args, **kwargs):
         super(OtherTicketUpdate, self).__init__(*args, **kwargs)
 
-class PersonTicketUpdate(UpdateView, PodaciMixin):
+class PersonTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
     model = PersonTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.PersonTicketForm
@@ -133,7 +135,8 @@ class TicketDetail(TemplateView, PodaciMixin):
             'flag_form': forms.RequestFlagForm(),
             'tag': tag,
             'result_files': tag.get_files()[1],
-            'charge_form': forms.RequestChargeForm()
+            'charge_form': forms.RequestChargeForm(),
+            'ticket_detail_view': True
         }
 
     #FIXME: AJAXize!
@@ -248,12 +251,12 @@ class TicketRequest(TemplateView, PodaciMixin):
         ticket_type = self.forms["ticket_type_form"].cleaned_data["ticket_type"]
         form = self.forms[ticket_type+"_form"]
 
-        print "ticket info"
-        print " "
-        print " "
-        print ticket_type
-        print form.errors.as_data()
-        print "end form"
+        # print "ticket info"
+        # print " "
+        # print " "
+        # print ticket_type
+        # print form.errors.as_data()
+        # print "end form"
 
         if not form.is_valid():
             # self.add_message(_("Error: Form was not valid"))
@@ -263,6 +266,7 @@ class TicketRequest(TemplateView, PodaciMixin):
         ticket = form.save(commit=False)
         ticket.requester = self.request.user
         ticket.save()
+        messages.success(self.request, _('Ticket successfully created.'))
 
         self.podaci_setup()
 

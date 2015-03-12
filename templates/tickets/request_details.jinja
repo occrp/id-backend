@@ -70,6 +70,11 @@
                 <ul class="dropdown-menu">
                     {% if is_admin or not is_staff or ticket.requester == user %}
                     <li>
+                        <a href="{{ url(ticket.ticket_type ~ '_ticket_edit', pk=ticket.id) }}" role="button">
+                            <i class="icon-pencil"></i> {% trans %}Edit Request{% endtrans %}
+                        </a>
+                    </li>
+                    <li>
                         <a href="#ReqCancelForm" data-toggle="modal" role="button">
                             <i class="icon-minus-sign"></i> {% trans %}Cancel Request{% endtrans %}
                         </a>
@@ -137,6 +142,17 @@
 {% endblock %}
 
 {% block content %}
+<div class="span12">
+    {% if messages and ticket_detail_view is defined %}
+        <div style="margin: 0;"></div>
+        {% for message in messages %}  
+            <div class="alert alert-detail alert-block alert-{{ message.tags }}">
+                <a class="close" data-dismiss="alert">×</a>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
 <div class="span12">
 <div class="row-fluid">
     <div class="span3">
