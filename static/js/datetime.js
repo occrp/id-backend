@@ -18,7 +18,7 @@
         $el.val(moment(date).format('l'));
       }
 
-      props = {format: 'yyyy-mm-dd'}
+      props = {format: 'yyyy-mm-dd', autoclose: true}
       if($el.hasClass('deadline')) {
         props['startDate'] = '+2d'
       }
