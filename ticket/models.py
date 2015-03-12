@@ -35,7 +35,7 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
                                     verbose_name=_('Public?'))
     flagged = models.BooleanField(default=False)
     user_pays = models.BooleanField(default=True)
-    deadline = models.DateField(null=True, blank=True, verbose_name=_('Deadline'))
+    deadline = models.DateField(null=False, blank=False, verbose_name=_('Deadline'))
     sensitive = models.BooleanField(default=False, verbose_name=_('Sensitive?'))
 
     tag_id = models.CharField(max_length=60, blank=True)    # Refers to this Ticket's Podaci tag.
