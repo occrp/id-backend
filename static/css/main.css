@@ -3303,6 +3303,11 @@ input[type="submit"].btn.btn-mini {
   -moz-border-radius: 0px;
   border-radius: 0px;
 }
+
+.alert-detail {
+  margin-bottom: 30px;
+}
+
 .alert,
 .alert h4 {
   color: #eca918;
