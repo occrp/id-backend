@@ -83,10 +83,10 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                            {% for locale in locales %}
+                            {% for locale in LANGUAGES %}
                             <li>
-                                <a href="{{ locale_base_url|replace("_LOCALE_", locale) }}">
-                                    {{ locale.display_name|capitalize }}
+                                <a href="{{url('set_language')}}?language={{ locale.0 }}">
+                                    {{ locale.1 }}
                                 </a>
                             </li>
                             {% endfor %}
