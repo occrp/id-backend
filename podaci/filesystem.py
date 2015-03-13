@@ -9,6 +9,8 @@ from copy import deepcopy
 import elasticsearch
 from distutils.version import StrictVersion
 
+from settings.settings import PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT
+
 class AuthenticationError(Exception):
     pass
 
@@ -476,7 +478,7 @@ class File(MetaMixin, PermissionsMixin):
 
 
 class FileSystem:
-    def __init__(self, es_servers = None, es_index = None, data_root = None, user=None):
+    def __init__(self, es_servers=PODACI_SERVERS, es_index=PODACI_ES_INDEX, data_root=PODACI_FS_ROOT, user=None):
         self.es_servers = es_servers
         self.es_index = es_index
         self.data_root = data_root
