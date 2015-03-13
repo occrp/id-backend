@@ -252,6 +252,14 @@ class Tag(MetaMixin, PermissionsMixin):
         if self.id and not prepopulate_meta:
             self.get_metadata()
 
+    def __unicode__(self):
+        if not self.id: return "[Uninitialized tag object]"
+        if not self.meta: self.get_metadata()
+        return "[Tag %s] %s" % (self.id, self.meta.get("name"))
+
+    def __str__(self):
+        return self.__unicode__()
+
     def create(self, name):
         self._create_metadata()
         self.meta["name"] = name
