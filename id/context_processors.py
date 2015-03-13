@@ -7,12 +7,10 @@ def userprofile(request):
     if request.user.is_authenticated():
         try:
             prof = request.user.profile
-            print "Got user profile!"
         except Exception, e:
             print "User profile for %s does not exist" % request.user.username
             prof = Profile(user=request.user)
             prof.save()
-            print "Created profile!"
         return {
             'user_profile': prof
         }
