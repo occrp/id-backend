@@ -26,28 +26,28 @@ class Profile(models.Model):
     is_admin = models.BooleanField(default=False)
     old_google_id = models.CharField(max_length=100)
 
-    phone_number = models.CharField(max_length=22)
-    organization_membership = models.CharField(max_length=20)
-    notes = models.TextField()
-    address = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
-    province = models.CharField(max_length=50)
-    postal_code = models.CharField(max_length=20)
+    phone_number = models.CharField(blank=True, max_length=22)
+    organization_membership = models.CharField(blank=True, max_length=20)
+    notes = models.TextField(blank=True, )
+    address = models.CharField(blank=True, max_length=50)
+    city = models.CharField(blank=True, max_length=50)
+    province = models.CharField(blank=True, max_length=50)
+    postal_code = models.CharField(blank=True, max_length=20)
 
     # Requester fields
-    industry = models.CharField(max_length=20)
-    industry_other = models.CharField(max_length=50)
-    media = models.CharField(max_length=50)
-    circulation = models.CharField(max_length=50)
-    title = models.CharField(max_length=50)
+    industry = models.CharField(blank=True, max_length=20)
+    industry_other = models.CharField(blank=True, max_length=50)
+    media = models.CharField(blank=True, max_length=50)
+    circulation = models.CharField(blank=True, max_length=50)
+    title = models.CharField(blank=True, max_length=50)
 
     # Volunteer fields
-    interests = models.TextField()
-    expertise = models.TextField()
-    languages = models.TextField()
-    availability = models.TextField()
-    databases = models.TextField()
-    conflicts = models.TextField()
+    interests = models.TextField(blank=True)
+    expertise = models.TextField(blank=True)
+    languages = models.TextField(blank=True)
+    availability = models.TextField(blank=True)
+    databases = models.TextField(blank=True)
+    conflicts = models.TextField(blank=True)
 
 
     def can_write_to(self, obj):
