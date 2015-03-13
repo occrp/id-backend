@@ -2,14 +2,33 @@
 {% block content %}
 
 <h1>{{user.name}}</h1>
-<div class="span12">
-<form action="/accounts/profile/" method="POST">
-{%csrf_token%}
-<fieldset> 
-{{form.as_table()}}
-<label></label><input class="btn primary" type="submit" value="{% trans %}Save{% endtrans %}"/>
-</fieldset>
-</form>
+<div class="tabpanel">
+    <form action="/accounts/profile/" method="POST">
+    {%csrf_token%}
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="profile" class="active"><a href="#basics" aria-controls="basics" role="tab" data-toggle="tab">Basics</a></li>
+        <li role="profile"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">Details</a></li>
+        {% if user.profile.is_admin %}
+        <li role="profile"><a href="#permissions" aria-controls="permissions" role="tab" data-toggle="tab">Permissions</a></li>
+        {% endif %}
+    </ul>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="basics">
+            {{ form_macros.render_form_fragment(form_basics) }}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="details">
+            {{ form_macros.render_form_fragment(form_details) }}
+        </div>
+        {% if user.profile.is_admin %}
+        <div role="tabpanel" class="tab-pane" id="permissions">
+            {{ form_macros.render_form_fragment(form_admin) }}
+        </div>
+        {% endif %}
+    </div>
+
+    <label></label><input class="btn primary" type="submit" value="{% trans %}Save{% endtrans %}"/>
+    </form>
 </div>
 
 {% endblock %}
