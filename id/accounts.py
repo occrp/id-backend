@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from registration.signals import user_registered
 
 from id.models import Profile, AccountRequest
-from id.forms import ProfileUpdateForm
+from id.forms import ProfileUpdateForm, ProfileBasicsForm, ProfileDetailsForm, ProfileAdminForm
 
 
 class ProfileView(DetailView):
@@ -14,11 +14,19 @@ class ProfileView(DetailView):
 
 class ProfileUpdate(UpdateView):
     template_name = 'registration/profile.jinja'
-    model = Profile
-    form = ProfileUpdateForm
+    form_class = ProfileUpdateForm
 
     def get_object(self, *args, **kwargs):
         return self.request.user.profile
+
+    def get_context_data(self, form):
+        ctx = super(ProfileUpdate, self).get_context_data()
+        ctx = {"form": form}
+        ctx["form_basics"] = ProfileBasicsForm()
+        ctx["form_details"] = ProfileDetailsForm()
+        if self.request.user.profile.is_admin:
+            ctx["form_admin"] = ProfileAdminForm()
+        return ctx
 
 class UserList(ListView):
     model = User

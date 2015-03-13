@@ -68,6 +68,26 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Profile
 
+class ProfileBasicsForm(forms.ModelForm):
+    class Meta:
+        model = models.Profile
+        fields = ("first_name", "last_name", "locale")
+
+class ProfileDetailsForm(forms.ModelForm):
+    class Meta:
+        model = models.Profile
+        fields = ("phone_number", "organization_membership", "address", 
+                  "city", "province", "postal_code", "industry",
+                  "media", "circulation", "title", "interests",
+                  "expertise", "languages", "availability",
+                  "databases", "conflicts")
+
+class ProfileAdminForm(forms.ModelForm):
+    class Meta:
+        model = models.Profile
+        fields = ("findings_visible", "is_for_profit", 
+                  "is_user", "is_staff", "is_volunteer", "is_admin")
+
 
 class ScraperRequestForm(forms.ModelForm):
     class Meta:
