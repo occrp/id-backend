@@ -63,6 +63,9 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <li  class="{% if url('profile') in request.path %}active{% endif %}">
+                                <a href="{{ url('profile') }}">{% trans %}Profile{% endtrans %}</a>
+                            </li>
                             {% if user.profile.is_staff or user.profile.is_admin %}
                             <li  class="{% if url('admin_panel') in request.path %}active{% endif %}">
                                 <a href="{{ url('admin_panel') }}">{% trans %}Admin{% endtrans %}</a>
@@ -85,7 +88,7 @@
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                             {% for locale in LANGUAGES %}
                             <li>
-                                <a href="{{url('set_language')}}?language={{ locale.0 }}">
+                                <a href="{{url('account_set_language', locale.0)}}">
                                     {{ locale.1 }}
                                 </a>
                             </li>

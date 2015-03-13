@@ -1,12 +1,24 @@
+from django.http import HttpResponseRedirect
 from django.views.generic import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-
+from settings.settings import LANGUAGES
 from registration.signals import user_registered
 
 from id.models import Profile, AccountRequest
 from id.forms import ProfileUpdateForm, ProfileBasicsForm, ProfileDetailsForm, ProfileAdminForm
 
+
+class ProfileSetLanguage(TemplateView):
+    template_name = 'registration/profile.jinja'
+
+    def get(self, request, lang, **kwargs):
+        if lang in [x[0] for x in LANGUAGES]:
+            print "Setting language to %s" % lang
+            request.session['django_language'] = lang
+            self.request.user.profile.locale = lang
+            self.request.user.profile.save()
+        return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
 class ProfileView(DetailView):
     template_name = 'registration/profile_view.jinja'
