@@ -16,6 +16,12 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="basics">
             {{ form_macros.render_form_fragment(form_basics) }}
+
+            <select>
+            {% for locale in LANGUAGES %}
+                <option value="{{ locale.0 }}" {% if user.profile.locale == locale.0 %}selected{% endif %}>{{ locale.1 }}</option>
+            {% endfor %}
+            </select>
         </div>
         <div role="tabpanel" class="tab-pane" id="details">
             {{ form_macros.render_form_fragment(form_details) }}
