@@ -14,10 +14,10 @@ class ProfileSetLanguage(TemplateView):
 
     def get(self, request, lang, **kwargs):
         if lang in [x[0] for x in LANGUAGES]:
-            print "Setting language to %s" % lang
             request.session['django_language'] = lang
-            self.request.user.profile.locale = lang
-            self.request.user.profile.save()
+            if request.user.is_authenticated():
+                request.user.profile.locale = lang
+                request.user.profile.save()
         return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
 
