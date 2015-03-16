@@ -8668,7 +8668,7 @@ span.highlight {
   margin-top: 0;
 }
 .has-full-page-header .alert:first-child {
-  margin-top: 40px;
+  /*margin-top: 40px; */
 }
 .header-buttons {
   margin-top: 24px;
