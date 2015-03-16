@@ -6,10 +6,10 @@
     <form action="/accounts/profile/" method="POST">
     {%csrf_token%}
     <ul class="nav nav-tabs" role="tablist">
-        <li role="profile" class="active"><a href="#basics" aria-controls="basics" role="tab" data-toggle="tab">Basics</a></li>
-        <li role="profile"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">Details</a></li>
+        <li role="profile" class="active"><a href="#basics" aria-controls="basics" role="tab" data-toggle="tab">{% trans %}Basics{% endtrans %}</a></li>
+        <li role="profile"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">{% trans %}Details{% endtrans %}</a></li>
         {% if user.profile.is_admin %}
-        <li role="profile"><a href="#permissions" aria-controls="permissions" role="tab" data-toggle="tab">Permissions</a></li>
+        <li role="profile"><a href="#permissions" aria-controls="permissions" role="tab" data-toggle="tab">{% trans %}Permissions{% endtrans %}</a></li>
         {% endif %}
     </ul>
 
