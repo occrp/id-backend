@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -75,9 +77,10 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
         Get a list of actors for a given ticket, being the requester and
         responder
         """
-        return [actor for actor in
-                [self.requester, ] + self.responders + self.volunteers
-                if actor]
+        actors = [actor for actor in
+                  list(chain(self.responders.all(), self.volunteers.all())) if actor]
+        actors.append(self.requester)
+        return actors
 
     def join_user(self, actor):
         """

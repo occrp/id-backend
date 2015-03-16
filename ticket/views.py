@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from django.contrib import messages
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import TemplateView, UpdateView
 
@@ -8,13 +9,13 @@ from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 
+from core.mixins import JSONResponseMixin
+
 from ticket.utils import *
 from ticket.mixins import *
-
-#  from core.mixins import MessageMixin
-
 from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, TicketUpdate, TicketCharge
 from ticket import forms
+from ticket import constants
 
 from podaci import PodaciMixin
 
@@ -22,7 +23,6 @@ class CompanyTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
     model = CompanyTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.CompanyTicketForm
-    #success_url = reverse_lazy('ticket_')
 
     def get_context_data(self, **kwargs):
         context = super(CompanyTicketUpdate, self).get_context_data(**kwargs)
@@ -37,7 +37,6 @@ class OtherTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
     model = OtherTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.OtherTicketForm
-    success_url = reverse_lazy('ticket_list')
 
     def get_context_data(self, **kwargs):
         context = super(OtherTicketUpdate, self).get_context_data(**kwargs)
@@ -52,7 +51,6 @@ class PersonTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
     model = PersonTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.PersonTicketForm
-    success_url = reverse_lazy('ticket_list')
 
     def get_context_data(self, **kwargs):
         context = super(PersonTicketUpdate, self).get_context_data(**kwargs)
@@ -62,6 +60,116 @@ class PersonTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
 
     def __init__(self, *args, **kwargs):
         super(PersonTicketUpdate, self).__init__(*args, **kwargs)
+
+# class TicketActionBaseHandler(JSONResponseMixin, TemplateView):
+#     """
+#     Base class for actions such as Cancel / Close / Etc from fragments to
+#     inherit from
+#     """
+
+#     form_class = None
+
+#     #FIXME: Auth
+#     #@role_in('user', 'staff', 'admin', 'volunteer')
+#     def get_context_data(self, ticket_id=None):
+#         self.response.headers.add_header("Access-Control-Allow-Origin", "*")
+#         ticket = Ticket.get_by_id(int(ticket_id))
+#         form = self.form_class(self.request.POST)
+#         not_allowed = not self.user_can(ticket)
+#         if form.validate() and not not_allowed:
+#             # save new update & add message
+#             self.form_valid(ticket, form)
+#         else:
+#             t = self.render_template('modals/form_basic.jinja', form=form,
+#                                      not_allowed=not_allowed)
+#             self.render_json_response({'status': 'error', 'html': t})
+
+class TicketActionBaseHandler(TicketUpdateMixin, UpdateView):
+    model = Ticket
+    form_class = forms.TicketCancelForm
+
+    def perform_invalid_action(self, form):
+        return
+
+    def perform_valid_action(self, form):
+        return
+
+    def perform_ticket_update(self, ticket, update_type, comment):
+        ticket_update = TicketUpdate(ticket=ticket)
+        ticket_update.author = self.request.user
+        ticket_update.update_type = constants.get_choice(update_type, constants.TICKET_UPDATE_TYPES)
+        ticket_update.comment = comment
+        ticket_update.save()
+
+    def form_invalid(self, form):
+        self.perform_invalid_action(form)
+        return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": self.object.id}))
+        #return super(TicketActionBaseHandler, self).form_invalid(form)
+
+    def form_valid(self, form):
+        self.perform_valid_action(form)
+        return super(TicketActionBaseHandler, self).form_valid(form)
+
+    def get_success_url(self):
+        ticket = self.get_object()
+        return reverse_lazy('ticket_details', kwargs={'ticket_id': ticket.id})
+
+class TicketActionCancelHandler(TicketActionBaseHandler):
+
+    def perform_invalid_action(self, form):
+        messages.error(self.request, _('A reason must be supplied to cancel the ticket.'))
+
+    def perform_valid_action(self, form):
+        ticket = self.object
+        ticket.status = constants.get_choice('Cancelled', constants.TICKET_STATUS)
+        self.perform_ticket_update(ticket, 'Cancelled', form.cleaned_data['reason'])
+        return super(TicketActionCancelHandler, self).perform_valid_action(form)
+
+class TicketActionCloseHandler(TicketActionBaseHandler):
+
+    def perform_invalid_action(self, form):
+        messages.error(self.request, _('A reason must be supplied to close the ticket.'))
+
+    def perform_valid_action(self, form):
+        ticket = self.object
+        ticket.status = constants.get_choice('Closed', constants.TICKET_STATUS)
+        self.perform_ticket_update(ticket, 'Closed', form.cleaned_data['reason'])
+        return super(TicketActionCloseHandler, self).perform_valid_action(form)
+
+
+class TicketActionJoinHandler(TicketActionBaseHandler):
+
+    def perform_invalid_action(self, form):
+        return
+
+    def perform_valid_action(self, form):
+        ticket = self.object
+
+        if self.request.user.profile.is_staff or self.request.user.profile.is_admin:
+            ticket.responders.add(self.request.user)
+        elif self.request.user.profile.is_volunteer:
+            ticket.volunteers.add(self.request.user)
+        else:
+            pass
+
+        return super(TicketActionCancelHandler, self).perform_valid_action(form)
+
+class TicketActionOpenHandler(TicketActionBaseHandler):
+
+    def perform_invalid_action(self, form):
+        messages.error(self.request, _('A reason must be supplied to (re)open the.'))
+
+    def perform_valid_action(self, form):
+        ticket = self.object
+
+        if(ticket.volunteers.count() == 0 and ticket.responders.count() == 0):
+            ticket.status = constants.get_choice('New', constants.TICKET_STATUS)
+        else:
+            ticket.status = constants.get_choice('In Progress', constants.TICKET_STATUS)
+
+        self.perform_ticket_update(ticket, 'Opened', form.cleaned_data['reason'])
+
+        return super(TicketActionOpenHandler, self).perform_valid_action(form)
 
 
 class TicketDetail(TemplateView, PodaciMixin):
@@ -102,7 +210,7 @@ class TicketDetail(TemplateView, PodaciMixin):
     def get_context_data(self):
         ticket_updates = (TicketUpdate.objects
                           .filter(ticket=self.ticket)
-                          .order_by("created"))
+                          .order_by("-created"))
 
         charges = (TicketCharge.objects.filter(ticket=self.ticket)
                    .order_by("created"))
@@ -128,15 +236,16 @@ class TicketDetail(TemplateView, PodaciMixin):
             'charges': charges,
             'charges_outstanding': sum(outstanding),
             'ticket_update_form': self.form,
-            'cancel_form': forms.RequestCancelForm(),
+            'cancel_form': forms.TicketCancelForm(),
             'mark_paid_form': forms.TicketPaidForm(),
-            'close_form': forms.RequestCancelForm(),
-            're_open_form': forms.RequestCancelForm(),
+            'close_form': forms.TicketCancelForm(),
+            'open_form': forms.TicketCancelForm(),
             'flag_form': forms.RequestFlagForm(),
             'tag': tag,
             'result_files': tag.get_files()[1],
             'charge_form': forms.RequestChargeForm(),
-            'ticket_detail_view': True
+            'ticket_detail_view': True,
+            'can_join': True if (self.request.user.profile.is_volunteer == 1 or self.request.user.profile.is_admin) else False
         }
 
     #FIXME: AJAXize!

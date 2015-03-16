@@ -31,56 +31,60 @@
       if(can_serialize($form)){
       var action = $form.attr('action');
       spinner.spin();
-      $.ajax({
-        url: action,
-        type: 'POST',
-        data: $form.serialize(),
-        success: function(data) {
-          if (data.status == 'error') {
-            // Replace modal body with error HTML and ensure the form
-            // action doesn't get lost
-            $content.html(data.html);
-            $('form', $content).attr('action', action);
+      $form.submit();
+      // $.ajax({
+      //   url: action,
+      //   type: 'POST',
+      //   data: $form.serialize(),
+      //   success: function(data) {
+      //     if (data.status == 'error') {
+      //       // Replace modal body with error HTML and ensure the form
+      //       // action doesn't get lost
+      //       $content.html(data.html);
+      //       $('form', $content).attr('action', action);
 
-            App.initWidgets();
-            var err = $('.error', $modal);
-            if (err.length > 0) {
-              $body.scrollTo(err);
-            }
-          } else {
-            if (data.data) {
-              var search = window.location.search;
-              if (search.length > 0) {
-                if (search.search("data=") > -1 ) {
-                  // replace the data url param
-                  search = search.substr(0, search.search("data=")) + "data=" + data.data;
-                } else {
-                  // append the data url param
-                  search += "&data=" + data.data;
-                }
-              } else {
-                // append the blank url param
-                search = "?data=" + data.data;
-              }
-              if (window.location.search == search) {
-                window.location.reload()
-              } else {
-                window.location.search = search;
-              }
+      //       App.initWidgets();
+      //       var err = $('.error', $modal);
+      //       if (err.length > 0) {
+      //         $body.scrollTo(err);
+      //       }
+      //     } else {
+      //       if (data.message) {
 
-            } else {
-              window.location.reload();
-            }
-          }
-        },
-        error: function() {
-          Alert.show('There was an error submitting this form. Please try ' +
-            'again.', 'error', $('.modal-alerts', $modal), $body);
-        },
-        complete: function () {
-          spinner.stop();
-        }
-      });
+      //         $modal.modal('hide')
+      //         Alert.show(data.message, 'success', $('#alerts'), $('body'));
+      //         // var search = window.location.search;
+      //         // if (search.length > 0) {
+      //         //   if (search.search("data=") > -1 ) {
+      //         //     // replace the data url param
+      //         //     search = search.substr(0, search.search("data=")) + "data=" + data.data;
+      //         //   } else {
+      //         //     // append the data url param
+      //         //     search += "&data=" + data.data;
+      //         //   }
+      //         // } else {
+      //         //   // append the blank url param
+      //         //   search = "?data=" + data.data;
+      //         // }
+      //         // if (window.location.search == search) {
+      //         //   window.location.reload()
+      //         // } else {
+      //         //   window.location.search = search;
+      //         // }
+
+      //       } else {
+      //         window.location.reload();
+      //       }
+      //     }
+      //   },
+      //   error: function() {
+      //     Alert.show('There was an error submitting this form. Please try ' +
+      //       'again.', 'error', $('.modal-alerts', $modal), $body);
+      //   },
+      //   complete: function () {
+      //     spinner.stop();
+      //   }
+      // });
       return false;
 }
 
