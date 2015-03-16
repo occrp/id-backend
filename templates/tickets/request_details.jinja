@@ -143,14 +143,17 @@
 
 {% block content %}
 <div class="span12">
-    {% if messages and ticket_detail_view is defined %}
-        <div style="margin: 0;"></div>
-        {% for message in messages %}  
-            <div class="alert alert-detail alert-block alert-{{ message.tags }}">
-                <a class="close" data-dismiss="alert">×</a>
-                {{ message }}
-            </div>
-        {% endfor %}
+    {% if ticket_detail_view is defined %}
+        <div id="alerts" class="container">
+            {% if messages %}
+                {% for message in messages %}  
+                    <div class="alert alert-detail alert-block alert-{{ message.tags }}">
+                        <a class="close" data-dismiss="alert">×</a>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
     {% endif %}
 </div>
 <div class="span12">
@@ -403,7 +406,7 @@
 
 {% block js %}
     {{ super() }}
-    <script type="text/javascript" src="{{ static_url }}js/entity-view.js"></script>
+    <script type="text/javascript" src="{{ static('js/entity-view.js') }}"></script>
     <script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/vendor/jquery.ui.widget.js')}}"></script>
     <script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
     <script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
