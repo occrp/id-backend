@@ -103,16 +103,16 @@
 
 <div id="content">
     <div class="before-content">
+        {% if messages and ticket_detail_view is not defined %}
         <div id="alerts" class="container">
-            {% if messages and ticket_detail_view is not defined %}
                 {% for message in messages %}
                     <div class="alert alert-block alert-{{ message.tags }}">
                         <a class="close" data-dismiss="alert">×</a>
                         {{ message }}
                     </div>
                 {% endfor %}
-            {% endif %}
         </div>
+        {% endif %}
         {% block before_content %}{% endblock %}
     </div>
 
@@ -152,7 +152,8 @@
     {% else %}
         <script type="text/javascript" src="{{ static("components/moment/min/lang/en-gb.js") }}"></script>
     {% endif %}
-    <script type="text/javascript" src="{{ static("components/spin.js/dist/spin.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static("components/spin.js/spin.js") }}"></script>
+    <script type="text/javascript" src="{{ static("components/spin.js/jquery.spin.js") }}"></script>
     <script type="text/javascript" src="{{ static("components/jquery.scrollTo/jquery.scrollTo.min.js") }}"></script>
     <script type="text/javascript" src="{{ static("components/jquery-mentions-input/lib/jquery.elastic.js") }}"></script>
     <script type="text/javascript" src="{{ static("components/jquery-mentions-input/jquery.mentionsInput.js") }}"></script>
