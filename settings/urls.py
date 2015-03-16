@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 
 from id import databases, requests, search, accounts
-from id import validation, admin, tasks, files, errors
+from id import validation, admin, tasks, errors
 from id.decorators import admin_only, staff_only, volunteers_only, users_only
 
 import ticket.validators
@@ -95,12 +95,6 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('registration.backends.default.urls')),
     # url(r'/post_login_redirect', accounts.PostLoginRedirectHandler, name='post_login_redirect'),
     # url(r'/complete_login', h.CompleteLoginHandler, name="complete_login"),
-
-    url(r'^file/list/(?P<folder_id>.+)/$', files.ListFilesHandler.as_view(), name='list_files'),
-    url(r'^file/remove/$', files.RemoveFileHandler.as_view(), name='remove_file'),
-    url(r'^file/upload/$', files.UploadFileHandler.as_view(), name='upload_files'),
-    url(r'^file/upload/direct/$', files.DirectUploadFileHandler.as_view(), name='upload_direct'),
-    url(r'^file/upload_check/$', files.UploadCheck.as_view(), name='upload_check'),
 
     url(r'^podaci/', include('podaci.urls')),
 
