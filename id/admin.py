@@ -1,5 +1,6 @@
 from django.views.generic import *
 from id.models import *
+from ticket.models import *
 from id.forms import ScraperRequestForm
 
 class Panel(TemplateView):
@@ -24,27 +25,11 @@ class Statistics(TemplateView):
             "accounts_volunteer": Profile.objects.filter(is_volunteer=True).count(),
             "accounts_staff": Profile.objects.filter(is_staff=True).count(),
             "accounts_admin": Profile.objects.filter(is_admin=True).count(),
-            "person_count": Person.objects.count(),
-            "company_count": Company.objects.count(),
-            "location_count": Location.objects.count(),
-            "relationship_count": Relationship.objects.count(),
             "accreq_total": AccountRequest.objects.count(),
             "accreq_approved": AccountRequest.objects.filter(approved=True).count(),
             "accreq_rejected": AccountRequest.objects.filter(approved=False).count(),
             "accreq_outstanding": AccountRequest.objects.filter(approved=None).count(),
         }
-
-class CompanyList(TemplateView):
-    template_name = "crud/company/list.jinja"
-
-class PersonList(TemplateView):
-    template_name = "crud/person/list.jinja"
-
-class LocationList(TemplateView):
-    template_name = "crud/location/list.jinja"
-
-class RelationshipList(TemplateView):
-    template_name = "crud/relationship/list.jinja"
 
 
 class DatabaseScrapeRequestCreate(CreateView):
