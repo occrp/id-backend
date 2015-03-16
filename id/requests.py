@@ -156,10 +156,10 @@ class RequestDetailsHandler(TemplateView):
             'charges': charges,
             'charges_outstanding': sum(outstanding),
             'ticket_update_form': self.form,
-            'cancel_form': forms.RequestCancelForm(),
+            'cancel_form': forms.TicketCancelForm(),
             'mark_paid_form': forms.TicketPaidForm(),
-            'close_form': forms.RequestCancelForm(),
-            're_open_form': forms.RequestCancelForm(),
+            'close_form': forms.TicketCancelForm(),
+            're_open_form': forms.TicketCancelForm(),
             'flag_form': forms.RequestFlagForm(),
             'file_upload_form': forms.DirectUploadForm(initial={
                 "key":self.ticket.id,
@@ -247,7 +247,7 @@ class RequestDetailsActionHandler(JSONResponseMixin, TemplateView):
 
 class RequestCloseHandler(RequestDetailsActionHandler):
     """ Close a request as being answered """
-    form_class = forms.RequestCancelForm
+    form_class = forms.TicketCancelForm
 
     def user_can(self, ticket):
         # volunteers cannot close tickets.
@@ -263,7 +263,7 @@ class RequestCloseHandler(RequestDetailsActionHandler):
 
 class RequestCancelHandler(RequestDetailsActionHandler):
     """ Cancel a request for information """
-    form_class = forms.RequestCancelForm
+    form_class = forms.TicketCancelForm
 
     def user_can(self, ticket):
         # responders cannot.
@@ -360,7 +360,7 @@ class RequestAddChargeHandler(RequestDetailsActionHandler):
 
 
 class RequestReopenHandler(RequestDetailsActionHandler):
-    form_class = forms.RequestCancelForm
+    form_class = forms.TicketCancelForm
 
     def user_can(self, ticket):
         return self.profile.is_admin or profile_in(
