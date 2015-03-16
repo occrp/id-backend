@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 
 from id import databases, requests, search, accounts
-from id import validation, admin, tasks, files, errors
+from id import validation, admin, tasks, errors
 from id.decorators import admin_only, staff_only, volunteers_only, users_only
 
 import ticket.validators
@@ -22,11 +22,6 @@ urlpatterns = patterns('',
     url(r'^about/$', TemplateView.as_view(template_name="about_us.jinja"), name='about_us'),
 
     url(r'^admin/$', admin.Panel.as_view(), name='admin_panel'),
-    url(r'^admin/company/list$', admin.CompanyList.as_view(), name='company_list'),
-    url(r'^admin/person/list$', admin.PersonList.as_view(), name='person_list'),
-    url(r'^admin/location/list$', admin.LocationList.as_view(), name='location_list'),
-    url(r'^admin/relationship/list$', admin.RelationshipList.as_view(), name='relationship_list'),
-
     url(r'^admin/scrapers/request/$', admin.DatabaseScrapeRequestCreate.as_view(), name='admin_scrapers_request'),
 
     url(r'^admin/storage/$', admin.Storage.as_view(), name='admin_storage'),
@@ -71,9 +66,6 @@ urlpatterns = patterns('',
     url(r'^ticket/(?P<pk>[0-9]+)/cancel/$', ticket.views.TicketActionCancelHandler.as_view(), name='ticket_cancel'),
     url(r'^ticket/(?P<pk>[0-9]+)/join/$', ticket.views.TicketActionJoinHandler.as_view(), name='ticket_join'),
 
-    url(r'^_validation/company/$', validation.ValidateCompany.as_view(), name='ajax_validate_company'),
-    url(r'^_validation/person/$', validation.ValidatePerson.as_view(), name='ajax_validate_person'),
-    url(r'^_validation/location/$', validation.ValidateLocation.as_view(), name='ajax_validate_location'),
     url(r'^_validation/request/$', ticket.validators.ValidateTicketRequest.as_view(), name='ajax_validate_request'),
 
     url(r'^databases/$', databases.ExternalDatabaseList.as_view(), name='externaldb_list'),
@@ -84,23 +76,18 @@ urlpatterns = patterns('',
 
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'registration/login.jinja'}, name='login'),
     url(r'^accounts/logout/', 'django.contrib.auth.views.logout', {'template_name': 'registration/logout.jinja'}, name='logout'),
-    url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^accounts/users/$', accounts.UserList.as_view(), name='userprofile_list'),
     url(r'^accounts/request/$', accounts.AccountRequestHome.as_view(), name='request_account_home'),
     url(r'^accounts/request/list/$', accounts.AccountRequestList.as_view(), name='request_account_list'),
     url(r'^accounts/profile/$', accounts.ProfileUpdate.as_view(), name='profile'),
-    url(r'^accounts/profile/(?P<pk>[0-9]+)/$', accounts.ProfileView.as_view(), name='profile'),
-    url(r'^accounts/profile/(?P<username>.+)/$', accounts.ProfileView.as_view(), name='profile'),
+    url(r'^accounts/profile/(?P<pk>[0-9]+)/$', accounts.ProfileUpdate.as_view(), name='profile'),
+    url(r'^accounts/profile/(?P<username>.+)/$', accounts.ProfileUpdate.as_view(), name='profile'),
+    url(r'^accounts/setlanguage/(?P<lang>[a-zA-Z]{2})/$', accounts.ProfileSetLanguage.as_view(), name='account_set_language'),
     url(r'^accounts/requester/$', accounts.AccountRequest.as_view(), name='request_account'),
     url(r'^accounts/volunteer/$', accounts.AccountVolunteer.as_view(), name='volunteer_account'),
+    url(r'^accounts/', include('registration.backends.default.urls')),
     # url(r'/post_login_redirect', accounts.PostLoginRedirectHandler, name='post_login_redirect'),
     # url(r'/complete_login', h.CompleteLoginHandler, name="complete_login"),
-
-    url(r'^file/list/(?P<folder_id>.+)/$', files.ListFilesHandler.as_view(), name='list_files'),
-    url(r'^file/remove/$', files.RemoveFileHandler.as_view(), name='remove_file'),
-    url(r'^file/upload/$', files.UploadFileHandler.as_view(), name='upload_files'),
-    url(r'^file/upload/direct/$', files.DirectUploadFileHandler.as_view(), name='upload_direct'),
-    url(r'^file/upload_check/$', files.UploadCheck.as_view(), name='upload_check'),
 
     url(r'^podaci/', include('podaci.urls')),
 

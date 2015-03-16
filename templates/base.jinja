@@ -33,13 +33,13 @@
             </a>
             {% if not exception %}
             <div class="nav-collapse collapse">
-                {% if request.path != '/' %}
+                {% if request.path != '/' or user.is_authenticated() %}
                 <ul class="nav">
                     <li  class="{% if url('search') in request.path %}active{% endif %}">
                         <a href="{{ url('search') }}"><i class="icon-search"></i> {% trans %}Search{% endtrans %}</a>
                     </li>
                     <li class="{% if url('externaldb_list') in request.path %}active{% endif %}">
-                        <a href="{{ url('externaldb_list') }}"><i class="icon-list-alt"></i> {% trans %}Business Registries{% endtrans %}</a>
+                        <a href="{{ url('externaldb_list') }}"><i class="icon-list-alt"></i> {% trans %}External Databases{% endtrans %}</a>
                     </li>
                     {% if user.is_authenticated() %}
                     <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
@@ -63,6 +63,9 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <li  class="{% if url('profile') in request.path %}active{% endif %}">
+                                <a href="{{ url('profile') }}">{% trans %}Profile{% endtrans %}</a>
+                            </li>
                             {% if user.profile.is_staff or user.profile.is_admin %}
                             <li  class="{% if url('admin_panel') in request.path %}active{% endif %}">
                                 <a href="{{ url('admin_panel') }}">{% trans %}Admin{% endtrans %}</a>
@@ -84,8 +87,8 @@
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                             {% for locale in LANGUAGES %}
-                            <li>
-                                <a href="{{url('set_language')}}?language={{ locale.0 }}">
+                            <li{% if (user.is_authenticated() and user.profile.locale == locale.0) or request.session.locale == locale.0 %} class="active"{% endif %}>
+                                <a href="{{url('account_set_language', locale.0)}}">
                                     {{ locale.1 }}
                                 </a>
                             </li>
@@ -127,7 +130,7 @@
         <a id="occrp-logo" class="hidden-phone" href="http://www.occrp.org"><img src="{{ static("img/occrp-logo.png") }}" /></a>
       <a id="ancir-logo" class="hidden-phone" href="http://investigativecenters.org/"><img src="{{ static("img/ancir-logo.png") }}" style="height:65px" /></a>
       <a id="arij-logo" class="hidden-phone" href="http://arij.net/en"> <img src="{{ static("img/arij-logo.png") }}" style="height:65px" /></a>
-        <small class="pull-right">{% trans %}&copy; 2013 - OCCRP. All rights reserved.{% endtrans %} <a href="{{ url('about_us') }}">{% trans %}About this site{% endtrans %}</a></small>
+        <small class="pull-right">{% trans %}&copy; 2015 - OCCRP.{% endtrans %} <a href="{{ url('about_us') }}">{% trans %}About this site{% endtrans %}</a></small>
     </div>
 </div>
 </div>
@@ -142,6 +145,7 @@
     <script type="text/javascript" src="{{ static("components/bootstrap/js/bootstrap-alert.js") }}"></script>
     <script type="text/javascript" src="{{ static("components/bootstrap/js/bootstrap-tooltip.js") }}"></script>
     <script type="text/javascript" src="{{ static("components/bootstrap/js/bootstrap-modal.js") }}"></script>
+    <script type="text/javascript" src="{{ static("components/bootstrap/js/bootstrap-tab.js") }}"></script>
     <script type="text/javascript" src="{{ static("components/bootstrap-datepicker/js/bootstrap-datepicker.js") }}"></script>
     <script type="text/javascript" src="{{ static("components/select2/select2.min.js") }}"></script>
     <script type="text/javascript" src="{{ static("components/moment/min/moment.min.js") }}"></script>

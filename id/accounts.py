@@ -1,28 +1,68 @@
+from django.http import HttpResponseRedirect
 from django.views.generic import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-
+from settings.settings import LANGUAGES
 from registration.signals import user_registered
 
 from id.models import Profile, AccountRequest
-from id.forms import ProfileUpdateForm
+from id.forms import ProfileUpdateForm, ProfileBasicsForm, ProfileDetailsForm, ProfileAdminForm
 
 
-class ProfileView(DetailView):
-    template_name = 'registration/profile_view.jinja'
-    model = Profile
+class ProfileSetLanguage(TemplateView):
+    template_name = 'registration/profile.jinja'
+
+    def get(self, request, lang, **kwargs):
+        if lang in [x[0] for x in LANGUAGES]:
+            request.session['django_language'] = lang
+            if request.user.is_authenticated():
+                request.user.profile.locale = lang
+                request.user.profile.save()
+        return HttpResponseRedirect(request.META["HTTP_REFERER"])
+
 
 class ProfileUpdate(UpdateView):
     template_name = 'registration/profile.jinja'
-    model = Profile
-    form = ProfileUpdateForm
+    form_class = ProfileUpdateForm
+    success_url = "/accounts/profile/"
 
     def get_object(self, *args, **kwargs):
+        if kwargs.has_key("pk"):
+            return User.objects.get(id=kwargs["pk"]).profile
+        elif kwargs.has_key("username"):
+            return User.objects.get(username=kwargs["username"]).profile
         return self.request.user.profile
+
+    def get_context_data(self, form):
+        obj = self.get_object()
+        ctx = super(ProfileUpdate, self).get_context_data()
+        ctx = {
+            "editing_self": obj == self.request.user.profile
+        }
+        print "Request method: ", self.request.method
+        if self.request.method == "POST":
+            ctx["form"] = ProfileUpdateForm(self.request.POST, instance=obj)
+            if ctx["form"].is_valid():
+                print "Saving form. Form: ", ctx["form"]
+                obj = ctx["form"].save()
+            else:
+                print ctx["form"].errors
+            ctx["form_basics"] = ProfileBasicsForm(self.request.POST, instance=obj)
+            ctx["form_details"] = ProfileDetailsForm(self.request.POST, instance=obj)
+            if obj.is_admin:
+                ctx["form_admin"] = ProfileAdminForm(self.request.POST, instance=obj)
+        else:
+            ctx["form"] = ProfileUpdateForm(instance=obj)
+            ctx["form_basics"] = ProfileBasicsForm(instance=obj)
+            ctx["form_details"] = ProfileDetailsForm(instance=obj)
+            if obj.is_admin:
+                ctx["form_admin"] = ProfileAdminForm(instance=obj)
+        return ctx
 
 class UserList(ListView):
     model = User
     paginate_by = 50
+    template_name = 'auth/user_list.jinja'
 
 class AccountRequestHome(TemplateView):
     template_name = 'request_account_home.jinja'
