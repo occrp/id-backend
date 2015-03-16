@@ -20,29 +20,49 @@ class ProfileSetLanguage(TemplateView):
             self.request.user.profile.save()
         return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
-class ProfileView(DetailView):
-    template_name = 'registration/profile_view.jinja'
-    model = Profile
 
 class ProfileUpdate(UpdateView):
     template_name = 'registration/profile.jinja'
     form_class = ProfileUpdateForm
+    success_url = "/accounts/profile/"
 
     def get_object(self, *args, **kwargs):
+        if kwargs.has_key("pk"):
+            return User.objects.get(id=kwargs["pk"]).profile
+        elif kwargs.has_key("username"):
+            return User.objects.get(username=kwargs["username"]).profile
         return self.request.user.profile
 
     def get_context_data(self, form):
+        obj = self.get_object()
         ctx = super(ProfileUpdate, self).get_context_data()
-        ctx = {"form": form}
-        ctx["form_basics"] = ProfileBasicsForm()
-        ctx["form_details"] = ProfileDetailsForm()
-        if self.request.user.profile.is_admin:
-            ctx["form_admin"] = ProfileAdminForm()
+        ctx = {
+            "editing_self": obj == self.request.user.profile
+        }
+        print "Request method: ", self.request.method
+        if self.request.method == "POST":
+            ctx["form"] = ProfileUpdateForm(self.request.POST, instance=obj)
+            if ctx["form"].is_valid():
+                print "Saving form. Form: ", ctx["form"]
+                obj = ctx["form"].save()
+            else:
+                print ctx["form"].errors
+            ctx["form_basics"] = ProfileBasicsForm(self.request.POST, instance=obj)
+            ctx["form_details"] = ProfileDetailsForm(self.request.POST, instance=obj)
+            if obj.is_admin:
+                ctx["form_admin"] = ProfileAdminForm(self.request.POST, instance=obj)
+        else:
+            ctx["form"] = ProfileUpdateForm(instance=obj)
+            ctx["form_basics"] = ProfileBasicsForm(instance=obj)
+            ctx["form_details"] = ProfileDetailsForm(instance=obj)
+            if obj.is_admin:
+                ctx["form_admin"] = ProfileAdminForm(instance=obj)
         return ctx
 
 class UserList(ListView):
     model = User
     paginate_by = 50
+    template_name = 'auth/user_list.jinja'
 
 class AccountRequestHome(TemplateView):
     template_name = 'request_account_home.jinja'

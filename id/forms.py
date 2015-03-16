@@ -66,12 +66,13 @@ class UserFilterForm(forms.Form):
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
+        exclude = ('user',)
         model = models.Profile
 
 class ProfileBasicsForm(forms.ModelForm):
     class Meta:
         model = models.Profile
-        fields = ("first_name", "last_name", "locale")
+        fields = ("first_name", "last_name", "abbr", "locale")
 
 class ProfileDetailsForm(forms.ModelForm):
     class Meta:
