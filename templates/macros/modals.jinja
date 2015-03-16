@@ -19,7 +19,7 @@
     </div>
 {% endmacro %}
 
-{% macro render_modal(form, form_action, modal_id, title, submit_text, enctype) %}
+{% macro render_modal(form, form_action, modal_id, title, submit_text, enctype, csrf) %}
     {% call modal_shell(modal_id, title, submit_text) %}
         {% include 'modals/form_basic.jinja' %}
     {% endcall %}
