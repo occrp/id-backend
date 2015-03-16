@@ -2,11 +2,8 @@
 
 {% if not_allowed %}{% trans %}Not Allowed{% endtrans %}{% endif %}
 
-<form action="{{ form_action }}" class="form-horizontal" method="POST"
- {% if enctype %}
-   enctype="{{enctype}}" 
- {% endif %}
->
+<form action="{{ form_action }}" class="form-horizontal" method="POST"{% if enctype != "" %} enctype="{{enctype}}"{% endif %}>
+	<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf }}">
     {% for field in form %}
         {{ form_macros.render_field(field) }}
     {% endfor %}
