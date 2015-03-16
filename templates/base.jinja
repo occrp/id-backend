@@ -39,7 +39,7 @@
                         <a href="{{ url('search') }}"><i class="icon-search"></i> {% trans %}Search{% endtrans %}</a>
                     </li>
                     <li class="{% if url('externaldb_list') in request.path %}active{% endif %}">
-                        <a href="{{ url('externaldb_list') }}"><i class="icon-list-alt"></i> {% trans %}Business Registries{% endtrans %}</a>
+                        <a href="{{ url('externaldb_list') }}"><i class="icon-list-alt"></i> {% trans %}External Databases{% endtrans %}</a>
                     </li>
                     {% if user.is_authenticated() %}
                     <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
@@ -87,7 +87,7 @@
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                             {% for locale in LANGUAGES %}
-                            <li>
+                            <li{% if user.profile.locale == locale.0 %} class="active"{% endif %}>
                                 <a href="{{url('account_set_language', locale.0)}}">
                                     {{ locale.1 }}
                                 </a>

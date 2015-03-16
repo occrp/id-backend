@@ -3,17 +3,18 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from id.mixins import *
 from id.constdata import *
+from settings.settings import LANGUAGES
 
 ######## User profiles #################
 class Profile(models.Model):
     user = models.OneToOneField(User)
     first_name = models.CharField(max_length=60, verbose_name=_("First Name"))
     last_name = models.CharField(max_length=60, verbose_name=_("Last Name"))
-    abbr = models.CharField(max_length=8, verbose_name=_("Initials"))
-    admin_notes = models.TextField(verbose_name=_("Admin Notes"))
-    locale = models.CharField(max_length=10)
+    abbr = models.CharField(max_length=8, unique=True, verbose_name=_("Initials"))
+    admin_notes = models.TextField(blank=True, verbose_name=_("Admin Notes"))
+    locale = models.CharField(blank=True, max_length=10, choices=LANGUAGES)
 
-    requester_type = models.CharField(max_length=10, choices=REQUESTER_TYPES,
+    requester_type = models.CharField(blank=True, max_length=10, choices=REQUESTER_TYPES,
                                       verbose_name=_('Requester Type'))
     findings_visible = models.BooleanField(default=False,
                                       verbose_name=_('Findings Public'))
@@ -24,7 +25,7 @@ class Profile(models.Model):
     is_staff = models.BooleanField(default=False)
     is_volunteer = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
-    old_google_id = models.CharField(max_length=100)
+    old_google_id = models.CharField(blank=True, max_length=100)
 
     phone_number = models.CharField(blank=True, max_length=22)
     organization_membership = models.CharField(blank=True, max_length=20)
