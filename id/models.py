@@ -3,17 +3,18 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from id.mixins import *
 from id.constdata import *
+from settings.settings import LANGUAGES
 
 ######## User profiles #################
 class Profile(models.Model):
     user = models.OneToOneField(User)
     first_name = models.CharField(max_length=60, verbose_name=_("First Name"))
     last_name = models.CharField(max_length=60, verbose_name=_("Last Name"))
-    abbr = models.CharField(max_length=8, verbose_name=_("Initials"))
-    admin_notes = models.TextField(verbose_name=_("Admin Notes"))
-    locale = models.CharField(max_length=10)
+    abbr = models.CharField(max_length=8, blank=True, null=True, unique=True, verbose_name=_("Initials"))
+    admin_notes = models.TextField(blank=True, verbose_name=_("Admin Notes"))
+    locale = models.CharField(blank=True, max_length=10, choices=LANGUAGES)
 
-    requester_type = models.CharField(max_length=10, choices=REQUESTER_TYPES,
+    requester_type = models.CharField(blank=True, max_length=10, choices=REQUESTER_TYPES,
                                       verbose_name=_('Requester Type'))
     findings_visible = models.BooleanField(default=False,
                                       verbose_name=_('Findings Public'))
@@ -24,30 +25,30 @@ class Profile(models.Model):
     is_staff = models.BooleanField(default=False)
     is_volunteer = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
-    old_google_id = models.CharField(max_length=100)
+    old_google_id = models.CharField(blank=True, max_length=100)
 
-    phone_number = models.CharField(max_length=22)
-    organization_membership = models.CharField(max_length=20)
-    notes = models.TextField()
-    address = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
-    province = models.CharField(max_length=50)
-    postal_code = models.CharField(max_length=20)
+    phone_number = models.CharField(blank=True, max_length=22)
+    organization_membership = models.CharField(blank=True, max_length=20)
+    notes = models.TextField(blank=True, )
+    address = models.CharField(blank=True, max_length=50)
+    city = models.CharField(blank=True, max_length=50)
+    province = models.CharField(blank=True, max_length=50)
+    postal_code = models.CharField(blank=True, max_length=20)
 
     # Requester fields
-    industry = models.CharField(max_length=20)
-    industry_other = models.CharField(max_length=50)
-    media = models.CharField(max_length=50)
-    circulation = models.CharField(max_length=50)
-    title = models.CharField(max_length=50)
+    industry = models.CharField(blank=True, max_length=20)
+    industry_other = models.CharField(blank=True, max_length=50)
+    media = models.CharField(blank=True, max_length=50)
+    circulation = models.CharField(blank=True, max_length=50)
+    title = models.CharField(blank=True, max_length=50)
 
     # Volunteer fields
-    interests = models.TextField()
-    expertise = models.TextField()
-    languages = models.TextField()
-    availability = models.TextField()
-    databases = models.TextField()
-    conflicts = models.TextField()
+    interests = models.TextField(blank=True)
+    expertise = models.TextField(blank=True)
+    languages = models.TextField(blank=True)
+    availability = models.TextField(blank=True)
+    databases = models.TextField(blank=True)
+    conflicts = models.TextField(blank=True)
 
 
     def can_write_to(self, obj):
@@ -199,207 +200,6 @@ class ExternalDatabase(models.Model, DisplayMixin):
         else: # no continent found. This will happen for pseudo-countries
             return ('', set())
 
-######## Entity relationships ##########
-class Entity(models.Model, DisplayMixin, DriveMixin): # Expando
-    comments = models.TextField(verbose_name=_('Comments'))
-    relationships = models.ManyToManyField('Entity')
-
-    @property
-    def kind(self):
-        return self.key.kind()
-
-    def __unicode__(self):
-        return self.name
-
-    def __str__(self):
-        return self.__unicode__()
-
-    def _pre_put_hook(self):
-        self.update_drive_permissions()
-
-    def _post_put_hook(self, future):
-        self.Meta.search_fields.append('kind')
-        index(self, only=self.Meta.search_fields, index='all')
-        index(self, only=self.Meta.search_fields,
-              index=self.key.kind().lower())
-
-    @classmethod
-    def _post_delete_hook(cls, key, future):
-        unindex(key, index='all')
-        unindex(key, index=key.kind())
-
-    def _prop_list(self, fields):
-        prop_list = []
-        for f in fields:
-            try:
-                prop = getattr(type(self), f)
-                verbose_name = prop._verbose_name
-                value = self.get_display_value(f)
-            except AttributeError:
-                try:
-                    query = ExpandoField.query().filter(
-                        ExpandoField.kind == self.key.kind(),
-                        ExpandoField.identifier == f).fetch()
-                    if query:
-                        prop = query[0]
-                        verbose_name = prop.label
-                        value = getattr(self, f)
-                    else:
-                        continue
-                except Exception as e:
-                    logging.warning("%r: %s" % (e, e.message))
-
-            if value:
-                prop_list.append((verbose_name, value))
-
-        return prop_list
-
-    @property
-    def summary(self):
-        return self._prop_list(self.Meta.summary_fields)
-
-    @property
-    def modal_details(self):
-        ignored = self.Meta.modal_ignored_fields or []
-        ignored.append("drive_folder_id")
-        ignored.append("name")
-        ignored.append("drive_shared_users")
-        ignored.append("drive_shared_groups")
-        fields = [f for f in self._properties.keys() if f not in ignored]
-        return self._prop_list(fields)
-
-    ## Shortcuts for relationships
-
-    def relationships(self, cls_on_left=True, cls_on_right=True):
-        '''get relationships
-        default is all
-        set cls_on_left = False to get only relationships where
-         the other entity is on the right
-        and vice versa
-        '''
-        ors = []
-        if cls_on_left:
-            ors.append(Relationship.left == self.key)
-        if cls_on_right:
-            ors.append(Relationship.right == self.key)
-        return Relationship.query(ndb.OR(*ors))
-
-
-    @property
-    def addresses(self):
-        return self.get_by_kind('Location')
-
-    @property
-    def people(self):
-        return self.get_by_kind('Person')
-
-    @property
-    def companies(self):
-        return self.get_by_kind('Company')
-
-    @property
-    def directors(self):
-        '''only makes sense for companies'''
-        pass
-
-    def get_by_reltype(self, reltype):
-        # inefficient, but it'll do for now
-        # Note that this returns a list of relationships, not of the objects
-        # to which the relationship applies
-        # Also, we probably need a better way of handling directionality
-        return [
-            x for x in self.relationships().iter() if x.type == reltype]
-
-
-    def get_by_kind(self, entity_kind):
-        # inefficient, but it'll do for now
-        # Note that this returns a list of relationships, not of the objects
-        # to which the relationship applies
-        # Also, we probably need a better way of handling directionality
-        return [
-            x for x in self.relationships(cls_on_left=False).iter() if x.left.get().kind == entity_kind] + [
-            x for x in self.relationships(cls_on_right=False).iter() if x.right.get().kind == entity_kind]
-
-    class Meta:
-        pass
-        #search_fields = None
-        #summary_fields = None
-        #modal_ignored_fields = None
-
-class Relationship(models.Model, DisplayMixin, DriveMixin):  # Expando
-    left = models.ForeignKey('Entity', blank=False, verbose_name=_('Entity One'), related_name="right_link")
-    right = models.ForeignKey('Entity', blank=False, verbose_name=_('Entity Two'), related_name="left_link")
-    type = models.CharField(max_length=70, blank=False, verbose_name=_('Type'),
-                          choices=ALL_RELATIONSHIP_TYPES)
-    left_name = models.CharField(max_length=50, verbose_name=_('Entity One'))
-    right_name = models.CharField(max_length=50, verbose_name=_('Entity Two'))
-    start = models.DateField(verbose_name=_('Start Date'))
-    end = models.DateField(verbose_name=_('End Date'))
-    comments = models.TextField(verbose_name=_('Comments'))
-
-    def _pre_put_hook(self):
-        super(Relationship, self)._pre_put_hook()
-        self.left_name = unicode(self.left.get())
-        self.right_name = unicode(self.right.get())
-
-    # For future validation
-    def get_types(self):
-        if not self.left or not self.right:
-            return None
-
-        left_kind = self.left.kind()
-        right_kind = self.right.kind()
-
-        rpl = RELATIONSHIP_PRECEDENCE.index(left_kind)
-        rpr = RELATIONSHIP_PRECEDENCE.index(right_kind)
-
-        order = [(rpl, left_kind.upper()), (rpr, right_kind.upper())]
-        order.sort()
-
-        return getattr(globals(), "%s_%s_TYPES" % [k for i, k in order])
-
-    def type_display(self):
-        return get_choice_display(self.type, ALL_RELATIONSHIP_TYPES)
-
-
-class Company(Entity):
-    name = models.CharField(max_length=50, blank=False, verbose_name=_('Name'))
-    name_variations = models.CharField(max_length=50, verbose_name=_('Name Variations'))  # Repeated
-    jurisdiction = models.CharField(max_length=70, choices=COUNTRIES,
-                                  verbose_name=_('Jurisdiction Registered'))
-    type = models.CharField(max_length=70, choices=COMPANY_TYPES,
-                          verbose_name=_('Form of Company'))
-    status = models.CharField(max_length=70, choices=COMPANY_STATUS,
-                            verbose_name=_('Status'))
-    registered = models.DateField(verbose_name=_('Date Registered'))
-    dissolved = models.DateField(verbose_name=_('Date Dissolved'))
-
-
-class Person(Entity):
-    first_name = models.CharField(max_length=50, blank=False,
-                                    verbose_name=_('First Name'))
-    middle_name = models.CharField(max_length=50, verbose_name=_('Middle Name'))
-    last_name = models.CharField(max_length=50, verbose_name=_('Last Name'))
-    name_variations = models.CharField(max_length=50, verbose_name=_('Name Variations'))  # Repeated
-    birth = models.DateField(verbose_name=_('Date of Birth'))
-    death = models.DateField(verbose_name=_('Date of Death'))
-    sex = models.CharField(max_length=70, choices=SEX, verbose_name=_('Sex'))
-    nationalities = models.CharField(max_length=50, verbose_name=_('Nationalities'))  # Repeated
-    id_numbers = models.CharField(max_length=50, verbose_name=_('ID Numbers'))  # Repeated
-
-    def __unicode__(self):
-        name = filter(None, [self.first_name, self.middle_name,
-                             self.last_name])
-        return ' '.join(name)
-
-
-class Location(Entity, AddressMixin):
-    name = models.CharField(max_length=50, blank=False, verbose_name=_('Name'))
-
-    def __unicode__(self):
-        name = filter(None, [self.name, self.address, self.city,
-                             self.province, self.postal_code, self.country])
-        return ', '.join(name)
 
 
 ######## Account management ############

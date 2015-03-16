@@ -9,6 +9,8 @@ from copy import deepcopy
 import elasticsearch
 from distutils.version import StrictVersion
 
+from settings.settings import PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT
+
 class AuthenticationError(Exception):
     pass
 
@@ -250,6 +252,14 @@ class Tag(MetaMixin, PermissionsMixin):
         if self.id and not prepopulate_meta:
             self.get_metadata()
 
+    def __unicode__(self):
+        if not self.id: return "[Uninitialized tag object]"
+        if not self.meta: self.get_metadata()
+        return "[Tag %s] %s" % (self.id, self.meta.get("name"))
+
+    def __str__(self):
+        return self.__unicode__()
+
     def create(self, name):
         self._create_metadata()
         self.meta["name"] = name
@@ -476,7 +486,7 @@ class File(MetaMixin, PermissionsMixin):
 
 
 class FileSystem:
-    def __init__(self, es_servers = None, es_index = None, data_root = None, user=None):
+    def __init__(self, es_servers=PODACI_SERVERS, es_index=PODACI_ES_INDEX, data_root=PODACI_FS_ROOT, user=None):
         self.es_servers = es_servers
         self.es_index = es_index
         self.data_root = data_root
