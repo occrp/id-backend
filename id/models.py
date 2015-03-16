@@ -10,7 +10,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User)
     first_name = models.CharField(max_length=60, verbose_name=_("First Name"))
     last_name = models.CharField(max_length=60, verbose_name=_("Last Name"))
-    abbr = models.CharField(max_length=8, unique=True, verbose_name=_("Initials"))
+    abbr = models.CharField(max_length=8, blank=True, null=True, unique=True, verbose_name=_("Initials"))
     admin_notes = models.TextField(blank=True, verbose_name=_("Admin Notes"))
     locale = models.CharField(blank=True, max_length=10, choices=LANGUAGES)
 
