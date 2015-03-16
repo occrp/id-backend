@@ -22,11 +22,6 @@ urlpatterns = patterns('',
     url(r'^about/$', TemplateView.as_view(template_name="about_us.jinja"), name='about_us'),
 
     url(r'^admin/$', admin.Panel.as_view(), name='admin_panel'),
-    url(r'^admin/company/list$', admin.CompanyList.as_view(), name='company_list'),
-    url(r'^admin/person/list$', admin.PersonList.as_view(), name='person_list'),
-    url(r'^admin/location/list$', admin.LocationList.as_view(), name='location_list'),
-    url(r'^admin/relationship/list$', admin.RelationshipList.as_view(), name='relationship_list'),
-
     url(r'^admin/scrapers/request/$', admin.DatabaseScrapeRequestCreate.as_view(), name='admin_scrapers_request'),
 
     url(r'^admin/storage/$', admin.Storage.as_view(), name='admin_storage'),
@@ -70,9 +65,6 @@ urlpatterns = patterns('',
     url(r'^ticket/manage/person_ownership/(?P<pk>[0-9]+)/edit/$', ticket.views.PersonTicketUpdate.as_view(), name='person_ownership_ticket_edit'),
     url(r'^ticket/manage/other/(?P<pk>[0-9]+)/edit/$', ticket.views.OtherTicketUpdate.as_view(), name='other_ticket_edit'),
 
-    url(r'^_validation/company/$', validation.ValidateCompany.as_view(), name='ajax_validate_company'),
-    url(r'^_validation/person/$', validation.ValidatePerson.as_view(), name='ajax_validate_person'),
-    url(r'^_validation/location/$', validation.ValidateLocation.as_view(), name='ajax_validate_location'),
     url(r'^_validation/request/$', ticket.validators.ValidateTicketRequest.as_view(), name='ajax_validate_request'),
 
     url(r'^databases/$', databases.ExternalDatabaseList.as_view(), name='externaldb_list'),
