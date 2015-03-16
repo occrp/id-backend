@@ -152,8 +152,12 @@ class OtherTicketForm(TicketForm):
         self.prefix = "other"
 
 
-class RequestCancelForm(forms.Form):
-    reason = forms.CharField(label=_("Reason"), widget=forms.Textarea)
+class TicketCancelForm(forms.ModelForm):
+    reason = forms.CharField(label=_("Reason"), widget=forms.Textarea(attrs={'rows': 6}))
+
+    class Meta:
+        model = models.Ticket
+        fields = ['reason']
 
 class RequestFlagForm(forms.Form):
     comment = forms.CharField(
@@ -171,8 +175,8 @@ class CommentForm(forms.ModelForm):
             "ticket": forms.HiddenInput(),
             "comment": forms.Textarea(
                 attrs={
-                    "placeholder":_("Add a comment, visible to the person making "
-                                    "this request and the researcher answering it."),
+                    "placeholder": _("Add a comment, visible to the person making "
+                                     "this request and the researcher answering it."),
                     "class": "span9"
                 }
             )
