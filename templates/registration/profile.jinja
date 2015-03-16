@@ -1,7 +1,7 @@
 {% extends "base.jinja" %}
 {% block content %}
 
-<h1>{{user.name}}</h1>
+<h1>{% if editing_self %}{% trans %}Your profile{% endtrans %}{% else %}{% trans %}Profile for user{% endtrans %}{{user.username}}{% endif %}</h1>
 <div class="tabpanel">
     <form action="/accounts/profile/" method="POST">
     {%csrf_token%}
@@ -16,12 +16,6 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="basics">
             {{ form_macros.render_form_fragment(form_basics) }}
-
-            <select>
-            {% for locale in LANGUAGES %}
-                <option value="{{ locale.0 }}" {% if user.profile.locale == locale.0 %}selected{% endif %}>{{ locale.1 }}</option>
-            {% endfor %}
-            </select>
         </div>
         <div role="tabpanel" class="tab-pane" id="details">
             {{ form_macros.render_form_fragment(form_details) }}
