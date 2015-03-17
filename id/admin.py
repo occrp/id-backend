@@ -31,7 +31,6 @@ class Statistics(TemplateView):
             "accreq_outstanding": AccountRequest.objects.filter(approved=None).count(),
         }
 
-
 class DatabaseScrapeRequestCreate(CreateView):
     form_class = ScraperRequestForm
     template_name = "admin/database_scrape_request.jinja"
