@@ -51,7 +51,6 @@ urlpatterns = patterns('',
     url(r'^request/charges/outstanding/$', requests.AdminOutstandingChargesHandler.as_view(), name='ticket_admin_outstanding_charges'),
     url(r'^request/submit/$', requests.RequestHandler.as_view(), name='request'),
 
-
     url(r'^ticket/$',                       perm('user', ticket.views.TicketList), name='ticket_list'),
     url(r'^ticket/submit/$',                perm('user', ticket.views.TicketRequest), name='ticket_submit'),
     url(r'^ticket/(?P<ticket_id>[0-9]+)/details/$', 
@@ -68,6 +67,7 @@ urlpatterns = patterns('',
     url(r'^ticket/(?P<pk>[0-9]+)/open/$',   perm('user', ticket.views.TicketActionOpenHandler), name='ticket_open'),
     url(r'^ticket/(?P<pk>[0-9]+)/cancel/$', perm('user', ticket.views.TicketActionCancelHandler), name='ticket_cancel'),
     url(r'^ticket/(?P<pk>[0-9]+)/join/$',   perm('volunteer', ticket.views.TicketActionJoinHandler), name='ticket_join'),
+    url(r'^ticket/(?P<pk>[0-9]+)/leave/$',  perm('volunteer', ticket.views.TicketActionLeaveHandler), name='ticket_leave'),
 
 
     url(r'^_validation/request/$',          perm('user', ticket.validators.ValidateTicketRequest), name='ajax_validate_request'),
@@ -78,7 +78,6 @@ urlpatterns = patterns('',
     url(r'^databases/view/(?P<id>[0-9]+)/$',perm('any', databases.ExternalDatabaseDetail), name='externaldb_detail'),
     url(r'^databases/delete/(?P<id>[0-9]+)/$', 
                                             perm('admin', databases.ExternalDatabaseDelete), name='externaldb_delete'),
-
 
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'registration/login.jinja'}, name='login'),
     url(r'^accounts/logout/', 'django.contrib.auth.views.logout', {'template_name': 'registration/logout.jinja'}, name='logout'),
