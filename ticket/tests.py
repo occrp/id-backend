@@ -10,6 +10,8 @@ class TicketsTest(TestCase):
         self.anonymous_user = AnonymousUser()
         self.normal_user = User.objects.create_user(
             username='requester', email='testuser@occrp.org', password='top_secret')
+        self.normal_user.profile.is_user = True
+        self.normal_user.profile.save()
 
         self.volunteer_user = User.objects.create_user(
             username='volunteer', email='testuser@occrp.org', password='top_secret')
@@ -60,7 +62,7 @@ class TicketsTest(TestCase):
         dset["other-deadline"] = ""
 
         response = client.post(reverse('ticket_submit'), dset)
-
+        print response
         self.assertEqual(response.status_code, 302)
         self.assertTrue(PersonTicket.objects.count() == 1)
 

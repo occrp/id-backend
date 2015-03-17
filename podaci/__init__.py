@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 from id.mixins import JSONResponseMixin
-from id.decorators import staff_only
+from id.decorators import require_staff
 from podaci.filesystem import *
 import json
 from settings.settings import PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT
@@ -41,7 +41,7 @@ class PodaciMixin:
 class PodaciView(TemplateView, PodaciMixin, JSONResponseMixin):
     def dispatch(self, *args, **kwargs):
         # All of podaci is for staff only.
-        staff_only(self.request.user)
+        require_staff(self.request.user)
         self.podaci_setup()
         return super(PodaciView, self).dispatch(*args, **kwargs)
 
