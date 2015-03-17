@@ -5,9 +5,24 @@ from id.mixins import *
 from id.constdata import *
 from settings.settings import LANGUAGES
 
+class Network(models.Model):
+    short_name = models.CharField(max_length=50)
+    long_name = models.CharField(max_length=100, blank=True)
+
+    def __unicode__(self):
+        if self.long_name:
+            return "%s - %s" % (self.short_name, self.long_name)
+        return self.short_name
+
+
 ######## User profiles #################
 class Profile(models.Model):
     user = models.OneToOneField(User)
+
+    user_created = models.DateTimeField(auto_now_add=True)
+    profile_updated = models.DateTimeField(auto_now=True)
+    last_seen = models.DateTimeField(auto_now=True)
+
     first_name = models.CharField(max_length=60, verbose_name=_("First Name"))
     last_name = models.CharField(max_length=60, verbose_name=_("Last Name"))
     abbr = models.CharField(max_length=8, blank=True, null=True, unique=True, verbose_name=_("Initials"))
@@ -27,6 +42,7 @@ class Profile(models.Model):
     is_admin = models.BooleanField(default=False)
     old_google_id = models.CharField(blank=True, max_length=100)
 
+    network = models.ForeignKey(Network, null=True, blank=True)
     phone_number = models.CharField(blank=True, max_length=22)
     organization_membership = models.CharField(blank=True, max_length=20)
     notes = models.TextField(blank=True, )
@@ -34,6 +50,7 @@ class Profile(models.Model):
     city = models.CharField(blank=True, max_length=50)
     province = models.CharField(blank=True, max_length=50)
     postal_code = models.CharField(blank=True, max_length=20)
+    country = models.CharField(blank=True, max_length=20, choices=DATABASE_COUNTRIES)
 
     # Requester fields
     industry = models.CharField(blank=True, max_length=20)

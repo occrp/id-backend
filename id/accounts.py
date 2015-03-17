@@ -90,6 +90,7 @@ class AccountRequestHome(TemplateView):
                 ' Please be patient.')
 
 class AccountRequestList(ListView):
+    template_name = 'id/accountrequest_list.jinja'
     model = AccountRequest
 
 class AccountRequest(AccountRequestHome):
