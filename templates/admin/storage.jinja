@@ -1,0 +1,28 @@
+{% extends "admin_base.jinja" %}
+{% block admin_content %}
+
+<h2>ElasticSearch/Podaci status</h2>
+<table>
+<tr><th>Files</th><td>{{podaci.files}}</td></tr>
+<tr><th>Tags</th><td>{{podaci.tags}}</td></tr>
+<tr><th>Total size</th><td>{{podaci.size|filesizeformat}}</td></tr>
+<tr><th>Root</th><td>{{podaci.data_root}}</td></tr>
+<tr><th>Main index</th><td>{{podaci.index}}</td></tr>
+<tr><th>Servers</th><td>
+	{% for i in podaci.servers %}
+		<div>{{i.host}}:{{i.port}}</div>
+	{% endfor %}</td>
+</tr>
+<tr><th>Cluster nodes</th><td>
+	{% for k,i in podaci.cluster.nodes.iteritems() %}
+		<div>{{i.name}} ({{k}}) {{i.transport_address}}</div>
+	{% endfor %}</td>
+</tr>
+</table>
+
+<h2>Neo4j/Osoba status</h2>
+
+<h2>MySQL status</h2>
+
+
+{% endblock %}
