@@ -511,6 +511,29 @@ class FileSystem:
             print "## %-44s ##" % ""
             print "#"*50
 
+    def _get_total_filesystem_size(self):
+        body = {
+            "query" : {
+                "match_all" : {} 
+            },
+            "aggs" : {
+                "size" : { "sum" : { "field" : "size" } }
+            }
+        }
+        res = self.es.search(index=self.es_index, doc_type="file", body=body)
+        return res["aggregations"]["size"]["value"]
+
+    def status(self):
+        stat = {}
+
+        stat["data_root"] = self.data_root
+        stat["servers"] = self.es_servers
+        stat["index"] = self.es_index
+        stat["cluster"] = self.es.cluster.state()
+        stat["size"] = self._get_total_filesystem_size()
+        stat["files"] = self.es.count(index=self.es_index, doc_type="file")["count"]
+        stat["tags"] = self.es.count(index=self.es_index, doc_type="tag")["count"]
+        return stat
 
     def create_file_from_url(self, url):
         f = File(self)
