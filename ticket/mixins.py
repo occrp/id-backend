@@ -25,11 +25,16 @@ class TicketAjaxResponseMixin(object):
 
 class TicketUpdateMixin(object):
 
-    def form_valid(self, form):
-        messages.success(self.request, _("Ticket successfully saved."))
+    def form_valid(self, form, form_messages=None):
+        if form_messages is None:
+            form_messages = [_("Ticket successfully saved.")]
+
+        for i in form_messages:
+            messages.success(self.request, i)
+
         return super(TicketUpdateMixin, self).form_valid(form)
 
-    def form_invalid(self, form):
+    def form_invalid(self, form, messags=None):
         return super(TicketUpdateMixin, self).form_valid(form)
 
     def get_success_url(self):

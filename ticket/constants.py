@@ -75,7 +75,8 @@ TICKET_UPDATE_TYPES = (
     ('flag', _('Flagged')),
     ('docs_attached', _('Documents Attached')),
     ('entities_attached', _('Entities Attached')),
-    ('comment', _('Comment Added'))
+    ('comment', _('Comment Added')),
+    ('join', _('Responder Joined'))
 )
 
 TICKET_STATUS = (

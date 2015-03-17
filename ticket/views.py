@@ -1,13 +1,14 @@
-from django.http import HttpResponseRedirect
-from django.http import HttpResponse
-from django.contrib import messages
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.views.generic import TemplateView, UpdateView
-
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+import django.forms
+from django.forms.utils import ErrorList
+from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from django.views.generic import TemplateView, UpdateView
 
 from core.mixins import JSONResponseMixin
 
@@ -88,6 +89,10 @@ class TicketActionBaseHandler(TicketUpdateMixin, UpdateView):
     model = Ticket
     form_class = forms.TicketCancelForm
 
+    success_messages = None
+    failure_messages = None
+    force_invalid = False
+
     def perform_invalid_action(self, form):
         return
 
@@ -108,7 +113,11 @@ class TicketActionBaseHandler(TicketUpdateMixin, UpdateView):
 
     def form_valid(self, form):
         self.perform_valid_action(form)
-        return super(TicketActionBaseHandler, self).form_valid(form)
+
+        if self.force_invalid is True:
+            return self.form_invalid(form)
+
+        return super(TicketActionBaseHandler, self).form_valid(form, self.success_messages)
 
     def get_success_url(self):
         ticket = self.get_object()
@@ -138,21 +147,47 @@ class TicketActionCloseHandler(TicketActionBaseHandler):
 
 
 class TicketActionJoinHandler(TicketActionBaseHandler):
+    form_class = forms.TicketEmptyForm
 
     def perform_invalid_action(self, form):
-        return
+        messages.error(self.request, _('There was an error adding you to the ticket.'))
 
     def perform_valid_action(self, form):
         ticket = self.object
 
         if self.request.user.profile.is_staff or self.request.user.profile.is_admin:
             ticket.responders.add(self.request.user)
+            self.success_messages = [_('You have successfully been added to the ticket.')]
+            return super(TicketActionJoinHandler, self).perform_valid_action(form)
+
         elif self.request.user.profile.is_volunteer:
             ticket.volunteers.add(self.request.user)
-        else:
-            pass
+            self.success_messages = [_('You have successfully been added to the ticket.')]
+            return super(TicketActionJoinHandler, self).perform_valid_action(form)
 
-        return super(TicketActionCancelHandler, self).perform_valid_action(form)
+        else:
+            self.perform_invalid_action(form)
+
+class TicketActionLeaveHandler(TicketActionBaseHandler):
+    form_class = forms.TicketEmptyForm
+
+    def perform_invalid_action(self, form):
+        messages.error(self.request, _('There was an error removing you from the ticket.'))
+
+    def perform_valid_action(self, form):
+        ticket = self.object
+
+        if self.request.user in ticket.responders.all():
+            ticket.responders.remove(self.request.user)
+            self.success_messages = [_('You have successfully been removed from the ticket.')]
+            return super(TicketActionLeaveHandler, self).perform_valid_action(form)
+        elif self.request.user in ticket.volunteers.all():
+            self.volunteers.remove(self.request.user)
+            self.success_messages = [_('You have successfully been removed from the ticket.')]
+            return super(TicketActionLeaveHandler, self).perform_valid_action(form)
+        else:
+            self.force_invalid = True
+
 
 class TicketActionOpenHandler(TicketActionBaseHandler):
 
