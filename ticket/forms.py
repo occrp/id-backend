@@ -131,8 +131,6 @@ class CompanyTicketForm(TicketForm):
         self.fields['sources'].widget.attrs.update({'class': 'span8', 'placeholder': _('What sources do you have so far?'), 'rows': '6'})
         self.prefix = "company"
 
-
-
 class OtherTicketForm(TicketForm):
     class Meta(TicketForm.Meta):
         model = models.OtherTicket
@@ -158,6 +156,15 @@ class TicketCancelForm(forms.ModelForm):
     class Meta:
         model = models.Ticket
         fields = ['reason']
+
+class TicketEmptyForm(forms.ModelForm):
+    # this is for when no field validation is needed, but a ticket still
+    # needs to be actioned by a POST method
+
+    class Meta:
+        model = models.Ticket
+        fields = []
+
 
 class RequestFlagForm(forms.Form):
     comment = forms.CharField(
