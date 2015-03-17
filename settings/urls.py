@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 
 from id import databases, requests, search, accounts
 from id import validation, admin, tasks, errors
-from id.decorators import perm
+from core.auth import perm
 
 import ticket.validators
 import ticket.views
