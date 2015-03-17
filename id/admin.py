@@ -2,12 +2,19 @@ from django.views.generic import *
 from id.models import *
 from ticket.models import *
 from id.forms import ScraperRequestForm
+from podaci import FileSystem
 
 class Panel(TemplateView):
     template_name = "admin/panel.jinja"
 
 class Storage(TemplateView):
     template_name = "admin/storage.jinja"
+
+    def get_context_data(self):
+        fs = FileSystem(user=self.request.user)
+        return {
+            "podaci": fs.status()
+        }
 
 class Statistics(TemplateView):
     template_name = "admin/statistics.jinja"

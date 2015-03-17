@@ -15,6 +15,9 @@
 		{% endif %}
 
 		{% if user.profile.is_admin %}
+                <li class="{% if 'admin_storage' in ROUTE_NAME %}active{% endif %}">
+                    <a href="{{ url('admin_storage') }}"><i class="icon-folder-open"></i> {% trans %}Storage and databases{% endtrans %}</a>
+                </li>
                 <li class="{% if 'accountrequest' in ROUTE_NAME %}active{% endif %}">
                     <a href="{{ url('request_account_list') }}"><i class="icon-key"></i> {% trans %}Account Requests{% endtrans %}</a>
                 </li>
