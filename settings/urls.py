@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 
 from id import databases, requests, search, accounts
 from id import validation, admin, tasks, errors
-from id.decorators import admin_only, staff_only, volunteers_only, users_only
+from id.decorators import perm
 
 import ticket.validators
 import ticket.views
@@ -14,22 +14,21 @@ from django.contrib import admin as django_admin
 django_admin.autodiscover()
 
 js_info_dict = {
-    'packages': ('id',),
+    'packages': ('id', 'ticket', 'search', 'podaci'),
 }
 
 urlpatterns = patterns('',
-    url(r'^$', TemplateView.as_view(template_name="splash.jinja"), name="home"),
-    url(r'^about/$', TemplateView.as_view(template_name="about_us.jinja"), name='about_us'),
+    url(r'^$',                          perm('any', TemplateView, template_name="splash.jinja"), name="home"),
+    url(r'^about/$',                    perm('any', TemplateView, template_name="about_us.jinja"), name='about_us'),
 
-    url(r'^admin/$', admin.Panel.as_view(), name='admin_panel'),
-    url(r'^admin/scrapers/request/$', admin.DatabaseScrapeRequestCreate.as_view(), name='admin_scrapers_request'),
+    url(r'^admin/$',                    perm('staff', admin.Panel), name='admin_panel'),
+    url(r'^admin/scrapers/request/$',   perm('staff', admin.DatabaseScrapeRequestCreate), name='admin_scrapers_request'),
 
-    url(r'^admin/storage/$', admin.Storage.as_view(), name='admin_storage'),
-    url(r'^admin/statistics/$', admin.Statistics.as_view(), name='statistics'),
-    url(r'^admin/django/', include(django_admin.site.urls)),
+    url(r'^admin/storage/$',            perm('admin', admin.Storage), name='admin_storage'),
+    url(r'^admin/statistics/$',         perm('admin', admin.Statistics), name='statistics'),
 
-    url(r'^search/$', search.CombinedSearchHandler.as_view(), name="search"),
-    url(r'^search/entities/$', search.CombinedSearchHandler.as_view(), name='search_entities'), # still needed for ajax only
+    url(r'^search/$',                   perm('any', search.CombinedSearchHandler), name="search"),
+    url(r'^search/entities/$',          perm('any', search.CombinedSearchHandler), name='search_entities'), # still needed for ajax only
 
     #url(r'^request/$', requests.RequestListHandler.as_view(), name='request_list'),
     #url(r'^request/(?P<ticket_id>[0-9]+)/details/$', requests.RequestDetailsHandler.as_view(), name='request_details'),
@@ -53,41 +52,56 @@ urlpatterns = patterns('',
     url(r'^request/charges/outstanding/$', requests.AdminOutstandingChargesHandler.as_view(), name='ticket_admin_outstanding_charges'),
     url(r'^request/submit/$', requests.RequestHandler.as_view(), name='request'),
 
-    url(r'^ticket/$', ticket.views.TicketList.as_view(), name='ticket_list'),
-    url(r'^ticket/submit/$', ticket.views.TicketRequest.as_view(), name='ticket_submit'),
-    url(r'^ticket/(?P<ticket_id>[0-9]+)/details/$', ticket.views.TicketDetail.as_view(), name='ticket_details'),
-    url(r'^ticket/manage/(?P<ticket_id>[0-9]+)/edit/$', ticket.views.TicketRequest.as_view(), name='ticket_edit'),
-    url(r'^ticket/manage/company_ownership/(?P<pk>[0-9]+)/edit/$', ticket.views.CompanyTicketUpdate.as_view(), name='company_ownership_ticket_edit'),
-    url(r'^ticket/manage/person_ownership/(?P<pk>[0-9]+)/edit/$', ticket.views.PersonTicketUpdate.as_view(), name='person_ownership_ticket_edit'),
-    url(r'^ticket/manage/other/(?P<pk>[0-9]+)/edit/$', ticket.views.OtherTicketUpdate.as_view(), name='other_ticket_edit'),
 
-    url(r'^ticket/(?P<pk>[0-9]+)/close/$', ticket.views.TicketActionCloseHandler.as_view(), name='ticket_close'),
-    url(r'^ticket/(?P<pk>[0-9]+)/open/$', ticket.views.TicketActionOpenHandler.as_view(), name='ticket_open'),
-    url(r'^ticket/(?P<pk>[0-9]+)/cancel/$', ticket.views.TicketActionCancelHandler.as_view(), name='ticket_cancel'),
-    url(r'^ticket/(?P<pk>[0-9]+)/join/$', ticket.views.TicketActionJoinHandler.as_view(), name='ticket_join'),
+    url(r'^ticket/$',                   perm('user', ticket.views.TicketList), name='ticket_list'),
+    url(r'^ticket/submit/$',            perm('user', ticket.views.TicketRequest), name='ticket_submit'),
+    url(r'^ticket/(?P<ticket_id>[0-9]+)/details/$', 
+                                        perm('user', ticket.views.TicketDetail), name='ticket_details'),
+    url(r'^ticket/manage/(?P<ticket_id>[0-9]+)/edit/$', 
+                                        perm('user', ticket.views.TicketRequest), name='ticket_edit'),
+    url(r'^ticket/manage/company_ownership/(?P<pk>[0-9]+)/edit/$', 
+                                        perm('user', ticket.views.CompanyTicketUpdate), name='company_ownership_ticket_edit'),
+    url(r'^ticket/manage/person_ownership/(?P<pk>[0-9]+)/edit/$', 
+                                        perm('user', ticket.views.PersonTicketUpdate), name='person_ownership_ticket_edit'),
+    url(r'^ticket/manage/other/(?P<pk>[0-9]+)/edit/$', 
+                                        perm('user', ticket.views.OtherTicketUpdate), name='other_ticket_edit'),
+    url(r'^ticket/(?P<pk>[0-9]+)/close/$', 
+                                        perm('user', ticket.views.TicketActionCloseHandler), name='ticket_close'),
+    url(r'^ticket/(?P<pk>[0-9]+)/open/$', 
+                                        perm('user', ticket.views.TicketActionOpenHandler), name='ticket_open'),
+    url(r'^ticket/(?P<pk>[0-9]+)/cancel/$', 
+                                        perm('user', ticket.views.TicketActionCancelHandler), name='ticket_cancel'),
+    url(r'^ticket/(?P<pk>[0-9]+)/join/$', 
+                                        perm('volunteer', ticket.views.TicketActionJoinHandler), name='ticket_join'),
 
-    url(r'^_validation/request/$', ticket.validators.ValidateTicketRequest.as_view(), name='ajax_validate_request'),
 
-    url(r'^databases/$', databases.ExternalDatabaseList.as_view(), name='externaldb_list'),
-    url(r'^databases/add/$', databases.ExternalDatabaseAdd.as_view(), name='externaldb_add'),
-    url(r'^databases/edit/(?P<id>[0-9]+)/$', databases.ExternalDatabaseEdit.as_view(), name='externaldb_edit'),
-    url(r'^databases/view/(?P<id>[0-9]+)/$', databases.ExternalDatabaseDetail.as_view(), name='externaldb_detail'),
-    url(r'^databases/delete/(?P<id>[0-9]+)/$', databases.ExternalDatabaseDelete.as_view(), name='externaldb_delete'),
+    url(r'^_validation/request/$',      perm('user', ticket.validators.ValidateTicketRequest), name='ajax_validate_request'),
+
+    url(r'^databases/$',                perm('any', databases.ExternalDatabaseList), name='externaldb_list'),
+    url(r'^databases/add/$',            perm('staff', databases.ExternalDatabaseAdd), name='externaldb_add'),
+    url(r'^databases/edit/(?P<id>[0-9]+)/$', 
+                                        perm('staff', databases.ExternalDatabaseEdit), name='externaldb_edit'),
+    url(r'^databases/view/(?P<id>[0-9]+)/$',
+                                        perm('any', databases.ExternalDatabaseDetail), name='externaldb_detail'),
+    url(r'^databases/delete/(?P<id>[0-9]+)/$', 
+                                        perm('admin', databases.ExternalDatabaseDelete), name='externaldb_delete'),
+
 
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'registration/login.jinja'}, name='login'),
     url(r'^accounts/logout/', 'django.contrib.auth.views.logout', {'template_name': 'registration/logout.jinja'}, name='logout'),
-    url(r'^accounts/users/$', accounts.UserList.as_view(), name='userprofile_list'),
-    url(r'^accounts/request/$', accounts.AccountRequestHome.as_view(), name='request_account_home'),
-    url(r'^accounts/request/list/$', accounts.AccountRequestList.as_view(), name='request_account_list'),
-    url(r'^accounts/profile/$', accounts.ProfileUpdate.as_view(), name='profile'),
-    url(r'^accounts/profile/(?P<pk>[0-9]+)/$', accounts.ProfileUpdate.as_view(), name='profile'),
-    url(r'^accounts/profile/(?P<username>.+)/$', accounts.ProfileUpdate.as_view(), name='profile'),
-    url(r'^accounts/setlanguage/(?P<lang>[a-zA-Z]{2})/$', accounts.ProfileSetLanguage.as_view(), name='account_set_language'),
-    url(r'^accounts/requester/$', accounts.AccountRequest.as_view(), name='request_account'),
-    url(r'^accounts/volunteer/$', accounts.AccountVolunteer.as_view(), name='volunteer_account'),
+    url(r'^accounts/users/$',           perm('admin', accounts.UserList), name='userprofile_list'),
+    url(r'^accounts/request/$',         perm('any', accounts.AccountRequestHome), name='request_account_home'),
+    url(r'^accounts/request/list/$',    perm('admin', accounts.AccountRequestList), name='request_account_list'),
+    url(r'^accounts/profile/$',         perm('user', accounts.ProfileUpdate), name='profile'),
+    url(r'^accounts/profile/(?P<pk>[0-9]+)/$',
+                                        perm('admin', accounts.ProfileUpdate), name='profile'),
+    url(r'^accounts/profile/(?P<username>.+)/$',
+                                        perm('admin', accounts.ProfileUpdate), name='profile'),
+    url(r'^accounts/setlanguage/(?P<lang>[a-zA-Z]{2})/$',
+                                        perm('user', accounts.ProfileSetLanguage), name='account_set_language'),
+    url(r'^accounts/requester/$',       perm('any', accounts.AccountRequest), name='request_account'),
+    url(r'^accounts/volunteer/$',       perm('any', accounts.AccountVolunteer), name='volunteer_account'),
     url(r'^accounts/', include('registration.backends.default.urls')),
-    # url(r'/post_login_redirect', accounts.PostLoginRedirectHandler, name='post_login_redirect'),
-    # url(r'/complete_login', h.CompleteLoginHandler, name="complete_login"),
 
     url(r'^podaci/', include('podaci.urls')),
 
