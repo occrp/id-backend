@@ -8,10 +8,9 @@ from core.auth import perm
 import ticket.validators
 import ticket.views
 
-# from id.google_apis.drive import drive_decorator
-
-from django.contrib import admin as django_admin
-django_admin.autodiscover()
+from django.contrib.auth import views as auth_views
+from registration.views import RegistrationView
+from registration.views import ActivationView
 
 js_info_dict = {
     'packages': ('id', 'ticket', 'search', 'podaci'),
@@ -95,7 +94,20 @@ urlpatterns = patterns('',
                                             perm('user', accounts.ProfileSetLanguage), name='account_set_language'),
     url(r'^accounts/requester/$',           perm('any', accounts.AccountRequest), name='request_account'),
     url(r'^accounts/volunteer/$',           perm('any', accounts.AccountVolunteer), name='volunteer_account'),
-    url(r'^accounts/', include('registration.backends.default.urls')),
+
+    url(r'^accounts/password/change/$', auth_views.password_change, {'template_name': 'registration/password_change_form.jinja'}, name='auth_password_change'),
+    url(r'^accounts/password/change/done/$', auth_views.password_change_done, {'template_name': 'registration/password_change_done.jinja'}, name='auth_password_change_done'), 
+    url(r'^accounts/password/reset/$', auth_views.password_reset, {'template_name': 'registration/password_reset_form.jinja'}, name='auth_password_reset'),
+    url(r'^accounts/password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', auth_views.password_reset_confirm, {'template_name': 'registration/password_reset_confirm.jinja'}, name='auth_password_reset_confirm'),
+    url(r'^accounts/password/reset/complete/$', auth_views.password_reset_complete, {'template_name': 'registration/password_reset_complete.jinja'}, name='auth_password_reset_complete'),
+    url(r'^accounts/password/reset/done/$', auth_views.password_reset_done, {'template_name': 'registration/password_reset_done.jinja'}, name='auth_password_reset_done'),
+
+    url(r'^accounts/activate/complete/$', TemplateView.as_view(template_name='registration/activation_complete.jinja'), name='registration_activation_complete'),
+    url(r'^accounts/activate/(?P<activation_key>w+)/$', ActivationView.as_view(template_name='registration/activation_form.jinja'), name='registration_activate'),
+    url(r'^accounts/register/$', RegistrationView.as_view(template_name='registration/registration_form.jinja'), name='registration_register'),
+    url(r'^accounts/register/complete/$', TemplateView.as_view(template_name='registration/registration_complete.jinja'), name='registration_complete'),
+    url(r'^accounts/register/closed/$',  TemplateView.as_view(template_name='registration/registration_closed.jinja'), name='registration_disallowed'),
+
 
     url(r'^podaci/', include('podaci.urls')),
 
