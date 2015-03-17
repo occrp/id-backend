@@ -86,7 +86,8 @@ class ProfileDetailsForm(forms.ModelForm):
 class ProfileAdminForm(forms.ModelForm):
     class Meta:
         model = models.Profile
-        fields = ("findings_visible", "is_for_profit", 
+        fields = ("network",
+                  "findings_visible", "is_for_profit", 
                   "is_user", "is_staff", "is_volunteer", "is_admin")
 
 
