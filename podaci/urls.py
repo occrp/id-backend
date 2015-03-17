@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from podaci import search, info, files, tags
-from id.decorators import perm
+from core.auth import perm
 
 urlpatterns = patterns('',
     url(r'^$',                             perm("staff", info.Home), name='podaci_info_home'),
