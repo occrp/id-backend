@@ -38,7 +38,8 @@ COMMON_METADATA_V1 = {
     "date_added":           "",
     "changelog":            [],
     "notes":                [],
-    "public_read":          False,
+    "public_read":          False,  # Whether to allow public read access
+    "staff_allowed":        False,  # Whether to override to allow all staff to do anything
     "allowed_users":        [],
     "allowed_write_users":  [],
 }
@@ -207,6 +208,16 @@ class PermissionsMixin:
         self.log("Made file private.")
         self._sync()
 
+    def allow_staff(self):
+        self.meta["staff_allowed"] = True
+        self.log("Made file accessible to all staff.")
+        self._sync()
+
+    def disallow_staff(self):
+        self.meta["staff_allowed"] = False
+        self.log("Made file inaccessible to staff.")
+        self._sync()
+
     def remove_user(self, user):
         if not user: return
         try:
@@ -221,6 +232,7 @@ class PermissionsMixin:
         if self.meta["public_read"]: return True
         if user.is_superuser: return True
         if user.profile.is_admin: return True
+        if self.meta["staff_allowed"] and user.profile.is_staff: return True
         if user.id in self.meta["allowed_users"]: return True
         if self.DOCTYPE == "file":
             for t in self.meta["tags"]:
@@ -233,6 +245,7 @@ class PermissionsMixin:
         if user.id in self.meta["allowed_write_users"]: return True
         if user.is_superuser: return True
         if user.profile.is_admin: return True
+        if self.meta["staff_allowed"] and user.profile.is_staff: return True
         if self.DOCTYPE == "file":
             for t in self.meta["tags"]:
                 tag = Tag(self.fs, tid=t)
