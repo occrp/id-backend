@@ -25,7 +25,7 @@
                 </h5>
             </div>
         </div>
-    </div> <!-- span5 -->
+    </div> <!-- span5 --a>
 
     <div class="span7">
         <div class="header-buttons pull-right">
@@ -48,17 +48,23 @@
                     <i class="icon-globe"></i> {% trans %}Attach Entities{% endtrans %}
                 </a>#}
             </div>
-            {% if is_volunteer or can_join %}
-                {% if user.id not in ticket.actors() %}
-                <a class='btn' href="{{ url('ticket_join', pk=ticket.id) }}">
-                    <i class='icon-eye-open'></i>
-                    {% trans %}Watch{% endtrans %}
-                </a>
+            {% if is_volunteer or can_join_leave %}
+                {% if user not in ticket.actors() %}
+                    <form action="{{ url('ticket_join', pk=ticket.id) }}" method="POST" class="inline-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">
+                            <i class='icon-eye-open'></i>
+                            {% trans %}Join{% endtrans %}
+                        </button>
+                    </form>
                 {% else %}
-                <a class='btn' href="{{ url('ticket_leave', pk=ticket.id) }}">
-                    <i class='icon-eye-close'></i>
-                    {% trans %}Leave{% endtrans %}
-                </a>
+                    <form action="{{ url('ticket_leave', pk=ticket.id) }}" method="POST" class="inline-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">
+                            <i class='icon-eye-open'></i>
+                            {% trans %}Leave{% endtrans %}
+                        </button>
+                    </form>
                 {% endif %}
             {% endif %}
 
@@ -197,7 +203,7 @@
             <dd>
             {% if ticket.responders.count() > 0 %}
                 {% for responder in ticket.responders.all() %}
-                    {{ responder.display_name }} <br />
+                    {{ responder.profile.display_name }} <br />
                 {% endfor %}
             {% else %}
                 {{ _("No Responders") }}
@@ -208,7 +214,7 @@
             <dt class="yell soft">{% trans %}Volunteer Responders{% endtrans %}</dt>
             <dd>
                 {% for volunteer in ticket.volunteers.all() %}
-                    {{ volunteer.display_name }} <br />
+                    {{ volunteer.profile.display_name }} <br />
                 {% endfor %}
             </dd>
             {% endif %}

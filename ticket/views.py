@@ -195,12 +195,12 @@ class TicketDetail(TemplateView, PodaciMixin):
         if not self.ticket:
             return self.abort(404)
 
-        if not self.ticket.is_public and not (
-            request.user.profile.is_admin or
-            request.user == self.ticket.requester or
-            request.user in self.ticket.responders.objects.all() or
-            request.user in self.ticket.volunteers.objects.all()):
-                return self.abort(401)
+        # if not self.ticket.is_public and not (
+        #     request.user.profile.is_admin or
+        #     request.user == self.ticket.requester or
+        #     request.user in self.ticket.responders.all() or
+        #     request.user in self.ticket.volunteers.all()):
+        #         return self.abort(401)
 
         self.form = forms.CommentForm()
         #form.author.data = request.user.id
@@ -223,12 +223,23 @@ class TicketDetail(TemplateView, PodaciMixin):
         if self.ticket.tag_id == "":
             # Create Podaci tag for this ticket.
             tag_name = "Ticket %d" % (self.ticket.id)
-            
+
             tag = self.fs.create_tag(tag_name)
             self.ticket.tag_id = tag.id
             self.ticket.save()
         else:
             tag = self.fs.get_tag(self.ticket.tag_id)
+
+        can_join_leave = False
+        if self.request.user != self.ticket.requester:
+            if self.request.user.profile.is_volunteer and self.ticket.is_public:
+                can_join_leave = True
+
+            if self.request.user.profile.is_volunteer and self.request.user in self.ticket.volunteers.all():
+                can_join_leave = True
+
+            if self.request.user.profile.is_admin or self.request.user.is_staff:
+                can_join_leave = True
 
         return {
             'ticket': self.ticket,
@@ -245,7 +256,7 @@ class TicketDetail(TemplateView, PodaciMixin):
             'result_files': tag.get_files()[1],
             'charge_form': forms.RequestChargeForm(),
             'ticket_detail_view': True,
-            'can_join': True if (self.request.user.profile.is_volunteer == 1 or self.request.user.profile.is_admin) else False
+            'can_join_leave': can_join_leave
         }
 
     #FIXME: AJAXize!
@@ -256,14 +267,12 @@ class TicketDetail(TemplateView, PodaciMixin):
         form = forms.CommentForm(self.request.POST)
 
         if not form.is_valid():
-            print "FORM WAS INVALID!!!"
             return self.get(request)
 
         comment = form.save(commit=False)
         print comment
         comment.ticket = self.ticket
         comment.author = request.user
-        print "YAAY SAVING!!"
         comment.save()
         return HttpResponseRedirect(reverse('ticket_details', kwargs={ "ticket_id":self.ticket.id}))
 
