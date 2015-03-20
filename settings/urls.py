@@ -112,8 +112,9 @@ urlpatterns = patterns('',
     url(r'^accounts/register/complete/$', TemplateView.as_view(template_name='registration/registration_complete.jinja'), name='registration_complete'),
     url(r'^accounts/register/closed/$',  TemplateView.as_view(template_name='registration/registration_closed.jinja'), name='registration_disallowed'),
 
-
     url(r'^podaci/', include('podaci.urls')),
+    url(r'^osoba/', include('osoba.urls')),
+    url(r'^robots/', include('robots.urls')),
 
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
