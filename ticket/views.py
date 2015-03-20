@@ -17,6 +17,8 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView, UpdateView
 
+from django.db.models import Count, Sum
+
 from core.mixins import JSONResponseMixin
 from core.utils import *
 
@@ -521,3 +523,28 @@ class TicketRequest(TemplateView, PodaciMixin):
         #     self.add_message(_('Ticket successfully created.'))
 
         return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": ticket.id}))
+
+
+class TicketUserFeesOverview(TemplateView):
+    template_name = 'tickets/ticket_user_fees_overview.jinja'
+
+    def get_context_data(self):
+        return {
+            "users": User.objects.annotate(payment_count=Count('ticketcharge')).annotate(payment_total=Sum('ticketcharge__cost')).filter(payment_count__gt=0)
+        }
+
+class TicketNetworkFeesOverview(TemplateView):
+    template_name = 'tickets/ticket_network_fees_overview.jinja'
+
+    def get_context_data(self):
+        return {
+            "networks": Network.objects.all(),
+        }
+
+class TicketBudgetFeesOverview(TemplateView):
+    template_name = 'tickets/ticket_budget_fees_overview.jinja'
+
+    def get_context_data(self):
+        return {
+            "budgets": [],
+        }
