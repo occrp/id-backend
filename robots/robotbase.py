@@ -7,6 +7,18 @@ from id.apis.osoba import *
 
 import logging
 
+####
+#
+# Robot rules:
+#
+#   1. Every robot has a unique identifier
+#   2. Every robot has a version number
+#   3. Every robot tags every database entry they create with their identifier as source
+#   4. Every robot tags every database entry they create with their version number
+#   5. Robots must register to the robot wrangler
+#
+####
+
 
 class RobotBase:
 	# Our basic robot, that establishes connections to Podaci 
