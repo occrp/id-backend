@@ -431,7 +431,7 @@ class TicketCharge(models.Model, DisplayMixin):
 
     # whether the bill has been reconciled or not
     reconciled = models.BooleanField(default=False)
-    reconciled_date = models.DateTimeField()
+    reconciled_date = models.DateTimeField(blank=True)
     paid_status = models.CharField(max_length=70, choices=PAID_STATUS)
 
     # when the charge was created
