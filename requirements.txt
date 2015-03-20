@@ -13,3 +13,4 @@ requests
 neo4django
 flup
 mysql
+django_select2
