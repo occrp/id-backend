@@ -1,5 +1,12 @@
 from django import forms
+from django.contrib.auth.models import User
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
+
+from django_select2 import *
+
+import core.widgets
+import core.utils
 
 from ticket import constants
 from ticket import models
@@ -148,6 +155,30 @@ class OtherTicketForm(TicketForm):
         self.fields['deadline'].widget.attrs.update({'class': 'datepicker deadline'})
         self.fields['question'].widget.attrs.update({'class': 'span8', 'rows': '6'})
         self.prefix = "other"
+
+
+# class MultiResponderChoices(Select2MultipleChoiceField):
+#     choices = User.objects.all().filter(Q(profile__is_admin=1) | Q(profile__is_staff=1))
+
+class TicketAdminSettingsForm(forms.ModelForm):
+    responders = Select2MultipleChoiceField(label=_("Staff Responders"), required=False)
+    volunteers = Select2MultipleChoiceField(label=_("Volunteer Responders"), required=False)
+
+    class Meta:
+        model = models.Ticket
+        fields = ['responders', 'volunteers', 'requester_type', 'flagged', 'findings_visible', 'is_for_profit', 'is_public']
+        widgets = {
+            'requester_type': forms.RadioSelect()
+        }
+
+    def __init__(self, *args, **kwargs):
+
+        super(TicketAdminSettingsForm, self).__init__(*args, **kwargs)
+        self.fields['responders'].choices = core.utils.convert_group_to_select2field_choices(
+                                                User.objects.all().filter(Q(profile__is_admin=1) | Q(profile__is_staff=1)))
+        self.fields['volunteers'].choices = core.utils.convert_group_to_select2field_choices(
+                                                User.objects.all().filter(Q(profile__is_volunteer=1)))
+        self.fields['requester_type'].widget.attrs.update({'choices': constants.REQUESTER_TYPES})
 
 
 class TicketCancelForm(forms.ModelForm):

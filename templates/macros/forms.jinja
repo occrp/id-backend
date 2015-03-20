@@ -62,24 +62,24 @@
 {% endmacro %}
 
 {% macro render_hiddenkeyfield(field) %}
-    <input type="hidden" name="{{ field.html_name }}" id="{{ field.auto_id }}" value="{{ field.get_value() }}" />
+    <input type="hidden" name="{{ field.html_name }}" id="{{ field.auto_id }}" value="{{ field.value() }}" />
 {% endmacro %}
 
 {% macro render_select2field(field) %}
     <input type="hidden" name="{{ field.html_name }}" id="{{ field.auto_id }}" 
-            value="{% if field.value %}{{ field.get_value() }}{% endif %}"
+            value="{% if field.field.widget.attrs.value != None %}{{ field.field.widget.attrs.value }}{% endif %}"
            data-provide="select2-field" 
-           data-placeholder="{% if field.value %}{{ field.placeholder }}{% endif %}" 
-           data-ajax-url="{{ field.ajax_url }}"
-           data-multiple="{{ field.multiple }}"
-           {% if field.options %}
+           data-placeholder="{% if field.field.widget.attrs.placeholder != None %}{{ field.field.widget.attrs.placeholder }}{% endif %}" 
+           data-ajax-url="{{ field.field.widget.attrs.ajax_url }}"
+           data-multiple="{{ field.field.widget.attrs.multiple }}"
+           {% if field.field.widget.attrs.options %}
             data-options="{{ field.auto_id }}_options"
            {% endif %}
-           data-text="{% if field.value %}{{ field.get_text() }}{% endif %}"/>
+           data-text="{% if field.field.widget.attrs.data_text != None  %}{{ field.field.widget.attrs.data_text }}{% endif %}"/>
 
-    {% if field.options %}
+    {% if field.field.widget.attrs.options %}
     <script type="text/javascript">
-        var {{ field.auto_id }}_options = JSON.parse('{{ field.options|safe }}');
+        var {{ field.auto_id }}_options = JSON.parse('{{ field.field.widget.attrs.options|safe }}');
     </script>
     {% endif %}
 {% endmacro %}
@@ -125,8 +125,8 @@
                     {{ render_drivefield(field) }}
                 {% elif get_field_type(field) == 'KeyField' %}
                     {{ render_keyfield(field) }}
-                {% elif get_field_type(field) == 'Select2Field' %}
-                    {{ render_select2field(field) }}
+                {# elif get_field_type(field) == 'Select2Field' %}
+                    {{ render_select2field(field) }} #}
                 {% elif get_field_type(field) == 'ClassedTextAreaField' %}
                     {{ render_classedtextareafield(field) }}
                 {% else %}
