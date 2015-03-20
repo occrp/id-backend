@@ -20,8 +20,8 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
     ticket_type = ""
     # Staff-facing fields
     requester = models.ForeignKey(User, related_name="ticket_requests")
-    requester_type = models.CharField(max_length=70, choices=REQUESTER_TYPES,
-                                    verbose_name=_('Requester Type'))
+    requester_type = models.CharField(blank=False, max_length=70, choices=REQUESTER_TYPES,
+                                    verbose_name=_('Requester Type'), default='subs')
     responders = models.ManyToManyField(User, related_name="tickets_responded")
 
     volunteers = models.ManyToManyField(User, related_name="tickets_volunteered")

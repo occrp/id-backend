@@ -1,16 +1,24 @@
+import json
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib import messages
+from django.db.models import Q
 import django.forms
 from django.forms.utils import ErrorList
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from django.http import JsonResponse
+from django.middleware.csrf import get_token
+from django.template.loader import render_to_string
+from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView, UpdateView
 
 from core.mixins import JSONResponseMixin
+from core.utils import *
 
 from ticket.utils import *
 from ticket.mixins import *
@@ -207,6 +215,35 @@ class TicketActionOpenHandler(TicketActionBaseHandler):
         return super(TicketActionOpenHandler, self).perform_valid_action(form)
 
 
+class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
+    model = Ticket
+    template_name = "modals/form_basic.jinja"
+    form_class = forms.TicketAdminSettingsForm
+    """
+    Administrator edits a ticket's properties (re-assignment, closing, etc)
+    """
+
+    def form_invalid(self, form):
+        messages.error(self.request, _('There was an error updating the ticket.'))
+        return HttpResponseRedirect(reverse('ticket_list'))
+
+    def get(self, request, pk, status='success'):
+        super(TicketAdminSettingsHandler, self).get(self, request)
+
+        t = render_to_string('modals/form_basic.jinja', self.get_context_data())
+        return JsonResponse({'status': status, 'html': t})
+
+    def get_context_data(self, **kwargs):
+        context = super(TicketAdminSettingsHandler, self).get_context_data(**kwargs)
+        context['csrf'] = get_token(self.request)
+        context['form_action'] = reverse_lazy('ticket_admin_settings', kwargs={'pk': self.object.id})
+        context['form'] = self.get_form(self.form_class)
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('ticket_list')
+
+
 class TicketDetail(TemplateView, PodaciMixin):
     template_name = "tickets/request_details.jinja"
     """
@@ -320,7 +357,6 @@ class TicketList(TemplateView, PodaciMixin):
     #FIXME: Auth
     #@role_in('user', 'staff', 'admin', 'volunteer')
     def get_context_data(self):
-        print "get ticket list asfda';fda"
         my_tickets_base = (Ticket.objects
                            .filter(requester=self.request.user)
                            .order_by('-created'))
