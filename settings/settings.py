@@ -52,7 +52,8 @@ INSTALLED_APPS = (
     'id',
     'podaci',
     'ticket',
-    'core'
+    'core',
+    'django_select2'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -77,6 +78,8 @@ TEMPLATE_CONTEXT_PROCESSORS += (
 )
 
 ROOT_URLCONF = 'settings.urls'
+
+AUTO_RENDER_SELECT2_STATICS = False
 
 # FIXME: Move existing templates to .jinja, start writing
 #        new templates as .jinja with Django template engine
