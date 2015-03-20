@@ -71,6 +71,10 @@ urlpatterns = patterns('',
     url(r'^ticket/(?P<pk>[0-9]+)/leave/$',  perm('volunteer', ticket.views.TicketActionLeaveHandler), name='ticket_leave'),
     url(r'^ticket/(?P<pk>[0-9]+)/updateremove/$',  perm('volunteer', ticket.views.TicketUpdateRemoveHandler), name='ticket_update_remove'),
 
+    url(r'^ticket/fees/users/$',            perm('staff', ticket.views.TicketUserFeesOverview), name='ticket_fees_users'),
+    url(r'^ticket/fees/networks/$',         perm('staff', ticket.views.TicketNetworkFeesOverview), name='ticket_fees_networks'),
+    url(r'^ticket/fees/budgets/$',          perm('staff', ticket.views.TicketBudgetFeesOverview), name='ticket_fees_budgets'),
+
     url(r'^_validation/request/$',          perm('user', ticket.validators.ValidateTicketRequest), name='ajax_validate_request'),
 
     url(r'^databases/$',                    perm('any', databases.ExternalDatabaseList), name='externaldb_list'),
