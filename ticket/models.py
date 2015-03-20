@@ -402,6 +402,12 @@ class DecimalProperty(models.IntegerField):
         # int -> decimal
         return Decimal(value) / 100
 
+class Budget(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.name
+
 class TicketCharge(models.Model, DisplayMixin):
     """
     An individual charge to a ticket.
@@ -414,6 +420,7 @@ class TicketCharge(models.Model, DisplayMixin):
 
     # comment on what the charge is for
     item = models.CharField(max_length=50, blank=False)
+    budget = models.ForeignKey(Budget, blank=True, null=True)
 
     # cost in USD
     cost = DecimalProperty()
