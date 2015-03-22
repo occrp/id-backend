@@ -107,13 +107,6 @@ class TicketActionBaseHandler(TicketUpdateMixin, UpdateView):
     def perform_valid_action(self, form):
         return
 
-    def perform_ticket_update(self, ticket, update_type, comment):
-        ticket_update = TicketUpdate(ticket=ticket)
-        ticket_update.author = self.request.user
-        ticket_update.update_type = constants.get_choice(update_type, constants.TICKET_UPDATE_TYPES)
-        ticket_update.comment = comment
-        ticket_update.save()
-
     def form_invalid(self, form):
         self.perform_invalid_action(form)
         return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": self.object.id}))
@@ -166,11 +159,13 @@ class TicketActionJoinHandler(TicketActionBaseHandler):
         if self.request.user.profile.is_staff or self.request.user.profile.is_admin:
             ticket.responders.add(self.request.user)
             self.success_messages = [_('You have successfully been added to the ticket.')]
+            self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.profile.display_name + unicode(_(' has joined the ticket')))
             return super(TicketActionJoinHandler, self).perform_valid_action(form)
 
         elif self.request.user.profile.is_volunteer:
             ticket.volunteers.add(self.request.user)
             self.success_messages = [_('You have successfully been added to the ticket.')]
+            self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.profile.display_name + unicode(_(' has joined the ticket')))
             return super(TicketActionJoinHandler, self).perform_valid_action(form)
 
         else:
@@ -188,10 +183,12 @@ class TicketActionLeaveHandler(TicketActionBaseHandler):
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
+            self.perform_ticket_update(ticket, 'Responder Left', self.request.user.profile.display_name + unicode(_(' has left the ticket')))
             return super(TicketActionLeaveHandler, self).perform_valid_action(form)
         elif self.request.user in ticket.volunteers.all():
             self.volunteers.remove(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
+            self.perform_ticket_update(ticket, 'Responder Left', self.request.user.profile.display_name + unicode(_(' has left the ticket')))
             return super(TicketActionLeaveHandler, self).perform_valid_action(form)
         else:
             self.force_invalid = True
@@ -223,9 +220,44 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
     Administrator edits a ticket's properties (re-assignment, closing, etc)
     """
 
+    def convert_users_to_ids(self, users):
+        return [int(i.id) for i in users]
+
     def form_invalid(self, form):
         messages.error(self.request, _('There was an error updating the ticket.'))
         return HttpResponseRedirect(reverse('ticket_list'))
+
+    def form_valid(self, form):
+        print form.cleaned_data['responders']
+        ticket = self.object
+        form_responders = [int(i) for i in form.cleaned_data['responders']]
+        form_volunteers = [int(i) for i in form.cleaned_data['volunteers']]
+
+        current_responders = self.convert_users_to_ids(ticket.responders.all())
+        current_volunteers = self.convert_users_to_ids(ticket.volunteers.all())
+        print current_responders
+
+        for i in form_responders:
+            if i not in current_responders:
+                u = User.objects.get(pk=i)
+                self.perform_ticket_update(ticket, 'Responder Joined', u.profile.display_name + unicode(_(' has joined the ticket')))
+
+        for i in form_volunteers:
+            if i not in current_volunteers:
+                u = User.objects.get(pk=i)
+                self.perform_ticket_update(ticket, 'Responder Joined', u.profile.display_name + unicode(_(' has joined the ticket')))
+
+        for i in current_responders:
+            if i not in form_responders:
+                u = User.objects.get(pk=i)
+                self.perform_ticket_update(ticket, 'Responder Left', u.profile.display_name + unicode(_(' has left the ticket')))
+
+        for i in current_volunteers:
+            if i not in form_volunteers:
+                u = User.objects.get(pk=i)
+                self.perform_ticket_update(ticket, 'Responder Left', u.profile.display_name + unicode(_(' has left the ticket')))
+
+        return super(TicketAdminSettingsHandler, self).form_valid(form)
 
     def get(self, request, pk, status='success'):
         super(TicketAdminSettingsHandler, self).get(self, request)
