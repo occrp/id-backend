@@ -23,6 +23,58 @@ Manually run tests with:
 
 ### Running with Docker
 
+You can run Investigative Dashboard under Docker. Here's how.
+
+#### Prerequisites
+
+Obviously, you'll need [Docker](http://docker.io/). [Go here](https://docs.docker.com/installation/#installation), ask questions later. For debian-based distros usually:
+
+```
+ apt-get install docker.io
+```
+
+Containers running these images are required prerequisites for running Inverstigative Dashboard 2:
+ * tpires/neo4j
+ * mysql
+
+Hence:
+
+```
+ docker pull tpires/neo4j
+ docker pull mysql
+```
+
+Now go grab some coffee, this will take a while depending on available bandwidth.
+
+#### Set-up and run
+
+Build Investigative Dashboard 2 image (you only have to do it once, or each time you modify the source); you can use any tagname for the image, just remember what you use (duh!):
+```
+ docker build -t ip2 /path/to/investigative-dashboard-2
+```
+
+Run `mysql`:
+```
+ 
+```
+
+Run `neo4j`:
+```
+ 
+```
+
+Run it:
+```
+ docker run ip2
+```
+
+#### With docker-compose
+
+Yes, you can use [docker-compose](http://docs.docker.com/compose/) to have all the images built, containers run and linked and `ip2` started for you. Nice of you to ask. **Caveat: you need at least docker 1.3 for that!**
+
+```
+ docker-compose .
+```
 
 ### Running locally
 
