@@ -2,8 +2,8 @@
 import sys
 import os
 
-from id.apis.podaci import *
-from id.apis.osoba import *
+from podaci.filesystem import FileSystem, File, Tag
+# from osoba.models import *
 
 import logging
 
