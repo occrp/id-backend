@@ -70,28 +70,6 @@ class PersonTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
     def __init__(self, *args, **kwargs):
         super(PersonTicketUpdate, self).__init__(*args, **kwargs)
 
-# class TicketActionBaseHandler(JSONResponseMixin, TemplateView):
-#     """
-#     Base class for actions such as Cancel / Close / Etc from fragments to
-#     inherit from
-#     """
-
-#     form_class = None
-
-#     #FIXME: Auth
-#     #@role_in('user', 'staff', 'admin', 'volunteer')
-#     def get_context_data(self, ticket_id=None):
-#         self.response.headers.add_header("Access-Control-Allow-Origin", "*")
-#         ticket = Ticket.get_by_id(int(ticket_id))
-#         form = self.form_class(self.request.POST)
-#         not_allowed = not self.user_can(ticket)
-#         if form.validate() and not not_allowed:
-#             # save new update & add message
-#             self.form_valid(ticket, form)
-#         else:
-#             t = self.render_template('modals/form_basic.jinja', form=form,
-#                                      not_allowed=not_allowed)
-#             self.render_json_response({'status': 'error', 'html': t})
 
 class TicketActionBaseHandler(TicketUpdateMixin, UpdateView):
     model = Ticket
@@ -276,6 +254,38 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
         return reverse_lazy('ticket_list')
 
 
+class TicketUpdateRemoveHandler(TicketActionBaseHandler):
+    model = TicketUpdate
+    form_class = forms.TicketEmptyForm
+    ticket = None
+
+    def get_ticket(self):
+        self.ticket = Ticket.objects.get(pk=self.object.ticket_id)
+
+    def form_invalid(self, form):
+        self.get_ticket()
+        self.perform_invalid_action(form)
+        return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": self.ticket.id}))
+
+    def form_valid(self, form):
+        self.get_ticket()
+        self.perform_valid_action(form)
+        super(TicketUpdateRemoveHandler, self).form_valid(form)
+        return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": self.ticket.id}))
+
+    def perform_invalid_action(self, form):
+        messages.error(self.request, _('There was an error deleting the comment.'))
+
+    def perform_valid_action(self, form):
+        self.success_messages = [_('The comment was successfully deleted.')]
+        self.object.is_removed = True
+        self.object.save()
+        return super(TicketUpdateRemoveHandler, self).perform_valid_action(form)
+
+    def __init__(self, *args, **kwargs):
+        super(TicketUpdateRemoveHandler, self).__init__(*args, **kwargs)
+
+
 class TicketDetail(TemplateView, PodaciMixin):
     template_name = "tickets/request_details.jinja"
     """
@@ -313,7 +323,7 @@ class TicketDetail(TemplateView, PodaciMixin):
 
     def get_context_data(self):
         ticket_updates = (TicketUpdate.objects
-                          .filter(ticket=self.ticket)
+                          .filter(ticket=self.ticket, is_removed=False)
                           .order_by("-created"))
 
         charges = (TicketCharge.objects.filter(ticket=self.ticket)

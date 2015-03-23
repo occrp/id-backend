@@ -325,6 +325,7 @@ class TicketUpdate(models.Model):
     ticket = models.ForeignKey(Ticket, blank=False)
     created = models.DateTimeField(auto_now_add=True)
     comment = models.TextField()
+    is_removed = models.BooleanField(default=False)
 
     # if you plan to use the extra_relation key for any ticket updates
     # make sure the model that you're relating to implements a method with
