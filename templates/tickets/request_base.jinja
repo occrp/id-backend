@@ -27,13 +27,20 @@
 
 			  {% elif ticket.status == 'in-progress' %}
 
-			  {% if ticket.responders_len > 0 %}
-			        Assigned to
-	      <a href="/admin/userprofile/{{ ticket.responders[0].get().key.urlsafe()}}/view">
-			  {{ticket.responders[0].get().display_name}}</a>
-                            {% else %}
-                                {% trans %}No Responder{% endtrans %}
-                            {% endif %}
+                    {% if ticket.responders|length > 0 %}
+                        Assigned to
+
+                        {% for actor in ticket.actors(false) %}
+                            {% if not loop.first %}, {% endif %}
+                            <a href="{{ url('profile', pk=actor.id)}}">{{ actor.profile.display_name }}</a>
+
+                        {% endfor %}
+
+                    {% else %}
+                        
+                        {% trans %}No Responder{% endtrans %}
+                    
+                    {% endif %}
 
 			  {% elif ticket.status == 'closed' %}
 			    {% trans %}Completed {% endtrans %}
