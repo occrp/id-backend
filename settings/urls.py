@@ -69,7 +69,7 @@ urlpatterns = patterns('',
     url(r'^ticket/(?P<pk>[0-9]+)/cancel/$', perm('user', ticket.views.TicketActionCancelHandler), name='ticket_cancel'),
     url(r'^ticket/(?P<pk>[0-9]+)/join/$',   perm('volunteer', ticket.views.TicketActionJoinHandler), name='ticket_join'),
     url(r'^ticket/(?P<pk>[0-9]+)/leave/$',  perm('volunteer', ticket.views.TicketActionLeaveHandler), name='ticket_leave'),
-
+    url(r'^ticket/(?P<pk>[0-9]+)/updateremove/$',  perm('volunteer', ticket.views.TicketUpdateRemoveHandler), name='ticket_update_remove'),
 
     url(r'^_validation/request/$',          perm('user', ticket.validators.ValidateTicketRequest), name='ajax_validate_request'),
 
