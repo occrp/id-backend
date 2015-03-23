@@ -51,6 +51,11 @@ class TicketUpdateMixin(object):
         ticket_update.comment = comment
         ticket_update.save()
 
+    def transition_ticket_from_new(self, ticket):
+        if ticket.status == constants.get_choice('New', constants.TICKET_STATUS):
+            ticket.status = constants.get_choice('In Progress', constants.TICKET_STATUS)
+            ticket.save()
+
 class TicketCreateMixin(object):
 
     def form_valid(self, form):

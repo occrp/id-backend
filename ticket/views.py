@@ -134,6 +134,8 @@ class TicketActionJoinHandler(TicketActionBaseHandler):
     def perform_valid_action(self, form):
         ticket = self.object
 
+        self.transition_ticket_from_new(ticket)
+
         if self.request.user.profile.is_staff or self.request.user.profile.is_admin:
             ticket.responders.add(self.request.user)
             self.success_messages = [_('You have successfully been added to the ticket.')]
@@ -206,14 +208,15 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
         return HttpResponseRedirect(reverse('ticket_list'))
 
     def form_valid(self, form):
-        print form.cleaned_data['responders']
         ticket = self.object
         form_responders = [int(i) for i in form.cleaned_data['responders']]
         form_volunteers = [int(i) for i in form.cleaned_data['volunteers']]
 
         current_responders = self.convert_users_to_ids(ticket.responders.all())
         current_volunteers = self.convert_users_to_ids(ticket.volunteers.all())
-        print current_responders
+
+        if len(form_responders) > 0 or len(form_volunteers) > 0:
+            self.transition_ticket_from_new(ticket)
 
         for i in form_responders:
             if i not in current_responders:
