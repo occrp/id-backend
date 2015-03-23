@@ -255,6 +255,10 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
 
 
 class TicketUpdateRemoveHandler(TicketActionBaseHandler):
+    # it should be noted that while the intent of this handler
+    # is to eventually cater to removing any ticket updates that
+    # would be neccesary to remove, right now the assumption is
+    # just for comments - 2014.03.22
     model = TicketUpdate
     form_class = forms.TicketEmptyForm
     ticket = None
