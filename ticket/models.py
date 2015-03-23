@@ -72,14 +72,15 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
             self.responder = None
         self.update_drive_permissions()
 
-    def actors(self):
+    def actors(self, include_self=True):
         """
         Get a list of actors for a given ticket, being the requester and
         responder
         """
         actors = [actor for actor in
                   list(chain(self.responders.all(), self.volunteers.all())) if actor]
-        actors.append(self.requester)
+        if include_self:
+            actors.append(self.requester)
         return actors
 
     def join_user(self, actor):
