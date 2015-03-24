@@ -17,7 +17,7 @@ RUN mkdir -p /var/log/id2/
 
 VOLUME /data
 
-RUN apt-get update && apt-get install -y \
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y \
     mysql-client libmysqlclient-dev \
     postgresql-client libpq-dev \
     sqlite3 \
