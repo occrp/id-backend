@@ -84,6 +84,14 @@ Run Investigative Dashboard 2:
    id2
 ```
 
+Check the IP addresses of `id2-neo4j` and `id2` containers:
+```
+ docker inspect -f '{{.NetworkSettings.IPAddress}}' id2-neo4j
+ docker inspect -f '{{.NetworkSettings.IPAddress}}' id2
+```
+
+Fire up a browser and check if everything works by visiting `http://<id2-neo4j IP address>:7474/` and `http://<id2 IP address>:8000/`. You should see Neo4j's browser main page, and Investigative Dashboard's main page, respectively.
+
 #### With docker-compose
 
 Yes, you can use [docker-compose](http://docs.docker.com/compose/) to have all the images built, containers run and linked and `id2` started for you. Nice of you to ask. It's actually easier that way. **Caveat: you need at least docker 1.3 for that!**
@@ -92,6 +100,24 @@ Yes, you can use [docker-compose](http://docs.docker.com/compose/) to have all t
  cd /path/to/investigative-dashboard-2
  docker-compose up
 ```
+
+Get some info on the containers being run:
+```
+ $ ../docker-compose ps
+             Name                            Command               State         Ports        
+ ---------------------------------------------------------------------------------------------
+ investigativedashboard2_id2_1     python manage.py runserver ...   Up      8000/tcp           
+ investigativedashboard2_mysql_1   /entrypoint.sh mysqld            Up      3306/tcp           
+ investigativedashboard2_neo4j_1   /bin/bash -c /launch.sh          Up      1337/tcp, 7474/tcp 
+```
+
+Check the IP addresses of `*_neo4j_` and `*_id2_*` (in the case above: `investigativedashboard2_neo4j_1`, `investigativedashboard2_id2_1`, respectively) containers:
+```
+ docker inspect -f '{{.NetworkSettings.IPAddress}}' investigativedashboard2_neo4j_1
+ docker inspect -f '{{.NetworkSettings.IPAddress}}' investigativedashboard2_id2_1
+```
+
+Fire up a browser and check if everything works by visiting `http://<*_neo4j_* IP address>:7474/` and `http://*_id2_* IP address>:8000/`. You should see Neo4j's browser main page, and Investigative Dashboard's main page, respectively.
 
 ### Running locally
 
