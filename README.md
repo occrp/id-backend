@@ -34,8 +34,8 @@ Obviously, you'll need [Docker](http://docker.io/). [Go here](https://docs.docke
 ```
 
 Containers running these images are required prerequisites for running Inverstigative Dashboard 2:
- * tpires/neo4j
- * mysql
+ * [tpires/neo4j](https://registry.hub.docker.com/u/tpires/neo4j/)
+ * [mysql](https://registry.hub.docker.com/_/mysql/)
 
 Hence:
 
@@ -44,33 +44,49 @@ Hence:
  docker pull mysql
 ```
 
-Now go grab some coffee, this will take a while depending on available bandwidth.
+Now go grab some coffee, this will take a while (depending on available bandwidth).
 
 #### Set-up and run
 
-Build Investigative Dashboard 2 image (you only have to do it once, or each time you modify the source); you can use any tagname for the image, just remember what you use (duh!):
+Time to build Investigative Dashboard 2 image (you only have to do it once, or each time you modify the source). You can use any tagname for the image, just remember what you use (duh!). We're using `id2` tag here:
 ```
- docker build -t ip2 /path/to/investigative-dashboard-2
-```
-
-Run `mysql`:
-```
- 
+ docker build -t id2 /path/to/investigative-dashboard-2
 ```
 
-Run `neo4j`:
+After the build is complete, we can start running things. Run `mysql` (again, you can use whatever container name you feel like; we're using `id2-mysql` here):
 ```
- 
+ docker run -d \
+   --name id2-mysql \
+   -e MYSQL_ROOT_PASSWORD=root \
+   -e MYSQL_USER=id2 \
+   -e MYSQL_PASSWORD=id2 \
+   -e MYSQL_DATABASE=id2 \
+   mysql
+```
+
+**Credentials used above are just an example, do change them when running Investigative Dashboard 2 anywhere near an open Internet connection**, and once you do, remember to change them also in `settings/settings_local.py-docker` file!
+
+Now, run `neo4j`:
+```
+ docker run -d \
+   --name id2-neo4j \
+   --cap-add SYS_RESOURCE \
+   tpires/neo4j
 ```
 
 Run Investigative Dashboard 2:
 ```
- docker run ip2
+ docker run -d \
+   --name id2 \
+   --link id2-neo4j:neo4j \
+   --link id2-mysql:mysql \
+   --expose "8000" \
+   id2
 ```
 
 #### With docker-compose
 
-Yes, you can use [docker-compose](http://docs.docker.com/compose/) to have all the images built, containers run and linked and `ip2` started for you. Nice of you to ask. **Caveat: you need at least docker 1.3 for that!**
+Yes, you can use [docker-compose](http://docs.docker.com/compose/) to have all the images built, containers run and linked and `id2` started for you. Nice of you to ask. It's actually easier that way. **Caveat: you need at least docker 1.3 for that!**
 
 ```
  cd /path/to/investigative-dashboard-2
