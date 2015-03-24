@@ -72,6 +72,15 @@ class TicketForm(forms.ModelForm):
         }
 
 class PersonTicketForm(TicketForm):
+
+    def clean_family(self):
+        data = self.cleaned_data['family']
+        return data.strip()
+
+    def clean_aliases(self):
+        data = self.cleaned_data['aliases']
+        return data.strip()
+
     class Meta(TicketForm.Meta):
         model = models.PersonTicket
         fields = ('name', 'aliases', 'background', 'biography',
@@ -108,6 +117,11 @@ class PersonTicketForm(TicketForm):
 
 
 class CompanyTicketForm(TicketForm):
+
+    def clean_connections(self):
+        data = self.cleaned_data['connections']
+        return data.strip()
+
     class Meta(TicketForm.Meta):
         model = models.CompanyTicket
         fields = ('name', 'country', 'background', 'sources',
