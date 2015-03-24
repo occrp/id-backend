@@ -63,7 +63,7 @@ Run `neo4j`:
  
 ```
 
-Run it:
+Run Investigative Dashboard 2:
 ```
  docker run ip2
 ```
@@ -73,7 +73,8 @@ Run it:
 Yes, you can use [docker-compose](http://docs.docker.com/compose/) to have all the images built, containers run and linked and `ip2` started for you. Nice of you to ask. **Caveat: you need at least docker 1.3 for that!**
 
 ```
- docker-compose .
+ cd /path/to/investigative-dashboard-2
+ docker-compose up
 ```
 
 ### Running locally
