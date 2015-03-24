@@ -429,17 +429,6 @@ class TicketRequest(TemplateView, PodaciMixin):
     template_name = "tickets/request.jinja"
 
     # runs when django forms clean the data but before django saves the object
-    def clean_family(self):
-        data = self.cleaned_data['family']
-        return data.strip()
-
-    def clean_aliases(self):
-        data = self.cleaned_data['aliases']
-        return data.strip()
-
-    def clean_connections(self):
-        data = self.cleaned_data['connections']
-        return data.strip()
 
     """ Some registered user submits a ticket for response by a responder. """
     def dispatch(self, *args, **kwargs):
@@ -482,7 +471,6 @@ class TicketRequest(TemplateView, PodaciMixin):
     #FIXME: Auth
     #@role_in('user', 'staff', 'admin', 'volunteer')
     def post(self, ticket_id=None):
-        print "ticket post"
         if not self.forms["ticket_type_form"].is_valid():
             print self.forms["ticket_type_form"].errors.as_data()
             # self.add_message("Error")
