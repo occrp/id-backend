@@ -1,6 +1,7 @@
 from podaci import PodaciView
 from django.http import StreamingHttpResponse
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.template.loader import render_to_string
 from copy import copy
 
@@ -25,12 +26,12 @@ class Details(PodaciView):
         tags = {}
         notes = []
         for user in self.file.meta["allowed_users"]:
-            users[user] = User.objects.get(id=user)
+            users[user] = get_user_model().objects.get(id=user)
         for tag in self.file.meta["tags"]:
             tags[tag] = self.fs.get_tag(tag)
         notes = copy(self.file.meta["notes"])
         for note in notes:
-            u = User.objects.get(id=note["user"])
+            u = get_user_model().objects.get(id=note["user"])
             note["user_details"] = {
                 "username": u.username,
                 "email": u.email,
@@ -76,7 +77,7 @@ class NoteAdd(PodaciView):
         success = self.file.add_note(text)
         meta = copy(self.file.meta)
         for note in meta["notes"]:
-            u = User.objects.get(id=note["user"])
+            u = get_user_model().objects.get(id=note["user"])
             note["user_details"] = {
                 "username": u.username,
                 "email": u.email,

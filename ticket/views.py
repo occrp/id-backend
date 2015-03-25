@@ -2,7 +2,8 @@ import json
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.contrib import messages
 from django.db.models import Q
 import django.forms
@@ -222,22 +223,22 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
 
         for i in form_responders:
             if i not in current_responders:
-                u = User.objects.get(pk=i)
+                u = get_user_model().objects.get(pk=i)
                 self.perform_ticket_update(ticket, 'Responder Joined', u.profile.display_name + unicode(_(' has joined the ticket')))
 
         for i in form_volunteers:
             if i not in current_volunteers:
-                u = User.objects.get(pk=i)
+                u = get_user_model().objects.get(pk=i)
                 self.perform_ticket_update(ticket, 'Responder Joined', u.profile.display_name + unicode(_(' has joined the ticket')))
 
         for i in current_responders:
             if i not in form_responders:
-                u = User.objects.get(pk=i)
+                u = get_user_model().objects.get(pk=i)
                 self.perform_ticket_update(ticket, 'Responder Left', u.profile.display_name + unicode(_(' has left the ticket')))
 
         for i in current_volunteers:
             if i not in form_volunteers:
-                u = User.objects.get(pk=i)
+                u = get_user_model().objects.get(pk=i)
                 self.perform_ticket_update(ticket, 'Responder Left', u.profile.display_name + unicode(_(' has left the ticket')))
 
         return super(TicketAdminSettingsHandler, self).form_valid(form)
@@ -518,7 +519,7 @@ class TicketUserFeesOverview(TemplateView):
 
     def get_context_data(self):
         return {
-            "users": User.objects.annotate(payment_count=Count('ticketcharge')).annotate(payment_total=Sum('ticketcharge__cost')).filter(payment_count__gt=0)
+            "users": get_user_model().objects.annotate(payment_count=Count('ticketcharge')).annotate(payment_total=Sum('ticketcharge__cost')).filter(payment_count__gt=0)
         }
 
 class TicketNetworkFeesOverview(TemplateView):
