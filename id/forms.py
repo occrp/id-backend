@@ -72,12 +72,14 @@ class ProfileUpdateForm(forms.ModelForm):
 class ProfileBasicsForm(forms.ModelForm):
     class Meta:
         model = models.Profile
-        fields = ("first_name", "last_name", "abbr", "locale")
+        fields = ("first_name", "last_name", "abbr", "locale", 
+                  "country", "network")
 
 class ProfileDetailsForm(forms.ModelForm):
     class Meta:
         model = models.Profile
-        fields = ("phone_number", "organization_membership", "address", 
+        fields = ("phone_number", "organization_membership", 
+                  "address", 
                   "city", "province", "postal_code", "industry",
                   "media", "circulation", "title", "interests",
                   "expertise", "languages", "availability",
@@ -86,8 +88,7 @@ class ProfileDetailsForm(forms.ModelForm):
 class ProfileAdminForm(forms.ModelForm):
     class Meta:
         model = models.Profile
-        fields = ("network",
-                  "findings_visible", "is_for_profit", 
+        fields = ("findings_visible", "is_for_profit", 
                   "is_user", "is_staff", "is_volunteer", "is_admin")
 
 

@@ -72,14 +72,15 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
             self.responder = None
         self.update_drive_permissions()
 
-    def actors(self):
+    def actors(self, include_self=True):
         """
         Get a list of actors for a given ticket, being the requester and
         responder
         """
         actors = [actor for actor in
                   list(chain(self.responders.all(), self.volunteers.all())) if actor]
-        actors.append(self.requester)
+        if include_self:
+            actors.append(self.requester)
         return actors
 
     def join_user(self, actor):
@@ -325,6 +326,7 @@ class TicketUpdate(models.Model):
     ticket = models.ForeignKey(Ticket, blank=False)
     created = models.DateTimeField(auto_now_add=True)
     comment = models.TextField()
+    is_removed = models.BooleanField(default=False)
 
     # if you plan to use the extra_relation key for any ticket updates
     # make sure the model that you're relating to implements a method with
@@ -400,6 +402,12 @@ class DecimalProperty(models.IntegerField):
         # int -> decimal
         return Decimal(value) / 100
 
+class Budget(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.name
+
 class TicketCharge(models.Model, DisplayMixin):
     """
     An individual charge to a ticket.
@@ -412,6 +420,7 @@ class TicketCharge(models.Model, DisplayMixin):
 
     # comment on what the charge is for
     item = models.CharField(max_length=50, blank=False)
+    budget = models.ForeignKey(Budget, blank=True, null=True)
 
     # cost in USD
     cost = DecimalProperty()
@@ -422,7 +431,7 @@ class TicketCharge(models.Model, DisplayMixin):
 
     # whether the bill has been reconciled or not
     reconciled = models.BooleanField(default=False)
-    reconciled_date = models.DateTimeField()
+    reconciled_date = models.DateTimeField(blank=True)
     paid_status = models.CharField(max_length=70, choices=PAID_STATUS)
 
     # when the charge was created

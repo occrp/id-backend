@@ -3,6 +3,9 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import JsonResponse
 from django.utils.translation import ugettext_lazy as _
 
+from ticket.models import TicketUpdate
+from ticket import constants
+
 class TicketAjaxResponseMixin(object):
 
     def form_invalid(self, form):
@@ -40,6 +43,18 @@ class TicketUpdateMixin(object):
     def get_success_url(self):
         ticket = self.get_object()
         return reverse_lazy('ticket_details', kwargs={'ticket_id': ticket.id})
+
+    def perform_ticket_update(self, ticket, update_type, comment):
+        ticket_update = TicketUpdate(ticket=ticket)
+        ticket_update.author = self.request.user
+        ticket_update.update_type = constants.get_choice(update_type, constants.TICKET_UPDATE_TYPES)
+        ticket_update.comment = comment
+        ticket_update.save()
+
+    def transition_ticket_from_new(self, ticket):
+        if ticket.status == constants.get_choice('New', constants.TICKET_STATUS):
+            ticket.status = constants.get_choice('In Progress', constants.TICKET_STATUS)
+            ticket.save()
 
 class TicketCreateMixin(object):
 

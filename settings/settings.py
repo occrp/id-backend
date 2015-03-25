@@ -51,6 +51,8 @@ INSTALLED_APPS = (
     'django_jinja',
     'id',
     'podaci',
+    # 'osoba',
+    'robots',
     'ticket',
     'core',
     'django_select2'

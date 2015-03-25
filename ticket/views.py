@@ -17,6 +17,8 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView, UpdateView
 
+from django.db.models import Count, Sum
+
 from core.mixins import JSONResponseMixin
 from core.utils import *
 
@@ -70,28 +72,6 @@ class PersonTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
     def __init__(self, *args, **kwargs):
         super(PersonTicketUpdate, self).__init__(*args, **kwargs)
 
-# class TicketActionBaseHandler(JSONResponseMixin, TemplateView):
-#     """
-#     Base class for actions such as Cancel / Close / Etc from fragments to
-#     inherit from
-#     """
-
-#     form_class = None
-
-#     #FIXME: Auth
-#     #@role_in('user', 'staff', 'admin', 'volunteer')
-#     def get_context_data(self, ticket_id=None):
-#         self.response.headers.add_header("Access-Control-Allow-Origin", "*")
-#         ticket = Ticket.get_by_id(int(ticket_id))
-#         form = self.form_class(self.request.POST)
-#         not_allowed = not self.user_can(ticket)
-#         if form.validate() and not not_allowed:
-#             # save new update & add message
-#             self.form_valid(ticket, form)
-#         else:
-#             t = self.render_template('modals/form_basic.jinja', form=form,
-#                                      not_allowed=not_allowed)
-#             self.render_json_response({'status': 'error', 'html': t})
 
 class TicketActionBaseHandler(TicketUpdateMixin, UpdateView):
     model = Ticket
@@ -106,13 +86,6 @@ class TicketActionBaseHandler(TicketUpdateMixin, UpdateView):
 
     def perform_valid_action(self, form):
         return
-
-    def perform_ticket_update(self, ticket, update_type, comment):
-        ticket_update = TicketUpdate(ticket=ticket)
-        ticket_update.author = self.request.user
-        ticket_update.update_type = constants.get_choice(update_type, constants.TICKET_UPDATE_TYPES)
-        ticket_update.comment = comment
-        ticket_update.save()
 
     def form_invalid(self, form):
         self.perform_invalid_action(form)
@@ -163,14 +136,18 @@ class TicketActionJoinHandler(TicketActionBaseHandler):
     def perform_valid_action(self, form):
         ticket = self.object
 
+        self.transition_ticket_from_new(ticket)
+
         if self.request.user.profile.is_staff or self.request.user.profile.is_admin:
             ticket.responders.add(self.request.user)
             self.success_messages = [_('You have successfully been added to the ticket.')]
+            self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.profile.display_name + unicode(_(' has joined the ticket')))
             return super(TicketActionJoinHandler, self).perform_valid_action(form)
 
         elif self.request.user.profile.is_volunteer:
             ticket.volunteers.add(self.request.user)
             self.success_messages = [_('You have successfully been added to the ticket.')]
+            self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.profile.display_name + unicode(_(' has joined the ticket')))
             return super(TicketActionJoinHandler, self).perform_valid_action(form)
 
         else:
@@ -188,10 +165,12 @@ class TicketActionLeaveHandler(TicketActionBaseHandler):
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
+            self.perform_ticket_update(ticket, 'Responder Left', self.request.user.profile.display_name + unicode(_(' has left the ticket')))
             return super(TicketActionLeaveHandler, self).perform_valid_action(form)
         elif self.request.user in ticket.volunteers.all():
             self.volunteers.remove(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
+            self.perform_ticket_update(ticket, 'Responder Left', self.request.user.profile.display_name + unicode(_(' has left the ticket')))
             return super(TicketActionLeaveHandler, self).perform_valid_action(form)
         else:
             self.force_invalid = True
@@ -223,9 +202,45 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
     Administrator edits a ticket's properties (re-assignment, closing, etc)
     """
 
+    def convert_users_to_ids(self, users):
+        return [int(i.id) for i in users]
+
     def form_invalid(self, form):
         messages.error(self.request, _('There was an error updating the ticket.'))
         return HttpResponseRedirect(reverse('ticket_list'))
+
+    def form_valid(self, form):
+        ticket = self.object
+        form_responders = [int(i) for i in form.cleaned_data['responders']]
+        form_volunteers = [int(i) for i in form.cleaned_data['volunteers']]
+
+        current_responders = self.convert_users_to_ids(ticket.responders.all())
+        current_volunteers = self.convert_users_to_ids(ticket.volunteers.all())
+
+        if len(form_responders) > 0 or len(form_volunteers) > 0:
+            self.transition_ticket_from_new(ticket)
+
+        for i in form_responders:
+            if i not in current_responders:
+                u = User.objects.get(pk=i)
+                self.perform_ticket_update(ticket, 'Responder Joined', u.profile.display_name + unicode(_(' has joined the ticket')))
+
+        for i in form_volunteers:
+            if i not in current_volunteers:
+                u = User.objects.get(pk=i)
+                self.perform_ticket_update(ticket, 'Responder Joined', u.profile.display_name + unicode(_(' has joined the ticket')))
+
+        for i in current_responders:
+            if i not in form_responders:
+                u = User.objects.get(pk=i)
+                self.perform_ticket_update(ticket, 'Responder Left', u.profile.display_name + unicode(_(' has left the ticket')))
+
+        for i in current_volunteers:
+            if i not in form_volunteers:
+                u = User.objects.get(pk=i)
+                self.perform_ticket_update(ticket, 'Responder Left', u.profile.display_name + unicode(_(' has left the ticket')))
+
+        return super(TicketAdminSettingsHandler, self).form_valid(form)
 
     def get(self, request, pk, status='success'):
         super(TicketAdminSettingsHandler, self).get(self, request)
@@ -242,6 +257,42 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('ticket_list')
+
+
+class TicketUpdateRemoveHandler(TicketActionBaseHandler):
+    # it should be noted that while the intent of this handler
+    # is to eventually cater to removing any ticket updates that
+    # would be neccesary to remove, right now the assumption is
+    # just for comments - 2014.03.22
+    model = TicketUpdate
+    form_class = forms.TicketEmptyForm
+    ticket = None
+
+    def get_ticket(self):
+        self.ticket = Ticket.objects.get(pk=self.object.ticket_id)
+
+    def form_invalid(self, form):
+        self.get_ticket()
+        self.perform_invalid_action(form)
+        return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": self.ticket.id}))
+
+    def form_valid(self, form):
+        self.get_ticket()
+        self.perform_valid_action(form)
+        super(TicketUpdateRemoveHandler, self).form_valid(form)
+        return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": self.ticket.id}))
+
+    def perform_invalid_action(self, form):
+        messages.error(self.request, _('There was an error deleting the comment.'))
+
+    def perform_valid_action(self, form):
+        self.success_messages = [_('The comment was successfully deleted.')]
+        self.object.is_removed = True
+        self.object.save()
+        return super(TicketUpdateRemoveHandler, self).perform_valid_action(form)
+
+    def __init__(self, *args, **kwargs):
+        super(TicketUpdateRemoveHandler, self).__init__(*args, **kwargs)
 
 
 class TicketDetail(TemplateView, PodaciMixin):
@@ -281,7 +332,7 @@ class TicketDetail(TemplateView, PodaciMixin):
 
     def get_context_data(self):
         ticket_updates = (TicketUpdate.objects
-                          .filter(ticket=self.ticket)
+                          .filter(ticket=self.ticket, is_removed=False)
                           .order_by("-created"))
 
         charges = (TicketCharge.objects.filter(ticket=self.ticket)
@@ -378,17 +429,6 @@ class TicketRequest(TemplateView, PodaciMixin):
     template_name = "tickets/request.jinja"
 
     # runs when django forms clean the data but before django saves the object
-    def clean_family(self):
-        data = self.cleaned_data['family']
-        return data.strip()
-
-    def clean_aliases(self):
-        data = self.cleaned_data['aliases']
-        return data.strip()
-
-    def clean_connections(self):
-        data = self.cleaned_data['connections']
-        return data.strip()
 
     """ Some registered user submits a ticket for response by a responder. """
     def dispatch(self, *args, **kwargs):
@@ -431,7 +471,6 @@ class TicketRequest(TemplateView, PodaciMixin):
     #FIXME: Auth
     #@role_in('user', 'staff', 'admin', 'volunteer')
     def post(self, ticket_id=None):
-        print "ticket post"
         if not self.forms["ticket_type_form"].is_valid():
             print self.forms["ticket_type_form"].errors.as_data()
             # self.add_message("Error")
@@ -472,3 +511,28 @@ class TicketRequest(TemplateView, PodaciMixin):
         #     self.add_message(_('Ticket successfully created.'))
 
         return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": ticket.id}))
+
+
+class TicketUserFeesOverview(TemplateView):
+    template_name = 'tickets/ticket_user_fees_overview.jinja'
+
+    def get_context_data(self):
+        return {
+            "users": User.objects.annotate(payment_count=Count('ticketcharge')).annotate(payment_total=Sum('ticketcharge__cost')).filter(payment_count__gt=0)
+        }
+
+class TicketNetworkFeesOverview(TemplateView):
+    template_name = 'tickets/ticket_network_fees_overview.jinja'
+
+    def get_context_data(self):
+        return {
+            "networks": Network.objects.all(),
+        }
+
+class TicketBudgetFeesOverview(TemplateView):
+    template_name = 'tickets/ticket_budget_fees_overview.jinja'
+
+    def get_context_data(self):
+        return {
+            "budgets": [],
+        }
