@@ -536,7 +536,7 @@ class AdminCustomerChargesHandler(AdminTicketListTemplateView):
 
         customer_key = self.request.GET.get('user')
         if customer_key:
-            self.customer = User.objects.get(id=customer_key)
+            self.customer = get_user_model().objects.get(id=customer_key)
 
         return super(AdminCustomerChargesHandler, self).dispatch(*args, **kwargs)
 
@@ -778,7 +778,7 @@ class RequestMailHandler(object): #FIXME
 
 class Select2AllHandler(View, JSONResponseMixin):
     def get_context_data(self):
-        return User.objects.all()
+        return get_user_model().objects.all()
 
 
 

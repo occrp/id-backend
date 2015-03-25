@@ -1,4 +1,5 @@
-from django.contrib.auth.models import AnonymousUser, User
+from django.contrib.auth.models import AnonymousUser#, User
+from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.test import TestCase
 from settings.settings import *
 from podaci.filesystem import *
@@ -70,7 +71,7 @@ class PodaciPermissionTest(TestCase):
     def test_logged_in_without_access(self):
         ## Verify that a logged in user cannot access a non-public file
         ## they have no permission for
-        u = User(username="testuser")
+        u = get_user_model(username="testuser")
         u.save()
         self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
                              user=u)
@@ -80,7 +81,7 @@ class PodaciPermissionTest(TestCase):
     def test_logged_in_with_direct_access(self):
         ## Verify that a logged in user can access a non-public file they
         ## have explicit access to
-        u = User(username="testuser")
+        u = get_user_model(username="testuser")
         u.save()
         self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
                              user=u)
@@ -90,7 +91,7 @@ class PodaciPermissionTest(TestCase):
     def test_logged_in_with_indirect_access(self):
         ## Verify that a logged in user can access a non-public file they
         ## have access to through a tag they are allowed on
-        u = User(username="testuser")
+        u = get_user_model(username="testuser")
         u.save()
         self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
                              user=u)
@@ -99,7 +100,7 @@ class PodaciPermissionTest(TestCase):
 
     def test_admin_access(self):
         ## Verify that an admin user always has access
-        u = User(username="testuser")
+        u = get_user_model(username="testuser")
         u.is_superuser = True
         u.save()
         self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 

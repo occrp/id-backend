@@ -1,6 +1,7 @@
 from itertools import chain
 
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -19,12 +20,12 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
     """
     ticket_type = ""
     # Staff-facing fields
-    requester = models.ForeignKey(User, related_name="ticket_requests")
+    requester = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="ticket_requests")
     requester_type = models.CharField(blank=False, max_length=70, choices=REQUESTER_TYPES,
                                     verbose_name=_('Requester Type'), default='subs')
-    responders = models.ManyToManyField(User, related_name="tickets_responded")
+    responders = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="tickets_responded")
 
-    volunteers = models.ManyToManyField(User, related_name="tickets_volunteered")
+    volunteers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="tickets_volunteered")
 
     created = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=70, choices=TICKET_STATUS, default='new')
@@ -322,7 +323,7 @@ class OtherTicket(Ticket):
 class TicketUpdate(models.Model):
     update_type = models.CharField(max_length=70, choices=TICKET_UPDATE_TYPES,
                                    default=TICKET_UPDATE_TYPES[0][0])
-    author = models.ForeignKey(User, blank=False)  # requester or responder
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, blank=False)  # requester or responder
     ticket = models.ForeignKey(Ticket, blank=False)
     created = models.DateTimeField(auto_now_add=True)
     comment = models.TextField()
@@ -416,7 +417,7 @@ class TicketCharge(models.Model, DisplayMixin):
     """
 
     ticket = models.ForeignKey(Ticket, blank=False)
-    user = models.ForeignKey(User, blank=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=False)
 
     # comment on what the charge is for
     item = models.CharField(max_length=50, blank=False)

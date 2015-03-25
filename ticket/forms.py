@@ -1,5 +1,6 @@
 from django import forms
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
@@ -172,7 +173,7 @@ class OtherTicketForm(TicketForm):
 
 
 # class MultiResponderChoices(Select2MultipleChoiceField):
-#     choices = User.objects.all().filter(Q(profile__is_admin=1) | Q(profile__is_staff=1))
+#     choices = get_user_model().objects.all().filter(Q(profile__is_admin=1) | Q(profile__is_staff=1))
 
 class TicketAdminSettingsForm(forms.ModelForm):
     responders = Select2MultipleChoiceField(label=_("Staff Responders"), required=False)
@@ -189,9 +190,9 @@ class TicketAdminSettingsForm(forms.ModelForm):
 
         super(TicketAdminSettingsForm, self).__init__(*args, **kwargs)
         self.fields['responders'].choices = core.utils.convert_group_to_select2field_choices(
-                                                User.objects.all().filter(Q(profile__is_admin=1) | Q(profile__is_staff=1)))
+                                                get_user_model().objects.all().filter(Q(profile__is_admin=1) | Q(profile__is_staff=1)))
         self.fields['volunteers'].choices = core.utils.convert_group_to_select2field_choices(
-                                                User.objects.all().filter(Q(profile__is_volunteer=1)))
+                                                get_user_model().objects.all().filter(Q(profile__is_volunteer=1)))
         self.fields['requester_type'].widget.attrs.update({'choices': constants.REQUESTER_TYPES})
 
 
