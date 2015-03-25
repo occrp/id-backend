@@ -1,0 +1,25 @@
+# docker compose config for dataimports
+# http://docs.docker.com/compose/
+#
+id2dataimports:
+  build: .
+  expose:
+    - "8000"
+  links:
+    - mysql
+    - neo4j
+  command: /bin/bash
+  volumes:
+    - "../export-prod/:/data"
+    - "data/:/usr/src/id2/data/"
+neo4j:
+  image: tpires/neo4j
+  cap_add:
+    - SYS_RESOURCE
+mysql:
+  image: mysql
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_USER:     id2
+    MYSQL_PASSWORD: id2
+    MYSQL_DATABASE: id2
