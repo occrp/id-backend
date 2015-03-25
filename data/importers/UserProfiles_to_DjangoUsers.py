@@ -7,8 +7,10 @@ from os.path import dirname
 import os
 import json
 from django.db.utils import IntegrityError
+import django
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 sys.path.append(os.path.abspath("../../"))
 from id.models import *
 
@@ -53,11 +55,13 @@ def convert(in_file):
         profiles.append(profile)
 
     print "... Got %d users" % (cnt - 1)
+    print "Setting up django..."
+    django.setup()
 
     i = 0
     for user in users:
         i += 1
-        print "\rAdding users: %d" % i,
+        print "\rAdding users: %d, %s" % (i, user["username"]),
         sys.stdout.flush()
         u = User()
         u.id = user["id"]
