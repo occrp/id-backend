@@ -32,6 +32,96 @@
     {% endif %}
 {% endmacro %}
 
+{% macro render_ticket_table(tickets, pretty_paginator) %}
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>{% trans %}Summary{% endtrans %}</th>
+                    <th>{% trans %}Type{% endtrans %}</th>
+                    <th>{% trans %}Status{% endtrans %}</th>
+                    <th>{% trans %}Deadline{% endtrans %}</th>
+                    <th>{% trans %}Actions{% endtrans %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                    <tr>
+                        <td>
+                            <a href="{{ url('ticket_details', ticket_id=ticket.id) }}">
+                                {{ ticket.summary }}
+                            </a>
+                        </td>
+                        <td>{{ ticket.ticket_type_display() }}</td>
+                        <td>
+              {% if ticket.status == 'new' %}
+
+              {% trans %} Unassigned {% endtrans %}
+
+              {% elif ticket.status == 'in-progress' %}
+
+                    {% if ticket.responders|length > 0 %}
+                        Assigned to
+
+                        {% for actor in ticket.actors(false) %}
+                        
+                            <a href="{{ url('profile', pk=actor.id)}}">{{ actor.profile.display_name }}</a>{% if loop.length > 0 and not loop.last %}, {% endif %}
+
+                        {% endfor %}
+
+                    {% else %}
+                        
+                        {% trans %}No Responder{% endtrans %}
+                    
+                    {% endif %}
+
+              {% elif ticket.status == 'closed' %}
+                {% trans %}Completed {% endtrans %}
+              {% elif ticket.status == 'cancelled' %}
+                {% trans %}Cancelled {% endtrans %}           
+              {% endif %}
+
+
+                        </td>
+                        <td>{{ display_datetime(ticket.deadline) }}</td>
+                        <td>
+                            <a class='btn btn-mini' href="{{ url(ticket.ticket_type ~ '_ticket_edit', pk=ticket.id) }}?next={{ url('ticket_list') }}">
+                                <i class="icon-pencil"></i>
+                            </a>
+                        <a href="#AdminSettingsModal" class='btn btn-mini'
+                           data-modal-url="{{ url('ticket_admin_settings', pk=ticket.id) }}">
+                            <i class="icon-cog"></i>
+                        </a>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+        {% if pretty_paginator.paginator %}
+            {% if pretty_paginator.paginator.num_pages > 1 %}
+                {{ render_pagination_links(pretty_paginator.page_objects) }}
+            {% endif %}
+        {% endif %}
+{% endmacro %}
+
+{% macro render_pagination_links(page_objects) %}
+    <div class="pagination pull-right">
+        <ul>
+            {% for obj in page_objects %}
+                {% if not obj.spacer %}
+                    <li{% if obj.is_current_page %} class="active"{% endif %}>
+                        <a href="{{ obj.url }}">{{ obj.page_num }}</a>
+                    </li>
+                {% else %}
+                    <li><span>...</span></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endmacro %}
+
 {% macro display_field(obj, field_name) %}
     {{ display_value(obj.get_display_value(field_name)) }}
 {% endmacro %}
