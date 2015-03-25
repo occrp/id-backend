@@ -1,4 +1,5 @@
-from django.contrib.auth.models import AnonymousUser, User
+from django.contrib.auth.models import AnonymousUser#, User
+from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.test import TestCase
 from core.testclient import TestClient
 from settings.settings import *
@@ -8,22 +9,22 @@ from ticket.models import *
 class TicketsTest(TestCase):
     def setUp(self):
         self.anonymous_user = AnonymousUser()
-        self.normal_user = User.objects.create_user(
+        self.normal_user = get_user_model().objects.create_user(
             username='requester', email='testuser@occrp.org', password='top_secret')
         self.normal_user.profile.is_user = True
         self.normal_user.profile.save()
 
-        self.volunteer_user = User.objects.create_user(
+        self.volunteer_user = get_user_model().objects.create_user(
             username='volunteer', email='testuser@occrp.org', password='top_secret')
         self.volunteer_user.profile.is_volunteer = True
         self.volunteer_user.profile.save()
 
-        self.staff_user = User.objects.create_user(
+        self.staff_user = get_user_model().objects.create_user(
             username='staff', email='testuser@occrp.org', password='top_secret')
         self.staff_user.profile.is_staff = True
         self.staff_user.profile.save()
 
-        self.admin_user = User.objects.create_user(
+        self.admin_user = get_user_model().objects.create_user(
             username='admin', email='testuser@occrp.org', password='top_secret')
         self.admin_user.is_superuser = True
         self.admin_user.save()

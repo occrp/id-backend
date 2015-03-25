@@ -16,8 +16,13 @@ class Network(models.Model):
 
 
 ######## User profiles #################
+
+# TODO: this is SOOO temporary
+class ID2User(User):
+    
+
 class Profile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL)
 
     user_created = models.DateTimeField(auto_now_add=True)
     profile_updated = models.DateTimeField(auto_now=True)
@@ -185,7 +190,7 @@ def profile_create(sender, instance, created, **kwargs):
         profile = Profile(user=instance)
         profile.save()
 
-post_save.connect(profile_create, sender=User)
+post_save.connect(profile_create, sender=settings.AUTH_USER_MODEL)
 
 
 ######## External databases ############
@@ -222,7 +227,7 @@ class ExternalDatabase(models.Model, DisplayMixin):
 ######## Account management ############
 class AccountRequest(models.Model, DisplayMixin, AddressMixin, UserDetailsGenericMixin): # polymodel
     request_type = 'generic'
-    user_profile = models.ForeignKey(User, blank=False)
+    user_profile = models.ForeignKey(settings.AUTH_USER_MODEL, blank=False)
     approved = models.BooleanField(default=False, verbose_name=_('Approved'))
     email = models.CharField(max_length=50, blank=False, verbose_name=_('Email Address'))
     date_created = models.DateTimeField(auto_now_add=True,
@@ -402,7 +407,7 @@ class DatabaseScrapeRequest(models.Model):
     url = models.URLField(blank=False, verbose_name=_("URL"))
     name = models.CharField(max_length=200, verbose_name=_("Name"))
     description = models.TextField(verbose_name=_("Description"))
-    # plusones = models.ManyToManyField(User)
+    # plusones = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
     # def plusone(self, user):
     #    self.plusone.add(user)

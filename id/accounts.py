@@ -1,7 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.views.generic import *
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from settings.settings import LANGUAGES
 from registration.signals import user_registered
 
@@ -28,9 +29,9 @@ class ProfileUpdate(UpdateView):
 
     def get_object(self, *args, **kwargs):
         if kwargs.has_key("pk"):
-            return User.objects.get(id=kwargs["pk"]).profile
+            return get_user_model().objects.get(id=kwargs["pk"]).profile
         elif kwargs.has_key("username"):
-            return User.objects.get(username=kwargs["username"]).profile
+            return get_user_model().objects.get(username=kwargs["username"]).profile
         return self.request.user.profile
 
     def get_context_data(self, form):
@@ -60,7 +61,7 @@ class ProfileUpdate(UpdateView):
         return ctx
 
 class UserList(ListView):
-    model = User
+    model = settings.AUTH_USER_MODEL
     paginate_by = 50
     template_name = 'auth/user_list.jinja'
 

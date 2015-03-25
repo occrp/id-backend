@@ -18,7 +18,8 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 import django
 from settings.settings import *
 from podaci.filesystem import *
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.contrib.auth import authenticate
 
 django.setup()
@@ -26,13 +27,13 @@ django.setup()
 def getuser(u):
     if not u.isdigit():
         try:
-            user = User.objects.get(username=u)
+            user = get_user_model().objects.get(username=u)
         except:
             print "Error: User %s does not exist" % u
             return None
     else:
         try:
-            user = User.objects.get(id=u)
+            user = get_user_model().objects.get(id=u)
         except:
             print "Error: User %s does not exist" % u
             return None
