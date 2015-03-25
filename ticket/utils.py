@@ -33,3 +33,11 @@ def get_actual_ticket(self):
         return self.otherticket
     except:
         pass
+
+def get_actual_tickets(tickets):
+    actual_tickets = []
+
+    for i in tickets:
+        actual_tickets.append(get_actual_ticket(i))
+
+    return actual_tickets
