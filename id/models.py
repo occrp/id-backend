@@ -50,13 +50,13 @@ class Profile(models.Model):
     city = models.CharField(blank=True, max_length=50)
     province = models.CharField(blank=True, max_length=50)
     postal_code = models.CharField(blank=True, max_length=20)
-    country = models.CharField(blank=True, max_length=20, choices=DATABASE_COUNTRIES)
+    country = models.CharField(blank=True, max_length=20, choices=COUNTRIES)
 
     # Requester fields
-    industry = models.CharField(blank=True, max_length=20)
+    industry = models.CharField(blank=True, max_length=20, choices=INDUSTRY_TYPES)
     industry_other = models.CharField(blank=True, max_length=50)
-    media = models.CharField(blank=True, max_length=50)
-    circulation = models.CharField(blank=True, max_length=50)
+    media = models.CharField(blank=True, max_length=50, choices=MEDIA_TYPES)
+    circulation = models.CharField(blank=True, max_length=50, choices=CIRCULATION_TYPES)
     title = models.CharField(blank=True, max_length=50)
 
     # Volunteer fields

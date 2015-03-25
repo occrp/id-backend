@@ -347,8 +347,8 @@
         {% if ticket_updates %}
             <div class="row-fluid discussion">
                 <div class="span12">
-                {% for tu in ticket_updates %}
-		  {% if tu.comment %}
+            {% for tu in ticket_updates %}
+                {% if tu.comment %}
                     <div class="request-update">
                         <i class="icon-caret-right primary-highlight"></i>
                         <h5>
@@ -367,6 +367,10 @@
                             <i class="icon-flag"></i>
                         {% elif tu.update_type == "charge" %}
                             <i class="icon-ticket"></i>
+                        {% elif tu.update_type == "join" %}
+                            <i class="icon-user"></i>
+                        {% elif tu.update_type == "leave" %}
+                            <i class="icon-remove"></i>
                         {% endif %}
                         {{ tu.author.profile.display_name }}
                         </strong>
@@ -382,9 +386,17 @@
                         {% if tu.extra_relation -%}
                             <p>{{ tu.extra_relation.to_ticket_update(tu) }}</p>
                         {%- endif %}
+                        {% if tu.update_type == 'update' %}
+                            {% if user.profile.is_admin or user.profile.is_staff %}
+                                <div class="pull-right soft">
+                                    <a data-action="{{ url('ticket_update_remove', pk=tu.id) }}" data-csrf="{{ csrf_token }}" class="anchor_form" href="#">{% trans %}delete comment{% endtrans %}</a>
+                                </div>
+                                <div class="clearfix"></div>
+                            {% endif %}
+                        {% endif %}
                     </div>
-		    {% endif %}
-                {% endfor %}
+                {% endif %}
+            {% endfor %}
                 </div>
             </div>
         {% else %}
