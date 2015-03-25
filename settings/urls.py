@@ -69,7 +69,11 @@ urlpatterns = patterns('',
     url(r'^ticket/(?P<pk>[0-9]+)/cancel/$', perm('user', ticket.views.TicketActionCancelHandler), name='ticket_cancel'),
     url(r'^ticket/(?P<pk>[0-9]+)/join/$',   perm('volunteer', ticket.views.TicketActionJoinHandler), name='ticket_join'),
     url(r'^ticket/(?P<pk>[0-9]+)/leave/$',  perm('volunteer', ticket.views.TicketActionLeaveHandler), name='ticket_leave'),
+    url(r'^ticket/(?P<pk>[0-9]+)/updateremove/$',  perm('volunteer', ticket.views.TicketUpdateRemoveHandler), name='ticket_update_remove'),
 
+    url(r'^ticket/fees/users/$',            perm('staff', ticket.views.TicketUserFeesOverview), name='ticket_fees_users'),
+    url(r'^ticket/fees/networks/$',         perm('staff', ticket.views.TicketNetworkFeesOverview), name='ticket_fees_networks'),
+    url(r'^ticket/fees/budgets/$',          perm('staff', ticket.views.TicketBudgetFeesOverview), name='ticket_fees_budgets'),
 
     url(r'^_validation/request/$',          perm('user', ticket.validators.ValidateTicketRequest), name='ajax_validate_request'),
 
@@ -108,8 +112,9 @@ urlpatterns = patterns('',
     url(r'^accounts/register/complete/$', TemplateView.as_view(template_name='registration/registration_complete.jinja'), name='registration_complete'),
     url(r'^accounts/register/closed/$',  TemplateView.as_view(template_name='registration/registration_closed.jinja'), name='registration_disallowed'),
 
-
     url(r'^podaci/', include('podaci.urls')),
+    url(r'^osoba/', include('osoba.urls')),
+    url(r'^robots/', include('robots.urls')),
 
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),

@@ -1,0 +1,34 @@
+{% extends "robot_base.jinja" %}
+
+{% block content_main %}
+
+<table class="table">
+<thead>
+	<tr>
+		<th><input type="checkbox" id="robots_select_all"/></th>
+		<th>Robot name</th>
+		<th>Version</th>
+		<th>Identifier</th>
+		<th>Runs</th>
+		<th>Status</th>
+		<th>Run frequency</th>
+		<th>Last ran</th>
+	</tr>
+</thead>
+<tbody>
+{% for robot in robots %}
+	<tr id="robot_{{robot.ROBOT_ID}}">
+		<td><input type="checkbox" id="robot_select"/></td>
+		<td>{{robot.NAME}}</td>
+		<td>{{robot.VERSION}}</td>
+		<td>{{robot.ROBOT_ID}}</td>
+		<td>{{robot.runs}}</td>
+		<td>{{robot.status}}</td>
+		<td>{{robot.frequency}}</td>
+		<td>{{robot.lastrun}}</td>
+	</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
