@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from id.mixins import *
 from id.constdata import *
-from settings.settings import LANGUAGES
+from settings.settings import LANGUAGES, AUTH_USER_MODEL
 
 class Network(models.Model):
     short_name = models.CharField(max_length=50)
@@ -18,11 +18,14 @@ class Network(models.Model):
 ######## User profiles #################
 
 # TODO: this is SOOO temporary
-class ID2User(User):
-    
+# as per http://stackoverflow.com/questions/20415627/how-to-properly-extend-django-user-model
+class ID2User(AbstractUser):
+    def yeah_we_re_using_id2user(self):
+        print('Yes, indeed we are using ID2User! AUTH_USER_MODEL is: %s' % AUTH_USER_MODEL)
+
 
 class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL)
+    user = models.OneToOneField(AUTH_USER_MODEL)
 
     user_created = models.DateTimeField(auto_now_add=True)
     profile_updated = models.DateTimeField(auto_now=True)
@@ -190,7 +193,7 @@ def profile_create(sender, instance, created, **kwargs):
         profile = Profile(user=instance)
         profile.save()
 
-post_save.connect(profile_create, sender=settings.AUTH_USER_MODEL)
+post_save.connect(profile_create, sender=AUTH_USER_MODEL)
 
 
 ######## External databases ############
@@ -227,7 +230,7 @@ class ExternalDatabase(models.Model, DisplayMixin):
 ######## Account management ############
 class AccountRequest(models.Model, DisplayMixin, AddressMixin, UserDetailsGenericMixin): # polymodel
     request_type = 'generic'
-    user_profile = models.ForeignKey(settings.AUTH_USER_MODEL, blank=False)
+    user_profile = models.ForeignKey(AUTH_USER_MODEL, blank=False)
     approved = models.BooleanField(default=False, verbose_name=_('Approved'))
     email = models.CharField(max_length=50, blank=False, verbose_name=_('Email Address'))
     date_created = models.DateTimeField(auto_now_add=True,
@@ -407,7 +410,7 @@ class DatabaseScrapeRequest(models.Model):
     url = models.URLField(blank=False, verbose_name=_("URL"))
     name = models.CharField(max_length=200, verbose_name=_("Name"))
     description = models.TextField(verbose_name=_("Description"))
-    # plusones = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    # plusones = models.ManyToManyField(AUTH_USER_MODEL)
 
     # def plusone(self, user):
     #    self.plusone.add(user)

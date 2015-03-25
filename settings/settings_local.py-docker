@@ -24,6 +24,10 @@ NEO4J_HOST = 'neo4j'
 NEO4J_PORT = '7474'
 NEO4J_ENDPOINT = '/db/data'
 
+# our own precious User model
+# as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
+AUTH_USER_MODEL = 'id.ID2User'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 TIME_ZONE = 'UTC'
