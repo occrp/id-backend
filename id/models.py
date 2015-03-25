@@ -19,20 +19,29 @@ class Network(models.Model):
 
 # TODO: this is SOOO temporary
 # as per http://stackoverflow.com/questions/20415627/how-to-properly-extend-django-user-model
-class ID2User(AbstractUser):
-    def yeah_we_re_using_id2user(self):
-        print('Yes, indeed we are using ID2User! AUTH_USER_MODEL is: %s' % AUTH_USER_MODEL)
-
-
-class Profile(models.Model):
-    user = models.OneToOneField(AUTH_USER_MODEL)
+class Profile(AbstractUser):
+    # TODO: remove, just a debug kludge
+    def yeah_we_re_using_profile(self):
+        print('Yes, indeed we are using Profile! AUTH_USER_MODEL is: %s' % AUTH_USER_MODEL)
+  
+    # TODO: this should not be required at all?
+    #user = models.OneToOneField(AUTH_USER_MODEL)
+    
+    # TODO: temporary kludge!
+    @property
+    def user(self):
+        return self
+      
+    # TODO: temporary kludge!
+    def profile(self):
+        return self
 
     user_created = models.DateTimeField(auto_now_add=True)
     profile_updated = models.DateTimeField(auto_now=True)
     last_seen = models.DateTimeField(auto_now=True)
 
-    first_name = models.CharField(max_length=60, verbose_name=_("First Name"))
-    last_name = models.CharField(max_length=60, verbose_name=_("Last Name"))
+    #first_name = models.CharField(max_length=60, verbose_name=_("First Name")) # clash!
+    #last_name = models.CharField(max_length=60, verbose_name=_("Last Name")) # clash!
     abbr = models.CharField(max_length=8, blank=True, null=True, unique=True, verbose_name=_("Initials"))
     admin_notes = models.TextField(blank=True, verbose_name=_("Admin Notes"))
     locale = models.CharField(blank=True, max_length=10, choices=LANGUAGES)
@@ -45,7 +54,7 @@ class Profile(models.Model):
                                    verbose_name=_('For-Profit?'))
 
     is_user = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
+    #is_staff = models.BooleanField(default=False) # clash!
     is_volunteer = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     old_google_id = models.CharField(blank=True, max_length=100)
