@@ -12,12 +12,13 @@ id2dataimports:
   volumes:
     - "../export-prod/:/data"
     - "data/:/usr/src/id2/data/"
+    - "./:/usr/src/id2/"
 neo4j:
   image: tpires/neo4j
   cap_add:
     - SYS_RESOURCE
 mysql:
-  image: mysql
+  image: mysql:5.7
   environment:
     MYSQL_ROOT_PASSWORD: root
     MYSQL_USER:     id2
