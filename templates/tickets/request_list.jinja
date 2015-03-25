@@ -1,25 +1,23 @@
 {% extends "tickets/request_base.jinja" %}
 
 
+
 {% block inner_content %}
     <div class="page-header">
         <a href="{{ url('ticket_submit') }}" class="btn btn-primary pull-right">
             <i class="icon-plus-sign icon-white"></i> {% trans %}New Request{% endtrans %}
         </a>
-        <h1>{% trans %}My Requests{% endtrans %}</h1>
+        <h1>{% trans %}{{ page_name }}{% endtrans %}</h1>
     </div>
 
-    {% if requests %}
-        <h4>{% trans %}Open Requests{% endtrans %}</h4>
-    {{ render_ticket_table(requests) }}
+    {% if tickets %}
+        <h4>{% trans %}{{ ticket_list_name }}{% endtrans %}</h4>
+    {{ macros.render_ticket_table(tickets, paginator_object) }}
 
     {% else %}
         <div class="alert alert-block alert-warning">
             {% trans %}No open requests found.{% endtrans %}
         </div>
     {% endif %}
-    {% if closed_requests %}
-        <h4>{% trans %}Closed Requests{% endtrans %}</h4>
-     {{ render_ticket_table(closed_requests) }}
-    {% endif %}
+
 {% endblock %}

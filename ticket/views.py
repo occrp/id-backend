@@ -1,4 +1,5 @@
 import json
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -19,7 +20,7 @@ from django.views.generic import TemplateView, UpdateView
 
 from django.db.models import Count, Sum
 
-from core.mixins import JSONResponseMixin
+from core.mixins import JSONResponseMixin, PrettyPaginatorMixin
 from core.utils import *
 
 from ticket.utils import *
@@ -399,31 +400,75 @@ class TicketDetail(TemplateView, PodaciMixin):
         comment.save()
         return HttpResponseRedirect(reverse('ticket_details', kwargs={ "ticket_id":self.ticket.id}))
 
-class TicketList(TemplateView, PodaciMixin):
+class TicketList(PrettyPaginatorMixin, TemplateView, PodaciMixin):
     template_name = "tickets/request_list.jinja"
+    page_name = ""
+    ticket_list_name = ""
+    tickets = []
+    page_number = 1
+    page_size = 1
+    page_buttons = 5
+    page_buttons_padding = 2
+    paginator = None
+    url_name = 'ticket_list'
+    url_args = {}
 
-    """Display a list of requests which the currently logged in user has out in
-    the wild."""
+    def get_context_data(self, **kwargs):
+        if 'page' in kwargs:
+            self.page_number = int(kwargs.pop('page'))
+            if self.page_number is None:
+                self.page_number = 1
 
-    #FIXME: Auth
-    #@role_in('user', 'staff', 'admin', 'volunteer')
-    def get_context_data(self):
-        my_tickets_base = (Ticket.objects
-                           .filter(requester=self.request.user)
-                           .order_by('-created'))
-        my_tickets = []
-        for i in my_tickets_base:
-            my_tickets.append(get_actual_ticket(i))
-        open_tickets, closed_tickets = split_open_tickets(my_tickets)
         context = {
-            'requests': open_tickets,
-            'closed_requests': closed_tickets
+            'page_name': self.page_name,
+            'ticket_list_name': self.ticket_list_name,
+            'tickets': self.get_paged_tickets(self.page_number),
+            'paginator_object': self.create_pretty_pagination_object(self.paginator,
+                                                                     self.page_number,
+                                                                     self.page_buttons,
+                                                                     self.page_buttons_padding,
+                                                                     self.url_name,
+                                                                     self.url_args),
+            'page_number': self.page_number
         }
+        print "are we contexting?"
         return context
+
+    def get_paged_tickets(self, page_number):
+        self.set_paginator_object()
+
+        try:
+            paged_tickets = self.paginator.page(page_number)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            paged_tickets = self.paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            paged_tickets = self.paginator.page(self.paginator.num_pages)
+
+        return paged_tickets
+
+    def set_paginator_object(self):
+        self.paginator = Paginator(self.get_ticket_set(), self.page_size)
+
+    def get_ticket_set(self):
+        return self.tickets
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(TicketList, self).dispatch(*args, **kwargs)
+
+
+class TicketListMyOpen(TicketList):
+    page_name = "My Requests"
+    ticket_list_name = "Open Tickets"
+
+    def get_ticket_set(self):
+        return get_actual_tickets(Ticket.objects.filter(
+            requester=self.request.user).filter(
+            ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            "-created"))
+
 
 class TicketRequest(TemplateView, PodaciMixin):
     template_name = "tickets/request.jinja"
