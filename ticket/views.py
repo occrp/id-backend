@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import Count
@@ -226,22 +227,22 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
 
         for i in form_responders:
             if i not in current_responders:
-                u = User.objects.get(pk=i)
+                u = get_user_model().objects.get(pk=i)
                 self.perform_ticket_update(ticket, 'Responder Joined', u.profile.display_name + unicode(_(' has joined the ticket')))
 
         for i in form_volunteers:
             if i not in current_volunteers:
-                u = User.objects.get(pk=i)
+                u = get_user_model().objects.get(pk=i)
                 self.perform_ticket_update(ticket, 'Responder Joined', u.profile.display_name + unicode(_(' has joined the ticket')))
 
         for i in current_responders:
             if i not in form_responders:
-                u = User.objects.get(pk=i)
+                u = get_user_model().objects.get(pk=i)
                 self.perform_ticket_update(ticket, 'Responder Left', u.profile.display_name + unicode(_(' has left the ticket')))
 
         for i in current_volunteers:
             if i not in form_volunteers:
-                u = User.objects.get(pk=i)
+                u = get_user_model().objects.get(pk=i)
                 self.perform_ticket_update(ticket, 'Responder Left', u.profile.display_name + unicode(_(' has left the ticket')))
 
         return super(TicketAdminSettingsHandler, self).form_valid(form)
