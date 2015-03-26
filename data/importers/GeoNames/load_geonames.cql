@@ -21,10 +21,13 @@ CREATE INDEX ON :Elevation(asciiname);
 CREATE INDEX ON :UnderSea(asciiname);
 CREATE INDEX ON :Vegetation(asciiname);
 
+CREATE INDEX ON :GeoName(geonameid);
+CREATE CONSTRAINT ON (geo:GeoName) ASSERT geo.geonameid IS UNIQUE;
+
 CREATE CONSTRAINT ON (country:Country) ASSERT country.iso IS UNIQUE;
 
 USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "file:/home/smari/Projects/OCCRP/Data/GeoNames/output/countries.csv" as csvLine
+LOAD CSV WITH HEADERS FROM "file:/home/id/server/id2/data/importers/GeoNames/output/countries.csv" as csvLine
 CREATE (:Country {
 	iso: csvLine.iso,
 	iso3: csvLine.iso3, 
@@ -52,7 +55,7 @@ CREATE (:Country {
 ## Regions
 
 USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "file:/home/smari/Projects/OCCRP/Data/GeoNames/output/regions.csv" as csvLine
+LOAD CSV WITH HEADERS FROM "file:/home/id/server/id2/data/importers/GeoNames/output/regions.csv" as csvLine
 MERGE (country:Country {iso: csvLine.countrycode})
 CREATE (region:Region {
 	geonameid: csvLine.geonameid, 
@@ -80,7 +83,7 @@ CREATE (region)-[:is_in]->(country);
 ## Water Bodies
 
 USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "file:/home/smari/Projects/OCCRP/Data/GeoNames/output/waterbodies.csv" as csvLine
+LOAD CSV WITH HEADERS FROM "file:/home/id/server/id2/data/importers/GeoNames/output/waterbodies.csv" as csvLine
 MERGE (country:Country {iso: csvLine.countrycode})
 CREATE (waterbody:WaterBody {
 	geonameid: csvLine.geonameid, 
@@ -109,7 +112,7 @@ CREATE (waterbody)-[:is_in]->(country);
 ## Areas
 
 USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "file:/home/smari/Projects/OCCRP/Data/GeoNames/output/areas.csv" as csvLine
+LOAD CSV WITH HEADERS FROM "file:/home/id/server/id2/data/importers/GeoNames/output/areas.csv" as csvLine
 MERGE (country:Country {iso: csvLine.countrycode})
 CREATE (area:Area {
 	geonameid: csvLine.geonameid, 
@@ -138,7 +141,7 @@ CREATE (area)-[:is_in]->(country)
 ## Places
 
 USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "file:/home/smari/Projects/OCCRP/Data/GeoNames/output/places.csv" as csvLine
+LOAD CSV WITH HEADERS FROM "file:/home/id/server/id2/data/importers/GeoNames/output/places.csv" as csvLine
 MERGE (country:Country {iso: csvLine.countrycode})
 CREATE (place:Place {
 	geonameid: csvLine.geonameid, 
@@ -161,13 +164,14 @@ CREATE (place:Place {
 	source: csvLine.source
 })
 CREATE (place)-[:is_in]->(country)
+;
 
 
 ########################################################
 ## Road
 
 USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "file:/home/smari/Projects/OCCRP/Data/GeoNames/output/roads.csv" as csvLine
+LOAD CSV WITH HEADERS FROM "file:/home/id/server/id2/data/importers/GeoNames/output/roads.csv" as csvLine
 MERGE (country:Country {iso: csvLine.countrycode})
 CREATE (road:Road {
 	geonameid: csvLine.geonameid, 
@@ -197,7 +201,7 @@ CREATE (road)-[:is_in]->(country)
 ## Location
 
 USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "file:/home/smari/Projects/OCCRP/Data/GeoNames/output/locations.csv" as csvLine
+LOAD CSV WITH HEADERS FROM "file:/home/id/server/id2/data/importers/GeoNames/output/locations.csv" as csvLine
 MERGE (country:Country {iso: csvLine.countrycode})
 CREATE (location:Location {
 	geonameid: csvLine.geonameid, 
@@ -227,7 +231,7 @@ CREATE (location)-[:is_in]->(country)
 ## Elevation
 
 USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "file:/home/smari/Projects/OCCRP/Data/GeoNames/output/locations.csv" as csvLine
+LOAD CSV WITH HEADERS FROM "file:/home/id/server/id2/data/importers/GeoNames/output/elevation.csv" as csvLine
 MERGE (country:Country {iso: csvLine.countrycode})
 CREATE (elevation:Elevation {
 	geonameid: csvLine.geonameid, 
@@ -256,7 +260,7 @@ CREATE (elevation)-[:is_in]->(country)
 ## UnderSea
 
 USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "file:/home/smari/Projects/OCCRP/Data/GeoNames/output/locations.csv" as csvLine
+LOAD CSV WITH HEADERS FROM "file:/home/id/server/id2/data/importers/GeoNames/output/undersea.csv" as csvLine
 MERGE (country:Country {iso: csvLine.countrycode})
 CREATE (undersea:UnderSea {
 	geonameid: csvLine.geonameid, 
@@ -285,7 +289,7 @@ CREATE (undersea)-[:is_in]->(country)
 ## Vegetation
 
 USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "file:/home/smari/Projects/OCCRP/Data/GeoNames/output/locations.csv" as csvLine
+LOAD CSV WITH HEADERS FROM "file:/home/id/server/id2/data/importers/GeoNames/output/vegetation.csv" as csvLine
 MERGE (country:Country {iso: csvLine.countrycode})
 CREATE (vegetation:Vegetation {
 	geonameid: csvLine.geonameid, 
@@ -308,3 +312,15 @@ CREATE (vegetation:Vegetation {
 	source: csvLine.source
 })
 CREATE (vegetation)-[:is_in]->(country)
+
+
+########################################################
+## Alternative Names
+
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
+MERGE (geo:GeoName {geonameid: csvLine.geonameid})
+CREATE (alt:AlternativeName {
+	name: csvLine.name;
+})
+CREATE (geo)-[:also_known_as]->(alt)
