@@ -19,6 +19,8 @@ neo4j:
     - SYS_RESOURCE
 mysql:
   image: mysql:5.7
+  volumes:
+    - 'mysql_charset.cnf:/etc/mysql/conf.d/charset.cnf'
   environment:
     MYSQL_ROOT_PASSWORD: root
     MYSQL_USER:     id2

@@ -9,7 +9,6 @@ import json
 from django.db.utils import IntegrityError
 import django
 
-#os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 sys.path.append(os.path.abspath("../../"))
 from id.models import *
@@ -24,7 +23,6 @@ def convert(in_file):
     cnt = 1
 
     users = []
-    profiles = []
 
     print "Harvesting from CSV: ",
     for row in reader:
@@ -35,24 +33,18 @@ def convert(in_file):
         cnt += 1
 
         user = {"id": cnt}
-        profile = {"user_id": cnt}
         for i in range(len(row)):
-            value = row[i]
+            value = unicode(row[i], 'utf-8').strip()
             key = header_row[i]
 
             if key == "user":
                 pass
-            elif key == "email":
-                user["username"] = value
-                user["email"] = value
-                profile["email"] = value
             elif key == "id":
-                profile["old_google_id"] = value
+                user["old_google_id"] = value
             else:
-                profile[key] = value
+                user[key] = value
 
         users.append(user)
-        profiles.append(profile)
 
     print "... Got %d users" % (cnt - 1)
     print "Setting up django..."
@@ -61,30 +53,17 @@ def convert(in_file):
     i = 0
     for user in users:
         i += 1
-        print "\rAdding users: %d, %s" % (i, user["username"]),
+        print "\rAdding user profiles: %4d, %64s" % (i, user["email"]),
         sys.stdout.flush()
-        u = User()
-        u.id = user["id"]
-        u.username = user["username"]
+        u = Profile()
+        u.is_superuser = user["is_admin"]
+        for key, value in user.iteritems():
+            setattr(u, key, value)
         try:
             u.save()
         except IntegrityError, e:
             print "Skipping dupe: %s" % (e)
-    print "\rAdding users: Done."
-
-    i = 0
-    for profile in profiles:
-        i += 1
-        print "\rAdding profiles: %d" % i,
-        sys.stdout.flush()
-        p = Profile()
-        for key, value in profile.iteritems():
-            setattr(p, key, value)
-        try:
-            p.save()
-        except IntegrityError, e:
-            print "Skipping dupe: %s" % (e)
-    print "\rAdding profiles: Done."
+    print "\rAdding user profiles: Done."
 
 
 
