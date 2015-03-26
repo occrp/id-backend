@@ -1,10 +1,14 @@
 import json
+from datetime import datetime, timedelta
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 #from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.contrib import messages
+from django.db.models import Count
 from django.db.models import Q
 import django.forms
 from django.forms.utils import ErrorList
@@ -20,7 +24,7 @@ from django.views.generic import TemplateView, UpdateView
 
 from django.db.models import Count, Sum
 
-from core.mixins import JSONResponseMixin
+from core.mixins import JSONResponseMixin, PrettyPaginatorMixin
 from core.utils import *
 
 from ticket.utils import *
@@ -128,7 +132,7 @@ class TicketActionCloseHandler(TicketActionBaseHandler):
         return super(TicketActionCloseHandler, self).perform_valid_action(form)
 
 
-class TicketActionJoinHandler(TicketActionBaseHandler):
+class TicketActionJoinHandler(TicketActionBaseHandler, PodaciMixin):
     form_class = forms.TicketEmptyForm
 
     def perform_invalid_action(self, form):
@@ -137,24 +141,33 @@ class TicketActionJoinHandler(TicketActionBaseHandler):
     def perform_valid_action(self, form):
         ticket = self.object
 
-        self.transition_ticket_from_new(ticket)
+        self.podaci_setup()
+        tag = self.fs.get_tag(ticket.tag_id)
 
         if self.request.user.profile.is_staff or self.request.user.profile.is_admin:
             ticket.responders.add(self.request.user)
             self.success_messages = [_('You have successfully been added to the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.profile.display_name + unicode(_(' has joined the ticket')))
+            self.transition_ticket_from_new(ticket)
+
+            tag.add_user(self.request.user, True)
+
             return super(TicketActionJoinHandler, self).perform_valid_action(form)
 
         elif self.request.user.profile.is_volunteer:
             ticket.volunteers.add(self.request.user)
             self.success_messages = [_('You have successfully been added to the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.profile.display_name + unicode(_(' has joined the ticket')))
+            self.transition_ticket_from_new(ticket)
+
+            tag.add_user(self.request.user, True)
+
             return super(TicketActionJoinHandler, self).perform_valid_action(form)
 
         else:
             self.perform_invalid_action(form)
 
-class TicketActionLeaveHandler(TicketActionBaseHandler):
+class TicketActionLeaveHandler(TicketActionBaseHandler, PodaciMixin):
     form_class = forms.TicketEmptyForm
 
     def perform_invalid_action(self, form):
@@ -163,15 +176,24 @@ class TicketActionLeaveHandler(TicketActionBaseHandler):
     def perform_valid_action(self, form):
         ticket = self.object
 
+        self.podaci_setup()
+        tag = self.fs.get_tag(ticket.tag_id)
+
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.profile.display_name + unicode(_(' has left the ticket')))
+
+            tag.remove_user(self.request.user)
+
             return super(TicketActionLeaveHandler, self).perform_valid_action(form)
         elif self.request.user in ticket.volunteers.all():
             self.volunteers.remove(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.profile.display_name + unicode(_(' has left the ticket')))
+
+            tag.remove_user(self.request.user)
+
             return super(TicketActionLeaveHandler, self).perform_valid_action(form)
         else:
             self.force_invalid = True
@@ -195,10 +217,11 @@ class TicketActionOpenHandler(TicketActionBaseHandler):
         return super(TicketActionOpenHandler, self).perform_valid_action(form)
 
 
-class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
+class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
     model = Ticket
     template_name = "modals/form_basic.jinja"
     form_class = forms.TicketAdminSettingsForm
+    redirect = "ticket_list"
     """
     Administrator edits a ticket's properties (re-assignment, closing, etc)
     """
@@ -208,7 +231,7 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
 
     def form_invalid(self, form):
         messages.error(self.request, _('There was an error updating the ticket.'))
-        return HttpResponseRedirect(reverse('ticket_list'))
+        return HttpResponseRedirect(reverse(self.redirect))
 
     def form_valid(self, form):
         ticket = self.object
@@ -218,33 +241,44 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
         current_responders = self.convert_users_to_ids(ticket.responders.all())
         current_volunteers = self.convert_users_to_ids(ticket.volunteers.all())
 
+        self.podaci_setup()
+        tag = self.fs.get_tag(ticket.tag_id)
+
+        if 'redirect' in self.request.POST:
+            self.redirect = self.request.POST['redirect']
+
         if len(form_responders) > 0 or len(form_volunteers) > 0:
             self.transition_ticket_from_new(ticket)
 
         for i in form_responders:
             if i not in current_responders:
                 u = get_user_model().objects.get(pk=i)
+                tag.add_user(u, True)
                 self.perform_ticket_update(ticket, 'Responder Joined', u.profile.display_name + unicode(_(' has joined the ticket')))
 
         for i in form_volunteers:
             if i not in current_volunteers:
                 u = get_user_model().objects.get(pk=i)
+                tag.add_user(u, True)
                 self.perform_ticket_update(ticket, 'Responder Joined', u.profile.display_name + unicode(_(' has joined the ticket')))
 
         for i in current_responders:
             if i not in form_responders:
                 u = get_user_model().objects.get(pk=i)
+                tag.remove_user(u)
                 self.perform_ticket_update(ticket, 'Responder Left', u.profile.display_name + unicode(_(' has left the ticket')))
 
         for i in current_volunteers:
             if i not in form_volunteers:
                 u = get_user_model().objects.get(pk=i)
+                tag.remove_user(u)
                 self.perform_ticket_update(ticket, 'Responder Left', u.profile.display_name + unicode(_(' has left the ticket')))
 
         return super(TicketAdminSettingsHandler, self).form_valid(form)
 
-    def get(self, request, pk, status='success'):
+    def get(self, request, pk, redirect, status='success'):
         super(TicketAdminSettingsHandler, self).get(self, request)
+        self.redirect = redirect
 
         t = render_to_string('modals/form_basic.jinja', self.get_context_data())
         return JsonResponse({'status': status, 'html': t})
@@ -252,12 +286,13 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(TicketAdminSettingsHandler, self).get_context_data(**kwargs)
         context['csrf'] = get_token(self.request)
-        context['form_action'] = reverse_lazy('ticket_admin_settings', kwargs={'pk': self.object.id})
+        context['form_action'] = reverse_lazy('ticket_admin_settings', kwargs={'pk': self.object.id, 'redirect': self.redirect})
         context['form'] = self.get_form(self.form_class)
+        context['form'].fields['redirect'].initial = self.redirect
         return context
 
     def get_success_url(self):
-        return reverse_lazy('ticket_list')
+        return reverse_lazy(self.redirect)
 
 
 class TicketUpdateRemoveHandler(TicketActionBaseHandler):
@@ -400,31 +435,169 @@ class TicketDetail(TemplateView, PodaciMixin):
         comment.save()
         return HttpResponseRedirect(reverse('ticket_details', kwargs={ "ticket_id":self.ticket.id}))
 
-class TicketList(TemplateView, PodaciMixin):
+class TicketList(PrettyPaginatorMixin, TemplateView, PodaciMixin):
     template_name = "tickets/request_list.jinja"
+    page_name = ""
+    ticket_list_name = ""
+    tickets = []
+    page_number = 1
+    page_size = 10
+    page_buttons = 5
+    page_buttons_padding = 2
+    paginator = None
+    url_name = 'ticket_list'
+    url_args = {}
 
-    """Display a list of requests which the currently logged in user has out in
-    the wild."""
+    def get_context_data(self, **kwargs):
+        if 'page' in kwargs:
+            self.page_number = int(kwargs.pop('page'))
+            if self.page_number is None:
+                self.page_number = 1
 
-    #FIXME: Auth
-    #@role_in('user', 'staff', 'admin', 'volunteer')
-    def get_context_data(self):
-        my_tickets_base = (Ticket.objects
-                           .filter(requester=self.request.user)
-                           .order_by('-created'))
-        my_tickets = []
-        for i in my_tickets_base:
-            my_tickets.append(get_actual_ticket(i))
-        open_tickets, closed_tickets = split_open_tickets(my_tickets)
         context = {
-            'requests': open_tickets,
-            'closed_requests': closed_tickets
+            'page_name': self.page_name,
+            'ticket_list_name': self.ticket_list_name,
+            'tickets': self.get_paged_tickets(self.page_number),
+            'paginator_object': self.create_pretty_pagination_object(self.paginator,
+                                                                     self.page_number,
+                                                                     self.page_buttons,
+                                                                     self.page_buttons_padding,
+                                                                     self.url_name,
+                                                                     self.url_args),
+            'page_number': self.page_number
         }
+
         return context
+
+    def get_paged_tickets(self, page_number):
+        self.set_paginator_object()
+
+        try:
+            paged_tickets = self.paginator.page(page_number)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            paged_tickets = self.paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            paged_tickets = self.paginator.page(self.paginator.num_pages)
+
+        return paged_tickets
+
+    def set_paginator_object(self):
+        self.paginator = Paginator(self.get_ticket_set(), self.page_size)
+
+    def get_ticket_set(self):
+        return self.tickets
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(TicketList, self).dispatch(*args, **kwargs)
+
+
+class TicketListAllOpen(TicketList):
+    page_name = "All Requests"
+    ticket_list_name = "All Open Requests"
+
+    def get_ticket_set(self):
+        return get_actual_tickets(Ticket.objects.filter(
+            ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            "-created"))
+
+class TicketListAllClosed(TicketList):
+    page_name = "All Requests"
+    ticket_list_name = "All Closed Requests"
+
+    def get_ticket_set(self):
+        return get_actual_tickets(Ticket.objects.filter(
+            Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            "-created"))
+
+class TicketListMyOpen(TicketList):
+    page_name = "My Requests"
+    ticket_list_name = "My Open Requests"
+
+    def get_ticket_set(self):
+        return get_actual_tickets(Ticket.objects.filter(
+            requester=self.request.user).filter(
+            ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            "-created"))
+
+class TicketListMyClosed(TicketList):
+    page_name = "My Requests"
+    ticket_list_name = "My Closed Requests"
+
+    def get_ticket_set(self):
+        return get_actual_tickets(Ticket.objects.filter(
+            requester=self.request.user).filter(
+            Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            "-created"))
+
+class TicketListMyAssigned(TicketList):
+    page_name = "My Assignments"
+    ticket_list_name = "Open Assignments"
+
+    def get_ticket_set(self):
+        return get_actual_tickets(Ticket.objects.filter(
+            Q(responders__in=[self.request.user]) | Q(volunteers__in=[self.request.user])).filter(
+            ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            "-created"))
+
+class TicketListMyAssignedClosed(TicketList):
+    page_name = "My Assignments"
+    ticket_list_name = "Closed Assignments"
+
+    def get_ticket_set(self):
+        return get_actual_tickets(Ticket.objects.filter(
+            Q(responders__in=[self.request.user]) | Q(volunteers__in=[self.request.user])).filter(
+            Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            "-created"))
+
+
+class TicketListPublic(TicketList):
+    page_name = "Public Requests"
+    ticket_list_name = "Open Public Requests"
+
+    def get_ticket_set(self):
+        return get_actual_tickets(Ticket.objects.filter(
+            is_public=True).filter(
+            ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            "-created"))
+
+class TicketListPublicClosed(TicketList):
+    page_name = "Pubic Requests"
+    ticket_list_name = "Closed Public Requests"
+
+    def get_ticket_set(self):
+        return get_actual_tickets(Ticket.objects.filter(
+            is_public=True).filter(
+            Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            "-created"))
+
+
+class TicketListUnassigned(TicketList):
+    page_name = "Unassigned Requests"
+    ticket_list_name = "Unassigned Requests"
+
+    def get_ticket_set(self):
+        return get_actual_tickets(Ticket.objects.annotate(
+            volunteer_count=Count('volunteers')).annotate(
+            responder_count=Count('responders')).filter(
+            Q(volunteer_count=0) & Q(responder_count=0)).order_by(
+            "-created"))
+
+
+class TicketListUpcomingDeadline(TicketList):
+    page_name = "Upcoming Deadline Requests"
+    ticket_list_name = "Requests with deadlines in the 30 days"
+
+    def get_ticket_set(self):
+        filter_date = datetime.now() + timedelta(days=30)
+
+        return get_actual_tickets(Ticket.objects.filter(
+            Q(deadline__isnull=False) & Q(deadline__lte=filter_date)).filter(
+            ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            "-created"))
+
 
 class TicketRequest(TemplateView, PodaciMixin):
     template_name = "tickets/request.jinja"
