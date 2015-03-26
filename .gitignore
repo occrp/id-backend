@@ -52,3 +52,4 @@ docs/_build/
 
 # PyBuilder
 target/
+id/.models.py.kate-swp
