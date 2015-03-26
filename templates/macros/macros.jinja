@@ -32,7 +32,7 @@
     {% endif %}
 {% endmacro %}
 
-{% macro render_ticket_table(tickets, pretty_paginator) %}
+{% macro render_ticket_table(tickets, route_name, pretty_paginator) %}
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -84,11 +84,11 @@
                         </td>
                         <td>{{ display_datetime(ticket.deadline) }}</td>
                         <td>
-                            <a class='btn btn-mini' href="{{ url(ticket.ticket_type ~ '_ticket_edit', pk=ticket.id) }}?next={{ url('ticket_list') }}">
+                            <a class='btn btn-mini' href="{{ url(ticket.ticket_type ~ '_ticket_edit', pk=ticket.id) }}">
                                 <i class="icon-pencil"></i>
                             </a>
                         <a href="#AdminSettingsModal" class='btn btn-mini'
-                           data-modal-url="{{ url('ticket_admin_settings', pk=ticket.id) }}">
+                           data-modal-url="{{ url('ticket_admin_settings', pk=ticket.id, redirect=route_name) }}">
                             <i class="icon-cog"></i>
                         </a>
 

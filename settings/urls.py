@@ -86,7 +86,7 @@ urlpatterns = patterns('',
     url(r'^ticket/(?P<ticket_id>[0-9]+)/details/$',
                                             perm('user', ticket.views.TicketDetail), name='ticket_details'),
     
-    url(r'^ticket/manage/(?P<pk>[0-9]+)/settings/$', ticket.views.TicketAdminSettingsHandler.as_view(), name='ticket_admin_settings'),
+    url(r'^ticket/manage/(?P<pk>[0-9]+)/settings/(?P<redirect>[a-z_]+)/$', ticket.views.TicketAdminSettingsHandler.as_view(), name='ticket_admin_settings'),
     url(r'^ticket/manage/(?P<ticket_id>[0-9]+)/edit/$',
                                             perm('user', ticket.views.TicketRequest), name='ticket_edit'),
     
