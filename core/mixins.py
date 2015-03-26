@@ -153,8 +153,6 @@ class PrettyPaginatorMixin(object):
                 if current_page + page_padding < total_pages - 1:
                     obj['page_objects'].insert(len(obj['page_objects'])-1, {'spacer': True})
 
-        print padded_page_start
-        print obj
         return obj
 
     def is_current_page(self, page_num, current_page_num):
