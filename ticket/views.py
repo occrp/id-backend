@@ -132,7 +132,7 @@ class TicketActionCloseHandler(TicketActionBaseHandler):
         return super(TicketActionCloseHandler, self).perform_valid_action(form)
 
 
-class TicketActionJoinHandler(TicketActionBaseHandler):
+class TicketActionJoinHandler(TicketActionBaseHandler, PodaciMixin):
     form_class = forms.TicketEmptyForm
 
     def perform_invalid_action(self, form):
@@ -141,24 +141,33 @@ class TicketActionJoinHandler(TicketActionBaseHandler):
     def perform_valid_action(self, form):
         ticket = self.object
 
-        self.transition_ticket_from_new(ticket)
+        self.podaci_setup()
+        tag = self.fs.get_tag(ticket.tag_id)
 
         if self.request.user.profile.is_staff or self.request.user.profile.is_admin:
             ticket.responders.add(self.request.user)
             self.success_messages = [_('You have successfully been added to the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.profile.display_name + unicode(_(' has joined the ticket')))
+            self.transition_ticket_from_new(ticket)
+
+            tag.add_user(self.request.user, True)
+
             return super(TicketActionJoinHandler, self).perform_valid_action(form)
 
         elif self.request.user.profile.is_volunteer:
             ticket.volunteers.add(self.request.user)
             self.success_messages = [_('You have successfully been added to the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.profile.display_name + unicode(_(' has joined the ticket')))
+            self.transition_ticket_from_new(ticket)
+
+            tag.add_user(self.request.user, True)
+
             return super(TicketActionJoinHandler, self).perform_valid_action(form)
 
         else:
             self.perform_invalid_action(form)
 
-class TicketActionLeaveHandler(TicketActionBaseHandler):
+class TicketActionLeaveHandler(TicketActionBaseHandler, PodaciMixin):
     form_class = forms.TicketEmptyForm
 
     def perform_invalid_action(self, form):
@@ -167,15 +176,24 @@ class TicketActionLeaveHandler(TicketActionBaseHandler):
     def perform_valid_action(self, form):
         ticket = self.object
 
+        self.podaci_setup()
+        tag = self.fs.get_tag(ticket.tag_id)
+
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.profile.display_name + unicode(_(' has left the ticket')))
+
+            tag.remove_user(self.request.user)
+
             return super(TicketActionLeaveHandler, self).perform_valid_action(form)
         elif self.request.user in ticket.volunteers.all():
             self.volunteers.remove(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.profile.display_name + unicode(_(' has left the ticket')))
+
+            tag.remove_user(self.request.user)
+
             return super(TicketActionLeaveHandler, self).perform_valid_action(form)
         else:
             self.force_invalid = True
@@ -199,7 +217,7 @@ class TicketActionOpenHandler(TicketActionBaseHandler):
         return super(TicketActionOpenHandler, self).perform_valid_action(form)
 
 
-class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
+class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
     model = Ticket
     template_name = "modals/form_basic.jinja"
     form_class = forms.TicketAdminSettingsForm
@@ -222,27 +240,34 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
         current_responders = self.convert_users_to_ids(ticket.responders.all())
         current_volunteers = self.convert_users_to_ids(ticket.volunteers.all())
 
+        self.podaci_setup()
+        tag = self.fs.get_tag(ticket.tag_id)
+
         if len(form_responders) > 0 or len(form_volunteers) > 0:
             self.transition_ticket_from_new(ticket)
 
         for i in form_responders:
             if i not in current_responders:
                 u = get_user_model().objects.get(pk=i)
+                tag.add_user(u, True)
                 self.perform_ticket_update(ticket, 'Responder Joined', u.profile.display_name + unicode(_(' has joined the ticket')))
 
         for i in form_volunteers:
             if i not in current_volunteers:
                 u = get_user_model().objects.get(pk=i)
+                tag.add_user(u, True)
                 self.perform_ticket_update(ticket, 'Responder Joined', u.profile.display_name + unicode(_(' has joined the ticket')))
 
         for i in current_responders:
             if i not in form_responders:
                 u = get_user_model().objects.get(pk=i)
+                tag.remove_user(u)
                 self.perform_ticket_update(ticket, 'Responder Left', u.profile.display_name + unicode(_(' has left the ticket')))
 
         for i in current_volunteers:
             if i not in form_volunteers:
                 u = get_user_model().objects.get(pk=i)
+                tag.remove_user(u)
                 self.perform_ticket_update(ticket, 'Responder Left', u.profile.display_name + unicode(_(' has left the ticket')))
 
         return super(TicketAdminSettingsHandler, self).form_valid(form)
