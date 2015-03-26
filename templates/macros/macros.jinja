@@ -59,7 +59,7 @@
 
               {% elif ticket.status == 'in-progress' %}
 
-                    {% if ticket.responders|length > 0 %}
+                    {% if ticket.actors(false)|length > 0 %}
                         Assigned to
 
                         {% for actor in ticket.actors(false) %}
