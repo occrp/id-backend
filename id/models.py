@@ -245,16 +245,6 @@ class Profile(AbstractBaseUser, PermissionsMixin):
         # editable_fields = ('first_name', 'last_name') + tuple(x for x in fields if x not in ('display_name',))
 
 
-#from django.db.models.signals import post_save
-
-#def profile_create(sender, instance, created, **kwargs):
-#    if created:
-#        profile = Profile(user=instance)
-#        profile.save()
-
-#post_save.connect(profile_create, sender=AUTH_USER_MODEL)
-
-
 ######## External databases ############
 class ExternalDatabase(models.Model, DisplayMixin):
     agency = models.CharField(max_length=500, blank=False, verbose_name=_('Agency / Name'))
