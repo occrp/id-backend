@@ -3,7 +3,7 @@ from django.views.generic import *
 from django.contrib.auth.decorators import login_required
 #from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
-from settings.settings import LANGUAGES, AUTH_USER_MODEL
+from settings.settings import LANGUAGES
 from registration.signals import user_registered
 
 from id.models import Profile, AccountRequest
@@ -61,7 +61,7 @@ class ProfileUpdate(UpdateView):
         return ctx
 
 class UserList(ListView):
-    model = AUTH_USER_MODEL
+    model = get_user_model()
     paginate_by = 50
     template_name = 'auth/user_list.jinja'
 
