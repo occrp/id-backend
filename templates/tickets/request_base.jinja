@@ -6,38 +6,71 @@
     <div class="span3">
         <div class="well sidebar-nav">
             <ul class="nav nav-list">
-                <li class="nav-header">{% trans %}Requests{% endtrans %}</li>
+
+                <li class="nav-header">{% trans %}My Requests{% endtrans %}</li>
+                
                 <li class='{% if 'ticket_list' in ROUTE_NAME %}active{% endif %}'>
-                    <a href="{{ url('ticket_list') }}"><i class="icon-folder-open-alt"></i> {% trans %}My Requests{% endtrans %}</a>
+                    <a href="{{ url('ticket_list') }}"><i class="icon-folder-open-alt"></i> {% trans %}Open{% endtrans %}</a>
                 </li>
-		{% if user.profile.is_staff or user.profile.is_volunteer or user.profile.is_admin %}
-                <li class='{% if 'public_list' in ROUTE_NAME %}active{% endif %}'>
-                    <a href="{{ url('public_list') }}"><i class="icon-dropbox"></i> {% trans %}Public Requests{% endtrans %}</a>
+
+                <li class='{% if 'ticket_closed_list' in ROUTE_NAME %}active{% endif %}'>
+                    <a href="{{ url('ticket_closed_list') }}"><i class="icon-folder-close-alt"></i> {% trans %}Closed{% endtrans %}</a>
                 </li>
-		{% endif %}
-                {% if user.profile.is_staff or user.profile.is_volunteer %}
-                <li class='{% if 'response_list' in ROUTE_NAME %}active{% endif %}'>
-                    <a href="{{ url('response_list') }}"><i class="icon-inbox"></i> {% trans %}Assigned Requests{% endtrans %}</a>
-                </li>
+
+                {% if user.profile.is_staff or user.profile.is_volunteer or user.profile.is_admin %}
+                    
+                    <li class="nav-header">{% trans %}My Assignments{% endtrans %}</li>
+
+                    <li class='{% if 'ticket_assigned_list' in ROUTE_NAME %}active{% endif %}'>
+                        <a href="{{ url('ticket_assigned_list') }}"><i class="icon-folder-open-alt"></i> {% trans %}Open{% endtrans %}</a>
+                    </li>
+
+                    <li class='{% if 'ticket_assigned_closed_list' in ROUTE_NAME %}active{% endif %}'>
+                        <a href="{{ url('ticket_assigned_closed_list') }}"><i class="icon-folder-close-alt"></i> {% trans %}Closed{% endtrans %}</a>
+                    </li>
+
+                    <li class="nav-header">{% trans %}Public Requests{% endtrans %}</li>
+
+                    <li class='{% if 'ticket_public_list' in ROUTE_NAME %}active{% endif %}'>
+                        <a href="{{ url('ticket_public_list') }}"><i class="icon-folder-open-alt"></i> {% trans %}Open{% endtrans %}</a>
+                    </li>
+
+                    <li class='{% if 'ticket_public_closed_list' in ROUTE_NAME %}active{% endif %}'>
+                        <a href="{{ url('ticket_public_closed_list') }}"><i class="icon-folder-close-alt"></i> {% trans %}Closed{% endtrans %}</a>
+                    </li>                                        
+
                 {% endif %}
+
                 {% if user.profile.is_admin %}
+
                     <li class="nav-header">{% trans %}Manage{% endtrans %}</li>
-                    <li class='{% if 'ticket_admin_unassigned' in ROUTE_NAME %}active{% endif %}'>
-                        <a href="{{ url('ticket_admin_unassigned') }}"><i class="icon-circle-blank"></i> {% trans %}Unassigned Tickets{% endtrans %}</a>
+
+                    <li class='{% if 'ticket_unassigned_list' in ROUTE_NAME %}active{% endif %}'>
+                        <a href="{{ url('ticket_unassigned_list') }}"><i class="icon-circle-blank"></i> {% trans %}Unassigned Tickets{% endtrans %}</a>
                     </li>
-                    <li class='{% if 'ticket_admin_deadline' in ROUTE_NAME %}active{% endif %}'>
-                        <a href="{{ url('ticket_admin_deadline') }}"><i class="icon-calendar"></i> {% trans %}Upcoming Deadlines{% endtrans %}</a>
+
+                    <li class='{% if 'ticket_deadline_list' in ROUTE_NAME %}active{% endif %}'>
+                        <a href="{{ url('ticket_deadline_list') }}"><i class="icon-calendar"></i> {% trans %}Upcoming Deadlines{% endtrans %}</a>
                     </li>
-                    <li class='{% if 'ticket_admin_flagged' in ROUTE_NAME %}active{% endif %}'>
-                        <a href="{{ url('ticket_admin_flagged') }}"><i class="icon-flag"></i> {% trans %}Flagged Tickets{% endtrans %}</a>
-                    </li>
+
                     <li class='{% if 'ticket_admin_history' in ROUTE_NAME %}active{% endif %}'>
                         <a href="{{ url('ticket_admin_history') }}"><i class="icon-bookmark-empty"></i> {% trans %}Closed Tickets{% endtrans %}</a>
                     </li>
+
+                    <li class='{% if 'ticket_all_list' in ROUTE_NAME %}active{% endif %}'>
+                        <a href="{{ url('ticket_all_list') }}"><i class="icon-folder-open-alt"></i> {% trans %}All Open Requests{% endtrans %}</a>
+                    </li>
+
+                    <li class='{% if 'ticket_all_closed_list' in ROUTE_NAME %}active{% endif %}'>
+                        <a href="{{ url('ticket_all_closed_list') }}"><i class="icon-folder-close-alt"></i> {% trans %}All Closed Requests{% endtrans %}</a>
+                    </li>
+
                     <li class="nav-header">{% trans %}Billing{% endtrans %}</li>
+                    
                     <li class='{% if 'ticket_admin_customer_charges' in ROUTE_NAME %}active{% endif %}'>
                         <a href="{{ url('ticket_admin_customer_charges') }}"><i class="icon-user"></i> {% trans %}Customer Report{% endtrans %}</a>
                     </li>
+                    
                     <li class='{% if 'ticket_admin_outstanding_charges' in ROUTE_NAME %}active{% endif %}'>
                         <a href="{{ url('ticket_admin_outstanding_charges') }}"><i class="icon-ticket"></i> {% trans %}Outstanding Charges{% endtrans %}</a>
                     </li>
