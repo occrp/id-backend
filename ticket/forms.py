@@ -180,7 +180,7 @@ class TicketAdminSettingsForm(forms.ModelForm):
 
     class Meta:
         model = models.Ticket
-        fields = ['responders', 'volunteers', 'requester_type', 'flagged', 'findings_visible', 'is_for_profit', 'is_public']
+        fields = ['responders', 'volunteers', 'requester_type', 'findings_visible', 'is_for_profit', 'is_public']
         widgets = {
             'requester_type': forms.RadioSelect()
         }
