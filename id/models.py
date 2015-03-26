@@ -1,9 +1,10 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from id.mixins import *
 from id.constdata import *
 from settings.settings import LANGUAGES, AUTH_USER_MODEL
+from django.utils import timezone
 
 class Network(models.Model):
     short_name = models.CharField(max_length=50)
@@ -17,15 +18,40 @@ class Network(models.Model):
 
 ######## User profiles #################
 
+# managing the profiles
+class ProfileManager(BaseUserManager):
+    use_in_migrations = True
+
+    def _create_user(self, email, password, is_staff, is_superuser, **extra_fields):
+        """
+        Creates and saves a User with the given email and password.
+        """
+        now = timezone.now()
+        if not email:
+            raise ValueError('The email field has to be set.')
+        email = self.normalize_email(email)
+        user = self.model(email=email, is_staff=is_staff, is_active=True,
+                          is_superuser=is_superuser, date_joined=now, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, email, password=None, **extra_fields):
+        return self._create_user(email, password, False, False,
+                                 **extra_fields)
+
+    def create_superuser(self, email, password, **extra_fields):
+        print(email)
+        return self._create_user(email, password, True, True,
+                                 **extra_fields)
+      
+
 # TODO: this is SOOO temporary
 # as per http://stackoverflow.com/questions/20415627/how-to-properly-extend-django-user-model
-class Profile(AbstractUser):
+class Profile(AbstractBaseUser, PermissionsMixin):
     # TODO: remove, just a debug kludge
     def yeah_we_re_using_profile(self):
         print('Yes, indeed we are using Profile! AUTH_USER_MODEL is: %s' % AUTH_USER_MODEL)
-  
-    # TODO: this should not be required at all?
-    #user = models.OneToOneField(AUTH_USER_MODEL)
     
     # TODO: temporary kludge!
     @property
@@ -36,12 +62,14 @@ class Profile(AbstractUser):
     def profile(self):
         return self
 
+    email = models.EmailField(_('E-mail Address'), max_length=254, unique=True, blank=False)
+
     user_created = models.DateTimeField(auto_now_add=True)
     profile_updated = models.DateTimeField(auto_now=True)
     last_seen = models.DateTimeField(auto_now=True)
 
-    #first_name = models.CharField(max_length=60, verbose_name=_("First Name")) # clash!
-    #last_name = models.CharField(max_length=60, verbose_name=_("Last Name")) # clash!
+    first_name = models.CharField(max_length=60, verbose_name=_("First Name"))
+    last_name = models.CharField(max_length=60, verbose_name=_("Last Name"))
     abbr = models.CharField(max_length=8, blank=True, null=True, unique=True, verbose_name=_("Initials"))
     admin_notes = models.TextField(blank=True, verbose_name=_("Admin Notes"))
     locale = models.CharField(blank=True, max_length=10, choices=LANGUAGES)
@@ -54,10 +82,13 @@ class Profile(AbstractUser):
                                    verbose_name=_('For-Profit?'))
 
     is_user = models.BooleanField(default=False)
-    #is_staff = models.BooleanField(default=False) # clash!
+    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=True)
     is_volunteer = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False) # TODO: PermissionMixin has is_superuser field, use that instead!
+    is_active   = models.BooleanField(default=True)
     old_google_id = models.CharField(blank=True, max_length=100)
+    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
     network = models.ForeignKey(Network, null=True, blank=True)
     phone_number = models.CharField(blank=True, max_length=22)
@@ -84,6 +115,22 @@ class Profile(AbstractUser):
     databases = models.TextField(blank=True)
     conflicts = models.TextField(blank=True)
 
+    # Django auth module settings
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+    
+    # object manager
+    objects = ProfileManager()
+    
+    def get_full_name(self):
+        return self.display_name()
+
+    def get_short_name(self):
+        return self.first_name
+
+    def email_user(self, subject, message, from_email=None, **kwargs):
+        send_mail(subject, message, from_email, [self.email], **kwargs)
+    
 
     def can_write_to(self, obj):
         '''
@@ -117,7 +164,7 @@ class Profile(AbstractUser):
     def display_name(self):
         if self.first_name or self.last_name:
             return " ".join((self.first_name, self.last_name)).title()
-        return self.user.email or self.user.username or ''
+        return self.user.email or ''
 
     @property
     def is_approved(self):
@@ -180,7 +227,10 @@ class Profile(AbstractUser):
                      'for our work)')
 
     class Meta:
-        pass
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
+        abstract = False
+        swappable = 'AUTH_USER_MODEL'
         #index_name = "userprofile_staff"
         #index_name_all = "userprofile_all"
         #search_fields = ['name', 'email', 'full_name']
@@ -195,14 +245,14 @@ class Profile(AbstractUser):
         # editable_fields = ('first_name', 'last_name') + tuple(x for x in fields if x not in ('display_name',))
 
 
-from django.db.models.signals import post_save
+#from django.db.models.signals import post_save
 
-def profile_create(sender, instance, created, **kwargs):
-    if created:
-        profile = Profile(user=instance)
-        profile.save()
+#def profile_create(sender, instance, created, **kwargs):
+#    if created:
+#        profile = Profile(user=instance)
+#        profile.save()
 
-post_save.connect(profile_create, sender=AUTH_USER_MODEL)
+#post_save.connect(profile_create, sender=AUTH_USER_MODEL)
 
 
 ######## External databases ############
