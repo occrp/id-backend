@@ -59,16 +59,8 @@ class Profile(AbstractBaseUser, PermissionsMixin):
     @property
     def profile(self):
         return self
-      
-    # TODO: temporary kludge!
-    """@property
-    def is_admin(self):
-        return self.is_superuser
-    # TODO: temporary kludge!
-    @is_admin.setter
-    def is_admin(self, value):
-        self.is_superuser = value"""
-
+    
+    
     email = models.EmailField(_('E-mail Address'), max_length=254, unique=True, blank=False)
 
     user_created = models.DateTimeField(auto_now_add=True)
