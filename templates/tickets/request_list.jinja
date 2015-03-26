@@ -12,7 +12,7 @@
 
     {% if tickets %}
         <h4>{% trans %}{{ ticket_list_name }}{% endtrans %}</h4>
-    {{ macros.render_ticket_table(tickets, paginator_object) }}
+    {{ macros.render_ticket_table(tickets, ROUTE_NAME, paginator_object) }}
 
     {% else %}
         <div class="alert alert-block alert-warning">

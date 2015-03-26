@@ -177,6 +177,7 @@ class OtherTicketForm(TicketForm):
 class TicketAdminSettingsForm(forms.ModelForm):
     responders = Select2MultipleChoiceField(label=_("Staff Responders"), required=False)
     volunteers = Select2MultipleChoiceField(label=_("Volunteer Responders"), required=False)
+    redirect = forms.CharField(required=False, initial="default", widget=forms.HiddenInput)
 
     class Meta:
         model = models.Ticket
