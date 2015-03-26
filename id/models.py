@@ -49,19 +49,25 @@ class ProfileManager(BaseUserManager):
 # TODO: this is SOOO temporary
 # as per http://stackoverflow.com/questions/20415627/how-to-properly-extend-django-user-model
 class Profile(AbstractBaseUser, PermissionsMixin):
-    # TODO: remove, just a debug kludge
-    def yeah_we_re_using_profile(self):
-        print('Yes, indeed we are using Profile! AUTH_USER_MODEL is: %s' % AUTH_USER_MODEL)
     
     # TODO: temporary kludge!
     @property
     def user(self):
         return self
-      
+        
     # TODO: temporary kludge!
     @property
     def profile(self):
         return self
+      
+    # TODO: temporary kludge!
+    """@property
+    def is_admin(self):
+        return self.is_superuser
+    # TODO: temporary kludge!
+    @is_admin.setter
+    def is_admin(self, value):
+        self.is_superuser = value"""
 
     email = models.EmailField(_('E-mail Address'), max_length=254, unique=True, blank=False)
 
@@ -69,13 +75,13 @@ class Profile(AbstractBaseUser, PermissionsMixin):
     profile_updated = models.DateTimeField(auto_now=True)
     last_seen = models.DateTimeField(auto_now=True)
 
-    first_name = models.CharField(max_length=60, verbose_name=_("First Name"))
-    last_name = models.CharField(max_length=60, verbose_name=_("Last Name"))
+    first_name = models.CharField(max_length=64, verbose_name=_("First Name"))
+    last_name = models.CharField(max_length=64, verbose_name=_("Last Name"))
     abbr = models.CharField(max_length=8, blank=True, null=True, unique=True, verbose_name=_("Initials"))
     admin_notes = models.TextField(blank=True, verbose_name=_("Admin Notes"))
-    locale = models.CharField(blank=True, max_length=10, choices=LANGUAGES)
+    locale = models.CharField(blank=True, max_length=16, choices=LANGUAGES)
 
-    requester_type = models.CharField(blank=True, max_length=10, choices=REQUESTER_TYPES,
+    requester_type = models.CharField(blank=True, max_length=16, choices=REQUESTER_TYPES,
                                       verbose_name=_('Requester Type'))
     findings_visible = models.BooleanField(default=False,
                                       verbose_name=_('Findings Public'))
@@ -89,24 +95,24 @@ class Profile(AbstractBaseUser, PermissionsMixin):
     is_admin = models.BooleanField(default=False) # TODO: PermissionMixin has is_superuser field, use that instead!
     is_active   = models.BooleanField(default=True)
     old_google_id = models.CharField(blank=True, max_length=100)
-    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    date_joined = models.DateTimeField(_('Date Joined'), default=timezone.now)
 
     network = models.ForeignKey(Network, null=True, blank=True)
-    phone_number = models.CharField(blank=True, max_length=22)
-    organization_membership = models.CharField(blank=True, max_length=20)
-    notes = models.TextField(blank=True, )
-    address = models.CharField(blank=True, max_length=50)
-    city = models.CharField(blank=True, max_length=50)
-    province = models.CharField(blank=True, max_length=50)
-    postal_code = models.CharField(blank=True, max_length=20)
-    country = models.CharField(blank=True, max_length=20, choices=COUNTRIES)
+    phone_number = models.CharField(blank=True, max_length=24)
+    organization_membership = models.CharField(blank=True, max_length=64)
+    notes = models.TextField(blank=True)
+    address = models.CharField(blank=True, max_length=128)
+    city = models.CharField(blank=True, max_length=64)
+    province = models.CharField(blank=True, max_length=64)
+    postal_code = models.CharField(blank=True, max_length=24)
+    country = models.CharField(blank=True, max_length=32, choices=COUNTRIES)
 
     # Requester fields
-    industry = models.CharField(blank=True, max_length=20, choices=INDUSTRY_TYPES)
-    industry_other = models.CharField(blank=True, max_length=50)
-    media = models.CharField(blank=True, max_length=50, choices=MEDIA_TYPES)
-    circulation = models.CharField(blank=True, max_length=50, choices=CIRCULATION_TYPES)
-    title = models.CharField(blank=True, max_length=50)
+    industry = models.CharField(blank=True, max_length=32, choices=INDUSTRY_TYPES)
+    industry_other = models.CharField(blank=True, max_length=96)
+    media = models.CharField(blank=True, max_length=64, choices=MEDIA_TYPES)
+    circulation = models.CharField(blank=True, max_length=64, choices=CIRCULATION_TYPES)
+    title = models.CharField(blank=True, max_length=96) # because 'Controleur des finances publiques / lutte contre la frise fiscale'...
 
     # Volunteer fields
     interests = models.TextField(blank=True)
@@ -170,7 +176,7 @@ class Profile(AbstractBaseUser, PermissionsMixin):
     @property
     def is_approved(self):
         return any((
-            self.is_user, self.is_staff, self.is_volunteer, self.is_admin
+            self.is_user, self.is_staff, self.is_volunteer, self.is_superuser
             ))
 
     def get_account_request(self):
@@ -198,7 +204,7 @@ class Profile(AbstractBaseUser, PermissionsMixin):
             unindex(self.key, self.Meta.index_name)
 
         # Maintain an alternate index for all users.
-        if self.is_staff or self.is_admin or self.is_user:
+        if self.is_staff or self.is_superuser or self.is_user:
             index(self, only=self.Meta.search_fields,
                   index=self.Meta.index_name_all)
         else:
@@ -237,7 +243,7 @@ class Profile(AbstractBaseUser, PermissionsMixin):
         #search_fields = ['name', 'email', 'full_name']
         #fields = (('email', 'display_name', 'admin_notes',
         #          'requester_type', 'findings_visible', 'is_for_profit',
-        #          'is_admin', 'is_staff', 'is_volunteer', 'is_user'
+        #          'is_superuser', 'is_staff', 'is_volunteer', 'is_user'
         #         ) +
         #         AddressMixin.Meta.fields +
         #         UserDetailsGenericMixin.Meta.fields +
@@ -401,7 +407,7 @@ class AccountRequest(models.Model, DisplayMixin, AddressMixin, UserDetailsGeneri
             template='mail/account_request/received.jinja',
             context={'request': self}
         )
-        for admin in UserProfile.query(UserProfile.is_admin == True).fetch():
+        for admin in UserProfile.query(UserProfile.is_superuser == True).fetch():
             with templocale(admin.locale or 'en'):
                 email_notification(
                     to=admin.email,
