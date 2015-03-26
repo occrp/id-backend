@@ -36,7 +36,6 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
                                         verbose_name=_('For-Profit?'))
     is_public = models.BooleanField(default=False,
                                     verbose_name=_('Public?'))
-    flagged = models.BooleanField(default=False)
     user_pays = models.BooleanField(default=True)
     deadline = models.DateField(null=True, blank=True, verbose_name=_('Deadline'))
     sensitive = models.BooleanField(default=False, verbose_name=_('Sensitive?'))
