@@ -221,6 +221,7 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
     model = Ticket
     template_name = "modals/form_basic.jinja"
     form_class = forms.TicketAdminSettingsForm
+    redirect = "ticket_list"
     """
     Administrator edits a ticket's properties (re-assignment, closing, etc)
     """
@@ -230,7 +231,7 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
 
     def form_invalid(self, form):
         messages.error(self.request, _('There was an error updating the ticket.'))
-        return HttpResponseRedirect(reverse('ticket_list'))
+        return HttpResponseRedirect(reverse(self.redirect))
 
     def form_valid(self, form):
         ticket = self.object
@@ -242,6 +243,9 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
 
         self.podaci_setup()
         tag = self.fs.get_tag(ticket.tag_id)
+
+        if 'redirect' in self.request.POST:
+            self.redirect = self.request.POST['redirect']
 
         if len(form_responders) > 0 or len(form_volunteers) > 0:
             self.transition_ticket_from_new(ticket)
@@ -272,8 +276,9 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
 
         return super(TicketAdminSettingsHandler, self).form_valid(form)
 
-    def get(self, request, pk, status='success'):
+    def get(self, request, pk, redirect, status='success'):
         super(TicketAdminSettingsHandler, self).get(self, request)
+        self.redirect = redirect
 
         t = render_to_string('modals/form_basic.jinja', self.get_context_data())
         return JsonResponse({'status': status, 'html': t})
@@ -281,12 +286,13 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
     def get_context_data(self, **kwargs):
         context = super(TicketAdminSettingsHandler, self).get_context_data(**kwargs)
         context['csrf'] = get_token(self.request)
-        context['form_action'] = reverse_lazy('ticket_admin_settings', kwargs={'pk': self.object.id})
+        context['form_action'] = reverse_lazy('ticket_admin_settings', kwargs={'pk': self.object.id, 'redirect': self.redirect})
         context['form'] = self.get_form(self.form_class)
+        context['form'].fields['redirect'].initial = self.redirect
         return context
 
     def get_success_url(self):
-        return reverse_lazy('ticket_list')
+        return reverse_lazy(self.redirect)
 
 
 class TicketUpdateRemoveHandler(TicketActionBaseHandler):
