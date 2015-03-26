@@ -27,6 +27,7 @@ class TicketAjaxResponseMixin(object):
             return response
 
 class TicketUpdateMixin(object):
+    redirect = "default"
 
     def form_valid(self, form, form_messages=None):
         if form_messages is None:
@@ -42,7 +43,11 @@ class TicketUpdateMixin(object):
 
     def get_success_url(self):
         ticket = self.get_object()
-        return reverse_lazy('ticket_details', kwargs={'ticket_id': ticket.id})
+
+        if self.redirect == "default":
+            return reverse_lazy('ticket_details', kwargs={'ticket_id': ticket.id})
+        else:
+            return reverse_lazy(self.redirect)
 
     def perform_ticket_update(self, ticket, update_type, comment):
         ticket_update = TicketUpdate(ticket=ticket)
