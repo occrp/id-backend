@@ -59,6 +59,7 @@ class Profile(AbstractBaseUser, PermissionsMixin):
         return self
       
     # TODO: temporary kludge!
+    @property
     def profile(self):
         return self
 

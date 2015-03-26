@@ -19,10 +19,10 @@ VOLUME /data
 
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y \
     mysql-client libmysqlclient-dev \
-    postgresql-client libpq-dev \
-    sqlite3 \
     gcc \
     --no-install-recommends && rm -rf /var/lib/apt/lists/*
+    #postgresql-client libpq-dev \
+    #sqlite3 \
 
 EXPOSE 8000
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
