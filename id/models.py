@@ -66,8 +66,6 @@ class Profile(AbstractBaseUser, PermissionsMixin):
                                       verbose_name=_('Requester Type'))
     findings_visible = models.BooleanField(default=False,
                                       verbose_name=_('Findings Public'))
-    is_for_profit = models.BooleanField(default=False,
-                                   verbose_name=_('For-Profit?'))
 
     is_user = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
@@ -139,7 +137,8 @@ class Profile(AbstractBaseUser, PermissionsMixin):
 
     def groups_display(self):
         return ', '.join(x.capitalize() for x in ['user', 'staff', 'volunteer', 'admin'] if getattr(self, 'is_%s' % x))
-
+    
+    
     @property
     def num_requests(self):
         # XXX beware, this is expensive!
@@ -222,7 +221,7 @@ class Profile(AbstractBaseUser, PermissionsMixin):
         #index_name_all = "userprofile_all"
         #search_fields = ['name', 'email', 'full_name']
         #fields = (('email', 'display_name', 'admin_notes',
-        #          'requester_type', 'findings_visible', 'is_for_profit',
+        #          'requester_type', 'findings_visible'
         #          'is_superuser', 'is_staff', 'is_volunteer', 'is_user'
         #         ) +
         #         AddressMixin.Meta.fields +
