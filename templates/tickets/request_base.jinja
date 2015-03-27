@@ -53,10 +53,6 @@
                         <a href="{{ url('ticket_deadline_list') }}"><i class="icon-calendar"></i> {% trans %}Upcoming Deadlines{% endtrans %}</a>
                     </li>
 
-                    <li class='{% if 'ticket_admin_history' in ROUTE_NAME %}active{% endif %}'>
-                        <a href="{{ url('ticket_admin_history') }}"><i class="icon-bookmark-empty"></i> {% trans %}Closed Tickets{% endtrans %}</a>
-                    </li>
-
                     <li class='{% if 'ticket_all_list' in ROUTE_NAME %}active{% endif %}'>
                         <a href="{{ url('ticket_all_list') }}"><i class="icon-folder-open-alt"></i> {% trans %}All Open Requests{% endtrans %}</a>
                     </li>
