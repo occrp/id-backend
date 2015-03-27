@@ -8,7 +8,7 @@
     <ul class="nav nav-tabs" role="tablist">
         <li role="profile" class="active"><a href="#basics" aria-controls="basics" role="tab" data-toggle="tab">{% trans %}Basics{% endtrans %}</a></li>
         <li role="profile"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">{% trans %}Details{% endtrans %}</a></li>
-        {% if userg.is_superuser %}
+        {% if user.profile.is_superuser %}
         <li role="profile"><a href="#permissions" aria-controls="permissions" role="tab" data-toggle="tab">{% trans %}Permissions{% endtrans %}</a></li>
         {% endif %}
     </ul>
@@ -20,7 +20,7 @@
         <div role="tabpanel" class="tab-pane" id="details">
             {{ form_macros.render_form_fragment(form_details) }}
         </div>
-        {% if userg.is_superuser %}
+        {% if user.profile.is_superuser %}
         <div role="tabpanel" class="tab-pane" id="permissions">
             {{ form_macros.render_form_fragment(form_admin) }}
         </div>
