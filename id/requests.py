@@ -128,7 +128,7 @@ class RequestDetailsHandler(TemplateView):
             return self.abort(404)
 
         if not self.ticket.is_public and not (
-            request.user.profile.is_admin or
+            request.user.profile.is_superuser or
             request.user == self.ticket.requester or
             request.user in self.ticket.responders.objects.all() or
             request.user in self.ticket.volunteers.objects.all()):
@@ -251,7 +251,7 @@ class RequestCloseHandler(RequestDetailsActionHandler):
 
     def user_can(self, ticket):
         # volunteers cannot close tickets.
-        return self.profile.is_admin or profile_in(
+        return self.profile.is_superuser or profile_in(
             self.profile, [ticket.requester, ticket.responders])
 
     def form_valid(self, ticket, form):
@@ -267,7 +267,7 @@ class RequestCancelHandler(RequestDetailsActionHandler):
 
     def user_can(self, ticket):
         # responders cannot.
-        return self.profile.is_admin or profile_in(self.profile, [ticket.requester, ])
+        return self.profile.is_superuser or profile_in(self.profile, [ticket.requester, ])
 
     def form_valid(self, ticket, form):
         ticket.status = models.get_choice('Cancelled', models.TICKET_STATUS)
@@ -309,7 +309,7 @@ class RequestPaidHandler(RequestDetailsActionHandler):
     form_class = forms.TicketPaidForm
 
     def user_can(self, ticket):
-        return self.profile.is_admin or profile_in(self.profile, [ticket.responders])
+        return self.profile.is_superuser or profile_in(self.profile, [ticket.responders])
 
     def form_valid(self, ticket, form):
         # mark all charges related to the ticket as being paid
@@ -332,7 +332,7 @@ class RequestAddChargeHandler(RequestDetailsActionHandler):
     form_class = forms.RequestChargeForm
 
     def user_can(self, ticket):
-        return self.profile.is_admin or profile_in(self.profile, [ticket.responders])
+        return self.profile.is_superuser or profile_in(self.profile, [ticket.responders])
 
     def form_valid(self, ticket, form):
         charge = models.TicketCharge(
@@ -363,7 +363,7 @@ class RequestReopenHandler(RequestDetailsActionHandler):
     form_class = forms.TicketCancelForm
 
     def user_can(self, ticket):
-        return self.profile.is_admin or profile_in(
+        return self.profile.is_superuser or profile_in(
             self.profile, [ticket.requester, ticket.responders])
 
     def form_valid(self, ticket, form):

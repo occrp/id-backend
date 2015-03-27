@@ -173,7 +173,7 @@ class OtherTicketForm(TicketForm):
 
 
 # class MultiResponderChoices(Select2MultipleChoiceField):
-#     choices = get_user_model().objects.all().filter(Q(profile__is_admin=1) | Q(profile__is_staff=1))
+#     choices = get_user_model().objects.all().filter(Q(profile__is_superuser=1) | Q(profile__is_staff=1))
 
 class TicketAdminSettingsForm(forms.ModelForm):
     responders = Select2MultipleChoiceField(label=_("Staff Responders"), required=False)
@@ -191,7 +191,7 @@ class TicketAdminSettingsForm(forms.ModelForm):
 
         super(TicketAdminSettingsForm, self).__init__(*args, **kwargs)
         self.fields['responders'].choices = core.utils.convert_group_to_select2field_choices(
-                                                get_user_model().objects.all().filter(Q(profile__is_admin=1) | Q(profile__is_staff=1)))
+                                                get_user_model().objects.all().filter(Q(profile__is_superuser=1) | Q(profile__is_staff=1)))
         self.fields['volunteers'].choices = core.utils.convert_group_to_select2field_choices(
                                                 get_user_model().objects.all().filter(Q(profile__is_volunteer=1)))
         self.fields['requester_type'].widget.attrs.update({'choices': constants.REQUESTER_TYPES})

@@ -33,7 +33,7 @@
                     <tr>
                         <td>
                             <div class="result">
-                                {% if is_admin %}
+                                {% if is_superuser %}
                                     <div class="pull-right">
                                         <a class="fade-content" href="{{ uri_for("%s_edit" % entity.key.kind().lower(), obj_id=entity.key.id()) }}">
                                             <i class="icon-pencil"></i>

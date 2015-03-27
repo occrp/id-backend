@@ -23,7 +23,7 @@
     {% if action == 'edit' %}
         {% if instance and instance.drive_folder_id %}
             <h2>
-                {% if is_staff or is_admin %}
+                {% if is_staff or is_superuser %}
                     <a href="#sharing-modal" class="pull-right btn" data-modal-url="{{ uri_for('share_files', entity_id=instance.key.urlsafe() ) }}">
                         <i class="icon-group"></i>
                         {% trans %}Sharing{% endtrans %}

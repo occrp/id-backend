@@ -45,7 +45,7 @@
                     <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
                         <a href="{{ url('ticket_list') }}"><i class="icon-comments-alt"></i> {% trans %}Expert Help{% endtrans %}</a>
                     </li>
-                        {% if user.profile.is_staff or user.profile.is_admin %}
+                        {% if user.profile.is_staff or user.profile.is_superuser %}
                         <li class="{% if url('podaci_info_home') in request.path %}active{% endif %}">
                             <a href="{{ url('podaci_info_home') }}"><i class="icon-file"></i> {% trans %}Files{% endtrans %}</a>
                         </li>
@@ -66,7 +66,7 @@
                             <li  class="{% if url('profile') in request.path %}active{% endif %}">
                                 <a href="{{ url('profile') }}">{% trans %}Profile{% endtrans %}</a>
                             </li>
-                            {% if user.profile.is_staff or user.profile.is_admin %}
+                            {% if user.profile.is_staff or user.profile.is_superuser %}
                             <li  class="{% if url('admin_panel') in request.path %}active{% endif %}">
                                 <a href="{{ url('admin_panel') }}">{% trans %}Admin{% endtrans %}</a>
                             </li>
