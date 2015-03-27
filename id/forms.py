@@ -88,8 +88,7 @@ class ProfileDetailsForm(forms.ModelForm):
 class ProfileAdminForm(forms.ModelForm):
     class Meta:
         model = models.Profile
-        fields = ("findings_visible", "is_for_profit", 
-                  "is_user", "is_staff", "is_volunteer", "is_superuser")
+        fields = ("findings_visible", "is_user", "is_staff", "is_volunteer", "is_superuser")
 
 
 class ScraperRequestForm(forms.ModelForm):
