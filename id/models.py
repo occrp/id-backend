@@ -45,21 +45,10 @@ class ProfileManager(BaseUserManager):
         return self._create_user(email, password, True, True,
                                  **extra_fields)
       
-
-# TODO: this is SOOO temporary
+# our own User model replacement
 # as per http://stackoverflow.com/questions/20415627/how-to-properly-extend-django-user-model
+#
 class Profile(AbstractBaseUser, PermissionsMixin):
-    
-    # TODO: temporary kludge!
-    @property
-    def user(self):
-        return self
-        
-    # TODO: temporary kludge!
-    @property
-    def profile(self):
-        return self
-    
     
     email = models.EmailField(_('E-mail Address'), max_length=254, unique=True, blank=False)
 
