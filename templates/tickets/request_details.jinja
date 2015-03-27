@@ -74,7 +74,7 @@
                     </a>
                     <button class="btn dropdown-toggle" data-toggle='dropdown'><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    {% if is_admin or not is_staff or ticket.requester == user %}
+                    {% if is_superuser or not is_staff or ticket.requester == user %}
                     <li>
                         <a href="{{ url(ticket.ticket_type ~ '_ticket_edit', pk=ticket.id) }}" role="button">
                             <i class="icon-pencil"></i> {% trans %}Edit Request{% endtrans %}
@@ -86,14 +86,14 @@
                         </a>
                     </li>
                     {% endif %}
-                    {% if is_admin or is_staff %}
+                    {% if is_superuser or is_staff %}
                     <li>
                         <a href="#ChargeForm" data-toggle='modal' role='button'>
                             <i class="icon-money"></i> {% trans %}Add Charge{% endtrans %}
                         </a>
                     </li>
 
-		    {% if is_admin %}
+		    {% if is_superuser %}
                     <li>
 		                            <a href="{{ url('request_delete', ticket_id=ticket.id) }}" role="button">
                             <i class="icon-minus-sign"></i> {% trans %}Delete Request{% endtrans %}
@@ -101,14 +101,14 @@
                     </li>
                     {% endif %}
 
-                    {% if is_admin %}
+                    {% if is_superuser %}
                     <li>
                         <a href="#MarkPaidForm" data-toggle='modal' role='button'>
                             <i class="icon-check"></i> {% trans %}Mark Bill Paid{% endtrans %}
                         </a>
                     </li>
                     {% endif %}
-                    {% if is_admin  %}
+                    {% if is_superuser  %}
                     <li>
                         <a href="{{ url('ticket_edit', ticket_id=ticket.id) }}?next={{ request.path_qs }}" role='button'>
                             <i class="icon-pencil"></i> {% trans %}Edit Information{% endtrans %}
@@ -122,7 +122,7 @@
                     </li>
                     {% endif %}
 
-                    {% if not is_admin %}
+                    {% if not is_superuser %}
                     <li>
                         <a href="#ReqFlagForm" data-toggle='modal' role='button'>
                             <i class="icon-warning-sign"></i> {% trans %}Alert Administrator{% endtrans %}
@@ -191,7 +191,7 @@
         <dl>
             <dt class="yell soft">{% trans %}Requester{% endtrans %}</dt>
             <dd>
-                {% if ticket.requester and (is_staff or is_admin) %}
+                {% if ticket.requester and (is_staff or is_superuser) %}
 	      <a href="/admin/userprofile/{{ ticket.requester.id}}/view/">
               {{ ticket.requester.display_name if ticket.requester else _("No Requester") }} </a>
 	      {% else %}
@@ -300,7 +300,7 @@
                     </div>
                 </div>
                 {% trans %}Attached Files{% endtrans %}
-                {% if is_staff or is_admin %}
+                {% if is_staff or is_superuser %}
                     <a href="#SharingModal" class="btn btn-small pull-right"
                        data-modal-url="{{ url('share_files', entity_id=ticket.key.urlsafe()) }}">
                         <i class="icon-group"></i> {% trans %}Sharing{% endtrans %}
@@ -387,7 +387,7 @@
                             <p>{{ tu.extra_relation.to_ticket_update(tu) }}</p>
                         {%- endif %}
                         {% if tu.update_type == 'update' %}
-                            {% if user.profile.is_admin or user.profile.is_staff %}
+                            {% if user.profile.is_superuser or user.profile.is_staff %}
                                 <div class="pull-right soft">
                                     <a data-action="{{ url('ticket_update_remove', pk=tu.id) }}" data-csrf="{{ csrf_token }}" class="anchor_form" href="#">{% trans %}delete comment{% endtrans %}</a>
                                 </div>

@@ -31,7 +31,7 @@ class Statistics(TemplateView):
             "accounts_user": Profile.objects.filter(is_user=True).count(),
             "accounts_volunteer": Profile.objects.filter(is_volunteer=True).count(),
             "accounts_staff": Profile.objects.filter(is_staff=True).count(),
-            "accounts_admin": Profile.objects.filter(is_admin=True).count(),
+            "accounts_admin": Profile.objects.filter(is_superuser=True).count(),
             "accreq_total": AccountRequest.objects.count(),
             "accreq_approved": AccountRequest.objects.filter(approved=True).count(),
             "accreq_rejected": AccountRequest.objects.filter(approved=False).count(),

@@ -28,7 +28,7 @@ class TicketsTest(TestCase):
             username='admin', email='testuser@occrp.org', password='top_secret')
         self.admin_user.is_superuser = True
         self.admin_user.save()
-        self.admin_user.profile.is_admin = True
+        self.admin_user.profile.is_superuser = True
         self.admin_user.profile.save()
 
     def tearDown(self):

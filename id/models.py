@@ -84,7 +84,6 @@ class Profile(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=True)
     is_volunteer = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False) # TODO: PermissionMixin has is_superuser field, use that instead!
     is_active   = models.BooleanField(default=True)
     old_google_id = models.CharField(blank=True, max_length=100)
     date_joined = models.DateTimeField(_('Date Joined'), default=timezone.now)
