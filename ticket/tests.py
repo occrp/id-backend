@@ -11,25 +11,25 @@ class TicketsTest(TestCase):
         self.anonymous_user = AnonymousUser()
         self.normal_user = get_user_model().objects.create_user(
             email='testuser@occrp.org', password='top_secret')
-        self.normal_user.profile.is_user = True
-        self.normal_user.profile.save()
+        self.normal_userg.is_user = True
+        self.normal_userg.save()
 
         self.volunteer_user = get_user_model().objects.create_user(
             email='testuser@occrp.org', password='top_secret')
-        self.volunteer_user.profile.is_volunteer = True
-        self.volunteer_user.profile.save()
+        self.volunteer_userg.is_volunteer = True
+        self.volunteer_userg.save()
 
         self.staff_user = get_user_model().objects.create_user(
             email='testuser@occrp.org', password='top_secret')
-        self.staff_user.profile.is_staff = True
-        self.staff_user.profile.save()
+        self.staff_userg.is_staff = True
+        self.staff_userg.save()
 
         self.admin_user = get_user_model().objects.create_user(
             email='testuser@occrp.org', password='top_secret')
         self.admin_user.is_superuser = True
         self.admin_user.save()
-        self.admin_user.profile.is_superuser = True
-        self.admin_user.profile.save()
+        self.admin_userg.is_superuser = True
+        self.admin_userg.save()
 
     def tearDown(self):
         pass

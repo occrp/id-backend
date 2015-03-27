@@ -34,8 +34,8 @@ class Details(PodaciView):
             u = get_user_model().objects.get(id=note["user"])
             note["user_details"] = {
                 "email": u.email,
-                "first_name": u.profile.first_name,
-                "last_name": u.profile.first_name,
+                "first_name": ug.first_name,
+                "last_name": ug.first_name,
             }
 
         return {
@@ -79,8 +79,8 @@ class NoteAdd(PodaciView):
             u = get_user_model().objects.get(id=note["user"])
             note["user_details"] = {
                 "email": u.email,
-                "first_name": u.profile.first_name,
-                "last_name": u.profile.first_name,
+                "first_name": ug.first_name,
+                "last_name": ug.first_name,
             }
             note["html"] = render_to_string("podaci/partials/_note.jinja", {"note": note})
 
