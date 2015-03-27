@@ -17,8 +17,8 @@ class ProfileSetLanguage(TemplateView):
         if lang in [x[0] for x in LANGUAGES]:
             request.session['django_language'] = lang
             if request.user.is_authenticated():
-                request.user.profile.locale = lang
-                request.user.profile.save()
+                request.user.locale = lang
+                request.user.save()
         return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
 
@@ -29,16 +29,16 @@ class ProfileUpdate(UpdateView):
 
     def get_object(self, *args, **kwargs):
         if kwargs.has_key("pk"):
-            return get_user_model().objects.get(id=kwargs["pk"]).profile
+            return get_user_model().objects.get(id=kwargs["pk"])
         elif kwargs.has_key("email"):
-            return get_user_model().objects.get(email=kwargs["email"]).profile
-        return self.request.user.profile
+            return get_user_model().objects.get(email=kwargs["email"])
+        return self.request.user
 
     def get_context_data(self, form):
         obj = self.get_object()
         ctx = super(ProfileUpdate, self).get_context_data()
         ctx = {
-            "editing_self": obj == self.request.user.profile
+            "editing_self": obj == self.request.user
         }
         print "Request method: ", self.request.method
         if self.request.method == "POST":
@@ -76,11 +76,11 @@ class AccountRequestHome(TemplateView):
     def fallback_response(self):
         if not self.user:
             return False
-        if self.profile.is_user:
+        if self.is_user:
             return self.message(
                 'request_list',
                 'You have already been approved as an Information Requester.')
-        if self.profile.is_volunteer:
+        if self.is_volunteer:
             return self.message(
                 'request_list',
                 'You have already been approved as a Volunteer.')
@@ -102,14 +102,14 @@ class AccountRequest(AccountRequestHome):
     def _get(self):
         if self.fallback_response():
             return
-        form = self.form_class(email=self.profile.email)
+        form = self.form_class(email=self.email)
         return (self.fallback_response()
                 or self.render_response(self.template_name, form=form))
 
     @login_required
     def _post(self):
         f = self.form_class(self.request.POST)
-        f.email.data = self.profile.email
+        f.email.data = self.email
 
         if not f.validate():
             logging.info("Fail to validate for unknown reason!")
@@ -117,7 +117,7 @@ class AccountRequest(AccountRequestHome):
 
         account_request = f.save(parent=ndb.Key('Entity', 'accountrequest'),
                                  commit=False)
-        account_request.user_profile = self.profile.key
+        account_request.user_profile = self.key
         account_request.put()
         account_request.notify_received()
         self.add_message(_('Request submitted. Our staff will evaluate and '
