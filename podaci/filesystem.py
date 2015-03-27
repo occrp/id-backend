@@ -231,8 +231,8 @@ class PermissionsMixin:
     def has_permission(self, user):
         if self.meta["public_read"]: return True
         if user.is_superuser: return True
-        if user.profile.is_superuser: return True
-        if self.meta["staff_allowed"] and user.profile.is_staff: return True
+        if userg.is_superuser: return True
+        if self.meta["staff_allowed"] and userg.is_staff: return True
         if user.id in self.meta["allowed_users"]: return True
         if self.DOCTYPE == "file":
             for t in self.meta["tags"]:
@@ -244,8 +244,8 @@ class PermissionsMixin:
     def has_write_permission(self, user):
         if user.id in self.meta["allowed_write_users"]: return True
         if user.is_superuser: return True
-        if user.profile.is_superuser: return True
-        if self.meta["staff_allowed"] and user.profile.is_staff: return True
+        if userg.is_superuser: return True
+        if self.meta["staff_allowed"] and userg.is_staff: return True
         if self.DOCTYPE == "file":
             for t in self.meta["tags"]:
                 tag = Tag(self.fs, tid=t)
@@ -398,7 +398,7 @@ class File(MetaMixin, PermissionsMixin):
         self.meta["filename"] = filename
         self.meta["hash"] = sha256sum(fh)
         # FIXME: "ID" is a temporary identifier. At some point, we need some kind of "project" notion.
-        self.meta["identifier"] = "%s-%s-%6s" % ("ID", self.fs.user.profile.abbr, self.meta["hash"][-6:])
+        self.meta["identifier"] = "%s-%s-%6s" % ("ID", self.fs.userg.abbr, self.meta["hash"][-6:])
         self.meta["mimetype"] = magic.Magic(mime=True).from_buffer(fh.read(100))
         if self.fs.file_exists_by_hash(self.meta["hash"]):
             print "Warning: File exists!"

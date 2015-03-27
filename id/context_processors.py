@@ -6,7 +6,7 @@ from id.models import Profile
 def userprofile(request):
     if request.user.is_authenticated():
         try:
-            prof = request.user.profile
+            prof = request.userg
         except Exception, e:
             print "User profile for %s does not exist" % request.user.email
             prof = Profile(user=request.user)
