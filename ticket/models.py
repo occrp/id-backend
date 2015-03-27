@@ -288,7 +288,6 @@ class CompanyTicket(Ticket):
     background = models.TextField(blank=False, verbose_name=_('Background'))
     sources = models.TextField(blank=False, verbose_name=_('Sources'))
     story = models.TextField(blank=False, verbose_name=_('Your Story'))
-    #connections = models.CharField(max_length=50, verbose_name=_('Connected People')) # Repeated
     connections = models.TextField(blank=True, verbose_name=_('Connected People'))
 
     @property
@@ -322,7 +321,7 @@ class OtherTicket(Ticket):
 class TicketUpdate(models.Model):
     update_type = models.CharField(max_length=70, choices=TICKET_UPDATE_TYPES,
                                    default=TICKET_UPDATE_TYPES[0][0])
-    author = models.ForeignKey(AUTH_USER_MODEL, blank=False)  # requester or responder
+    author = models.ForeignKey(AUTH_USER_MODEL, blank=False)  # either requester, or responder
     ticket = models.ForeignKey(Ticket, blank=False)
     created = models.DateTimeField(auto_now_add=True)
     comment = models.TextField()
