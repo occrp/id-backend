@@ -45,7 +45,7 @@
                     <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
                         <a href="{{ url('ticket_list') }}"><i class="icon-comments-alt"></i> {% trans %}Expert Help{% endtrans %}</a>
                     </li>
-                        {% if user.profile.is_staff or user.profile.is_superuser %}
+                        {% if user.is_staff or user.is_superuser %}
                         <li class="{% if url('podaci_info_home') in request.path %}active{% endif %}">
                             <a href="{{ url('podaci_info_home') }}"><i class="icon-file"></i> {% trans %}Files{% endtrans %}</a>
                         </li>
@@ -66,7 +66,7 @@
                             <li  class="{% if url('profile') in request.path %}active{% endif %}">
                                 <a href="{{ url('profile') }}">{% trans %}Profile{% endtrans %}</a>
                             </li>
-                            {% if user.profile.is_staff or user.profile.is_superuser %}
+                            {% if user.is_staff or user.is_superuser %}
                             <li  class="{% if url('admin_panel') in request.path %}active{% endif %}">
                                 <a href="{{ url('admin_panel') }}">{% trans %}Admin{% endtrans %}</a>
                             </li>
@@ -87,7 +87,7 @@
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                             {% for locale in LANGUAGES %}
-                            <li{% if (user.is_authenticated() and user.profile.locale == locale.0) or request.session.locale == locale.0 %} class="active"{% endif %}>
+                            <li{% if (user.is_authenticated() and user.locale == locale.0) or request.session.locale == locale.0 %} class="active"{% endif %}>
                                 <a href="{{url('account_set_language', locale.0)}}">
                                     {{ locale.1 }}
                                 </a>

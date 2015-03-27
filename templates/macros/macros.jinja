@@ -64,7 +64,7 @@
 
                         {% for actor in ticket.actors(false) %}
                         
-                            <a href="{{ url('profile', pk=actor.id)}}">{{ actor.profile.display_name }}</a>{% if loop.length > 0 and not loop.last %}, {% endif %}
+                            <a href="{{ url('profile', pk=actor.id)}}">{{ actor.display_name }}</a>{% if loop.length > 0 and not loop.last %}, {% endif %}
 
                         {% endfor %}
 
