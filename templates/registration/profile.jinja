@@ -1,7 +1,7 @@
 {% extends "base.jinja" %}
 {% block content %}
 
-<h1>{% if editing_self %}{% trans %}Your profile{% endtrans %}{% else %}{% trans %}Profile for user{% endtrans %}{{user.username}}{% endif %}</h1>
+<h1>{% if editing_self %}{% trans %}Your profile{% endtrans %}{% else %}{% trans %}Profile for user{% endtrans %}{{user.email}}{% endif %}</h1>
 <div class="tabpanel">
     <form action="/accounts/profile/" method="POST">
     {%csrf_token%}

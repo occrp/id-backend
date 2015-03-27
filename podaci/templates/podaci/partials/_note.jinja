@@ -1,6 +1,6 @@
 <div class="note">
     <div class="note_content">
-        <span class="note_user"><a href="{{url('profile', username=note.user_details.username)}}">{{note.user_details.username}}</a></span>
+        <span class="note_user"><a href="{{url('profile', email=note.user_details.email)}}">{{note.user_details.email}}</a></span>
         <span class="note_text">{{parse_mentions(note.text)|safe}}</span>
     </div>
     <div class="note_actions">

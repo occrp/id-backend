@@ -6,9 +6,9 @@ from podaci.filesystem import *
 import os, shutil
 
 class Strawman:
-    def __init__(self, username):
+    def __init__(self, email):
         self.id = 1
-        self.username = username
+        self.email = email
 
 
 class PodaciAPITest(TestCase):
@@ -71,7 +71,7 @@ class PodaciPermissionTest(TestCase):
     def test_logged_in_without_access(self):
         ## Verify that a logged in user cannot access a non-public file
         ## they have no permission for
-        u = get_user_model(username="testuser")
+        u = get_user_model(email="testuser@occrp.org")
         u.save()
         self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
                              user=u)
@@ -81,7 +81,7 @@ class PodaciPermissionTest(TestCase):
     def test_logged_in_with_direct_access(self):
         ## Verify that a logged in user can access a non-public file they
         ## have explicit access to
-        u = get_user_model(username="testuser")
+        u = get_user_model(email="testuser@occrp.org")
         u.save()
         self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
                              user=u)
@@ -91,7 +91,7 @@ class PodaciPermissionTest(TestCase):
     def test_logged_in_with_indirect_access(self):
         ## Verify that a logged in user can access a non-public file they
         ## have access to through a tag they are allowed on
-        u = get_user_model(username="testuser")
+        u = get_user_model(email="testuser@occrp.org")
         u.save()
         self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
                              user=u)
@@ -100,7 +100,7 @@ class PodaciPermissionTest(TestCase):
 
     def test_admin_access(self):
         ## Verify that an admin user always has access
-        u = get_user_model(username="testuser")
+        u = get_user_model(email="testuser@occrp.org")
         u.is_superuser = True
         u.save()
         self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 

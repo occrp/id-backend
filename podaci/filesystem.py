@@ -195,7 +195,7 @@ class PermissionsMixin:
             self.meta["allowed_users"].append(user.id)
         if write and user.id not in self.meta["allowed_write_users"]:
             self.meta["allowed_write_users"].append(user.id)
-        self.log("Added user '%s' [%d] (write=%s)" % (user.username, user.id, write))
+        self.log("Added user '%s' [%d] (write=%s)" % (user.email, user.id, write))
         self._sync()
 
     def make_public(self):
@@ -223,7 +223,7 @@ class PermissionsMixin:
         try:
             self.meta["allowed_users"].remove(user.id)
             self.meta["allowed_write_users"].remove(user.id)
-            self.log("Removed user '%s' [%d]" % (user.username, user.id))
+            self.log("Removed user '%s' [%d]" % (user.email, user.id))
             self._sync()
         except ValueError:
             pass

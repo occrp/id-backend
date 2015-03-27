@@ -27,7 +27,7 @@ django.setup()
 def getuser(u):
     if not u.isdigit():
         try:
-            user = get_user_model().objects.get(username=u)
+            user = get_user_model().objects.get(email=u)
         except:
             print "Error: User %s does not exist" % u
             return None
@@ -46,10 +46,10 @@ class PodaciShell(cmd.Cmd):
 
     def __init__(self):
         cmd.Cmd.__init__(self)
-        username = raw_input("Username? ")
+        email = raw_input("E-mail? ")
         password = raw_input("Password? ")
 
-        user = authenticate(username=username, password=password)
+        user = authenticate(email=email, password=password)
         if user is not None:
             if user.is_active:
                 print("User is valid, active and authenticated")
@@ -57,7 +57,7 @@ class PodaciShell(cmd.Cmd):
                 print("The password is valid, but the account has been disabled!")
                 sys.exit()
         else:
-            print("The username and password were incorrect.")
+            print("The email or password were incorrect.")
             sys.exit()
 
         self.fs = FileSystem(

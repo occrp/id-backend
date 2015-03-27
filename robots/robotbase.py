@@ -29,7 +29,7 @@ class RobotBase:
 	ROBOT_ID = "robot_0"	# Actions taken on Podaci or Osoba will be tagged to this ID
 
 	def __init__(self):
-		self.username = self.ROBOT_ID
+		self.email = self.ROBOT_ID
 		self.id = self.ROBOT_ID
 
 		self.fs = FileSystem(user=self)
