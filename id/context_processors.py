@@ -8,7 +8,7 @@ def userprofile(request):
         try:
             prof = request.user.profile
         except Exception, e:
-            print "User profile for %s does not exist" % request.user.username
+            print "User profile for %s does not exist" % request.user.email
             prof = Profile(user=request.user)
             prof.save()
         return {

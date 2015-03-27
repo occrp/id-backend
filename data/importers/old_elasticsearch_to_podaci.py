@@ -19,9 +19,9 @@ NEW_DATA_ROOT = "/home/smari/Projects/OCCRP/data/"
 OLD_DATA_ROOT = "/home/datatrac/indexed/public"
 
 class Strawman:
-    def __init__(self, id, username):
+    def __init__(self, id, email):
         self.id = id
-        self.username = username
+        self.email = email
 
 
 class OldESImporter:
