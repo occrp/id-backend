@@ -195,7 +195,7 @@
 	      <a href="/admin/userprofile/{{ ticket.requester.id}}/view/">
               {{ ticket.requester.display_name if ticket.requester else _("No Requester") }} </a>
 	      {% else %}
-	      {{ ticket.requester.profile.display_name if ticket.requester else _("No Requester") }}
+	      {{ ticket.requesterg.display_name if ticket.requester else _("No Requester") }}
               {% endif %}
 	    </dd>
 
@@ -203,7 +203,7 @@
             <dd>
             {% if ticket.responders.count() > 0 %}
                 {% for responder in ticket.responders.all() %}
-                    {{ responder.profile.display_name }} <br />
+                    {{ responderg.display_name }} <br />
                 {% endfor %}
             {% else %}
                 {{ _("No Responders") }}
@@ -214,7 +214,7 @@
             <dt class="yell soft">{% trans %}Volunteer Responders{% endtrans %}</dt>
             <dd>
                 {% for volunteer in ticket.volunteers.all() %}
-                    {{ volunteer.profile.display_name }} <br />
+                    {{ volunteerg.display_name }} <br />
                 {% endfor %}
             </dd>
             {% endif %}
@@ -372,7 +372,7 @@
                         {% elif tu.update_type == "leave" %}
                             <i class="icon-remove"></i>
                         {% endif %}
-                        {{ tu.author.profile.display_name }}
+                        {{ tu.authorg.display_name }}
                         </strong>
 
                         <div class="pull-right soft">
@@ -387,7 +387,7 @@
                             <p>{{ tu.extra_relation.to_ticket_update(tu) }}</p>
                         {%- endif %}
                         {% if tu.update_type == 'update' %}
-                            {% if user.profile.is_superuser or user.profile.is_staff %}
+                            {% if userg.is_superuser or user.profile.is_staff %}
                                 <div class="pull-right soft">
                                     <a data-action="{{ url('ticket_update_remove', pk=tu.id) }}" data-csrf="{{ csrf_token }}" class="anchor_form" href="#">{% trans %}delete comment{% endtrans %}</a>
                                 </div>

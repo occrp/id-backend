@@ -144,20 +144,20 @@ class TicketActionJoinHandler(TicketActionBaseHandler, PodaciMixin):
         self.podaci_setup()
         tag = self.fs.get_tag(ticket.tag_id)
 
-        if self.request.user.profile.is_staff or self.request.user.profile.is_superuser:
+        if self.request.userg.is_staff or self.request.user.profile.is_superuser:
             ticket.responders.add(self.request.user)
             self.success_messages = [_('You have successfully been added to the ticket.')]
-            self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.profile.display_name + unicode(_(' has joined the ticket')))
+            self.perform_ticket_update(ticket, 'Responder Joined', self.request.userg.display_name + unicode(_(' has joined the ticket')))
             self.transition_ticket_from_new(ticket)
 
             tag.add_user(self.request.user, True)
 
             return super(TicketActionJoinHandler, self).perform_valid_action(form)
 
-        elif self.request.user.profile.is_volunteer:
+        elif self.request.userg.is_volunteer:
             ticket.volunteers.add(self.request.user)
             self.success_messages = [_('You have successfully been added to the ticket.')]
-            self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.profile.display_name + unicode(_(' has joined the ticket')))
+            self.perform_ticket_update(ticket, 'Responder Joined', self.request.userg.display_name + unicode(_(' has joined the ticket')))
             self.transition_ticket_from_new(ticket)
 
             tag.add_user(self.request.user, True)
@@ -182,7 +182,7 @@ class TicketActionLeaveHandler(TicketActionBaseHandler, PodaciMixin):
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
-            self.perform_ticket_update(ticket, 'Responder Left', self.request.user.profile.display_name + unicode(_(' has left the ticket')))
+            self.perform_ticket_update(ticket, 'Responder Left', self.request.userg.display_name + unicode(_(' has left the ticket')))
 
             tag.remove_user(self.request.user)
 
@@ -190,7 +190,7 @@ class TicketActionLeaveHandler(TicketActionBaseHandler, PodaciMixin):
         elif self.request.user in ticket.volunteers.all():
             self.volunteers.remove(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
-            self.perform_ticket_update(ticket, 'Responder Left', self.request.user.profile.display_name + unicode(_(' has left the ticket')))
+            self.perform_ticket_update(ticket, 'Responder Left', self.request.userg.display_name + unicode(_(' has left the ticket')))
 
             tag.remove_user(self.request.user)
 
@@ -254,25 +254,25 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
             if i not in current_responders:
                 u = get_user_model().objects.get(pk=i)
                 tag.add_user(u, True)
-                self.perform_ticket_update(ticket, 'Responder Joined', u.profile.display_name + unicode(_(' has joined the ticket')))
+                self.perform_ticket_update(ticket, 'Responder Joined', ug.display_name + unicode(_(' has joined the ticket')))
 
         for i in form_volunteers:
             if i not in current_volunteers:
                 u = get_user_model().objects.get(pk=i)
                 tag.add_user(u, True)
-                self.perform_ticket_update(ticket, 'Responder Joined', u.profile.display_name + unicode(_(' has joined the ticket')))
+                self.perform_ticket_update(ticket, 'Responder Joined', ug.display_name + unicode(_(' has joined the ticket')))
 
         for i in current_responders:
             if i not in form_responders:
                 u = get_user_model().objects.get(pk=i)
                 tag.remove_user(u)
-                self.perform_ticket_update(ticket, 'Responder Left', u.profile.display_name + unicode(_(' has left the ticket')))
+                self.perform_ticket_update(ticket, 'Responder Left', ug.display_name + unicode(_(' has left the ticket')))
 
         for i in current_volunteers:
             if i not in form_volunteers:
                 u = get_user_model().objects.get(pk=i)
                 tag.remove_user(u)
-                self.perform_ticket_update(ticket, 'Responder Left', u.profile.display_name + unicode(_(' has left the ticket')))
+                self.perform_ticket_update(ticket, 'Responder Left', ug.display_name + unicode(_(' has left the ticket')))
 
         return super(TicketAdminSettingsHandler, self).form_valid(form)
 
@@ -355,7 +355,7 @@ class TicketDetail(TemplateView, PodaciMixin):
             return self.abort(404)
 
         # if not self.ticket.is_public and not (
-        #     request.user.profile.is_superuser or
+        #     request.userg.is_superuser or
         #     request.user == self.ticket.requester or
         #     request.user in self.ticket.responders.all() or
         #     request.user in self.ticket.volunteers.all()):
@@ -391,13 +391,13 @@ class TicketDetail(TemplateView, PodaciMixin):
 
         can_join_leave = False
         if self.request.user != self.ticket.requester:
-            if self.request.user.profile.is_volunteer and self.ticket.is_public:
+            if self.request.userg.is_volunteer and self.ticket.is_public:
                 can_join_leave = True
 
-            if self.request.user.profile.is_volunteer and self.request.user in self.ticket.volunteers.all():
+            if self.request.userg.is_volunteer and self.request.user in self.ticket.volunteers.all():
                 can_join_leave = True
 
-            if self.request.user.profile.is_superuser or self.request.user.is_staff:
+            if self.request.userg.is_superuser or self.request.user.is_staff:
                 can_join_leave = True
 
         return {

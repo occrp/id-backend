@@ -23,7 +23,7 @@
   {% for obj in object_list %}
     <tr>
       <td>
-        <a href="{{ url('profile', pk=obj.profile.id) }}">
+        <a href="{{ url('profile', pk=objg.id) }}">
           {{obj.id}}
         </a>
       </td>
@@ -31,13 +31,13 @@
         {{obj.email}}
       </td>
       <td>
-        {{obj.profile.first_name}} {{obj.profile.last_name}}
+        {{objg.first_name}} {{obj.profile.last_name}}
       </td>
       <td>
-        {% if obj.profile.is_superuser %}Administrator {% endif %}
-        {% if obj.profile.is_staff %}Staffer {% endif %}
-        {% if obj.profile.is_volunteer %}Volunteer {% endif %}
-        {% if obj.profile.is_user %}Registered {% endif %}
+        {% if objg.is_superuser %}Administrator {% endif %}
+        {% if objg.is_staff %}Staffer {% endif %}
+        {% if objg.is_volunteer %}Volunteer {% endif %}
+        {% if objg.is_user %}Registered {% endif %}
       </td>
     </tr>
   {% endfor %}
@@ -78,7 +78,7 @@
             </thead>
             <tbody>
                 {% for obj in object_list %}
-                   {% if obj.profile.is_approved %}
+                   {% if objg.is_approved %}
                     <tr>
                         <td>
                             <a href="{{ uri_for('%s_%s' % (model_name, link_action), obj_id=obj.key.urlsafe()) }}">

@@ -5,7 +5,7 @@
         <div class="well sidebar-nav admin-nav">
             <ul class="nav nav-list">
                 <li class="nav-header">{% trans %}Manage{% endtrans %}</li>
-		{% if user.profile.is_superuser or user.profile.is_staff %}
+		{% if userg.is_superuser or user.profile.is_staff %}
         		<li class="{% if 'externaldb_list' in ROUTE_NAME %}active{% endif %}">
                     <a href="{{ url('externaldb_list') }}"><i class="icon-list-alt"></i> {% trans %}External Databases{% endtrans %}</a>
                 </li>
@@ -14,7 +14,7 @@
                 </li>
 		{% endif %}
 
-		{% if user.profile.is_superuser %}
+		{% if userg.is_superuser %}
                 <li class="{% if 'admin_storage' in ROUTE_NAME %}active{% endif %}">
                     <a href="{{ url('admin_storage') }}"><i class="icon-folder-open"></i> {% trans %}Storage and databases{% endtrans %}</a>
                 </li>
