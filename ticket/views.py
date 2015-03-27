@@ -464,10 +464,27 @@ class TicketList(PrettyPaginatorMixin, TemplateView, PodaciMixin):
                                                                      self.page_buttons_padding,
                                                                      self.url_name,
                                                                      self.url_args),
-            'page_number': self.page_number
+            'page_number': self.page_number,
+            'ticket_figures': self.get_ticket_list_figures()
         }
 
         return context
+
+    def get_ticket_list_figures(self):
+        ticket_figures = {
+            'all_open': TicketListAllOpen().get_ticket_set(self.request.user).count(),
+            'all_closed': TicketListAllClosed().get_ticket_set(self.request.user).count(),
+            'my_open': TicketListMyOpen().get_ticket_set(self.request.user).count(),
+            'my_closed': TicketListMyClosed().get_ticket_set(self.request.user).count(),
+            'my_assigned': TicketListMyAssigned().get_ticket_set(self.request.user).count(),
+            'my_assigned_closed': TicketListMyAssignedClosed().get_ticket_set(self.request.user).count(),
+            'public': TicketListPublic().get_ticket_set(self.request.user).count(),
+            'public_closed': TicketListPublicClosed().get_ticket_set(self.request.user).count(),
+            'unassigned': TicketListUnassigned().get_ticket_set(self.request.user).count(),
+            'upcoming_deadline': TicketListUpcomingDeadline().get_ticket_set(self.request.user).count()
+        }
+
+        return ticket_figures
 
     def get_paged_tickets(self, page_number):
         self.set_paginator_object()
@@ -484,9 +501,9 @@ class TicketList(PrettyPaginatorMixin, TemplateView, PodaciMixin):
         return paged_tickets
 
     def set_paginator_object(self):
-        self.paginator = Paginator(self.get_ticket_set(), self.page_size)
+        self.paginator = Paginator(get_actual_tickets(self.get_ticket_set(self.request.user)), self.page_size)
 
-    def get_ticket_set(self):
+    def get_ticket_set(self, user):
         return self.tickets
 
     @method_decorator(login_required)
@@ -498,105 +515,105 @@ class TicketListAllOpen(TicketList):
     page_name = "All Requests"
     ticket_list_name = "All Open Requests"
 
-    def get_ticket_set(self):
-        return get_actual_tickets(Ticket.objects.filter(
+    def get_ticket_set(self, user):
+        return Ticket.objects.filter(
             ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
-            "-created"))
+            "-created")
 
 class TicketListAllClosed(TicketList):
     page_name = "All Requests"
     ticket_list_name = "All Closed Requests"
 
-    def get_ticket_set(self):
-        return get_actual_tickets(Ticket.objects.filter(
+    def get_ticket_set(self, user):
+        return Ticket.objects.filter(
             Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
-            "-created"))
+            "-created")
 
 class TicketListMyOpen(TicketList):
     page_name = "My Requests"
     ticket_list_name = "My Open Requests"
 
-    def get_ticket_set(self):
-        return get_actual_tickets(Ticket.objects.filter(
-            requester=self.request.user).filter(
+    def get_ticket_set(self, user):
+        return Ticket.objects.filter(
+            requester=user).filter(
             ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
-            "-created"))
+            "-created")
 
 class TicketListMyClosed(TicketList):
     page_name = "My Requests"
     ticket_list_name = "My Closed Requests"
 
-    def get_ticket_set(self):
-        return get_actual_tickets(Ticket.objects.filter(
-            requester=self.request.user).filter(
+    def get_ticket_set(self, user):
+        return Ticket.objects.filter(
+            requester=user).filter(
             Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
-            "-created"))
+            "-created")
 
 class TicketListMyAssigned(TicketList):
     page_name = "My Assignments"
     ticket_list_name = "Open Assignments"
 
-    def get_ticket_set(self):
-        return get_actual_tickets(Ticket.objects.filter(
-            Q(responders__in=[self.request.user]) | Q(volunteers__in=[self.request.user])).filter(
+    def get_ticket_set(self, user):
+        return Ticket.objects.filter(
+            Q(responders__in=[user]) | Q(volunteers__in=[user])).filter(
             ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
-            "-created"))
+            "-created")
 
 class TicketListMyAssignedClosed(TicketList):
     page_name = "My Assignments"
     ticket_list_name = "Closed Assignments"
 
-    def get_ticket_set(self):
-        return get_actual_tickets(Ticket.objects.filter(
-            Q(responders__in=[self.request.user]) | Q(volunteers__in=[self.request.user])).filter(
+    def get_ticket_set(self, user):
+        return Ticket.objects.filter(
+            Q(responders__in=[user]) | Q(volunteers__in=[user])).filter(
             Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
-            "-created"))
+            "-created")
 
 
 class TicketListPublic(TicketList):
     page_name = "Public Requests"
     ticket_list_name = "Open Public Requests"
 
-    def get_ticket_set(self):
-        return get_actual_tickets(Ticket.objects.filter(
+    def get_ticket_set(self, user):
+        return Ticket.objects.filter(
             is_public=True).filter(
             ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
-            "-created"))
+            "-created")
 
 class TicketListPublicClosed(TicketList):
     page_name = "Pubic Requests"
     ticket_list_name = "Closed Public Requests"
 
-    def get_ticket_set(self):
-        return get_actual_tickets(Ticket.objects.filter(
+    def get_ticket_set(self, user):
+        return Ticket.objects.filter(
             is_public=True).filter(
             Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
-            "-created"))
+            "-created")
 
 
 class TicketListUnassigned(TicketList):
     page_name = "Unassigned Requests"
     ticket_list_name = "Unassigned Requests"
 
-    def get_ticket_set(self):
-        return get_actual_tickets(Ticket.objects.annotate(
+    def get_ticket_set(self, user):
+        return Ticket.objects.annotate(
             volunteer_count=Count('volunteers')).annotate(
             responder_count=Count('responders')).filter(
             Q(volunteer_count=0) & Q(responder_count=0)).order_by(
-            "-created"))
+            "-created")
 
 
 class TicketListUpcomingDeadline(TicketList):
     page_name = "Upcoming Deadline Requests"
     ticket_list_name = "Requests with deadlines in the 30 days"
 
-    def get_ticket_set(self):
+    def get_ticket_set(self, user):
         filter_date = datetime.now() + timedelta(days=30)
 
-        return get_actual_tickets(Ticket.objects.filter(
+        return Ticket.objects.filter(
             Q(deadline__isnull=False) & Q(deadline__lte=filter_date)).filter(
             ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
-            "-created"))
+            "-created")
 
 
 class TicketRequest(TemplateView, PodaciMixin):
