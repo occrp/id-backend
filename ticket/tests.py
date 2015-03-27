@@ -10,22 +10,22 @@ class TicketsTest(TestCase):
     def setUp(self):
         self.anonymous_user = AnonymousUser()
         self.normal_user = get_user_model().objects.create_user(
-            username='requester', email='testuser@occrp.org', password='top_secret')
+            email='testuser@occrp.org', password='top_secret')
         self.normal_user.profile.is_user = True
         self.normal_user.profile.save()
 
         self.volunteer_user = get_user_model().objects.create_user(
-            username='volunteer', email='testuser@occrp.org', password='top_secret')
+            email='testuser@occrp.org', password='top_secret')
         self.volunteer_user.profile.is_volunteer = True
         self.volunteer_user.profile.save()
 
         self.staff_user = get_user_model().objects.create_user(
-            username='staff', email='testuser@occrp.org', password='top_secret')
+            email='testuser@occrp.org', password='top_secret')
         self.staff_user.profile.is_staff = True
         self.staff_user.profile.save()
 
         self.admin_user = get_user_model().objects.create_user(
-            username='admin', email='testuser@occrp.org', password='top_secret')
+            email='testuser@occrp.org', password='top_secret')
         self.admin_user.is_superuser = True
         self.admin_user.save()
         self.admin_user.profile.is_superuser = True
