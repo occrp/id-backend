@@ -264,7 +264,7 @@ class ExternalDatabase(models.Model, DisplayMixin):
 
 ######## Account management ############
 class AccountRequest(models.Model, DisplayMixin, AddressMixin, UserDetailsGenericMixin): # polymodel
-    request_type = 'generic'
+    request_type = models.CharField(blank=False, max_length=64, choices=REQUEST_TYPES)
     user_profile = models.ForeignKey(AUTH_USER_MODEL, blank=False)
     approved = models.BooleanField(default=False, verbose_name=_('Approved'))
     email = models.CharField(max_length=50, blank=False, verbose_name=_('Email Address'))

@@ -58,6 +58,11 @@ REQUESTER_TYPES = (
     ('cost_plus', _('Covering Cost +'))
 )
 
+REQUEST_TYPES = (
+    ('requester', _('Requester')),
+    ('volunteer', _('Volunteer'))
+)
+
 TICKET_TYPES = (
     ('person_ownership', _('Identify what a person owns')),
     ('company_ownership', _('Determine company ownership')),
