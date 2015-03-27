@@ -144,7 +144,7 @@ class TicketActionJoinHandler(TicketActionBaseHandler, PodaciMixin):
         self.podaci_setup()
         tag = self.fs.get_tag(ticket.tag_id)
 
-        if self.request.user.profile.is_staff or self.request.user.profile.is_admin:
+        if self.request.user.profile.is_staff or self.request.user.profile.is_superuser:
             ticket.responders.add(self.request.user)
             self.success_messages = [_('You have successfully been added to the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.profile.display_name + unicode(_(' has joined the ticket')))
@@ -355,7 +355,7 @@ class TicketDetail(TemplateView, PodaciMixin):
             return self.abort(404)
 
         # if not self.ticket.is_public and not (
-        #     request.user.profile.is_admin or
+        #     request.user.profile.is_superuser or
         #     request.user == self.ticket.requester or
         #     request.user in self.ticket.responders.all() or
         #     request.user in self.ticket.volunteers.all()):
@@ -397,7 +397,7 @@ class TicketDetail(TemplateView, PodaciMixin):
             if self.request.user.profile.is_volunteer and self.request.user in self.ticket.volunteers.all():
                 can_join_leave = True
 
-            if self.request.user.profile.is_admin or self.request.user.is_staff:
+            if self.request.user.profile.is_superuser or self.request.user.is_staff:
                 can_join_leave = True
 
         return {

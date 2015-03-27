@@ -34,7 +34,7 @@
         {{obj.profile.first_name}} {{obj.profile.lastname}}
       </td>
       <td>
-        {% if obj.profile.is_admin %}Administrator {% endif %}
+        {% if obj.profile.is_superuser %}Administrator {% endif %}
         {% if obj.profile.is_staff %}Staffer {% endif %}
         {% if obj.profile.is_volunteer %}Volunteer {% endif %}
         {% if obj.profile.is_user %}Registered {% endif %}

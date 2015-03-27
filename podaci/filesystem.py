@@ -231,7 +231,7 @@ class PermissionsMixin:
     def has_permission(self, user):
         if self.meta["public_read"]: return True
         if user.is_superuser: return True
-        if user.profile.is_admin: return True
+        if user.profile.is_superuser: return True
         if self.meta["staff_allowed"] and user.profile.is_staff: return True
         if user.id in self.meta["allowed_users"]: return True
         if self.DOCTYPE == "file":
@@ -244,7 +244,7 @@ class PermissionsMixin:
     def has_write_permission(self, user):
         if user.id in self.meta["allowed_write_users"]: return True
         if user.is_superuser: return True
-        if user.profile.is_admin: return True
+        if user.profile.is_superuser: return True
         if self.meta["staff_allowed"] and user.profile.is_staff: return True
         if self.DOCTYPE == "file":
             for t in self.meta["tags"]:

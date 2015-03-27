@@ -50,13 +50,13 @@ class ProfileUpdate(UpdateView):
                 print ctx["form"].errors
             ctx["form_basics"] = ProfileBasicsForm(self.request.POST, instance=obj)
             ctx["form_details"] = ProfileDetailsForm(self.request.POST, instance=obj)
-            if obj.is_admin:
+            if obj.is_superuser:
                 ctx["form_admin"] = ProfileAdminForm(self.request.POST, instance=obj)
         else:
             ctx["form"] = ProfileUpdateForm(instance=obj)
             ctx["form_basics"] = ProfileBasicsForm(instance=obj)
             ctx["form_details"] = ProfileDetailsForm(instance=obj)
-            if obj.is_admin:
+            if obj.is_superuser:
                 ctx["form_admin"] = ProfileAdminForm(instance=obj)
         return ctx
 

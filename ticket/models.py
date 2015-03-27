@@ -354,7 +354,7 @@ class TicketUpdate(models.Model):
             elif r == 'responders':
                 recipients = recipients + ticket.fetch_responders()
             elif r == 'admin':
-                admin = UserProfile.query(UserProfile.is_admin == True).fetch()
+                admin = UserProfile.query(UserProfile.is_superuser == True).fetch()
                 recipients = recipients + admin
         return recipients
 

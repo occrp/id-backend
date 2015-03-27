@@ -17,7 +17,7 @@
                     <a href="{{ url('ticket_closed_list') }}"><i class="icon-folder-close-alt"></i> {% trans %}Closed{% endtrans %}</a>
                 </li>
 
-                {% if user.profile.is_staff or user.profile.is_volunteer or user.profile.is_admin %}
+                {% if user.profile.is_staff or user.profile.is_volunteer or user.profile.is_superuser %}
                     
                     <li class="nav-header">{% trans %}My Assignments{% endtrans %}</li>
 
@@ -41,7 +41,7 @@
 
                 {% endif %}
 
-                {% if user.profile.is_admin %}
+                {% if user.profile.is_superuser %}
 
                     <li class="nav-header">{% trans %}Manage{% endtrans %}</li>
 
