@@ -33,7 +33,6 @@ class Details(PodaciView):
         for note in notes:
             u = get_user_model().objects.get(id=note["user"])
             note["user_details"] = {
-                "username": u.username,
                 "email": u.email,
                 "first_name": u.profile.first_name,
                 "last_name": u.profile.first_name,
@@ -79,7 +78,6 @@ class NoteAdd(PodaciView):
         for note in meta["notes"]:
             u = get_user_model().objects.get(id=note["user"])
             note["user_details"] = {
-                "username": u.username,
                 "email": u.email,
                 "first_name": u.profile.first_name,
                 "last_name": u.profile.first_name,

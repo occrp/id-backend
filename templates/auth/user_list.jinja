@@ -14,7 +14,7 @@
 <table class="table table-striped table-bordered tablesorter-default {{ extra_class }}">
   <thead>
   <tr>
-    {% for field in ("Username", "E-mail", "Full name", "Status") %}
+    {% for field in ("Id", "E-mail", "Full name", "Status") %}
     <th>{{field}}</th>
     {% endfor %}
   </tr>
@@ -24,7 +24,7 @@
     <tr>
       <td>
         <a href="{{ url('profile', pk=obj.profile.id) }}">
-          {{obj.username}}
+          {{obj.id}}
         </a>
       </td>
       <td>

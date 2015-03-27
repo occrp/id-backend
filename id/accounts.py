@@ -30,8 +30,8 @@ class ProfileUpdate(UpdateView):
     def get_object(self, *args, **kwargs):
         if kwargs.has_key("pk"):
             return get_user_model().objects.get(id=kwargs["pk"]).profile
-        elif kwargs.has_key("username"):
-            return get_user_model().objects.get(username=kwargs["username"]).profile
+        elif kwargs.has_key("email"):
+            return get_user_model().objects.get(email=kwargs["email"]).profile
         return self.request.user.profile
 
     def get_context_data(self, form):
