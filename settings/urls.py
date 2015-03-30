@@ -31,7 +31,7 @@ urlpatterns = patterns('',
 
     #url(r'^request/(?P<ticket_id>[0-9]+)/pay/$', requests.RequestPaidHandler.as_view(), name='request_mark_paid'),
     #url(r'^request/(?P<ticket_id>[0-9]+)/charge/$', requests.RequestAddChargeHandler.as_view(), name='request_charge_add'),
-    #url(r'^request/submit/$', requests.RequestHandler.as_view(), name='request'),
+    url(r'^request/submit/$', perm('any', TemplateView, template_name="splash.jinja"), name='request'),
     #url(r'^request/request_unauthorized/$', requests.RequestUnauthorized.as_view(), name='request_unauthorized'),
     # url(r'^request/respond/$', requests.ResponseListHandler.as_view(), name='response_list'),
     # url(r'^request/public/$', requests.PublicListHandler.as_view(), name='public_list'),
