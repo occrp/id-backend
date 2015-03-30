@@ -8,6 +8,7 @@ import os
 import json
 from django.db.utils import IntegrityError
 import django
+import pickle
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 sys.path.append(os.path.abspath("../../"))
@@ -60,6 +61,7 @@ def convert(in_file):
     django.setup()
 
     i = 0
+    dupes = {}
     for user in users:
         i += 1
         print "\rAdding user profiles: %4d, %64s" % (i, user["email"]),
@@ -72,8 +74,16 @@ def convert(in_file):
             u.save()
         except IntegrityError, e:
             print "Skipping dupe: %s" % (e)
+            dupes[u.old_google_key] = u.email
     print "\rAdding user profiles: Done."
-
+    # do we need to save the dupes?
+    if dupes:
+        try:
+            with open('UserProfile.dupes', 'wb') as dupefile:
+                pickle.dump(dupes, dupefile)
+            print "Dumped %d dupes." % len(dupes)
+        except:
+            print 'Dumping %d dupes failed! You kind of need them for ticket import...' % len(dupes)
 
 
 if __name__ == "__main__":
