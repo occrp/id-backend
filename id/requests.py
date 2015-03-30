@@ -128,7 +128,7 @@ class RequestDetailsHandler(TemplateView):
             return self.abort(404)
 
         if not self.ticket.is_public and not (
-            request.user.profile.is_superuser or
+            request.user.is_superuser or
             request.user == self.ticket.requester or
             request.user in self.ticket.responders.objects.all() or
             request.user in self.ticket.volunteers.objects.all()):
