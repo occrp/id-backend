@@ -9,6 +9,7 @@ import json
 from django.db.utils import IntegrityError
 import django
 from ast import literal_eval
+import pickle
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 sys.path.append(os.path.abspath("../../"))
@@ -17,6 +18,23 @@ from django.contrib.auth import get_user_model;
 
 # we're gonna need that...
 import re
+
+
+# getting a user profile from the db, using profiledupes if needed
+def get_user_profile(value):
+    try:
+        # try the db
+        return get_user_model().objects.get(old_google_key=value)
+    except:
+        try:
+            # try the db using profiledupes
+            print '+-- looking for dupe user: %s (%s)' % (value, profiledupes[value])
+            return get_user_model().objects.get(email=profiledupes[value])
+            print '+-- found! %s' % value.id
+        except:
+            print('User with old_google_key: "%s" does not seem to exist (even as a dupe); have you imported user data already?' % value)
+            sys.exit(1)
+
 
 def convert(in_file):
  
@@ -92,7 +110,7 @@ def convert(in_file):
     i = 0
     for ticket in tickets:
         i += 1
-        print("Adding %20s ticket data: %4d, %s %s" % (ticket["ticket_type"], i, ticket["family"], type(ticket["family"])))
+        print("Adding %20s ticket data: %4d, %s (old key: %s)" % (ticket["ticket_type"], i, ticket["name"], ticket["key"]))
         
         # which kind of ticket are we working with?
         if ticket['ticket_type'] == 'person_ownership':
@@ -110,14 +128,14 @@ def convert(in_file):
             # this has to be a Profile instance
             # or, actually, anything that we use as the User model these days
             if key == "requester":
-                try:
-                    value = get_user_model().objects.get(old_google_key=value)
-                except:
-                    print('User with old_google_key: "%s" does not seem to exist; have you imported user data already?' % value)
-                    sys.exit(1)
+                # get user's profile even if it was a dupe and not got included in the db
+                value = get_user_profile(value)
             # we don't need time here
-            elif key == 'deadline':
+            elif key in ['deadline', 'dob']:
                 value = value.strip()[:10]
+                # and we definitely don't need empty dates
+                if not value:
+                    continue
             elif key == "responders":
                 # we're not going to save that into the ticket directly
                 # instead, we're saving it for use after the ticket is saved
@@ -139,13 +157,13 @@ def convert(in_file):
             print('Responders: "%s"' % responders)
             for resp in r.finditer(responders):
                 print '+-- %s' % resp.group(1)
-                u = get_user_model().objects.get(old_google_key=resp.group(1))
+                u = get_user_profile(resp.group(1))
                 t.responders.add(u)
             # ...and volunteers
             print('Volunteers: "%s"' % volunteers)
             for vol in r.finditer(volunteers):
                 print '+-- %s' % vol.group(1)
-                u = get_user_model().objects.get(old_google_key=vol.group(1))
+                u = get_user_profile(vol.group(1))
                 t.volunteers.add(u)
         # wat.
         except IntegrityError, e:
@@ -155,6 +173,15 @@ def convert(in_file):
 
 
 if __name__ == "__main__":
+  
+    print "Loading dupes..."
+    try:
+        with open('UserProfile.dupes', 'rb') as dupefile:
+            profiledupes = pickle.load(dupefile)
+        print '+-- loaded %d dupes' % len(profiledupes)
+    except:
+        print "+-- error, no dupes loaded! you kind of need them, though..."
+  
     try:
         script, input_file_name = sys.argv
     except ValueError:
