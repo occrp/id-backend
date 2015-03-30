@@ -40,10 +40,12 @@ def convert(in_file):
             # user and is_for_profit are kill.
             if key in ("user", "is_for_profit"):
                 pass
-            elif key == "id":
-                user["old_google_id"] = value
+            # this is the internal ID from bigtable
+            elif key == "key":
+                user["old_google_key"] = value
+                print('old_google_key : %s' % value)
+            # we have to handle "True"/"False" properly
             else:
-                # we have to handle "True"/"False" properly
                 if value == 'False':
                     value = False
                 elif value == 'True':

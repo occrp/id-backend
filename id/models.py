@@ -72,7 +72,7 @@ class Profile(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=True)
     is_volunteer = models.BooleanField(default=False)
     is_active   = models.BooleanField(default=True)
-    old_google_id = models.CharField(blank=True, max_length=100)
+    old_google_key = models.CharField(blank=True, max_length=100)  # id from google app engine
     date_joined = models.DateTimeField(_('Date Joined'), default=timezone.now)
 
     network = models.ForeignKey(Network, null=True, blank=True)
