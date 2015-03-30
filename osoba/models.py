@@ -141,6 +141,8 @@ class Vegetation(GeonameObject):
 class Address(OsobaObject):
     line1 = models.StringProperty()
     line2 = models.StringProperty()
+    line3 = models.StringProperty()
+    line4 = models.StringProperty()
     city = models.Relationship('City', rel_type='is_in')
     state = models.Relationship('Place', rel_type='is_in')
     postcode = models.StringProperty()
@@ -148,6 +150,11 @@ class Address(OsobaObject):
 
 class Company(LegalPersonObject):
     name = models.StringProperty()
+    incorporation_date = models.DateProperty()
+    dissolution_date = models.DateProperty()    
+    is_liquidated: models.BooleanProperty(),
+    in_receivership: models.BooleanProperty(),
+
     emails = models.Relationship('EmailAddress', rel_type='has_address')
     phones = models.Relationship('PhoneNumber', rel_type='has_phoneno')
 
