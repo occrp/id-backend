@@ -241,7 +241,7 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
 class PersonTicket(Ticket):
     """ Person ownership request """
     ticket_type = 'person_ownership'
-    name = models.CharField(max_length=50, blank=False, verbose_name=_('Name'))
+    name = models.CharField(max_length=300, blank=False, verbose_name=_('Name'))
     aliases = models.TextField(blank=True, verbose_name=_('Aliases'), help_text=_("Other names they are known by"))
     background = models.TextField(blank=False, verbose_name=_('Background'))
     biography = models.TextField(blank=False, verbose_name=_('Biography'))
@@ -249,14 +249,14 @@ class PersonTicket(Ticket):
     business_activities = models.TextField(
         blank=False,
         verbose_name=_('Business Activities'))
-    dob = models.DateField(blank=False, verbose_name=_('Date of Birth'))
-    birthplace = models.CharField(max_length=50,
+    dob = models.DateField(null=True, blank=True, verbose_name=_('Date of Birth'))
+    birthplace = models.CharField(max_length=100,
         blank=False,
         verbose_name=_('Place of Birth'))
     initial_information = models.TextField(
         blank=False,
         verbose_name=_('Where have you looked?'))
-    location = models.CharField(max_length=50,
+    location = models.CharField(max_length=64,
         blank=False,
         verbose_name=_('Location'))
 
@@ -279,10 +279,10 @@ class PersonTicket(Ticket):
 class CompanyTicket(Ticket):
     """ Company ownership request """
     ticket_type = 'company_ownership'
-    name = models.CharField(max_length=50,
+    name = models.CharField(max_length=300,
         blank=False,
         verbose_name=_('Company Name'))
-    country = models.CharField(max_length=70, choices=COUNTRIES,
+    country = models.CharField(max_length=100, choices=COUNTRIES,
                              blank=False,
                              verbose_name=_('Country Registered'))
     background = models.TextField(blank=False, verbose_name=_('Background'))
