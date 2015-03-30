@@ -8,6 +8,7 @@ id2:
   links:
     - mysql
     - neo4j
+    - elasticsearch
 neo4j:
   image: tpires/neo4j
   cap_add:
@@ -21,3 +22,5 @@ mysql:
     MYSQL_USER:     id2
     MYSQL_PASSWORD: id2
     MYSQL_DATABASE: id2
+elasticsearch:
+  image: elasticsearch
