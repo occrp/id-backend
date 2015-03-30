@@ -242,7 +242,7 @@ class PersonTicket(Ticket):
     """ Person ownership request """
     ticket_type = 'person_ownership'
     name = models.CharField(max_length=50, blank=False, verbose_name=_('Name'))
-    aliases = models.TextField(blank=True, verbose_name=_('Aliases'))
+    aliases = models.TextField(blank=True, verbose_name=_('Aliases'), help_text=_("Other names they are known by"))
     background = models.TextField(blank=False, verbose_name=_('Background'))
     biography = models.TextField(blank=False, verbose_name=_('Biography'))
     family = models.TextField(blank=True, verbose_name=_('Family'))

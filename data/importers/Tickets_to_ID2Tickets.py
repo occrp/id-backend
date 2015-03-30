@@ -12,7 +12,7 @@ from ast import literal_eval
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 sys.path.append(os.path.abspath("../../"))
-from id.models import *
+from ticket.models import *
 
 
 def convert(in_file):
@@ -86,21 +86,22 @@ def convert(in_file):
     for ticket in tickets:
         i += 1
         print("Adding %20s ticket data: %4d, %s %s" % (ticket["ticket_type"], i, ticket["family"], type(ticket["family"])))
-        #sys.stdout.flush()
         
         # which kind of ticket are we working with?
-        """t = Ticket()
+        if ticket['ticket_type'] == 'person_ownership':
+            t = PersonTicket()
+        elif ticket['ticket_type'] == 'company_ownership':
+            t = CompanyTicket()
+        elif ticket['ticket_type'] == 'other':
+            t = OtherTicket()
         
-        u.is_superuser = user["is_admin"]
-        for key, value in user.iteritems():
-            setattr(u, key, value)
+        for key, value in ticket.iteritems():
+            setattr(t, key, value)
         try:
-            u.save()
+            t.save()
         except IntegrityError, e:
             print "Skipping dupe: %s" % (e)
-    print "\rAdding user profiles: Done."
-    """
-
+    print "\rAdding tickets: Done."
 
 
 if __name__ == "__main__":
