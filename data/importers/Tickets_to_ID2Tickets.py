@@ -10,6 +10,7 @@ from django.db.utils import IntegrityError
 import django
 from ast import literal_eval
 import pickle
+import datetime
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 sys.path.append(os.path.abspath("../../"))
@@ -136,6 +137,10 @@ def convert(in_file):
                 # and we definitely don't need empty dates
                 if not value:
                     continue
+            # needd to pay special attention to dates
+            elif key in ['created', 'status_updated']:
+                print '     +-- value: %s' % value
+                    #continue
             elif key == "responders":
                 # we're not going to save that into the ticket directly
                 # instead, we're saving it for use after the ticket is saved
@@ -149,10 +154,16 @@ def convert(in_file):
             # set the attribute
             setattr(t, key, value)
         
+        # fix status_updated
+        if not t.status_updated:
+            t.status_updated = datetime.datetime.strptime(t.created, '%Y-%m-%d %H:%M:%S.%f')
+            print '+-- t.status_updated set to t.created : %s' % t.status_updated
         # databasing the database
         try:
             # save the ticket
             t.save()
+            print '+-- created        : %s' % t.created
+            print '+-- status_updated : %s' % t.status_updated
             # handle responders...
             print('Responders: "%s"' % responders)
             for resp in r.finditer(responders):

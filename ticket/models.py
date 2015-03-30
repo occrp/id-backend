@@ -9,6 +9,7 @@ from core.mixins import ModelDiffMixin, DisplayMixin
 
 from constants import *
 from utils import *
+import datetime
 
 ######## Data requests #################
 class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
@@ -29,7 +30,7 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
 
     created = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=70, choices=TICKET_STATUS, default='new')
-    status_updated = models.DateTimeField(auto_now=True)
+    status_updated = models.DateTimeField(default=datetime.datetime.now, null=False)
     findings_visible = models.BooleanField(default=False,
                                            verbose_name=_('Findings Public'))
     is_for_profit = models.BooleanField(default=False,
