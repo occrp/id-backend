@@ -7,7 +7,7 @@
 USING PERIODIC COMMIT 200
 LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
 MERGE (uk:Country {iso: "UK"})
-CREATE (company:LegalPerson:Company:UKCompany {
+CREATE (company:LegalPerson:Company:UKCompany:CompaniesHouseData {
     name: csvLine.name,
     incorporation_date: csvLine.inc,
     dissolution_date: csvLine.dissdate,
@@ -17,7 +17,7 @@ CREATE (company:LegalPerson:Company:UKCompany {
     uk_cs_id: csvLine.org,
 
 })
-CREATE UNIQUE (sic07:SIC07 {
+CREATE UNIQUE (sic07:SIC07:CompaniesHouseData {
     sic07code: csvLine.sic07,
     description: csvLine.sic07code
 })
@@ -28,6 +28,7 @@ CREATE UNIQUE (regaddress:Address {
     addr4: csvLine.trad4,
     postcode: csvline.tradpost
 })
+SET regaddress :CompaniesHouseData
 CREATE UNIQUE (mainaddress:Address {
     addr1: csvLine.trad1,
     addr2: csvLine.trad2,
@@ -35,6 +36,7 @@ CREATE UNIQUE (mainaddress:Address {
     addr4: csvLine.trad4,
     postcode: csvline.tradpost
 })
+SET mainaddress :CompaniesHouseData
 CREATE (company)-[:registered_in]->(country)
 CREATE (company)-[:registered_at]->(regaddress)
 CREATE UNIQUE (company)-[:has_address]->(regaddress)
