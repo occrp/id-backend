@@ -3,14 +3,18 @@
 
 USING PERIODIC COMMIT 500
 LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
-CREATE (person:LegalPerson:Person:UKPerson {
-    uk_cs_pnr: csvLine.pnr,
+CREATE UNIQUE (person:Person {
     dob: csvLine.dob,
     first_name: csvLine.fname,
     middle_names: csvLine.mname,
     last_name: csvLine.sname,
     name_honours: csvLine.hns,
     name_suffix: csvLine.suf,
-    title: csvLine.title
+    title: csvLine.title,
 })
+SET person :LegalPerson:Person:UKPerson:CompaniesHouseData
+CREATE (chpnr:CompaniesHousePNR {
+    uk_cs_pnr: csvLine.pnr
+})
+CREATE (chpnr)-[:is]->(person)
 ;

@@ -7,16 +7,20 @@ CREATE INDEX ON :UKPerson(uk_cs_pnr)
 
 USING PERIODIC COMMIT 500
 LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
-CREATE (person:LegalPerson:Person:UKPerson {
-    uk_cs_pnr: csvLine.pnr,
+CREATE UNIQUE (person:Person {
     dob: csvLine.dob,
     first_name: csvLine.fname,
     middle_names: csvLine.mname,
     last_name: csvLine.sname,
     name_honours: csvLine.hns,
     name_suffix: csvLine.suf,
-    title: csvLine.title
+    title: csvLine.title,
 })
+SET person :LegalPerson:Person:UKPerson:CompaniesHouseData
+CREATE (chpnr:CompaniesHousePNR {
+    uk_cs_pnr: csvLine.pnr
+})
+CREATE (chpnr)-[:is]->(person)
 ;
 
 // ==> cs_uk_companies.csv <==
@@ -28,7 +32,7 @@ CREATE (person:LegalPerson:Person:UKPerson {
 USING PERIODIC COMMIT 200
 LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
 MERGE (uk:Country {iso: "UK"})
-CREATE (company:LegalPerson:Company:UKCompany {
+CREATE (company:LegalPerson:Company:UKCompany:CompaniesHouseData {
     name: csvLine.name,
     incorporation_date: csvLine.inc,
     dissolution_date: csvLine.dissdate,
@@ -38,7 +42,7 @@ CREATE (company:LegalPerson:Company:UKCompany {
     uk_cs_id: csvLine.org,
 
 })
-CREATE UNIQUE (sic07:SIC07 {
+CREATE UNIQUE (sic07:SIC07:CompaniesHouseData {
     sic07code: csvLine.sic07,
     description: csvLine.sic07code
 })
@@ -49,6 +53,7 @@ CREATE UNIQUE (regaddress:Address {
     addr4: csvLine.trad4,
     postcode: csvline.tradpost
 })
+SET regaddress :CompaniesHouseData
 CREATE UNIQUE (mainaddress:Address {
     addr1: csvLine.trad1,
     addr2: csvLine.trad2,
@@ -56,6 +61,7 @@ CREATE UNIQUE (mainaddress:Address {
     addr4: csvLine.trad4,
     postcode: csvline.tradpost
 })
+SET mainaddress :CompaniesHouseData
 CREATE (company)-[:registered_in]->(country)
 CREATE (company)-[:registered_at]->(regaddress)
 CREATE UNIQUE (company)-[:has_address]->(regaddress)
@@ -80,11 +86,13 @@ CREATE UNIQUE (address:Address {
     addr4: csvLine.trad4,
     postcode: csvline.tradpost,
 })
+SET address :CompaniesHouseData
 CREATE UNIQUE (company)-[:has_address]->(address)
 CREATE UNIQUE (address)-[:is_in]->(c)
 CREATE UNIQUE (telephone:PhoneNumber) {
     number: csvLine.tel
 })
+SET telephone :CompaniesHouseData
 CREATE (company)-[:has_phonenumber]->(telephone)
 ;
 
@@ -95,7 +103,7 @@ CREATE (company)-[:has_phonenumber]->(telephone)
 USING PERIODIC COMMIT 100
 LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
 MERGE (company:UKCompany {uk_cs_id: csvLine.org})
-CREATE (cr:CompanyRecord:UKCompanyRecord {
+CREATE (cr:CompanyRecord:UKCompanyRecord:CompaniesHouseData {
     date:                   csvLine.date
     accounts_format:        csvLine.accformat
     tangible_assets:        csvLine.tangas,
@@ -152,16 +160,19 @@ CREATE (cr:CompanyRecord:UKCompanyRecord {
     consolidated_accounts:  csvLine.consol,
     shareholder_funds:      csvLine.shrfun,
 })
-CREATE (solicitor:Person:LegalPerson:Solicitor {
+CREATE UNIQUE (solicitor:Person {
     name:   csvLine.solname,
 })
-CREATE (auditor:Person:LegalPerson:Auditor {
+SET solicitor :LegalPerson:Solicitor:CompaniesHouseData
+CREATE UNIQUE (auditor:Person {
     name:   csvLine.audname,
     auditor_qualification_code: csvLine.audqual,
 })
-CREATE (accountant:Person:LegalPerson:Accountant {
+SET auditor :LegalPerson:Auditor:CompaniesHouseData
+CREATE UNIQUE (accountant:Person {
     name:   csvLine.accname,
 })
+SET accountant :LegalPerson:Accountant:CompaniesHouseData
 CREATE (solicitor)-[:solicitor_for]->(company)
 CREATE (accountant)-[:accounted]->(cr)
 CREATE (accountant)-[:accountant_for]->(company)
@@ -175,7 +186,7 @@ CREATE (auditor)-[:audited]->(company)
 USING PERIODIC COMMIT 200
 LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
 MERGE (company:UKCompany {uk_cs_id: csvLine.org})
-MERGE (person:UKPerson {uk_cs_pnr: csvLine.pnr})
+MERGE (pnr:CompaniesHousePNR {uk_cs_pnr: csvLine.pnr})-[:is]->(person:UKPerson)
 CREATE (person)-[:director_of {
         date_appointed:     csvLine.appdate,
         date_resigned:      csvLine.resdate,
@@ -212,6 +223,7 @@ CREATE UNIQUE (company:Company {
     name:             csvLine.name,
     creditsafe_id:    csvLine.name,
 })
+SET company :CompaniesHouseData
 CREATE (company)-[:registered_in]->(country)
 CREATE (holding)-[:owns]->(company)
 CREATE (ultimateholding)-[:ultimately_holds]->(company)
