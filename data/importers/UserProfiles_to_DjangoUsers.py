@@ -24,6 +24,9 @@ def convert(in_file):
     cnt = 0
 
     users = []
+    
+    # needed for verification
+    all_emails = []
 
     print "Harvesting from CSV: ",
     for row in reader:
@@ -56,7 +59,11 @@ def convert(in_file):
                 # set the key
                 user[key] = value
 
+        # working array
         users.append(user)
+        # verification array
+        if user['email'] not in all_emails:
+            all_emails.append(user['email']);
 
     print "... Got %d users" % (cnt - 1)
     print "Setting up django..."
@@ -86,16 +93,35 @@ def convert(in_file):
             
     print "\rAdding user profiles: Done."
     
+    # verify all e-mails found their wait into the database
+    print "Verifying all emails have in fact been properly imported..."
+    failed_emails = []
+    for email in all_emails:
+        print '\r+-- checking: %60s...' % email,
+        sys.stdout.flush()
+        try:
+            u = Profile.objects.get(email=email)
+            if not u:
+                failed_emails.append(email)
+                print '     +-- warning: not in database!'
+        except e:
+            print('+-- whoops, we have an exception: %s' % e)
+    if failed_emails:
+        print('\rEmail verification failed in %d instances.' % len(failed_emails))
+    else:
+        print('\rEmail verification passed.')
+    
     # we need to save the old_google_key-related data
     try:
-        with open('UserProfile.gkeys', 'wb') as gkeysfile:
+        with open(user_gkeys_file, 'wb') as gkeysfile:
             pickle.dump(gkeys, gkeysfile)
-        print "Dumped %d gkeys." % len(gkeys)
+        print "Dumped %d gkeys to %s." % (len(gkeys), user_gkeys_file)
     except:
-        print 'Dumping %d gkeys has failed! You kind of need them for ticket import...' % len(gkeys)
+        print 'Dumping %d gkeys to %s has failed! You kind of need them for ticket import...' % (len(gkeys), user_gkeys_file)
 
 
 if __name__ == "__main__":
+    
     try:
         script, input_file_name = sys.argv
     except ValueError:
@@ -103,4 +129,8 @@ if __name__ == "__main__":
         sys.exit()
 
     in_file = input_file_name
+    workdir = os.path.dirname(os.path.abspath(in_file))
+    
+    user_gkeys_file = os.path.join(workdir, 'UserProfile.gkeys')
+    
     convert(in_file)
