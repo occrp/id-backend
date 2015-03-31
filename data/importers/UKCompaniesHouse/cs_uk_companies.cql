@@ -15,7 +15,6 @@ CREATE (company:LegalPerson:Company:UKCompany:CompaniesHouseData {
     in_receivership: csvLine.rec_status,
 
     uk_cs_id: csvLine.org,
-
 })
 CREATE UNIQUE (sic07:SIC07:CompaniesHouseData {
     sic07code: csvLine.sic07,
@@ -39,8 +38,8 @@ CREATE UNIQUE (mainaddress:Address {
 SET mainaddress :CompaniesHouseData
 CREATE (company)-[:registered_in]->(country)
 CREATE (company)-[:registered_at]->(regaddress)
-CREATE UNIQUE (company)-[:has_address]->(regaddress)
-CREATE UNIQUE (company)-[:main_address]->(regaddress)
+CREATE UNIQUE (company)-[:has_address]->(mainaddress)
+CREATE UNIQUE (company)-[:main_address]->(mainaddress)
 CREATE (company)-[:sic07code]->(sic07)
 CREATE (company)-[:website]->(Website: {
     url: csvLine.web,
