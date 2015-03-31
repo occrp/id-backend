@@ -122,6 +122,10 @@ NEO4J_DATABASES = {
 # DATABASE_ROUTERS = ['neo4django.utils.Neo4djangoIntegrationRouter']
 
 
+# our own precious User model
+# as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
+AUTH_USER_MODEL = 'id.Profile'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
