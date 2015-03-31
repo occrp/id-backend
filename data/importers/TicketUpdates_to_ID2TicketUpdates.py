@@ -22,7 +22,7 @@ missing_tickets = []
 def get_user_profile(value):
     # known-missing?
     if value in missing_users:
-        print('User with old_google_key: "%s" does not seem to exist in UserProfile.gkeys; have you imported user data already?' % value)
+        print('User with old_google_key: "%s" does not seem to exist in %s; have you imported user data already?' % (value, user_gkeys_file))
         return None
     # should be known, try getting it from the db
     try:
@@ -32,14 +32,14 @@ def get_user_profile(value):
         print '+-- found! id: %s' % value.id
     except:
         missing_users.append(value)
-        print('User with old_google_key: "%s" does not seem to exist in UserProfile.gkeys; have you imported user data already?' % value)
+        print('User with old_google_key: "%s" does not seem to exist in %s; have you imported user data already?' % (value, user_gkeys_file))
         return None
 
 # getting a ticket from the db based on gkeys, using ticketgkeys
 def get_ticket(value):
     # known-missing?
     if value in missing_tickets:
-        print('Ticket with old_google_key: "%s" does not seem to exist in Ticket.gkeys; have you imported user data already?' % value)
+        print('Ticket with old_google_key: "%s" does not seem to exist in %s; have you imported user data already?' % (value, ticket_gkeys_file))
         return None
     # should be known, try getting it from the db
     try:
@@ -49,7 +49,7 @@ def get_ticket(value):
         print '+-- found! id: %s' % value.id
     except:
         missing_tickets.append(value)
-        print('Ticket with old_google_key: "%s" does not seem to exist in Ticket.gkeys; have you imported user data already?' % value)
+        print('Ticket with old_google_key: "%s" does not seem to exist in %s; have you imported user data already?' % (value, ticket_gkeys_file))
 
 
 def convert(in_file):
@@ -105,7 +105,7 @@ def convert(in_file):
                 # did we actually get anything?
                 if not value:
                     # no. break -- this will make the else part of the for not execute
-                    print("+-- ignoring this ticket update due to missing user! you'll find all missing user gkeys in UserProfile.missing")
+                    print("+-- ignoring this ticket update due to missing user! you'll find all missing user gkeys in %s" % user_missing_file)
                     break
             # this has to be a Ticket instance
             elif key == "ticket":
@@ -113,7 +113,7 @@ def convert(in_file):
                 # did we actually get anything?
                 if not value:
                     # no. break -- this will make the else part of the for not execute
-                    print("+-- ignoring this ticket update due to missing ticket! you'll find all missing ticket gkeys in Ticket.missing")
+                    print("+-- ignoring this ticket update due to missing ticket! you'll find all missing ticket gkeys in %s" % ticket_missing_file)
                     break
             # set the attribute
             setattr(t, key, value)
@@ -134,14 +134,28 @@ def convert(in_file):
 
 if __name__ == "__main__":
   
+    try:
+        script, input_file_name = sys.argv
+    except ValueError:
+        print "\nRun via:\n\n%s input_file_name" % sys.argv[0]
+        sys.exit()
+        
+    in_file = input_file_name
+    workdir = os.path.dirname(os.path.abspath(in_file))
+    
+    user_gkeys_file = os.path.join(workdir, 'UserProfile.gkeys')
+    user_missing_file = os.path.join(workdir, 'UserProfile.missing')
+    ticket_gkeys_file = os.path.join(workdir, 'Ticket.gkeys')
+    ticket_missing_file = os.path.join(workdir, 'Ticket.missing')
+  
     print "Loading gkeys..."
     try:
-        with open('UserProfile.gkeys', 'rb') as gkeyfile:
+        with open(user_gkeys_file, 'rb') as gkeyfile:
             profilegkeys = pickle.load(gkeyfile)
-        print '+-- loaded %d UserProfile gkeys' % len(profilegkeys)
-        with open('Ticket.gkeys', 'rb') as gkeyfile:
+        print '+-- loaded %d UserProfile gkeys from %s' % (len(profilegkeys), user_gkeys_file)
+        with open(ticket_gkeys_file, 'rb') as gkeyfile:
             ticketgkeys = pickle.load(gkeyfile)
-        print '+-- loaded %d Ticket gkeys' % len(ticketgkeys)
+        print '+-- loaded %d Ticket gkeys from %s' % (len(ticketgkeys), ticket_gkeys_file)
     except:
         print "+-- error, no gkeys loaded! you kind of need them, though..."
         sys.exit(1)
@@ -149,36 +163,30 @@ if __name__ == "__main__":
     # users known to be missing
     print "Loading missing user gkeys..."
     try:
-        with open('UserProfile.missing', 'rb') as missingfile:
+        with open(user_missing_file, 'rb') as missingfile:
             missing_users = pickle.load(missingfile)
-        print '+-- loaded %d missing user gkeys' % len(missing_users)
+        print '+-- loaded %d missing user gkeys from %s' % (len(missing_users), user_missing_file)
     except:
-        print "+-- warning, no missing user gkeys loaded."
-
-    try:
-        script, input_file_name = sys.argv
-    except ValueError:
-        print "\nRun via:\n\n%s input_file_name" % sys.argv[0]
-        sys.exit()
-
-    in_file = input_file_name
+        print "+-- warning, no missing user gkeys loaded, tried from %s." % user_missing_file
+    
+    
     convert(in_file)
 
   
     # saving missing users, if any
     if missing_users:
         try:
-            with open('UserProfile.missing', 'wb') as missingfile:
+            with open(user_missing_file, 'wb') as missingfile:
                 pickle.dump(missing_users, missingfile)
-            print "Dumped %d missing user gkeys to `UserProfile.missing`." % len(missing_users)
+            print "Dumped %d missing user gkeys to %s." % (len(missing_users), user_missing_file)
         except:
-            print 'Dumping %d missing user gkeys has failed!..' % len(gkeys)
+            print 'Dumping %d missing user gkeys to %s has failed!..' % (len(gkeys), user_missing_file)
             
     # saving missing tickets, if any
     if missing_tickets:
         try:
-            with open('Ticket.missing', 'wb') as missingfile:
+            with open(ticket_missing_file, 'wb') as missingfile:
                 pickle.dump(missing_tickets, missingfile)
-            print "Dumped %d missing ticket gkeys to `Ticket.missing`." % len(missing_tickets)
+            print "Dumped %d missing ticket gkeys to %s." % (len(missing_tickets), ticket_missing_file)
         except:
-            print 'Dumping %d missing ticket gkeys has failed!..' % len(gkeys)
+            print 'Dumping %d missing ticket gkeys to %s has failed!..' % (len(gkeys), ticket_missing_file)

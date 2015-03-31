@@ -142,7 +142,7 @@ def convert(in_file):
                 # did we actually get anything?
                 if not value:
                     # no. break -- this will make the else part of the for not execute
-                    print("+-- ignoring this ticket update due to missing user! you'll find all missing user gkeys in UserProfile.missing")
+                    print("+-- ignoring this ticket update due to missing user! you'll find all missing user gkeys in %s" % user_missing_file)
                     break
             # we don't need time here
             elif key in ['deadline', 'dob']:
@@ -212,38 +212,44 @@ def convert(in_file):
     
     # we need to save the old_google_key-related data
     try:
-        with open('Ticket.gkeys', 'wb') as gkeysfile:
+        with open(ticket_gkeys_file, 'wb') as gkeysfile:
             pickle.dump(gkeys, gkeysfile)
-        print "Dumped %d gkeys." % len(gkeys)
+        print "Dumped %d gkeys to %s." % (len(gkeys), ticket_gkeys_file)
     except:
-        print 'Dumping %d gkeys has failed! You kind of need them for ticket updates import...' % len(gkeys)
+        print 'Dumping %d gkeys to %s has failed! You kind of need them for ticket updates import...' % (len(gkeys), ticket_gkeys_file)
 
 
 if __name__ == "__main__":
-  
-    print "Loading gkeys..."
-    try:
-        with open('UserProfile.gkeys', 'rb') as gkeyfile:
-            profilegkeys = pickle.load(gkeyfile)
-        print '+-- loaded %d UserProfile gkeys' % len(profilegkeys)
-    except:
-        print "+-- error, no gkeys loaded! you kind of need them, though..."
-        sys.exit(1)
   
     try:
         script, input_file_name = sys.argv
     except ValueError:
         print "\nRun via:\n\n%s input_file_name" % sys.argv[0]
         sys.exit()
-
+  
     in_file = input_file_name
+    workdir = os.path.dirname(os.path.abspath(in_file))
+    
+    user_gkeys_file = os.path.join(workdir, 'UserProfile.gkeys')
+    user_missing_file = os.path.join(workdir, 'UserProfile.missing')
+    ticket_gkeys_file = os.path.join(workdir, 'Ticket.gkeys')
+  
+    print "Loading gkeys..."
+    try:
+        with open(user_gkeys_file, 'rb') as gkeyfile:
+            profilegkeys = pickle.load(gkeyfile)
+        print '+-- loaded %d UserProfile gkeys from %s' % (len(profilegkeys), user_gkeys_file)
+    except:
+        print "+-- error, no gkeys loaded (tried: %s)! you kind of need them, though..." % user_gkeys_file
+        sys.exit(1)
+    
     convert(in_file)
     
     # saving missing users, if any
     if missing_users:
         try:
-            with open('UserProfiles.missing', 'wb') as missingfile:
+            with open(user_missing_file, 'wb') as missingfile:
                 pickle.dump(missing_users, missingfile)
-            print "Dumped %d missing user gkeys to `UserProfiles.missing`." % len(missing_users)
+            print "Dumped %d missing user gkeys to %s." % (len(missing_users), user_missing_file)
         except:
-            print 'Dumping %d missing user gkeys has failed!..' % len(gkeys)
+            print 'Dumping %d missing user gkeys %s has failed!..' % (len(gkeys), user_missing_file)
