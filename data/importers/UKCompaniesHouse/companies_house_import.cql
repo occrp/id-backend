@@ -5,7 +5,7 @@ CREATE INDEX ON :UKPerson(uk_cs_pnr)
 // ==> cs_uk_directors.csv <==
 // version,hns,suf,mname,dob,trp02,pnr,title,ptitle,fname,sname
 
-USING PERIODIC COMMIT
+USING PERIODIC COMMIT 500
 LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
 CREATE (person:LegalPerson:Person:UKPerson {
     uk_cs_pnr: csvLine.pnr,
@@ -25,8 +25,9 @@ CREATE (person:LegalPerson:Person:UKPerson {
 // rec_status,web,stat,type,volag,dissdate,acc_type,post,
 // admin,liq_status,charnum
 
-USING PERIODIC COMMIT
+USING PERIODIC COMMIT 200
 LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
+MERGE (uk:Country {iso: "UK"})
 CREATE (company:LegalPerson:Company:UKCompany {
     name: csvLine.name,
     incorporation_date: csvLine.inc,
@@ -55,6 +56,7 @@ CREATE UNIQUE (mainaddress:Address {
     addr4: csvLine.trad4,
     postcode: csvline.tradpost
 })
+CREATE (company)-[:registered_in]->(country)
 CREATE (company)-[:registered_at]->(regaddress)
 CREATE UNIQUE (company)-[:has_address]->(regaddress)
 CREATE UNIQUE (company)-[:main_address]->(regaddress)
@@ -66,7 +68,7 @@ CREATE (company)-[:website]->(Website: {
 // ==> cs_uk_trading_addresses.csv <==
 // version,_id,tradpost,trad1,trad4,tel,td001,org,tps,trad2,trad3
 
-USING PERIODIC COMMIT
+USING PERIODIC COMMIT 200
 LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
 MERGE (c:Country {iso:"UK"})
 MERGE (company:UKCompany {uk_cs_id: csvLine.org})
@@ -89,7 +91,7 @@ CREATE (company)-[:has_phonenumber]->(telephone)
 // ==> cs_uk_company_accounts.csv <==
 // version,tangas,audqual,netwrth,stock,nomon,taxation,date,incincsh,sunrese,placcres,trdebt,contliab,liabcurr,asstotfix,netass,grprof,ptaxpro,ltloan,diremol,netcsfrfn,trp04,capemp,accname,liabmisccur,totliab,asstotcur,cstsales,wrkcap,liablt,netcsbffn,proaftax,org,intpay,intass,exports,curr,bnkovr,retpro,audfee,depre,numemp,audname,acctype,revres,opprof,bnkovltln,shrttrmlns,paidupeq,asscur,trover,accformat,asstot,acstat,wages,trcred,divpay,opnetcashf,consol,shrfun,solname,assothcur
 
-USING PERIODIC COMMIT
+USING PERIODIC COMMIT 100
 LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
 MERGE (company:UKCompany {uk_cs_id: csvLine.org})
 CREATE (cr:CompanyRecord:UKCompanyRecord {
@@ -167,9 +169,49 @@ CREATE (auditor)-[:audited]->(company)
 ;
 
 // ==> cs_uk_directorships.csv <==
-// version,poscode,resdate_str,func,pnr,trp03,org,funcode,pos,sec,active,resdate,appdate,id
-
+// version,poscode,resdate_str,func,pnr,trp03,org,
+// funcode,pos,sec,active,resdate,appdate,id
+USING PERIODIC COMMIT 200
+LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
+MERGE (company:UKCompany {uk_cs_id: csvLine.org})
+MERGE (person:UKPerson {uk_cs_pnr: csvLine.pnr})
+CREATE (person)-[:director_of {
+        date_appointed:     csvLine.appdate,
+        date_resigned:      csvLine.resdate,
+        function:           csvLine.func,
+        position:           csvLine.pos
+    }]->(company)
+;
 
 // ==> cs_uk_group_structure.csv <==
-// version,gs002,regnum,safenum,name,holdnum,level,org,kfin,ultholdnum
+// version,gs002,regnum,safenum,name,holdnum,
+// level,org,kfin,ultholdnum
+// Here we split the input into two sets:
+//   - Companies registered in UK (just link them)
+//   - Companies registered elsewhere (need to create them)
 
+// UK companies held in UK
+USING PERIODIC COMMIT 400
+LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
+MERGE (company:UKCompany {uk_cs_id: csvLine.org})
+MERGE (holding:UKCompany {uk_cs_id: csvLine.holdnum})
+MERGE (ultimateholding:UKCompany {uk_cs_id: csvLine.ultholdnum})
+SET company.creditsafe_id = csvLine.safenum
+CREATE (holding)-[:owns]->(company)
+CREATE (ultimateholding)-[:ultimately_holds]->(company)
+;
+
+// Foreign companies held in UK
+USING PERIODIC COMMIT 400
+LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
+MERGE (holding:UKCompany {uk_cs_id: csvLine.holdnum})
+MERGE (ultimateholding:UKCompany {uk_cs_id: csvLine.ultholdnum})
+MERGE (country:Country {isocode: csvLine.countrycode})
+CREATE UNIQUE (company:Company {
+    name:             csvLine.name,
+    creditsafe_id:    csvLine.name,
+})
+CREATE (company)-[:registered_in]->(country)
+CREATE (holding)-[:owns]->(company)
+CREATE (ultimateholding)-[:ultimately_holds]->(company)
+;
