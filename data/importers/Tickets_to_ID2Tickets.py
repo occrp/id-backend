@@ -20,21 +20,24 @@ from django.contrib.auth import get_user_model;
 # we're gonna need that...
 import re
 
+missing_users = []
 
-# getting a user profile from the db, using profiledupes if needed
+# getting a user profile from the db based on gkeys, using profilegkeys
 def get_user_profile(value):
+    # known-missing?
+    if value in missing_users:
+        print('User with old_google_key: "%s" does not seem to exist in UserProfile.gkeys; have you imported user data already?' % value)
+        return None
+    # should be known, try getting it from the db
     try:
-        # try the db
-        return get_user_model().objects.get(old_google_key=value)
+        # try the db using profilegkeys
+        print '+-- looking for user based on gkey: %s (%s)' % (value, profilegkeys[value])
+        return get_user_model().objects.get(email=profilegkeys[value])
+        print '+-- found! id: %s' % value.id
     except:
-        try:
-            # try the db using profiledupes
-            print '+-- looking for dupe user: %s (%s)' % (value, profiledupes[value])
-            return get_user_model().objects.get(email=profiledupes[value])
-            print '+-- found! %s' % value.id
-        except:
-            print('User with old_google_key: "%s" does not seem to exist (even as a dupe); have you imported user data already?' % value)
-            sys.exit(1)
+        missing_users.append(value)
+        print('User with old_google_key: "%s" does not seem to exist in UserProfile.gkeys; have you imported user data already?' % value)
+        return None
 
 
 def convert(in_file):
@@ -44,7 +47,7 @@ def convert(in_file):
 
     header_row = []
     entries = []
-    cnt = 1
+    cnt = 0
 
     tickets = []
 
@@ -55,7 +58,6 @@ def convert(in_file):
             continue
 
         cnt += 1
-
         ticket = {"id": cnt}
         for i in range(len(row)):
             value = unicode(row[i], 'utf-8').strip()
@@ -64,6 +66,12 @@ def convert(in_file):
             # id, entities, flagged are kill
             if key in ("id", "entities", "flagged"):
                 pass
+            # this is the internal ID from bigtable
+            # will *not* be saved in the database; instead, will land in
+            # UserProfile.gkeys for reference while importing Tickets and TicketUpdates
+            elif key == "key":
+                ticket["old_google_key"] = value
+                print('old_google_key : %s' % value)
             # let's properly handle the ticket type
             elif key == "ticket_type":
                 if 'PersonTicket' in value:
@@ -109,6 +117,7 @@ def convert(in_file):
     r = re.compile("u'UserProfile', (\d+)L, _app")
 
     i = 0
+    gkeys = {}
     for ticket in tickets:
         i += 1
         print("Adding %20s ticket data: %4d, %s (old key: %s)" % (ticket["ticket_type"], i, ticket["name"], ticket["key"]))
@@ -125,22 +134,25 @@ def convert(in_file):
         volunteers = ''
         for key, value in ticket.iteritems():
             print '+-- working on: %24s' % key
-            #sys.stdout.flush()
             # this has to be a Profile instance
             # or, actually, anything that we use as the User model these days
             if key == "requester":
                 # get user's profile even if it was a dupe and not got included in the db
                 value = get_user_profile(value)
+                # did we actually get anything?
+                if not value:
+                    # no. break -- this will make the else part of the for not execute
+                    print("+-- ignoring this ticket update due to missing user! you'll find all missing user gkeys in UserProfile.missing")
+                    break
             # we don't need time here
             elif key in ['deadline', 'dob']:
                 value = value.strip()[:10]
                 # and we definitely don't need empty dates
                 if not value:
                     continue
-            # needd to pay special attention to dates
+            # need to pay special attention to dates
             elif key in ['created', 'status_updated']:
                 print '     +-- value: %s' % value
-                    #continue
             elif key == "responders":
                 # we're not going to save that into the ticket directly
                 # instead, we're saving it for use after the ticket is saved
@@ -151,47 +163,72 @@ def convert(in_file):
                 # instead, we're saving it for use after the ticket is saved
                 volunteers = value
                 continue
+            # we don't want to save old_google_key into the db
+            # rather, to gkeys, so that it's pickled into UserProfile.gkeys for further reference
+            if key == 'old_google_key':
+                gkeys[value] = ticket['id']
+                print '     +-- gkey / id : %s / %d' % (value, ticket['id'])
+                continue
             # set the attribute
             setattr(t, key, value)
         
-        # fix status_updated
-        if not t.status_updated:
-            t.status_updated = datetime.datetime.strptime(t.created, '%Y-%m-%d %H:%M:%S.%f')
-            print '+-- t.status_updated set to t.created : %s' % t.status_updated
-        # databasing the database
-        try:
-            # save the ticket
-            t.save()
-            print '+-- created        : %s' % t.created
-            print '+-- status_updated : %s' % t.status_updated
-            # handle responders...
-            print('Responders: "%s"' % responders)
-            for resp in r.finditer(responders):
-                print '+-- %s' % resp.group(1)
-                u = get_user_profile(resp.group(1))
-                t.responders.add(u)
-            # ...and volunteers
-            print('Volunteers: "%s"' % volunteers)
-            for vol in r.finditer(volunteers):
-                print '+-- %s' % vol.group(1)
-                u = get_user_profile(vol.group(1))
-                t.volunteers.add(u)
-        # wat.
-        except IntegrityError, e:
-            print "Skipping dupe: %s" % (e)
+        # this will get executed if *and only* if the for loop terminated normally (i.e. no "break")
+        # that way we can skip entries with missing data
+        else:
+            # fix status_updated
+            if not t.status_updated:
+                t.status_updated = datetime.datetime.strptime(t.created, '%Y-%m-%d %H:%M:%S.%f')
+                print '+-- t.status_updated set to t.created : %s' % t.status_updated
+            # databasing the database
+            try:
+                # save the ticket
+                t.save()
+                print '+-- ticket id / db id : %d / %d' % (ticket['id'], t.id)
+                print '+-- created           : %s' % t.created
+                print '+-- status_updated    : %s' % t.status_updated
+                # handle responders...
+                print('Responders: "%s"' % responders)
+                for resp in r.finditer(responders):
+                    print '+-- %s' % resp.group(1)
+                    u = get_user_profile(resp.group(1))
+                    if u:
+                        t.responders.add(u)
+                    else:
+                        print('     +-- missing, noted')
+                # ...and volunteers
+                print('Volunteers: "%s"' % volunteers)
+                for vol in r.finditer(volunteers):
+                    print '+-- %s' % vol.group(1)
+                    u = get_user_profile(vol.group(1))
+                    if u:
+                        t.volunteers.add(u)
+                    else:
+                        print('     +-- missing, noted')
+            # wat.
+            except IntegrityError, e:
+                print "Skipping dupe: %s" % (e)
       
     print "\rAdding tickets: Done."
+    
+    # we need to save the old_google_key-related data
+    try:
+        with open('Ticket.gkeys', 'wb') as gkeysfile:
+            pickle.dump(gkeys, gkeysfile)
+        print "Dumped %d gkeys." % len(gkeys)
+    except:
+        print 'Dumping %d gkeys has failed! You kind of need them for ticket updates import...' % len(gkeys)
 
 
 if __name__ == "__main__":
   
-    print "Loading dupes..."
+    print "Loading gkeys..."
     try:
-        with open('UserProfile.dupes', 'rb') as dupefile:
-            profiledupes = pickle.load(dupefile)
-        print '+-- loaded %d dupes' % len(profiledupes)
+        with open('UserProfile.gkeys', 'rb') as gkeyfile:
+            profilegkeys = pickle.load(gkeyfile)
+        print '+-- loaded %d UserProfile gkeys' % len(profilegkeys)
     except:
-        print "+-- error, no dupes loaded! you kind of need them, though..."
+        print "+-- error, no gkeys loaded! you kind of need them, though..."
+        sys.exit(1)
   
     try:
         script, input_file_name = sys.argv
@@ -201,3 +238,12 @@ if __name__ == "__main__":
 
     in_file = input_file_name
     convert(in_file)
+    
+    # saving missing users, if any
+    if missing_users:
+        try:
+            with open('UserProfiles.missing', 'wb') as missingfile:
+                pickle.dump(missing_users, missingfile)
+            print "Dumped %d missing user gkeys to `UserProfiles.missing`." % len(missing_users)
+        except:
+            print 'Dumping %d missing user gkeys has failed!..' % len(gkeys)
