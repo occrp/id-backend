@@ -64,6 +64,7 @@ CREATE (company)-[:sic07code]->(sic07)
 CREATE (company)-[:website]->(Website: {
     url: csvLine.web,
 })
+;
 
 // ==> cs_uk_trading_addresses.csv <==
 // version,_id,tradpost,trad1,trad4,tel,td001,org,tps,trad2,trad3
