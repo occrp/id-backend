@@ -21,7 +21,7 @@ def convert(in_file):
 
     header_row = []
     entries = []
-    cnt = 1
+    cnt = 0
 
     users = []
 
@@ -42,6 +42,8 @@ def convert(in_file):
             if key in ("user", "is_for_profit"):
                 pass
             # this is the internal ID from bigtable
+            # will *not* be saved in the database; instead, will land in
+            # UserProfile.gkeys for reference while importing Tickets and TicketUpdates
             elif key == "key":
                 user["old_google_key"] = value
                 print('old_google_key : %s' % value)
@@ -61,7 +63,7 @@ def convert(in_file):
     django.setup()
 
     i = 0
-    dupes = {}
+    gkeys = {}
     for user in users:
         i += 1
         print "\rAdding user profiles: %4d, %64s" % (i, user["email"]),
@@ -69,21 +71,28 @@ def convert(in_file):
         u = Profile()
         u.is_superuser = user["is_admin"]
         for key, value in user.iteritems():
+            # we don't want to save old_google_key into the db
+            # rather, to gkeys, so that it's pickled into UserProfile.gkeys for further reference
+            if key == 'old_google_key':
+                gkeys[value] = user['email']
+                continue
+            # set the attrs we actually *want* to set
             setattr(u, key, value)
+        # save the user profile to the db
         try:
             u.save()
         except IntegrityError, e:
             print "Skipping dupe: %s" % (e)
-            dupes[u.old_google_key] = u.email
+            
     print "\rAdding user profiles: Done."
-    # do we need to save the dupes?
-    if dupes:
-        try:
-            with open('UserProfile.dupes', 'wb') as dupefile:
-                pickle.dump(dupes, dupefile)
-            print "Dumped %d dupes." % len(dupes)
-        except:
-            print 'Dumping %d dupes failed! You kind of need them for ticket import...' % len(dupes)
+    
+    # we need to save the old_google_key-related data
+    try:
+        with open('UserProfile.gkeys', 'wb') as gkeysfile:
+            pickle.dump(gkeys, gkeysfile)
+        print "Dumped %d gkeys." % len(gkeys)
+    except:
+        print 'Dumping %d gkeys has failed! You kind of need them for ticket import...' % len(gkeys)
 
 
 if __name__ == "__main__":
