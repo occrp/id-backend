@@ -6,7 +6,8 @@ The source was received as a PostgreSQL dump file.
 2. Export tables using:
     `COPY <tablename> TO '/data/<tablename>.csv' DELIMITER ',' CSV HEADER;`
 3. Run `cat uk_companies_house_setup.cql | neo4j-shell`
-4. Run `split_and_insert.sh` for each table, like so:
+4. Run `python group_structures_split.py` -- this will split company groups into UK and foreign.
+5. Run `split_and_insert.sh` for each table, like so:
     `./split_and_insert.sh <tablename>`
 
 Do the tables in the following order, otherwise things will break:

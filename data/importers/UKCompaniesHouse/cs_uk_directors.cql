@@ -10,10 +10,10 @@ CREATE UNIQUE (person:Person {
     last_name: csvLine.sname,
     name_honours: csvLine.hns,
     name_suffix: csvLine.suf,
-    title: csvLine.title,
+    title: csvLine.title
 })
-SET person :LegalPerson:Person:UKPerson:CompaniesHouseData
-CREATE (chpnr:CompaniesHousePNR {
+SET person :LegalPerson:UKPerson:CompaniesHouseData
+CREATE (chpnr:CompaniesHousePNR:CompaniesHouseData {
     uk_cs_pnr: csvLine.pnr
 })
 CREATE (chpnr)-[:is]->(person)
