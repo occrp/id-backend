@@ -43,21 +43,22 @@ def convert(in_file):
 
             # user and is_for_profit are kill.
             if key in ("user", "is_for_profit"):
-                pass
+                continue
             # this is the internal ID from bigtable
             # will *not* be saved in the database; instead, will land in
             # UserProfile.gkeys for reference while importing Tickets and TicketUpdates
             elif key == "key":
                 user["old_google_key"] = value
                 print('old_google_key : %s' % value)
+                continue
             # we have to handle "True"/"False" properly
             else:
                 if value == 'False':
                     value = False
                 elif value == 'True':
                     value = True
-                # set the key
-                user[key] = value
+            # set the key
+            user[key] = value
 
         # working array
         users.append(user)

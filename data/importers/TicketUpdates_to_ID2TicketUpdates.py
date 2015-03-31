@@ -78,7 +78,7 @@ def convert(in_file):
 
             # extra_relation is kill
             if key == 'extra_relation':
-                pass
+                continue
             # set the key
             tupdt[key] = value
 
@@ -180,7 +180,7 @@ if __name__ == "__main__":
                 pickle.dump(missing_users, missingfile)
             print "Dumped %d missing user gkeys to %s." % (len(missing_users), user_missing_file)
         except:
-            print 'Dumping %d missing user gkeys to %s has failed!..' % (len(gkeys), user_missing_file)
+            print 'Dumping %d missing user gkeys to %s has failed!..' % (len(missing_users), user_missing_file)
             
     # saving missing tickets, if any
     if missing_tickets:
@@ -189,4 +189,4 @@ if __name__ == "__main__":
                 pickle.dump(missing_tickets, missingfile)
             print "Dumped %d missing ticket gkeys to %s." % (len(missing_tickets), ticket_missing_file)
         except:
-            print 'Dumping %d missing ticket gkeys to %s has failed!..' % (len(gkeys), ticket_missing_file)
+            print 'Dumping %d missing ticket gkeys to %s has failed!..' % (len(missing_tickets), ticket_missing_file)

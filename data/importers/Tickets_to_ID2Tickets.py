@@ -20,7 +20,10 @@ from django.contrib.auth import get_user_model;
 # we're gonna need that...
 import re
 
+# google key ids of missing users
 missing_users = []
+# db id -> google folder id
+drive_folder_ids = {}
 
 # getting a user profile from the db based on gkeys, using profilegkeys
 def get_user_profile(value):
@@ -65,7 +68,14 @@ def convert(in_file):
 
             # id, entities, flagged are kill
             if key in ("id", "entities", "flagged"):
-                pass
+                continue
+            # drive_folder_id is not to be kept in the database -- keep it in a temporary pickled file
+            if key == 'drive_folder_id':
+                # no, we don't want the empty ones
+                if value.strip():
+                    drive_folder_ids[cnt] = value
+                # nor do we want it in the db
+                continue
             # this is the internal ID from bigtable
             # will *not* be saved in the database; instead, will land in
             # UserProfile.gkeys for reference while importing Tickets and TicketUpdates
@@ -233,6 +243,7 @@ if __name__ == "__main__":
     user_gkeys_file = os.path.join(workdir, 'UserProfile.gkeys')
     user_missing_file = os.path.join(workdir, 'UserProfile.missing')
     ticket_gkeys_file = os.path.join(workdir, 'Ticket.gkeys')
+    drive_folder_ids_file = os.path.join(workdir, 'Ticket.drivefolderids')
   
     print "Loading gkeys..."
     try:
@@ -245,6 +256,15 @@ if __name__ == "__main__":
     
     convert(in_file)
     
+    # saving drive folder ids, if any
+    if drive_folder_ids:
+        try:
+            with open(drive_folder_ids_file, 'wb') as dfifile:
+                pickle.dump(drive_folder_ids, dfifile)
+            print "Dumped %d drive folder ids to %s." % (len(drive_folder_ids), drive_folder_ids_file)
+        except:
+            print 'Dumping %d missing user gkeys %s has failed!..' % (len(drive_folder_ids), drive_folder_ids_file)
+    
     # saving missing users, if any
     if missing_users:
         try:
@@ -252,4 +272,4 @@ if __name__ == "__main__":
                 pickle.dump(missing_users, missingfile)
             print "Dumped %d missing user gkeys to %s." % (len(missing_users), user_missing_file)
         except:
-            print 'Dumping %d missing user gkeys %s has failed!..' % (len(gkeys), user_missing_file)
+            print 'Dumping %d missing user gkeys %s has failed!..' % (len(missing_users), user_missing_file)
