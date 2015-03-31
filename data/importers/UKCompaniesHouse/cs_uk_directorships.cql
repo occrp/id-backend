@@ -4,7 +4,7 @@
 USING PERIODIC COMMIT 200
 LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
 MERGE (company:UKCompany {uk_cs_id: csvLine.org})
-MERGE (person:UKPerson {uk_cs_pnr: csvLine.pnr})
+MERGE (pnr:CompaniesHousePNR {uk_cs_pnr: csvLine.pnr})-[:is]->(person:UKPerson)
 CREATE (person)-[:director_of {
         date_appointed:     csvLine.appdate,
         date_resigned:      csvLine.resdate,

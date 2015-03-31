@@ -4,7 +4,7 @@
 USING PERIODIC COMMIT 100
 LOAD CSV WITH HEADERS FROM "file:%PATH%" as csvLine
 MERGE (company:UKCompany {uk_cs_id: csvLine.org})
-CREATE (cr:CompanyRecord:UKCompanyRecord {
+CREATE (cr:CompanyRecord:UKCompanyRecord:CompaniesHouseData {
     date:                   csvLine.date
     accounts_format:        csvLine.accformat
     tangible_assets:        csvLine.tangas,
@@ -61,16 +61,19 @@ CREATE (cr:CompanyRecord:UKCompanyRecord {
     consolidated_accounts:  csvLine.consol,
     shareholder_funds:      csvLine.shrfun,
 })
-CREATE (solicitor:Person:LegalPerson:Solicitor {
+CREATE UNIQUE (solicitor:Person {
     name:   csvLine.solname,
 })
-CREATE (auditor:Person:LegalPerson:Auditor {
+SET solicitor :LegalPerson:Solicitor:CompaniesHouseData
+CREATE UNIQUE (auditor:Person {
     name:   csvLine.audname,
     auditor_qualification_code: csvLine.audqual,
 })
-CREATE (accountant:Person:LegalPerson:Accountant {
+SET auditor :LegalPerson:Auditor:CompaniesHouseData
+CREATE UNIQUE (accountant:Person {
     name:   csvLine.accname,
 })
+SET accountant :LegalPerson:Accountant:CompaniesHouseData
 CREATE (solicitor)-[:solicitor_for]->(company)
 CREATE (accountant)-[:accounted]->(cr)
 CREATE (accountant)-[:accountant_for]->(company)
