@@ -15,6 +15,7 @@ CREATE UNIQUE (company:Company {
     name:             csvLine.name,
     creditsafe_id:    csvLine.name,
 })
+SET company :CompaniesHouseData
 CREATE (company)-[:registered_in]->(country)
 CREATE (holding)-[:owns]->(company)
 CREATE (ultimateholding)-[:ultimately_holds]->(company)

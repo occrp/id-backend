@@ -12,10 +12,12 @@ CREATE UNIQUE (address:Address {
     addr4: csvLine.trad4,
     postcode: csvline.tradpost,
 })
+SET address :CompaniesHouseData
 CREATE UNIQUE (company)-[:has_address]->(address)
 CREATE UNIQUE (address)-[:is_in]->(c)
 CREATE UNIQUE (telephone:PhoneNumber) {
     number: csvLine.tel
 })
+SET telephone :CompaniesHouseData
 CREATE (company)-[:has_phonenumber]->(telephone)
 ;
