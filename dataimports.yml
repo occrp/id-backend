@@ -13,6 +13,7 @@ id2dataimports:
     - "../export-prod/:/data"
     - "data/:/usr/src/id2/data/"
     - "./:/usr/src/id2/"
+    - "../investigative-dashboard/:/usr/src/id/"
 neo4j:
   image: tpires/neo4j
   cap_add:

@@ -10,6 +10,7 @@ import sys
 import os
 import httplib2
 import pickle
+import hashlib
 from apiclient import errors
 from apiclient import http as apihttp
 from apiclient.discovery import build
@@ -135,11 +136,11 @@ if __name__ == "__main__":
         script, idpath, drivefolderids_path = sys.argv
     except ValueError:
         print("\nRun via:\n    %s </path/to/legacy-investigative-dashboard> <drive-folder-ids-file-path>\n" % sys.argv[0])
+        print("Temporary files are being saved in /tmp/id_gdrive_downloads/<folder-id>/<individual-filenames>")
         sys.exit()
     
     # make sure we have the config available
     sys.path.append(os.path.abspath("%s/app/config/" % idpath))
-    print "%s/app/config/" % idpath
     from production import config
     
     # pickled drive folder ids are required
@@ -155,7 +156,8 @@ if __name__ == "__main__":
     service = create_system_service()
     
     # get folder contents
-    file_ids_list = list_folder_contents(service, drivefolderids[310])
+    folder_id = drivefolderids[310]
+    file_ids_list = list_folder_contents(service, folder_id)
     
     # get file metadata
     file_info_list = []
@@ -168,8 +170,33 @@ if __name__ == "__main__":
     # - id
     # - title
     # - originalFilename
+    # - md5Checksum
+    
+    # make sure the output directory exists and is a directory
+    # name: /tmp/id_gdrive_downloads/<folder-id>/
+    dfolder = os.path.join('/tmp/id_gdrive_downloads/', folder_id)
+    if not os.path.exists(dfolder):
+        os.makedirs(dfolder)
     
     # let's download some files!
+    print 'Retrieving files...'
     for f in file_info_list:
-        with open('/tmp/gdrive_downloads/%s' % f['originalFilename'], 'wb') as dfile:
+        
+        print '+-- file: %s (md5: %s)' % (f['originalFilename'], f['md5Checksum'])
+        
+        # filename
+        fname = os.path.join(dfolder, f['originalFilename'])
+        
+        # if the file exists...
+        if os.path.isfile(fname):
+            print '     +-- file exists, checking md5...'
+            with open(fname, 'rb') as dfile:
+                if hashlib.md5(dfile.read()).hexdigest() == f['md5Checksum']:
+                    print '     +-- checksums match, not downloading.'
+                    continue
+                else:
+                    print '     +-- checksums do not match, downloading...'
+            
+        # download the bugger
+        with open(fname, 'wb') as dfile:
             download_file(service, f['id'], dfile)
