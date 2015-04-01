@@ -11,7 +11,7 @@ import django
 import pickle
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
-sys.path.append(os.path.abspath("../../"))
+sys.path.append(os.path.abspath("../../../"))
 from id.models import *
 
 
@@ -21,12 +21,19 @@ def convert(in_file):
 
     header_row = []
     entries = []
-    cnt = 1 # starting at id=2 so that a pre-existing admin account won't cause a conflict
-
     users = []
     
     # needed for verification
     all_emails = []
+    
+    print "Setting up django..."
+    django.setup()
+    # grabbing the highest id in the Profile database so as not to overwrite existing entries
+    try:
+        cnt = Profile.objects.latest('id').id
+      # in case we can't get it, just start with 0
+    except:
+        cnt = 0
 
     print "Harvesting from CSV: ",
     for row in reader:
@@ -71,8 +78,6 @@ def convert(in_file):
             all_emails.append(user['email']);
 
     print "... Got %d users" % (cnt - 1)
-    print "Setting up django..."
-    django.setup()
 
     i = 0
     gkeys = {}
