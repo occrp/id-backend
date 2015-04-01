@@ -60,7 +60,7 @@ for DATA_KIND in AccountRequest UserProfile TicketUpdate Ticket; do
 
   mkdir -p "$OUTPUT_DIR"
   /usr/bin/env python2.7 "$APPENGINE_DIR/appcfg.py" download_data \
-    --config_file="$ID_APP_DIR/bulkloader-rysiek.yaml" \
+    --config_file="$ID_APP_DIR/bulkloader.yaml" \
     --filename="$OUTPUT_FILE" \
     --db_filename="$OUTPUT_FILE.progress.sql3" \
     --log_file="$OUTPUT_FILE.log" \
