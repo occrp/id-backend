@@ -251,13 +251,13 @@ class PersonTicket(Ticket):
         blank=False,
         verbose_name=_('Business Activities'))
     dob = models.DateField(null=True, blank=True, verbose_name=_('Date of Birth'))
-    birthplace = models.CharField(max_length=100,
+    birthplace = models.CharField(max_length=128,
         blank=False,
         verbose_name=_('Place of Birth'))
     initial_information = models.TextField(
         blank=False,
         verbose_name=_('Where have you looked?'))
-    location = models.CharField(max_length=64,
+    location = models.CharField(max_length=128,
         blank=False,
         verbose_name=_('Location'))
 
@@ -280,7 +280,7 @@ class PersonTicket(Ticket):
 class CompanyTicket(Ticket):
     """ Company ownership request """
     ticket_type = 'company_ownership'
-    name = models.CharField(max_length=300,
+    name = models.CharField(max_length=512,
         blank=False,
         verbose_name=_('Company Name'))
     country = models.CharField(max_length=100, choices=COUNTRIES,
