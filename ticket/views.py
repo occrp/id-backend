@@ -108,7 +108,7 @@ class TicketActionBaseHandler(TicketUpdateMixin, UpdateView):
         ticket = self.get_object()
         return reverse_lazy('ticket_details', kwargs={'ticket_id': ticket.id})
 
-class TicketActionCancelHandler(TicketActionBaseHandler):
+class TicketActionCancel(TicketActionBaseHandler):
 
     def perform_invalid_action(self, form):
         messages.error(self.request, _('A reason must be supplied to cancel the ticket.'))
@@ -119,7 +119,7 @@ class TicketActionCancelHandler(TicketActionBaseHandler):
         self.perform_ticket_update(ticket, 'Cancelled', form.cleaned_data['reason'])
         return super(TicketActionCancelHandler, self).perform_valid_action(form)
 
-class TicketActionCloseHandler(TicketActionBaseHandler):
+class TicketActionClose(TicketActionBaseHandler):
 
     def perform_invalid_action(self, form):
         messages.error(self.request, _('A reason must be supplied to close the ticket.'))
@@ -131,7 +131,7 @@ class TicketActionCloseHandler(TicketActionBaseHandler):
         return super(TicketActionCloseHandler, self).perform_valid_action(form)
 
 
-class TicketActionJoinHandler(TicketActionBaseHandler, PodaciMixin):
+class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
     form_class = forms.TicketEmptyForm
 
     def perform_invalid_action(self, form):
@@ -166,7 +166,7 @@ class TicketActionJoinHandler(TicketActionBaseHandler, PodaciMixin):
         else:
             self.perform_invalid_action(form)
 
-class TicketActionLeaveHandler(TicketActionBaseHandler, PodaciMixin):
+class TicketActionLeave(TicketActionBaseHandler, PodaciMixin):
     form_class = forms.TicketEmptyForm
 
     def perform_invalid_action(self, form):
@@ -198,10 +198,10 @@ class TicketActionLeaveHandler(TicketActionBaseHandler, PodaciMixin):
             self.force_invalid = True
 
 
-class TicketActionOpenHandler(TicketActionBaseHandler):
+class TicketActionOpen(TicketActionBaseHandler):
 
     def perform_invalid_action(self, form):
-        messages.error(self.request, _('A reason must be supplied to (re)open the.'))
+        messages.error(self.request, _('A reason must be supplied to (re)open the ticket.'))
 
     def perform_valid_action(self, form):
         ticket = self.object
@@ -214,6 +214,37 @@ class TicketActionOpenHandler(TicketActionBaseHandler):
         self.perform_ticket_update(ticket, 'Opened', form.cleaned_data['reason'])
 
         return super(TicketActionOpenHandler, self).perform_valid_action(form)
+
+
+class TicketAddCharge(TicketActionBaseHandler):
+    form_class = forms.RequestChargeForm
+
+    def perform_invalid_action(self, form):
+        pass
+
+    def perform_valid_action(self, ticket, form):
+        charge = models.TicketCharge(
+            parent=self.object.id,
+            ticket=self.object.id,
+            user=self.request.user,
+            item=form.item.data,
+            cost=form.cost.data,
+            cost_original_currency=form.cost_original_currency.data,
+            original_currency=form.original_currency.data
+        ).save()
+
+        models.TicketUpdate(
+            parent=self.object.id,
+            ticket=self.object.id,
+            author=self.request.user,
+            update_type=models.get_choice(
+                _('Charge Added'),
+                models.TICKET_UPDATE_TYPES),
+            comment=form.comment.data,
+            extra_relation=charge
+        ).save()
+
+        self.add_message(_('The new charge was added to the request.'))
 
 
 class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
