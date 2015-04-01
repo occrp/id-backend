@@ -60,6 +60,7 @@ CREATE (cr:CompanyRecord:UKCompanyRecord:CompaniesHouseData {
     operations_net_cashflow:csvLine.opnetcashf,
     consolidated_accounts:  csvLine.consol,
     shareholder_funds:      csvLine.shrfun,
+    audit_fee:              csvLine.audfee,
 })
 CREATE UNIQUE (solicitor:Person {
     name:   csvLine.solname,
