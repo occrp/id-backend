@@ -125,38 +125,15 @@ def download_file(service, file_id, local_fd):
             print 'An error occurred: %s' % error
             return
         if download_progress:
-            print 'Download Progress: %d%%' % int(download_progress.progress() * 100)
+            print '\r     +-- download progress: %d%%' % int(download_progress.progress() * 100),
+            sys.stdout.flush()
         if done:
-            print 'Download Complete'
+            print '\r     +-- done.                                   '
+            sys.stdout.flush()
             return
 
-if __name__ == "__main__":
-    
-    try:
-        script, idpath, drivefolderids_path = sys.argv
-    except ValueError:
-        print("\nRun via:\n    %s </path/to/legacy-investigative-dashboard> <drive-folder-ids-file-path>\n" % sys.argv[0])
-        print("Temporary files are being saved in /tmp/id_gdrive_downloads/<folder-id>/<individual-filenames>")
-        sys.exit()
-    
-    # make sure we have the config available
-    sys.path.append(os.path.abspath("%s/app/config/" % idpath))
-    from production import config
-    
-    # pickled drive folder ids are required
-    print "Loading pickled drive folder ids from %s..." % drivefolderids_path
-    try:
-        drivefolderids = get_pickled_data(drivefolderids_path)
-        print '+-- loaded %d drive folder ids' % len(drivefolderids)
-    except e:
-        print '+-- error loading pickled drive folder ids: %s' % e
-        sys.exit(1)
-    
-    # create the damn gdrive service
-    service = create_system_service()
-    
-    # get folder contents
-    folder_id = drivefolderids[310]
+
+def handle_folder_id(service, folder_id):
     file_ids_list = list_folder_contents(service, folder_id)
     
     # get file metadata
@@ -200,3 +177,34 @@ if __name__ == "__main__":
         # download the bugger
         with open(fname, 'wb') as dfile:
             download_file(service, f['id'], dfile)
+
+
+if __name__ == "__main__":
+    
+    try:
+        script, idpath, drivefolderids_path = sys.argv
+    except ValueError:
+        print("\nRun via:\n    %s </path/to/legacy-investigative-dashboard> <drive-folder-ids-file-path>\n" % sys.argv[0])
+        print("Temporary files are being saved in /tmp/id_gdrive_downloads/<folder-id>/<individual-filenames>")
+        sys.exit()
+    
+    # make sure we have the config available
+    sys.path.append(os.path.abspath("%s/app/config/" % idpath))
+    from production import config
+    
+    # pickled drive folder ids are required
+    print "Loading pickled drive folder ids from %s..." % drivefolderids_path
+    try:
+        drivefolderids = get_pickled_data(drivefolderids_path)
+        print '+-- loaded %d drive folder ids' % len(drivefolderids)
+    except e:
+        print '+-- error loading pickled drive folder ids: %s' % e
+        sys.exit(1)
+    
+    # create the damn gdrive service
+    service = create_system_service()
+    
+    # get folder contents
+    for folder in drivefolderids:
+        # let's handle a google drive folder, shall we?
+        handle_folder_id(service, drivefolderids[folder])
