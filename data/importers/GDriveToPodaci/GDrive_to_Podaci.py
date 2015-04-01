@@ -16,6 +16,12 @@ from apiclient import http as apihttp
 from apiclient.discovery import build
 from oauth2client import client
 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
+sys.path.append(os.path.abspath("../../../"))
+from id.models import *
+from ticket.models import *
+from podaci import File, Tag, FileSystem
+
 
 # getting a string from a textfile
 def file_to_str(filename):
@@ -62,7 +68,6 @@ def list_folder_contents(service, folder_id):
     
     page_token = None
     while True:
-        print '+-- in while loop'
         try:
             param = {}
             if page_token:
@@ -133,7 +138,28 @@ def download_file(service, file_id, local_fd):
             return
 
 
-def handle_folder_id(service, folder_id):
+def handle_gdrive_file(service, f):
+    # if the file exists...
+    if os.path.isfile(f['localPath']):
+        print '     +-- file exists, checking md5...'
+        with open(f['localPath'], 'rb') as dfile:
+            if hashlib.md5(dfile.read()).hexdigest() == f['md5Checksum']:
+                print '     +-- checksums match, not downloading.'
+                return False
+            else:
+                print '     +-- checksums do not match, downloading...'
+        
+    # download the bugger
+    with open(f['localPath'], 'wb') as dfile:
+        download_file(service, f['id'], dfile)
+    return True
+
+
+def podacify_file(ticket_id, fname):
+    pass
+
+
+def handle_folder_id(service, ticket_id, folder_id):
     file_ids_list = list_folder_contents(service, folder_id)
     
     # get file metadata
@@ -160,23 +186,15 @@ def handle_folder_id(service, folder_id):
     for f in file_info_list:
         
         print '+-- file: %s (md5: %s)' % (f['originalFilename'], f['md5Checksum'])
-        
         # filename
-        fname = os.path.join(dfolder, f['originalFilename'])
+        f['localPath'] = os.path.join(dfolder, f['originalFilename'])
         
-        # if the file exists...
-        if os.path.isfile(fname):
-            print '     +-- file exists, checking md5...'
-            with open(fname, 'rb') as dfile:
-                if hashlib.md5(dfile.read()).hexdigest() == f['md5Checksum']:
-                    print '     +-- checksums match, not downloading.'
-                    continue
-                else:
-                    print '     +-- checksums do not match, downloading...'
-            
-        # download the bugger
-        with open(fname, 'wb') as dfile:
-            download_file(service, f['id'], dfile)
+        # download/checksum the file
+        handle_gdrive_file(service, f)
+        
+        # handle the podaci side of things
+        podacify_file(ticket_id, f['localPath'])
+        
 
 
 if __name__ == "__main__":
@@ -205,6 +223,6 @@ if __name__ == "__main__":
     service = create_system_service()
     
     # get folder contents
-    for folder in drivefolderids:
+    for ticket_id in drivefolderids:
         # let's handle a google drive folder, shall we?
-        handle_folder_id(service, drivefolderids[folder])
+        handle_folder_id(service, ticket_id, drivefolderids[ticket_id])
