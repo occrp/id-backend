@@ -1,0 +1,19 @@
+{% extends "tickets/request_base.jinja" %}
+
+{% block inner_content %}
+
+<h2>Fees charged to budgets</h2>
+
+<table class="table">
+<thead>
+    <tr><th>Budget</th><th>Total costs</th><th>Details</th></tr>
+</thead>
+<tbody>
+{% for budget in budgets %}
+    <tr><td>{{budget}}</td><td>{{budget.payment_total}}</td><td>Details</td></tr>
+{% endfor %}
+</tbody>
+</table>
+
+
+{% endblock %}

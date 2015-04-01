@@ -149,7 +149,7 @@ class Profile(AbstractBaseUser, PermissionsMixin):
     def display_name(self):
         if self.first_name or self.last_name:
             return " ".join((self.first_name, self.last_name)).title()
-        return self.user.email or ''
+        return self.email or ''
 
     @property
     def is_approved(self):
