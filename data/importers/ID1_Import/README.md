@@ -74,22 +74,22 @@ Once you have the data in the `/exported-data/` directory, time to import them. 
 
 This will setu-up the Django database and system, as required by import scripts. The scripts are located in `data/importers` subdirectory of the `investigative-dashboard-2` code directory:
 ```
- cd data/importers/
+ cd data/importers/ID1_Import/
 ```
 
 First, we need to import UserProfile data:
 ```
- python UserProfiles_to_DjangoUsers.py ../../../exported-data/UserProfile.csv
+ python UserProfiles_to_DjangoUsers.py ../../../../exported-data/UserProfile.csv
 ```
 
 Then, Ticket data:
 ```
- python Tickets_to_ID2Tickets.py ../../../exported-data/Ticket.csv
+ python Tickets_to_ID2Tickets.py ../../../../exported-data/Ticket.csv
 ```
 
 Finally, TicketUpdates data:
 ```
- python TicketUpdates_to_ID2TicketUpdates.py ../../../exported-data/TicketUpdates.csv
+ python TicketUpdates_to_ID2TicketUpdates.py ../../../../exported-data/TicketUpdates.csv
 ```
 
 If everything goes well (it should), you will have UserProfile, Ticket and TicketUpdate data in the database, and (depending on imported data) a couple of new files in the `exported-data` directory. These are [pickled](https://docs.python.org/2/library/pickle.html)) Python data structures (dicts or lists).
