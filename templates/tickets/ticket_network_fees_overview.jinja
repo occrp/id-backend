@@ -1,0 +1,19 @@
+{% extends "tickets/request_base.jinja" %}
+
+{% block inner_content %}
+
+<h2>Network fees</h2>
+
+<table class="table">
+<thead>
+    <tr><th>Network</th><th>Total costs</th><th>Details</th></tr>
+</thead>
+<tbody>
+{% for network in networks %}
+    <tr><td>{{network}}</td><td>{{network.payment_total}}</td><td>Details</td></tr>
+{% endfor %}
+</tbody>
+</table>
+
+
+{% endblock %}

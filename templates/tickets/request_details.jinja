@@ -8,8 +8,8 @@
 <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
 
 <div class="page-header full-page-header">
- <div class="container">
-  <div class="row">
+<div class="container">
+<div class="row">
     <div class="span5">
         <div class="summary">
             <div class="icon pull-left">
@@ -30,12 +30,8 @@
     <div class="span7">
         <div class="header-buttons pull-right">
             <div class="status-container">
-                 <h5 class="yell soft">
-                    {% trans %}Status{% endtrans %}
-                 </h5>
-                 <h5 class="yell">
-                    <i class="icon-circle">&nbsp;</i> {{ ticket.status }}
-                 </h5>
+                 <h5 class="yell soft">{% trans %}Status{% endtrans %}</h5>
+                 <h5 class="yell"><i class="icon-circle"></i> {{ ticket.status }}</h5>
             </div>
             {% if ticket.is_open() %}
 
@@ -48,7 +44,7 @@
                     <i class="icon-globe"></i> {% trans %}Attach Entities{% endtrans %}
                 </a>#}
             </div>
-            {% if is_volunteer or can_join_leave %}
+            {% if user.is_volunteer or user.can_join_leave %}
                 {% if user not in ticket.actors() %}
                     <form action="{{ url('ticket_join', pk=ticket.id) }}" method="POST" class="inline-form">
                         {% csrf_token %}
@@ -69,12 +65,12 @@
             {% endif %}
 
             <div class="btn-group">
-                   <a href="#ReqCloseForm" class="btn" data-toggle='modal' role='button'>
-                        <i class="icon-ok"></i> {% trans %}Close Request{% endtrans %}
-                    </a>
-                    <button class="btn dropdown-toggle" data-toggle='dropdown'><span class="caret"></span></button>
+                <a href="#ReqCloseForm" class="btn" data-toggle='modal' role='button'>
+                    <i class="icon-ok"></i> {% trans %}Close Request{% endtrans %}
+                </a>
+                <button class="btn dropdown-toggle" data-toggle='dropdown'><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    {% if is_superuser or not is_staff or ticket.requester == user %}
+                    {% if user.is_superuser or not user.is_staff or ticket.requester == user %}
                     <li>
                         <a href="{{ url(ticket.ticket_type ~ '_ticket_edit', pk=ticket.id) }}" role="button">
                             <i class="icon-pencil"></i> {% trans %}Edit Request{% endtrans %}
@@ -86,46 +82,24 @@
                         </a>
                     </li>
                     {% endif %}
-                    {% if is_superuser or is_staff %}
+                    {% if user.is_superuser or user.is_staff %}
                     <li>
                         <a href="#ChargeForm" data-toggle='modal' role='button'>
                             <i class="icon-money"></i> {% trans %}Add Charge{% endtrans %}
                         </a>
                     </li>
-
-		    {% if is_superuser %}
-                    <li>
-		                            <a href="{{ url('request_delete', ticket_id=ticket.id) }}" role="button">
-                            <i class="icon-minus-sign"></i> {% trans %}Delete Request{% endtrans %}
-                        </a>
-                    </li>
-                    {% endif %}
-
-                    {% if is_superuser %}
+                    {% if user.is_superuser %}
                     <li>
                         <a href="#MarkPaidForm" data-toggle='modal' role='button'>
                             <i class="icon-check"></i> {% trans %}Mark Bill Paid{% endtrans %}
                         </a>
                     </li>
                     {% endif %}
-                    {% if is_superuser  %}
-                    <li>
-                        <a href="{{ url('ticket_edit', ticket_id=ticket.id) }}?next={{ request.path_qs }}" role='button'>
-                            <i class="icon-pencil"></i> {% trans %}Edit Information{% endtrans %}
-                        </a>
-                    </li>
+                    {% if user.is_superuser  %}
                     <li>
                         <a href="#AdminSettingsModal" role='button'
-                           data-modal-url="{{ url('ticket_admin_settings', ticket_id=ticket.id) }}">
+                           data-modal-url="{{ url('ticket_admin_settings', pk=ticket.id, redirect='details') }}">
                             <i class="icon-cog"></i> {% trans %}Request Settings{% endtrans %}
-                        </a>
-                    </li>
-                    {% endif %}
-
-                    {% if not is_superuser %}
-                    <li>
-                        <a href="#ReqFlagForm" data-toggle='modal' role='button'>
-                            <i class="icon-warning-sign"></i> {% trans %}Alert Administrator{% endtrans %}
                         </a>
                     </li>
                     {% endif %}
@@ -133,7 +107,7 @@
                 {% endif %}
             </div>
             {% else %}
-                {% if not is_volunteer %}
+                {% if not user.is_volunteer %}
                     <div class="btn-group">
                         <a href="#ReqReopenForm" class="btn btn-warning" data-toggle='modal' role='button'>
                             <i class="icon-unlock"></i> {% trans %}Re-Open{% endtrans %}
@@ -143,8 +117,8 @@
             {% endif %}
         </div>
     </div>  <!-- class="span7" -->
-  </div> <!-- class="row" -->
- </div> <!-- class="container" -->
+</div> <!-- class="row" -->
+</div> <!-- class="container" -->
 {% endblock %}
 
 {% block content %}
@@ -191,8 +165,8 @@
         <dl>
             <dt class="yell soft">{% trans %}Requester{% endtrans %}</dt>
             <dd>
-                {% if ticket.requester and (is_staff or is_superuser) %}
-	      <a href="/admin/userprofile/{{ ticket.requester.id}}/view/">
+                {% if ticket.requester and (user.is_staff or user.is_superuser) %}
+	      <a href="{{ url('profile', pk=ticket.requester.id)}}">
               {{ ticket.requester.display_name if ticket.requester else _("No Requester") }} </a>
 	      {% else %}
 	      {{ ticket.requester.display_name if ticket.requester else _("No Requester") }}
@@ -203,7 +177,7 @@
             <dd>
             {% if ticket.responders.count() > 0 %}
                 {% for responder in ticket.responders.all() %}
-                    {{ responder.display_name }} <br />
+                    <a href="{{ url('profile', pk=responder.id)}}">{{ responder.display_name }}</a><br />
                 {% endfor %}
             {% else %}
                 {{ _("No Responders") }}
@@ -300,7 +274,7 @@
                     </div>
                 </div>
                 {% trans %}Attached Files{% endtrans %}
-                {% if is_staff or is_superuser %}
+                {% if user.is_staff or user.is_superuser %}
                     <a href="#SharingModal" class="btn btn-small pull-right"
                        data-modal-url="{{ url('share_files', entity_id=ticket.key.urlsafe()) }}">
                         <i class="icon-group"></i> {% trans %}Sharing{% endtrans %}
@@ -345,8 +319,8 @@
 
         <h3 class="primary-highlight">{% trans %}Activity{% endtrans %}</h3>
         {% if ticket_updates %}
-            <div class="row-fluid discussion">
-                <div class="span12">
+        <div class="row-fluid discussion">
+            <div class="span12">
             {% for tu in ticket_updates %}
                 {% if tu.comment %}
                     <div class="request-update">
@@ -397,25 +371,25 @@
                     </div>
                 {% endif %}
             {% endfor %}
-                </div>
             </div>
+        </div>
         {% else %}
-            <p class="discussion">{% trans %}No updates yet.{% endtrans %}</p>
+        <p class="discussion">{% trans %}No updates yet.{% endtrans %}</p>
         {% endif %}
 
         {% if ticket.is_open() %}
-            <h4>{% trans %}Leave a Comment{% endtrans %}</h4>
-            <div class="row-fluid">
-                <form class="comment-form" method="POST" action="" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ticket_update_form.as_p()}}
-                    <div class="row-fluid">
-                        <div class="span9">
-                            <button class="btn btn-primary pull-right" type="submit">{% trans %}Comment{% endtrans %}</button>
-                        </div>
+        <h4>{% trans %}Leave a Comment{% endtrans %}</h4>
+        <div class="row-fluid">
+            <form class="comment-form" method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ticket_update_form.as_p()}}
+                <div class="row-fluid">
+                    <div class="span9">
+                        <button class="btn btn-primary pull-right" type="submit">{% trans %}Comment{% endtrans %}</button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
+        </div>
         {% endif %}
     </div>
 </div>
