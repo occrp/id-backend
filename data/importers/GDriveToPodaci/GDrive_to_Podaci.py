@@ -16,6 +16,7 @@ from apiclient import http as apihttp
 from apiclient.discovery import build
 from oauth2client import client
 
+import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 sys.path.append(os.path.abspath("../../../"))
 from id.models import *
@@ -155,8 +156,29 @@ def handle_gdrive_file(service, f):
     return True
 
 
-def podacify_file(ticket_id, fname):
-    pass
+def podacify_file(ticket_id, f):
+    # assuming:
+    # - fs is a global FileSystem instance
+    # - metatag is a global Tag instance, being the Tickets meta tag
+    
+    # first, we need the ticket
+    ticket = Ticket.objects.get(id=ticket_id)
+    
+    # create the tag
+    tag = fs.create_tag('Ticket %d' % ticket.id)
+    
+    #
+    pfile = fs.create_file(fname)
+    
+    # save potentially useful metadata (anything else?)
+    pfile.meta['extra']['legacyGoogleFolderId'] = f['legacyGoogleFolderId']
+    
+    # add the tags
+    pfile.add_tag(tag)
+    ticket.add_tag(tag)
+    #metatag.add_tag(tag) which
+    #tag.add_tag(metatag) one?
+    
 
 
 def handle_folder_id(service, ticket_id, folder_id):
@@ -188,12 +210,13 @@ def handle_folder_id(service, ticket_id, folder_id):
         print '+-- file: %s (md5: %s)' % (f['originalFilename'], f['md5Checksum'])
         # filename
         f['localPath'] = os.path.join(dfolder, f['originalFilename'])
+        f['legacyGoogleFolderId'] = folder_id
         
         # download/checksum the file
         handle_gdrive_file(service, f)
         
         # handle the podaci side of things
-        podacify_file(ticket_id, f['localPath'])
+        podacify_file(ticket_id, f)
         
 
 
@@ -205,6 +228,10 @@ if __name__ == "__main__":
         print("\nRun via:\n    %s </path/to/legacy-investigative-dashboard> <drive-folder-ids-file-path>\n" % sys.argv[0])
         print("Temporary files are being saved in /tmp/id_gdrive_downloads/<folder-id>/<individual-filenames>")
         sys.exit()
+    
+    # the "d" is silent
+    print "Setting up django..."
+    django.setup()
     
     # make sure we have the config available
     sys.path.append(os.path.abspath("%s/app/config/" % idpath))
@@ -218,6 +245,10 @@ if __name__ == "__main__":
     except e:
         print '+-- error loading pickled drive folder ids: %s' % e
         sys.exit(1)
+    
+    # podaci filesystem
+    fs = FileSystem()
+    metatag = fs.create_tag('Tickets')
     
     # create the damn gdrive service
     service = create_system_service()
