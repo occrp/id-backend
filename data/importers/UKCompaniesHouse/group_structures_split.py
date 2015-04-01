@@ -2,8 +2,9 @@ import csv
 import sys
 
 ukcomp_fieldnames = ['version','gs002','regnum','safenum','name','holdnum','level','org','kfin','ultholdnum']
-ukcomp_fieldnames = ['version','gs002','regnum','safenum','name','holdnum','level','org','kfin','ultholdnum','country']
+forcomp_fieldnames = ['version','gs002','regnum','safenum','name','holdnum','level','org','kfin','ultholdnum','country']
 
+countrymap = {}
 
 def split_foreign_companies():
     print "Splitting foreign companies...",
@@ -21,9 +22,13 @@ def split_foreign_companies():
     try:
         for comp in groups:
             comp.append("GeoNames")
-            data = dict(zip(places_fieldnames, place))
-            if data["org"].lower().find("foreign"):
+            data = dict(zip(ukcomp_fieldnames, comp))
+            if data["regnum"].lower().find("foreign") != -1:
                 country = data["safenum"][:2].upper()
+                if country == '':
+                    if data["regnum"] not in countrymap:
+                        countrymap[data["regnum"]] = raw_input('What country is "%s"?' % data["regnum"])
+                    country = countrymap[data["regnum"]]
                 comp.append(country)
                 forcomp.writerow(comp)
             else:
@@ -39,4 +44,4 @@ def split_foreign_companies():
     print "DONE"
 
 if __name__ == "__main__":
-    split_foreign_companies
+    split_foreign_companies()
