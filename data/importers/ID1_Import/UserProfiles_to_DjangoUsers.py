@@ -21,7 +21,7 @@ def convert(in_file):
 
     header_row = []
     entries = []
-    cnt = 0
+    cnt = 1 # starting at id=2 so that a pre-existing admin account won't cause a conflict
 
     users = []
     
@@ -49,8 +49,12 @@ def convert(in_file):
             # UserProfile.gkeys for reference while importing Tickets and TicketUpdates
             elif key == "key":
                 user["old_google_key"] = value
-                print('old_google_key : %s' % value)
+                print '\rold_google_key : %s' % value,
+                sys.stdout.flush()
                 continue
+            # let's make sure e-mail is lower-case, shall we?
+            elif key == "email":
+                value = value.lower()
             # we have to handle "True"/"False" properly
             else:
                 if value == 'False':
