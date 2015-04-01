@@ -5,7 +5,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-#from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.contrib import messages
 from django.db.models import Count
@@ -26,10 +25,10 @@ from django.db.models import Count, Sum
 
 from core.mixins import JSONResponseMixin, PrettyPaginatorMixin
 from core.utils import *
-
+from id.models import Network
 from ticket.utils import *
 from ticket.mixins import *
-from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, TicketUpdate, TicketCharge
+from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, TicketUpdate, TicketCharge, Budget
 from ticket import forms
 from ticket import constants
 
