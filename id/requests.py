@@ -245,65 +245,6 @@ class RequestDetailsActionHandler(JSONResponseMixin, TemplateView):
             self.render_json_response({'status': 'error', 'html': t})
 
 
-class RequestCloseHandler(RequestDetailsActionHandler):
-    """ Close a request as being answered """
-    form_class = forms.TicketCancelForm
-
-    def user_can(self, ticket):
-        # volunteers cannot close tickets.
-        return self.profile.is_superuser or profile_in(
-            self.profile, [ticket.requester, ticket.responders])
-
-    def form_valid(self, ticket, form):
-        ticket.status = models.get_choice('Closed', models.TICKET_STATUS)
-        ticket.status_updated = datetime.datetime.now()
-        ticket.put(comment=form.reason.data if hasattr(form, 'reason') else '')
-        self.add_message(_('Request has been marked as closed & answered.'))
-
-
-class RequestCancelHandler(RequestDetailsActionHandler):
-    """ Cancel a request for information """
-    form_class = forms.TicketCancelForm
-
-    def user_can(self, ticket):
-        # responders cannot.
-        return self.profile.is_superuser or profile_in(self.profile, [ticket.requester, ])
-
-    def form_valid(self, ticket, form):
-        ticket.status = models.get_choice('Cancelled', models.TICKET_STATUS)
-        ticket.status_updated = datetime.datetime.now()
-        ticket.put(comment=form.reason.data if hasattr(form, 'reason') else '')
-        self.add_message(_('Request has been cancelled.'))
-
-
-class RequestDeleteHandler(RequestDetailsActionHandler):
-    """ Cancel a request for information """
-
-    #FIXME: Auth
-    #@role_in('admin')
-    def _get(self, ticket_id=None):
-        ticket = models.Ticket.get_by_id(int(ticket_id))
-        ticket.key.delete()
-        self.add_message(_(
-            'Ticket %s has been deleted' % ticket_id))
-        self.redirect(self.uri_for('ticket_list'))
-
-
-class RequestFlagHandler(RequestDetailsActionHandler):
-    """ Bring in an administrator for additional help """
-    form_class = forms.RequestFlagForm
-
-    def user_can(self, ticket):
-        # admin cannot.
-        return profile_in(self.profile, [ticket.requester, ticket.responders])
-
-    def form_valid(self, ticket, form):
-        ticket.flagged = True
-        ticket.put(comment=form.comment.data)
-        self.add_message(_(
-            'An Administrator has been notified notified and will update the '
-            'issue shortly.'))
-
 
 class RequestPaidHandler(RequestDetailsActionHandler):
     form_class = forms.TicketPaidForm

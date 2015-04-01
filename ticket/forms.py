@@ -191,9 +191,9 @@ class TicketAdminSettingsForm(forms.ModelForm):
 
         super(TicketAdminSettingsForm, self).__init__(*args, **kwargs)
         self.fields['responders'].choices = core.utils.convert_group_to_select2field_choices(
-                                                get_user_model().objects.all().filter(Q(profile__is_superuser=1) | Q(profile__is_staff=1)))
+                                                get_user_model().objects.all().filter(Q(is_superuser=1) | Q(is_staff=1)))
         self.fields['volunteers'].choices = core.utils.convert_group_to_select2field_choices(
-                                                get_user_model().objects.all().filter(Q(profile__is_volunteer=1)))
+                                                get_user_model().objects.all().filter(Q(is_volunteer=1)))
         self.fields['requester_type'].widget.attrs.update({'choices': constants.REQUESTER_TYPES})
 
 

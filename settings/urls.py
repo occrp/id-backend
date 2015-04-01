@@ -5,9 +5,6 @@ from id import databases, requests, search, accounts
 from id import validation, admin, tasks, errors
 from core.auth import perm
 
-import ticket.validators
-import ticket.views
-
 from django.contrib.auth import views as auth_views
 from registration.views import RegistrationView
 from registration.views import ActivationView
@@ -29,80 +26,6 @@ urlpatterns = patterns('',
     url(r'^search/$',                       perm('any', search.CombinedSearchHandler), name="search"),
     url(r'^search/entities/$',              perm('any', search.CombinedSearchHandler), name='search_entities'), # still needed for ajax only
 
-    #url(r'^request/(?P<ticket_id>[0-9]+)/pay/$', requests.RequestPaidHandler.as_view(), name='request_mark_paid'),
-    #url(r'^request/(?P<ticket_id>[0-9]+)/charge/$', requests.RequestAddChargeHandler.as_view(), name='request_charge_add'),
-    url(r'^request/submit/$', perm('any', TemplateView, template_name="splash.jinja"), name='request'),
-    #url(r'^request/request_unauthorized/$', requests.RequestUnauthorized.as_view(), name='request_unauthorized'),
-    # url(r'^request/respond/$', requests.ResponseListHandler.as_view(), name='response_list'),
-    # url(r'^request/public/$', requests.PublicListHandler.as_view(), name='public_list'),
-    # url(r'^request/manage/unassigned/$', requests.AdminUnassignedTicketsHandler.as_view(), name='ticket_admin_unassigned'),
-    # url(r'^request/manage/deadline/$', requests.AdminDeadlineTicketsHandler.as_view(), name='ticket_admin_deadline'),
-    # url(r'^request/manage/history/$', requests.AdminHistoryTicketsHandler.as_view(), name='ticket_admin_history'),
-    # url(r'^request/manage/flagged/$', requests.AdminFlaggedTicketsHandler.as_view(), name='ticket_admin_flagged'),
-    #url(r'^request/manage/(?P<ticket_id>[0-9]+)/edit/$', requests.RequestHandler.as_view(), name='ticket_edit'),
-    #url(r'^request/manage/(?P<ticket_id>[0-9]+)/settings/$', requests.AdminSettingsHandler.as_view(), name='ticket_admin_settings'),
-    url(r'^request/charges/customer/$', requests.AdminCustomerChargesHandler.as_view(), name='ticket_admin_customer_charges'),
-    url(r'^request/charges/(?P<charge_key>.+)/reconcile/$', requests.AdminChargeReconcileInlineHandler.as_view(), name='ticket_admin_reconcile_charges'),
-    url(r'^request/charges/outstanding/$', requests.AdminOutstandingChargesHandler.as_view(), name='ticket_admin_outstanding_charges'),
-
-    url(r'^ticket/all_open/$',              perm('user', ticket.views.TicketListAllOpen), name='ticket_all_list'),
-    url(r'^ticket/all_open/(?P<page>\d+)/$',
-                                            perm('user', ticket.views.TicketListAllOpen), name='ticket_all_list'),
-    url(r'^ticket/all_closed/$',            perm('user', ticket.views.TicketListAllClosed), name='ticket_all_closed_list'),
-    url(r'^ticket/all_closed/(?P<page>\d+)/$',
-                                            perm('user', ticket.views.TicketListAllClosed), name='ticket_all_closed_list'),
-
-    url(r'^ticket/$',                       perm('user', ticket.views.TicketListMyOpen), name='ticket_list'),
-    url(r'^ticket/(?P<page>\d+)/$',         perm('user', ticket.views.TicketListMyOpen), name='ticket_list'),
-    url(r'^ticket/closed/$',                perm('user', ticket.views.TicketListMyClosed), name='ticket_closed_list'),
-    url(r'^ticket/closed/(?P<page>\d+)/$',  perm('user', ticket.views.TicketListMyClosed), name='ticket_closed_list'),
-
-    url(r'^ticket/assigned/$',              perm('user', ticket.views.TicketListMyAssigned), name='ticket_assigned_list'),
-    url(r'^ticket/assigned/(?P<page>\d+)/$',
-                                            perm('user', ticket.views.TicketListMyAssigned), name='ticket_assigned_list'),
-    url(r'^ticket/assigned/closed/$',       perm('user', ticket.views.TicketListMyAssignedClosed), name='ticket_assigned_closed_list'),
-    url(r'^ticket/assigned/closed/(?P<page>\d+)/$', perm('user', ticket.views.TicketListMyAssignedClosed), name='ticket_assigned_closed_list'),
-
-    url(r'^ticket/public/$',                perm('user', ticket.views.TicketListPublic), name='ticket_public_list'),
-    url(r'^ticket/public/(?P<page>\d+)/$',  perm('user', ticket.views.TicketListPublic), name='ticket_public_list'),
-    url(r'^ticket/public/closed/$',         perm('user', ticket.views.TicketListPublicClosed), name='ticket_public_closed_list'),
-    url(r'^ticket/public/closed/(?P<page>\d+)/$',
-                                            perm('user', ticket.views.TicketListPublicClosed), name='ticket_public_closed_list'),
-
-    url(r'^ticket/unassigned/$',            perm('user', ticket.views.TicketListUnassigned), name='ticket_unassigned_list'),
-    url(r'^ticket/unassigned/(?P<page>\d+)/$',
-                                            perm('user', ticket.views.TicketListUnassigned), name='ticket_unassigned_list'),
-    url(r'^ticket/upcoming_deadline/$',     perm('user', ticket.views.TicketListUpcomingDeadline), name='ticket_deadline_list'),
-    url(r'^ticket/upcoming_deadline/(?P<page>\d+)/$',
-                                            perm('user', ticket.views.TicketListUpcomingDeadline), name='ticket_deadline_list'),
-
-    url(r'^ticket/submit/$',                perm('user', ticket.views.TicketRequest), name='ticket_submit'),
-    url(r'^ticket/(?P<ticket_id>[0-9]+)/details/$',
-                                            perm('user', ticket.views.TicketDetail), name='ticket_details'),
-    
-    url(r'^ticket/manage/(?P<pk>[0-9]+)/settings/(?P<redirect>[a-z_]+)/$', ticket.views.TicketAdminSettingsHandler.as_view(), name='ticket_admin_settings'),
-    url(r'^ticket/manage/(?P<ticket_id>[0-9]+)/edit/$',
-                                            perm('user', ticket.views.TicketRequest), name='ticket_edit'),
-    
-    url(r'^ticket/manage/company_ownership/(?P<pk>[0-9]+)/edit/$',
-                                            perm('user', ticket.views.CompanyTicketUpdate), name='company_ownership_ticket_edit'),
-    url(r'^ticket/manage/person_ownership/(?P<pk>[0-9]+)/edit/$',
-                                            perm('user', ticket.views.PersonTicketUpdate), name='person_ownership_ticket_edit'),
-    url(r'^ticket/manage/other/(?P<pk>[0-9]+)/edit/$',
-                                            perm('user', ticket.views.OtherTicketUpdate), name='other_ticket_edit'),
-    url(r'^ticket/(?P<pk>[0-9]+)/close/$',  perm('user', ticket.views.TicketActionCloseHandler), name='ticket_close'),
-    url(r'^ticket/(?P<pk>[0-9]+)/open/$',   perm('user', ticket.views.TicketActionOpenHandler), name='ticket_open'),
-    url(r'^ticket/(?P<pk>[0-9]+)/cancel/$', perm('user', ticket.views.TicketActionCancelHandler), name='ticket_cancel'),
-    url(r'^ticket/(?P<pk>[0-9]+)/join/$',   perm('volunteer', ticket.views.TicketActionJoinHandler), name='ticket_join'),
-    url(r'^ticket/(?P<pk>[0-9]+)/leave/$',  perm('volunteer', ticket.views.TicketActionLeaveHandler), name='ticket_leave'),
-    url(r'^ticket/(?P<pk>[0-9]+)/updateremove/$',
-                                            perm('volunteer', ticket.views.TicketUpdateRemoveHandler), name='ticket_update_remove'),
-
-    url(r'^ticket/fees/users/$',            perm('staff', ticket.views.TicketUserFeesOverview), name='ticket_fees_users'),
-    url(r'^ticket/fees/networks/$',         perm('staff', ticket.views.TicketNetworkFeesOverview), name='ticket_fees_networks'),
-    url(r'^ticket/fees/budgets/$',          perm('staff', ticket.views.TicketBudgetFeesOverview), name='ticket_fees_budgets'),
-
-    url(r'^_validation/request/$',          perm('user', ticket.validators.ValidateTicketRequest), name='ajax_validate_request'),
 
     url(r'^databases/$',                    perm('any', databases.ExternalDatabaseList), name='externaldb_list'),
     url(r'^databases/add/$',                perm('staff', databases.ExternalDatabaseAdd), name='externaldb_add'),
@@ -139,6 +62,7 @@ urlpatterns = patterns('',
     url(r'^accounts/register/complete/$', TemplateView.as_view(template_name='registration/registration_complete.jinja'), name='registration_complete'),
     url(r'^accounts/register/closed/$',  TemplateView.as_view(template_name='registration/registration_closed.jinja'), name='registration_disallowed'),
 
+    url(r'^ticket/', include('ticket.urls')),
     url(r'^podaci/', include('podaci.urls')),
     url(r'^osoba/', include('osoba.urls')),
     url(r'^robots/', include('robots.urls')),
