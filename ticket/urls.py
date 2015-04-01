@@ -44,23 +44,34 @@ urlpatterns = patterns('',
                                      perm('user', ticket.views.PersonTicketUpdate), name='person_ownership_ticket_edit'),
     url(r'^manage/other/(?P<pk>[0-9]+)/edit/$',
                                      perm('user', ticket.views.OtherTicketUpdate), name='other_ticket_edit'),
-    url(r'^(?P<pk>[0-9]+)/close/$',  perm('user', ticket.views.TicketActionCloseHandler), name='ticket_close'),
-    url(r'^(?P<pk>[0-9]+)/open/$',   perm('user', ticket.views.TicketActionOpenHandler), name='ticket_open'),
-    url(r'^(?P<pk>[0-9]+)/cancel/$', perm('user', ticket.views.TicketActionCancelHandler), name='ticket_cancel'),
-    url(r'^(?P<pk>[0-9]+)/join/$',   perm('volunteer', ticket.views.TicketActionJoinHandler), name='ticket_join'),
-    url(r'^(?P<pk>[0-9]+)/leave/$',  perm('volunteer', ticket.views.TicketActionLeaveHandler), name='ticket_leave'),
+    url(r'^(?P<pk>[0-9]+)/close/$',  perm('user', ticket.views.TicketActionClose), name='ticket_close'),
+    url(r'^(?P<pk>[0-9]+)/open/$',   perm('user', ticket.views.TicketActionOpen), name='ticket_open'),
+    url(r'^(?P<pk>[0-9]+)/cancel/$', perm('user', ticket.views.TicketActionCancel), name='ticket_cancel'),
+    url(r'^(?P<pk>[0-9]+)/join/$',   perm('volunteer', ticket.views.TicketActionJoin), name='ticket_join'),
+    url(r'^(?P<pk>[0-9]+)/leave/$',  perm('volunteer', ticket.views.TicketActionLeave), name='ticket_leave'),
     url(r'^(?P<pk>[0-9]+)/updateremove/$',
                                      perm('volunteer', ticket.views.TicketUpdateRemoveHandler), name='ticket_update_remove'),
+
+    url(r'^fees/users/$',            perm('staff', ticket.views.TicketUserFeesOverview), name='ticket_fees_users'),
+    url(r'^fees/networks/$',         perm('staff', ticket.views.TicketNetworkFeesOverview), name='ticket_fees_networks'),
+    url(r'^fees/budgets/$',          perm('staff', ticket.views.TicketBudgetFeesOverview), name='ticket_fees_budgets'),
+    url(r'^_validation/request/$',   perm('user', ticket.validators.ValidateTicketRequest), name='ajax_validate_request'),
+
+# TODO: FIXME
+    url(r'^(?P<pk>[0-9]+)/pay/$', requests.RequestPaidHandler.as_view(), name='request_mark_paid'),
+    url(r'^(?P<pk>[0-9]+)/charge/$', perm('staff', ticket.views.TicketAddCharge), name='request_charge_add'),
+    #url(r'^request/request_unauthorized/$', requests.RequestUnauthorized.as_view(), name='request_unauthorized'),
+    # url(r'^request/respond/$', requests.ResponseListHandler.as_view(), name='response_list'),
+    # url(r'^request/public/$', requests.PublicListHandler.as_view(), name='public_list'),
+    #url(r'^request/manage/(?P<ticket_id>[0-9]+)/edit/$', requests.RequestHandler.as_view(), name='ticket_edit'),
+    #url(r'^request/manage/(?P<ticket_id>[0-9]+)/settings/$', requests.AdminSettingsHandler.as_view(), name='ticket_admin_settings'),
 
     url(r'^fees/customer/$',         perm('staff', requests.AdminCustomerChargesHandler), name='ticket_admin_customer_charges'),
     url(r'^fees/(?P<charge_key>.+)/reconcile/$', 
                                      perm('staff', requests.AdminChargeReconcileInlineHandler), name='ticket_admin_reconcile_charges'),
     url(r'^fees/outstanding/$',      perm('staff', requests.AdminOutstandingChargesHandler), name='ticket_admin_outstanding_charges'),
 
-    url(r'^fees/users/$',            perm('staff', ticket.views.TicketUserFeesOverview), name='ticket_fees_users'),
-    url(r'^fees/networks/$',         perm('staff', ticket.views.TicketNetworkFeesOverview), name='ticket_fees_networks'),
-    url(r'^fees/budgets/$',          perm('staff', ticket.views.TicketBudgetFeesOverview), name='ticket_fees_budgets'),
-    url(r'^_validation/request/$',   perm('user', ticket.validators.ValidateTicketRequest), name='ajax_validate_request'),
+
 )
 
 
