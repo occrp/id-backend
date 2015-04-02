@@ -49,7 +49,8 @@ def create_system_service():
         prn=config['drive_owner_account']
     )
 
-    http = httplib2.Http(cache="/tmp/id_gdrive_downloads/.cache")
+    #http = httplib2.Http(cache="/tmp/id_gdrive_downloads/.cache")
+    http = httplib2.Http()
     http = credentials.authorize(http)
 
     try:
@@ -253,16 +254,33 @@ def handle_folder_id(service, ticket_id, folder_id):
         podacify_file(ticket_id, f)
         
         # remove the file?
+        if not keep_downloads:
+            os.remove(f['localPath'])
+            
+    # remove the folder?
+    if not keep_downloads:
+        os.rmdir(dfolder)
         
 
 
 if __name__ == "__main__":
     
+    keep_downloads = False
     try:
-        script, idpath, drivefolderids_path = sys.argv
+        # requried args
+        script, idpath, drivefolderids_path = sys.argv[:3]
+        # --keep?
+        if len(sys.argv) > 3:
+            if sys.argv[3] == '--keep':
+                keep_downloads = True
+            else:
+                raise ValueError
+            # too long, did not read
+            if len(sys.argv) > 4:
+                raise ValueError
     except ValueError:
-        print("\nRun via:\n    %s </path/to/legacy-investigative-dashboard> <drive-folder-ids-file-path>\n" % sys.argv[0])
-        print("Temporary files are being saved in /tmp/id_gdrive_downloads/<folder-id>/<individual-filenames>")
+        print("\nRun via:\n\t%s </path/to/legacy-investigative-dashboard> <drive-folder-ids-file-path> [--keep]\n" % sys.argv[0])
+        print("Temporary files are being saved in:\n\t/tmp/id_gdrive_downloads/<folder-id>/<individual-filenames>\n\nOptional --keep parameter makes the script not delete the downloaded files after Podaci import.\n")
         sys.exit()
     
     # the "d" is silent
@@ -301,3 +319,8 @@ if __name__ == "__main__":
     for ticket_id in drivefolderids:
         # let's handle a google drive folder, shall we?
         handle_folder_id(service, ticket_id, drivefolderids[ticket_id])
+    
+    # should we tidy things up?
+    if not keep_downloads:
+      # remove id_gdrive_downloads folder
+      os.rmdir('/tmp/id_gdrive_downloads/')
