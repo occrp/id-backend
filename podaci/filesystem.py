@@ -130,6 +130,8 @@ class PermissionsMixin:
         """Adds an index entry to the Elasticsearch database."""
         if not self.fs.user:
             raise AuthenticationError()
+        if not id and self.id:
+            id = self.id
         res = self.fs.es.create(index=self.fs.es_index, doc_type=self.DOCTYPE, body=self.meta, id=id)
         if res["created"]:
             self.id = res["_id"]
