@@ -288,7 +288,7 @@ class Tag(MetaMixin, PermissionsMixin):
         return True
 
     def parent_add(self, parenttag):
-        if isinstance(parenttag, Tag): parenttag = tag.id
+        if isinstance(parenttag, Tag): parenttag = parenttag.id
         if parenttag not in self.meta["parents"]:
             self.meta["parents"].append(parenttag)
         self._sync()
