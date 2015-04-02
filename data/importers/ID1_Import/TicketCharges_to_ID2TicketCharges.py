@@ -8,7 +8,7 @@ import os
 import json
 from django.db.utils import IntegrityError
 import django
-#import pickle FIXME do we need this?
+import pickle
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 sys.path.append(os.path.abspath("../../../"))
@@ -97,7 +97,7 @@ def convert(in_file):
             # set the key
             tchrg[key] = value
 
-        tchrgs.append(tupdt)
+        tchrgs.append(tchrg)
 
     print "... Got %d ticket charges" % (len(tchrgs))
 
@@ -129,6 +129,10 @@ def convert(in_file):
                     # no. break -- this will make the else part of the for not execute
                     print("+-- ignoring this ticket update due to missing ticket! you'll find all missing ticket gkeys in %s" % ticket_missing_file)
                     break
+            elif key in ['created', 'reconciled_date']:
+                print '     +-- value is: %s' % value
+                if not value.strip():
+                    continue
             # set the attribute
             setattr(t, key, value)
             
@@ -162,7 +166,7 @@ if __name__ == "__main__":
     ticket_gkeys_file = os.path.join(workdir, 'Ticket.gkeys')
     ticket_missing_file = os.path.join(workdir, 'Ticket.missing')
   
-    print "Loading gkeys..."
+    print "Loading gkeys from %s, %s..." % (user_gkeys_file, ticket_gkeys_file)
     try:
         with open(user_gkeys_file, 'rb') as gkeyfile:
             profilegkeys = pickle.load(gkeyfile)
