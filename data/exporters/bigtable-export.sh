@@ -53,6 +53,10 @@ ID_APP_DIR="$2"
 APPENGINE_DIR="$3"
 OUTPUT_DIR="$4"
 
+# get user and password
+read    -p 'AppEngine Email?    : ' APPENGINE_EMAIL
+read -s -p 'AppEngine Password? : ' APPENGINE_PW
+
 # can be: AccountRequest, UserProfile, TicketUpdate, Ticket
 for DATA_KIND in AccountRequest UserProfile TicketUpdate Ticket; do
   echo "Exporting $DATA_KIND from $ID_APP..."
@@ -71,6 +75,13 @@ for DATA_KIND in AccountRequest UserProfile TicketUpdate Ticket; do
     --batch_size=500 \
     --num_threads=50 \
     --bandwidth_limit=500000 \
-    --rps_limit=1000
+    --email="$APPENGINE_EMAIL" \
+    --rps_limit=1000 <<EOF
+$APPENGINE_PW
+$APPENGINE_PW
+$APPENGINE_PW
+$APPENGINE_PW
+$APPENGINE_PW
+EOF
   echo '...done.'
 done

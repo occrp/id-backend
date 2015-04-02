@@ -34,9 +34,9 @@ def get_user_profile(value):
     # should be known, try getting it from the db
     try:
         # try the db using profilegkeys
-        print '+-- looking for user based on gkey: %s (%s)' % (value, profilegkeys[value])
+        #print '+-- looking for user based on gkey: %s (%s)' % (value, profilegkeys[value])
         return get_user_model().objects.get(email=profilegkeys[value])
-        print '+-- found! id: %s' % value.id
+        #print '+-- found! id: %s' % value.id
     except:
         missing_users.append(value)
         print('User with old_google_key: "%s" does not seem to exist in UserProfile.gkeys; have you imported user data already?' % value)
@@ -88,7 +88,8 @@ def convert(in_file):
             # UserProfile.gkeys for reference while importing Tickets and TicketUpdates
             elif key == "key":
                 ticket["old_google_key"] = value
-                print('old_google_key : %s' % value)
+                print '\rold_google_key : %s' % value,
+                sys.stdout.flush()
             # let's properly handle the ticket type
             elif key == "ticket_type":
                 if 'PersonTicket' in value:
@@ -126,7 +127,7 @@ def convert(in_file):
 
         tickets.append(ticket)
 
-    print "... Got %d tickets" % (cnt - 1)
+    print "... Got %d tickets" % (len(tickets))
 
     # we need that regex for the 'responders' field
     r = re.compile("u'UserProfile', (\d+)L, _app")
@@ -135,7 +136,8 @@ def convert(in_file):
     gkeys = {}
     for ticket in tickets:
         i += 1
-        print("Adding %20s ticket data: %4d, %s (old key: %s)" % (ticket["ticket_type"], i, ticket["name"], ticket["key"]))
+        print "\rAdding %20s ticket data: %4d (old key: %s)" % (ticket["ticket_type"], i, ticket["key"]),
+        sys.stdout.flush()
         
         # which kind of ticket are we working with?
         if ticket['ticket_type'] == 'person_ownership':
@@ -148,7 +150,7 @@ def convert(in_file):
         responders = ''
         volunteers = ''
         for key, value in ticket.iteritems():
-            print '+-- working on: %24s' % key
+            #print '+-- working on: %24s' % key
             # this has to be a Profile instance
             # or, actually, anything that we use as the User model these days
             if key == "requester":
@@ -165,9 +167,6 @@ def convert(in_file):
                 # and we definitely don't need empty dates
                 if not value:
                     continue
-            # need to pay special attention to dates
-            elif key in ['created', 'status_updated']:
-                print '     +-- value: %s' % value
             elif key == "responders":
                 # we're not going to save that into the ticket directly
                 # instead, we're saving it for use after the ticket is saved
@@ -182,7 +181,7 @@ def convert(in_file):
             # rather, to gkeys, so that it's pickled into UserProfile.gkeys for further reference
             if key == 'old_google_key':
                 gkeys[value] = ticket['id']
-                print '     +-- gkey / id : %s / %d' % (value, ticket['id'])
+                #print '     +-- gkey / id : %s / %d' % (value, ticket['id'])
                 continue
             # set the attribute
             setattr(t, key, value)
@@ -193,37 +192,37 @@ def convert(in_file):
             # fix status_updated
             if not t.status_updated:
                 t.status_updated = datetime.datetime.strptime(t.created, '%Y-%m-%d %H:%M:%S.%f')
-                print '+-- t.status_updated set to t.created : %s' % t.status_updated
+                #print '+-- t.status_updated set to t.created : %s' % t.status_updated
             # databasing the database
             try:
                 # save the ticket
                 t.save()
-                print '+-- ticket id / db id : %d / %d' % (ticket['id'], t.id)
-                print '+-- created           : %s' % t.created
-                print '+-- status_updated    : %s' % t.status_updated
+                #print '+-- ticket id / db id : %d / %d' % (ticket['id'], t.id)
+                #print '+-- created           : %s' % t.created
+                #print '+-- status_updated    : %s' % t.status_updated
                 # handle responders...
-                print('Responders: "%s"' % responders)
+                #print('Responders: "%s"' % responders)
                 for resp in r.finditer(responders):
-                    print '+-- %s' % resp.group(1)
+                    #print '+-- %s' % resp.group(1)
                     u = get_user_profile(resp.group(1))
                     if u:
                         t.responders.add(u)
-                    else:
-                        print('     +-- missing, noted')
+                    #else:
+                        #print('     +-- missing, noted')
                 # ...and volunteers
-                print('Volunteers: "%s"' % volunteers)
+                #print('Volunteers: "%s"' % volunteers)
                 for vol in r.finditer(volunteers):
-                    print '+-- %s' % vol.group(1)
+                    #print '+-- %s' % vol.group(1)
                     u = get_user_profile(vol.group(1))
                     if u:
                         t.volunteers.add(u)
-                    else:
-                        print('     +-- missing, noted')
+                    #else:
+                        #print('     +-- missing, noted')
             # wat.
             except IntegrityError, e:
                 print "Skipping dupe: %s" % (e)
       
-    print "\rAdding tickets: Done."
+    print "\rAdding tickets: Done.                                                                 "
     
     # we need to save the old_google_key-related data
     try:
