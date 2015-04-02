@@ -36,7 +36,7 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>{% trans %}Status{% endtrans %}</th>
+                    <th></th>
                     <th>{% trans %}Summary{% endtrans %}</th>
                     <th>{% trans %}Requester{% endtrans %}</th>
                     <th>{% trans %}Responders{% endtrans %}</th>
@@ -47,16 +47,15 @@
             <tbody>
                 {% for ticket in tickets %}
                     <tr>
-                        <td><i title="{{ticket.get_status()}}" class="icon-{{ ticket.get_status_icon() }}"></i></td>
+                        <td title="{{ticket.get_status()}}">
+                            <i class="icon-{{ticket.get_type_icon()}}"></i>
+                            <i class="icon-{{ticket.get_status_icon()}}"></i>
+                        </td>
                         <td>
-                            {% if ticket.ticket_type == 'person_ownership' %}<i class="icon-user"></i>
-                            {% elif ticket.ticket_type == 'company_ownership' %}<i class="icon-building"></i>
-                            {% else %}<i class="icon-question"></i>
-                            {% endif %}
                             <a href="{{ url('ticket_details', ticket_id=ticket.id) }}">
                                 {{ ticket.summary }}
                             </a>
-                            {% if ticket.ticket_type == 'company_ownership' %}({{ticket.get_country()}}){% endif %}
+                            {% if ticket.ticket_type == 'company_ownership' %}<br/>({{ticket.get_country()}}){% endif %}
                         </td>
                         <td><a href="{{ url('profile', pk=ticket.requester.id)}}">{{ ticket.requester }}</a></td>
                         <td>
