@@ -37,6 +37,9 @@ class Statistics(TemplateView):
             "accreq_approved": AccountRequest.objects.filter(approved=True).count(),
             "accreq_rejected": AccountRequest.objects.filter(approved=False).count(),
             "accreq_outstanding": AccountRequest.objects.filter(approved=None).count(),
+            "networks": Network.objects.all(),
+            "unaffiliated_costs_total": sum([x.cost for x in TicketCharge.objects.filter(user__network=0)]),
+            "unaffiliated_users_count": Profile.objects.filter(network=None).count()
         }
 
 class DatabaseScrapeRequestCreate(CreateView):
