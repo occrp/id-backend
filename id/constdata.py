@@ -1,3 +1,6 @@
+#
+#  THIS FILE IS OBSOLETE PLEASE SALVAGE ANYTHING USEFUL FROM IT AND KILL IT WITH FIRE
+#
 from django.utils.translation import ugettext_lazy as _
 from id.countries import COUNTRIES, CONTINENTS, REGIONS, CURRENCIES
 
