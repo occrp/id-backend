@@ -1,4 +1,4 @@
-# TicketUpdates_to_ID2TicketUpdates.py
+# TicketCharges_to_ID2TicketCharges.py
 
 import sys
 import getopt
@@ -8,11 +8,12 @@ import os
 import json
 from django.db.utils import IntegrityError
 import django
-import pickle
+#import pickle FIXME do we need this?
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 sys.path.append(os.path.abspath("../../../"))
 from ticket.models import *
+from ticket.constants import *
 from django.contrib.auth import get_user_model
 
 missing_users = []
@@ -27,9 +28,9 @@ def get_user_profile(value):
     # should be known, try getting it from the db
     try:
         # try the db using profilegkeys
-        #print '+-- looking for user based on gkey: %s (%s)' % (value, profilegkeys[value])
+        print '+-- looking for user based on gkey: %s (%s)' % (value, profilegkeys[value])
         return get_user_model().objects.get(email=profilegkeys[value])
-        #print '+-- found! id: %s' % value.id
+        print '+-- found! id: %s' % value.id
     except:
         missing_users.append(value)
         print('User with old_google_key: "%s" does not seem to exist in %s; have you imported user data already?' % (value, user_gkeys_file))
@@ -44,9 +45,9 @@ def get_ticket(value):
     # should be known, try getting it from the db
     try:
         # try the db using profilegkeys
-        #print '+-- looking for ticket based on gkey: %s (%s)' % (value, ticketgkeys[value])
+        print '+-- looking for ticket based on gkey: %s (%s)' % (value, ticketgkeys[value])
         return Ticket.objects.get(id=ticketgkeys[value])
-        #print '+-- found! id: %s' % value.id
+        print '+-- found! id: %s' % value.id
     except:
         missing_tickets.append(value)
         print('Ticket with old_google_key: "%s" does not seem to exist in %s; have you imported user data already?' % (value, ticket_gkeys_file))
@@ -60,13 +61,13 @@ def convert(in_file):
     header_row = []
     entries = []
 
-    tupdts = []
+    tchrgs = []
     
     print "Setting up django..."
     django.setup()
-    # grabbing the highest id in the TicketUpdate database so as not to overwrite existing entries
+    # grabbing the highest id in the TicketCharges database so as not to overwrite existing entries
     try:
-        cnt = TicketUpdate.objects.latest('id').id
+        cnt = TicketCharge.objects.latest('id').id
     # in case we can't get it, just start with 0
     except:
         cnt = 0
@@ -79,35 +80,41 @@ def convert(in_file):
 
         cnt += 1
 
-        tupdt = {"id": cnt}
+        tchrg = {"id": cnt}
         for i in range(len(row)):
             value = unicode(row[i], 'utf-8').strip()
             key = header_row[i]
 
-            # extra_relation is kill
-            if key == 'extra_relation':
-                continue
+            if key == 'paid_status':
+                if value not in [ps[0] for ps in PAID_STATUS]:
+                    value = 'unpaid'
+            else:
+                if value.strip() == 'False':
+                    value = False
+                elif value.strip() == 'True':
+                    value = True
+
             # set the key
-            tupdt[key] = value
+            tchrg[key] = value
 
-        tupdts.append(tupdt)
+        tchrgs.append(tupdt)
 
-    print "... Got %d ticket updates" % (len(tupdts))
+    print "... Got %d ticket charges" % (len(tchrgs))
 
     i = 0
-    for tupdt in tupdts:
+    for tchrg in tchrgs:
         i += 1
-        print "\rAdding %20s ticket update data: %4d, a: (%16s, t: %16s)" % (tupdt["update_type"], i, tupdt["author"], tupdt["ticket"]),
+        print "\rAdding %20s ticket update data: %4d, a: (%16s, t: %16s)" % (tchrg["paid_status"], i, tchrg["user"], tchrg["ticket"]),
         sys.stdout.flush()
         
         # the model
-        t = TicketUpdate()
+        t = TicketCharge()
 
-        for key, value in tupdt.iteritems():
-            #print '+-- working on: %24s' % key
+        for key, value in tchrg.iteritems():
+            print '+-- working on: %24s' % key
             # this has to be a Profile instance
             # or, actually, anything that we use as the User model these days
-            if key == "author":
+            if key == "user":
                 value = get_user_profile(value)
                 # did we actually get anything?
                 if not value:
@@ -131,7 +138,7 @@ def convert(in_file):
             try:
                 # save the ticket
                 t.save()
-                #print '+-- created        : %s' % t.created
+                print '+-- created        : %s' % t.created
             # wat.
             except IntegrityError, e:
                 print "Skipping dupe: %s" % (e)

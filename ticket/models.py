@@ -426,7 +426,7 @@ class TicketCharge(models.Model, DisplayMixin):
     user = models.ForeignKey(AUTH_USER_MODEL, blank=False)
 
     # comment on what the charge is for
-    item = models.CharField(max_length=50, blank=False)
+    item = models.CharField(max_length=64, blank=False)
     budget = models.ForeignKey(Budget, blank=True, null=True)
 
     # cost in USD
