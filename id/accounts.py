@@ -27,11 +27,13 @@ class ProfileUpdate(UpdateView):
     form_class = ProfileUpdateForm
     success_url = "/accounts/profile/"
 
-    def get_object(self, *args, **kwargs):
-        if kwargs.has_key("pk"):
-            return get_user_model().objects.get(id=kwargs["pk"])
-        elif kwargs.has_key("email"):
-            return get_user_model().objects.get(email=kwargs["email"])
+    def get_object(self):
+        print "GET OBJECT: " % self.kwargs
+        if self.request.user.is_staff or self.request.user.is_superuser:
+            if self.kwargs.has_key("pk"):
+                return get_user_model().objects.get(id=self.kwargs["pk"])
+            elif self.kwargs.has_key("email"):
+                return get_user_model().objects.get(email=self.kwargs["email"])
         return self.request.user
 
     def get_context_data(self, form):
@@ -40,23 +42,21 @@ class ProfileUpdate(UpdateView):
         ctx = {
             "editing_self": obj == self.request.user
         }
-        print "Request method: ", self.request.method
         if self.request.method == "POST":
             ctx["form"] = ProfileUpdateForm(self.request.POST, instance=obj)
             if ctx["form"].is_valid():
-                print "Saving form. Form: ", ctx["form"]
                 obj = ctx["form"].save()
             else:
                 print ctx["form"].errors
             ctx["form_basics"] = ProfileBasicsForm(self.request.POST, instance=obj)
             ctx["form_details"] = ProfileDetailsForm(self.request.POST, instance=obj)
-            if obj.is_superuser:
+            if self.request.user.is_superuser:
                 ctx["form_admin"] = ProfileAdminForm(self.request.POST, instance=obj)
         else:
             ctx["form"] = ProfileUpdateForm(instance=obj)
             ctx["form_basics"] = ProfileBasicsForm(instance=obj)
             ctx["form_details"] = ProfileDetailsForm(instance=obj)
-            if obj.is_superuser:
+            if self.request.user.is_superuser:
                 ctx["form_admin"] = ProfileAdminForm(instance=obj)
         return ctx
 
