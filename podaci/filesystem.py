@@ -126,11 +126,11 @@ class PermissionsMixin:
         if sync:
             self._sync()
 
-    def _create_index(self):
+    def _create_index(self, id=None):
         """Adds an index entry to the Elasticsearch database."""
         if not self.fs.user:
             raise AuthenticationError()
-        res = self.fs.es.create(index=self.fs.es_index, doc_type=self.DOCTYPE, body=self.meta)
+        res = self.fs.es.create(index=self.fs.es_index, doc_type=self.DOCTYPE, body=self.meta, id=id)
         if res["created"]:
             self.id = res["_id"]
             self.version = res["_version"]
