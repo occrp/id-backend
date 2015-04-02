@@ -5,7 +5,7 @@
         <h1>{% block crud_title %}Statistics{% endblock %}</h1>
     </div>
 
-
+<h2>Basic Statistics</h2>
 <ul class="statistics_boards">
   <li>{% trans %}{{tickets_opened}} research requests ({{tickets_people}} about people, {{tickets_company}} about companies, {{tickets_other}} about other topics{% endtrans %}</li>
   <li>{% trans %}{{tickets_closed}} research requests completed, {{tickets_in_progress}} still in progress{% endtrans %}</li>
@@ -13,6 +13,33 @@
   <li>{% trans %}{{accreq_total}} account requests ({{accreq_approved}} approved, {{accreq_rejected}} rejected, {{accreq_outstanding}} outstanding){% endtrans %}</li>
 </ul>	
 
+<div>
+	<h2>Networks</h2>
+
+	<table class="table table-border">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Members</th>
+			<th>Total costs incurred</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for network in networks %}
+		<tr>
+			<td>{{network.short_name}}</td>
+			<td>{{network.members.count()}}</td>
+			<td>{{network.get_payment_total()}} USD</td>
+		</tr>
+		{% endfor %}
+		<tr>
+			<td>{% trans %}Unaffiliated{% endtrans %}</td>
+			<td>{{unaffiliated_users_count}}</td>
+			<td>{{unaffiliated_costs_total}} USD</td>
+		</tr>
+	</tbody>
+	</table>
+</div>
  
     
 {% endblock %}
