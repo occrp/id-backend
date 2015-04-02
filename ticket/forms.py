@@ -33,19 +33,26 @@ class TicketPaidForm(forms.Form):
         required=True,
         widget=forms.RadioSelect)
 
-class RequestChargeForm(forms.Form):
+class RequestChargeForm(forms.ModelForm):
     """
     Add a charge to a ticket!
     """
-    comment = forms.CharField(label=_("Comment to Requester"), widget=forms.Textarea)
-    item = forms.CharField(label=_("Item"), required=True)
-    cost = forms.DecimalField(label=_("Cost (USD)"), required=True)
-    cost_original_currency = forms.DecimalField(
-        label=_("Cost (Original Currency)"))
-    original_currency = forms.ChoiceField(
-        label=_("Original Currency Name"),
-        choices=constants.CURRENCIES,
-        initial="EUR")
+    class Meta:
+        model = models.TicketCharge
+        exclude = ['ticket', 'user']
+        widgets = {
+            'cost_original_currency': forms.Select(choices=constants.CURRENCIES)
+        }
+        
+    #comment = forms.CharField(label=_("Comment to Requester"), widget=forms.Textarea)
+    #item = forms.CharField(label=_("Item"), required=True)
+    #cost = forms.DecimalField(label=_("Cost (USD)"), required=True)
+    # cost_original_currency = forms.DecimalField(
+    #    label=_("Cost (Original Currency)"))
+    #original_currency = forms.ChoiceField(
+    #    label=_("Original Currency Name"),
+    #    choices=constants.CURRENCIES,
+    #    initial="EUR")
 
 class TicketTypeForm(forms.Form):
     ticket_type = forms.ChoiceField(
@@ -235,3 +242,8 @@ class CommentForm(forms.ModelForm):
                 }
             )
         }
+
+
+class BudgetForm(forms.ModelForm):
+    class Meta:
+        model = models.Budget

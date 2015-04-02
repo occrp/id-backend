@@ -416,9 +416,9 @@
 
     {{ modal_macros.render_modal(cancel_form, url('ticket_cancel', pk=ticket.id), "ReqCancelForm", _("Cancel Request"), _("Submit"), "", csrf_token) }}
 
-    {{ modal_macros.render_modal(mark_paid_form, url('request_mark_paid', ticket_id=ticket.id), "MarkPaidForm", _("Mark Paid"), _("Save"), "", csrf_token) }}
+    {{ modal_macros.render_modal(mark_paid_form, url('request_mark_paid', pk=ticket.id), "MarkPaidForm", _("Mark Paid"), _("Save"), "", csrf_token) }}
     
-    {{ modal_macros.render_modal(charge_form, url('request_charge_add', ticket_id=ticket.id), "ChargeForm", _("Add Charge"), _("Add"), "", csrf_token) }}
+    {{ modal_macros.render_modal(charge_form, url('request_charge_add', pk=ticket.id), "ChargeForm", _("Add Charge"), _("Add"), "", csrf_token) }}
     
     {{ modal_macros.render_dynamic_modal('SharingModal', _('Share Attached Files'), _('Save')) }}
     

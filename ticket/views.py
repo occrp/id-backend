@@ -19,7 +19,7 @@ from django.template.loader import render_to_string
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import TemplateView, UpdateView
+from django.views.generic import TemplateView, UpdateView, FormView
 
 from django.db.models import Count, Sum
 
@@ -117,7 +117,7 @@ class TicketActionCancel(TicketActionBaseHandler):
         ticket = self.object
         ticket.status = constants.get_choice('Cancelled', constants.TICKET_STATUS)
         self.perform_ticket_update(ticket, 'Cancelled', form.cleaned_data['reason'])
-        return super(TicketActionCancelHandler, self).perform_valid_action(form)
+        return super(TicketActionCancel, self).perform_valid_action(form)
 
 class TicketActionClose(TicketActionBaseHandler):
 
@@ -128,7 +128,7 @@ class TicketActionClose(TicketActionBaseHandler):
         ticket = self.object
         ticket.status = constants.get_choice('Closed', constants.TICKET_STATUS)
         self.perform_ticket_update(ticket, 'Closed', form.cleaned_data['reason'])
-        return super(TicketActionCloseHandler, self).perform_valid_action(form)
+        return super(TicketActionClose, self).perform_valid_action(form)
 
 
 class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
@@ -151,7 +151,7 @@ class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
 
             tag.add_user(self.request.user, True)
 
-            return super(TicketActionJoinHandler, self).perform_valid_action(form)
+            return super(TicketActionJoin, self).perform_valid_action(form)
 
         elif self.request.user.is_volunteer:
             ticket.volunteers.add(self.request.user)
@@ -161,7 +161,7 @@ class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
 
             tag.add_user(self.request.user, True)
 
-            return super(TicketActionJoinHandler, self).perform_valid_action(form)
+            return super(TicketActionJoin, self).perform_valid_action(form)
 
         else:
             self.perform_invalid_action(form)
@@ -185,7 +185,7 @@ class TicketActionLeave(TicketActionBaseHandler, PodaciMixin):
 
             tag.remove_user(self.request.user)
 
-            return super(TicketActionLeaveHandler, self).perform_valid_action(form)
+            return super(TicketActionLeave, self).perform_valid_action(form)
         elif self.request.user in ticket.volunteers.all():
             self.volunteers.remove(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
@@ -193,7 +193,7 @@ class TicketActionLeave(TicketActionBaseHandler, PodaciMixin):
 
             tag.remove_user(self.request.user)
 
-            return super(TicketActionLeaveHandler, self).perform_valid_action(form)
+            return super(TicketActionLeave, self).perform_valid_action(form)
         else:
             self.force_invalid = True
 
@@ -213,7 +213,7 @@ class TicketActionOpen(TicketActionBaseHandler):
 
         self.perform_ticket_update(ticket, 'Opened', form.cleaned_data['reason'])
 
-        return super(TicketActionOpenHandler, self).perform_valid_action(form)
+        return super(TicketActionOpen, self).perform_valid_action(form)
 
 
 class TicketAddCharge(TicketActionBaseHandler):
@@ -404,8 +404,7 @@ class TicketDetail(TemplateView, PodaciMixin):
         charges = (TicketCharge.objects.filter(ticket=self.ticket)
                    .order_by("created"))
 
-        outstanding = TicketCharge.outstanding_charges(
-            charges, pluck="cost")
+        outstanding = sum([x.cost for x in TicketCharge.objects.filter(reconciled=False)])
 
         self.podaci_setup()
 
@@ -434,7 +433,7 @@ class TicketDetail(TemplateView, PodaciMixin):
             'ticket': self.ticket,
             'ticket_updates': ticket_updates,
             'charges': charges,
-            'charges_outstanding': sum(outstanding),
+            'charges_outstanding': outstanding,
             'ticket_update_form': self.form,
             'cancel_form': forms.TicketCancelForm(),
             'mark_paid_form': forms.TicketPaidForm(),
@@ -544,6 +543,7 @@ class TicketList(PrettyPaginatorMixin, TemplateView, PodaciMixin):
 class TicketListAllOpen(TicketList):
     page_name = "All Requests"
     ticket_list_name = "All Open Requests"
+    url_name = 'ticket_all_open_list'
 
     def get_ticket_set(self, user):
         return Ticket.objects.filter(
@@ -553,6 +553,7 @@ class TicketListAllOpen(TicketList):
 class TicketListAllClosed(TicketList):
     page_name = "All Requests"
     ticket_list_name = "All Closed Requests"
+    url_name = 'ticket_all_closed_list'
 
     def get_ticket_set(self, user):
         return Ticket.objects.filter(
@@ -624,6 +625,7 @@ class TicketListPublicClosed(TicketList):
 class TicketListUnassigned(TicketList):
     page_name = "Unassigned Requests"
     ticket_list_name = "Unassigned Requests"
+    url_name = 'ticket_unassigned_list'
 
     def get_ticket_set(self, user):
         return Ticket.objects.annotate(
@@ -636,6 +638,7 @@ class TicketListUnassigned(TicketList):
 class TicketListUpcomingDeadline(TicketList):
     page_name = "Upcoming Deadline Requests"
     ticket_list_name = "Requests with deadlines in the 30 days"
+    url_name = 'ticket_deadline_list'
 
     def get_ticket_set(self, user):
         filter_date = datetime.now() + timedelta(days=30)
@@ -755,5 +758,5 @@ class TicketBudgetFeesOverview(TemplateView):
 
     def get_context_data(self):
         return {
-            "budgets": [],
+            "budgets": Budget.objects.all(),
         }
