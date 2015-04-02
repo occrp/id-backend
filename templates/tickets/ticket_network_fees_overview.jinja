@@ -10,7 +10,7 @@
 </thead>
 <tbody>
 {% for network in networks %}
-    <tr><td>{{network}}</td><td>{{network.payment_total}}</td><td>Details</td></tr>
+    <tr><td>{{network}}</td><td>{{network.get_payment_total()}}</td><td>Details</td></tr>
 {% endfor %}
 </tbody>
 </table>
