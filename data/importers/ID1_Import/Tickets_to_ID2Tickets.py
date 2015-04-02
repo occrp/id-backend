@@ -15,7 +15,7 @@ import datetime
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 sys.path.append(os.path.abspath("../../../"))
 from ticket.models import *
-from django.contrib.auth import get_user_model;
+from django.contrib.auth import get_user_model
 
 # we're gonna need that...
 import re
@@ -101,10 +101,8 @@ def convert(in_file):
                 else:
                     raise ValueError('%s is not a valid ticket type' % value)
             # that one's tricky, but luckily literal_eval comes to rescue
-            elif key == "family":
-                if value == '':
-                    value = []
-                else:
+            elif key in ["family", "aliases", "connections"]:
+                if value != '':
                     # get the eval'd value
                     oldvalue = literal_eval(value)
                     value = []
@@ -114,6 +112,7 @@ def convert(in_file):
                     for v in oldvalue:
                         if v.strip() != '':
                             value.append(v)
+                    value = '\n'.join(value)
                             
             # maybe it's a True/False string?
             else:
