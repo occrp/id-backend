@@ -8,11 +8,14 @@ requests_log.setLevel(logging.WARNING)
 import pycountry
 
 skipped_codes = (
-    'XXX', 'XTS' #omit some testing currency codes
+    'XXX', 'XTS', 'XBA', 'XBB', 'XBC', 'XBD', 'XFO', 'XAF', 'XPF',
+    'XFU', 'XOF', 'XPD', 'XAU', 'XAG', 'XDR', 'SDR', 'XPT', 'USN',
+    'USS', 
+    #omit some non-useful currency codes
     )
-CURRENCIES = [(x.letter, x.name)
+CURRENCIES = [(x.letter, '%s - %s' % (x.letter, x.name))
               for x in pycountry.currencies
-              if x not in skipped_codes]
+              if x.letter not in skipped_codes]
 
 COUNTRIES = (
     ('', u'-----------'),
