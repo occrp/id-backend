@@ -3,12 +3,19 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from id.mixins import *
 from id.constdata import *
+from ticket.models import TicketCharge
 from settings.settings import LANGUAGES, AUTH_USER_MODEL
 from django.utils import timezone
 
 class Network(models.Model):
     short_name = models.CharField(max_length=50)
     long_name = models.CharField(max_length=100, blank=True)
+
+    def get_payment_total(self):
+        total = 0
+        for t in TicketCharge.objects.filter(ticket__requester__network=self):
+            total += t.cost
+        return total
 
     def __unicode__(self):
         if self.long_name:
@@ -74,7 +81,7 @@ class Profile(AbstractBaseUser, PermissionsMixin):
     is_active   = models.BooleanField(default=True)
     date_joined = models.DateTimeField(_('Date Joined'), default=timezone.now)
 
-    network = models.ForeignKey(Network, null=True, blank=True)
+    network = models.ForeignKey(Network, null=True, blank=True, related_name='members')
     phone_number = models.CharField(blank=True, max_length=24)
     organization_membership = models.CharField(blank=True, max_length=64)
     notes = models.TextField(blank=True)
