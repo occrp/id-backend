@@ -8,6 +8,7 @@ id2dataimports:
   links:
     - mysql
     - neo4j
+    - elasticsearch
   command: /bin/bash
   volumes:
     - "../export-prod/:/data"
@@ -27,3 +28,5 @@ mysql:
     MYSQL_USER:     id2
     MYSQL_PASSWORD: id2
     MYSQL_DATABASE: id2
+elasticsearch:
+  image: elasticsearch:1.5

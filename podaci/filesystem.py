@@ -601,7 +601,7 @@ class FileSystem:
                     "query": {
                         "bool": {
                             "must": [
-                                {"match":{"allowed_users":user.id}},
+                                #{"match":{"allowed_users":user.id}},
                                 {"match":{"parents":root}}
                             ]
                         }
