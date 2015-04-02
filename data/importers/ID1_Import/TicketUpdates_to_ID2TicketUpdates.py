@@ -27,9 +27,9 @@ def get_user_profile(value):
     # should be known, try getting it from the db
     try:
         # try the db using profilegkeys
-        print '+-- looking for user based on gkey: %s (%s)' % (value, profilegkeys[value])
+        #print '+-- looking for user based on gkey: %s (%s)' % (value, profilegkeys[value])
         return get_user_model().objects.get(email=profilegkeys[value])
-        print '+-- found! id: %s' % value.id
+        #print '+-- found! id: %s' % value.id
     except:
         missing_users.append(value)
         print('User with old_google_key: "%s" does not seem to exist in %s; have you imported user data already?' % (value, user_gkeys_file))
@@ -44,9 +44,9 @@ def get_ticket(value):
     # should be known, try getting it from the db
     try:
         # try the db using profilegkeys
-        print '+-- looking for ticket based on gkey: %s (%s)' % (value, ticketgkeys[value])
+        #print '+-- looking for ticket based on gkey: %s (%s)' % (value, ticketgkeys[value])
         return Ticket.objects.get(id=ticketgkeys[value])
-        print '+-- found! id: %s' % value.id
+        #print '+-- found! id: %s' % value.id
     except:
         missing_tickets.append(value)
         print('Ticket with old_google_key: "%s" does not seem to exist in %s; have you imported user data already?' % (value, ticket_gkeys_file))
@@ -92,18 +92,19 @@ def convert(in_file):
 
         tupdts.append(tupdt)
 
-    print "... Got %d ticket updates" % (cnt - 1)
+    print "... Got %d ticket updates" % (len(tupdts))
 
     i = 0
     for tupdt in tupdts:
         i += 1
-        print("Adding %20s ticket update data: %4d, a: (%s, t: %s)" % (tupdt["update_type"], i, tupdt["author"], tupdt["ticket"]))
+        print "\rAdding %20s ticket update data: %4d, a: (%16s, t: %16s)" % (tupdt["update_type"], i, tupdt["author"], tupdt["ticket"]),
+        sys.stdout.flush()
         
         # the model
         t = TicketUpdate()
 
         for key, value in tupdt.iteritems():
-            print '+-- working on: %24s' % key
+            #print '+-- working on: %24s' % key
             # this has to be a Profile instance
             # or, actually, anything that we use as the User model these days
             if key == "author":
@@ -130,12 +131,12 @@ def convert(in_file):
             try:
                 # save the ticket
                 t.save()
-                print '+-- created        : %s' % t.created
+                #print '+-- created        : %s' % t.created
             # wat.
             except IntegrityError, e:
                 print "Skipping dupe: %s" % (e)
       
-    print "\rAdding tickets: Done."
+    print "\rAdding ticket updates: Done.                                                              "
 
 
 if __name__ == "__main__":
