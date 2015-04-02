@@ -16,6 +16,13 @@ from apiclient import http as apihttp
 from apiclient.discovery import build
 from oauth2client import client
 
+import django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
+sys.path.append(os.path.abspath("../../../"))
+from id.models import *
+from ticket.models import *
+from podaci import File, Tag, FileSystem
+
 
 # getting a string from a textfile
 def file_to_str(filename):
@@ -62,7 +69,6 @@ def list_folder_contents(service, folder_id):
     
     page_token = None
     while True:
-        print '+-- in while loop'
         try:
             param = {}
             if page_token:
@@ -133,7 +139,49 @@ def download_file(service, file_id, local_fd):
             return
 
 
-def handle_folder_id(service, folder_id):
+def handle_gdrive_file(service, f):
+    # if the file exists...
+    if os.path.isfile(f['localPath']):
+        print '     +-- file exists, checking md5...'
+        with open(f['localPath'], 'rb') as dfile:
+            if hashlib.md5(dfile.read()).hexdigest() == f['md5Checksum']:
+                print '     +-- checksums match, not downloading.'
+                return False
+            else:
+                print '     +-- checksums do not match, downloading...'
+        
+    # download the bugger
+    with open(f['localPath'], 'wb') as dfile:
+        download_file(service, f['id'], dfile)
+    return True
+
+
+def podacify_file(ticket_id, f):
+    # assuming:
+    # - fs is a global FileSystem instance
+    # - metatag is a global Tag instance, being the Tickets meta tag
+    
+    # first, we need the ticket
+    ticket = Ticket.objects.get(id=ticket_id)
+    
+    # create the tag
+    tag = fs.create_tag('Ticket %d' % ticket.id)
+    
+    #
+    pfile = fs.create_file(fname)
+    
+    # save potentially useful metadata (anything else?)
+    pfile.meta['extra']['legacyGoogleFolderId'] = f['legacyGoogleFolderId']
+    
+    # add the tags
+    pfile.add_tag(tag)
+    ticket.add_tag(tag)
+    #metatag.add_tag(tag) which
+    #tag.add_tag(metatag) one?
+    
+
+
+def handle_folder_id(service, ticket_id, folder_id):
     file_ids_list = list_folder_contents(service, folder_id)
     
     # get file metadata
@@ -160,23 +208,16 @@ def handle_folder_id(service, folder_id):
     for f in file_info_list:
         
         print '+-- file: %s (md5: %s)' % (f['originalFilename'], f['md5Checksum'])
-        
         # filename
-        fname = os.path.join(dfolder, f['originalFilename'])
+        f['localPath'] = os.path.join(dfolder, f['originalFilename'])
+        f['legacyGoogleFolderId'] = folder_id
         
-        # if the file exists...
-        if os.path.isfile(fname):
-            print '     +-- file exists, checking md5...'
-            with open(fname, 'rb') as dfile:
-                if hashlib.md5(dfile.read()).hexdigest() == f['md5Checksum']:
-                    print '     +-- checksums match, not downloading.'
-                    continue
-                else:
-                    print '     +-- checksums do not match, downloading...'
-            
-        # download the bugger
-        with open(fname, 'wb') as dfile:
-            download_file(service, f['id'], dfile)
+        # download/checksum the file
+        handle_gdrive_file(service, f)
+        
+        # handle the podaci side of things
+        podacify_file(ticket_id, f)
+        
 
 
 if __name__ == "__main__":
@@ -187,6 +228,10 @@ if __name__ == "__main__":
         print("\nRun via:\n    %s </path/to/legacy-investigative-dashboard> <drive-folder-ids-file-path>\n" % sys.argv[0])
         print("Temporary files are being saved in /tmp/id_gdrive_downloads/<folder-id>/<individual-filenames>")
         sys.exit()
+    
+    # the "d" is silent
+    print "Setting up django..."
+    django.setup()
     
     # make sure we have the config available
     sys.path.append(os.path.abspath("%s/app/config/" % idpath))
@@ -201,10 +246,14 @@ if __name__ == "__main__":
         print '+-- error loading pickled drive folder ids: %s' % e
         sys.exit(1)
     
+    # podaci filesystem
+    fs = FileSystem()
+    metatag = fs.create_tag('Tickets')
+    
     # create the damn gdrive service
     service = create_system_service()
     
     # get folder contents
-    for folder in drivefolderids:
+    for ticket_id in drivefolderids:
         # let's handle a google drive folder, shall we?
-        handle_folder_id(service, drivefolderids[folder])
+        handle_folder_id(service, ticket_id, drivefolderids[ticket_id])
