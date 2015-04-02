@@ -3,7 +3,7 @@ from django.db import models
 from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
 
-from id.constdata import *
+from ticket.constants import *
 
 class MessageMixin(object):
     def add_message(self, message, level='success'):
@@ -31,82 +31,6 @@ class DisplayMixin(object):
             value = ', '.join(value)
 
         return value
-
-
-class DriveMixin(object):
-    """ Fields necessary for supporting Drive uploads. """
-    drive_folder_id = models.CharField(max_length=200)
-    drive_shared_users = models.TextField()
-    drive_shared_groups = models.TextField()
-    _use_cache = False
-
-    def permissions_changed(self):
-        if 'groups_admin_id' not in self.drive_shared_groups:
-            self.drive_shared_groups.append('groups_admin_id')
-        old = self.key.get()
-        new = self
-        if (old.drive_shared_users != new.drive_shared_users or
-                old.drive_shared_groups != new.drive_shared_groups):
-            return True
-        return False
-
-    def update_drive_permissions(self):
-        if not self.drive_folder_id:
-            # Deliberately omitting 'groups_admin_id' so that
-            # next save will trigger permissions_changed.
-            self.drive_shared_groups = ['groups_staff_id']
-            return  # Cannot have had files uploaded yet
-        elif not self.permissions_changed():
-            return
-
-        # Clear all old permissions
-        drive = Drive.system_instance()
-        drive.clear_permissions(self.drive_folder_id)
-
-        # If ticket, make requestor and responder readers
-        share_with = []
-        if getattr(self, 'requester', None):
-            share_with.append(self.requester.get().email)
-        if getattr(self, 'responders', None):
-            for responder in self.responders:
-                share_with.append(responder.get().email)
-
-        # Make all named users readers
-        if self.drive_shared_users:
-            share_with = share_with + self.drive_shared_users
-
-        if share_with:
-            drive.share([self.drive_folder_id], share_with, 'user', 'reader')
-
-        # Make all groups readers
-        if self.drive_shared_groups:
-            group_emails = [config[g] for g in self.drive_shared_groups]
-            drive.share(
-                [self.drive_folder_id], group_emails, 'group', 'reader')
-
-        # Make public if necessary
-        if 'groups_all_id' in self.drive_shared_groups:
-            drive.share(
-                [self.drive_folder_id], [''], 'anyone', 'reader')
-
-    def _create_drive_folder(self):
-        if not self.drive_folder_id:
-            drive = Drive.system_instance()
-            folder_human_label = key_to_json(self.key)
-            self.drive_folder_id = drive.ensure_folder(folder_human_label)
-            self.put()
-        return self.drive_folder_id
-
-    def _add_file(self, fh, title):
-        drive = Drive.system_instance()
-        mimetype = 'application/pdf' # XXX fixme
-        drive._upload_file(fh = fh,
-                           folder_id = self._create_drive_folder(),
-                           title = title,
-                           mimetype=mimetype)
-
-    def list_files(self):
-        pass
 
 
 class ModelDiffMixin(object):
