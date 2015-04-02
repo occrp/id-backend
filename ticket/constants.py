@@ -91,9 +91,10 @@ OPEN_TICKET_STATUSES = ['new', 'in-progress']
 CLOSED_TICKET_STATUSES = ['closed', 'cancelled']
 
 PAID_STATUS = (
+    ('unpaid', _('Unpaid')),
     ('paid', _('Paid')),
     ('free', _('Paid by OCCRP')),
-    ('cancelled', _('Cancelled'))
+    ('invoiced', _('Invoiced'))
 )
 
 RELATIONSHIP_TYPES = {
