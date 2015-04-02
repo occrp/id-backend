@@ -404,6 +404,13 @@ class DecimalProperty(models.IntegerField):
 
 class Budget(models.Model):
     name = models.CharField(max_length=50)
+    description = models.TextField(blank=True)
+
+    def get_payment_total(self):
+        total = 0
+        for charge in TicketCharge.objects.filter(budget=self):
+            total += charge.cost
+        return total
 
     def __unicode__(self):
         return self.name
@@ -453,23 +460,6 @@ class TicketCharge(models.Model, DisplayMixin):
         if self.reconciled and not self.reconciled_date:
             self.reconciled_date = datetime.datetime.now()
 
-    @classmethod
-    def outstanding_charges(cls, charges, pluck=None):
-        """
-        Gathers all the cost items for supplied charges that are un-reconciled.
-
-        @param charges: A list of TicketCharges
-        @param pluck: (None | Property) if pluck is supplied, it will pluck
-                      the supplied property name from the charge.
-        """
-        outstanding = []
-        for charge in charges:
-            if not charge.reconciled:
-                if pluck:
-                    outstanding.append(getattr(charge, pluck._name))
-                else:
-                    outstanding.append(charge)
-        return outstanding
 
     @classmethod
     def customer_charges(cls, user_key, reconciled=None, pluck=None):
