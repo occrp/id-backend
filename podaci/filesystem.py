@@ -170,7 +170,7 @@ class PermissionsMixin:
 
     def _create_metadata(self):
         """Creates a default metadata template for a new entry."""
-        if self.id: raise ValueError("Cannot recreate existing %s" % self.DOCTYPE)
+        # if self.id: raise ValueError("Cannot recreate existing %s" % self.DOCTYPE)
         self.meta = deepcopy(self.METADATA_TEMPLATE)
         self.meta["date_added"] = datetime.now().isoformat()
         self.log("Created")
