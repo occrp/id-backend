@@ -19,6 +19,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/$',                        perm('staff', admin.Panel), name='admin_panel'),
     url(r'^admin/scrapers/request/$',       perm('staff', admin.DatabaseScrapeRequestCreate), name='admin_scrapers_request'),
+    url(r'^admin/budgets/$',                perm('staff', admin.Budgets), name='admin_budgets'),
 
     url(r'^admin/storage/$',                perm('admin', admin.Storage), name='admin_storage'),
     url(r'^admin/statistics/$',             perm('admin', admin.Statistics), name='statistics'),
