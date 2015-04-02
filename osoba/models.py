@@ -22,6 +22,9 @@ class LegalPersonObject(OsobaObject):
     cars_owned = models.Relationship('Car', rel_type='owns')
     brands_owned = models.Relationship('Brand', rel_type='owns')
     lawsuits = models.Relationship('Person', rel_type='party_to')
+    emails = models.Relationship('EmailAddress', rel_type='has_address')
+    phones = models.Relationship('PhoneNumber', rel_type='has_phoneno')
+
 
 class Person(LegalPersonObject):
     """A human."""
@@ -155,9 +158,6 @@ class Company(LegalPersonObject):
     is_liquidated: models.BooleanProperty(),
     in_receivership: models.BooleanProperty(),
 
-    emails = models.Relationship('EmailAddress', rel_type='has_address')
-    phones = models.Relationship('PhoneNumber', rel_type='has_phoneno')
-
 class Organization(OsobaObject):
     name = models.StringProperty()
     emails = models.Relationship('EmailAddress', rel_type='has_address')
@@ -167,7 +167,7 @@ class Brand(OsobaObject):
     name = models.StringProperty()
 
 class Building(OsobaObject):
-    address = models.StringProperty()
+    address = models.Relationship('Address', rel_type='has_address')
 
 class Property(OsobaObject):
     value = models.IntegerProperty()
@@ -227,6 +227,65 @@ class PhoneNumber(OsobaObject):
 
 class EmailAddress(OsobaObject):
     address = models.StringProperty()
+
+
+# class CompanyAccount
+# date
+# accounts_format
+# tangible_assets
+# netwrth
+# stock
+# number_of_months
+# taxation
+# increase_in_cash
+# sundry_reserves
+# pl_accout_reserves
+# trade_debtors
+# trade_creditors
+# liabilities_contingent
+# liabilities_current
+# liabilities_long_term
+# liabilities_misc_current
+# liabilities_total
+# assets_current
+# assets_fixed_total
+# assets_intangible
+# assets_other_current
+# assets_net
+# assets_total
+# profits_gross
+# profits_before_tax
+# profits_after_tax
+# profits_operating
+# profits_retained
+# loans_long_term
+# loans_short_term
+# bank_overdraft
+# bank_overdraft_and_long_term_loans
+# director_emoluments
+# cashflow_net_from_financing
+# cashflow_net_before_financing
+# capital_employed
+# assets_total_current
+# cost_of_sales
+# working_capital
+# interest_payments
+# exports
+# currency
+# depreciation
+# employees_number
+# accounts_type
+# accounts_format
+# accounts_status
+# revaluation_reserve
+# paid_up_equity
+# turnover
+# wages
+# dividends_payable
+# operations_net_cashflow
+# consolidated_accounts
+# shareholder_funds
+# audit_fee
 
 
 # Property, StringProperty, EmailProperty, URLProperty,
