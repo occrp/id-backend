@@ -2,6 +2,7 @@ from django.views.generic import *
 from id.models import *
 from ticket.models import *
 from id.forms import ScraperRequestForm
+from ticket.forms import BudgetForm
 from podaci import FileSystem
 
 class Panel(TemplateView):
@@ -46,3 +47,13 @@ class DatabaseScrapeRequestCreate(CreateView):
     def get_context_data(self, **kwargs):
         kwargs['object_list'] = DatabaseScrapeRequest.objects.all()
         return super(DatabaseScrapeRequestCreate, self).get_context_data(**kwargs)
+
+
+class Budgets(CreateView):
+    form_class = BudgetForm
+    template_name = "admin/budgets.jinja"
+    success_url = '/admin/budgets'
+
+    def get_context_data(self, **kwargs):
+        kwargs['object_list'] = Budget.objects.all()
+        return super(CreateView, self).get_context_data(**kwargs)
