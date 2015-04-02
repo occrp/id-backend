@@ -288,6 +288,7 @@ class Tag(MetaMixin, PermissionsMixin):
         return True
 
     def parent_add(self, parenttag):
+        if isinstance(parenttag, Tag): parenttag = tag.id
         if parenttag not in self.meta["parents"]:
             self.meta["parents"].append(parenttag)
         self._sync()
@@ -452,15 +453,17 @@ class File(MetaMixin, PermissionsMixin):
         self.fs.es.delete(index=self.fs.es_index, doc_type="file", id=self.id)
         return True
 
-    def add_tag(self, tagid):
-        if tagid in self.meta["tags"]: return
-        self.meta["tags"].append(tagid)
-        self.log("Added tag '%s'" % tagid)
+    def add_tag(self, tag):
+        if isinstance(tag, Tag): tag = tag.id
+        if tag in self.meta["tags"]: return
+        self.meta["tags"].append(tag)
+        self.log("Added tag '%s'" % tag)
         self._sync()
 
-    def remove_tag(self, tagname):
-        self.meta["tags"].remove(tagid)
-        self.log("Removed tag '%s'" % tagid)
+    def remove_tag(self, tag):
+        if isinstance(tag, Tag): tag = tag.id
+        self.meta["tags"].remove(tag)
+        self.log("Removed tag '%s'" % tag)
         self._sync()
 
     def add_note(self, text):
