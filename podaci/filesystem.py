@@ -21,7 +21,7 @@ class FileNotFound(Exception):
 
 def sha256sum(filename, blocksize=65536):
     f = None
-    if type(filename) == str:
+    if type(filename) in [str, unicode]:
         f = open(filename, "r+b")
     else:
         f = filename
