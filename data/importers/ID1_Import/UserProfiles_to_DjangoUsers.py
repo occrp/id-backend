@@ -86,7 +86,7 @@ def convert(in_file):
         i += 1
         print "\rAdding user profiles: %4d, %64s" % (i, user["email"]),
         sys.stdout.flush()
-        u = get_user_model()
+        u = get_user_model()()
         u.is_superuser = user["is_admin"]
         for key, value in user.iteritems():
             # we don't want to save old_google_key into the db

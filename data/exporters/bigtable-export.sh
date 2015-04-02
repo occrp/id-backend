@@ -53,12 +53,11 @@ ID_APP_DIR="$2"
 APPENGINE_DIR="$3"
 OUTPUT_DIR="$4"
 
-# get user and password
-read    -p 'AppEngine Email?    : ' APPENGINE_EMAIL
-read -s -p 'AppEngine Password? : ' APPENGINE_PW
+# get user email
+read -p 'AppEngine Email?    : ' APPENGINE_EMAIL
 
 # can be: AccountRequest, UserProfile, TicketUpdate, Ticket
-for DATA_KIND in AccountRequest UserProfile TicketUpdate Ticket; do
+for DATA_KIND in AccountRequest UserProfile TicketUpdate Ticket TicketCharge; do
   echo "Exporting $DATA_KIND from $ID_APP..."
   OUTPUT_FILE="$OUTPUT_DIR/${DATA_KIND}.csv"
 
@@ -76,12 +75,6 @@ for DATA_KIND in AccountRequest UserProfile TicketUpdate Ticket; do
     --num_threads=50 \
     --bandwidth_limit=500000 \
     --email="$APPENGINE_EMAIL" \
-    --rps_limit=1000 <<EOF
-$APPENGINE_PW
-$APPENGINE_PW
-$APPENGINE_PW
-$APPENGINE_PW
-$APPENGINE_PW
-EOF
+    --rps_limit=1000
   echo '...done.'
 done
