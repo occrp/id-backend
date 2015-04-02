@@ -13,6 +13,7 @@ import pickle
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 sys.path.append(os.path.abspath("../../../"))
 from id.models import *
+from django.contrib.auth import get_user_model
 
 
 def convert(in_file):
@@ -30,7 +31,7 @@ def convert(in_file):
     django.setup()
     # grabbing the highest id in the Profile database so as not to overwrite existing entries
     try:
-        cnt = Profile.objects.latest('id').id
+        cnt = get_user_model().objects.latest('id').id
       # in case we can't get it, just start with 0
     except:
         cnt = 0
@@ -85,7 +86,7 @@ def convert(in_file):
         i += 1
         print "\rAdding user profiles: %4d, %64s" % (i, user["email"]),
         sys.stdout.flush()
-        u = Profile()
+        u = get_user_model()
         u.is_superuser = user["is_admin"]
         for key, value in user.iteritems():
             # we don't want to save old_google_key into the db
@@ -110,7 +111,7 @@ def convert(in_file):
         print '\r+-- checking: %60s...                         ' % email,
         sys.stdout.flush()
         try:
-            u = Profile.objects.get(email=email)
+            u = get_user_model().objects.get(email=email)
             if not u:
                 failed_emails.append(email)
                 print '     +-- warning: not in database!'
