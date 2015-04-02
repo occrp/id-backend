@@ -58,14 +58,8 @@ urlpatterns = patterns('',
     url(r'^_validation/request/$',   perm('user', ticket.validators.ValidateTicketRequest), name='ajax_validate_request'),
 
     # TODO: FIXME
-    url(r'^(?P<pk>[0-9]+)/pay/$', requests.RequestPaidHandler.as_view(), name='request_mark_paid'),
+    url(r'^(?P<pk>[0-9]+)/pay/$',    perm('staff', requests.RequestPaidHandler), name='request_mark_paid'),
     url(r'^(?P<pk>[0-9]+)/charge/$', perm('staff', ticket.views.TicketAddCharge), name='request_charge_add'),
-    #url(r'^request/request_unauthorized/$', requests.RequestUnauthorized.as_view(), name='request_unauthorized'),
-    # url(r'^request/respond/$', requests.ResponseListHandler.as_view(), name='response_list'),
-    # url(r'^request/public/$', requests.PublicListHandler.as_view(), name='public_list'),
-    #url(r'^request/manage/(?P<ticket_id>[0-9]+)/edit/$', requests.RequestHandler.as_view(), name='ticket_edit'),
-    #url(r'^request/manage/(?P<ticket_id>[0-9]+)/settings/$', requests.AdminSettingsHandler.as_view(), name='ticket_admin_settings'),
-
     url(r'^fees/customer/$',         perm('staff', requests.AdminCustomerChargesHandler), name='ticket_admin_customer_charges'),
     url(r'^fees/(?P<charge_key>.+)/reconcile/$', 
                                      perm('staff', requests.AdminChargeReconcileInlineHandler), name='ticket_admin_reconcile_charges'),
