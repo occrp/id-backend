@@ -34,7 +34,7 @@ TIME_ZONE = 'UTC'
 LANGUAGE_CODE = 'en-us'
 DATE_FORMAT = 'd-F-Y'
 
-PODACI_SERVERS = [{"host": "localhost", "port": "9200"}]
+PODACI_SERVERS = [{"host": "elasticsearch", "port": "9200"}]
 PODACI_ES_INDEX = 'podaci'
 PODACI_FS_ROOT = '/data'
 

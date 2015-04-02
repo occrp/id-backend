@@ -49,8 +49,7 @@ def create_system_service():
         prn=config['drive_owner_account']
     )
 
-    #http = httplib2.Http(cache=memcache)
-    http = httplib2.Http()
+    http = httplib2.Http(cache="/tmp/id_gdrive_downloads/.cache")
     http = credentials.authorize(http)
 
     try:
@@ -157,27 +156,62 @@ def handle_gdrive_file(service, f):
 
 
 def podacify_file(ticket_id, f):
+    print '+-- podacifying...'
+    
     # assuming:
     # - fs is a global FileSystem instance
     # - metatag is a global Tag instance, being the Tickets meta tag
     
+    ### TICKET
     # first, we need the ticket
     ticket = Ticket.objects.get(id=ticket_id)
+    print '     +-- ticket : %s' % ticket_id
+    print '     +-- file   : %s' % f['localPath']
     
-    # create the tag
-    tag = fs.create_tag('Ticket %d' % ticket.id)
+    # user for this file
+    fs.user = ticket.requester
     
-    #
-    pfile = fs.create_file(fname)
+    ### TAG
+    tag = ticket.tag_id
+    if tag:
+        try:
+            # get the tag
+            tag = fs.get_tag(tag)
+        except:
+            # create the tag
+            tag = fs.create_tag('Ticket %d' % ticket.id)
+            ticket.tag_id = tag.id
+            ticket.save()
+    else:
+        # create the tag
+        tag = fs.create_tag('Ticket %d' % ticket.id)
+        ticket.tag_id = tag.id
+        ticket.save()
+    
+    # set permissions, etc
+    if ticket.is_public:
+        tag.make_public() # the tag and related files have to have the same visibility as the ticket
+    tag.allow_staff()     # staff has to have r/w access to all imported tickets, and related files
+    
+    # add requester (ro)
+    tag.add_user(ticket.requester, write=False)
+    
+    # add volunteers (rw)
+    for v in ticket.volunteers.all():
+        tag.add_user(v, write=True)
+    
+    # add the metatag
+    tag.parent_add(metatag)
+    
+    ### FILE
+    # create the file
+    pfile = fs.create_file(f['localPath'])
     
     # save potentially useful metadata (anything else?)
     pfile.meta['extra']['legacyGoogleFolderId'] = f['legacyGoogleFolderId']
     
     # add the tags
     pfile.add_tag(tag)
-    ticket.add_tag(tag)
-    #metatag.add_tag(tag) which
-    #tag.add_tag(metatag) one?
     
 
 
@@ -218,6 +252,8 @@ def handle_folder_id(service, ticket_id, folder_id):
         # handle the podaci side of things
         podacify_file(ticket_id, f)
         
+        # remove the file?
+        
 
 
 if __name__ == "__main__":
@@ -246,9 +282,17 @@ if __name__ == "__main__":
         print '+-- error loading pickled drive folder ids: %s' % e
         sys.exit(1)
     
+    # user
+    u = Profile.objects.get(email='admin@example.com') # FIXME
     # podaci filesystem
-    fs = FileSystem()
-    metatag = fs.create_tag('Tickets')
+    fs = FileSystem(user=u)
+    # podaci tickets meta tag
+    try:
+        metatag = fs.get_tag('Tickets_Meta_Tag')
+    except:
+        metatag = Tag(fs)
+        metatag.id = 'Tickets_Meta_Tag'
+        metatag.create('Tickets Meta Tag')
     
     # create the damn gdrive service
     service = create_system_service()
