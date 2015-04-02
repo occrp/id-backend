@@ -57,6 +57,11 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
     def summary(self):
         return ""
 
+    def get_type_icon(self):
+        if self.ticket_type == 'person_ownership': return 'user'
+        elif self.ticket_type == 'company_ownership': return 'building'
+        else: return 'question'
+
     def get_status(self):
         return dict(TICKET_STATUS).get(self.status, _('Unknown'))
 
