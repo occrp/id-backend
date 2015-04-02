@@ -9,8 +9,11 @@
         		<li class="{% if 'externaldb_list' in ROUTE_NAME %}active{% endif %}">
                     <a href="{{ url('externaldb_list') }}"><i class="icon-list-alt"></i> {% trans %}External Databases{% endtrans %}</a>
                 </li>
-                <li class="{% if 'externaldb_list' in ROUTE_NAME %}active{% endif %}">
+                <li class="{% if 'admin_scrapers_request' in ROUTE_NAME %}active{% endif %}">
                     <a href="{{ url('admin_scrapers_request') }}"><i class="icon-list-alt"></i> {% trans %}Scraper requests{% endtrans %}</a>
+                </li>
+                <li class="{% if 'admin_budgets' in ROUTE_NAME %}active{% endif %}">
+                    <a href="{{ url('admin_budgets') }}"><i class="icon-money"></i> {% trans %}Budgets{% endtrans %}</a>
                 </li>
 		{% endif %}
 
