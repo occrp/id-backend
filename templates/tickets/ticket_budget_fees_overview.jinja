@@ -10,7 +10,7 @@
 </thead>
 <tbody>
 {% for budget in budgets %}
-    <tr><td>{{budget}}</td><td>{{budget.payment_total}}</td><td>Details</td></tr>
+    <tr><td>{{budget}}</td><td>{{budget.get_payment_total()}}</td><td>Details</td></tr>
 {% endfor %}
 </tbody>
 </table>
