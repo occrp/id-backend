@@ -8,8 +8,8 @@ import ticket.validators
 import ticket.views
 
 urlpatterns = patterns('',
-    url(r'^all_open/$',              perm('staff', ticket.views.TicketListAllOpen), name='ticket_all_list'),
-    url(r'^all_open/(?P<page>\d+)/$',perm('staff', ticket.views.TicketListAllOpen), name='ticket_all_list'),
+    url(r'^all_open/$',              perm('staff', ticket.views.TicketListAllOpen), name='ticket_all_open_list'),
+    url(r'^all_open/(?P<page>\d+)/$',perm('staff', ticket.views.TicketListAllOpen), name='ticket_all_open_list'),
     url(r'^all_closed/$',            perm('staff', ticket.views.TicketListAllClosed), name='ticket_all_closed_list'),
     url(r'^all_closed/(?P<page>\d+)/$',
                                      perm('staff', ticket.views.TicketListAllClosed), name='ticket_all_closed_list'),
@@ -57,7 +57,7 @@ urlpatterns = patterns('',
     url(r'^fees/budgets/$',          perm('staff', ticket.views.TicketBudgetFeesOverview), name='ticket_fees_budgets'),
     url(r'^_validation/request/$',   perm('user', ticket.validators.ValidateTicketRequest), name='ajax_validate_request'),
 
-# TODO: FIXME
+    # TODO: FIXME
     url(r'^(?P<pk>[0-9]+)/pay/$', requests.RequestPaidHandler.as_view(), name='request_mark_paid'),
     url(r'^(?P<pk>[0-9]+)/charge/$', perm('staff', ticket.views.TicketAddCharge), name='request_charge_add'),
     #url(r'^request/request_unauthorized/$', requests.RequestUnauthorized.as_view(), name='request_unauthorized'),
