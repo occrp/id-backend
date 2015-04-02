@@ -28,9 +28,9 @@ def get_user_profile(value):
     # should be known, try getting it from the db
     try:
         # try the db using profilegkeys
-        print '+-- looking for user based on gkey: %s (%s)' % (value, profilegkeys[value])
+        #print '+-- looking for user based on gkey: %s (%s)' % (value, profilegkeys[value])
         return get_user_model().objects.get(email=profilegkeys[value])
-        print '+-- found! id: %s' % value.id
+        #print '+-- found! id: %s' % value.id
     except:
         missing_users.append(value)
         print('User with old_google_key: "%s" does not seem to exist in %s; have you imported user data already?' % (value, user_gkeys_file))
@@ -45,9 +45,9 @@ def get_ticket(value):
     # should be known, try getting it from the db
     try:
         # try the db using profilegkeys
-        print '+-- looking for ticket based on gkey: %s (%s)' % (value, ticketgkeys[value])
+        #print '+-- looking for ticket based on gkey: %s (%s)' % (value, ticketgkeys[value])
         return Ticket.objects.get(id=ticketgkeys[value])
-        print '+-- found! id: %s' % value.id
+        #print '+-- found! id: %s' % value.id
     except:
         missing_tickets.append(value)
         print('Ticket with old_google_key: "%s" does not seem to exist in %s; have you imported user data already?' % (value, ticket_gkeys_file))
@@ -111,7 +111,7 @@ def convert(in_file):
         t = TicketCharge()
 
         for key, value in tchrg.iteritems():
-            print '+-- working on: %24s' % key
+            #print '+-- working on: %24s' % key
             # this has to be a Profile instance
             # or, actually, anything that we use as the User model these days
             if key == "user":
@@ -186,6 +186,15 @@ if __name__ == "__main__":
         print '+-- loaded %d missing user gkeys from %s' % (len(missing_users), user_missing_file)
     except:
         print "+-- warning, no missing user gkeys loaded, tried from %s." % user_missing_file
+
+    # users known to be missing
+    print "Loading missing user gkeys..."
+    try:
+        with open(ticket_missing_file, 'rb') as missingfile:
+            missing_tickets = pickle.load(missingfile)
+        print '+-- loaded %d missing user gkeys from %s' % (len(missing_tickets), ticket_missing_file)
+    except:
+        print "+-- warning, no missing user gkeys loaded, tried from %s." % ticket_missing_file
     
     
     convert(in_file)
