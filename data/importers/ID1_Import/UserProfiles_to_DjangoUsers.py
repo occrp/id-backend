@@ -107,7 +107,7 @@ def convert(in_file):
     print "Verifying all emails have in fact been properly imported..."
     failed_emails = []
     for email in all_emails:
-        print '\r+-- checking: %60s...' % email,
+        print '\r+-- checking: %60s...                         ' % email,
         sys.stdout.flush()
         try:
             u = Profile.objects.get(email=email)
