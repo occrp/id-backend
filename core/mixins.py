@@ -120,7 +120,6 @@ class PrettyPaginatorMixin(object):
 
         else:
             padded_page_start = current_page - page_padding
-
             if padded_page_start <= 1:
                 padded_page_start = 2
 
@@ -129,6 +128,7 @@ class PrettyPaginatorMixin(object):
             if padded_page_end > total_pages:
                 padded_page_end = total_pages
                 padded_page_start = total_pages - (page_padding * 2 + 1)
+                if padded_page_start <= 1: padded_page_start = 2
 
             obj['page_objects'] = [self.create_page_object(1,
                                                            self.is_current_page(1, page_number),
