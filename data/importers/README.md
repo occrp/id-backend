@@ -105,4 +105,4 @@ The files are:
  - `UserProfile.missing`/`Ticket.missing` - these contain old Google AppEngine ids that were references in other imported data sets that could be found in the data (i.e. Ticket ids referenced in TicketUpdate data, but not present in Ticket export data, etc); **important**: data items that reference missing IDs (i.e. a TicketUpdate that references a missing Ticket) *are dropped upon import*, please review missing IDs and items referencing them after the import in original `CSV` data files;
  - `Ticket.drivefolderids` - map Google Drive folder ids to imported Ticket ids in the database, for further reference and use with Podaci file import scripts.
  
-Once everything is imported, you can safely move to [importing Google Drive files into Podaci](../GDriveToPodaci/README.md)
+Once everything is imported, you can safely move to [importing Google Drive files into Podaci](GDriveToPodaci/README.md)
