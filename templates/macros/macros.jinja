@@ -36,53 +36,42 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
+                    <th></th>
                     <th>{% trans %}Summary{% endtrans %}</th>
-                    <th>{% trans %}Type{% endtrans %}</th>
-                    <th>{% trans %}Status{% endtrans %}</th>
+                    <th>{% trans %}Requester{% endtrans %}</th>
+                    <th>{% trans %}Responders{% endtrans %}</th>
+                    <th>{% trans %}Requested{% endtrans %}</th>
                     <th>{% trans %}Deadline{% endtrans %}</th>
-                    <th>{% trans %}Actions{% endtrans %}</th>
                 </tr>
             </thead>
             <tbody>
                 {% for ticket in tickets %}
                     <tr>
+                        <td title="{{ticket.get_status()}}">
+                            <i class="icon-{{ticket.get_type_icon()}}"></i>
+                            <i class="icon-{{ticket.get_status_icon()}}"></i>
+                        </td>
                         <td>
                             <a href="{{ url('ticket_details', ticket_id=ticket.id) }}">
                                 {{ ticket.summary }}
                             </a>
+                            {% if ticket.ticket_type == 'company_ownership' %}<br/>({{ticket.get_country()}}){% endif %}
                         </td>
-                        <td>{{ ticket.ticket_type_display() }}</td>
+                        <td><a href="{{ url('profile', pk=ticket.requester.id)}}">{{ ticket.requester }}</a></td>
                         <td>
-              {% if ticket.status == 'new' %}
-
-              {% trans %} Unassigned {% endtrans %}
-
-              {% elif ticket.status == 'in-progress' %}
-
-                    {% if ticket.actors(false)|length > 0 %}
-                        Assigned to
-
-                        {% for actor in ticket.actors(false) %}
-                        
-                            <a href="{{ url('profile', pk=actor.id)}}">{{ actor.display_name }}</a>{% if loop.length > 0 and not loop.last %}, {% endif %}
-
-                        {% endfor %}
-
-                    {% else %}
-                        
-                        {% trans %}No Responder{% endtrans %}
-                    
-                    {% endif %}
-
-              {% elif ticket.status == 'closed' %}
-                {% trans %}Completed {% endtrans %}
-              {% elif ticket.status == 'cancelled' %}
-                {% trans %}Cancelled {% endtrans %}           
-              {% endif %}
-
-
+                        {% if ticket.status == 'in-progress' %}
+                            {% if ticket.actors(false)|length > 0 %}
+                                {% for actor in ticket.actors(false) %}
+                                <a href="{{ url('profile', pk=actor.id)}}">{{ actor.display_name }}</a>{% if loop.length > 0 and not loop.last %}, {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                {% trans %}No Responder{% endtrans %}
+                            {% endif %}    
+                        {% endif %}
                         </td>
-                        <td>{{ display_datetime(ticket.deadline) }}</td>
+                        <td nowrap>{{ display_datetime(ticket.created.date()) }}</td>
+                        <td nowrap>{{ display_datetime(ticket.deadline) }}</td>
+{#
                         <td>
                             <a class='btn btn-mini' href="{{ url(ticket.ticket_type ~ '_ticket_edit', pk=ticket.id) }}">
                                 <i class="icon-pencil"></i>
@@ -93,6 +82,7 @@
                         </a>
 
                         </td>
+#}
                     </tr>
                 {% endfor %}
 

@@ -57,6 +57,17 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
     def summary(self):
         return ""
 
+    def get_type_icon(self):
+        if self.ticket_type == 'person_ownership': return 'user'
+        elif self.ticket_type == 'company_ownership': return 'building'
+        else: return 'question'
+
+    def get_status(self):
+        return dict(TICKET_STATUS).get(self.status, _('Unknown'))
+
+    def get_status_icon(self):
+        return dict(TICKET_STATUS_ICONS).get(self.status, 'question')
+
     def _pre_put_hook(self, future=None):
         # Copy default requester settings into the ticket if it's not been
         # saved yet.
@@ -263,7 +274,7 @@ class PersonTicket(Ticket):
 
     @property
     def summary(self):
-        return "Person: %s" % smart_truncate(self.name, 150)
+        return "%s" % smart_truncate(self.name, 150)
 
 
     def most_fields(self):
@@ -293,7 +304,10 @@ class CompanyTicket(Ticket):
 
     @property
     def summary(self):
-        return "Company: %s" % smart_truncate(self.name, 150)
+        return "%s" % (smart_truncate(self.name, 150))
+
+    def get_country(self):
+        return dict(COUNTRIES).get(self.country, self.country)
 
     def most_fields(self):
         '''Return an iterator of tuples (verbose name, display value)
@@ -317,7 +331,7 @@ class OtherTicket(Ticket):
         for word in words:
             text += word + " "
             if len(text) > 120: break
-        return "Question: %s" % text.strip()
+        return "%s" % text.strip()
 
 class TicketUpdate(models.Model):
     update_type = models.CharField(max_length=70, choices=TICKET_UPDATE_TYPES,
