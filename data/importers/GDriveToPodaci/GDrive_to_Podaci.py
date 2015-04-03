@@ -23,6 +23,7 @@ from id.models import *
 from ticket.models import *
 from podaci import File, Tag, FileSystem
 
+imported_files = {}
 
 # getting a string from a textfile
 def file_to_str(filename):
@@ -208,9 +209,12 @@ def podacify_file(ticket_id, f):
     # create the file
     pfile = fs.create_file(f['localPath'])
     
-    # save potentially useful metadata (anything missing here?)
-    pfile.meta['extra']['legacyGoogleFolderId'] = f['legacyGoogleFolderId'] # legacy Google Folder ID the file was in
-    pfile.meta['extra']['legacyGoogleFileId']   = f['id']                   # legacy Google ID of the file itself, needed for later downloading of files that were not in any ticket-related folder
+    # put the id into the imported_files list, to be pickled and saved to a file later
+    # legacy Google ID of the file itself, needed for later downloading of files that were not in any ticket-related folder
+    imported_files[f['id']] =  {
+      'folder'      : f['legacyGoogleFolderId'], # legacy Google Folder ID the file was in
+      'md5Checksum' : f['md5Checksum']
+    }
     
     # add the tags
     pfile.add_tag(tag)
@@ -223,7 +227,15 @@ def handle_folder_id(service, ticket_id, folder_id):
     # get file metadata
     file_info_list = []
     for f in file_ids_list:
-        file_info_list.append(get_file_metadata(service, f['id']))
+        f = get_file_metadata(service, f['id'])
+        if f['id'] not in imported_files:
+            print '     +-- %s: not in imported files, file will be downloaded' % f['id']
+            file_info_list.append(f)
+        elif f['md5Checksum'] != imported_files[f['id']]['md5Checksum']:
+            print '     +-- %s: md5Checksum (%s vs. %s) mismatch, file will be downloaded' % (f['id'], f['md5Checksum'], imported_files[f['id']]['md5Checksum'])
+            file_info_list.append(f)
+        else:
+            print '     +-- %s: file already imported, md5Checksum matches; not downloading' % f['id']
         
     # whoohoo, we have a file list!
     # interesting bits are:
@@ -284,6 +296,15 @@ if __name__ == "__main__":
         print("Temporary files are being saved in:\n\t/tmp/id_gdrive_downloads/<folder-id>/<individual-filenames>\n\nOptional --keep parameter makes the script not delete the downloaded files after Podaci import.\n")
         sys.exit()
     
+    # imported files ids pickled dump file
+    imported_files_file = os.path.join(
+        os.path.dirname(
+          os.path.abspath(
+            drivefolderids_path
+          )
+        ), 'GDrive.importedfiles')
+    
+    
     # the "d" is silent
     print "Setting up django..."
     django.setup()
@@ -301,6 +322,16 @@ if __name__ == "__main__":
         print '+-- error loading pickled drive folder ids: %s' % e
         sys.exit(1)
     
+    # files already imported
+    print "Loading imported files data..."
+    try:
+        with open(imported_files_file, 'rb') as iffile:
+            imported_files = pickle.load(iffile)
+        print '+-- loaded %d imported file data from %s' % (len(imported_files), imported_files_file)
+    except:
+        print "+-- warning, no imported file data loaded, tried from %s." % imported_files_file
+    
+    
     # user
     u = Profile.objects.get(email='admin@example.com') # FIXME
     # podaci filesystem
@@ -316,12 +347,28 @@ if __name__ == "__main__":
     # create the damn gdrive service
     service = create_system_service()
     
-    # get folder contents
-    for ticket_id in drivefolderids:
-        # let's handle a google drive folder, shall we?
-        handle_folder_id(service, ticket_id, drivefolderids[ticket_id])
     
-    # should we tidy things up?
-    if not keep_downloads:
-      # remove id_gdrive_downloads folder
-      os.rmdir('/tmp/id_gdrive_downloads/')
+    # handling the keyboard interrupt gracefully
+    try:
+        # get folder contents
+        for ticket_id in drivefolderids:
+            # let's handle a google drive folder, shall we?
+            handle_folder_id(service, ticket_id, drivefolderids[ticket_id])
+        # should we tidy things up?
+        if not keep_downloads:
+            # remove id_gdrive_downloads folder
+            os.rmdir('/tmp/id_gdrive_downloads/')
+    except KeyboardInterrupt:
+        print 'KeyboardInterrupt caught, exitin gracefully'
+    #except Exception as e:
+    #   print 'Exception caught: %s (%s); exiting gracefully' % (e, type(e))
+      
+    
+    # have we actually saved any files?
+    if imported_files:
+        try:
+            with open(imported_files_file, 'wb') as iffile:
+                pickle.dump(imported_files, iffile)
+            print "Dumped %d drive folder ids to %s." % (len(imported_files), imported_files_file)
+        except:
+            print 'Dumping %d missing user gkeys %s has failed!..' % (len(imported_files), imported_files_file)
