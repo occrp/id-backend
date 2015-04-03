@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Google Drive to Podaci importer
+# Google Drive to Podaci importer -- Ticket-related files only!
 #
 # that's kind of needed too:
 # pip install pycrypto
@@ -135,7 +135,7 @@ def download_file(service, file_id, local_fd):
             print '\r     +-- download progress: %d%%' % int(download_progress.progress() * 100),
             sys.stdout.flush()
         if done:
-            print '\r     +-- done.                                   '
+            print '\r     +-- downloaded.                                   '
             sys.stdout.flush()
             return
 
@@ -360,8 +360,8 @@ if __name__ == "__main__":
             os.rmdir('/tmp/id_gdrive_downloads/')
     except KeyboardInterrupt:
         print 'KeyboardInterrupt caught, exitin gracefully'
-    #except Exception as e:
-    #   print 'Exception caught: %s (%s); exiting gracefully' % (e, type(e))
+    except Exception as e:
+       print 'Exception caught: %s (%s); exiting gracefully' % (e, type(e))
       
     
     # have we actually saved any files?
@@ -371,4 +371,4 @@ if __name__ == "__main__":
                 pickle.dump(imported_files, iffile)
             print "Dumped %d drive folder ids to %s." % (len(imported_files), imported_files_file)
         except:
-            print 'Dumping %d missing user gkeys %s has failed!..' % (len(imported_files), imported_files_file)
+            print 'Dumping %d drive folder ids %s has failed!..' % (len(imported_files), imported_files_file)

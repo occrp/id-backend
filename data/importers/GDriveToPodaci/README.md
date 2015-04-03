@@ -6,6 +6,16 @@ The export/import has two phases:
 1. export/import Ticket-related files and folders;
 2. export/import everything else.
 
+## Requirements
+
+You need `pycrypto` and `google-api-python-client` Python modules:
+```
+ pip install pycrypto
+ pip install --upgrade google-api-python-client
+```
+
+They are *not* installed by default in the dockerized environment, as they are not used by any other part of the system.
+
 ## Exporting/importing Ticket-related files and folders
 
 The `GDriveToPodaci.py` script handles this part. It uses (old) `investigative-dashboard` credentials, so make sure you have access to (old) `investigative-dashboard` code. Running the script without parameters will output some basic usage info:
