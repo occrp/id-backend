@@ -87,6 +87,13 @@ TICKET_STATUS = (
     ('cancelled', _('Cancelled'))
 )
 
+TICKET_STATUS_ICONS = (
+    ('new', 'circle'),
+    ('in-progress', 'spinner'),
+    ('closed', 'check'),
+    ('cancelled', 'close')
+)
+
 OPEN_TICKET_STATUSES = ['new', 'in-progress']
 CLOSED_TICKET_STATUSES = ['closed', 'cancelled']
 
