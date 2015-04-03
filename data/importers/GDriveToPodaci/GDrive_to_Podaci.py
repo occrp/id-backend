@@ -208,8 +208,9 @@ def podacify_file(ticket_id, f):
     # create the file
     pfile = fs.create_file(f['localPath'])
     
-    # save potentially useful metadata (anything else?)
-    pfile.meta['extra']['legacyGoogleFolderId'] = f['legacyGoogleFolderId']
+    # save potentially useful metadata (anything missing here?)
+    pfile.meta['extra']['legacyGoogleFolderId'] = f['legacyGoogleFolderId'] # legacy Google Folder ID the file was in
+    pfile.meta['extra']['legacyGoogleFileId']   = f['id']                   # legacy Google ID of the file itself, needed for later downloading of files that were not in any ticket-related folder
     
     # add the tags
     pfile.add_tag(tag)
