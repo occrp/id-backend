@@ -120,7 +120,7 @@ def convert(in_file):
     if failed_emails:
         print('\rEmail verification failed in %d instances.' % len(failed_emails))
     else:
-        print('\rEmail verification passed.')
+        print('\rEmail verification passed.                                                                          ')
     
     # we need to save the old_google_key-related data
     try:

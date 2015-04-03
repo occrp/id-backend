@@ -130,7 +130,7 @@ def convert(in_file):
                     print("+-- ignoring this ticket update due to missing ticket! you'll find all missing ticket gkeys in %s" % ticket_missing_file)
                     break
             elif key in ['created', 'reconciled_date']:
-                print '     +-- value is: %s' % value
+                #print '     +-- value is: %s' % value
                 if not value.strip():
                     continue
             # set the attribute
@@ -142,7 +142,8 @@ def convert(in_file):
             try:
                 # save the ticket
                 t.save()
-                print '+-- created        : %s' % t.created
+                #print '+-- created         : %s' % t.created
+                #print '+-- reconciled_date : %s' % t.created
             # wat.
             except IntegrityError, e:
                 print "Skipping dupe: %s" % (e)
