@@ -37,6 +37,7 @@ Exporting the data, and then importing them into our own database consists of a 
 2. import UserProfile data
 3. import Ticket data
 4. import TicketUpdates data
+5. import TicketCharges data
 
 And yes, we do have nice scripts for everything.
 
@@ -82,19 +83,26 @@ First, we need to import UserProfile data:
  python UserProfiles_to_DjangoUsers.py ../../../../exported-data/UserProfile.csv
 ```
 
-Then, Ticket data:
+Next, Ticket data:
 ```
  python Tickets_to_ID2Tickets.py ../../../../exported-data/Ticket.csv
 ```
 
-Finally, TicketUpdates data:
+Then, TicketUpdates data:
 ```
- python TicketUpdates_to_ID2TicketUpdates.py ../../../../exported-data/TicketUpdates.csv
+ python TicketUpdates_to_ID2TicketUpdates.py ../../../../exported-data/TicketUpdate.csv
+```
+
+Finally, TicketCharges data:
+```
+ python TicketCharges_to_ID2TicketCharges.py ../../../../exported-data/TicketCharge.csv
 ```
 
 If everything goes well (it should), you will have UserProfile, Ticket and TicketUpdate data in the database, and (depending on imported data) a couple of new files in the `exported-data` directory. These are [pickled](https://docs.python.org/2/library/pickle.html)) Python data structures (dicts or lists).
 
 The files are:
  - `UserProfile.gkeys`/`Ticket.gkeys` - map old Google AppEngine ids to emails (in case of UserProfile) or new database ids (in case of Ticket), and are needed by the import scripts themselves;
- - `UserProfile.missing`/`Ticket.missing` - these contain old Google AppEngine ids that were references in other imported data sets that could be found in the data (i.e. Ticket ids referenced in TicketUpdate data, but not present in Ticket export data, etc);
+ - `UserProfile.missing`/`Ticket.missing` - these contain old Google AppEngine ids that were references in other imported data sets that could be found in the data (i.e. Ticket ids referenced in TicketUpdate data, but not present in Ticket export data, etc); **important**: data items that reference missing IDs (i.e. a TicketUpdate that references a missing Ticket) *are dropped upon import*, please review missing IDs and items referencing them after the import in original `CSV` data files;
  - `Ticket.drivefolderids` - map Google Drive folder ids to imported Ticket ids in the database, for further reference and use with Podaci file import scripts.
+ 
+Once everything is imported, you can safely move to [importing Google Drive files into Podaci](../GDriveToPodaci/README.md)
