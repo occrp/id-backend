@@ -127,4 +127,4 @@ Fire up a browser and check if everything works by visiting `http://<*_neo4j_* I
 
 ## Data
 
-...
+Once the system is running, you can start [importing data](data/importers/ID1_Import/README.md).
