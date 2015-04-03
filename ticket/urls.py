@@ -57,7 +57,7 @@ urlpatterns = patterns('',
     url(r'^fees/budgets/$',          perm('staff', ticket.views.TicketBudgetFeesOverview), name='ticket_fees_budgets'),
     url(r'^_validation/request/$',   perm('user', ticket.validators.ValidateTicketRequest), name='ajax_validate_request'),
 
-    # TODO: FIXME
+    # TODO: FIXME THESE SHOULD NOT BE REFERENCING REQUESTS
     url(r'^(?P<pk>[0-9]+)/pay/$',    perm('staff', requests.RequestPaidHandler), name='request_mark_paid'),
     url(r'^(?P<pk>[0-9]+)/charge/$', perm('staff', ticket.views.TicketAddCharge), name='request_charge_add'),
     url(r'^fees/customer/$',         perm('staff', requests.AdminCustomerChargesHandler), name='ticket_admin_customer_charges'),
