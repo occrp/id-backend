@@ -28,7 +28,7 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
 
     volunteers = models.ManyToManyField(AUTH_USER_MODEL, related_name="tickets_volunteered")
 
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(default=datetime.datetime.now, null=False)
     status = models.CharField(max_length=70, choices=TICKET_STATUS, default='new')
     status_updated = models.DateTimeField(default=datetime.datetime.now, null=False)
     findings_visible = models.BooleanField(default=False,
@@ -338,7 +338,7 @@ class TicketUpdate(models.Model):
                                    default=TICKET_UPDATE_TYPES[0][0])
     author = models.ForeignKey(AUTH_USER_MODEL, blank=False)  # either requester, or responder
     ticket = models.ForeignKey(Ticket, blank=False)
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(default=datetime.datetime.now, null=False)
     comment = models.TextField()
     is_removed = models.BooleanField(default=False)
 
@@ -456,7 +456,7 @@ class TicketCharge(models.Model, DisplayMixin):
     paid_status = models.CharField(max_length=70, choices=PAID_STATUS, blank=False)
 
     # when the charge was created
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(default=datetime.datetime.now, null=False)
 
     def to_ticket_update(self, update):
         text = _(
