@@ -6,6 +6,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from core.mixins import ModelDiffMixin, DisplayMixin
+from podaci.filesystem import Tag
 
 from constants import *
 from utils import *
@@ -248,6 +249,19 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
         logging.info("deprecated fetch_responders called")
         logging.info(traceback.format_stack())
         return ndb.get_multi([self.responder]) if self.responder else []
+
+    def get_tag(self, fs):
+        if self.tag_id:
+            tag = Tag(fs)
+            tag.load(self.tag_id)
+            return tag
+        else:
+            tag_name = "Ticket %d" % self.id
+            tag = Tag(fs)
+            tag.create(tag_name)
+            self.tag_id = tag.id
+            self.save()
+            return tag
 
 
 class PersonTicket(Ticket):

@@ -141,11 +141,31 @@ class TicketsTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(TicketUpdate.objects.count() == 1)
 
-    def test_join_ticket(self):
-        pass
+    def test_join_and_leave_ticket_as_staff(self):
+        client = TestClient()
+        client.login_user(self.staff_user)
+        t = OtherTicket()
+        t.requester = self.normal_user
+        t.save()
+        response = client.post(reverse('ticket_join', kwargs={"pk": t.id}), {})
+        t = OtherTicket.objects.get(id=t.id)
+        self.assertIn(self.staff_user, t.responders.all())
+        response = client.post(reverse('ticket_leave', kwargs={"pk": t.id}), {})
+        t = OtherTicket.objects.get(id=t.id)
+        self.assertNotIn(self.staff_user, t.responders.all())
 
-    def test_leave_ticket(self):
-        pass
+    def test_join_and_leave_ticket_as_volunteer(self):
+        client = TestClient()
+        client.login_user(self.volunteer_user)
+        t = OtherTicket()
+        t.requester = self.normal_user
+        t.save()
+        response = client.post(reverse('ticket_join', kwargs={"pk": t.id}), {})
+        t = OtherTicket.objects.get(id=t.id)
+        self.assertIn(self.volunteer_user, t.volunteers.all())
+        response = client.post(reverse('ticket_leave', kwargs={"pk": t.id}), {})
+        t = OtherTicket.objects.get(id=t.id)
+        self.assertNotIn(self.volunteer_user, t.volunteers.all())
 
     def test_edit_ticket(self):
         pass
