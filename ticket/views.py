@@ -148,9 +148,7 @@ class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
             self.success_messages = [_('You have successfully been added to the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.display_name + unicode(_(' has joined the ticket')))
             self.transition_ticket_from_new(ticket)
-
             tag.add_user(self.request.user, True)
-
             return super(TicketActionJoin, self).perform_valid_action(form)
 
         elif self.request.user.is_volunteer:
@@ -158,9 +156,7 @@ class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
             self.success_messages = [_('You have successfully been added to the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.display_name + unicode(_(' has joined the ticket')))
             self.transition_ticket_from_new(ticket)
-
             tag.add_user(self.request.user, True)
-
             return super(TicketActionJoin, self).perform_valid_action(form)
 
         else:
