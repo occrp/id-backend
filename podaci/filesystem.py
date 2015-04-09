@@ -13,7 +13,7 @@ from uuid import uuid4
 from settings.settings import PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT
 
 def random_id():
-    return uuid4()
+    return str(uuid4())
 
 class AuthenticationError(Exception):
     pass
@@ -378,7 +378,7 @@ class Tag(MetaMixin):
     def has_files(self):
         """Return the number of files associated with this tag."""
         body = {"query":{"match":{"tags": self.id}}}
-        res = self.fs.es.search(index=self.fs.es_index, doc_type="file", body=body, from_=0, size=0)
+        res = self.fs.es.search(index=self.fs.es_index, doc_type="file", body=body)
         return res["hits"]["total"]
 
 
@@ -467,12 +467,12 @@ class File(MetaMixin):
             self.meta["filename"] = filename_override
         self.meta["hash"] = sha256sum(filename)
         self.meta["mimetype"] = magic.Magic(mime=True).from_file(filename)
-        if self.exists_by_hash(self.meta["hash"]):
-            print "Warning: File exists!"
-            self.load_by_hash(self.meta["hash"])
-            if (self.fs.user):
-                self.add_user(self.fs.user)
-            return self.id, self.meta, False
+        #if self.exists_by_hash(self.meta["hash"]):
+        #    print "Warning: File exists!"
+        #    self.load_by_hash(self.meta["hash"])
+        #    if (self.fs.user):
+        #        self.add_user(self.fs.user)
+        #    return self.id, self.meta, False
 
         shutil.copy(filename, self.resident_location())
         self.meta["size"] = os.stat(self.resident_location()).st_size
