@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AnonymousUser#, User
+from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.test import TestCase
 from settings.settings import *
 from podaci.filesystem import *
@@ -61,46 +62,87 @@ class PodaciPermissionTest(TestCase):
         if not os.path.isdir(PODACI_FS_ROOT):
             os.mkdir(PODACI_FS_ROOT)
 
+        self.anonymous_user = AnonymousUser()
+        
+        self.normal_user = get_user_model().objects.create_user(
+            email='testuser@occrp.org', password='top_secret')
+        self.normal_user.is_user = True
+        self.normal_user.save()
+
+        self.volunteer_user = get_user_model().objects.create_user(
+            email='testvolunteer@occrp.org', password='top_secret')
+        self.volunteer_user.is_volunteer = True
+        self.volunteer_user.save()
+
+        self.staff_user = get_user_model().objects.create_user(
+            email='teststaff@occrp.org', password='top_secret')
+        self.staff_user.is_staff = True
+        self.staff_user.save()
+
+        self.admin_user = get_user_model().objects.create_user(
+            email='testsuperuser@occrp.org', password='top_secret')
+        self.admin_user.is_superuser = True
+        self.admin_user.save()
+
+
     def tearDown(self):
         shutil.rmtree(PODACI_FS_ROOT)
 
-    def test_anonymous_with_access(self):
+    def test_anonymous_access(self):
         ## Verify that an anonymous user can access a public file
-        u = AnonymousUser()
-        self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
-                             user=Strawman("smari"))
-        
-
-    def test_anonymous_without_access(self):
         ## Verify that an anonymous user can't access a non-public file
-        u = AnonymousUser()
         self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
-                             user=Strawman("smari"))
-        pass
+                             user=self.admin_user)
 
-    def test_logged_in_without_access(self):
+        f = File(self.fs)
+        f.create_from_path("requirements.txt")
+        f.make_public()
+        self.assertEqual(f.has_permission(self.anonymous_user), True)
+        f.make_private()
+        self.assertEqual(f.has_permission(self.anonymous_user), False)
+
+    def test_logged_in_access(self):
         ## Verify that a logged in user cannot access a non-public file
         ## they have no permission for
         self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
-                             user=Strawman("smari"))
+                             user=self.admin_user)
 
-        pass
+        f = File(self.fs)
+        f.create_from_path("requirements.txt")
+        f.make_public()
+        self.assertEqual(f.has_permission(self.normal_user), True)
+        f.make_private()
+        self.assertEqual(f.has_permission(self.normal_user), False)
 
     def test_logged_in_with_direct_access(self):
         ## Verify that a logged in user can access a non-public file they
         ## have explicit access to
         self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
-                             user=Strawman("smari"))
+                             user=self.admin_user)
 
-        pass
+        f = File(self.fs)
+        f.create_from_path("requirements.txt")
+        f.make_private()
+        f.add_user(self.normal_user)
+        self.assertEqual(f.has_permission(self.normal_user), True)
 
     def test_logged_in_with_indirect_access(self):
         ## Verify that a logged in user can access a non-public file they
         ## have access to through a tag they are allowed on
         self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
                              user=Strawman("smari"))
-
         pass
+
+    def text_staff_access(self):
+        ## Verify that staff can access staff-allowed files.
+        self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, 
+                             user=Strawman("smari", admin=True))
+        f = File(self.fs)
+        f.create_from_path("requirements.txt")
+        f.allow_staff()
+        self.assertEqual(f.has_permission(self.staff_user), True)
+        f.disallow_staff()
+        self.assertEqual(f.has_permission(self.staff_user), False)
 
     def test_admin_access(self):
         ## Verify that an admin user always has access
