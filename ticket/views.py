@@ -141,8 +141,7 @@ class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
         ticket = self.object
 
         self.podaci_setup()
-        tag = Tag(self.fs)
-        tag.load(ticket.tag_id)
+        tag = ticket.get_tag(self.fs)
 
         if self.request.user.is_staff or self.request.user.is_superuser:
             ticket.responders.add(self.request.user)
@@ -177,23 +176,20 @@ class TicketActionLeave(TicketActionBaseHandler, PodaciMixin):
         ticket = self.object
 
         self.podaci_setup()
-        tag = Tag(self.fs)
-        tag.load(ticket.tag_id)
+        tag = ticket.get_tag(self.fs)
 
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
+            tag.remove_user(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.display_name + unicode(_(' has left the ticket')))
-
-            tag.remove_user(self.request.user)
 
             return super(TicketActionLeave, self).perform_valid_action(form)
         elif self.request.user in ticket.volunteers.all():
-            self.volunteers.remove(self.request.user)
+            ticket.volunteers.remove(self.request.user)
+            tag.remove_user(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.display_name + unicode(_(' has left the ticket')))
-
-            tag.remove_user(self.request.user)
 
             return super(TicketActionLeave, self).perform_valid_action(form)
         else:
@@ -274,8 +270,7 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
         current_volunteers = self.convert_users_to_ids(ticket.volunteers.all())
 
         self.podaci_setup()
-        tag = Tag(self.fs)
-        tag.load(ticket.tag_id)
+        tag = ticket.get_tag(self.fs)
 
         if 'redirect' in self.request.POST:
             self.redirect = self.request.POST['redirect']
@@ -410,18 +405,7 @@ class TicketDetail(TemplateView, PodaciMixin):
         outstanding = sum([x.cost for x in TicketCharge.objects.filter(reconciled=False)])
 
         self.podaci_setup()
-
-        if self.ticket.tag_id == "":
-            # Create Podaci tag for this ticket.
-            tag_name = "Ticket %d" % (self.ticket.id)
-
-            tag = Tag(self.fs)
-            tag.create(tag_name)
-            self.ticket.tag_id = tag.id
-            self.ticket.save()
-        else:
-            tag = Tag(self.fs)
-            tag.load(self.ticket.tag_id)
+        tag = self.ticket.get_tag(self.fs)
 
         can_join_leave = False
         if self.request.user != self.ticket.requester:
@@ -724,19 +708,7 @@ class TicketRequest(TemplateView, PodaciMixin):
         messages.success(self.request, _('Ticket successfully created.'))
 
         self.podaci_setup()
-
-        # Create Podaci tag for this ticket.
-        tag_name = "Ticket %d" % (ticket.id)
-        tag = Tag(self.fs)
-        tag.create(tag_name)
-        # TODO: Put this tag in a nice root tag.
-        ticket.tag_id = tag.id
-        ticket.save()
-
-        # if ticket_id:
-        #     self.add_message(_('Ticket successfully saved.'))
-        # else:
-        #     self.add_message(_('Ticket successfully created.'))
+        tag = ticket.get_tag(self.fs)
 
         return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": ticket.id}))
 

@@ -191,9 +191,9 @@ class MetaMixin:
             self.meta["allowed_users"].append(self.fs.user.id)
             self.meta["allowed_write_users"].append(self.fs.user.id)
 
-    def _sync(self):
+    def _sync(self, override=False):
         """Updates an index entry in the Elasticsearch database."""
-        if not self.has_write_permission(self.fs.user):
+        if not override and not self.has_write_permission(self.fs.user):
             raise AuthenticationError()
         if not self.id: return
         result = self.fs.es.update(
@@ -221,7 +221,7 @@ class MetaMixin:
             self.meta["allowed_users"].remove(user.id)
             self.meta["allowed_write_users"].remove(user.id)
             self.log("Removed user '%s' [%d]" % (user.email, user.id))
-            self._sync()
+            self._sync(override=True)
         except ValueError:
             pass
 
@@ -441,7 +441,6 @@ class File(MetaMixin):
         self.meta["hash"] = sha256sum(fh)
         self.meta["mimetype"] = magic.Magic(mime=True).from_buffer(fh.read(100))
         if self.exists_by_hash(self.meta["hash"]):
-            print "Warning: File exists!"
             self.load_by_hash(self.meta["hash"])
             if (self.fs.user):
                 self.add_user(self.fs.user)
