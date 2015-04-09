@@ -100,6 +100,7 @@ class PodaciPermissionTest(TestCase):
         self.assertEqual(f.has_permission(self.anonymous_user), True)
         f.make_private()
         self.assertEqual(f.has_permission(self.anonymous_user), False)
+        f.delete(True)
 
     def test_logged_in_access(self):
         ## Verify that a logged in user cannot access a non-public file
@@ -113,6 +114,7 @@ class PodaciPermissionTest(TestCase):
         self.assertEqual(f.has_permission(self.normal_user), True)
         f.make_private()
         self.assertEqual(f.has_permission(self.normal_user), False)
+        f.delete(True)
 
     def test_logged_in_with_direct_access(self):
         ## Verify that a logged in user can access a non-public file they
@@ -125,6 +127,7 @@ class PodaciPermissionTest(TestCase):
         f.make_private()
         f.add_user(self.normal_user)
         self.assertEqual(f.has_permission(self.normal_user), True)
+        f.delete(True)
 
     def test_logged_in_with_indirect_access(self):
         ## Verify that a logged in user can access a non-public file they
@@ -143,6 +146,7 @@ class PodaciPermissionTest(TestCase):
         self.assertEqual(f.has_permission(self.staff_user), True)
         f.disallow_staff()
         self.assertEqual(f.has_permission(self.staff_user), False)
+        f.delete(True)
 
     def test_admin_access(self):
         ## Verify that an admin user always has access

@@ -440,11 +440,11 @@ class File(MetaMixin):
         self.meta["filename"] = filename
         self.meta["hash"] = sha256sum(fh)
         self.meta["mimetype"] = magic.Magic(mime=True).from_buffer(fh.read(100))
-        if self.exists_by_hash(self.meta["hash"]):
-            self.load_by_hash(self.meta["hash"])
-            if (self.fs.user):
-                self.add_user(self.fs.user)
-            return self.id, self.meta, False
+        #if self.exists_by_hash(self.meta["hash"]):
+        #    self.load_by_hash(self.meta["hash"])
+        #    if (self.fs.user):
+        #        self.add_user(self.fs.user)
+        #    return self.id, self.meta, False
 
         fh.seek(0)
         f = open(self.resident_location(), "w+")
