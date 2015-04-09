@@ -4,6 +4,7 @@ from django.test import TestCase
 from settings.settings import *
 from podaci.filesystem import *
 import os, shutil
+import time
 
 class Strawman:
     def __init__(self, email, admin=False):
@@ -32,7 +33,8 @@ class PodaciAPITest(TestCase):
         self.assertEqual(f.exists, False)
 
     def test_add_tag(self):
-        ## Add tag
+        ## Test adding a tag to a file
+        ## Also tests if a tag has files
         f = File(self.fs)
         f.create_from_path("requirements.txt")
         t = Tag(self.fs)
@@ -98,6 +100,8 @@ class PodaciPermissionTest(TestCase):
         f.create_from_path("requirements.txt")
         f.make_public()
         self.assertEqual(f.has_permission(self.anonymous_user), True)
+        fh = f.get_filehandle()
+        self.assertEqual(type(fh), file)
         f.make_private()
         self.assertEqual(f.has_permission(self.anonymous_user), False)
         f.delete(True)
@@ -112,8 +116,10 @@ class PodaciPermissionTest(TestCase):
         f.create_from_path("requirements.txt")
         f.make_public()
         self.assertEqual(f.has_permission(self.normal_user), True)
+        self.assertEqual(f.has_write_permission(self.normal_user), False)
         f.make_private()
         self.assertEqual(f.has_permission(self.normal_user), False)
+        self.assertEqual(f.has_write_permission(self.normal_user), False)
         f.delete(True)
 
     def test_logged_in_with_direct_access(self):
@@ -144,8 +150,10 @@ class PodaciPermissionTest(TestCase):
         f.create_from_path("requirements.txt")
         f.allow_staff()
         self.assertEqual(f.has_permission(self.staff_user), True)
+        self.assertEqual(f.has_write_permission(self.staff_user), True)
         f.disallow_staff()
         self.assertEqual(f.has_permission(self.staff_user), False)
+        self.assertEqual(f.has_write_permission(self.staff_user), False)
         f.delete(True)
 
     def test_admin_access(self):
@@ -165,6 +173,9 @@ class PodaciFileSystemTest(TestCase):
     def tearDown(self):
         shutil.rmtree(PODACI_FS_ROOT)
 
+    def test_filesystem_status(self):
+        status = self.fs.status()
+
 class PodaciFileTest(TestCase):
     def setUp(self):
         if not os.path.isdir(PODACI_FS_ROOT):
@@ -181,6 +192,45 @@ class PodaciFileTest(TestCase):
         fh.seek(0)
         f.create_from_filehandle(fh, "test.txt")
         self.assertEqual(f.exists, True)
+        f.delete(sure=True)
 
     def test_get_file(self):
+        pass # f = File(self.fs)
+
+    def test_notes(self):
         f = File(self.fs)
+        f.create_from_path("requirements.txt")
+        f.note_add("This is a note")
+        f.note_add("This is another note")
+
+        self.assertEqual(len(f.note_list()), 2)
+        for note in f.note_list()[:]:
+            f.note_delete(note["id"])
+
+        self.assertEqual(len(f.note_list()), 0)
+        f.delete(sure=True)
+
+
+class PodaciTagTest(TestCase):
+    def setUp(self):
+        if not os.path.isdir(PODACI_FS_ROOT):
+            os.mkdir(PODACI_FS_ROOT)
+        self.fs = FileSystem(PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT, user=Strawman("smari"))
+
+    def tearDown(self):
+        shutil.rmtree(PODACI_FS_ROOT)
+
+    def test_has_files(self):
+        f = File(self.fs)
+        f.create_from_path("requirements.txt")
+        t = Tag(self.fs)
+        t.create("thistest")
+        self.assertEqual(t.has_files(), 0)
+        f.add_tag(t)
+        time.sleep(1)
+        self.assertEqual(t.has_files(), 1)
+        f.remove_tag(t)
+        time.sleep(1)
+        self.assertEqual(t.has_files(), 0)
+        t.delete(sure=True)
+        f.delete(sure=True)
