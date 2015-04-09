@@ -25,7 +25,6 @@ try:
 except ImportError:
     raise Exception('You need to set up settings_local.py (see settings_local.py-example')
 
-
 # Some error checking for local_settings
 if not SECRET_KEY:
     raise Exception('You need to specify Django SECRET_KEY in the settings_local.py!')
