@@ -15,19 +15,17 @@ class TicketsTest(TestCase):
         self.normal_user.save()
 
         self.volunteer_user = get_user_model().objects.create_user(
-            email='testuser@occrp.org', password='top_secret')
+            email='testvolunteer@occrp.org', password='top_secret')
         self.volunteer_user.is_volunteer = True
         self.volunteer_user.save()
 
         self.staff_user = get_user_model().objects.create_user(
-            email='testuser@occrp.org', password='top_secret')
+            email='teststaff@occrp.org', password='top_secret')
         self.staff_user.is_staff = True
         self.staff_user.save()
 
         self.admin_user = get_user_model().objects.create_user(
-            email='testuser@occrp.org', password='top_secret')
-        self.admin_user.is_superuser = True
-        self.admin_user.save()
+            email='testsuperuser@occrp.org', password='top_secret')
         self.admin_user.is_superuser = True
         self.admin_user.save()
 

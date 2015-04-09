@@ -32,7 +32,7 @@ from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, Tick
 from ticket import forms
 from ticket import constants
 
-from podaci import PodaciMixin
+from podaci import PodaciMixin, FileSystem, Tag, File
 
 class CompanyTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
     model = CompanyTicket
@@ -141,7 +141,8 @@ class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
         ticket = self.object
 
         self.podaci_setup()
-        tag = self.fs.get_tag(ticket.tag_id)
+        tag = Tag(self.fs)
+        tag.load(ticket.tag_id)
 
         if self.request.user.is_staff or self.request.user.is_superuser:
             ticket.responders.add(self.request.user)
@@ -176,7 +177,8 @@ class TicketActionLeave(TicketActionBaseHandler, PodaciMixin):
         ticket = self.object
 
         self.podaci_setup()
-        tag = self.fs.get_tag(ticket.tag_id)
+        tag = Tag(self.fs)
+        tag.load(ticket.tag_id)
 
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
@@ -272,7 +274,8 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
         current_volunteers = self.convert_users_to_ids(ticket.volunteers.all())
 
         self.podaci_setup()
-        tag = self.fs.get_tag(ticket.tag_id)
+        tag = Tag(self.fs)
+        tag.load(ticket.tag_id)
 
         if 'redirect' in self.request.POST:
             self.redirect = self.request.POST['redirect']
@@ -412,11 +415,13 @@ class TicketDetail(TemplateView, PodaciMixin):
             # Create Podaci tag for this ticket.
             tag_name = "Ticket %d" % (self.ticket.id)
 
-            tag = self.fs.create_tag(tag_name)
+            tag = Tag(self.fs)
+            tag.create(tag_name)
             self.ticket.tag_id = tag.id
             self.ticket.save()
         else:
-            tag = self.fs.get_tag(self.ticket.tag_id)
+            tag = Tag(self.fs)
+            tag.load(self.ticket.tag_id)
 
         can_join_leave = False
         if self.request.user != self.ticket.requester:
@@ -451,14 +456,12 @@ class TicketDetail(TemplateView, PodaciMixin):
     #FIXME: Auth
     #@role_in('user', 'staff', 'admin', 'volunteer')
     def post(self, request):
-        print self.ticket
         form = forms.CommentForm(self.request.POST)
 
         if not form.is_valid():
             return self.get(request)
 
         comment = form.save(commit=False)
-        print comment
         comment.ticket = self.ticket
         comment.author = request.user
         comment.save()
@@ -724,7 +727,8 @@ class TicketRequest(TemplateView, PodaciMixin):
 
         # Create Podaci tag for this ticket.
         tag_name = "Ticket %d" % (ticket.id)
-        tag = self.fs.create_tag(tag_name)
+        tag = Tag(self.fs)
+        tag.create(tag_name)
         # TODO: Put this tag in a nice root tag.
         ticket.tag_id = tag.id
         ticket.save()
