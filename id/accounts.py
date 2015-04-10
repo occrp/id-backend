@@ -28,7 +28,6 @@ class ProfileUpdate(UpdateView):
     success_url = "/accounts/profile/"
 
     def get_object(self):
-        print "GET OBJECT: " % self.kwargs
         if self.request.user.is_staff or self.request.user.is_superuser:
             if self.kwargs.has_key("pk"):
                 return get_user_model().objects.get(id=self.kwargs["pk"])
