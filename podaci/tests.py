@@ -1,10 +1,12 @@
-from django.contrib.auth.models import AnonymousUser#, User
-from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.test import TestCase
+from core.tests import UserTestCase
+from core.testclient import TestClient
 from settings.settings import *
+from django.core.urlresolvers import reverse
 from podaci.filesystem import *
 import os, shutil
 import time
+import json
 
 class Strawman:
     def __init__(self, email, admin=False):
@@ -59,36 +61,16 @@ class PodaciAPITest(TestCase):
         self.fs.search_files({"query":{"term":{"public_read":False}}})
 
 
-class PodaciPermissionTest(TestCase):
+class PodaciPermissionTest(UserTestCase):
     def setUp(self):
+        super(PodaciPermissionTest, self).setUp()
+
         if not os.path.isdir(PODACI_FS_ROOT):
             os.mkdir(PODACI_FS_ROOT)
 
-        self.anonymous_user = AnonymousUser()
-        
-        self.normal_user = get_user_model().objects.create_user(
-            email='testuser@occrp.org', password='top_secret')
-        self.normal_user.is_user = True
-        self.normal_user.save()
-
-        self.volunteer_user = get_user_model().objects.create_user(
-            email='testvolunteer@occrp.org', password='top_secret')
-        self.volunteer_user.is_volunteer = True
-        self.volunteer_user.save()
-
-        self.staff_user = get_user_model().objects.create_user(
-            email='teststaff@occrp.org', password='top_secret')
-        self.staff_user.is_staff = True
-        self.staff_user.save()
-
-        self.admin_user = get_user_model().objects.create_user(
-            email='testsuperuser@occrp.org', password='top_secret')
-        self.admin_user.is_superuser = True
-        self.admin_user.save()
-
-
     def tearDown(self):
         shutil.rmtree(PODACI_FS_ROOT)
+        super(PodaciPermissionTest, self).tearDown()
 
     def test_anonymous_access(self):
         ## Verify that an anonymous user can access a public file
@@ -234,3 +216,119 @@ class PodaciTagTest(TestCase):
         self.assertEqual(t.has_files(), 0)
         t.delete(sure=True)
         f.delete(sure=True)
+
+
+class PodaciWebInterfaceTest(UserTestCase):
+    def setUp(self):
+        super(PodaciWebInterfaceTest, self).setUp()
+        self.fs = FileSystem(PODACI_SERVERS, 
+                             PODACI_ES_INDEX, 
+                             PODACI_FS_ROOT, 
+                             user=self.staff_user)
+
+    def req_as_staff(self, urlname, get=False, args={}, dset={}):
+        client = TestClient()
+        client.login_user(self.staff_user)
+        url = reverse(urlname, kwargs=args)
+        if get:
+            response = client.get(url, dset)
+        else:
+            response = client.post(url, dset)
+        return response
+
+    def test_podaci_info_home(self):
+        res = self.req_as_staff('podaci_info_home')
+
+    def test_podaci_info_help(self):
+        res = self.req_as_staff('podaci_info_help', get=True)
+
+    def test_podaci_search(self):
+        res = self.req_as_staff('podaci_search')
+
+    def test_podaci_search_mention(self):
+        res = self.req_as_staff('podaci_search_mention')
+
+    def test_podaci_info_status(self):
+        res = self.req_as_staff('podaci_info_status')
+
+    def test_podaci_info_statistics(self):
+        res = self.req_as_staff('podaci_info_statistics')
+
+    def test_podaci_files_create_success(self):
+        with open("requirements.txt") as fp:
+            res = self.req_as_staff('podaci_files_create', 
+                dset={"files[]": [fp]})
+    
+        data = json.loads(res.content)
+        self.assertEqual(len(data), 3)
+        self.assertEqual(data[1]["filename"], "requirements.txt")
+        self.assertIn(self.staff_user.id, data[1]["allowed_users"])
+        self.assertNotIn(self.admin_user.id, data[1]["allowed_users"])
+        self.assertEqual(data[1]["public_read"], False)
+        self.assertEqual(data[1]["mimetype"], "text/plain")
+        # Clean up after ourselves...
+        f = File(self.fs)
+        f.load(data[0])
+        f.delete(True)
+
+    #def test_podaci_files_create_fail(self):
+    #    # Next, let's try failing:
+    #    pass
+
+    def test_podaci_files_note_add(self):
+        pass # res = self.req_as_staff('podaci_files_note_add')
+
+    def test_podaci_files_note_delete(self):
+        pass # res = self.req_as_staff('podaci_files_note_delete')
+
+    def test_podaci_files_note_update(self):
+        pass # res = self.req_as_staff('podaci_files_note_update')
+
+    def test_podaci_files_delete(self):
+        f = File(self.fs)
+        f.create_from_path("requirements.txt")
+        res = self.req_as_staff('podaci_files_delete', 
+                                args={"id": f.id})
+        data = json.loads(res.content)
+        self.assertEqual(data["deleted"], True)
+        self.assertEqual(data["id"], f.id)
+
+    def test_podaci_files_upload(self):
+        pass # res = self.req_as_staff('podaci_files_upload')
+
+    def test_podaci_files_download(self):
+        pass # res = self.req_as_staff('podaci_files_download')
+
+    def test_podaci_files_details(self):
+        f = File(self.fs)
+        f.create_from_path("requirements.txt")
+        res = self.req_as_staff('podaci_files_details', 
+                                args={"id": f.id})
+        data = json.loads(res.content)
+        self.assertIn("file", data)
+        self.assertIn("tags", data)
+        self.assertIn("notes", data)
+        self.assertIn("users", data)
+        f.delete(True)
+
+    def test_podaci_tags_create(self):
+        pass # res = self.req_as_staff('podaci_tags_create')
+
+    def test_podaci_tags_list(self):
+        pass # res = self.req_as_staff('podaci_tags_list')
+
+    def test_podaci_tags_delete(self):
+        pass # res = self.req_as_staff('podaci_tags_delete')
+
+    def test_podaci_tags_upload(self):
+        pass # res = self.req_as_staff('podaci_tags_upload')
+
+    def test_podaci_tags_zip_tag(self):
+        pass # res = self.req_as_staff('podaci_tags_zip')
+
+    def test_podaci_tags_zip_selection(self):
+        pass # res = self.req_as_staff('podaci_tags_zip')
+
+    def test_podaci_tags_details(self):
+        pass # res = self.req_as_staff('podaci_tags_details')
+
