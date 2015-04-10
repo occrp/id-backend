@@ -497,6 +497,10 @@ class File(MetaMixin):
 
         return self.id, self.meta, True
 
+    def load(self, fid, prepopulate_meta={}):
+        """Synonym of load_by_id"""
+        return self.load_by_id(fid, prepopulate_meta)
+
     def load_by_id(self, fid, prepopulate_meta={}):
         """Loads a file by ID into this File object."""
         self.id = fid
