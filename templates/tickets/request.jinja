@@ -1,3 +1,4 @@
+{% if user.is_user %}
 {% extends "tickets/request_base.jinja" %}
 
 {% block inner_content %}
@@ -52,3 +53,9 @@
 {% endblock %}
 
 {# data-validation-url="{{ person_ownership_form.Meta.ajax_validation_url }}" #}
+{% else %}
+    {% extends "base.jinja" %}
+    {% block content %}
+    {% include "partials/_request_access.jinja" %}
+    {% endblock %}
+{% endif %}
