@@ -64,19 +64,21 @@
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                             <li  class="{% if url('profile') in request.path %}active{% endif %}">
-                                <a href="{{ url('profile') }}">{% trans %}Profile{% endtrans %}</a>
+                                <a href="{{ url('profile') }}"><i class="icon-user"></i> {% trans %}Profile{% endtrans %}</a>
                             </li>
+                            {% if not (user.is_admin or user.is_staff or user.is_volunteer or user.is_user) %}
+                            <li><a href="{{ url('request_account_home') }}"><i class="icon-asterisk"></i> {% trans %}Request Permissions{% endtrans %}</a></li>
+                            {% endif %}
                             {% if user.is_staff or user.is_superuser %}
                             <li  class="{% if url('admin_panel') in request.path %}active{% endif %}">
                                 <a href="{{ url('admin_panel') }}">{% trans %}Admin{% endtrans %}</a>
                             </li>
                             {% endif %}
-                            <li><a tabindex="-1" href="{{ url('logout') }}">{% trans %}Sign out{% endtrans %}</a></li>
+                            <li><a tabindex="-1" href="{{ url('logout') }}"><i class="icon-signin"></i> {% trans %}Sign out{% endtrans %}</a></li>
                         </ul>
                     </li>
                 {% else %}
-                    <li><a href="{{ url('request_account_home') }}"><i class="icon-asterisk"></i> {% trans %}Request Account{% endtrans %}</a></li>
-                    <li><a href="{{ url('login') }}"><i class="icon-signin"></i> {% trans %}Log In{% endtrans %}</a></li>
+                    <li><a href="{{ url('login') }}"><i class="icon-signin"></i> {% trans %}Sign In{% endtrans %}</a></li>
                 {% endif %}
                 {% block language_chooser %}
                     <li class="dropdown">
