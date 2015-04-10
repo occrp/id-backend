@@ -219,6 +219,9 @@ class Profile(AbstractBaseUser, PermissionsMixin):
             return _('Covering cost+ (requester pays for documents, and also '
                      'for our work)')
 
+    def to_json(self):
+        return {"id": self.id, "email": self.email}
+
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
