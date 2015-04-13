@@ -270,40 +270,19 @@ class ExternalDatabase(models.Model, DisplayMixin):
         else: # no continent found. This will happen for pseudo-countries
             return ('', set())
 
-
-
 ######## Account management ############
-class AccountRequest(models.Model, DisplayMixin, AddressMixin, UserDetailsGenericMixin): # polymodel
+class AccountRequest(models.Model, DisplayMixin):
     request_type = models.CharField(blank=False, max_length=64, choices=REQUEST_TYPES)
-    user_profile = models.ForeignKey(AUTH_USER_MODEL, blank=False)
-    approved = models.BooleanField(default=False, verbose_name=_('Approved'))
-    email = models.CharField(max_length=50, blank=False, verbose_name=_('Email Address'))
+    user = models.ForeignKey(AUTH_USER_MODEL, blank=False)
+    approved = models.BooleanField(default=None, blank=True, verbose_name=_('Approved'))
     date_created = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('Date Created'))
 
     # temporary fix for updated profiles
     already_updated = models.BooleanField(default=False)
 
-    admin_only_fields = ('approved', 'email', 'date_created')
-    # Most fields for details are pulled in from UserDetailsGenericMixin,
-    # so that they can be shared with UserProfile
-
     GROUPS = []
     MAIL_TEMPLATE = 'accountrequest/mail_notification.jinja'
-
-    class Meta:
-        pass
-        #fields = UserDetailsGenericMixin.Meta.fields + AddressMixin.Meta.fields + ('approved', 'email',) #XXX see if we need this
-        #user_visible_fields = tuple(x for x in fields if x not in AccountRequest.admin_only_fields)
-
-    @classmethod
-    def pending_for(cls, user):
-        return cls.query().filter(
-            cls.email == user.email()).fetch()
-
-    @property
-    def full_name(self):
-        return "%s %s" % (self.first_name, self.last_name)
 
     def get_display_value(self, property_name):
         if property_name != 'approved':
@@ -313,101 +292,49 @@ class AccountRequest(models.Model, DisplayMixin, AddressMixin, UserDetailsGeneri
                     else _('Yes') if self.approved is True
                     else _('No'))
 
-    def fields_for_userprofile(self):
-        return self.Meta.fields # XXX duplication -- move to just Meta.fields
-        return ['request_type', 'first_name', 'last_name', 'phone_number',
-                'organization_membership', 'notes']
-
-    def enhance_userprofile(self):
-        user = self.user_profile.get()
-        fields = self.fields_for_userprofile()
-        for i in fields:
-            setattr(user, i, getattr(self, i))
-            logging.info('setting %s to %s based on %s' % (i, getattr(user, i), getattr(self, i)))
-        #try doing one manually
-        # for some reason, we cannot use setattr
-        user.request_type = self.request_type
-        # user.first_name = self.first_name
-        # user.last_name = self.last_name
-        user.phone_number = self.phone_number
-        user.organization_membership = self.organization_membership
-        user.notes = self.notes
-        user.address = self.address
-        user.city = self.city
-        user.province = self.province
-        user.postal_code = self.postal_code
-
-        if self.request_type == 'requester':
-            user.industry = self.industry
-            user.industry_other = self.industry_other
-            user.media = self.media
-            user.circulation = self.circulation
-            user.title = self.title
-        if self.request_type == 'volunteer':
-            user.interests = self.interests
-            user.expertise = self.expertise
-            user.languages = self.languages
-            user.availability = self.availability
-            user.databases = self.databases
-            user.conflicts = self.conflicts
-        user.put()
-        self.already_updated = True
-        self.put()
-
-    def approve(self, groups_to_add=['user']):
+    def approve(self):
         """
         Adds the Account Request's email address to the appropriate Google
         groups, and marks the request as approved.
         """
-        # groups sync is deprecated
-        #groups_service = groups.Groups.system_instance()
-        #for group in self.GROUPS:
-        #    groups_service.add_to(config[group], self.email)
+        if self.request_type == 'volunteer':
+            self.user.is_volunteer = True()
+            self.user.save()
+        elif self.request_type == 'requester':
+            self.user.is_user = True()
+            self.user.save()
 
-        # XXX this is a hack, on the way to eliminating google-based permisssions
-        # entirely
-        # but it'll take a while to get there
-        for g in groups_to_add:
-            g_name = 'is_%s' % g
-            setattr(self.user_profile.get(), g_name, True)
-
-        self.enhance_userprofile()
         self.approved = True
-        self.put()
+        self.save()
         self.notify_approved()
 
     def reject(self):
         """
         Removes the user from the group!
         """
-        # groups is deprecated
-        #groups_service = groups.Groups.system_instance()
-        #for group in self.GROUPS:
-        #    groups_service.remove_from(config[group], self.email)
-
         self.approved = False
-        self.put()
+        self.save()
         self.notify_rejected()
 
     def notify_received(self):
         email_notification(
-            to=self.email,
+            to=self.user.email,
             subject=unicode(_('Your Account Request was received')),
             template='mail/account_request/received.jinja',
             context={'request': self}
         )
-        for admin in UserProfile.query(UserProfile.is_superuser == True).fetch():
+        for admin in AUTH_USER_MODEL.objects.filter(is_superuser=True):
             with templocale(admin.locale or 'en'):
                 email_notification(
                     to=admin.email,
                     subject=unicode(_('An Account Request was received')),
                     template='mail/account_request/received_admin.jinja',
                     context={'request': self}
-                    )
+                )
 
     def notify_approved(self):
         email_notification(
-            to=self.email,
+            to=self.user.email,
             subject=unicode(_('An update to your Account Request')),
             template='mail/account_request/approved.jinja',
             context={'request': self}
@@ -415,41 +342,11 @@ class AccountRequest(models.Model, DisplayMixin, AddressMixin, UserDetailsGeneri
 
     def notify_rejected(self):
         email_notification(
-            to=self.email,
+            to=self.user.email,
             subject=unicode(_('Your Account Request was rejected')),
             template='mail/account_request/rejected.jinja',
             context={'request': self}
         )
-
-    def url(self, action='edit'):
-        return '/admin/accountrequest/%s/%s/' % (self.key.urlsafe(), action)
-
-class RequesterRequest(AccountRequest, UserDetailsRequesterMixin):
-    request_type = 'requester'
-
-    GROUPS = ['groups_all_id', 'groups_users_id']
-
-    def fields_for_userprofile(self):
-        return self.Meta.fields
-
-    class Meta:
-        pass
-        # fields = AccountRequest.Meta.fields + UserDetailsRequesterMixin.Meta.fields
-        # user_visible_fields = tuple(x for x in fields if x not in AccountRequest.admin_only_fields)
-
-class VolunteerRequest(AccountRequest, UserDetailsVolunteerMixin):
-    request_type = 'volunteer'
-
-    GROUPS = ['groups_all_id', 'groups_volunteer_id']
-
-    def fields_for_userprofile(self):
-        return self.Meta.fields
-
-    class Meta:
-        pass
-        # fields = AccountRequest.Meta.fields + UserDetailsVolunteerMixin.Meta.fields
-        # user_visible_fields = tuple(x for x in fields if x not in AccountRequest.admin_only_fields)
-
 
 class DatabaseScrapeRequest(models.Model):
     url = models.URLField(blank=False, verbose_name=_("URL"))
