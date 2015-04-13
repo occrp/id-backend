@@ -47,7 +47,7 @@ urlpatterns = patterns('',
                                             perm('admin', accounts.ProfileUpdate), name='profile'),
     url(r'^accounts/setlanguage/(?P<lang>[a-zA-Z]{2})/$',
                                             perm('any', accounts.ProfileSetLanguage), name='account_set_language'),
-    url(r'^accounts/requester/$',           perm('any', accounts.AccountRequest), name='request_account'),
+    url(r'^accounts/requester/$',           perm('any', accounts.AccountRequester), name='request_account'),
     url(r'^accounts/volunteer/$',           perm('any', accounts.AccountVolunteer), name='volunteer_account'),
 
     url(r'^accounts/password/change/$',      auth_views.password_change, {'template_name': 'registration/password_change_form.jinja'}, name='auth_password_change'),

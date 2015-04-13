@@ -67,64 +67,39 @@ class UserList(ListView):
 class AccountRequestHome(TemplateView):
     template_name = 'request_account_home.jinja'
 
-    def message(self, where, message):
-        self.add_message(message)
-        self.redirect_to(where)
-        return True
+    def get_context_data(self):
+        if self.fallback_response():
+            return {"status": False}
+        req = AccountRequest(request_type=self.REQUEST_TYPE,
+                             user=self.request.user)
+        req.save()
+        self.add_message(_('Request submitted. Our staff will evaluate and '
+                           'respond to your request.'), 'success')
+        return {"status": True, "requested": self.REQUEST_TYPE}
 
     def fallback_response(self):
-        if not self.user:
+        u = self.request.user
+        if u.is_user and self.REQUEST_TYPE == 'requester':
+            self.message('You have already been approved as an Information Requester.')
             return False
-        if self.is_user:
-            return self.message(
-                'request_list',
-                'You have already been approved as an Information Requester.')
-        if self.is_volunteer:
-            return self.message(
-                'request_list',
-                'You have already been approved as a Volunteer.')
-        if models.AccountRequest.pending_for(self.user):
-            return self.message(
-                'home',
-                'You already have a request for an account pending.'
+        if u.is_volunteer and self.REQUEST_TYPE == 'volunteer':
+            self.add_message('You have already been approved as a Volunteer.')
+            return False
+        if AccountRequest.objects.filter(user=u).count() > 0:
+            self.add_message('You already have a request for an account pending.'
                 ' Please be patient.')
+            return False
+        return True
 
 class AccountRequestList(ListView):
     template_name = 'id/accountrequest_list.jinja'
     model = AccountRequest
 
-class AccountRequest(AccountRequestHome):
-    # form_class = forms.modelform_factory(forms.AccountRequestForm)
-    template_name = 'request_account.jinja'
-
-    @login_required
-    def _get(self):
-        if self.fallback_response():
-            return
-        form = self.form_class(email=self.email)
-        return (self.fallback_response()
-                or self.render_response(self.template_name, form=form))
-
-    @login_required
-    def _post(self):
-        f = self.form_class(self.request.POST)
-        f.email.data = self.email
-
-        if not f.validate():
-            logging.info("Fail to validate for unknown reason!")
-            return self.render_response(self.template_name, form=f)
-
-        account_request = f.save(parent=ndb.Key('Entity', 'accountrequest'),
-                                 commit=False)
-        account_request.user_profile = self.key
-        account_request.put()
-        account_request.notify_received()
-        self.add_message(_('Request submitted. Our staff will evaluate and '
-                           'respond to your request.'), 'success')
-        self.redirect_to('home')
-
+class AccountRequester(AccountRequestHome):
+    template_name = 'accountrequest/confirm_access_requested.jinja'
+    REQUEST_TYPE = 'requester'
 
 class AccountVolunteer(AccountRequest):
-    # form_class = forms.modelform_factory(forms.AccountVolunteerForm)
-    template_name = 'accountrequest/volunteer_account.jinja'
+    template_name = 'accountrequest/confirm_access_requested.jinja'
+    REQUEST_TYPE = 'volunteer'
 
