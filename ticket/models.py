@@ -5,7 +5,7 @@ from settings.settings import AUTH_USER_MODEL # as per https://docs.djangoprojec
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from core.mixins import ModelDiffMixin, DisplayMixin
+from core.mixins import DisplayMixin
 from podaci.filesystem import Tag
 
 from constants import *
@@ -13,7 +13,7 @@ from utils import *
 import datetime
 
 ######## Data requests #################
-class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
+class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
     """
     Common fields for all ticket types
 
