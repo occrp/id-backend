@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 #from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
-from id.mixins import JSONResponseMixin
+from core.mixins import JSONResponseMixin
 from core.auth import require_staff
 from podaci.filesystem import *
 import json
