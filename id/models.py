@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from id.mixins import *
+from core.mixins import *
 from id.constdata import *
 from ticket.constants import *
 from ticket.models import TicketCharge
