@@ -74,8 +74,7 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.csrf",
     "id.context_processors.locale",
-    "id.context_processors.routename",
-    "id.context_processors.userprofile"
+    "id.context_processors.routename"
 )
 
 ROOT_URLCONF = 'settings.urls'
