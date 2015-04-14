@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'registration',
     'django_jinja',
+    'rest_framework',
     'id',
     'podaci',
     # 'osoba',
