@@ -590,6 +590,17 @@ class File(MetaMixin):
                 return self._sync()
         return False
 
+    def note_update(self, nid, text):
+        """Delete a note from a file."""
+        assert(self.fs.user.is_superuser)
+        for i in range(0, len(self.meta["notes"])):
+            if self.meta["notes"][i]["id"] == nid:
+                assert(self.fs.user.id == self.meta["notes"][i]["user"])
+                self.meta["notes"][i]["text"] = text
+                self.meta["notes"][i]["modified"] = datetime.now().isoformat()
+                return self._sync()
+        return False
+
     def note_list(self):
         """Get a list of notes."""
         return self.meta["notes"]
