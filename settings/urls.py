@@ -27,7 +27,6 @@ urlpatterns = patterns('',
     url(r'^search/$',                       perm('any', search.CombinedSearchHandler), name="search"),
     url(r'^search/entities/$',              perm('any', search.CombinedSearchHandler), name='search_entities'), # still needed for ajax only
 
-
     url(r'^databases/$',                    perm('any', databases.ExternalDatabaseList), name='externaldb_list'),
     url(r'^databases/add/$',                perm('staff', databases.ExternalDatabaseAdd), name='externaldb_add'),
     url(r'^databases/edit/(?P<id>[0-9]+)/$',perm('staff', databases.ExternalDatabaseEdit), name='externaldb_edit'),
