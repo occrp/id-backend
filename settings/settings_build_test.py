@@ -89,5 +89,10 @@ LOGGING = {
             'level': 'DEBUG',
             'propogate': True
         },
+        'elasticsearch': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propogate': True
+        }
     }
 }

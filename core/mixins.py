@@ -64,31 +64,6 @@ class MessageMixin(object):
             self.messages = []
         self.messages.append((message, level))
 
-class ModelDiffMixin(object):
-    """
-    Provide an API to determine what fields changed before a model is saved.
-    """
-    @property
-    def diff(self):
-        if self.is_new:
-            return {'old': None, 'changed_properties': []}
-
-        properties = [p for p in type(self)._properties if p != 'class']
-        changed_properties = []
-        old = self.key.get()
-        new = self
-
-        for prop in properties:
-            d1_val = getattr(old, prop)
-            d2_val = getattr(new, prop)
-            if d1_val != d2_val:
-                changed_properties.append(prop)
-        return {'old': old, 'changed_properties': changed_properties}
-
-    @property
-    def is_new(self):
-        return not bool(self.key)
-
 class PrettyPaginatorMixin(object):
 
     def create_page_object(self, page_num, is_current_page, url_name, url_args):
