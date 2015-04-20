@@ -1,6 +1,7 @@
 import urllib
 import urllib2
 import json
+from datetime import datetime
 
 class ImageSearchDispatcher:
     def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
@@ -68,7 +69,8 @@ class ImageSearchVK:
         r = urllib2.urlopen(self.URL, urllib.urlencode(meta))
         data = json.loads(r.read())
         for item in data["response"][1:]:
-            i = ImageSearchResult(item["src"], item["src"], item["created"], item["text"], item, self.PROVIDER)
+            timestamp = datetime.utcfromtimestamp(item["created"])
+            i = ImageSearchResult(item["src"], item["src"], timestamp, item["text"], item, self.PROVIDER)
             results.append(i)
 
         return results
