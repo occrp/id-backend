@@ -8,7 +8,7 @@ from django.views.generic import (
         TemplateView, ListView, RedirectView, UpdateView,
         CreateView, FormView, View)
 from django.utils.translation import ugettext_lazy as _
-from id.mixins import JSONResponseMixin, MessageMixin
+from core.mixins import JSONResponseMixin, MessageMixin
 from id import models
 from ticket import forms
 from ticket.models import (

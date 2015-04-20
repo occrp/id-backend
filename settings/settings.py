@@ -25,7 +25,6 @@ try:
 except ImportError:
     raise Exception('You need to set up settings_local.py (see settings_local.py-example')
 
-
 # Some error checking for local_settings
 if not SECRET_KEY:
     raise Exception('You need to specify Django SECRET_KEY in the settings_local.py!')
@@ -49,6 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'registration',
     'django_jinja',
+    'rest_framework',
     'id',
     'podaci',
     # 'osoba',
@@ -75,8 +75,7 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.csrf",
     "id.context_processors.locale",
-    "id.context_processors.routename",
-    "id.context_processors.userprofile"
+    "id.context_processors.routename"
 )
 
 ROOT_URLCONF = 'settings.urls'

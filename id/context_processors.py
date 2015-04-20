@@ -1,20 +1,6 @@
 from django.utils.translation import to_locale, get_language
 from django.core.urlresolvers import resolve
 from django.utils import formats
-from id.models import Profile
-
-def userprofile(request):
-    if request.user.is_authenticated():
-        try:
-            prof = request.user
-        except Exception, e:
-            print "User profile for %s does not exist" % request.user.email
-            prof = Profile(user=request.user)
-            prof.save()
-        return {
-            'user_profile': prof
-        }
-    return {}
 
 def locale(request):
     lang = get_language()
