@@ -64,11 +64,38 @@ class ImageSearchVK:
 
 
 class ImageSearchInstagram:
-    # https://instagram.com/developer/endpoints/locations/
+    # https://instagram.com/developer/endpoints/media/
+    # https://instagram.com/accounts/login/?next=%2Fdeveloper%2Fregister%2F
+    # https://github.com/Instagram/python-instagram/blob/master/README.md
+    # https://instagram.com/developer/endpoints/media/#get_media_search
+    # you can only create an account via the mobile app o_O'
     PROVIDER = "Instagram"
+    URL = "https://api.instagram.com/v1/media/search"
 
     def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
-        pass
+        # results
+        results = ImageSearchResultSet()
+        
+        # search metadata
+        meta = {}
+        #meta["q"] = q
+        meta["lat"] = lat
+        meta["lng"] = lon
+        meta["min_timestamp"] = startdate.strftime("%s")
+        meta["max_timestamp"] = enddate.strftime("%s")
+        #meta["offset"] = offset
+        #meta["count"] = count
+        meta["distance"] = self.clamp_radius_to_set(radius)
+
+        # run the query
+        r = urllib2.urlopen(self.URL, urllib.urlencode(meta))
+        data = json.loads(r.content)
+        
+        # get a nice results
+        for item in data["response"]:
+            i = ImageSearchResult(item.images["standard_resolution"]["url"], item["link"], item["created_time"], item, self.PROVIDER)
+            results.append(i)
+        
 
 class ImageSearchGoogleImages:
     PROVIDER = "Google Images"
@@ -88,5 +115,36 @@ class ImageSearchFacebook:
     def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
         pass
 
+class ImageSearchFlickr:
+    # https://www.flickr.com/services/api/flickr.photos.search.html
+    # this needs a mobile phone for registering with flickr/yahoo o_O'
+    PROVIDER = "Flickr"
 
-searchproviders = [ImageSearchFacebook, ImageSearchTwitter, ImageSearchInstagram, ImageSearchVK, ImageSearchGoogleImages]
+    URL = "https://api.instagram.com/v1/media/search"
+
+    def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
+        # results
+        results = ImageSearchResultSet()
+        
+        # search metadata
+        meta = {}
+        meta["q"] = q
+        meta["lat"] = lat
+        meta["lng"] = lon
+        meta["min_timestamp"] = startdate.strftime("%s")
+        meta["max_timestamp"] = enddate.strftime("%s")
+        #meta["offset"] = offset
+        #meta["count"] = count
+        meta["distance"] = self.clamp_radius_to_set(radius)
+
+        # run the query
+        r = urllib2.urlopen(self.URL, urllib.urlencode(meta))
+        data = json.loads(r.content)
+        
+        # get a nice results
+        for item in data["response"]:
+            i = ImageSearchResult(item.images["standard_resolution"]["url"], item["link"], item["created_time"], item, self.PROVIDER)
+            results.append(i)
+
+
+searchproviders = [ImageSearchFacebook, ImageSearchTwitter, ImageSearchInstagram, ImageSearchVK, ImageSearchGoogleImages, ImageSearchFlickr]
