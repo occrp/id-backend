@@ -78,39 +78,6 @@
                   zoom: 4
                 })
               });
-
-            var current_search_id = 0;
-
-            $.ready(function() {
-                $("#image_search_submit").on("click", function() {
-                    $.getJSON('{{url("search_images_query")}}', $("#image_search_form").serialize(), function(data) {
-                        if (data.status) {
-                            current_search_id = data.query_id;
-                            $("#searching_notice").show();
-                            $.setTimeout(check_search_results, data.checkin_after);
-                        }
-                    });
-                });
-            });
-
-            function check_search_results() {
-                $.getJSON('{{url("search_images_check")}}', {"id": current_search_id}, function(data) {
-                    $(".search-results").empty();
-                    for (item in data.results) {
-                        result = $('<div class="image-search-result"/>');
-                        result.append('<img src="'+item.imageurl+'"/>');
-                        result.append('<div class="image-search-caption">'+item.caption+'</div>');
-                        result.append('<div class="image-search-date">'+item.timestamp+'</div>');
-                        result.append('<div class="image-search-origin">'+item.provider+'</div>');
-                        $(".search_results").append(result);
-                    }
-                    if (data.done) {
-                        $("#searching_notice").hide();
-                    } else {
-                        $.setTimeout(check_search_results, data.checkin_after);
-                    }
-                });
-            };
             </script>
         </div>
         </form>
@@ -120,4 +87,45 @@
 
     <div class="row search-results">
     </div>
+{% endblock %}
+
+{% block after_js %}
+<script>
+    var current_search_id = 0;
+
+    $(function() {
+        $("#image_search_submit").on("click", start_search);
+        $("#image_search_form").on("submit", start_search);
+    });
+
+    function start_search() {
+        console.log("Searching!");
+        $.getJSON('{{url("search_images_query")}}', $("#image_search_form").serialize(), function(data) {
+            if (data.status) {
+                current_search_id = data.query_id;
+                $("#searching_notice").show();
+                $.setTimeout(check_search_results, data.checkin_after);
+            }
+        });
+    }
+
+    function check_search_results() {
+        $.getJSON('{{url("search_images_check")}}', {"id": current_search_id}, function(data) {
+            $(".search-results").empty();
+            for (item in data.results) {
+                result = $('<div class="image-search-result"/>');
+                result.append('<img src="'+item.imageurl+'"/>');
+                result.append('<div class="image-search-caption">'+item.caption+'</div>');
+                result.append('<div class="image-search-date">'+item.timestamp+'</div>');
+                result.append('<div class="image-search-origin">'+item.provider+'</div>');
+                $(".search_results").append(result);
+            }
+            if (data.done) {
+                $("#searching_notice").hide();
+            } else {
+                $.setTimeout(check_search_results, data.checkin_after);
+            }
+        });
+    };
+</script>
 {% endblock %}

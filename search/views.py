@@ -6,12 +6,13 @@ from django.views.generic import TemplateView, View
 from datetime import datetime
 from search.models import SearchRequest
 from core.mixins import JSONResponseMixin
+import json
 
 
 class ImageSearchQuery(View, JSONResponseMixin):
     def get_context_data(self):
         query = {}
-        query["q"] = self.request.GET.get("q", "").encode("utf-8")
+        query["q"] = self.request.GET.get("q", "")
         query["lat"] = float(self.request.GET.get("lat", 0.0))
         query["lon"] = float(self.request.GET.get("lon", 0.0))
         query["radius"] = int(self.request.GET.get("radius", 5000))
@@ -23,15 +24,19 @@ class ImageSearchQuery(View, JSONResponseMixin):
         search = SearchRequest()
         search.requester = self.request.user
         search.search_type = 'image'
-        search.query = json.dumps({})
+        search.query = json.dumps(query)
         search.save()
         return search.initiate_search()
 
 
 class ImageSearchCheck(View, JSONResponseMixin):
-    def get_context_data(self, searchid):
+    def get_context_data(self):
+        searchid = self.request.GET.get("id", 0)
+        if not searchid:
+            return {"status": False, "error": "Must supply valid ID"}
         search = SearchRequest.objects.get(id=searchid)
         return {
+            "status": True,
             "done": search.is_done(), 
             "bots_total": search.bots_done(),
             "bots_done": search.bots_done(),

@@ -11,14 +11,14 @@ SEARCH_TYPES = (
 
 class SearchRequest(models.Model):
     requester = models.ForeignKey(AUTH_USER_MODEL, blank=True)
-    search_type = models.CharField(choices=SEARCH_TYPES)
+    search_type = models.CharField(max_length=30, choices=SEARCH_TYPES)
     created = models.DateTimeField(auto_now_add=True)
     query = models.TextField()
 
     def initiate_search(self):
         for prov in searchproviders:
             provider = prov()
-            provider.start(args=(self))
+            provider.start(self)
 
         return {"status": True, "searchid": self.id, "bots_started": len(searchproviders), "checkin_after": 500}
 
@@ -32,7 +32,15 @@ class SearchRequest(models.Model):
         return all([x.done for x in self.searchrunner_set.all()])
 
     def get_results(self):
-        return self.searchresult_set.all()
+        return [x for x in self.searchresult_set.all()]
+
+    def create_runner(self, name):
+        runner = SearchRunner()
+        runner.request = self
+        runner.name = name
+        runner.save()
+        return runner
+
 
 class SearchRunner(models.Model):
     request = models.ForeignKey(SearchRequest)
@@ -49,3 +57,9 @@ class SearchResult(models.Model):
     found = models.DateTimeField(auto_now_add=True)
     data = models.TextField()
 
+    def as_json(self):
+        return {
+            "provider": self.provider,
+            "found": self.found,
+            "data": json.loads(self.data)
+        }

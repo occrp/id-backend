@@ -49,12 +49,14 @@ INSTALLED_APPS = (
     'registration',
     'django_jinja',
     'rest_framework',
+
+    'core',
     'id',
+    'search',
     'podaci',
     # 'osoba',
     'robots',
     'ticket',
-    'core',
     'django_select2'
 )
 
