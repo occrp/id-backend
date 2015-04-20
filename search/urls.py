@@ -7,9 +7,11 @@ from id import search as oldsearch
 import search.views
 
 urlpatterns = patterns('',
-    url(r'^$',             perm('any', oldsearch.CombinedSearchHandler), name='search'),
-    url(r'^entities/$',    perm('any', oldsearch.CombinedSearchHandler), name='search_entities'), # still needed for ajax only
-    url(r'^images/$',      perm('any', search.views.ImageSearch), name='search_images')
+    url(r'^$',               perm('any', oldsearch.CombinedSearchHandler), name='search'),
+    url(r'^entities/$',      perm('any', oldsearch.CombinedSearchHandler), name='search_entities'), # still needed for ajax only
+    url(r'^images/$',        perm('any', TemplateView, template_name="search/search_images.jinja"), name='search_images'),
+    url(r'^images/query/$',  perm('any', search.views.ImageSearchQuery), name='search_images_query'),
+    url(r'^images/check/$',  perm('any', search.views.ImageSearchCheck), name='search_images_check'),
 )
 
 
