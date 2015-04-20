@@ -50,9 +50,9 @@ def create_system_service():
         raise DriveError(_('Error refreshing Google Drive access token. Check your settings and try again.'))
 
 
-def dump_pickled_filelist(files):
+def dump_pickled_filelist(files, i):
     try:
-        with open(gdrive_filelist_file, 'wb') as gflfile:
+        with open('%s.%d' % (gdrive_filelist_file, i), 'wb') as gflfile:
             pickle.dump(files, gflfile)
         print "Dumped %d files metadata to %s." % (len(files), gdrive_filelist_file)
     except:
@@ -69,6 +69,7 @@ def retrieve_all_files(service):
     """
     print 'Retrieving file list for the GDrive root folder...'
     result = []
+    i = 0
     page_token = None
     while True:
         try:
@@ -81,11 +82,12 @@ def retrieve_all_files(service):
             result.extend(files['items'])
             print '+-- %d files metadata retrieved (%d in total)...' % (len(files['items']), len(result))
             # make sure we won't lose them in case of a fsckup
-            dump_pickled_filelist(result)
+            dump_pickled_filelist(files['items'], i)
             # move on to the next page
             page_token = files.get('nextPageToken')
             if not page_token:
                 break
+            i = i+1
         except errors.HttpError, error:
             print 'An error occurred: %s' % error
             break
@@ -95,22 +97,12 @@ def retrieve_all_files(service):
 
 if __name__ == "__main__":
     
-    keep_downloads = False
     try:
         # requried args
-        script, idpath, imported_files_file = sys.argv[:3]
-        # --keep?
-        if len(sys.argv) > 3:
-            if sys.argv[3] == '--keep':
-                keep_downloads = True
-            else:
-                raise ValueError
-            # too long, did not read
-            if len(sys.argv) > 4:
-                raise ValueError
-    except ValueError:
-        print("\nRun via:\n\t%s </path/to/legacy-investigative-dashboard> <imported-files-list-file-path> [--keep]\n" % sys.argv[0])
-        print("Temporary files are being saved in:\n\t/tmp/id_gdrive_downloads/root/<individual-filenames>\n\nOptional --keep parameter makes the script not delete the downloaded files after Podaci import.\n")
+        script, idpath, imported_files_file = sys.argv
+    except:
+        print("\nRun via:\n\t%s </path/to/legacy-investigative-dashboard> <imported-files-list-file-path>\n" % sys.argv[0])
+        print("Pickled GDrive file metadata are being saved in:\n\t/<imported-file-list-file-containing-folder>/GDrive.filelist.<n>\n...where n is the consecutive number of data file (one per GDrive API call, max. 1000 files returned per call)")
         sys.exit()
         
     # pickle and save the result
@@ -162,7 +154,7 @@ if __name__ == "__main__":
     #except Exception as e:
     #   print 'Exception caught: %s (%s); exiting gracefully' % (e, type(e))
     
-    dump_pickled_filelist(files)
+    #dump_pickled_filelist(files)
         
     # have we actually saved any files?
     if imported_files:
