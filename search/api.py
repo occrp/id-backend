@@ -22,32 +22,50 @@ class ImageSearchVK:
     # http://vk.com/dev.php?method=photos.search
     PROVIDER = "VKontakte"
 
-    def search(lat, lon, radius, startdate, enddate):
-        pass
+    def clamp_radius_to_set(self, radius):
+        arr = [10, 100, 800, 5000, 6000, 50000]:
+        curr = arr[0]
+        for val in arr:
+            if abs(radius - val) < abs (radius - curr):
+                curr = val
+        return curr
+
+    def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
+        meta = {}
+        meta["q"] = q
+        meta["lat"] = lat
+        meta["long"] = lon
+        meta["start_time"] = startdate.strftime("%s")
+        meta["end_time"] = enddate.strftime("%s")
+        meta["offset"] = offset
+        meta["count"] = count
+        meta["radius"] = self.clamp_radius_to_set(radius)
+
+        
 
 class ImageSearchInstagram:
     # https://instagram.com/developer/endpoints/locations/
     PROVIDER = "Instagram"
 
-    def search(lat, lon, radius, startdate, enddate):
+    def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
         pass
 
 class ImageSearchGoogleImages:
     PROVIDER = "Google Images"
 
-    def search(lat, lon, radius, startdate, enddate):
+    def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
         pass
 
 class ImageSearchTwitter:
     PROVIDER = "Twitter"
 
-    def search(lat, lon, radius, startdate, enddate):
+    def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
         pass
 
 class ImageSearchFacebook:
     PROVIDER = "Facebook"
 
-    def search(lat, lon, radius, startdate, enddate):
+    def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
         pass
 
 
