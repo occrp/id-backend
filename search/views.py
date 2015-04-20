@@ -6,8 +6,9 @@ from search.api import ImageSearch, ImageSearchResult
 
 
 class ImageSearch(TemplateView):
-	template_name = "search/imagesearch.html"
+    template_name = "search/imagesearch.html"
 
-	def get_context_data(self):
-		pass
+    def get_context_data(self):
+        s = ImageSearch()
+        results = s.search(lat, lon, radius, startdate, enddate)
 
