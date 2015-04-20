@@ -50,19 +50,18 @@
     <script src="http://openlayers.org/en/v3.4.0/build/ol.js" type="text/javascript"></script>
 
     <div class="row well">
-        <form method="GET" action="{{url('search_images')}}">
+        <form name="image_search_form" id="image_search_form">
         <div class="span3">
-            <input class="input-lg" name="q" value="{{q.decode("utf-8")}}" placeholder="Search"/>
+            <input class="input-large" name="q" placeholder="Search"/>
 
             <table>
-                <tr><th>Query:</th><td></td></tr>
-                <tr><th>Latitude:</th><td><input name="lat" value="{{lat}}"/></td></tr>
-                <tr><th>Longitude:</th><td><input name="lon" value="{{lon}}"/></td></tr>
-                <tr><th>Search radius:</th><td><input name="radius" value="{{radius}}"/></td></tr>
-                <tr><th>Start:</th><td><input name="startdate" value="{{startdate}}"/></td></tr>
-                <tr><th>End:</th><td><input name="enddate" value="{{enddate}}"/></td></tr>
+                <tr><th>Latitude:</th><td><input name="lat"/></td></tr>
+                <tr><th>Longitude:</th><td><input name="lon"/></td></tr>
+                <tr><th>Search radius:</th><td><input name="radius"/></td></tr>
+                <tr><th>Start:</th><td><input name="startdate"/></td></tr>
+                <tr><th>End:</th><td><input name="enddate"/></td></tr>
             </table>
-            <input class="btn btn-primary pull-right" type="submit" value="Search"/>
+            <input id="image_search_submit" class="btn btn-primary pull-right" type="button" value="Search"/>
         </div>
         <div class="span6 pull-right">
             <div id="map" class="map"></div>
@@ -79,21 +78,46 @@
                   zoom: 4
                 })
               });
+
+            var current_search_id = 0;
+
+            $.ready(function() {
+                $("#image_search_submit").on("click", function() {
+                    $.getJSON('{{url("search_images_query")}}', $("#image_search_form").serialize(), function(data) {
+                        if (data.status) {
+                            current_search_id = data.query_id;
+                            $("#searching_notice").show();
+                            $.setTimeout(check_search_results, data.checkin_after);
+                        }
+                    });
+                });
+            });
+
+            function check_search_results() {
+                $.getJSON('{{url("search_images_check")}}', {"id": current_search_id}, function(data) {
+                    $(".search-results").empty();
+                    for (item in data.results) {
+                        result = $('<div class="image-search-result"/>');
+                        result.append('<img src="'+item.imageurl+'"/>');
+                        result.append('<div class="image-search-caption">'+item.caption+'</div>');
+                        result.append('<div class="image-search-date">'+item.timestamp+'</div>');
+                        result.append('<div class="image-search-origin">'+item.provider+'</div>');
+                        $(".search_results").append(result);
+                    }
+                    if (data.done) {
+                        $("#searching_notice").hide();
+                    } else {
+                        $.setTimeout(check_search_results, data.checkin_after);
+                    }
+                });
+            };
             </script>
         </div>
         </form>
     </div>
 
+    <div class="alert alert-success hide" role="alert">Searching...</div>
+
     <div class="row search-results">
-    {% for result in results %}
-        <div class="image-search-result">
-            <img src="{{result.imageurl}}"/>
-            <div class="image-search-caption">{{result.caption}}</div>
-            <div class="image-search-date">{{result.timestamp}}</div>
-            <div class="image-search-origin">{{result.provider}}</div>
-        </div>
-    {% else %}
-    <div class="alert alert-info" role="alert">No results</div>
-    {% endfor %}
     </div>
 {% endblock %}
