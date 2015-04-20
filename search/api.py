@@ -1,13 +1,22 @@
 import urllib
 import urllib2
+import json
+from datetime import datetime
 
-class ImageSearch:
+class ImageSearchDispatcher:
     def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
         # This is stupid
         global searchproviders
-        results = []
+        results = ImageSearchResultSet()
+
+        try: startdate = datetime.utcfromtimestamp(float(startdate))
+        except: startdate = None
+        try: enddate = datetime.utcfromtimestamp(float(enddate))
+        except: enddate = None
+
         for prov in searchproviders:
-            results.extend(prov.search(lat, lon, radius, startdate, enddate))
+            provider = prov()
+            results.extend(provider.search(q, lat, lon, radius, startdate, enddate, offset, count))
 
         return results
 
@@ -23,12 +32,13 @@ class ImageSearchResultSet(list):
 
 
 class ImageSearchResult:
-    def __init__(self, imageurl, resulturl, timestamp, metadata, provider):
+    def __init__(self, imageurl, resulturl, timestamp, caption, metadata, provider):
         self.imageurl = imageurl
         self.resulturl = resulturl
         self.metadata = metadata
         self.provider = provider
         self.timestamp = timestamp
+        self.caption = caption
 
 
 class ImageSearchVK:
@@ -37,30 +47,33 @@ class ImageSearchVK:
     URL = "https://api.vk.com/method/photos.search"
 
     def clamp_radius_to_set(self, radius):
-        arr = [10, 100, 800, 5000, 6000, 50000]:
+        arr = [10, 100, 800, 5000, 6000, 50000]
         curr = arr[0]
         for val in arr:
             if abs(radius - val) < abs (radius - curr):
                 curr = val
         return curr
 
-    def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
+    def search(self, q, lat, lon, radius=5000, startdate=None, enddate=None, offset=0, count=100):
         results = ImageSearchResultSet()
         meta = {}
         meta["q"] = q
         meta["lat"] = lat
-        meta["long"] = lon
-        meta["start_time"] = startdate.strftime("%s")
-        meta["end_time"] = enddate.strftime("%s")
+        meta["lon"] = lon
+        if startdate: meta["start_time"] = startdate.strftime("%s")
+        if enddate: meta["end_time"] = enddate.strftime("%s")
         meta["offset"] = offset
         meta["count"] = count
         meta["radius"] = self.clamp_radius_to_set(radius)
 
         r = urllib2.urlopen(self.URL, urllib.urlencode(meta))
-        data = json.loads(r.content)
+        data = json.loads(r.read())
         for item in data["response"][1:]:
-            i = ImageSearchResult(item["src"], item["src"], item["created"], item, self.PROVIDER)
+            timestamp = datetime.utcfromtimestamp(item["created"])
+            i = ImageSearchResult(item["src"], item["src"], timestamp, item["text"], item, self.PROVIDER)
             results.append(i)
+
+        return results
 
 
 class ImageSearchInstagram:
@@ -95,25 +108,26 @@ class ImageSearchInstagram:
         for item in data["response"]:
             i = ImageSearchResult(item.images["standard_resolution"]["url"], item["link"], item["created_time"], item, self.PROVIDER)
             results.append(i)
-        
+
+        return results
 
 class ImageSearchGoogleImages:
     PROVIDER = "Google Images"
 
     def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
-        pass
+        return ImageSearchResultSet()
 
 class ImageSearchTwitter:
     PROVIDER = "Twitter"
 
     def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
-        pass
+        return ImageSearchResultSet()
 
 class ImageSearchFacebook:
     PROVIDER = "Facebook"
 
     def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
-        pass
+        return ImageSearchResultSet()
 
 class ImageSearchFlickr:
     # https://www.flickr.com/services/api/flickr.photos.search.html

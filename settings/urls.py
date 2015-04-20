@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 
-from id import databases, requests, search, accounts
+from id import databases, requests, accounts
 from id import validation, admin, tasks, errors
 from core.auth import perm
 
@@ -23,9 +23,6 @@ urlpatterns = patterns('',
 
     url(r'^admin/storage/$',                perm('admin', admin.Storage), name='admin_storage'),
     url(r'^admin/statistics/$',             perm('admin', admin.Statistics), name='statistics'),
-
-    url(r'^search/$',                       perm('any', search.CombinedSearchHandler), name="search"),
-    url(r'^search/entities/$',              perm('any', search.CombinedSearchHandler), name='search_entities'), # still needed for ajax only
 
     url(r'^databases/$',                    perm('any', databases.ExternalDatabaseList), name='externaldb_list'),
     url(r'^databases/add/$',                perm('staff', databases.ExternalDatabaseAdd), name='externaldb_add'),
@@ -62,6 +59,7 @@ urlpatterns = patterns('',
     url(r'^accounts/register/complete/$',   TemplateView.as_view(template_name='registration/registration_complete.jinja'), name='registration_complete'),
     url(r'^accounts/register/closed/$',     TemplateView.as_view(template_name='registration/registration_closed.jinja'), name='registration_disallowed'),
 
+    url(r'^search/', include('search.urls')),
     url(r'^ticket/', include('ticket.urls')),
     url(r'^podaci/', include('podaci.urls')),
     url(r'^osoba/', include('osoba.urls')),
