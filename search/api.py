@@ -2,7 +2,8 @@ import urllib
 import urllib2
 import json
 from datetime import datetime
-import threading
+from threading import Thread
+
 
 class ImageSearchResult:
     def __init__(self, imageurl, resulturl, timestamp, caption, metadata, provider):
@@ -14,7 +15,11 @@ class ImageSearchResult:
         self.caption = caption
 
 
-class ImageSearcher(threading.Thread):
+class ImageSearcher():
+    def start(self, search):
+        thread = Thread(target=self.run, args=(search,))
+        thread.start()
+
     def run(self, search):
         # id, q, lat, lon, radius, startdate, enddate, offset, count
         query = json.loads(search.query)
@@ -28,11 +33,7 @@ class ImageSearcher(threading.Thread):
         count = query["count"]
 
         print "ImageSearch:%s:START" % (self.PROVIDER)
-        search = SearchRequest.objects.get(id=search_id)
-        runner = SearchRunner()
-        runner.request = search
-        runner.name = self.PROVIDER
-        runner.save()
+        runner = search.create_runner(self.PROVIDER)
 
         results = self.search(q, lat, lon, radius, startdate, enddate, offset, count)
         for r in results:
@@ -67,8 +68,8 @@ class ImageSearchVK(ImageSearcher):
         meta["q"] = q
         meta["lat"] = lat
         meta["lon"] = lon
-        if startdate: meta["start_time"] = startdate.strftime("%s")
-        if enddate: meta["end_time"] = enddate.strftime("%s")
+        if startdate: meta["start_time"] = startdate
+        if enddate: meta["end_time"] = enddate
         meta["offset"] = offset
         meta["count"] = count
         meta["radius"] = self.clamp_radius_to_set(radius)
@@ -101,20 +102,20 @@ class ImageSearchInstagram(ImageSearcher):
         #meta["q"] = q
         meta["lat"] = lat
         meta["lng"] = lon
-        meta["min_timestamp"] = startdate.strftime("%s")
-        meta["max_timestamp"] = enddate.strftime("%s")
+        meta["min_timestamp"] = startdate
+        meta["max_timestamp"] = enddate
         #meta["offset"] = offset
         #meta["count"] = count
-        meta["distance"] = self.clamp_radius_to_set(radius)
+        #meta["distance"] = self.clamp_radius_to_set(radius)
 
         # run the query
-        r = urllib2.urlopen(self.URL, urllib.urlencode(meta))
-        data = json.loads(r.content)
+        #r = urllib2.urlopen(self.URL, urllib.urlencode(meta))
+        #data = json.loads(r.content)
         
         # get a nice results
-        for item in data["response"]:
-            i = ImageSearchResult(item.images["standard_resolution"]["url"], item["link"], item["created_time"], item, self.PROVIDER)
-            results.append(i)
+        #for item in data["response"]:
+        #    i = ImageSearchResult(item.images["standard_resolution"]["url"], item["link"], item["created_time"], item, self.PROVIDER)
+        #    results.append(i)
 
         return results
 
@@ -152,20 +153,21 @@ class ImageSearchFlickr(ImageSearcher):
         meta["q"] = q
         meta["lat"] = lat
         meta["lng"] = lon
-        meta["min_timestamp"] = startdate.strftime("%s")
-        meta["max_timestamp"] = enddate.strftime("%s")
+        meta["min_timestamp"] = startdate
+        meta["max_timestamp"] = enddate
         #meta["offset"] = offset
         #meta["count"] = count
-        meta["distance"] = self.clamp_radius_to_set(radius)
+        #meta["distance"] = self.clamp_radius_to_set(radius)
 
         # run the query
-        r = urllib2.urlopen(self.URL, urllib.urlencode(meta))
-        data = json.loads(r.content)
+        #r = urllib2.urlopen(self.URL, urllib.urlencode(meta))
+        #data = json.loads(r.content)
         
         # get a nice results
-        for item in data["response"]:
-            i = ImageSearchResult(item.images["standard_resolution"]["url"], item["link"], item["created_time"], item, self.PROVIDER)
-            results.append(i)
+        #for item in data["response"]:
+        #    i = ImageSearchResult(item.images["standard_resolution"]["url"], item["link"], item["created_time"], item, self.PROVIDER)
+        #    results.append(i)
+        return []
 
 
 searchproviders = [ImageSearchFacebook, ImageSearchTwitter, ImageSearchInstagram, 
