@@ -1,28 +1,40 @@
 #coding:utf-8
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import TemplateView, UpdateView, FormView
+from django.views.generic import TemplateView, View
 
 from datetime import datetime
-from search.api import ImageSearchDispatcher, ImageSearchResult
+from search.models import SearchRequest
+from core.mixins import JSONResponseMixin
 
 
-class ImageSearch(TemplateView):
-    template_name = "search/search_images.jinja"
-
+class ImageSearchQuery(View, JSONResponseMixin):
     def get_context_data(self):
-        res = {"results": []}
-        res["q"] = q = self.request.GET.get("q", "").encode("utf-8")
-        if q:
-            res["lat"] = lat = self.request.GET.get("lat")
-            res["lon"] = lon = self.request.GET.get("lon")
-            res["radius"] = radius = int(self.request.GET.get("radius", 5000))
-            res["startdate"] = startdate = self.request.GET.get("startdate", None)
-            res["enddate"] = enddate = self.request.GET.get("enddate", None)
-            res["offset"] = offset = self.request.GET.get("offset", 0)
-            res["count"] = count = self.request.GET.get("count", 100)
-            s = ImageSearchDispatcher()
-            res["results"] = s.search(q, lat, lon, radius, startdate, enddate, offset, count)
-            return res
+        query = {}
+        query["q"] = self.request.GET.get("q", "").encode("utf-8")
+        query["lat"] = float(self.request.GET.get("lat", 0.0))
+        query["lon"] = float(self.request.GET.get("lon", 0.0))
+        query["radius"] = int(self.request.GET.get("radius", 5000))
+        query["startdate"] = self.request.GET.get("startdate", None)
+        query["enddate"] = self.request.GET.get("enddate", None)
+        query["offset"] = self.request.GET.get("offset", 0)
+        query["count"] = self.request.GET.get("count", 100)
 
-        return res
+        search = SearchRequest()
+        search.requester = self.request.user
+        search.search_type = 'image'
+        search.query = json.dumps({})
+        search.save()
+        return search.initiate_search()
+
+
+class ImageSearchCheck(View, JSONResponseMixin):
+    def get_context_data(self, searchid):
+        search = SearchRequest.objects.get(id=searchid)
+        return {
+            "done": search.is_done(), 
+            "bots_total": search.bots_done(),
+            "bots_done": search.bots_done(),
+            "results": search.get_results(),
+            "checkin_after": -1 if search.is_done() else 500,
+        }
