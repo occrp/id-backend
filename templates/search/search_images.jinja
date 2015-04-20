@@ -39,6 +39,21 @@
         text-align: right;
         float: right;
     }
+    
+    .image-search-form {
+        display:flex;
+        flex-direction:row;
+        align-items: center;
+    }
+    
+    .image-search-form > .image-search-inputs-container {
+        margin-right:1em;
+    }
+    
+    .image-search-form > .image-search-map-container {
+        flex-grow:100;
+        margin-left:1em
+    }
     </style>
     <link rel="stylesheet" href="http://openlayers.org/en/v3.4.0/css/ol.css" type="text/css">
     <style>
@@ -50,28 +65,28 @@
     <script src="http://openlayers.org/en/v3.4.0/build/ol.js" type="text/javascript"></script>
 
     <div class="row well">
-        <form method="GET" action="{{url('search_images')}}">
-        <div class="span3">
+        <form method="GET" action="{{url('search_images')}}" class="image-search-form">
+        <div class="image-search-inputs-container">
             <input class="input-lg" name="q" value="{{q.decode("utf-8")}}" placeholder="Search"/>
 
             <table>
                 <tr><th>Query:</th><td></td></tr>
                 <tr><th>Latitude:</th><td><input name="lat" value="{{lat}}"/></td></tr>
                 <tr><th>Longitude:</th><td><input name="lon" value="{{lon}}"/></td></tr>
-                <tr><th>Search radius:</th><td><input name="radius" value="{{radius}}"/></td></tr>
+                <tr><th>Search radius:</th><td><input name="radius" value="{{radius}}" type="range" min="10" max="50000"/></td></tr>
                 <tr><th>Start:</th><td><input name="startdate" value="{{startdate}}"/></td></tr>
                 <tr><th>End:</th><td><input name="enddate" value="{{enddate}}"/></td></tr>
             </table>
             <input class="btn btn-primary pull-right" type="submit" value="Search"/>
         </div>
-        <div class="span6 pull-right">
+        <div class="image-search-map-container">
             <div id="map" class="map"></div>
             <script type="text/javascript">
               var map = new ol.Map({
                 target: 'map',
                 layers: [
                   new ol.layer.Tile({
-                    source: new ol.source.MapQuest({layer: 'sat'})
+                    source: new ol.source.OSM
                   })
                 ],
                 view: new ol.View({
@@ -79,6 +94,47 @@
                   zoom: 4
                 })
               });
+              
+              /* vector source and layer for our range circle */
+              var vectorSource = new ol.source.Vector({
+                projection: 'EPSG:4326'
+              });
+              var vectorLayer = new ol.layer.Vector({
+                source: vectorSource
+              });
+              map.addLayer(vectorLayer);
+              
+              /* the circle */
+              var circle = false
+              var circleFeature = false
+              
+              function setCircle() {
+                var radius = ($('input[name=radius]').val() / ol.proj.METERS_PER_UNIT.m) * 2;
+                
+                var lon = $('input[name=lon]').val() * 1
+                var lat = $('input[name=lat]').val() * 1
+                
+                circle = new ol.geom.Circle(
+                  ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'), radius, 'XY'
+                )
+                if (circleFeature != false) {
+                  vectorSource.removeFeature(circleFeature)
+                }
+                circleFeature = new ol.Feature(circle);
+                // Source and vector layer
+                vectorSource.addFeature(circleFeature);
+              }
+              
+              map.on('click', function(e){
+                var lonlat = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
+                $('input[name=lon]').val(lonlat[0])
+                $('input[name=lat]').val(lonlat[1])
+                
+                /* make sure radius is handled */
+                $('input[name=radius]').on('change', setCircle)
+
+                setCircle()
+              })
             </script>
         </div>
         </form>
