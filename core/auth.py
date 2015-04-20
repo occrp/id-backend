@@ -1,7 +1,7 @@
 from django.core.exceptions import PermissionDenied
 
 def perm(perm, view, **viewkwargs):
-    assert(perm in ["any", "user", "volunteer", "staff", "admin"])
+    assert(perm in ["any", "loggedin", "user", "volunteer", "staff", "admin"])
 
     def decorator(request, **reqkwargs):
         if perm != "any":

@@ -1,6 +1,6 @@
 # from app.auth import role_in
 from django.views.generic import TemplateView
-from id.mixins import JSONResponseMixin
+from core.mixins import JSONResponseMixin
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext as _nl
 

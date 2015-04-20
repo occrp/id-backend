@@ -1,39 +1,11 @@
-from django.contrib.auth.models import AnonymousUser#, User
-from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.test import TestCase
+from core.tests import UserTestCase
 from core.testclient import TestClient
 from settings.settings import *
 from django.core.urlresolvers import reverse
 from ticket.models import *
 
-class TicketsTest(TestCase):
-    def setUp(self):
-        self.anonymous_user = AnonymousUser()
-        self.normal_user = get_user_model().objects.create_user(
-            email='testuser@occrp.org', password='top_secret')
-        self.normal_user.is_user = True
-        self.normal_user.save()
-
-        self.volunteer_user = get_user_model().objects.create_user(
-            email='testuser@occrp.org', password='top_secret')
-        self.volunteer_user.is_volunteer = True
-        self.volunteer_user.save()
-
-        self.staff_user = get_user_model().objects.create_user(
-            email='testuser@occrp.org', password='top_secret')
-        self.staff_user.is_staff = True
-        self.staff_user.save()
-
-        self.admin_user = get_user_model().objects.create_user(
-            email='testuser@occrp.org', password='top_secret')
-        self.admin_user.is_superuser = True
-        self.admin_user.save()
-        self.admin_user.is_superuser = True
-        self.admin_user.save()
-
-    def tearDown(self):
-        pass
-
+class TicketsTest(UserTestCase):
     def test_create_person_ticket(self):
         client = TestClient()
         client.login_user(self.normal_user)
@@ -143,11 +115,31 @@ class TicketsTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(TicketUpdate.objects.count() == 1)
 
-    def test_join_ticket(self):
-        pass
+    def test_join_and_leave_ticket_as_staff(self):
+        client = TestClient()
+        client.login_user(self.staff_user)
+        t = OtherTicket()
+        t.requester = self.normal_user
+        t.save()
+        response = client.post(reverse('ticket_join', kwargs={"pk": t.id}), {})
+        t = OtherTicket.objects.get(id=t.id)
+        self.assertIn(self.staff_user, t.responders.all())
+        response = client.post(reverse('ticket_leave', kwargs={"pk": t.id}), {})
+        t = OtherTicket.objects.get(id=t.id)
+        self.assertNotIn(self.staff_user, t.responders.all())
 
-    def test_leave_ticket(self):
-        pass
+    def test_join_and_leave_ticket_as_volunteer(self):
+        client = TestClient()
+        client.login_user(self.volunteer_user)
+        t = OtherTicket()
+        t.requester = self.normal_user
+        t.save()
+        response = client.post(reverse('ticket_join', kwargs={"pk": t.id}), {})
+        t = OtherTicket.objects.get(id=t.id)
+        self.assertIn(self.volunteer_user, t.volunteers.all())
+        response = client.post(reverse('ticket_leave', kwargs={"pk": t.id}), {})
+        t = OtherTicket.objects.get(id=t.id)
+        self.assertNotIn(self.volunteer_user, t.volunteers.all())
 
     def test_edit_ticket(self):
         pass

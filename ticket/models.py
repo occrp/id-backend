@@ -5,14 +5,15 @@ from settings.settings import AUTH_USER_MODEL # as per https://docs.djangoprojec
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from core.mixins import ModelDiffMixin, DisplayMixin
+from core.mixins import DisplayMixin
+from podaci.filesystem import Tag
 
 from constants import *
 from utils import *
 import datetime
 
 ######## Data requests #################
-class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
+class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
     """
     Common fields for all ticket types
 
@@ -68,22 +69,6 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
     def get_status_icon(self):
         return dict(TICKET_STATUS_ICONS).get(self.status, 'question')
 
-    def _pre_put_hook(self, future=None):
-        # Copy default requester settings into the ticket if it's not been
-        # saved yet.
-        if not self.key.id() and self.requester:
-            requester = self.requester.get()
-            self.requester_type = requester.requester_type
-            self.findings_visible = requester.findings_visible
-            self.is_for_profit = requester.is_for_profit
-
-        if self.responder:
-            # slowly migrate the datas.
-            if self.responder not in self.responders:
-                self.responders.append(self.responder)
-            self.responder = None
-        self.update_drive_permissions()
-
     def actors(self, include_self=True):
         """
         Get a list of actors for a given ticket, being the requester and
@@ -97,7 +82,7 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
 
     def join_user(self, actor):
         """
-        Adds an existing UserProfile object to the list of ticket
+        Adds an existing User to the list of ticket
         contributors, if the user if a volunteer, they're forced into the
         volunteers category.
 
@@ -108,18 +93,14 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
             boolean - whether the user was added or not.
         """
 
-        if isinstance(actor, ndb.Key):
-            actor = actor.get()
+        if actor in self.actors():
+            return False
 
-        if actor.key not in self.actors():
-            if actor.is_volunteer:
-                self.volunteers.append(actor.key)
-            else:
-                self.responders.append(actor.key)
-            self.put()
-            return True
-
-        return False
+        if actor.is_volunteer:
+            self.volunteers.add(actor)
+        else:
+            self.responders.add(actor)
+        return True
 
     def leave_user(self, actor):
         """
@@ -129,55 +110,9 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
         Args:
             actor (UserProfile Key) - an actor who wants to leave the ticket.
         """
+        self.responders.remove(actor)
+        self.volunteers.remove(actor)
 
-        if not isinstance(actor, ndb.Key):
-            actor = actor.key
-
-        self.responders = [a for a in self.responders if a != actor]
-        self.volunteers = [a for a in self.volunteers if a != actor]
-        self.put()
-
-    def permalink(self, include_domain=False):
-        return "%s%s" % (
-            ROOT_URL if include_domain else "",
-            webapp2.uri_for('request_details', ticket_id=self.key.id()))
-
-    def set_derivative_properties(self):
-        diff = self.diff
-        # if status has been explicitly set, don't second-guess it
-        if 'status' in diff['changed_properties']:
-            self.status_updated = datetime.datetime.now()
-            return
-
-        if getattr(diff['old'], 'status', None) == u'new':
-            #new tickets become in progress when somebody is assigned
-            logging.info('new ticket')
-            if self.responders_len > 0:
-                self.status = 'in-progress'
-
-    def put(self, **kwargs):
-        """
-        Optional kwargs that are popped are:
-        generate_update - whether or not to detect changes to important
-          fields and generate a TicketUpdate
-        comment - if generate_update is True, this should be a comment for the
-          TicketUpdate
-        """
-        # Override put() so we can toggle whether an update gets generated
-        generate_update = kwargs.pop('generate_update', True)
-        comment = kwargs.pop('comment', '')
-
-        if generate_update:
-            # Get changed properties before saving
-            self.set_derivative_properties()
-            diff = self.diff
-
-            super(Ticket, self).put(**kwargs)
-
-            # Pass changed properties so proper update can be generated
-            self.generate_update(comment, **diff)
-        else:
-            super(Ticket, self).put(**kwargs)
 
     def generate_update(self, comment, old=None, changed_properties=None):
         """
@@ -213,9 +148,6 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
         if 'update_type' in kwargs:
             TicketUpdate(**kwargs).put()
 
-    def permalink(self):
-        return webapp2.uri_for('request_details', ticket_id=self.key.id(),
-                               _full=True)
 
     def ticket_type_display(self):
         return get_choice_display(self.ticket_type, TICKET_TYPES)
@@ -230,6 +162,7 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
         return self.status in OPEN_TICKET_STATUSES
 
     def mark_charges_paid(self, paid_status):
+        # TODO: FIXME
         """
         Mark the ticket as paid, and all the charges associated with it.
         """
@@ -242,12 +175,18 @@ class Ticket(models.Model, ModelDiffMixin, DisplayMixin):  # polymodel.PolyModel
 
         ndb.put_multi(charges)
 
-    def fetch_responders(self):
-        # XXX deprecated? I can't find anything calling this
-        # TODO: Extend list comp here for muliple responders
-        logging.info("deprecated fetch_responders called")
-        logging.info(traceback.format_stack())
-        return ndb.get_multi([self.responder]) if self.responder else []
+    def get_tag(self, fs):
+        if self.tag_id:
+            tag = Tag(fs)
+            tag.load(self.tag_id)
+            return tag
+        else:
+            tag_name = "Ticket %d" % self.id
+            tag = Tag(fs)
+            tag.create(tag_name)
+            self.tag_id = tag.id
+            self.save()
+            return tag
 
 
 class PersonTicket(Ticket):
