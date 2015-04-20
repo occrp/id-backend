@@ -1,0 +1,27 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+    <form method="GET">
+    <table>
+        <tr><th>Query:</th><td><input name="q"/></td></tr>
+        <tr><th>Latitude:</th><td><input name="lat"/></td></tr>
+        <tr><th>Longitude:</th><td><input name="lon"/></td></tr>
+        <tr><th>Search radius:</th><td><input name="radius"/></td></tr>
+        <tr><th>Start:</th><td><input name="startdate"/></td></tr>
+        <tr><th>End:</th><td><input name="enddate"/></td></tr>
+        <tr><th></th><td><input type="submit" value="Search"/></td></tr>
+    </table>
+    </form>
+
+    <div class="search-results">
+    {% for result in results %}
+        <div class="image-search-result">
+            <img src="{{result.imageurl}}"/>
+            <div class="image-search-caption">{{result.caption}}</div>
+            <div class="image-search-origin">{{result.provider}}</div>
+        </div>
+    {% else %}
+    <div class="alert alert-info" role="alert">No results</div>
+    {% endfor %}
+    </div>
+{% endblock %}
