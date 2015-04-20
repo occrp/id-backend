@@ -11,7 +11,7 @@ class ImageSearch(TemplateView):
     template_name = "search/search_images.jinja"
 
     def get_context_data(self):
-        res = {"results": None}
+        res = {"results": []}
         res["q"] = q = self.request.GET.get("q", "").encode("utf-8")
         if q:
             res["lat"] = lat = self.request.GET.get("lat")
@@ -24,6 +24,5 @@ class ImageSearch(TemplateView):
             s = ImageSearchDispatcher()
             res["results"] = s.search(q, lat, lon, radius, startdate, enddate, offset, count)
             return res
-
 
         return res
