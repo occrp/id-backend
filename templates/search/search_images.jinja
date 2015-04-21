@@ -154,6 +154,8 @@
         <div id="searching_notice" class="hide" role="alert">Searching... <i class="fa fa-spinner fa-pulse"></i></div>
     </div>
 
+    <div id="search_statistics" class="hide"></div>
+
     <div class="row search-results" id="search_results">
     </div>
 {% endblock %}
@@ -169,6 +171,8 @@
         $.getJSON('{{url("search_images_check")}}', {"id": searchid}, function(data) {
             if (data.status) {
                 $("#search-results").empty();
+                $("#search_statistics").text("Found " + data.results.length + " images from " + data.bots_done + " of " + data.bots_total + " image sources.");
+                $("#search_statistics").show();
                 for (item in data.results) {
                     item = data.results[item];
                     result = $('<div class="image-search-result"/>');
@@ -191,6 +195,7 @@
 
     function start_search() {
         $("#search-results").empty();
+        $("#search_statistics").hide();
         $.getJSON('{{url("search_images_query")}}', $("#image_search_form").serialize(), function(data) {
             if (data.status) {
                 $("#searching_notice").show();
