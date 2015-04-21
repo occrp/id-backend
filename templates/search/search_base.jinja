@@ -4,6 +4,11 @@
     <div class="span12">
         <div class="page-header">
             <h1>{% trans %}Search{% endtrans %}</h1>
+
+            <!-- THIS IS TEMPORARY -->
+            <a class="btn btn-large" href="{{url('search_images')}}">Image Search</a>
+
+
 	    {% if query_made and result_count > 0%}
 	  <h4>{% trans %}Results {% endtrans %} {{ start}}
        - {{ end }}</h4>
