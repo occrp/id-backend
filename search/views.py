@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, View
 from datetime import datetime
 from search.models import SearchRequest
 from core.mixins import JSONResponseMixin
-import json
+from core.utils import json_dumps
 
 
 class ImageSearchQuery(View, JSONResponseMixin):
@@ -24,7 +24,7 @@ class ImageSearchQuery(View, JSONResponseMixin):
         search = SearchRequest()
         search.requester = self.request.user
         search.search_type = 'image'
-        search.query = json.dumps(query)
+        search.query = json_dumps(query)
         search.save()
         return search.initiate_search()
 
