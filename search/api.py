@@ -76,7 +76,8 @@ class ImageSearchVK(ImageSearcher):
         data = json.loads(r.read())
         for item in data["response"]["items"]:
             timestamp = datetime.utcfromtimestamp(item["date"])
-            i = ImageSearchResult(item["photo_130"], item["photo_807"], timestamp, item["text"], item, self.PROVIDER)
+            large_photo = item.get("photo_807", item.get("photo_604", item.get("photo_130", "")))
+            i = ImageSearchResult(item["photo_130"], large_photo, timestamp, item["text"], item, self.PROVIDER)
             results.append(i)
 
         return results
