@@ -48,11 +48,96 @@
     
     .image-search-form > .image-search-inputs-container {
         margin-right:1em;
+        min-width:299px;
+    }
+    
+    .image-search-form > .image-search-inputs-container > table input {
+        width:100%;
+    }
+    
+    
+    .image-search-form > .image-search-inputs-container input[type=datetime-local] {
+        padding: 3px 1px;
+        border: solid 1px #a9a9a9;
+        margin-bottom: 0px;
+    }
+    
+    .image-search-form > .image-search-inputs-container input[type=range] {
+        padding: 3px 2px;
+        border: solid 1px #a9a9a9;
+    }
+    
+    .image-search-form > .image-search-inputs-container th {
+        text-align:right;
     }
     
     .image-search-form > .image-search-map-container {
         flex-grow:100;
         margin-left:1em
+    }
+    
+    *[data-tooltip] {
+        position:relative;
+    }
+
+    *[data-tooltip]::before,
+    *[data-tooltip]::after {
+        position:absolute;
+        opacity:0.8;
+        visibility:hidden;
+        font-size:80%;
+        font-family:sans-serif;
+        transition-duration:0s;
+        -moz-transition-duration:0s;
+        -webkit-transition-duration:0s;
+          
+    }
+
+    *[data-tooltip]::before {
+        content:attr(data-tooltip);
+        top:-3.1em;
+        left:1em;
+        height:1.5em;
+        min-width:10em;
+        max-width:20em;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        padding:0.5em 0.7em 0.7em 0.7em;
+        display:block;
+        border-radius:0.3em;
+        text-align:center;
+        
+        color:white;
+        background-color:rgba(6,6,6,0);
+    }
+
+    *[data-tooltip]::after {
+        content:" ";
+        background:transparent;
+        width:1px;
+        height:1px;
+        border:solid 0.4em rgba(6, 6, 6, 0);
+        display:block;
+        border-bottom:none;
+        border-left:solid 0.3em transparent;
+        border-right:solid 0.3em transparent;
+        top:-0.9ex;
+        left:50%;
+        margin-left:-0.3em;
+    }
+
+    *[data-tooltip]:hover::before,
+    *[data-tooltip]:hover::after {
+        border-top-color:rgba(6,6,6,1);
+        visibility:visible;
+        transition:background-color 0.3s ease-out, border-top-color 0.3s ease-out;
+        -moz-transition:background-color 0.3s ease-out, border-top-color 0.3s ease-out;
+        -webkit-transition:background-color 0.3s ease-out, border-top-color 0.3s ease-out;
+    }
+
+    *[data-tooltip]:hover::before {
+        background-color:rgba(6,6,6,1);
     }
     </style>
     <link rel="stylesheet" href="http://openlayers.org/en/v3.4.0/css/ol.css" type="text/css">
@@ -67,15 +152,13 @@
     <div class="row well">
         <form method="GET" class="image-search-form">
         <div class="image-search-inputs-container">
-            <input class="input-large" name="q" placeholder="Search"/>
-
             <table>
-                <tr><th>Query:</th><td></td></tr>
+                <tr><th colspan="2"><input class="input-large" name="q" placeholder="Search"/></th></tr>
                 <tr><th>Latitude:</th><td><input name="lat"/></td></tr>
                 <tr><th>Longitude:</th><td><input name="lon"/></td></tr>
-                <tr><th>Search radius:</th><td><input name="radius" type="range" min="10" max="50000"/></td></tr>
-                <tr><th>Start:</th><td><input name="startdate"/></td></tr>
-                <tr><th>End:</th><td><input name="enddate"/></td></tr>
+                <tr><th>Search radius:</th><td><input name="radius" type="range" min="10" max="50000" data-tooltip="Radius (in meters)"/></td></tr>
+                <tr><th>Start date:</th><td><input name="startdate" type="datetime-local"/></td></tr>
+                <tr><th>End date:</th><td><input name="enddate" type="datetime-local"/></td></tr>
             </table>
             <input id="image_search_submit" class="btn btn-primary pull-right" type="button" value="Search"/>
         </div>
@@ -86,7 +169,7 @@
                 target: 'map',
                 layers: [
                   new ol.layer.Tile({
-                    source: new ol.source.OSM
+                    source: new ol.source.MapQuest({"layer":"osm"})
                   })
                 ],
                 view: new ol.View({
@@ -129,10 +212,6 @@
                 var lonlat = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
                 $('input[name=lon]').val(lonlat[0])
                 $('input[name=lat]').val(lonlat[1])
-                
-                /* make sure radius is handled */
-                $('input[name=radius]').on('change', setCircle)
-
                 setCircle()
               })
             </script>
@@ -149,10 +228,16 @@
 {% block after_js %}
 <script>
     var current_search_id = 0;
-
+    
     $(function() {
         $("#image_search_submit").on("click", start_search);
         $("#image_search_form").on("submit", start_search);
+        /* make sure radius is handled */
+        $('input[name=radius]')
+            .on('change', setCircle)
+            .on("input", function(){
+                $(this).attr('data-tooltip', 'Radius: ' + this.value + 'm')
+            });
     });
 
     function start_search() {
