@@ -52,7 +52,8 @@
     
     .image-search-form > .image-search-map-container {
         flex-grow:100;
-        margin-left:1em
+        margin-left:1em;
+    }
 
     #searching_notice {
         position: absolute;
@@ -165,11 +166,9 @@
     });
 
     function check_search_results(searchid) {
-        console.log("Checking for results on search=" + searchid);
         $.getJSON('{{url("search_images_check")}}', {"id": searchid}, function(data) {
-            console.log("Got data! ", data);
             if (data.status) {
-                // $("#search-results").empty();
+                $("#search-results").empty();
                 for (item in data.results) {
                     item = data.results[item];
                     result = $('<div class="image-search-result"/>');
@@ -185,17 +184,15 @@
                     window.setTimeout(function() { check_search_results(searchid); }, data.checkin_after);
                 }
             } else {
-                console.log("Data status not okay. Trying again in 2 seconds.")
                 window.setTimeout(function() { check_search_results(searchid); }, 2000);
             }
         });
     };
 
     function start_search() {
-        console.log("Searching!");
+        $("#search-results").empty();
         $.getJSON('{{url("search_images_query")}}', $("#image_search_form").serialize(), function(data) {
             if (data.status) {
-                console.log("Search started with id=" + data.searchid + ". Checking in after " + data.checkin_after);
                 $("#searching_notice").show();
                 window.setTimeout(function() { check_search_results(data.searchid); }, data.checkin_after);
             }
