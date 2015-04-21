@@ -23,7 +23,7 @@ class ImageSearcher():
     def run(self, search):
         # id, q, lat, lon, radius, startdate, enddate, offset, count
         query = json.loads(search.query)
-        q = query["q"]
+        q = query["q"].encode("utf-8")
         lat = query["lat"]
         lon = query["lon"]
         radius = query["radius"]
