@@ -73,7 +73,20 @@
     
     .image-search-form > .image-search-map-container {
         flex-grow:100;
-        margin-left:1em
+        margin-left:1em;
+    }
+
+    #searching_notice {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        height: 100%;
+        width: 100%;
+        font-size: 150%;
+        text-align: center;
+        vertical-align: middle;
+        background-color: #eee;
+        opacity: 0.9;
     }
     
     *[data-tooltip] {
@@ -149,8 +162,8 @@
     </style>
     <script src="http://openlayers.org/en/v3.4.0/build/ol.js" type="text/javascript"></script>
 
-    <div class="row well">
-        <form method="GET" class="image-search-form">
+    <div class="row well" style="position:relative;">
+        <form name="image_search_form" id="image_search_form">
         <div class="image-search-inputs-container">
             <table>
                 <tr><th colspan="2"><input class="input-large" name="q" placeholder="Search"/></th></tr>
@@ -217,18 +230,20 @@
             </script>
         </div>
         </form>
+        <div id="searching_notice" class="hide" role="alert">Searching... <i class="fa fa-spinner fa-pulse"></i></div>
     </div>
 
-    <div class="alert alert-success hide" role="alert">Searching...</div>
+    <div id="search_statistics" class="hide"></div>
 
-    <div class="row search-results">
+    <div class="row search-results" id="search_results">
     </div>
 {% endblock %}
 
 {% block after_js %}
 <script>
+
     var current_search_id = 0;
-    
+
     $(function() {
         $("#image_search_submit").on("click", start_search);
         $("#image_search_form").on("submit", start_search);
@@ -240,34 +255,41 @@
             });
     });
 
-    function start_search() {
-        console.log("Searching!");
-        $.getJSON('{{url("search_images_query")}}', $("#image_search_form").serialize(), function(data) {
+    function check_search_results(searchid) {
+        $.getJSON('{{url("search_images_check")}}', {"id": searchid}, function(data) {
             if (data.status) {
-                current_search_id = data.query_id;
-                $("#searching_notice").show();
-                $.setTimeout(check_search_results, data.checkin_after);
-            }
-        });
-    }
-
-    function check_search_results() {
-        $.getJSON('{{url("search_images_check")}}', {"id": current_search_id}, function(data) {
-            $(".search-results").empty();
-            for (item in data.results) {
-                result = $('<div class="image-search-result"/>');
-                result.append('<img src="'+item.imageurl+'"/>');
-                result.append('<div class="image-search-caption">'+item.caption+'</div>');
-                result.append('<div class="image-search-date">'+item.timestamp+'</div>');
-                result.append('<div class="image-search-origin">'+item.provider+'</div>');
-                $(".search_results").append(result);
-            }
-            if (data.done) {
-                $("#searching_notice").hide();
+                $("#search_results").empty();
+                $("#search_statistics").text("Found " + data.results.length + " images from " + data.bots_done + " of " + data.bots_total + " image sources.");
+                $("#search_statistics").show();
+                for (item in data.results) {
+                    item = data.results[item];
+                    result = $('<div class="image-search-result"/>');
+                    result.append('<a href="'+item.data.result_url+'"><img src="'+item.data.image_url+'"/></a>');
+                    result.append('<div class="image-search-caption">'+item.data.caption+'</div>');
+                    result.append('<div class="image-search-date">'+item.data.timestamp+'</div>');
+                    result.append('<div class="image-search-origin">'+item.provider+'</div>');
+                    $("#search_results").append(result);
+                }
+                if (data.done || data.checkin_after == -1) {
+                    $("#searching_notice").hide();
+                } else {
+                    window.setTimeout(function() { check_search_results(searchid); }, data.checkin_after);
+                }
             } else {
-                $.setTimeout(check_search_results, data.checkin_after);
+                window.setTimeout(function() { check_search_results(searchid); }, 2000);
             }
         });
     };
+
+    function start_search() {
+        $("#search_results").empty();
+        $("#search_statistics").hide();
+        $.getJSON('{{url("search_images_query")}}', $("#image_search_form").serialize(), function(data) {
+            if (data.status) {
+                $("#searching_notice").show();
+                window.setTimeout(function() { check_search_results(data.searchid); }, data.checkin_after);
+            }
+        });
+    }
 </script>
 {% endblock %}
