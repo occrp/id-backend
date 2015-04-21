@@ -262,11 +262,12 @@
                 $("#search_statistics").text("Found " + data.results.length + " images from " + data.bots_done + " of " + data.bots_total + " image sources.");
                 $("#search_statistics").show();
                 for (item in data.results) {
-                    item = data.results[item];
+                    var item = data.results[item];
+                    var timestamp = new Date(item.data.timestamp*1000);
                     result = $('<div class="image-search-result"/>');
                     result.append('<a href="'+item.data.result_url+'"><img src="'+item.data.image_url+'"/></a>');
                     result.append('<div class="image-search-caption">'+item.data.caption+'</div>');
-                    result.append('<div class="image-search-date">'+item.data.timestamp+'</div>');
+                    result.append('<div class="image-search-date">'+timestamp+'</div>');
                     result.append('<div class="image-search-origin">'+item.provider+'</div>');
                     $("#search_results").append(result);
                 }
