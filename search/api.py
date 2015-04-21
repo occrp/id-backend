@@ -3,16 +3,16 @@ import urllib2
 import json
 from datetime import datetime
 from threading import Thread
+from core.utils import json_dumps
 
-
-class ImageSearchResult:
+class ImageSearchResult(dict):
     def __init__(self, imageurl, resulturl, timestamp, caption, metadata, provider):
-        self.imageurl = imageurl
-        self.resulturl = resulturl
-        self.metadata = metadata
-        self.provider = provider
-        self.timestamp = timestamp
-        self.caption = caption
+        self["provider"] = provider
+        self["timestamp"] = timestamp
+        self["image_url"] = imageurl
+        self["result_url"] = resulturl
+        self["caption"] = caption
+        self["metadata"] = metadata
 
 
 class ImageSearcher():
@@ -23,7 +23,7 @@ class ImageSearcher():
     def run(self, search):
         # id, q, lat, lon, radius, startdate, enddate, offset, count
         query = json.loads(search.query)
-        q = query["q"]
+        q = query["q"].encode("utf-8")
         lat = query["lat"]
         lon = query["lon"]
         radius = query["radius"]
@@ -37,11 +37,7 @@ class ImageSearcher():
 
         results = self.search(q, lat, lon, radius, startdate, enddate, offset, count)
         for r in results:
-            res = SearchResult()
-            res.request = search
-            res.provider = self.PROVIDER
-            res.data = json.dumps(r)
-            res.save()
+            search.create_result(self.PROVIDER, r)
 
         runner.done = True
         runner.results = len(results)
@@ -67,18 +63,21 @@ class ImageSearchVK(ImageSearcher):
         meta = {}
         meta["q"] = q
         meta["lat"] = lat
-        meta["lon"] = lon
+        meta["long"] = lon
         if startdate: meta["start_time"] = startdate
         if enddate: meta["end_time"] = enddate
         meta["offset"] = offset
         meta["count"] = count
         meta["radius"] = self.clamp_radius_to_set(radius)
+        meta["v"] = "5.30"
 
         r = urllib2.urlopen(self.URL, urllib.urlencode(meta))
+        print "Hitting: %s?%s" % (self.URL, urllib.urlencode(meta))
         data = json.loads(r.read())
-        for item in data["response"][1:]:
-            timestamp = datetime.utcfromtimestamp(item["created"])
-            i = ImageSearchResult(item["src"], item["src"], timestamp, item["text"], item, self.PROVIDER)
+        for item in data["response"]["items"]:
+            timestamp = datetime.utcfromtimestamp(item["date"])
+            large_photo = item.get("photo_807", item.get("photo_604", item.get("photo_130", "")))
+            i = ImageSearchResult(item["photo_130"], large_photo, timestamp, item["text"], item, self.PROVIDER)
             results.append(i)
 
         return results
