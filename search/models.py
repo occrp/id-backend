@@ -1,6 +1,7 @@
 from django.db import models
 from settings.settings import AUTH_USER_MODEL # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from search.api import searchproviders, ImageSearchResult
+from core.utils import json_dumps, json_loads
 
 SEARCH_TYPES = (
     ('image', 'Image search'),
@@ -32,7 +33,9 @@ class SearchRequest(models.Model):
         return all([x.done for x in self.searchrunner_set.all()])
 
     def get_results(self):
-        return [x for x in self.searchresult_set.all()]
+        return [
+            x.as_json() for x in self.searchresult_set.all()
+        ]
 
     def create_runner(self, name):
         runner = SearchRunner()
@@ -40,6 +43,14 @@ class SearchRequest(models.Model):
         runner.name = name
         runner.save()
         return runner
+
+    def create_result(self, provider, data):
+        res = SearchResult()
+        res.request = self
+        res.provider = provider
+        res.data = json_dumps(data)
+        res.save()
+        return res
 
 
 class SearchRunner(models.Model):
@@ -61,5 +72,5 @@ class SearchResult(models.Model):
         return {
             "provider": self.provider,
             "found": self.found,
-            "data": json.loads(self.data)
+            "data": json_loads(self.data)
         }
