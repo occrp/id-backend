@@ -63,18 +63,20 @@ class ImageSearchVK(ImageSearcher):
         meta = {}
         meta["q"] = q
         meta["lat"] = lat
-        meta["lon"] = lon
+        meta["long"] = lon
         if startdate: meta["start_time"] = startdate
         if enddate: meta["end_time"] = enddate
         meta["offset"] = offset
         meta["count"] = count
         meta["radius"] = self.clamp_radius_to_set(radius)
+        meta["v"] = "5.30"
 
         r = urllib2.urlopen(self.URL, urllib.urlencode(meta))
+        print "Hitting: %s?%s" % (self.URL, urllib.urlencode(meta))
         data = json.loads(r.read())
-        for item in data["response"][1:]:
-            timestamp = datetime.utcfromtimestamp(item["created"])
-            i = ImageSearchResult(item["src"], item["src"], timestamp, item["text"], item, self.PROVIDER)
+        for item in data["response"]["items"]:
+            timestamp = datetime.utcfromtimestamp(item["date"])
+            i = ImageSearchResult(item["photo_130"], item["photo_807"], timestamp, item["text"], item, self.PROVIDER)
             results.append(i)
 
         return results
