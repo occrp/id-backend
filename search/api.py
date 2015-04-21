@@ -3,16 +3,16 @@ import urllib2
 import json
 from datetime import datetime
 from threading import Thread
+from core.utils import json_dumps
 
-
-class ImageSearchResult:
+class ImageSearchResult(dict):
     def __init__(self, imageurl, resulturl, timestamp, caption, metadata, provider):
-        self.imageurl = imageurl
-        self.resulturl = resulturl
-        self.metadata = metadata
-        self.provider = provider
-        self.timestamp = timestamp
-        self.caption = caption
+        self["provider"] = provider
+        self["timestamp"] = timestamp
+        self["image_url"] = imageurl
+        self["result_url"] = resulturl
+        self["caption"] = caption
+        self["metadata"] = metadata
 
 
 class ImageSearcher():
@@ -37,11 +37,7 @@ class ImageSearcher():
 
         results = self.search(q, lat, lon, radius, startdate, enddate, offset, count)
         for r in results:
-            res = SearchResult()
-            res.request = search
-            res.provider = self.PROVIDER
-            res.data = json.dumps(r)
-            res.save()
+            search.create_result(self.PROVIDER, r)
 
         runner.done = True
         runner.results = len(results)

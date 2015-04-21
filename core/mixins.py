@@ -5,6 +5,8 @@ from django.db import models
 from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
 
+from core.utils import json_dumps
+
 class DisplayMixin(object):
     """
     Renders a field's value in a display-friendly way. Should only be mixed
@@ -41,18 +43,7 @@ class JSONResponseMixin(object):
 
     def convert_context_to_json(self):
         "Convert the context dictionary into a JSON object"
-        # Note: This is *EXTREMELY* naive; in reality, you'll need
-        # to do much more complex handling to ensure that arbitrary
-        # objects -- such as Django model instances or querysets
-        # -- can be serialized as JSON.
-        def handledefault(o):
-            if hasattr(o, "to_json"):
-                return o.to_json()
-            elif hasattr(o, "__dict__"):
-                return o.__dict__
-            else:
-                raise ValueError("Not JSON serializable. Add to_json() or __dict__")
-        return json.dumps(self.get_context_data(), default=handledefault)
+        return json_dumps(self.get_context_data())
 
 
 class MessageMixin(object):
