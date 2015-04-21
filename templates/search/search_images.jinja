@@ -107,10 +107,11 @@
                 <tr><th colspan="2"><input class="input-large" name="q" placeholder="Search"/></th></tr>
                 <tr><th>Latitude:</th><td><input name="lat"/></td></tr>
                 <tr><th>Longitude:</th><td><input name="lon"/></td></tr>
-                <tr><th>Search radius:</th><td><input name="radius" type="range" min="10" max="50000" data-tooltip="Radius (in meters)"/></td></tr>
+                <tr><th>Search radius:</th><td><input name="radius_root" type="range" min="1" max="22359" value="22359" data-tooltip="Radius (in meters)"/></td></tr>
                 <tr><th>Start date:</th><td><input name="startdate" type="datetime-local"/></td></tr>
                 <tr><th>End date:</th><td><input name="enddate" type="datetime-local"/></td></tr>
             </table>
+            <input name="radius" value="50000" type="hidden"/>
             <input id="image_search_submit" class="btn btn-primary pull-right" type="button" value="Search"/>
         </div>
         <div class="image-search-map-container">
@@ -170,16 +171,20 @@
               
               /* calculating a sane radius from a given zoom level */
               function getRadiusFromZoom(zoom) {
-                if (zoom <= 7) return 50000
-                return (50000 / Math.pow(2, (zoom - 7)))
+                if (zoom <= 7) return 22359
+                //return (22359 / Math.pow(2, (zoom - 7)))
+                return (22359 / (zoom - 7))
               }
+              
               
               /* change the radius to fit the zoom level -- if the circle has not yet been set */
               map.getView().on('change:resolution', function(e) {
                 /* only if the circle has not yet been set */
                 if (circle == false) {
                   radius = getRadiusFromZoom(map.getView().getZoom())
-                  $('input[name=radius]').val(radius)
+                  $('input[name=radius_root]')
+                    .val(radius)
+                    .trigger('input')
                 }
               })
             </script>
@@ -203,10 +208,15 @@
         $("#image_search_submit").on("click", start_search);
         $("#image_search_form").on("submit", start_search);
         /* make sure radius is handled */
-        $('input[name=radius]')
+        $('input[name=radius_root]')
             .on('change', setCircle)
             .on("input", function(){
-                $(this).attr('data-tooltip', 'Radius: ' + this.value + 'm')
+                // a nice logarithmic radius control
+                radius = Math.floor(Math.pow((this.value / 100), 2))
+                // set the hidden field value
+                $('input[name=radius]').val(radius)
+                // fix the data tooltip
+                $(this).attr('data-tooltip', 'Radius: ' + radius + 'm')
             });
     });
 
