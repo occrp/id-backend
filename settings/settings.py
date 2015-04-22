@@ -28,6 +28,9 @@ except ImportError:
 # Some error checking for local_settings
 if not SECRET_KEY:
     raise Exception('You need to specify Django SECRET_KEY in the settings_local.py!')
+if not CREDENTIALS_STORE:
+    raise Exception('You need to specify a location for CREDENTIALS_STORE in settings_local.py')
+
 
 TEMPLATE_LOADERS = (
     'django_jinja.loaders.FileSystemLoader',
@@ -135,24 +138,24 @@ USE_L10N = True
 USE_TZ = True
 
 LANGUAGES = (
-  ('ar', u'العربية'),
-  ('bg', u'Български'),
-  ('de', u'Deutsch'),
-  ('en', u'English'),
-  ('es', u'Español'),
-  ('fr', u'Français'),
-  ('hr', u'Hrvatski'),
-  ('hu', u'Magyar'),
-  ('mk', u'Македонски'),
-  ('pt', u'Português'),
-  ('ro', u'Românește'),
-  ('ru', u'Русский'),
-  ('sl', u'Slovenski'),
-  ('sq', u'Shqip'),
-  ('sr', u'Српски'),
-  ('sw', u'Kiswahili'),
-  ('tr', u'Türkçe'),
-  ('uk', u'Українська'),
+    ('ar', u'العربية'),
+    ('bg', u'Български'),
+    ('de', u'Deutsch'),
+    ('en', u'English'),
+    ('es', u'Español'),
+    ('fr', u'Français'),
+    ('hr', u'Hrvatski'),
+    ('hu', u'Magyar'),
+    ('mk', u'Македонски'),
+    ('pt', u'Português'),
+    ('ro', u'Românește'),
+    ('ru', u'Русский'),
+    ('sl', u'Slovenski'),
+    ('sq', u'Shqip'),
+    ('sr', u'Српски'),
+    ('sw', u'Kiswahili'),
+    ('tr', u'Türkçe'),
+    ('uk', u'Українська'),
 )
 
 
