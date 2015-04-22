@@ -115,9 +115,20 @@
       -webkit-transition:background-color 0.3s ease-out, border-left-color 0.3s ease-out;
     }
     
-    .center-on-selection button:hover::after {
+    .center-on-selection > button:hover::after {
       border-left-color:rgba(6,6,6,1);
       border-top-color:transparent !important;
+    }
+    
+    .center-on-selection > button {
+      opacity:1;
+      transition:opacity 0.7s ease-in;
+      -moz-transition:opacity 0.7s ease-in;
+      -webkit-transition:opacity 0.7s ease-in;
+    }
+    
+    .center-on-selection > button[disabled] {
+      opacity:0;
     }
     
     </style>
@@ -135,7 +146,7 @@
         <form name="image_search_form" id="image_search_form" class="image-search-form">
         <div class="image-search-inputs-container">
             <table>
-                <tr><th colspan="2"><input class="input-large" name="q" placeholder="Search"/></th></tr>
+                <tr><th colspan="2"><input class="input-large" name="q" placeholder="Search terms"/></th></tr>
                 <tr><th>Latitude:</th><td><input name="lat"/></td></tr>
                 <tr><th>Longitude:</th><td><input name="lon"/></td></tr>
                 <tr><th>Search radius:</th><td><input name="radius_root" type="range" min="1" max="22359" value="22359" data-tooltip="Radius (in meters)"/></td></tr>
@@ -169,6 +180,7 @@
                 button.innerHTML = 'ʘ';
                 button.setAttribute('data-tooltip', 'Center map on selection')
                 button.setAttribute('type', 'button')
+                button.setAttribute('disabled', 'disabled')
 
                 var this_ = this;
                 var centerMap = function(e) {
@@ -286,6 +298,9 @@
                 circleFeature = new ol.Feature(circle);
                 // Source and vector layer
                 vectorSource.addFeature(circleFeature);
+                
+                // enable the "center on selection" button
+                $('.center-on-selection > button').removeAttr('disabled')
               }
               
               /* set the circle upon click */
