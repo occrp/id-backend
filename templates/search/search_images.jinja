@@ -456,6 +456,15 @@
           if (!$('input[name=lon]').is(':valid')) return false
           /* yay, set the circle */
           id2.setCircle()
+          /* pan animation */
+          var panimation = ol.animation.pan({
+            source: map.getView().getCenter()
+          });
+          map.beforeRender(panimation);
+          /* center */
+          map.getView().setCenter(
+            id2.circle.getCenter()
+          )
         })
     });
     
