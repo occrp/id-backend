@@ -89,6 +89,25 @@
         opacity: 0.9;
     }
     
+    .center-on-selection {
+      top:0.5em;
+      right:0.5em;
+    }
+    
+    .center-on-selection button::before {
+      /*position:absolute;
+      top: -25%;
+      right: 2em;*/
+      display:none;
+    }
+    
+    .center-on-selection button::after {
+      /*position:absolute;
+      top: -50%;
+      right: 100%;*/
+      display:none;
+    }
+    
     </style>
     <link rel="stylesheet" href="{{ static('css/ol.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ static('css/tooltips.css') }}" type="text/css">
@@ -117,7 +136,111 @@
         <div class="image-search-map-container">
             <div id="map" class="map"></div>
             <script type="text/javascript">
+            
+              /**
+                * Define a namespace for the application.
+                * http://openlayers.org/en/v3.2.1/examples/custom-controls.js
+                */
+              window.app = {};
+              var app = window.app;
+            
+            
+              function doPan(location) {
+                // pan from the current center
+                
+              }
+            
+            
+              /**
+                * @constructor
+                * @extends {ol.control.Control}
+                * @param {Object=} opt_options Control options.
+                */
+              app.CenterOnSelection = function(opt_options) {
+
+                var options = opt_options || {};
+
+                var button = document.createElement('button');
+                button.innerHTML = 'ʘ';
+                button.setAttribute('data-tooltip', 'Center map on selection')
+                button.setAttribute('type', 'button')
+
+                var this_ = this;
+                var centerMap = function(e) {
+                  /* this is where magic happens */
+                  if (circle != false) {
+                    
+                    /* pan animation */
+                    var panimation = ol.animation.pan({
+                      source: this_.getMap().getView().getCenter()
+                    });
+                    
+                    /* bounce animation */
+                    var bouncimation = ol.animation.bounce({
+                      duration: 2000,
+                      resolution: 9783.93962050256,
+                    });
+                    
+                    /* zoom animation */
+                    var zoomination = ol.animation.zoom({
+                      resolution: this_.getMap().getView().getResolution()
+                    });
+                    
+                    /* target zoom level */
+                    var zoom = getZoomFromRadius(
+                                 $('[name=radius_root]').val()
+                               )
+                    
+                    /* set teh animations */
+                    if (this_.getMap().getView().getZoom() >= zoom) {
+                      this_.getMap().beforeRender(zoomination, bouncimation, panimation);
+                    } else {
+                      this_.getMap().beforeRender(zoomination, panimation);
+                    }
+                    
+                    /* center */
+                    this_.getMap().getView().setCenter(
+                      circle.getCenter()
+                    )
+                    /* zoom */
+                    this_.getMap().getView().setZoom(
+                      getZoomFromRadius(
+                        $('[name=radius_root]').val()
+                      )
+                    )
+                  }
+                  /* not submitting the form is a good idea */
+                  return false;
+                };
+
+                button.addEventListener('click', centerMap, false);
+                button.addEventListener('touchstart', centerMap, false);
+
+                var element = document.createElement('div');
+                element.className = 'center-on-selection ol-unselectable ol-control';
+                element.appendChild(button);
+
+                ol.control.Control.call(this, {
+                  element: element,
+                  target: options.target
+                });
+
+              };
+              ol.inherits(app.CenterOnSelection, ol.control.Control);
+
+
+              //
+              // Create map, giving it a rotate to north control.
+              //
+            
               var map = new ol.Map({
+                controls: ol.control.defaults({
+                  attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+                    collapsible: false
+                  })
+                }).extend([
+                  new app.CenterOnSelection()
+                ]),
                 target: 'map',
                 layers: [
                   new ol.layer.Tile({
@@ -172,8 +295,14 @@
               /* calculating a sane radius from a given zoom level */
               function getRadiusFromZoom(zoom) {
                 if (zoom <= 7) return 22359
-                //return (22359 / Math.pow(2, (zoom - 7)))
                 return (22359 / (zoom - 7))
+              }
+              
+              
+              /* calculating a sane radius from a given zoom level */
+              function getZoomFromRadius(radius) {
+                if (radius >= 22359) return 7
+                return ( (22359 / radius) + 7 )
               }
               
               
