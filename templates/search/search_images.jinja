@@ -512,8 +512,9 @@
                     result = $('<div class="image-search-result"/>');
                     result.append('<a href="'+item.data.result_url+'"><img src="'+item.data.image_url+'"/></a>');
                     result.append('<div class="image-search-caption">'+item.data.caption+'</div>');
+                    result.append('<div class="image-search-link"><a href="'+item.data.link+'">'+item.data.link_title+'</a></div>');
                     result.append('<div class="image-search-date">'+timestamp+'</div>');
-                    result.append('<div class="image-search-origin">'+item.provider+'</div>');
+                    result.append('<div class="image-search-origin">Source: '+item.provider+'</div>');
                     $("#search_results").append(result);
                 }
                 if (data.done || data.checkin_after == -1) {
