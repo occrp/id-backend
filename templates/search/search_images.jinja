@@ -56,11 +56,22 @@
     }
     
     
-    .image-search-form > .image-search-inputs-container input[type=datetime-local],
+    .image-search-form > .image-search-inputs-container input[type=date],
+    .image-search-form > .image-search-inputs-container input[type=time],
     .image-search-form > .image-search-inputs-container input[type=number] {
         padding: 3px 1px;
         border: solid 1px #a9a9a9;
         margin-bottom: 0px;
+    }
+    
+    .image-search-form > .image-search-inputs-container input[type=date] {
+      width:60%;
+      min-width:130px;
+    }
+    .image-search-form > .image-search-inputs-container input[type=time] {
+      width:25%;
+      min-width:75px;
+      margin-left:1%;
     }
     
     .image-search-form > .image-search-inputs-container input[type=range] {
@@ -204,10 +215,10 @@
                 <tr><th>Latitude:</th><td><input name="lat" type="number" step="any" min="-90" max="90"/></td></tr>
                 <tr><th>Longitude:</th><td><input name="lon" type="number" step="any" min="-180" max="180"/></td></tr>
                 <tr><th>Radius:</th><td><input name="radius_root" type="range" min="1" max="22359" value="22359" data-tooltip="Radius (in meters)"/></td></tr>
-                <tr><th colspan="2">Dates:</th></tr>
-                <tr><td colspan="2" class="instructions">Adjust date thresholds.</td></tr>
-                <tr><th>Start date:</th><td><input name="startdate" type="datetime-local"/></td></tr>
-                <tr><th>End date:</th><td><input name="enddate" type="datetime-local"/></td></tr>
+                <tr><th colspan="2">Dates and times:</th></tr>
+                <tr><td colspan="2" class="instructions">Optionally, adjust date/time thresholds.</td></tr>
+                <tr><th>Start:</th><td><input name="startdate" type="date"/><input name="starttime" type="time"/></td></tr>
+                <tr><th>End:</th><td><input name="enddate" type="date"/><input name="endtime" type="time"/></td></tr>
             </table>
             <input name="radius" value="50000" type="hidden"/>
             <input id="image_search_submit" class="btn btn-primary pull-right" type="button" value="Search"/>
