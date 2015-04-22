@@ -89,6 +89,34 @@
         opacity: 0.9;
     }
     
+    .image-search-form > .image-search-inputs-container input[name=radius_root]::before {
+      top: -0.4em;
+      left: 101%;
+      right:auto;
+      padding:0.3em 1em 1em 1em;
+      font-weight:normal;
+      z-index:200;
+    }
+    
+    .image-search-form > .image-search-inputs-container input[name=radius_root]::after {
+      top: 0.9em;
+      left: 101%;
+      right:auto;
+      border-right: solid 0.4em rgba(6, 6, 6, 0);
+      border-left: none;
+      border-top: solid 0.3em transparent !important;
+      border-bottom: solid 0.3em transparent;
+      transition:background-color 0.3s ease-out, border-right-color 0.3s ease-out;
+      -moz-transition:background-color 0.3s ease-out, border-right-color 0.3s ease-out;
+      -webkit-transition:background-color 0.3s ease-out, border-right-color 0.3s ease-out;
+      z-index:200;
+    }
+    
+    .image-search-form > .image-search-inputs-container input[name=radius_root]:hover::after {
+      border-right-color:rgba(6,6,6,1);
+      border-top-color:transparent !important;
+    }
+    
     .center-on-selection {
       top:0.5em;
       right:0.5em;
@@ -131,6 +159,21 @@
       opacity:0;
     }
     
+    .image-search-inputs-container table {
+      max-width:300px;
+    }
+    
+    .image-search-inputs-container th[colspan] {
+      padding-top:0.5em;
+      text-align:left;
+      border-bottom: solid 1px #888;
+    }
+    
+    .image-search-inputs-container td.instructions {
+      font-size:80%;
+      font-style:italic;
+    }
+    
     </style>
     <link rel="stylesheet" href="{{ static('css/ol.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ static('css/tooltips.css') }}" type="text/css">
@@ -146,10 +189,16 @@
         <form name="image_search_form" id="image_search_form" class="image-search-form">
         <div class="image-search-inputs-container">
             <table>
-                <tr><th colspan="2"><input class="input-large" name="q" placeholder="Search terms"/></th></tr>
+                <tr><th colspan="2">Search terms:</th></tr>
+                <tr><td colspan="2" class="instructions">Please provide search terms to search images by.</td></tr>
+                <tr><td colspan="2"><input class="input-large" name="q" placeholder="Search terms"/></td></tr>
+                <tr><th colspan="2">Area:</th></tr>
+                <tr><td colspan="2" class="instructions">Select area on the map or enter latitude and longitude, and adjust search radius.</td></tr>
                 <tr><th>Latitude:</th><td><input name="lat"/></td></tr>
                 <tr><th>Longitude:</th><td><input name="lon"/></td></tr>
-                <tr><th>Search radius:</th><td><input name="radius_root" type="range" min="1" max="22359" value="22359" data-tooltip="Radius (in meters)"/></td></tr>
+                <tr><th>Radius:</th><td><input name="radius_root" type="range" min="1" max="22359" value="22359" data-tooltip="Radius (in meters)"/></td></tr>
+                <tr><th colspan="2">Dates:</th></tr>
+                <tr><td colspan="2" class="instructions">Adjust date thresholds.</td></tr>
                 <tr><th>Start date:</th><td><input name="startdate" type="datetime-local"/></td></tr>
                 <tr><th>End date:</th><td><input name="enddate" type="datetime-local"/></td></tr>
             </table>
@@ -164,15 +213,15 @@
                 * Define a namespace for the application.
                 * http://openlayers.org/en/v3.2.1/examples/custom-controls.js
                 */
-              window.app = {};
-              var app = window.app;
+              window.id2 = {};
+              var id2 = window.id2;
             
               /**
                 * @constructor
                 * @extends {ol.control.Control}
                 * @param {Object=} opt_options Control options.
                 */
-              app.CenterOnSelection = function(opt_options) {
+              id2.CenterOnSelection = function(opt_options) {
 
                 var options = opt_options || {};
 
@@ -185,7 +234,7 @@
                 var this_ = this;
                 var centerMap = function(e) {
                   /* this is where magic happens */
-                  if (circle != false) {
+                  if (id2.circle != false) {
                     
                     /* pan animation */
                     var panimation = ol.animation.pan({
@@ -204,7 +253,7 @@
                     });
                     
                     /* target zoom level */
-                    var zoom = getZoomFromRadius(
+                    var zoom = id2.getZoomFromRadiusRoot(
                                  $('[name=radius_root]').val()
                                )
                     
@@ -217,14 +266,10 @@
                     
                     /* center */
                     this_.getMap().getView().setCenter(
-                      circle.getCenter()
+                      id2.circle.getCenter()
                     )
                     /* zoom */
-                    this_.getMap().getView().setZoom(
-                      getZoomFromRadius(
-                        $('[name=radius_root]').val()
-                      )
-                    )
+                    this_.getMap().getView().setZoom(zoom)
                   }
                   /* not submitting the form is a good idea */
                   return false;
@@ -243,7 +288,7 @@
                 });
 
               };
-              ol.inherits(app.CenterOnSelection, ol.control.Control);
+              ol.inherits(id2.CenterOnSelection, ol.control.Control);
 
 
               //
@@ -256,7 +301,7 @@
                     collapsible: false
                   })
                 }).extend([
-                  new app.CenterOnSelection()
+                  new id2.CenterOnSelection()
                 ]),
                 target: 'map',
                 layers: [
@@ -271,66 +316,66 @@
               });
               
               /* vector source and layer for our range circle */
-              var vectorSource = new ol.source.Vector({
+              id2.vectorSource = new ol.source.Vector({
                 projection: 'EPSG:4326'
               });
-              var vectorLayer = new ol.layer.Vector({
-                source: vectorSource
+              id2.vectorLayer = new ol.layer.Vector({
+                source: id2.vectorSource
               });
-              map.addLayer(vectorLayer);
+              map.addLayer(id2.vectorLayer);
               
               /* the circle */
-              var circle = false
-              var circleFeature = false
+              id2.circle = false
+              id2.circleFeature = false
               
-              function setCircle() {
+              id2.setCircle = function() {
                 var radius = ($('input[name=radius]').val() / ol.proj.METERS_PER_UNIT.m) * 2;
                 
                 var lon = $('input[name=lon]').val() * 1
                 var lat = $('input[name=lat]').val() * 1
                 
-                circle = new ol.geom.Circle(
+                id2.circle = new ol.geom.Circle(
                   ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'), radius, 'XY'
                 )
-                if (circleFeature != false) {
-                  vectorSource.removeFeature(circleFeature)
+                if (id2.circleFeature != false) {
+                  id2.vectorSource.removeFeature(id2.circleFeature)
                 }
-                circleFeature = new ol.Feature(circle);
+                id2.circleFeature = new ol.Feature(id2.circle);
                 // Source and vector layer
-                vectorSource.addFeature(circleFeature);
+                id2.vectorSource.addFeature(id2.circleFeature);
                 
                 // enable the "center on selection" button
                 $('.center-on-selection > button').removeAttr('disabled')
               }
+              
+              
+              /* calculating a sane radius from a given zoom level */
+              id2.getRadiusRootFromZoom = function(zoom) {
+                if (zoom <= 7) return 22359
+                return (22359 / (zoom - 7)) // FIXME this needs more work
+              }
+              
+              
+              /* calculating a sane radius from a given zoom level */
+              id2.getZoomFromRadiusRoot = function(radius) {
+                if (radius >= 22359) return 7
+                return ( (22359 / radius) + 7 ) // FIXME this needs more work
+              }
+              
               
               /* set the circle upon click */
               map.on('click', function(e){
                 var lonlat = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
                 $('input[name=lon]').val(lonlat[0])
                 $('input[name=lat]').val(lonlat[1])
-                setCircle()
+                id2.setCircle()
               })
-              
-              
-              /* calculating a sane radius from a given zoom level */
-              function getRadiusFromZoom(zoom) {
-                if (zoom <= 7) return 22359
-                return (22359 / (zoom - 7))
-              }
-              
-              
-              /* calculating a sane radius from a given zoom level */
-              function getZoomFromRadius(radius) {
-                if (radius >= 22359) return 7
-                return ( (22359 / radius) + 7 )
-              }
-              
               
               /* change the radius to fit the zoom level -- if the circle has not yet been set */
               map.getView().on('change:resolution', function(e) {
                 /* only if the circle has not yet been set */
-                if (circle == false) {
-                  radius = getRadiusFromZoom(map.getView().getZoom())
+                if (id2.circle == false) {
+                  radius = id2.getRadiusRootFromZoom(map.getView().getZoom())
                   $('input[name=radius_root]')
                     .val(radius)
                     .trigger('input')
@@ -358,7 +403,7 @@
         $("#image_search_form").on("submit", start_search);
         /* make sure radius is handled */
         $('input[name=radius_root]')
-            .on('change', setCircle)
+            .on('change', id2.setCircle)
             .on("input", function(){
                 // a nice logarithmic radius control
                 radius = Math.floor(Math.pow((this.value / 100), 2))
