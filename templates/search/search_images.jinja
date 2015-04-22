@@ -18,7 +18,7 @@
     }
 
     .image-search-result img {
-        width:      250px;
+        min-width:      250px;
         max-height: 400px;
     }
 
@@ -56,7 +56,8 @@
     }
     
     
-    .image-search-form > .image-search-inputs-container input[type=datetime-local] {
+    .image-search-form > .image-search-inputs-container input[type=datetime-local],
+    .image-search-form > .image-search-inputs-container input[type=number] {
         padding: 3px 1px;
         border: solid 1px #a9a9a9;
         margin-bottom: 0px;
@@ -87,6 +88,12 @@
         vertical-align: middle;
         background-color: #eee;
         opacity: 0.9;
+    }
+    
+    .image-search-form > .image-search-inputs-container input:invalid {
+      background:#ffeeee;
+      border-color:#ddbbbb;
+      color:#664444;
     }
     
     .image-search-form > .image-search-inputs-container input[name=radius_root]::before {
@@ -194,8 +201,8 @@
                 <tr><td colspan="2"><input class="input-large" name="q" placeholder="Search terms"/></td></tr>
                 <tr><th colspan="2">Area:</th></tr>
                 <tr><td colspan="2" class="instructions">Select area on the map or enter latitude and longitude, and adjust search radius.</td></tr>
-                <tr><th>Latitude:</th><td><input name="lat"/></td></tr>
-                <tr><th>Longitude:</th><td><input name="lon"/></td></tr>
+                <tr><th>Latitude:</th><td><input name="lat" type="number" step="any" min="-90" max="90"/></td></tr>
+                <tr><th>Longitude:</th><td><input name="lon" type="number" step="any" min="-180" max="180"/></td></tr>
                 <tr><th>Radius:</th><td><input name="radius_root" type="range" min="1" max="22359" value="22359" data-tooltip="Radius (in meters)"/></td></tr>
                 <tr><th colspan="2">Dates:</th></tr>
                 <tr><td colspan="2" class="instructions">Adjust date thresholds.</td></tr>
@@ -362,25 +369,6 @@
                 return ( (22359 / radius) + 7 ) // FIXME this needs more work
               }
               
-              
-              /* set the circle upon click */
-              map.on('click', function(e){
-                var lonlat = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
-                $('input[name=lon]').val(lonlat[0])
-                $('input[name=lat]').val(lonlat[1])
-                id2.setCircle()
-              })
-              
-              /* change the radius to fit the zoom level -- if the circle has not yet been set */
-              map.getView().on('change:resolution', function(e) {
-                /* only if the circle has not yet been set */
-                if (id2.circle == false) {
-                  radius = id2.getRadiusRootFromZoom(map.getView().getZoom())
-                  $('input[name=radius_root]')
-                    .val(radius)
-                    .trigger('input')
-                }
-              })
             </script>
         </div>
         </form>
@@ -403,16 +391,56 @@
         $("#image_search_form").on("submit", start_search);
         /* make sure radius is handled */
         $('input[name=radius_root]')
-            .on('change', id2.setCircle)
-            .on("input", function(){
-                // a nice logarithmic radius control
-                radius = Math.floor(Math.pow((this.value / 100), 2))
-                // set the hidden field value
-                $('input[name=radius]').val(radius)
-                // fix the data tooltip
-                $(this).attr('data-tooltip', 'Radius: ' + radius + 'm')
-            });
+          .on('change', id2.setCircle)
+          .on('input', function(){
+            // a nice logarithmic radius control
+            radius = Math.floor(Math.pow((this.value / 100), 2))
+            // set the hidden field value
+            $('input[name=radius]').val(radius)
+            // fix the data tooltip
+            $(this).attr('data-tooltip', 'Radius: ' + radius + 'm')
+          });
+        /* make sure lat/lon are handled */
+        $('input[name=lat], input[name=lon]').on('change', function(){
+          /* we need *both* to be valid */
+          if (!$('input[name=lat]').is(':valid')) return false
+          if (!$('input[name=lon]').is(':valid')) return false
+          /* yay, set the circle */
+          id2.setCircle()
+        })
     });
+    
+    
+    /* set the circle upon click */
+    map.on('click', function(e){
+      var lonlat = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
+      /* fix the longitude to be within constraints */
+      if (lonlat[0] > 180) {
+        lonlat[0] = lonlat[0] % 180 - 180
+        /* pan the map so that it makes sense, invisibly to the user */
+        map.getView().setCenter(ol.proj.transform([lonlat[0], lonlat[1]], 'EPSG:4326', 'EPSG:3857'))
+      } else if (lonlat[0] < -180) {
+        lonlat[0] = lonlat[0] % 180 + 180
+        /* pan the map so that it makes sense, invisibly to the user */
+        map.getView().setCenter(ol.proj.transform([lonlat[0], lonlat[1]], 'EPSG:4326', 'EPSG:3857'))
+      }
+      /* set the data in inputs */
+      $('input[name=lon]').val(lonlat[0])
+      $('input[name=lat]').val(lonlat[1])
+      /* set the selection circle */
+      id2.setCircle()
+    })
+    
+    /* change the radius to fit the zoom level -- if the circle has not yet been set */
+    map.getView().on('change:resolution', function(e) {
+      /* only if the circle has not yet been set */
+      if (id2.circle == false) {
+        radius = id2.getRadiusRootFromZoom(map.getView().getZoom())
+        $('input[name=radius_root]')
+          .val(radius)
+          .trigger('input')
+      }
+    })
 
     function check_search_results(searchid) {
         $.getJSON('{{url("search_images_check")}}', {"id": searchid}, function(data) {
