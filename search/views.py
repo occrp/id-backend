@@ -17,7 +17,11 @@ class ImageSearchQuery(View, JSONResponseMixin):
         query["lon"] = float(self.request.GET.get("lon", 0.0))
         query["radius"] = int(self.request.GET.get("radius", 5000))
         query["startdate"] = self.request.GET.get("startdate", None)
+        if query["startdate"]:
+            query["startdate"] += "T" + self.request.GET.get("starttime", "00:00")
         query["enddate"] = self.request.GET.get("enddate", None)
+        if query["enddate"]:
+            query["enddate"] += "T" + self.request.GET.get("endtime", "23:59")
         query["offset"] = self.request.GET.get("offset", 0)
         query["count"] = self.request.GET.get("count", 100)
 
