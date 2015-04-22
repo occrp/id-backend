@@ -95,17 +95,29 @@
     }
     
     .center-on-selection button::before {
-      /*position:absolute;
       top: -25%;
-      right: 2em;*/
-      display:none;
+      right: 120%;
+      left:auto;
+      padding:1em 1em 0.3em 1em;
+      font-weight:normal;
     }
     
     .center-on-selection button::after {
-      /*position:absolute;
-      top: -50%;
-      right: 100%;*/
-      display:none;
+      top: 25%;
+      right: 100%;
+      left:auto;
+      border-left: solid 0.4em rgba(6, 6, 6, 0);
+      border-right: none;
+      border-top: solid 0.3em transparent !important;
+      border-bottom: solid 0.3em transparent;
+      transition:background-color 0.3s ease-out, border-left-color 0.3s ease-out;
+      -moz-transition:background-color 0.3s ease-out, border-left-color 0.3s ease-out;
+      -webkit-transition:background-color 0.3s ease-out, border-left-color 0.3s ease-out;
+    }
+    
+    .center-on-selection button:hover::after {
+      border-left-color:rgba(6,6,6,1);
+      border-top-color:transparent !important;
     }
     
     </style>
@@ -143,13 +155,6 @@
                 */
               window.app = {};
               var app = window.app;
-            
-            
-              function doPan(location) {
-                // pan from the current center
-                
-              }
-            
             
               /**
                 * @constructor
