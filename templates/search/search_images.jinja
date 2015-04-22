@@ -65,13 +65,13 @@
     }
     
     .image-search-form > .image-search-inputs-container input[type=date] {
-      width:60%;
-      min-width:130px;
+        width:60%;
+        min-width:130px;
     }
     .image-search-form > .image-search-inputs-container input[type=time] {
-      width:25%;
-      min-width:75px;
-      margin-left:1%;
+        width:25%;
+        min-width:75px;
+        margin-left:1%;
     }
     
     .image-search-form > .image-search-inputs-container input[type=range] {
@@ -138,6 +138,24 @@
     .center-on-selection {
       top:0.5em;
       right:0.5em;
+      display:flex;
+      flex-direction:row;
+      align-items: center;
+    }
+    
+    /* serchbox */
+    .center-on-selection input {
+      flex-grow:100;
+      width:200px;
+      height:16px;
+      line-height:16px;
+      padding:2px 2px;
+      margin-bottom:0px;
+      transition:width 0.5s ease-out;
+    }
+    
+    .center-on-selection input:focus {
+      width:400px;
     }
     
     .center-on-selection button::before {
@@ -238,16 +256,28 @@
                 * @constructor
                 * @extends {ol.control.Control}
                 * @param {Object=} opt_options Control options.
+                * 
+                * id2 controls on the map -- ceter-on-selection and address geocoding
                 */
-              id2.CenterOnSelection = function(opt_options) {
+              id2.ID2Controls = function(opt_options) {
 
                 var options = opt_options || {};
 
+                /**
+                  * center-on-selection button
+                  */
                 var button = document.createElement('button');
                 button.innerHTML = 'ʘ';
                 button.setAttribute('data-tooltip', 'Center map on selection')
                 button.setAttribute('type', 'button')
                 button.setAttribute('disabled', 'disabled')
+                
+                /**
+                  * address geocode searchbox
+                  */
+                var searchbox = document.createElement('input');
+                searchbox.setAttribute('type', 'text')
+                searchbox.setAttribute('placeholder', 'Search for addresses')
 
                 var this_ = this;
                 var centerMap = function(e) {
@@ -293,11 +323,19 @@
                   return false;
                 };
 
+                /**
+                  * event listeners for the button
+                  */
                 button.addEventListener('click', centerMap, false);
                 button.addEventListener('touchstart', centerMap, false);
 
+                
+                /**
+                  * the container for all of this
+                  */
                 var element = document.createElement('div');
                 element.className = 'center-on-selection ol-unselectable ol-control';
+                element.appendChild(searchbox);
                 element.appendChild(button);
 
                 ol.control.Control.call(this, {
@@ -306,8 +344,8 @@
                 });
 
               };
-              ol.inherits(id2.CenterOnSelection, ol.control.Control);
-
+              ol.inherits(id2.ID2Controls, ol.control.Control);
+              
 
               //
               // Create map, giving it a rotate to north control.
@@ -319,7 +357,7 @@
                     collapsible: false
                   })
                 }).extend([
-                  new id2.CenterOnSelection()
+                  new id2.ID2Controls()
                 ]),
                 target: 'map',
                 layers: [
