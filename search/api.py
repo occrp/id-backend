@@ -9,6 +9,7 @@ from core.utils import json_dumps, Credentials
 
 from oauth2client import tools as oauth2tools
 from oauth2client import client as oauth2client
+from oauth2client import file as oauth2file
 
 from apiclient.discovery import build
 from apiclient.errors import HttpError
@@ -156,7 +157,7 @@ class ImageSearchInstagram(ImageSearcher):
             caption = ""
             if item.get("caption"):
                 caption = item.get("caption").get("text", "")
-                
+
             i = ImageSearchResult(
                 provider=self.PROVIDER,
                 imageurl=item["images"]["low_resolution"]["url"], 
@@ -244,15 +245,25 @@ class ImageSearchYouTube(ImageSearcher):
         # results
         #credentials = Credentials().get_oauth2_credentials("google", 
         #    scope='https://www.googleapis.com/auth/youtube.readonly')
+        # 4/G7xoBUxsmulnmIzYiri6bYTpJ0cDOLEyqUaZ6UZZHrw.QrS6tjsp5YYQyjz_MlCJoi2WwKLNmQI
+        import argparse
 
-        #flow = oauth2client.flow_from_clientsecrets("google_api.cred",
-        #    scope='https://www.googleapis.com/auth/youtube.readonly')
-        #credentials = oauth2tools.run_flow(flow)
+        flow = oauth2client.flow_from_clientsecrets("google_api.cred",
+            scope='https://www.googleapis.com/auth/youtube.readonly')
 
-        #http = httplib2.Http()
-        #http = credentials.authorize(http)
+        parser = argparse.ArgumentParser(
+            description=__doc__,
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            parents=[oauth2tools.argparser])
+        args = parser.parse_args([])
+        storage = oauth2file.Storage('google_auth.dat')
+        credentials = storage.get()
+        if credentials is None or credentials.invalid:
+            credentials = oauth2tools.run_flow(flow, storage, args)
+        http = httplib2.Http()
+        http = credentials.authorize(http)
 
-        youtube = build("youtube", "v3", developerKey="AIzaSyAPzVYxD72NlBNSFC5tByUCs4WZ9i3eypc")
+        youtube = build("youtube", "v3", http=http)
         results = []
         terms = {}
         terms["q"] = q
@@ -260,27 +271,29 @@ class ImageSearchYouTube(ImageSearcher):
             terms["location"] = "%s,%s" % (lat, lon)
             terms["locationRadius"] = "%sm" % radius
         if startdate:
-            terms["publishedAfter"] = startdate.isoformat()
+            terms["publishedAfter"] = startdate.isoformat()+"Z"
         if enddate:
-            terms["publishedBefore"] = enddate.isoformat()
+            terms["publishedBefore"] = enddate.isoformat()+"Z"
 
-        #response = youtube.search().list(
-        #    part="id,snippet", order="date", type="video", safeSearch="none",
-        #    maxResults=count, 
-        #    **terms
-        #)
-        #return response
-        #print response
-        #for item in response.get("items", [])["items"]:
-        #    #timestamp = datetime.utcfromtimestamp(item["date"])
-        #    #large_photo = item.get("photo_807", item.get("photo_604", item.get("photo_130", "")))
-        #    #i = ImageSearchResult(item["photo_130"], large_photo, timestamp, item["text"], item, self.PROVIDER)
-        #    #results.append(i)
-        #    print item
-        #    pass
+        if count > 50:
+            count = 50
+
+        response = youtube.search().list(
+            part="id,snippet", order="date", type="video", safeSearch="none",
+            maxResults=count, 
+            **terms
+        ).execute()
+
+        for item in response.get("items", []):
+            timestamp = item["snippet"]["publishedAt"]
+            thumbnail = item["snippet"]["thumbnails"]["default"]["url"]
+            caption = item["snippet"]["title"]
+            link = "http://youtu.be/%s" % item["id"]["videoId"]
+            i = ImageSearchResult(self.PROVIDER, thumbnail, link, timestamp, caption, item)
+            results.append(i)
 
         return results
 
 
-searchproviders = [ImageSearchFacebook, ImageSearchTwitter, ImageSearchInstagram, 
-                   ImageSearchVK, ImageSearchGoogleImages, ImageSearchFlickr]
+searchproviders = [ImageSearchInstagram, ImageSearchVK, ImageSearchYouTube]
+# ImageSearchFacebook, ImageSearchTwitter, ImageSearchGoogleImages, ImageSearchFlickr, ImageSearchYouTube
