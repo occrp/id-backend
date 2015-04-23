@@ -1,12 +1,16 @@
-{% extends "crud/list_base.jinja" %}
-{% block crud_title %}{% trans %}User Profiles{% endtrans %}{% endblock %}
+{% extends "admin_base.jinja" %}
 
-{% block filter_form %}
-<div class="page-header">
-        </div>
-{% endblock %}
 
-{% block crud_table %}
+{% block admin_content %}
+
+
+<div class="input-group pull-right">
+      <input type="text" class="form-control" placeholder="{% trans %}Filter users...{% endtrans %}">
+      <button class="btn btn-default" type="button"><i class="icon-search"></i></button>
+</div>
+
+<h1>{% trans %}User Profiles{% endtrans %}</h1>
+
 
 {% if object_list %}
 {% include("partials/_paginator.jinja") %}
@@ -14,7 +18,7 @@
 <table class="table table-striped table-bordered tablesorter-default {{ extra_class }}">
   <thead>
   <tr>
-    {% for field in ("Id", "E-mail", "Full name", "Status") %}
+    {% for field in ("E-mail", "Full name", "Status") %}
     <th>{{field}}</th>
     {% endfor %}
   </tr>
@@ -24,11 +28,8 @@
     <tr>
       <td>
         <a href="{{ url('profile', pk=obj.id) }}">
-          {{obj.id}}
+          {{obj.email}}
         </a>
-      </td>
-      <td>
-        {{obj.email}}
       </td>
       <td>
         {{obj.first_name}} {{obj.last_name}}
@@ -37,7 +38,7 @@
         {% if obj.is_superuser %}Administrator {% endif %}
         {% if obj.is_staff %}Staffer {% endif %}
         {% if obj.is_volunteer %}Volunteer {% endif %}
-        {% if obj.is_user %}Registered {% endif %}
+        {% if obj.is_user %}Requester {% endif %}
       </td>
     </tr>
   {% endfor %}
