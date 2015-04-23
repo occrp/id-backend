@@ -19,9 +19,11 @@ class ImageSearchQuery(View, JSONResponseMixin):
         query["startdate"] = self.request.GET.get("startdate", None)
         if query["startdate"]:
             query["startdate"] += "T" + self.request.GET.get("starttime", "00:00")
+            print "Starting: " + query["startdate"]
         query["enddate"] = self.request.GET.get("enddate", None)
         if query["enddate"]:
             query["enddate"] += "T" + self.request.GET.get("endtime", "23:59")
+            print "Ending: " + query["enddate"]
         query["offset"] = self.request.GET.get("offset", 0)
         query["count"] = self.request.GET.get("count", 100)
 

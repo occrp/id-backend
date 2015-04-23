@@ -14,13 +14,16 @@ from apiclient.discovery import build
 from apiclient.errors import HttpError
 
 class ImageSearchResult(dict):
-    def __init__(self, imageurl, resulturl, timestamp, caption, metadata, provider):
+    def __init__(self, provider, imageurl, resulturl, timestamp, caption, 
+                 linkurl=None, linktitle=None, metadata={}):
         self["provider"] = provider
         self["timestamp"] = timestamp
         self["image_url"] = imageurl
         self["result_url"] = resulturl
         self["caption"] = caption
         self["metadata"] = metadata
+        self["link"] = linkurl
+        self["linktitle"] = linktitle
 
 
 class ImageSearcher():
@@ -58,9 +61,13 @@ class ImageSearcher():
         runner.save()
         # logger.log("ImageSearch:%s:FINISH" % (self.PROVIDER))
 
-    def json_api_request(self, meta):
+    def json_api_request(self, meta, force_get=False):
         print "ImageSearch:%s:Hitting: %s?%s" % (self.PROVIDER, self.URL, urllib.urlencode(meta))
-        r = urllib2.urlopen(self.URL, urllib.urlencode(meta))
+        params = urllib.urlencode(meta)
+        if force_get:
+            r = urllib2.urlopen(self.URL + "?" + params)
+        else:
+            r = urllib2.urlopen(self.URL, params)
         return json.loads(r.read())
 
 
@@ -94,7 +101,14 @@ class ImageSearchVK(ImageSearcher):
         for item in data["response"]["items"]:
             timestamp = datetime.utcfromtimestamp(item["date"])
             large_photo = item.get("photo_807", item.get("photo_604", item.get("photo_130", "")))
-            i = ImageSearchResult(item["photo_130"], large_photo, timestamp, item["text"], item, self.PROVIDER)
+            i = ImageSearchResult(self.PROVIDER, 
+                item["photo_130"], 
+                large_photo, 
+                timestamp, 
+                caption=item.get("text", ""),
+                linkurl="",
+                linktitle="",
+                metadata=item)
             results.append(i)
 
         return results
@@ -137,15 +151,21 @@ class ImageSearchInstagram(ImageSearcher):
         if radius > 5000: radius = 5000
         meta["distance"] = radius
 
-        data = self.json_api_request(meta)
+        data = self.json_api_request(meta, force_get=True)
         for item in data["data"]:
+            caption = ""
+            if item.get("caption"):
+                caption = item.get("caption").get("text", "")
+                
             i = ImageSearchResult(
-                item["images"]["low_resolution"], 
-                item["link"], 
-                item["created_time"], 
-                item["caption"], 
-                item, 
-                self.PROVIDER)
+                provider=self.PROVIDER,
+                imageurl=item["images"]["low_resolution"]["url"], 
+                resulturl=item["link"], 
+                timestamp=datetime.utcfromtimestamp(float(item["created_time"])),
+                caption=caption,
+                linkurl=item["link"],
+                linktitle=item["user"]["full_name"],
+                metadata=item)
             results.append(i)
 
         return results
@@ -244,20 +264,20 @@ class ImageSearchYouTube(ImageSearcher):
         if enddate:
             terms["publishedBefore"] = enddate.isoformat()
 
-        response = youtube.search().list(
-            part="id,snippet", order="date", type="video", safeSearch="none",
-            maxResults=count, 
-            **terms
-        )
-        return response
-        print response
-        for item in response.get("items", [])["items"]:
-            #timestamp = datetime.utcfromtimestamp(item["date"])
-            #large_photo = item.get("photo_807", item.get("photo_604", item.get("photo_130", "")))
-            #i = ImageSearchResult(item["photo_130"], large_photo, timestamp, item["text"], item, self.PROVIDER)
-            #results.append(i)
-            print item
-            pass
+        #response = youtube.search().list(
+        #    part="id,snippet", order="date", type="video", safeSearch="none",
+        #    maxResults=count, 
+        #    **terms
+        #)
+        #return response
+        #print response
+        #for item in response.get("items", [])["items"]:
+        #    #timestamp = datetime.utcfromtimestamp(item["date"])
+        #    #large_photo = item.get("photo_807", item.get("photo_604", item.get("photo_130", "")))
+        #    #i = ImageSearchResult(item["photo_130"], large_photo, timestamp, item["text"], item, self.PROVIDER)
+        #    #results.append(i)
+        #    print item
+        #    pass
 
         return results
 
