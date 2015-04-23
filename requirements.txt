@@ -15,3 +15,5 @@ flup
 mysql
 django_select2
 djangorestframework
+oauth2client
+apiclient
