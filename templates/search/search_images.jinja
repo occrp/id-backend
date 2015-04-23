@@ -135,16 +135,60 @@
       border-top-color:transparent !important;
     }
     
-    .center-on-selection {
+    .ol-map-id2 {
       top:0.5em;
       right:0.5em;
+    }
+    
+    .ol-map-id2-results {
+      width:256px;
+      overflow-y:scroll;
+      float:right;
+      height:320px;
+      padding-top:1em;
+    }
+    
+    .ol-map-id2-results:empty {
+      display:none;
+    }
+    
+    .ol-map-id2-results .ol-id2-map-search-result {
+      display:block;
+      background-position: left top;
+      background-repeat: no-repeat;
+      padding-left:20px;
+      font-size:80%;
+      font-weight:bold;
+      text-decoration:none;
+      color:#3a4953;
+      background-color:rgba(220, 220, 220, 0.5);
+      margin-bottom:2px;
+      border-radius:0.3em;
+      cursor:pointer;
+    }
+    
+    .ol-map-id2-results .ol-id2-map-search-result:hover {
+      background-color:rgba(220, 220, 255, 0.9);
+    }
+    
+    .ol-map-id2-results .ol-id2-map-search-result .latlon {
+      font-size:70%;
+      display:block;
+    }
+    
+    .ol-map-id2-results .ol-id2-map-search-result .latlon > * {
+      font-style:italic;
+    }
+    
+    .ol-map-id2-controls {
+      display:block;
       display:flex;
       flex-direction:row;
       align-items: center;
     }
     
-    /* serchbox */
-    .center-on-selection input {
+    /* searchbox and center-on-selection button */
+    .ol-map-id2-controls input {
       flex-grow:100;
       width:200px;
       height:16px;
@@ -154,11 +198,15 @@
       transition:width 0.5s ease-out;
     }
     
-    .center-on-selection input:focus {
+    .ol-map-id2-controls input:focus {
       width:400px;
     }
     
-    .center-on-selection button::before {
+    .ol-map-id2-controls .ol-map-search-button {
+      margin-right:0.25em;
+    }
+    
+    .ol-map-id2-controls button::before {
       top: -25%;
       right: 120%;
       left:auto;
@@ -166,7 +214,7 @@
       font-weight:normal;
     }
     
-    .center-on-selection button::after {
+    .ol-map-id2-controls button::after {
       top: 25%;
       right: 100%;
       left:auto;
@@ -179,21 +227,22 @@
       -webkit-transition:background-color 0.3s ease-out, border-left-color 0.3s ease-out;
     }
     
-    .center-on-selection > button:hover::after {
+    .ol-map-id2-controls button:hover::after {
       border-left-color:rgba(6,6,6,1);
       border-top-color:transparent !important;
     }
     
-    .center-on-selection > button {
+    .ol-map-id2-controls button {
       opacity:1;
       transition:opacity 0.7s ease-in;
       -moz-transition:opacity 0.7s ease-in;
       -webkit-transition:opacity 0.7s ease-in;
     }
     
-    .center-on-selection > button[disabled] {
+    .ol-map-id2-controls button[disabled] {
       opacity:0;
     }
+    
     
     .image-search-inputs-container table {
       max-width:300px;
@@ -271,6 +320,7 @@
                 button.setAttribute('data-tooltip', 'Center map on selection')
                 button.setAttribute('type', 'button')
                 button.setAttribute('disabled', 'disabled')
+                button.setAttribute('class', 'ol-map-center-on-selection-button')
                 
                 /**
                   * address geocode searchbox
@@ -278,6 +328,26 @@
                 var searchbox = document.createElement('input');
                 searchbox.setAttribute('type', 'text')
                 searchbox.setAttribute('placeholder', 'Search for addresses')
+                searchbox.setAttribute('class', 'ol-map-search-box')
+                
+                /**
+                  * start address geocode search button
+                  */
+                var searchbutton = document.createElement('button');
+                searchbutton.innerHTML = '🔍';
+                searchbutton.setAttribute('data-tooltip', 'Search for this address')
+                searchbutton.setAttribute('type', 'button')
+                searchbutton.setAttribute('disabled', 'disabled')
+                searchbutton.setAttribute('class', 'ol-map-search-button')
+                
+                /**
+                  * search and center-on-selection container
+                  */
+                var controls_container = document.createElement('div');
+                controls_container.className = 'ol-map-id2-controls';
+                controls_container.appendChild(searchbox);
+                controls_container.appendChild(searchbutton);
+                controls_container.appendChild(button);
 
                 var this_ = this;
                 var centerMap = function(e) {
@@ -331,15 +401,27 @@
 
                 
                 /**
+                  * address geocoding search results container
+                  */
+                var results_container = document.createElement('div');
+                results_container.className = 'ol-map-id2-results';
+                
+                /**
                   * the container for all of this
                   */
-                var element = document.createElement('div');
-                element.className = 'center-on-selection ol-unselectable ol-control';
-                element.appendChild(searchbox);
-                element.appendChild(button);
-
+                var id2_container = document.createElement('div');
+                id2_container.className = 'ol-map-id2 ol-unselectable ol-control';
+                id2_container.appendChild(controls_container);
+                id2_container.appendChild(results_container);
+                
+                /**
+                  * container for geocoding results
+                  *
+                var results_container = document.createElement('div');
+                results_container.className = 'ol-map-id2-search-results ol-unselectable ol-control';*/
+                
                 ol.control.Control.call(this, {
-                  element: element,
+                  element: id2_container,
                   target: options.target
                 });
 
@@ -401,7 +483,7 @@
                 id2.vectorSource.addFeature(id2.circleFeature);
                 
                 // enable the "center on selection" button
-                $('.center-on-selection > button').removeAttr('disabled')
+                $('.ol-map-id2-controls .ol-map-center-on-selection-button').removeAttr('disabled')
               }
               
               
@@ -458,13 +540,37 @@
           id2.setCircle()
           /* pan animation */
           var panimation = ol.animation.pan({
-            source: map.getView().getCenter()
+            source: map.getView().getCenter(),
+            duration: 750,
           });
           map.beforeRender(panimation);
           /* center */
           map.getView().setCenter(
             id2.circle.getCenter()
           )
+        })
+        /* handle the map address geocoding search button */
+        $('.ol-map-id2-controls .ol-map-search-box')
+          .on('input', function(e){
+            if ($(this).val()) {
+              $('.ol-map-id2-controls .ol-map-search-button').removeAttr('disabled')
+            } else {
+              $('.ol-map-id2-controls .ol-map-search-button').attr('disabled', 'disabled')
+            }
+          })
+          .on('keypress', function(e){
+            if (e.which == 13) {
+              id2.geoSearch()
+            }
+          })
+        $('.ol-map-id2-controls .ol-map-search-button').on('click', function(e){
+          id2.geoSearch()
+        })
+        /* searching upon enter */
+        $('.image-search-inputs-container input[name=q]').on('keypress', function(e){
+          if (e.which == 13) {
+            start_search()
+          }
         })
     });
     
@@ -537,6 +643,45 @@
                 window.setTimeout(function() { check_search_results(data.searchid); }, data.checkin_after);
             }
         });
+    }
+    
+    id2.geoSearch = function() {
+      $('.ol-map-id2-results').empty()
+      var q = 'http://nominatim.openstreetmap.org/search?format=json&q=' + $('.ol-map-id2-controls  input.ol-map-search-box').val()
+      console.log('calling: ' + q)
+      $.getJSON(
+        q,
+        function(data) {
+          $('.ol-map-id2-controls .ol-map-search-box').blur()
+          if (data) {
+            for (item in data) {
+              var item = data[item];
+              result = $('<a class="ol-id2-map-search-result" style="background-image:url(' + item.icon + ')"/>');
+              result.append("<span class=\"display-name\">" + item.display_name + "</span>")
+              result.append("<span class=\"latlon\">lat: <lat>" + item.lat + "</lat>, lon: <lon>" + item.lon + "</lon></span>")
+              result.on('click', id2.geoResultClick)
+              $('.ol-map-id2-results').append(result);
+            }
+          }
+      });
+    }
+    
+    id2.geoResultClick = function(){
+      /* pan animation */
+      var panimation = ol.animation.pan({
+        source: map.getView().getCenter(),
+        duration: 750,
+      });
+      map.beforeRender(panimation);
+      /* center */
+      map.getView().setCenter(
+        ol.proj.transform(
+          [$(this).find('lon').html() * 1, $(this).find('lat').html() * 1],
+          'EPSG:4326',
+          'EPSG:3857'
+        )
+      )
+      return false;
     }
 </script>
 {% endblock %}
