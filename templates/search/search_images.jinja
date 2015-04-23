@@ -538,14 +538,14 @@
               /* calculating a sane radius from a given zoom level */
               id2.getRadiusRootFromZoom = function(zoom) {
                 if (zoom <= 7) return 22359
-                return (22359 / (zoom - 7)) // FIXME this needs more work
+                return (22359 / (zoom - 6)) // FIXME this needs more work
               }
               
               
               /* calculating a sane radius from a given zoom level */
               id2.getZoomFromRadiusRoot = function(radius) {
                 if (radius >= 22359) return 7
-                return ( (22359 / radius) + 7 ) // FIXME this needs more work
+                return ( (22359 / radius) + 6 ) // FIXME this needs more work
               }
               
             </script>
@@ -652,9 +652,11 @@
       /* only if the circle has not yet been set */
       if (id2.circle == false) {
         radius = id2.getRadiusRootFromZoom(map.getView().getZoom())
+        console.log('zoom: ' + map.getView().getZoom() + ' ; radius: ' + radius)
         $('input[name=radius_root]')
           .val(radius)
           .trigger('input')
+          //.trigger('change') // DEBUG
       }
     })
 
