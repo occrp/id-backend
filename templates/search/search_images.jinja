@@ -144,11 +144,43 @@
       width:256px;
       overflow-y:scroll;
       float:right;
-      height:320px;
-      padding-top:1em;
+      height:310px;
+      margin-top:2em;
+    }
+    
+    .ol-map-id2-results-close,
+    .ol-map-id2-results-stats {
+      display:block;
+      font-size:70%;
+      font-weight:900;
+      position:absolute;
+      top:3em;
+    }
+    
+    .ol-map-id2-results-stats {
+      left:0.3em;
+      color:black;
+    }
+    
+    .ol-map-id2-results-close {
+      right:0.3em;
+      color:white;
+      background-color:rgba(0,60,136,.5);
+      border-radius:0.5em;
+      padding:0em 0.5em;
+      cursor:pointer;
+    }
+    
+    .ol-map-id2-results-close:hover {
+      background-color:#7b98bc;
     }
     
     .ol-map-id2-results:empty {
+      display:none;
+    }
+    
+    .ol-map-id2-results:empty + .ol-map-id2-results-stats,
+    .ol-map-id2-results:empty + .ol-map-id2-results-stats + .ol-map-id2-results-close {
       display:none;
     }
     
@@ -407,12 +439,28 @@
                 results_container.className = 'ol-map-id2-results';
                 
                 /**
+                  * closing the results view
+                  */
+                var results_close = document.createElement('div');
+                results_close.className = 'ol-map-id2-results-close';
+                results_close.innerHTML = '× close';
+                
+                /**
+                  * result stats
+                  */
+                var results_stats = document.createElement('div');
+                results_stats.className = 'ol-map-id2-results-stats';
+                results_stats.innerHTML = 'found X results';
+                
+                /**
                   * the container for all of this
                   */
                 var id2_container = document.createElement('div');
                 id2_container.className = 'ol-map-id2 ol-unselectable ol-control';
                 id2_container.appendChild(controls_container);
                 id2_container.appendChild(results_container);
+                id2_container.appendChild(results_stats);
+                id2_container.appendChild(results_close);
                 
                 /**
                   * container for geocoding results
@@ -469,8 +517,8 @@
               id2.setCircle = function() {
                 var radius = ($('input[name=radius]').val() / ol.proj.METERS_PER_UNIT.m) * 2;
                 
-                var lon = $('input[name=lon]').val() * 1
-                var lat = $('input[name=lat]').val() * 1
+                var lon = $('input[name=lon]').val() * 1 // we need a number here
+                var lat = $('input[name=lat]').val() * 1 // an here
                 
                 id2.circle = new ol.geom.Circle(
                   ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'), radius, 'XY'
@@ -572,6 +620,10 @@
             start_search()
           }
         })
+        /* close search results */
+        $('.ol-map-id2-results-close').on('click', function(){
+          $('.ol-map-id2-results').empty();
+        })
     });
     
     
@@ -654,6 +706,7 @@
         function(data) {
           $('.ol-map-id2-controls .ol-map-search-box').blur()
           if (data) {
+            $('.ol-map-id2-results-stats').html('found ' + data.length + ' results')
             for (item in data) {
               var item = data[item];
               result = $('<a class="ol-id2-map-search-result" style="background-image:url(' + item.icon + ')"/>');
