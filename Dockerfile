@@ -12,7 +12,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -
     #postgresql-client libpq-dev \
     #sqlite3 \
 
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get -y autoremove
+#RUN export DEBIAN_FRONTEND=noninteractive && apt-get -y autoremove
     
 RUN mkdir -p /usr/src/id2
 WORKDIR /usr/src/id2
