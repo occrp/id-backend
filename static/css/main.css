@@ -1,4 +1,4 @@
-@import url(//fonts.googleapis.com/css?family=Roboto:300,400,500,700&subset=latin,greek,vietnamese,latin-ext,cyrillic,cyrillic-ext,greek-ext);
+@import "../components/roboto-font/roboto.css";
 
 @import "../components/select2/select2.css";
 /*!
