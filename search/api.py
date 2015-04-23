@@ -248,7 +248,7 @@ class ImageSearchYouTube(ImageSearcher):
         # 4/G7xoBUxsmulnmIzYiri6bYTpJ0cDOLEyqUaZ6UZZHrw.QrS6tjsp5YYQyjz_MlCJoi2WwKLNmQI
         import argparse
 
-        flow = oauth2client.flow_from_clientsecrets("/home/smari/Projects/OCCRP/id2/google_api.cred",
+        flow = oauth2client.flow_from_clientsecrets("google_api.cred",
             scope='https://www.googleapis.com/auth/youtube.readonly')
 
         parser = argparse.ArgumentParser(
