@@ -69,10 +69,20 @@
         float: right;
     }
     
+    .image-search-origin .provider {
+      background: #4d6f93;
+      padding: 0.1em 0.5em;
+      border-radius: 0.2em;
+      color: white;
+      font-size:90%;
+      font-weight:bold;
+      font-variant:normal;
+    }
+    
     .image-search-form {
         display:flex;
         flex-direction:row;
-        align-items: center;
+        align-items: stretch;
     }
     
     .image-search-form > .image-search-inputs-container {
@@ -115,6 +125,7 @@
     .image-search-form > .image-search-map-container {
         flex-grow:100;
         margin-left:1em;
+        margin-top:1em;
     }
 
     #searching_notice {
@@ -339,7 +350,7 @@
     }
     
     .map {
-      height: 400px;
+      height: 100%;
       width: 100%;
     }
     
@@ -376,15 +387,18 @@
       opacity:1.0
     }
     
-    td.search-providers div input[value=vkontakte] + span {
+    td.search-providers div input[value=VKontakte] + span,
+    .provider.VKontakte {
       background:#4d6f93;
     }
     
-    td.search-providers div input[value=instagram] + span {
+    td.search-providers div input[value=Instagram] + span,
+    .provider.Instagram {
       background:#305f87;
     }
     
-    td.search-providers div input[value=youtube] + span {
+    td.search-providers div input[value=YouTube] + span,
+    .provider.YouTube {
       background:#c3191e;
     }
     
@@ -413,205 +427,14 @@
                 <tr><th>End:</th><td><input name="enddate" type="date"/><input name="endtime" type="time"/></td></tr>
                 <tr><th colspan="2">Services:</th></tr>
                 <tr><td colspan="2" class="instructions">Choose services to search at.</td></tr>
-                <tr><td colspan="2" class="search-providers">{{ search_providers }}<div>
-                  <label><input type="checkbox" checked="checked" name="search_providers[]" value="vkontakte"/><span>VKontakte</span></label>
-                  <label><input type="checkbox" checked="checked" name="search_providers[]" value="instagram"/><span>Instagram</span></label>
-                  <label><input type="checkbox" checked="checked" name="search_providers[]" value="youtube"/><span>YouTube</span></label>
-                </div></td></tr>
+                <tr><td colspan="2" class="search-providers"><div>{% for provider in search_providers %}
+                  <label><input type="checkbox" checked="checked" name="search_providers[]" value="{{ provider }}"/><span><i class="fa fa-{{ provider|lower }}"></i>{{ provider }}</span></label>
+                {% endfor %}</div></td></tr>
                 <tr><td colspan="2"><input id="image_search_submit" class="btn btn-primary pull-right" type="button" value="Search"/></td></tr>
             </table>
             <input name="radius" value="50000" type="hidden"/>
         </div>
-        <div class="image-search-map-container">
-            <div id="map" class="map"></div>
-            <script type="text/javascript">
-            
-              /**
-                * Define a namespace for the application.
-                * http://openlayers.org/en/v3.2.1/examples/custom-controls.js
-                */
-              window.id2 = {};
-              var id2 = window.id2;
-            
-              /**
-                * @constructor
-                * @extends {ol.control.Control}
-                * @param {Object=} opt_options Control options.
-                * 
-                * id2 controls on the map -- ceter-on-selection and address geocoding
-                */
-              id2.ID2Controls = function(opt_options) {
-
-                var options = opt_options || {};
-
-                /**
-                  * center-on-selection button
-                  */
-                var button = document.createElement('button');
-                button.innerHTML = 'ʘ';
-                button.setAttribute('data-tooltip', 'Center map on selection')
-                button.setAttribute('type', 'button')
-                button.setAttribute('disabled', 'disabled')
-                button.setAttribute('class', 'ol-map-center-on-selection-button')
-                
-                /**
-                  * address geocode searchbox
-                  */
-                var searchbox = document.createElement('input');
-                searchbox.setAttribute('type', 'text')
-                searchbox.setAttribute('placeholder', 'Search for addresses')
-                searchbox.setAttribute('class', 'ol-map-search-box')
-                
-                /**
-                  * start address geocode search button
-                  */
-                var searchbutton = document.createElement('button');
-                searchbutton.innerHTML = '🔍';
-                searchbutton.setAttribute('data-tooltip', 'Search for this address')
-                searchbutton.setAttribute('type', 'button')
-                searchbutton.setAttribute('disabled', 'disabled')
-                searchbutton.setAttribute('class', 'ol-map-search-button')
-                
-                /**
-                  * search and center-on-selection container
-                  */
-                var controls_container = document.createElement('div');
-                controls_container.className = 'ol-map-id2-controls';
-                controls_container.appendChild(searchbox);
-                controls_container.appendChild(searchbutton);
-                controls_container.appendChild(button);
-
-                var this_ = this;
-                var centerMap = function(e) {
-                  /* this is where magic happens */
-                  if (id2.circle != false) {
-                    id2.flyToExtent(id2.circle.getExtent())
-                  }
-                  /* not submitting the form is a good idea */
-                  return false;
-                };
-
-                /**
-                  * event listeners for the button
-                  */
-                button.addEventListener('click', centerMap, false);
-                button.addEventListener('touchstart', centerMap, false);
-
-                
-                /**
-                  * address geocoding search results container
-                  */
-                var results_container = document.createElement('div');
-                results_container.className = 'ol-map-id2-results';
-                
-                /**
-                  * closing the results view
-                  */
-                var results_close = document.createElement('div');
-                results_close.className = 'ol-map-id2-results-close';
-                results_close.innerHTML = '× close';
-                
-                /**
-                  * result stats
-                  */
-                var results_stats = document.createElement('div');
-                results_stats.className = 'ol-map-id2-results-stats';
-                results_stats.innerHTML = 'found X results';
-                
-                /**
-                  * the container for all of this
-                  */
-                var id2_container = document.createElement('div');
-                id2_container.className = 'ol-map-id2 ol-unselectable ol-control';
-                id2_container.appendChild(controls_container);
-                id2_container.appendChild(results_container);
-                id2_container.appendChild(results_stats);
-                id2_container.appendChild(results_close);
-                
-                /**
-                  * container for geocoding results
-                  *
-                var results_container = document.createElement('div');
-                results_container.className = 'ol-map-id2-search-results ol-unselectable ol-control';*/
-                
-                ol.control.Control.call(this, {
-                  element: id2_container,
-                  target: options.target
-                });
-
-              };
-              ol.inherits(id2.ID2Controls, ol.control.Control);
-              
-
-              //
-              // Create map, giving it a rotate to north control.
-              //
-            
-              var map = new ol.Map({
-                controls: ol.control.defaults({
-                  attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
-                    collapsible: false
-                  })
-                }).extend([
-                  new id2.ID2Controls()
-                ]),
-                target: 'map',
-                layers: [
-                  new ol.layer.Tile({
-                    source: new ol.source.MapQuest({
-                      layer:"osm"
-                    })
-                  })
-                ],
-                view: new ol.View({
-                  center: ol.proj.transform([28.80, 47.00], 'EPSG:4326', 'EPSG:3857'),
-                  zoom: 4,
-                  maxZoom: 17
-                })
-              });
-              
-              /* vector source and layer for our range circle */
-              id2.vectorSource = new ol.source.Vector({
-                projection: 'EPSG:4326'
-              });
-              id2.vectorLayer = new ol.layer.Vector({
-                source: id2.vectorSource
-              });
-              map.addLayer(id2.vectorLayer);
-              
-              /* the circle */
-              id2.circle = false
-              id2.circleFeature = false
-              
-              id2.setCircle = function() {
-                var radius = ($('input[name=radius]').val() / ol.proj.METERS_PER_UNIT.m) * 2;
-                
-                var lon = $('input[name=lon]').val() * 1 // we need a number here
-                var lat = $('input[name=lat]').val() * 1 // an here
-                
-                id2.circle = new ol.geom.Circle(
-                  ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'), radius, 'XY'
-                )
-                if (id2.circleFeature != false) {
-                  id2.vectorSource.removeFeature(id2.circleFeature)
-                }
-                id2.circleFeature = new ol.Feature(id2.circle);
-                // Source and vector layer
-                id2.vectorSource.addFeature(id2.circleFeature);
-                
-                // enable the "center on selection" button
-                $('.ol-map-id2-controls .ol-map-center-on-selection-button').removeAttr('disabled')
-              }
-              
-              
-              /* calculating a sane radius from a given zoom level */
-              id2.getRadiusRootFromZoom = function(zoom) {
-                if (zoom <= 7) return 22359
-                return (22359 / Math.pow(1.4, (zoom - 6)))
-              }
-              
-            </script>
-        </div>
+        <div class="image-search-map-container"><div id="map" class="map"></div></div>
         </form>
         <div id="searching_notice" class="hide" role="alert">Searching... <i class="fa fa-spinner fa-pulse"></i></div>
     </div>
@@ -624,6 +447,190 @@
 
 {% block after_js %}
 <script>
+
+    /**
+      * Define a namespace for the application.
+      * http://openlayers.org/en/v3.2.1/examples/custom-controls.js
+      */
+    window.id2 = {};
+    var id2 = window.id2;
+  
+    /**
+      * @constructor
+      * @extends {ol.control.Control}
+      * @param {Object=} opt_options Control options.
+      * 
+      * id2 controls on the map -- ceter-on-selection and address geocoding
+      */
+    id2.ID2Controls = function(opt_options) {
+
+      var options = opt_options || {};
+
+      /**
+        * center-on-selection button
+        */
+      var button = document.createElement('button');
+      button.innerHTML = 'ʘ';
+      button.setAttribute('data-tooltip', 'Center map on selection')
+      button.setAttribute('type', 'button')
+      button.setAttribute('disabled', 'disabled')
+      button.setAttribute('class', 'ol-map-center-on-selection-button')
+      
+      /**
+        * address geocode searchbox
+        */
+      var searchbox = document.createElement('input');
+      searchbox.setAttribute('type', 'text')
+      searchbox.setAttribute('placeholder', 'Search for addresses')
+      searchbox.setAttribute('class', 'ol-map-search-box')
+      
+      /**
+        * start address geocode search button
+        */
+      var searchbutton = document.createElement('button');
+      searchbutton.innerHTML = '🔍';
+      searchbutton.setAttribute('data-tooltip', 'Search for this address')
+      searchbutton.setAttribute('type', 'button')
+      searchbutton.setAttribute('disabled', 'disabled')
+      searchbutton.setAttribute('class', 'ol-map-search-button')
+      
+      /**
+        * search and center-on-selection container
+        */
+      var controls_container = document.createElement('div');
+      controls_container.className = 'ol-map-id2-controls';
+      controls_container.appendChild(searchbox);
+      controls_container.appendChild(searchbutton);
+      controls_container.appendChild(button);
+
+      var this_ = this;
+      var centerMap = function(e) {
+        /* this is where magic happens */
+        if (id2.circle != false) {
+          id2.flyToExtent(id2.circle.getExtent())
+        }
+        /* not submitting the form is a good idea */
+        return false;
+      };
+
+      /**
+        * event listeners for the button
+        */
+      button.addEventListener('click', centerMap, false);
+      button.addEventListener('touchstart', centerMap, false);
+
+      
+      /**
+        * address geocoding search results container
+        */
+      var results_container = document.createElement('div');
+      results_container.className = 'ol-map-id2-results';
+      
+      /**
+        * closing the results view
+        */
+      var results_close = document.createElement('div');
+      results_close.className = 'ol-map-id2-results-close';
+      results_close.innerHTML = '× close';
+      
+      /**
+        * result stats
+        */
+      var results_stats = document.createElement('div');
+      results_stats.className = 'ol-map-id2-results-stats';
+      results_stats.innerHTML = 'found X results';
+      
+      /**
+        * the container for all of this
+        */
+      var id2_container = document.createElement('div');
+      id2_container.className = 'ol-map-id2 ol-unselectable ol-control';
+      id2_container.appendChild(controls_container);
+      id2_container.appendChild(results_container);
+      id2_container.appendChild(results_stats);
+      id2_container.appendChild(results_close);
+      
+      /**
+        * container for geocoding results
+        *
+      var results_container = document.createElement('div');
+      results_container.className = 'ol-map-id2-search-results ol-unselectable ol-control';*/
+      
+      ol.control.Control.call(this, {
+        element: id2_container,
+        target: options.target
+      });
+
+    };
+    ol.inherits(id2.ID2Controls, ol.control.Control);
+    
+
+    //
+    // Create map, giving it a rotate to north control.
+    //
+  
+    var map = new ol.Map({
+      controls: ol.control.defaults({
+        attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+          collapsible: false
+        })
+      }).extend([
+        new id2.ID2Controls()
+      ]),
+      target: 'map',
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.MapQuest({
+            layer:"osm"
+          })
+        })
+      ],
+      view: new ol.View({
+        center: ol.proj.transform([28.80, 47.00], 'EPSG:4326', 'EPSG:3857'),
+        zoom: 4,
+        maxZoom: 17
+      })
+    });
+    
+    /* vector source and layer for our range circle */
+    id2.vectorSource = new ol.source.Vector({
+      projection: 'EPSG:4326'
+    });
+    id2.vectorLayer = new ol.layer.Vector({
+      source: id2.vectorSource
+    });
+    map.addLayer(id2.vectorLayer);
+    
+    /* the circle */
+    id2.circle = false
+    id2.circleFeature = false
+    
+    id2.setCircle = function() {
+      var radius = ($('input[name=radius]').val() / ol.proj.METERS_PER_UNIT.m) * 2;
+      
+      var lon = $('input[name=lon]').val() * 1 // we need a number here
+      var lat = $('input[name=lat]').val() * 1 // an here
+      
+      id2.circle = new ol.geom.Circle(
+        ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'), radius, 'XY'
+      )
+      if (id2.circleFeature != false) {
+        id2.vectorSource.removeFeature(id2.circleFeature)
+      }
+      id2.circleFeature = new ol.Feature(id2.circle);
+      // Source and vector layer
+      id2.vectorSource.addFeature(id2.circleFeature);
+      
+      // enable the "center on selection" button
+      $('.ol-map-id2-controls .ol-map-center-on-selection-button').removeAttr('disabled')
+    }
+    
+    
+    /* calculating a sane radius from a given zoom level */
+    id2.getRadiusRootFromZoom = function(zoom) {
+      if (zoom <= 7) return 22359
+      return (22359 / Math.pow(1.4, (zoom - 6)))
+    }
 
     var current_search_id = 0;
 
@@ -734,7 +741,7 @@
                     result.append('<div class="image-search-caption">'+item.data.caption+'</div>');
                     result.append('<div class="image-search-link"><a href="'+item.data.linkurl+'">'+item.data.linktitle+'</a></div>');
                     result.append('<div class="image-search-date">'+timestamp+'</div>');
-                    result.append('<div class="image-search-origin">Source: '+item.provider+'</div>');
+                    result.append('<div class="image-search-origin">Source: <span class="provider ' + item.provider + '">'+ item.provider + '</span></div>');
                     $("#search_results").append(result);
                 }
                 if (data.done || data.checkin_after == -1) {
@@ -764,12 +771,7 @@
     
     id2.geoSearch = function() {
       $('.ol-map-id2-results').empty()
-<<<<<<< HEAD
-      var q = 'http://nominatim.openstreetmap.org/search?format=json&q=' + $('.ol-map-id2-controls  input.ol-map-search-box').val()
-=======
       var q = 'https://nominatim.openstreetmap.org/search?format=json&q=' + $('.ol-map-id2-controls  input.ol-map-search-box').val()
-      console.log('calling: ' + q)
->>>>>>> b8fc5eab08850d605dcbcb957a8938809379193a
       $.getJSON(
         q,
         function(data) {
