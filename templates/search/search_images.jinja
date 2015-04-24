@@ -42,9 +42,9 @@
         margin-top:0.6em
     }
     
-    .image-search-caption:hover {
+    /*.image-search-caption:hover {
       overflow: visible;
-    }
+    }*/
     
     .image-search-link {
       display:block;
@@ -129,7 +129,8 @@
     }
 
     #searching_notice {
-        position: absolute;
+        position: fixed;
+        padding-top:20%;
         top: 0px;
         left: 0px;
         height: 100%;
@@ -383,6 +384,11 @@
       font-weight:bold;
     }
     
+    .provider i.fa {
+      margin-right:0.5em;
+      margin-top:-0.2em;
+    }
+    
     td.search-providers div input:checked + span {
       opacity:1.0
     }
@@ -428,7 +434,12 @@
                 <tr><th colspan="2">Services:</th></tr>
                 <tr><td colspan="2" class="instructions">Choose services to search at.</td></tr>
                 <tr><td colspan="2" class="search-providers"><div>{% for provider in search_providers %}
-                  <label><input type="checkbox" checked="checked" name="search_providers[]" value="{{ provider }}"/><span><i class="fa fa-{{ provider|lower }}"></i>{{ provider }}</span></label>
+                  {% if provider|lower == 'vkontakte' %}
+                    {% set provider_icon = 'vk' %}
+                  {% else %}
+                    {% set provider_icon = provider|lower %}
+                  {% endif %}
+                  <label class="provider"><input type="checkbox" checked="checked" name="search_providers[]" value="{{ provider }}"/><span><i class="fa fa-{{ provider_icon }}"></i>{{ provider }}</span></label>
                 {% endfor %}</div></td></tr>
                 <tr><td colspan="2"><input id="image_search_submit" class="btn btn-primary pull-right" type="button" value="Search"/></td></tr>
             </table>
@@ -741,7 +752,7 @@
                     result.append('<div class="image-search-caption">'+item.data.caption+'</div>');
                     result.append('<div class="image-search-link"><a href="'+item.data.linkurl+'">'+item.data.linktitle+'</a></div>');
                     result.append('<div class="image-search-date">'+timestamp+'</div>');
-                    result.append('<div class="image-search-origin">Source: <span class="provider ' + item.provider + '">'+ item.provider + '</span></div>');
+                    result.append('<div class="image-search-origin">Source: <span class="provider ' + item.provider + '"><i class="fa fa-' + (item.provider=='VKontakte' ? 'vk' : item.provider.toLowerCase()) + '"></i>'+ item.provider + '</span></div>');
                     $("#search_results").append(result);
                 }
                 if (data.done || data.checkin_after == -1) {
