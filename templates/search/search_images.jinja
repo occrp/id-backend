@@ -159,7 +159,7 @@
     
     .ol-map-id2-results-stats {
       left:0.3em;
-      color:black;
+      color:#7b98bc;
     }
     
     .ol-map-id2-results-close {
@@ -385,41 +385,7 @@
                 var centerMap = function(e) {
                   /* this is where magic happens */
                   if (id2.circle != false) {
-                    
-                    /* pan animation */
-                    var panimation = ol.animation.pan({
-                      source: this_.getMap().getView().getCenter()
-                    });
-                    
-                    /* bounce animation */
-                    var bouncimation = ol.animation.bounce({
-                      duration: 2000,
-                      resolution: 9783.93962050256,
-                    });
-                    
-                    /* zoom animation */
-                    var zoomination = ol.animation.zoom({
-                      resolution: this_.getMap().getView().getResolution()
-                    });
-                    
-                    /* target zoom level */
-                    var zoom = id2.getZoomFromRadiusRoot(
-                                 $('[name=radius_root]').val()
-                               )
-                    
-                    /* set teh animations */
-                    if (this_.getMap().getView().getZoom() >= zoom) {
-                      this_.getMap().beforeRender(zoomination, bouncimation, panimation);
-                    } else {
-                      this_.getMap().beforeRender(zoomination, panimation);
-                    }
-                    
-                    /* center */
-                    this_.getMap().getView().setCenter(
-                      id2.circle.getCenter()
-                    )
-                    /* zoom */
-                    this_.getMap().getView().setZoom(zoom)
+                    id2.flyToExtent(id2.circle.getExtent())
                   }
                   /* not submitting the form is a good idea */
                   return false;
@@ -492,12 +458,15 @@
                 target: 'map',
                 layers: [
                   new ol.layer.Tile({
-                    source: new ol.source.MapQuest({"layer":"osm"})
+                    source: new ol.source.MapQuest({
+                      layer:"osm"
+                    })
                   })
                 ],
                 view: new ol.View({
                   center: ol.proj.transform([28.80, 47.00], 'EPSG:4326', 'EPSG:3857'),
-                  zoom: 4
+                  zoom: 4,
+                  maxZoom: 16
                 })
               });
               
@@ -712,6 +681,11 @@
             for (item in data) {
               var item = data[item];
               result = $('<a class="ol-id2-map-search-result" style="background-image:url(' + item.icon + ')"/>');
+              result
+                .attr('minlat', item.boundingbox[0])
+                .attr('maxlat', item.boundingbox[1])
+                .attr('minlon', item.boundingbox[2])
+                .attr('maxlon', item.boundingbox[3])
               result.append("<span class=\"display-name\">" + item.display_name + "</span>")
               result.append("<span class=\"latlon\">lat: <lat>" + item.lat + "</lat>, lon: <lon>" + item.lon + "</lon></span>")
               result.on('click', id2.geoResultClick)
@@ -721,21 +695,71 @@
       });
     }
     
-    id2.geoResultClick = function(){
+    
+    /* bouncing and panning the map to fit an extent (i.e. selection circle, search result, etc) neatly */
+    id2.flyToExtent = function(extent){
       /* pan animation */
       var panimation = ol.animation.pan({
         source: map.getView().getCenter(),
-        duration: 750,
+        duration: 2000,
       });
-      map.beforeRender(panimation);
-      /* center */
-      map.getView().setCenter(
-        ol.proj.transform(
-          [$(this).find('lon').html() * 1, $(this).find('lat').html() * 1],
-          'EPSG:4326',
-          'EPSG:3857'
-        )
+      map.beforeRender(panimation)
+      
+      /* resolution for our target extent */
+      var res = map.getView().getResolutionForExtent(
+        extent,
+        map.getSize()
       )
+      
+      /* our current extent */
+      var cur_extent = map.getView().calculateExtent(
+        map.getSize()
+      )
+      
+      /**
+        * do we need to bounce, or zoom?
+        * zoom   : when current zoom level is higher than target zoom level AND the extent is within the current view
+        * bounce : otherwise
+        */
+      if(
+        (map.getView().getResolution() > res * 2) &&   // zoom level
+        (ol.extent.containsExtent(cur_extent, extent)) // extent within the current view
+      ) {
+        /* zoom! */
+        var zoomination = ol.animation.zoom({
+          duration: 2000,
+          resolution: map.getView().getResolution(),
+        });
+        map.beforeRender(zoomination);
+      } else {
+        /* bounce! */
+        var bouncimation = ol.animation.bounce({
+          duration: 2000,
+          resolution: 9783.93962050256,
+        });
+        map.beforeRender(bouncimation);
+      }
+      
+      /* go */
+      map.getView().fitExtent(extent, map.getSize());
+    }
+    
+    /* show the clicked result on the map */
+    id2.geoResultClick = function(){
+      /* extent */
+      var extent = [
+        $(this).attr('minlon') * 1,
+        $(this).attr('minlat') * 1,
+        $(this).attr('maxlon') * 1,
+        $(this).attr('maxlat') * 1
+      ]
+      console.log('extent = [ ' + extent[0] + ', ' + extent[1] + ', ' + extent[2] + ', ' + extent[3] + ']');
+      /* translate */
+      extent = ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", "EPSG:3857"));
+      /* fly */
+      id2.flyToExtent(extent)
+      
+      /* that's it, don't  handle this click any further */
       return false;
     }
 </script>
