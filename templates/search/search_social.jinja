@@ -36,7 +36,7 @@ var id2 = {};
 id2.startSocialSearch = function() {
     $("#search_results").empty();
     $("#search_statistics").hide();
-    $.getJSON('{{url("search_social_follows")}}', $("#social-search-form").serialize(), function(data) {
+    $.getJSON('{{url("search_social_query")}}', $("#social-search-form").serialize(), function(data) {
         if (data.status) {
             $("#searching_notice").show();
             window.setTimeout(function() { id2.checkSearchResults(data.searchid); }, data.checkin_after);

@@ -56,14 +56,14 @@ class SearchRequest(models.Model):
     def list_providers(self, typeoverride=None):
         """Get a list of providers by name."""
         if not typeoverride:
-            typeoverride = self.type
+            typeoverride = self.search_type
         return [x.PROVIDER for x in searchproviders if x.TYPE == typeoverride]
 
     def get_providers(self, limit_to=None):
         """Get the providers."""
         if not limit_to:
             return searchproviders
-        return [x for x in searchproviders if x.PROVIDER in limit_to and (x.TYPE == self.type)]
+        return [x for x in searchproviders if x.PROVIDER in limit_to and (x.TYPE == self.search_type)]
 
 
 class SearchRunner(models.Model):
