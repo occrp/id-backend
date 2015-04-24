@@ -16,8 +16,8 @@ class SearchRequest(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     query = models.TextField()
 
-    def initiate_search(self):
-        for prov in searchproviders:
+    def initiate_search(self, limit_providers=None):
+        for prov in self.get_providers(limit_providers):
             provider = prov()
             provider.start(self)
 
@@ -51,6 +51,16 @@ class SearchRequest(models.Model):
         res.data = json_dumps(data)
         res.save()
         return res
+
+    def list_providers(self):
+        """Get a list of providers by name."""
+        return [x.PROVIDER for x in searchproviders]
+
+    def get_providers(self, limit_to=None):
+        """Get the providers."""
+        if not limit_to:
+            return searchproviders
+        return [x for x in searchproviders if x.PROVIDER in limit_to]
 
 
 class SearchRunner(models.Model):
