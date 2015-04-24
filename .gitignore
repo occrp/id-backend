@@ -46,6 +46,7 @@ coverage.xml
 
 # Django stuff:
 *.log
+*.log.*
 
 # Sphinx documentation
 docs/_build/
@@ -54,3 +55,6 @@ docs/_build/
 target/
 id/.models.py.kate-swp
 data/importers/UserProfile.dupes
+
+
+data/importers/GeoNames/output/*.csv

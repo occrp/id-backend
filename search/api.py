@@ -1,15 +1,10 @@
 import urllib
 import urllib2
-import httplib2
 import json
 from datetime import datetime
 import dateutil.parser
 from threading import Thread
 from core.utils import json_dumps, Credentials
-
-from oauth2client import tools as oauth2tools
-from oauth2client import client as oauth2client
-from oauth2client import file as oauth2file
 
 from apiclient.discovery import build
 from apiclient.errors import HttpError
@@ -122,18 +117,8 @@ class ImageSearchInstagram(ImageSearcher):
     # https://instagram.com/developer/endpoints/media/#get_media_search
     # you can only create an account via the mobile app o_O'
     # 
-    CLIENT_ID = "3664a35618ef491f8071dde568c08d38"
-    CLIENT_SECRET = "49f7cfb9d2d44403b6c4e74000243613"
-    CLIENT_CODE = "bec7d320fb084540bc36b91e5e8e6785"
-    WEBSITE_URL = "https://investigativedashboard.org"
-    REDIRECT_URI = "https://investigativedashboard.org"
-
     PROVIDER = "Instagram"
     URL = "https://api.instagram.com/v1/media/search"
-    OAUTH_TOKEN = {
-        "access_token":"2007223339.3664a35.bd4175cee6994603b46b6e66abdedb4b",
-        "user": {"username":"id000000id","bio":"","website":"","profile_picture":"https:\/\/igcdn-photos-g-a.akamaihd.net\/hphotos-ak-xpa1\/outbound-distillery\/t0.0-20\/OBPTH\/profiles\/anonymousUser.jpg","full_name":"ID","id":"2007223339"}
-    }
 
     def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
         # results
@@ -141,7 +126,7 @@ class ImageSearchInstagram(ImageSearcher):
         
         # search metadata
         meta = {}
-        meta["access_token"] = self.OAUTH_TOKEN["access_token"]
+        meta["access_token"] = Credentials().get("instagram", "access_token")
         #meta["q"] = q
         meta["lat"] = lat
         meta["lng"] = lon
@@ -236,30 +221,10 @@ class ImageSearchFlickr(ImageSearcher):
 
 class ImageSearchYouTube(ImageSearcher):
     PROVIDER = "YouTube"
-
     URL = "https://www.googleapis.com/youtube/v3/search"
 
     def search(self, q, lat=None, lon=None, radius=50000, startdate=None, enddate=None, offset=0, count=50):
-        # results
-        #credentials = Credentials().get_oauth2_credentials("google", 
-        #    scope='https://www.googleapis.com/auth/youtube.readonly')
-        # 4/G7xoBUxsmulnmIzYiri6bYTpJ0cDOLEyqUaZ6UZZHrw.QrS6tjsp5YYQyjz_MlCJoi2WwKLNmQI
-        import argparse
-
-        flow = oauth2client.flow_from_clientsecrets("google_api.cred",
-            scope='https://www.googleapis.com/auth/youtube.readonly')
-
-        parser = argparse.ArgumentParser(
-            description=__doc__,
-            formatter_class=argparse.RawDescriptionHelpFormatter,
-            parents=[oauth2tools.argparser])
-        args = parser.parse_args([])
-        storage = oauth2file.Storage('google_auth.dat')
-        credentials = storage.get()
-        if credentials is None or credentials.invalid:
-            credentials = oauth2tools.run_flow(flow, storage, args)
-        http = httplib2.Http()
-        http = credentials.authorize(http)
+        http = Credentials().get_oauth2_http("google", scope='https://www.googleapis.com/auth/youtube.readonly')
 
         youtube = build("youtube", "v3", http=http)
         results = []
