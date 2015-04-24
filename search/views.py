@@ -9,6 +9,12 @@ from core.mixins import JSONResponseMixin
 from core.utils import json_dumps
 
 
+class ImageSearchTemplate(TemplateView):
+    def get_context_data(self):
+      return {
+          'search_providers':SearchRequest().list_providers()#'image')
+        }
+
 class ImageSearchQuery(View, JSONResponseMixin):
     def get_context_data(self):
         query = {}
