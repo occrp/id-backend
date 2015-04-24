@@ -22,10 +22,38 @@ class ImageSearchResult(dict):
         self["linktitle"] = linktitle
 
 
-class ImageSearcher():
+class Searcher:
     def start(self, search):
         thread = Thread(target=self.run, args=(search,))
         thread.start()
+
+    def json_api_request(self, meta, force_get=False):
+        print "Search:%s:%s:Hitting: %s?%s" % (self.TYPE, self.PROVIDER, self.URL, urllib.urlencode(meta))
+        params = urllib.urlencode(meta)
+        if force_get:
+            r = urllib2.urlopen(self.URL + "?" + params)
+        else:
+            r = urllib2.urlopen(self.URL, params)
+        return json.loads(r.read())
+
+
+class SocialSearcher(Searcher):
+    TYPE = "social"
+
+    def run(self, search):
+        query = json.loads(search.query)
+        runner = search.create_runner(self.PROVIDER)
+
+        results = self.search(query)
+        for r in results:
+            search.create_result(self.PROVIDER, r)
+
+        runner.done = True
+        runner.results = len(results)
+        runner.save()
+
+class ImageSearcher(Searcher):
+    TYPE = "image"
 
     def run(self, search):
         # id, q, lat, lon, radius, startdate, enddate, offset, count
@@ -56,15 +84,6 @@ class ImageSearcher():
         runner.results = len(results)
         runner.save()
         # logger.log("ImageSearch:%s:FINISH" % (self.PROVIDER))
-
-    def json_api_request(self, meta, force_get=False):
-        print "ImageSearch:%s:Hitting: %s?%s" % (self.PROVIDER, self.URL, urllib.urlencode(meta))
-        params = urllib.urlencode(meta)
-        if force_get:
-            r = urllib2.urlopen(self.URL + "?" + params)
-        else:
-            r = urllib2.urlopen(self.URL, params)
-        return json.loads(r.read())
 
 
 class ImageSearchVK(ImageSearcher):
@@ -259,4 +278,4 @@ class ImageSearchYouTube(ImageSearcher):
 
 
 searchproviders = [ImageSearchInstagram, ImageSearchVK, ImageSearchYouTube]
-# ImageSearchFacebook, ImageSearchTwitter, ImageSearchGoogleImages, ImageSearchFlickr, ImageSearchYouTube
+# ImageSearchFacebook, ImageSearchTwitter, ImageSearchGoogleImages, ImageSearchFlickr

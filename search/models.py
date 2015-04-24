@@ -5,6 +5,7 @@ from core.utils import json_dumps, json_loads
 
 SEARCH_TYPES = (
     ('image', 'Image search'),
+    ('social', 'Social Network search'),
     ('podaci', 'Document search'),
     ('osoba', 'Graph search')
 )
@@ -52,15 +53,17 @@ class SearchRequest(models.Model):
         res.save()
         return res
 
-    def list_providers(self):
+    def list_providers(self, typeoverride=None):
         """Get a list of providers by name."""
-        return [x.PROVIDER for x in searchproviders]
+        if not typeoverride:
+            typeoverride = self.search_type
+        return [x.PROVIDER for x in searchproviders if x.TYPE == typeoverride]
 
     def get_providers(self, limit_to=None):
         """Get the providers."""
         if not limit_to:
             return searchproviders
-        return [x for x in searchproviders if x.PROVIDER in limit_to]
+        return [x for x in searchproviders if x.PROVIDER in limit_to and (x.TYPE == self.search_type)]
 
 
 class SearchRunner(models.Model):
