@@ -16,19 +16,48 @@
         background: #eee;
         border:     1px solid #ddd;
     }
-
-    .image-search-result img {
-        min-width:      250px;
-        max-height: 400px;
+    
+    .image-search-result > a {
+        width: 250px;
+        height: 250px;
+        display: block;
+        overflow: hidden;
+        object-fit:cover;
+        object-position:50% 50%;
+    }
+    
+    .image-search-result a:hover {
+      overflow: visible;
     }
 
     .image-search-caption {
-
+      font-size:90%;
+        font-size: 90%;
+        display: block;
+        line-height: 1;
+        height: 3.1em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom:0.3em;
+        margin-top:0.6em
+    }
+    
+    .image-search-caption:hover {
+      overflow: visible;
+    }
+    
+    .image-search-link {
+      display:block;
+      height:1em;
+      margin-top:0.3em;
+      margin-bottom:0.3em;
     }
     
     .image-search-date {
         color: #ccc;
         font-variant: small-caps;
+        font-size:80%;
+        font-style:italic;
         text-align: left;
         float: left;
     }
@@ -107,6 +136,9 @@
       color:#664444;
     }
     
+    /** 
+      * FIXME this needs to be moved to and merged with tooltips.css
+      */
     .image-search-form > .image-search-inputs-container input[name=radius_root]::before {
       top: -0.4em;
       left: 101%;
@@ -116,6 +148,9 @@
       z-index:200;
     }
     
+    /** 
+      * FIXME this needs to be moved to and merged with tooltips.css
+      */
     .image-search-form > .image-search-inputs-container input[name=radius_root]::after {
       top: 0.9em;
       left: 101%;
@@ -144,11 +179,43 @@
       width:256px;
       overflow-y:scroll;
       float:right;
-      height:320px;
-      padding-top:1em;
+      height:310px;
+      margin-top:2em;
+    }
+    
+    .ol-map-id2-results-close,
+    .ol-map-id2-results-stats {
+      display:block;
+      font-size:70%;
+      font-weight:900;
+      position:absolute;
+      top:3em;
+    }
+    
+    .ol-map-id2-results-stats {
+      left:0.3em;
+      color:#7b98bc;
+    }
+    
+    .ol-map-id2-results-close {
+      right:0.3em;
+      color:white;
+      background-color:rgba(0,60,136,.5);
+      border-radius:0.5em;
+      padding:0em 0.5em;
+      cursor:pointer;
+    }
+    
+    .ol-map-id2-results-close:hover {
+      background-color:#7b98bc;
     }
     
     .ol-map-id2-results:empty {
+      display:none;
+    }
+    
+    .ol-map-id2-results:empty + .ol-map-id2-results-stats,
+    .ol-map-id2-results:empty + .ol-map-id2-results-stats + .ol-map-id2-results-close {
       display:none;
     }
     
@@ -206,29 +273,41 @@
       margin-right:0.25em;
     }
     
+    
+    /** 
+      * FIXME this needs to be moved to and merged with tooltips.css
+      */
     .ol-map-id2-controls button::before {
-      top: -25%;
-      right: 120%;
-      left:auto;
+      top: auto;
+      bottom: -190%;
+      right: 0px;
+      left: auto;
       padding:1em 1em 0.3em 1em;
       font-weight:normal;
     }
     
+    /** 
+      * FIXME this needs to be moved to and merged with tooltips.css
+      */
     .ol-map-id2-controls button::after {
-      top: 25%;
-      right: 100%;
+      top: auto;
+      bottom: -0.5em;
+      right: 0.5em;
       left:auto;
-      border-left: solid 0.4em rgba(6, 6, 6, 0);
-      border-right: none;
-      border-top: solid 0.3em transparent !important;
-      border-bottom: solid 0.3em transparent;
-      transition:background-color 0.3s ease-out, border-left-color 0.3s ease-out;
-      -moz-transition:background-color 0.3s ease-out, border-left-color 0.3s ease-out;
-      -webkit-transition:background-color 0.3s ease-out, border-left-color 0.3s ease-out;
+      border-bottom: solid 0.4em rgba(6, 6, 6, 0);
+      border-top: none;
+      border-right: solid 0.3em transparent !important;
+      border-left: solid 0.3em transparent;
+      transition:background-color 0.3s ease-out, border-bottom-color 0.3s ease-out;
+      -moz-transition:background-color 0.3s ease-out, border-bottom-color 0.3s ease-out;
+      -webkit-transition:background-color 0.3s ease-out, border-bottom-color 0.3s ease-out;
     }
     
+    /** 
+      * FIXME this needs to be moved to and merged with tooltips.css
+      */
     .ol-map-id2-controls button:hover::after {
-      border-left-color:rgba(6,6,6,1);
+      border-bottom-color:rgba(6,6,6,1);
       border-top-color:transparent !important;
     }
     
@@ -353,41 +432,7 @@
                 var centerMap = function(e) {
                   /* this is where magic happens */
                   if (id2.circle != false) {
-                    
-                    /* pan animation */
-                    var panimation = ol.animation.pan({
-                      source: this_.getMap().getView().getCenter()
-                    });
-                    
-                    /* bounce animation */
-                    var bouncimation = ol.animation.bounce({
-                      duration: 2000,
-                      resolution: 9783.93962050256,
-                    });
-                    
-                    /* zoom animation */
-                    var zoomination = ol.animation.zoom({
-                      resolution: this_.getMap().getView().getResolution()
-                    });
-                    
-                    /* target zoom level */
-                    var zoom = id2.getZoomFromRadiusRoot(
-                                 $('[name=radius_root]').val()
-                               )
-                    
-                    /* set teh animations */
-                    if (this_.getMap().getView().getZoom() >= zoom) {
-                      this_.getMap().beforeRender(zoomination, bouncimation, panimation);
-                    } else {
-                      this_.getMap().beforeRender(zoomination, panimation);
-                    }
-                    
-                    /* center */
-                    this_.getMap().getView().setCenter(
-                      id2.circle.getCenter()
-                    )
-                    /* zoom */
-                    this_.getMap().getView().setZoom(zoom)
+                    id2.flyToExtent(id2.circle.getExtent())
                   }
                   /* not submitting the form is a good idea */
                   return false;
@@ -407,12 +452,28 @@
                 results_container.className = 'ol-map-id2-results';
                 
                 /**
+                  * closing the results view
+                  */
+                var results_close = document.createElement('div');
+                results_close.className = 'ol-map-id2-results-close';
+                results_close.innerHTML = '× close';
+                
+                /**
+                  * result stats
+                  */
+                var results_stats = document.createElement('div');
+                results_stats.className = 'ol-map-id2-results-stats';
+                results_stats.innerHTML = 'found X results';
+                
+                /**
                   * the container for all of this
                   */
                 var id2_container = document.createElement('div');
                 id2_container.className = 'ol-map-id2 ol-unselectable ol-control';
                 id2_container.appendChild(controls_container);
                 id2_container.appendChild(results_container);
+                id2_container.appendChild(results_stats);
+                id2_container.appendChild(results_close);
                 
                 /**
                   * container for geocoding results
@@ -444,12 +505,15 @@
                 target: 'map',
                 layers: [
                   new ol.layer.Tile({
-                    source: new ol.source.MapQuest({"layer":"osm"})
+                    source: new ol.source.MapQuest({
+                      layer:"osm"
+                    })
                   })
                 ],
                 view: new ol.View({
                   center: ol.proj.transform([28.80, 47.00], 'EPSG:4326', 'EPSG:3857'),
-                  zoom: 4
+                  zoom: 4,
+                  maxZoom: 16
                 })
               });
               
@@ -469,8 +533,8 @@
               id2.setCircle = function() {
                 var radius = ($('input[name=radius]').val() / ol.proj.METERS_PER_UNIT.m) * 2;
                 
-                var lon = $('input[name=lon]').val() * 1
-                var lat = $('input[name=lat]').val() * 1
+                var lon = $('input[name=lon]').val() * 1 // we need a number here
+                var lat = $('input[name=lat]').val() * 1 // an here
                 
                 id2.circle = new ol.geom.Circle(
                   ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'), radius, 'XY'
@@ -490,14 +554,7 @@
               /* calculating a sane radius from a given zoom level */
               id2.getRadiusRootFromZoom = function(zoom) {
                 if (zoom <= 7) return 22359
-                return (22359 / (zoom - 7)) // FIXME this needs more work
-              }
-              
-              
-              /* calculating a sane radius from a given zoom level */
-              id2.getZoomFromRadiusRoot = function(radius) {
-                if (radius >= 22359) return 7
-                return ( (22359 / radius) + 7 ) // FIXME this needs more work
+                return (22359 / Math.pow(1.4, (zoom - 6)))
               }
               
             </script>
@@ -518,8 +575,8 @@
     var current_search_id = 0;
 
     $(function() {
-        $("#image_search_submit").on("click", start_search);
-        $("#image_search_form").on("submit", start_search);
+        $("#image_search_submit").on("click", id2.startImageSearch);
+        $("#image_search_form").on("submit", id2.startImageSearch);
         /* make sure radius is handled */
         $('input[name=radius_root]')
           .on('change', id2.setCircle)
@@ -569,8 +626,12 @@
         /* searching upon enter */
         $('.image-search-inputs-container input[name=q]').on('keypress', function(e){
           if (e.which == 13) {
-            start_search()
+            id2.startImageSearch()
           }
+        })
+        /* close search results */
+        $('.ol-map-id2-results-close').on('click', function(){
+          $('.ol-map-id2-results').empty();
         })
     });
     
@@ -600,13 +661,14 @@
       /* only if the circle has not yet been set */
       if (id2.circle == false) {
         radius = id2.getRadiusRootFromZoom(map.getView().getZoom())
+        console.log('zoom: ' + map.getView().getZoom() + ' ; radius: ' + radius)
         $('input[name=radius_root]')
           .val(radius)
           .trigger('input')
       }
     })
 
-    function check_search_results(searchid) {
+    id2.checkSearchResults = function(searchid) {
         $.getJSON('{{url("search_images_check")}}', {"id": searchid}, function(data) {
             if (data.status) {
                 $("#search_results").empty();
@@ -625,22 +687,25 @@
                 }
                 if (data.done || data.checkin_after == -1) {
                     $("#searching_notice").hide();
+                    $('body').animate({
+                        scrollTop: $('#search_results').offset().top
+                    }, 1000);
                 } else {
-                    window.setTimeout(function() { check_search_results(searchid); }, data.checkin_after);
+                    window.setTimeout(function() { id2.checkSearchResults(searchid); }, data.checkin_after);
                 }
             } else {
-                window.setTimeout(function() { check_search_results(searchid); }, 2000);
+                window.setTimeout(function() { id2.checkSearchResults(searchid); }, 2000);
             }
         });
     };
 
-    function start_search() {
+    id2.startImageSearch = function() {
         $("#search_results").empty();
         $("#search_statistics").hide();
         $.getJSON('{{url("search_images_query")}}', $("#image_search_form").serialize(), function(data) {
             if (data.status) {
                 $("#searching_notice").show();
-                window.setTimeout(function() { check_search_results(data.searchid); }, data.checkin_after);
+                window.setTimeout(function() { id2.checkSearchResults(data.searchid); }, data.checkin_after);
             }
         });
     }
@@ -654,9 +719,15 @@
         function(data) {
           $('.ol-map-id2-controls .ol-map-search-box').blur()
           if (data) {
+            $('.ol-map-id2-results-stats').html('found ' + data.length + ' results')
             for (item in data) {
               var item = data[item];
               result = $('<a class="ol-id2-map-search-result" style="background-image:url(' + item.icon + ')"/>');
+              result
+                .attr('minlat', item.boundingbox[0])
+                .attr('maxlat', item.boundingbox[1])
+                .attr('minlon', item.boundingbox[2])
+                .attr('maxlon', item.boundingbox[3])
               result.append("<span class=\"display-name\">" + item.display_name + "</span>")
               result.append("<span class=\"latlon\">lat: <lat>" + item.lat + "</lat>, lon: <lon>" + item.lon + "</lon></span>")
               result.on('click', id2.geoResultClick)
@@ -666,21 +737,71 @@
       });
     }
     
-    id2.geoResultClick = function(){
+    
+    /* bouncing and panning the map to fit an extent (i.e. selection circle, search result, etc) neatly */
+    id2.flyToExtent = function(extent){
       /* pan animation */
       var panimation = ol.animation.pan({
         source: map.getView().getCenter(),
-        duration: 750,
+        duration: 2000,
       });
-      map.beforeRender(panimation);
-      /* center */
-      map.getView().setCenter(
-        ol.proj.transform(
-          [$(this).find('lon').html() * 1, $(this).find('lat').html() * 1],
-          'EPSG:4326',
-          'EPSG:3857'
-        )
+      map.beforeRender(panimation)
+      
+      /* resolution for our target extent */
+      var res = map.getView().getResolutionForExtent(
+        extent,
+        map.getSize()
       )
+      
+      /* our current extent */
+      var cur_extent = map.getView().calculateExtent(
+        map.getSize()
+      )
+      
+      /**
+        * do we need to bounce, or zoom?
+        * zoom   : when current zoom level is higher than target zoom level AND the extent is within the current view
+        * bounce : otherwise
+        */
+      if(
+        (map.getView().getResolution() > res * 2) &&   // zoom level
+        (ol.extent.containsExtent(cur_extent, extent)) // extent within the current view
+      ) {
+        /* zoom! */
+        var zoomination = ol.animation.zoom({
+          duration: 2000,
+          resolution: map.getView().getResolution(),
+        });
+        map.beforeRender(zoomination);
+      } else {
+        /* bounce! */
+        var bouncimation = ol.animation.bounce({
+          duration: 2000,
+          resolution: 9783.93962050256,
+        });
+        map.beforeRender(bouncimation);
+      }
+      
+      /* go */
+      map.getView().fitExtent(extent, map.getSize());
+    }
+    
+    /* show the clicked result on the map */
+    id2.geoResultClick = function(){
+      /* extent */
+      var extent = [
+        $(this).attr('minlon') * 1,
+        $(this).attr('minlat') * 1,
+        $(this).attr('maxlon') * 1,
+        $(this).attr('maxlat') * 1
+      ]
+      console.log('extent = [ ' + extent[0] + ', ' + extent[1] + ', ' + extent[2] + ', ' + extent[3] + ']');
+      /* translate */
+      extent = ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", "EPSG:3857"));
+      /* fly */
+      id2.flyToExtent(extent)
+      
+      /* that's it, don't  handle this click any further */
       return false;
     }
 </script>
