@@ -1,9 +1,13 @@
 import json
+import httplib2
+import argparse
+import os.path
 from datetime import datetime
 from settings import settings
 import tempfile
-from oauth2client import tools
+from oauth2client import tools as oauth2tools
 from oauth2client import client as oauth2client
+from oauth2client import file as oauth2file
 
 def convert_group_to_select2field_choices(group):
     result = []
@@ -37,41 +41,63 @@ def file_to_str(filename):
         return f.read()
 
 class Credentials:
+    def __init__(self):
+        self.credentials = {}
+
     def load_credentials(self):
+        credpath = os.path.join(settings.CREDENTIALS_DIR, "db.json")
         try:
-            with open(settings.CREDENTIALS_STORE, "r") as fh:
+            with open(credpath, "r") as fh:
                 self.credentials = json_loads(fh.read())
         except IOError:
             print "Credentials file %s does not exist (probably)." % (settings.CREDENTIALS_STORE)
         except ValueError:
             print "Credentials file %s does not contain valid JSON." % (settings.CREDENTIALS_STORE)
 
-
     def save_credentials(self):
         with open(settings.CREDENTIALS_STORE, "w+") as fh:
             fh.write(json_dumps(self.credentials))
+
+    def set(self, site, data):
+        return self.set_credentials(site, data)
+
+    def get(self, site, var=None):
+        return self.get_credentials(site, var)
 
     def set_credentials(self, site, data):
         self.load_credentials()
         self.credentials[site] = data
         self.save_credentials()
 
-    def get_credentials(self, site):
+    def get_credentials(self, site, var=None):
         self.load_credentials()
-        return self.credentials[site]
+        site = self.credentials.get(site, {})
+        if not var: return site
+        var = site.get(var, {})
+        return var
+
+    def get_oauth2_http(self, site, scope):
+        creds = self.get_oauth2_credentials(site, scope)
+        http = httplib2.Http()
+        http = creds.authorize(http)
+        return http
 
     def get_oauth2_credentials(self, site, scope):
-        # s = self.get_credentials(site)
-        # This is stupid
-        flow = oauth2client.flow_from_clientsecrets("google_api.cred", scope=scope)
-        # credentials = oauth2client.Credentials()
-        #if "stored_credentials" in s:
-        #    credentials.from_json(s["stored_credentials"])
-        # if credentials.invalid:
-        credentials = tools.run_flow(flow)
-        # s["stored_credentials"] = credentials.to_json()
-        # self.set_credentials(site, s)
+        # TODO: This will probably fail if we fetch two tokens with different
+        #       scopes.
+        credpath = os.path.join(settings.CREDENTIALS_DIR, "%s.cred" % site)
+        tokenpath = os.path.join(settings.CREDENTIALS_DIR, "%s.dat" % site)
+        flow = oauth2client.flow_from_clientsecrets(credpath, scope=scope)
+
+        parser = argparse.ArgumentParser(
+            description=__doc__,
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            parents=[oauth2tools.argparser])
+        args = parser.parse_args([])
+        storage = oauth2file.Storage(tokenpath)
+        credentials = storage.get()
+        if credentials is None or credentials.invalid:
+            credentials = oauth2tools.run_flow(flow, storage, args)
 
         return credentials
-
 

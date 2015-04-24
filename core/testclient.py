@@ -43,3 +43,7 @@ class TestClient(Client):
 
         # Save the session values.
         request.session.save()
+
+
+class APITestClient(TestClient):
+    pass
