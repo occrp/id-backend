@@ -546,8 +546,8 @@
     var current_search_id = 0;
 
     $(function() {
-        $("#image_search_submit").on("click", start_search);
-        $("#image_search_form").on("submit", start_search);
+        $("#image_search_submit").on("click", id2.startImageSearch);
+        $("#image_search_form").on("submit", id2.startImageSearch);
         /* make sure radius is handled */
         $('input[name=radius_root]')
           .on('change', id2.setCircle)
@@ -597,7 +597,7 @@
         /* searching upon enter */
         $('.image-search-inputs-container input[name=q]').on('keypress', function(e){
           if (e.which == 13) {
-            start_search()
+            id2.startImageSearch()
           }
         })
         /* close search results */
@@ -639,7 +639,7 @@
       }
     })
 
-    function check_search_results(searchid) {
+    id2.checkSearchResults = function(searchid) {
         $.getJSON('{{url("search_images_check")}}', {"id": searchid}, function(data) {
             if (data.status) {
                 $("#search_results").empty();
@@ -658,22 +658,25 @@
                 }
                 if (data.done || data.checkin_after == -1) {
                     $("#searching_notice").hide();
+                    $('body').animate({
+                        scrollTop: $('#search_results').offset().top
+                    }, 1000);
                 } else {
-                    window.setTimeout(function() { check_search_results(searchid); }, data.checkin_after);
+                    window.setTimeout(function() { id2.checkSearchResults(searchid); }, data.checkin_after);
                 }
             } else {
-                window.setTimeout(function() { check_search_results(searchid); }, 2000);
+                window.setTimeout(function() { id2.checkSearchResults(searchid); }, 2000);
             }
         });
     };
 
-    function start_search() {
+    id2.startImageSearch = function() {
         $("#search_results").empty();
         $("#search_statistics").hide();
         $.getJSON('{{url("search_images_query")}}', $("#image_search_form").serialize(), function(data) {
             if (data.status) {
                 $("#searching_notice").show();
-                window.setTimeout(function() { check_search_results(data.searchid); }, data.checkin_after);
+                window.setTimeout(function() { id2.checkSearchResults(data.searchid); }, data.checkin_after);
             }
         });
     }
