@@ -107,6 +107,9 @@
       color:#664444;
     }
     
+    /** 
+      * FIXME this needs to be moved to and merged with tooltips.css
+      */
     .image-search-form > .image-search-inputs-container input[name=radius_root]::before {
       top: -0.4em;
       left: 101%;
@@ -116,6 +119,9 @@
       z-index:200;
     }
     
+    /** 
+      * FIXME this needs to be moved to and merged with tooltips.css
+      */
     .image-search-form > .image-search-inputs-container input[name=radius_root]::after {
       top: 0.9em;
       left: 101%;
@@ -238,29 +244,41 @@
       margin-right:0.25em;
     }
     
+    
+    /** 
+      * FIXME this needs to be moved to and merged with tooltips.css
+      */
     .ol-map-id2-controls button::before {
-      top: -25%;
-      right: 120%;
-      left:auto;
+      top: auto;
+      bottom: -190%;
+      right: 0px;
+      left: auto;
       padding:1em 1em 0.3em 1em;
       font-weight:normal;
     }
     
+    /** 
+      * FIXME this needs to be moved to and merged with tooltips.css
+      */
     .ol-map-id2-controls button::after {
-      top: 25%;
-      right: 100%;
+      top: auto;
+      bottom: -0.5em;
+      right: 0.5em;
       left:auto;
-      border-left: solid 0.4em rgba(6, 6, 6, 0);
-      border-right: none;
-      border-top: solid 0.3em transparent !important;
-      border-bottom: solid 0.3em transparent;
-      transition:background-color 0.3s ease-out, border-left-color 0.3s ease-out;
-      -moz-transition:background-color 0.3s ease-out, border-left-color 0.3s ease-out;
-      -webkit-transition:background-color 0.3s ease-out, border-left-color 0.3s ease-out;
+      border-bottom: solid 0.4em rgba(6, 6, 6, 0);
+      border-top: none;
+      border-right: solid 0.3em transparent !important;
+      border-left: solid 0.3em transparent;
+      transition:background-color 0.3s ease-out, border-bottom-color 0.3s ease-out;
+      -moz-transition:background-color 0.3s ease-out, border-bottom-color 0.3s ease-out;
+      -webkit-transition:background-color 0.3s ease-out, border-bottom-color 0.3s ease-out;
     }
     
+    /** 
+      * FIXME this needs to be moved to and merged with tooltips.css
+      */
     .ol-map-id2-controls button:hover::after {
-      border-left-color:rgba(6,6,6,1);
+      border-bottom-color:rgba(6,6,6,1);
       border-top-color:transparent !important;
     }
     
