@@ -103,7 +103,7 @@ class ImageSearchVK(ImageSearcher):
             timestamp = datetime.utcfromtimestamp(item["date"])
             large_photo = item.get("photo_807", item.get("photo_604", item.get("photo_130", "")))
             i = ImageSearchResult(self.PROVIDER, 
-                item["photo_130"], 
+                item["photo_604"], 
                 large_photo, 
                 timestamp, 
                 caption=item.get("text", ""),
