@@ -525,14 +525,7 @@
               /* calculating a sane radius from a given zoom level */
               id2.getRadiusRootFromZoom = function(zoom) {
                 if (zoom <= 7) return 22359
-                return (22359 / (zoom - 6)) // FIXME this needs more work
-              }
-              
-              
-              /* calculating a sane radius from a given zoom level */
-              id2.getZoomFromRadiusRoot = function(radius) {
-                if (radius >= 22359) return 7
-                return ( (22359 / radius) + 6 ) // FIXME this needs more work
+                return (22359 / Math.pow(1.4, (zoom - 6)))
               }
               
             </script>
@@ -643,7 +636,6 @@
         $('input[name=radius_root]')
           .val(radius)
           .trigger('input')
-          //.trigger('change') // DEBUG
       }
     })
 
