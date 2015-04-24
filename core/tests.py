@@ -29,3 +29,27 @@ class UserTestCase(TestCase):
     def tearDown(self):
         pass
 
+class APITestCase(TestCase):
+    def http_action(self, verb, urlname, user, urlargs={}, data={}):
+        client = APITestClient()
+        if user:
+            client.login_user(user)
+        url = reverse(urlname, kwargs=urlargs)
+        fun = getattr(client, verb)
+        fun(url, data)
+
+    def post(self, urlname, user, urlargs={}, data={}):
+        return self.http_action("post", urlname, user, urlargs, data)
+
+    def get(self, urlname, user, urlargs={}, data={}):
+        return self.http_action("get", urlname, user, urlargs, data)
+
+    def put(self, urlname, user, urlargs={}, data={}):
+        return self.http_action("put", urlname, user, urlargs, data)
+
+    def delete(self, urlname, user, urlargs={}, data={}):
+        return self.http_action("delete", urlname, user, urlargs, data)
+
+    def patch(self, urlname, user, urlargs={}, data={}):
+        return self.http_action("patch", urlname, user, urlargs, data)
+
