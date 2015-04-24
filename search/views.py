@@ -9,7 +9,7 @@ from core.mixins import JSONResponseMixin
 from core.utils import json_dumps
 
 
-class ImageSearchQuery(View, JSONResponseMixin):
+class SearchImageQuery(View, JSONResponseMixin):
     def get_context_data(self):
         query = {}
         query["q"] = self.request.GET.get("q", "")
@@ -37,7 +37,26 @@ class ImageSearchQuery(View, JSONResponseMixin):
         return search.initiate_search(chosen_providers)
 
 
-class ImageSearchCheck(View, JSONResponseMixin):
+class SearchSocialQuery(View, JSONResponseMixin):
+    def get_context_data(self):
+        query = {}
+        query["q"] = self.request.GET.get("q", "")
+
+        chosen_providers = self.request.GET.getlist("providers[]", None)
+
+        search = SearchRequest()
+        search.requester = self.request.user
+        search.search_type = 'social'
+        search.query = json_dumps(query)
+        search.save()
+        return search.initiate_search(chosen_providers)
+
+        return {
+            "status": True
+        }
+
+
+class SearchCheck(View, JSONResponseMixin):
     def get_context_data(self):
         searchid = self.request.GET.get("id", 0)
         if not searchid:

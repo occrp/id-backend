@@ -669,7 +669,7 @@
     })
 
     id2.checkSearchResults = function(searchid) {
-        $.getJSON('{{url("search_images_check")}}', {"id": searchid}, function(data) {
+        $.getJSON('{{url("search_results")}}', {"id": searchid}, function(data) {
             if (data.status) {
                 $("#search_results").empty();
                 $("#search_statistics").text("Found " + data.results.length + " images from " + data.bots_done + " of " + data.bots_total + " image sources.");
