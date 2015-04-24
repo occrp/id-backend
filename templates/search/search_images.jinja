@@ -16,19 +16,48 @@
         background: #eee;
         border:     1px solid #ddd;
     }
-
-    .image-search-result img {
-        min-width:      250px;
-        max-height: 400px;
+    
+    .image-search-result > a {
+        width: 250px;
+        height: 250px;
+        display: block;
+        overflow: hidden;
+        object-fit:cover;
+        object-position:50% 50%;
+    }
+    
+    .image-search-result a:hover {
+      overflow: visible;
     }
 
     .image-search-caption {
-
+      font-size:90%;
+        font-size: 90%;
+        display: block;
+        line-height: 1;
+        height: 3.1em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom:0.3em;
+        margin-top:0.6em
+    }
+    
+    .image-search-caption:hover {
+      overflow: visible;
+    }
+    
+    .image-search-link {
+      display:block;
+      height:1em;
+      margin-top:0.3em;
+      margin-bottom:0.3em;
     }
     
     .image-search-date {
         color: #ccc;
         font-variant: small-caps;
+        font-size:80%;
+        font-style:italic;
         text-align: left;
         float: left;
     }
