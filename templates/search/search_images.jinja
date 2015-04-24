@@ -338,15 +338,61 @@
       font-style:italic;
     }
     
+    .map {
+      height: 400px;
+      width: 100%;
+    }
+    
+    td.search-providers div {
+      display:flex;
+      flex-direction:row;
+      width:100%;
+      justify-content:center;
+    }
+    
+    td.search-providers input[type=checkbox] {
+      display:none;
+    }
+    
+    td.search-providers label {
+      display:block;
+      margin:0.1em;
+    }
+    
+    td.search-providers label span {
+      display:block;
+      background:gray;
+      color:white;
+      opacity:0.5;
+      transition:opacity 0.5s ease-in-out;
+      -moz-transition:opacity 0.5s ease-in-out;
+      -webkit-transition:opacity 0.5s ease-in-out;
+      padding:0.1em 0.5em;
+      font-size:80%;
+      font-weight:bold;
+    }
+    
+    td.search-providers div input:checked + span {
+      opacity:1.0
+    }
+    
+    td.search-providers div input[value=vkontakte] + span {
+      background:#4d6f93;
+    }
+    
+    td.search-providers div input[value=instagram] + span {
+      background:#305f87;
+    }
+    
+    td.search-providers div input[value=youtube] + span {
+      background:#c3191e;
+    }
+    
+    value="vkontakte"
+    
     </style>
     <link rel="stylesheet" href="{{ static('css/ol.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ static('css/tooltips.css') }}" type="text/css">
-    <style>
-      .map {
-        height: 400px;
-        width: 100%;
-      }
-    </style>
     <script src="{{ static('js/ol.js') }}" type="text/javascript"></script>
 
     <div class="row well">
@@ -365,9 +411,16 @@
                 <tr><td colspan="2" class="instructions">Optionally, adjust date/time thresholds.</td></tr>
                 <tr><th>Start:</th><td><input name="startdate" type="date"/><input name="starttime" type="time"/></td></tr>
                 <tr><th>End:</th><td><input name="enddate" type="date"/><input name="endtime" type="time"/></td></tr>
+                <tr><th colspan="2">Services:</th></tr>
+                <tr><td colspan="2" class="instructions">Choose services to search at.</td></tr>
+                <tr><td colspan="2" class="search-providers">{{ search_providers }}<div>
+                  <label><input type="checkbox" checked="checked" name="search_providers[]" value="vkontakte"/><span>VKontakte</span></label>
+                  <label><input type="checkbox" checked="checked" name="search_providers[]" value="instagram"/><span>Instagram</span></label>
+                  <label><input type="checkbox" checked="checked" name="search_providers[]" value="youtube"/><span>YouTube</span></label>
+                </div></td></tr>
+                <tr><td colspan="2"><input id="image_search_submit" class="btn btn-primary pull-right" type="button" value="Search"/></td></tr>
             </table>
             <input name="radius" value="50000" type="hidden"/>
-            <input id="image_search_submit" class="btn btn-primary pull-right" type="button" value="Search"/>
         </div>
         <div class="image-search-map-container">
             <div id="map" class="map"></div>
@@ -513,7 +566,7 @@
                 view: new ol.View({
                   center: ol.proj.transform([28.80, 47.00], 'EPSG:4326', 'EPSG:3857'),
                   zoom: 4,
-                  maxZoom: 16
+                  maxZoom: 17
                 })
               });
               
@@ -661,7 +714,6 @@
       /* only if the circle has not yet been set */
       if (id2.circle == false) {
         radius = id2.getRadiusRootFromZoom(map.getView().getZoom())
-        console.log('zoom: ' + map.getView().getZoom() + ' ; radius: ' + radius)
         $('input[name=radius_root]')
           .val(radius)
           .trigger('input')
@@ -713,7 +765,6 @@
     id2.geoSearch = function() {
       $('.ol-map-id2-results').empty()
       var q = 'http://nominatim.openstreetmap.org/search?format=json&q=' + $('.ol-map-id2-controls  input.ol-map-search-box').val()
-      console.log('calling: ' + q)
       $.getJSON(
         q,
         function(data) {
@@ -795,7 +846,6 @@
         $(this).attr('maxlon') * 1,
         $(this).attr('maxlat') * 1
       ]
-      console.log('extent = [ ' + extent[0] + ', ' + extent[1] + ', ' + extent[2] + ', ' + extent[3] + ']');
       /* translate */
       extent = ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", "EPSG:3857"));
       /* fly */

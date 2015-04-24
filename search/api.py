@@ -235,8 +235,6 @@ class ImageSearchFlickr(ImageSearcher):
 
 
 class ImageSearchYouTube(ImageSearcher):
-    # https://www.flickr.com/services/api/flickr.photos.search.html
-    # this needs a mobile phone for registering with flickr/yahoo o_O'
     PROVIDER = "YouTube"
 
     URL = "https://www.googleapis.com/youtube/v3/search"
@@ -286,7 +284,7 @@ class ImageSearchYouTube(ImageSearcher):
 
         for item in response.get("items", []):
             timestamp = item["snippet"]["publishedAt"]
-            thumbnail = item["snippet"]["thumbnails"]["default"]["url"]
+            thumbnail = item["snippet"]["thumbnails"]["high"]["url"]
             caption = item["snippet"]["title"]
             link = "http://youtu.be/%s" % item["id"]["videoId"]
             i = ImageSearchResult(self.PROVIDER, thumbnail, link, timestamp, caption, item)
