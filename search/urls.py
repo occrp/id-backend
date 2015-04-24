@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     url(r'^images/query/$',  perm('user', search.views.SearchImageQuery), name='search_images_query'),
 
     url(r'^social/$',        perm('user', TemplateView, template_name='search/search_social.jinja'), name='search_social'),
-    url(r'^social/follows/$',perm('user', search.views.SearchSocialQuery), name='search_social_query'),
+    url(r'^social/query/$',  perm('user', search.views.SearchSocialQuery), name='search_social_query'),
 )
 
 
