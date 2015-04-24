@@ -33,12 +33,14 @@ class ImageSearchQuery(View, JSONResponseMixin):
         query["offset"] = self.request.GET.get("offset", 0)
         query["count"] = self.request.GET.get("count", 100)
 
+        chosen_providers = self.request.GET.getlist("providers[]", None)
+
         search = SearchRequest()
         search.requester = self.request.user
         search.search_type = 'image'
         search.query = json_dumps(query)
         search.save()
-        return search.initiate_search()
+        return search.initiate_search(chosen_providers)
 
 
 class ImageSearchCheck(View, JSONResponseMixin):

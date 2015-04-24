@@ -764,7 +764,12 @@
     
     id2.geoSearch = function() {
       $('.ol-map-id2-results').empty()
+<<<<<<< HEAD
       var q = 'http://nominatim.openstreetmap.org/search?format=json&q=' + $('.ol-map-id2-controls  input.ol-map-search-box').val()
+=======
+      var q = 'https://nominatim.openstreetmap.org/search?format=json&q=' + $('.ol-map-id2-controls  input.ol-map-search-box').val()
+      console.log('calling: ' + q)
+>>>>>>> b8fc5eab08850d605dcbcb957a8938809379193a
       $.getJSON(
         q,
         function(data) {
