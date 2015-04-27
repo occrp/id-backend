@@ -8,6 +8,7 @@ import tempfile
 from oauth2client import tools as oauth2tools
 from oauth2client import client as oauth2client
 from oauth2client import file as oauth2file
+from uuid import UUID
 
 def convert_group_to_select2field_choices(group):
     result = []
@@ -39,6 +40,9 @@ def json_loads(s):
 def file_to_str(filename):
     with open(filename, 'r') as f:
         return f.read()
+
+def sha256_to_uuid(sha):
+    return UUID(bytes=sha[:16], version=5)
 
 class Credentials:
     def __init__(self):
