@@ -65,6 +65,23 @@ class SearchRequest(models.Model):
             return searchproviders
         return [x for x in searchproviders if x.PROVIDER in limit_to and (x.TYPE == self.search_type)]
 
+    def statistics(self):
+        res = []
+        for t,name in SEARCH_TYPES:
+            res.append({
+                "type": name,
+                "count": SearchRequest.objects.filter(search_type=t).count(),
+                "bots": SearchRunner.objects.filter(request__search_type=t).count(),
+                "results": SearchResult.objects.filter(request__search_type=t).count(),
+            })
+        res.append({
+            "type": "Total",
+            "count": SearchRequest.objects.count(),
+            "bots": SearchRunner.objects.count(),
+            "results": SearchResult.objects.count()
+        })
+        return res
+
 
 class SearchRunner(models.Model):
     request = models.ForeignKey(SearchRequest)
