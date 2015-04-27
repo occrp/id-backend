@@ -5,6 +5,7 @@
         <h1>{% block crud_title %}Statistics{% endblock %}</h1>
     </div>
 
+<div>
 <h2>Basic Statistics</h2>
 <ul class="statistics_boards">
   <li>{% trans %}{{tickets_opened}} research requests ({{tickets_people}} about people, {{tickets_company}} about companies, {{tickets_other}} about other topics{% endtrans %}</li>
@@ -12,6 +13,31 @@
   <li>{% trans %}{{accounts_approved}} accounts ({{accounts_user}} requesters, {{accounts_volunteer}} volunteers, {{accounts_staff}} staff, {{accounts_admin}} admin){% endtrans %}</li>
   <li>{% trans %}{{accreq_total}} account requests ({{accreq_approved}} approved, {{accreq_rejected}} rejected, {{accreq_outstanding}} outstanding){% endtrans %}</li>
 </ul>	
+</div>
+
+<div>
+	<h2>Search</h2>
+	<table class="table table-border">
+	<thead>
+		<tr>
+			<th>Type</th>
+			<th>Searches</th>
+			<th>Bots run</th>
+			<th>Results found</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for search in searches %}
+		<tr>
+			<td>{{search.type}}</td>
+			<td>{{search.count}}</td>
+			<td>{{search.bots}}</td>
+			<td>{{search.results}}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+	</table>
+</div>
 
 <div>
 	<h2>Networks</h2>
