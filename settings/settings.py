@@ -14,6 +14,7 @@ BASE_DIR = here('../')
 
 try: ID_VERSION = open(".git_current_version").read()
 except: raise Exception("ID Version could not be read: .git_current_version not available")
+print "Starting ID version %s" % ID_VERSION
 
 # Allowed hosts:
 ALLOWED_HOSTS = []
