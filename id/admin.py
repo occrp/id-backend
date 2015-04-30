@@ -1,5 +1,5 @@
 from django.views.generic import *
-from core.utils import file_to_str
+from core.utils import version
 from id.models import *
 from ticket.models import *
 from id.forms import ScraperRequestForm
@@ -24,7 +24,7 @@ class Statistics(TemplateView):
 
     def get_context_data(self):
         return {
-            "version": file_to_str('.git_current_version')
+            "version": version(),
             "tickets_opened": Ticket.objects.count(),
             "tickets_people": PersonTicket.objects.count(),
             "tickets_company": CompanyTicket.objects.count(),
