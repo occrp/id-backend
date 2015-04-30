@@ -42,7 +42,7 @@ def file_to_str(filename):
         return f.read()
 
 def version():
-    return settings.VERSION
+    return settings.ID_VERSION
 
 def sha256_to_uuid(sha):
     return UUID(bytes=sha[:16], version=5)

@@ -1,5 +1,6 @@
 from django_jinja import library
 import jinja2
+from core.utils import version
 
 @library.global_function
 def get_verbose_or_field_name(field):
@@ -26,3 +27,7 @@ def get_widget_classes(field):
 @library.global_function
 def iso_dateformat(value):
     return
+
+@library.global_function
+def id_version():
+    return version()
