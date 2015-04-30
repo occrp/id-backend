@@ -5,9 +5,9 @@ Version 2 of the Investigative Dashboard.
 
 ## Databases
 
+ * MySQL for tickets and accounts.
  * ElasticSearch for document storage.
  * Neo4j for graph storage.
- * MySQL for tickets and accounts.
 
 ## Testing
 
