@@ -42,7 +42,7 @@ def file_to_str(filename):
         return f.read()
 
 def version():
-    return file_to_str('.git_current_version')
+    return settings.VERSION
 
 def sha256_to_uuid(sha):
     return UUID(bytes=sha[:16], version=5)
