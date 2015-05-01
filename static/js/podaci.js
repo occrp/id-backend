@@ -57,10 +57,7 @@ Podaci.init_taggedtext = function() {
 };
 
 Podaci.init_listmode = function() {
-    $(".podaci-files-icons").hide();
-    $(".podaci-files-list").show();
-    $("#podaci-list-mode-list").addClass("active");
-    $("#podaci-list-mode-icons").removeClass("active");
+    Podaci.listmode_icons();
 };
 
 Podaci.listmode_icons = function() {
@@ -365,6 +362,24 @@ Podaci.download_zip = function() {
     window.location = src;
 };
 
+Podaci.open_in_overview = function() {
+    if (Podaci.selection.length == 0 && Podaci.tagid) {
+        $.getJSON("/podaci/tag/" + Podaci.tagid + "/overview/", {"format": "json"}, function(data) {
+            if (data.ok) {
+                window.open("https://www.overviewproject.org/documentsets/" + data.docsetid, "_blank");
+            }
+        });
+    } else if (Podaci.selection.length == 0) {
+        alert("Cannot open all everything in Overview");
+    } else {
+        $.getJSON("/podaci/tag/selection/overview/?files=" + Podaci.selection.join("&files="), {"format": "json"}, function(data) {
+            if (data.ok) {
+                window.open("https://www.overviewproject.org/documentsets/" + data.docsetid, "_blank");
+            }
+        });
+    }
+}
+
 Podaci.file_click = function(e) {
     id = $(e.target).closest("li").data("id");
     e.preventDefault();
@@ -440,6 +455,7 @@ Podaci.callbacks = {
     ".podaci_file_select_all change": Podaci.select_invert,
     ".podaci_file_select_box change": Podaci.select_toggle_checkbox,
     ".podaci_selection_download_zip click": Podaci.download_zip,
+    ".podaci_open_in_overview click": Podaci.open_in_overview,
 
     ".podaci-files-icons > .podaci-file click": Podaci.file_click,
     ".podaci-files-icons > .podaci-file dblclick": Podaci.file_doubleclick,
