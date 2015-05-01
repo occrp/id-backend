@@ -5,7 +5,6 @@ from django.views.generic import TemplateView, View
 
 from id.forms import CombinedSearchForm
 from settings.settings import DEFAULTS
-from id import searchproviders
 import logging
 import traceback
 
@@ -16,10 +15,15 @@ from core.utils import json_dumps
 
 
 class ImageSearchTemplate(TemplateView):
+    template_name="search/search_images.jinja"
     def get_context_data(self):
-      return {
-          'search_providers':SearchRequest().list_providers('image')
-        }
+        return { 'search_providers':SearchRequest().list_providers('image') }
+
+class DocumentSearchTemplate(TemplateView):
+    template_name = "search/search_documents.jinja"
+    def get_context_data(self):
+        return { 'form': CombinedSearchForm(initial=self.request.GET),
+                 'search_providers':SearchRequest().list_providers('document') }
 
 class SearchImageQuery(View, JSONResponseMixin):
     def get_context_data(self):
@@ -106,6 +110,29 @@ def search(providers, query, offset, limit):
 
     return results, messages
 
+class DocumentSearchQuery(View, JSONResponseMixin):
+    def get_context_data(self):
+        query = {}
+        query["q"] = self.request.GET.get("q", "")
+        query["startdate"] = self.request.GET.get("startdate", None)
+        if query["startdate"]:
+            query["startdate"] += "T" + self.request.GET.get("starttime", "00:00")
+            print "Starting: " + query["startdate"]
+        query["enddate"] = self.request.GET.get("enddate", None)
+        if query["enddate"]:
+            query["enddate"] += "T" + self.request.GET.get("endtime", "23:59")
+            print "Ending: " + query["enddate"]
+        query["offset"] = self.request.GET.get("offset", 0)
+        query["count"] = self.request.GET.get("count", 100)
+
+        chosen_providers = self.request.GET.getlist("search_providers[]", None)
+
+        search = SearchRequest()
+        search.requester = self.request.user
+        search.search_type = 'document'
+        search.query = json_dumps(query)
+        search.save()
+        return search.initiate_search(chosen_providers)
 
 class CombinedSearchHandler(TemplateView):
     template_name = "search/search_combined.jinja"
