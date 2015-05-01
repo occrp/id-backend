@@ -26,6 +26,10 @@ urlpatterns = patterns('',
     url(r'^tag/list/$',                    perm("staff", tags.List), name='podaci_tags_list'),
     url(r'^tag/(?P<id>.+)/delete/$',       perm("staff", tags.Delete), name='podaci_tags_delete'),
     url(r'^tag/(?P<id>.+)/update/$',       perm("staff", tags.Update), name='podaci_tags_upload'),
+
+    url(r'^tag/selection/overview/$',      perm("staff", tags.Overview), name='podaci_tags_overview'),
+    url(r'^tag/(?P<id>.+)/overview/$',     perm("staff", tags.Overview), name='podaci_tags_overview'),
+
     url(r'^tag/selection/zip/$',           perm("staff", tags.Zip), name='podaci_tags_zip'),
     url(r'^tag/(?P<id>.+)/zip/$',          perm("staff", tags.Zip), name='podaci_tags_zip'),
     url(r'^tag/(?P<id>.+)/$',              perm("staff", tags.Details), name='podaci_tags_details'),

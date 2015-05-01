@@ -1,4 +1,5 @@
 from podaci import PodaciView
+from podaci.filesystem import File, Tag
 from django.http import StreamingHttpResponse
 
 class Create(PodaciView):
@@ -42,7 +43,7 @@ class Details(PodaciView):
             self.breadcrumb_pop()
         self.breadcrumb_push(id)
 
-        tag = self.fs.get_tag(id)
+        tag = Tag(self.fs, id)
         num_displayed = 1000
         tag_cnt, tags = self.fs.list_user_tags(self.request.user, root=tag.id, _size=num_displayed)
         file_cnt, files = self.fs.list_user_files(self.request.user, root=tag.id, _size=num_displayed)
@@ -66,6 +67,7 @@ class Update(PodaciView):
 
 
 class Zip(PodaciView):
+    # FIXME: Move this logic out of the view!
     """
         Return a zip file containing the files belonging to the tag.
 
@@ -106,3 +108,30 @@ class Zip(PodaciView):
         response = StreamingHttpResponse(archive, content_type="application/zip")
         response['Content-Disposition'] = 'attachment; filename=' + archive_name
         return response
+
+
+class Overview(PodaciView):
+    # FIXME: Move this logic out of the view!
+    """
+        ...
+    """
+    template_name = "NO_TEMPLATE"
+
+    def get_context_data(self, id=None, **kwargs):
+        from podaci.api import OverviewAPI
+        files = self.request.GET.getlist("files", [])
+
+        o = OverviewAPI("www.overviewproject.org", "ekykvx3qj0jr5fbrzdqtpcrp0")
+
+        if id:
+            self.tag = Tag(self.fs, id)
+            docsetid = o.new_docset_from_tag(self.tag)
+        elif files:
+            files = [File(self.fs, x) for x in files]
+            title = "An unnamed selection of files"
+            docsetid = o.new_docset_from_files(title, files)
+        else:
+            return {"ok": False, "error": "Must supply tag ID or file list."}
+
+        return {"ok": True, "docsetid": docsetid}
+
