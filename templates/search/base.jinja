@@ -1,0 +1,12 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+<h2>{% block search_title %}{% endblock %}</h2>
+    {% block search_form %}
+    {% endblock %}
+
+    <div id="search_statistics" class="hide"></div>
+
+    <div class="row search-results" id="search_results">
+    </div>
+{% endblock %}

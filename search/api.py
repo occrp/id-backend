@@ -6,6 +6,12 @@ import dateutil.parser
 from threading import Thread
 from core.utils import json_dumps, Credentials
 
+from id.apis.elastic import elastic
+# from id.apis.googledrive import drive_decorator, Drive
+from id.apis import opencorporates
+from django.utils.translation import ugettext_lazy as _
+from django.template.defaultfilters import slugify
+
 from apiclient.discovery import build
 from apiclient.errors import HttpError
 
@@ -36,54 +42,54 @@ class Searcher:
             r = urllib2.urlopen(self.URL, params)
         return json.loads(r.read())
 
+    def prepare_query(self, q):
+        # Default query preparation is idempotent
+        return q
+
+    def run(self, search):
+        runner = search.create_runner(self.PROVIDER)
+
+        query = self.prepare_query(json.loads(search.query))
+        results = self.search(**query)
+        for r in results:
+            search.create_result(self.PROVIDER, r)
+
+        runner.done = True
+        runner.results = len(results)
+        runner.save()
+
 
 class SocialSearcher(Searcher):
     TYPE = "social"
 
-    def run(self, search):
-        query = json.loads(search.query)
-        runner = search.create_runner(self.PROVIDER)
+class DocumentSearcher(Searcher):
+    TYPE = "document"
 
-        results = self.search(query)
-        for r in results:
-            search.create_result(self.PROVIDER, r)
-
-        runner.done = True
-        runner.results = len(results)
-        runner.save()
+    def prepare_query(self, query):
+        r = {}
+        r["q"] = query["q"].encode("utf-8")
+        if query["startdate"]:
+            r["startdate"] = dateutil.parser.parse(query["startdate"])
+        if query["enddate"]:
+            r["enddate"] = dateutil.parser.parse(query["enddate"])
+        return r
 
 class ImageSearcher(Searcher):
     TYPE = "image"
 
-    def run(self, search):
-        # id, q, lat, lon, radius, startdate, enddate, offset, count
-        query = json.loads(search.query)
-        q = query["q"].encode("utf-8")
-        lat = query["lat"]
-        lon = query["lon"]
-        radius = query["radius"]
+    def prepare_query(self, query):
+        r = {}
+        r["q"] = query["q"].encode("utf-8")
+        r["lat"] = query["lat"]
+        r["lon"] = query["lon"]
+        r["radius"] = query["radius"]
         if query["startdate"]:
-            startdate = dateutil.parser.parse(query["startdate"])
-        else:
-            startdate = None
+            r["startdate"] = dateutil.parser.parse(query["startdate"])
         if query["enddate"]:
-            enddate = dateutil.parser.parse(query["enddate"])
-        else:
-            enddate = None
-        offset = query["offset"]
-        count = query["count"]
-
-        # logger.log("ImageSearch:%s:START" % (self.PROVIDER))
-        runner = search.create_runner(self.PROVIDER)
-
-        results = self.search(q, lat, lon, radius, startdate, enddate, offset, count)
-        for r in results:
-            search.create_result(self.PROVIDER, r)
-
-        runner.done = True
-        runner.results = len(results)
-        runner.save()
-        # logger.log("ImageSearch:%s:FINISH" % (self.PROVIDER))
+            r["enddate"] = dateutil.parser.parse(query["enddate"])
+        r["offset"] = query["offset"]
+        r["count"] = query["count"]
+        return r
 
 
 class ImageSearchVK(ImageSearcher):
@@ -277,5 +283,27 @@ class ImageSearchYouTube(ImageSearcher):
         return results
 
 
-searchproviders = [ImageSearchInstagram, ImageSearchVK, ImageSearchYouTube]
-# ImageSearchFacebook, ImageSearchTwitter, ImageSearchGoogleImages, ImageSearchFlickr
+class EntitySearchOpenCorporates(DocumentSearcher):
+    PROVIDER = "OpenCorporates"
+    SEARCHER = opencorporates.OpenCorpSearch()
+
+    def _search(self, q, offset=0, limit=100, **kwargs):
+        results = self.SEARCHER.search(q, offset, limit)
+        self.result_count = results.resultcount
+        return results.resultdata
+
+
+class DocumentSearchElasticSearch(DocumentSearcher):
+    PROVIDER = "ElasticSearch"
+
+    def _search(self, q, offset, limit, **kwargs):
+        results = elastic.search(query,offset=offset,
+                                 limit=limit,
+                                 index='id_prod', **kwargs)
+        self.result_count = results['hits']['total']
+        return results['hits']['hits']
+
+
+
+searchproviders = [ImageSearchInstagram, ImageSearchVK, ImageSearchYouTube, DocumentSearchElasticSearch]
+# ImageSearchFacebook, ImageSearchTwitter, ImageSearchGoogleImages, ImageSearchFlickr, EntitySearchOpenCorporates
