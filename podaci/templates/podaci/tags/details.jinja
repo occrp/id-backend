@@ -2,7 +2,6 @@
 
 {% block podaci_content %}
 <div class="span12" style="margin-top: -20px">
-    {% include "podaci/partials/_podaci_tag_view_type_selection.jinja" %}
     <div class="breadcrumbs">
         <a href="{{url('podaci_info_home')}}">Tags</a>{% if breadcrumbs %} &gt; {% endif %}
         {% for bc in breadcrumbs %}
@@ -22,6 +21,7 @@
 </div>
 
 <div class="span9">
+    {% include "podaci/partials/_podaci_tag_view_type_selection.jinja" %}
 
     <h3>{% if tag %}{{tag.name}}{% else %}Your files{% endif %}</h3>
     <h6>{{num_files}} files / <span id="num_files_displayed">{{num_files_displayed}} shown</span></h6>
