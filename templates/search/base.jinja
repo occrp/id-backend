@@ -1,6 +1,12 @@
 {% extends "base.jinja" %}
 
 {% block content %}
+<ul class="nav nav-tabs">
+{% for type in search_types %}
+	<li role="presentation"{% if type.0 in request.path %} class="active"{% endif %}><a href="/search/{{type.0}}/"><i class="fa fa-{{type.0}}"></i> {{type.1}}</a></li>
+{% endfor %}
+</ul>
+
 <h2>{% block search_title %}{% endblock %}</h2>
     {% block search_form %}
     {% endblock %}
