@@ -4,10 +4,10 @@ from search.api import searchproviders, ImageSearchResult
 from core.utils import json_dumps, json_loads
 
 SEARCH_TYPES = (
+    ('document', 'Document search'),
     ('image', 'Image search'),
     ('social', 'Social Network search'),
-    ('document', 'Document search'),
-    ('entity', 'Entity search')
+#    ('entity', 'Entity search')
 )
 
 
@@ -62,7 +62,7 @@ class SearchRequest(models.Model):
     def get_providers(self, limit_to=None):
         """Get the providers."""
         if not limit_to:
-            return searchproviders
+            return [x for x in searchproviders if x.TYPE == self.search_type]
         return [x for x in searchproviders if x.PROVIDER in limit_to and (x.TYPE == self.search_type)]
 
     def statistics(self):

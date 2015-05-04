@@ -3,23 +3,23 @@
 {% block search_title %}Image Search{% endblock %}
 {% block search_form %}
     <div class="row well">
-        <form name="image_search_form" id="image_search_form" class="image-search-form">
+        <form name="image_search_form" id="search_form" class="image-search-form" data-type="image">
         <div class="image-search-inputs-container">
             <table>
-                <tr><th colspan="2">Search terms:</th></tr>
-                <tr><td colspan="2" class="instructions">Please provide search terms to search images by.</td></tr>
+                <tr><th colspan="2">{% trans %}Search terms:{% endtrans %}</th></tr>
+                <tr><td colspan="2" class="instructions">{% trans %}Please provide search terms to search images by.{% endtrans %}</td></tr>
                 <tr><td colspan="2"><input class="input-large" name="q" placeholder="Search terms"/></td></tr>
                 <tr><th colspan="2">Area:</th></tr>
-                <tr><td colspan="2" class="instructions">Select area on the map or enter latitude and longitude, and adjust search radius.</td></tr>
-                <tr><th>Latitude:</th><td><input name="lat" type="number" step="any" min="-90" max="90"/></td></tr>
-                <tr><th>Longitude:</th><td><input name="lon" type="number" step="any" min="-180" max="180"/></td></tr>
-                <tr><th>Radius:</th><td><input name="radius_root" type="range" min="1" max="22359" value="22359" data-tooltip="Radius (in meters)"/></td></tr>
-                <tr><th colspan="2">Dates and times:</th></tr>
-                <tr><td colspan="2" class="instructions">Optionally, adjust date/time thresholds.</td></tr>
-                <tr><th>Start:</th><td><input name="startdate" type="date"/><input name="starttime" type="time"/></td></tr>
-                <tr><th>End:</th><td><input name="enddate" type="date"/><input name="endtime" type="time"/></td></tr>
-                <tr><th colspan="2">Services:</th></tr>
-                <tr><td colspan="2" class="instructions">Choose services to search at.</td></tr>
+                <tr><td colspan="2" class="instructions">{% trans %}Select area on the map or enter latitude and longitude, and adjust search radius.{% endtrans %}</td></tr>
+                <tr><th>{% trans %}Latitude:{% endtrans %}</th><td><input name="lat" type="number" step="any" min="-90" max="90"/></td></tr>
+                <tr><th>{% trans %}Longitude:{% endtrans %}</th><td><input name="lon" type="number" step="any" min="-180" max="180"/></td></tr>
+                <tr><th>{% trans %}Radius:{% endtrans %}</th><td><input name="radius_root" type="range" min="1" max="22359" value="22359" data-tooltip="{% trans %}Radius (in meters){% endtrans %}"/></td></tr>
+                <tr><th colspan="2">{% trans %}Dates and times:{% endtrans %}</th></tr>
+                <tr><td colspan="2" class="instructions">{% trans %}Optionally, adjust date/time thresholds.{% endtrans %}</td></tr>
+                <tr><th>{% trans %}Start:{% endtrans %}</th><td><input name="startdate" type="date"/><input name="starttime" type="time"/></td></tr>
+                <tr><th>{% trans %}End:{% endtrans %}</th><td><input name="enddate" type="date"/><input name="endtime" type="time"/></td></tr>
+                <tr><th colspan="2">{% trans %}Services:{% endtrans %}</th></tr>
+                <tr><td colspan="2" class="instructions">{% trans %}Choose services to search at.{% endtrans %}</td></tr>
                 <tr><td colspan="2" class="search-providers"><div>{% for provider in search_providers %}
                   {% if provider|lower == 'vkontakte' %}
                     {% set provider_icon = 'vk' %}
@@ -28,20 +28,19 @@
                   {% endif %}
                   <label class="provider"><input type="checkbox" checked="checked" name="search_providers[]" value="{{ provider }}"/><span><i class="fa fa-{{ provider_icon }}"></i>{{ provider }}</span></label>
                 {% endfor %}</div></td></tr>
-                <tr><td colspan="2"><input id="image_search_submit" class="btn btn-primary pull-right" type="button" value="Search"/></td></tr>
+                <tr><td colspan="2"><button class="btn btn-large btn-primary" id="search_submit"><i class="fa fa-search"></i> {% trans %}Search{% endtrans %}</button></td></tr>
             </table>
             <input name="radius" value="50000" type="hidden"/>
         </div>
         <div class="image-search-map-container"><div id="map" class="map"></div></div>
         </form>
-        <div id="searching_notice" class="hide" role="alert">Searching... <i class="fa fa-spinner fa-pulse"></i></div>
+        <div id="searching_notice" class="hide" role="alert">{% trans %}Searching...{% endtrans %} <i class="fa fa-spinner fa-pulse"></i></div>
     </div>
 
 {% endblock %}
 
 {% block after_js %}
 <script>
-    var search_images_query = "{{url("search_images_query")}}";
     /**
       * Define a namespace for the application.
       * http://openlayers.org/en/v3.2.1/examples/custom-controls.js
