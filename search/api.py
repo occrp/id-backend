@@ -145,7 +145,7 @@ class ImageSearchInstagram(ImageSearcher):
     PROVIDER = "Instagram"
     URL = "https://api.instagram.com/v1/media/search"
 
-    def search(self, q, lat, lon, radius, startdate, enddate, offset, count):
+    def search(self, q, lat, lon, radius=5000, startdate=None, enddate=None, offset=0, count=100):
         # results
         results = []
         
@@ -287,7 +287,7 @@ class EntitySearchOpenCorporates(DocumentSearcher):
     PROVIDER = "OpenCorporates"
     SEARCHER = opencorporates.OpenCorpSearch()
 
-    def _search(self, q, offset=0, limit=100, **kwargs):
+    def search(self, q, offset=0, limit=100, **kwargs):
         results = self.SEARCHER.search(q, offset, limit)
         self.result_count = results.resultcount
         return results.resultdata
@@ -296,10 +296,9 @@ class EntitySearchOpenCorporates(DocumentSearcher):
 class DocumentSearchElasticSearch(DocumentSearcher):
     PROVIDER = "ElasticSearch"
 
-    def _search(self, q, offset, limit, **kwargs):
-        results = elastic.search(query,offset=offset,
-                                 limit=limit,
-                                 index='id_prod', **kwargs)
+    def search(self, **kwargs):
+        # offset=kwargs.get("offset", 0)
+        results = elastic.search(term=kwargs["q"], index='id_prod')
         self.result_count = results['hits']['total']
         return results['hits']['hits']
 
