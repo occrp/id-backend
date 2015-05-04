@@ -71,6 +71,28 @@ class SearchSocialQuery(View, JSONResponseMixin):
             "status": True
         }
 
+class DocumentSearchQuery(View, JSONResponseMixin):
+    def get_context_data(self):
+        query = {}
+        query["q"] = self.request.GET.get("q", "")
+        query["startdate"] = self.request.GET.get("startdate", None)
+        if query["startdate"]:
+            query["startdate"] += "T" + self.request.GET.get("starttime", "00:00")
+        query["enddate"] = self.request.GET.get("enddate", None)
+        if query["enddate"]:
+            query["enddate"] += "T" + self.request.GET.get("endtime", "23:59")
+        query["offset"] = self.request.GET.get("offset", 0)
+        query["count"] = self.request.GET.get("count", 100)
+
+        chosen_providers = self.request.GET.getlist("search_providers[]", None)
+
+        search = SearchRequest()
+        search.requester = self.request.user
+        search.search_type = 'document'
+        search.query = json_dumps(query)
+        search.save()
+        return search.initiate_search(chosen_providers)
+
 
 class SearchCheck(View, JSONResponseMixin):
     def get_context_data(self):
@@ -109,30 +131,6 @@ def search(providers, query, offset, limit):
                 traceback.format_exc()))
 
     return results, messages
-
-class DocumentSearchQuery(View, JSONResponseMixin):
-    def get_context_data(self):
-        query = {}
-        query["q"] = self.request.GET.get("q", "")
-        query["startdate"] = self.request.GET.get("startdate", None)
-        if query["startdate"]:
-            query["startdate"] += "T" + self.request.GET.get("starttime", "00:00")
-            print "Starting: " + query["startdate"]
-        query["enddate"] = self.request.GET.get("enddate", None)
-        if query["enddate"]:
-            query["enddate"] += "T" + self.request.GET.get("endtime", "23:59")
-            print "Ending: " + query["enddate"]
-        query["offset"] = self.request.GET.get("offset", 0)
-        query["count"] = self.request.GET.get("count", 100)
-
-        chosen_providers = self.request.GET.getlist("search_providers[]", None)
-
-        search = SearchRequest()
-        search.requester = self.request.user
-        search.search_type = 'document'
-        search.query = json_dumps(query)
-        search.save()
-        return search.initiate_search(chosen_providers)
 
 class CombinedSearchHandler(TemplateView):
     template_name = "search/search_combined.jinja"
