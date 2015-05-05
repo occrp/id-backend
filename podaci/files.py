@@ -16,11 +16,12 @@ class Create(PodaciView):
         uploadedfile = self.request.FILES.get("files[]", "")
         if uploadedfile == "":
             return None
-        res = f.create_from_filehandle(uploadedfile)
+        f.create_from_filehandle(uploadedfile)
         tag = self.request.POST.get("tag", None)
         if tag:
-            res.add_tag(tag)
-        return res
+            tag = Tag(self.fs, tag)
+            f.add_tag(tag)
+        return f
 
 
 class Details(PodaciView):
