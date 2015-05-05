@@ -259,6 +259,7 @@ Podaci.refresh_tags = function() {
         $.getJSON('/podaci/tag/' + tag + '/', {format: "json"}, 
                   function(data) {
             if (data.error) {
+                console.log("ERROR: ", data.error);
             } else {
                 $(el).empty();
                 console.log(data);
