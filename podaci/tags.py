@@ -9,7 +9,8 @@ class Create(PodaciView):
         tagname = self.request.POST.get("tag_name", None)
         if not tagname:
             return {"error": "Must supply tag name."}
-        tag = self.fs.create_tag(tagname)
+        tag = Tag(self.fs)
+        tag.create(tagname)
         parent = self.request.POST.get("tag_parents", None)
         if parent:
             tag.parent_add(parent)
@@ -76,7 +77,7 @@ class Zip(PodaciView):
     """
     template_name = "NO_TEMPLATE"
 
-    def get(self, request, id=None, **kwargs):
+    def get(self, request, tid=None, **kwargs):
         from id.apis.podaci import File
         import zipfile
         import StringIO
@@ -84,7 +85,7 @@ class Zip(PodaciView):
         files = request.GET.getlist("files", [])
 
         if id:
-            self.tag = self.fs.get_tag(id)
+            self.tag = Tag(self.fs, tid)
             archive = self.tag.get_zip()
             archive_name = "%s.zip" % (self.tag.meta["name"])
         elif files:
