@@ -1,6 +1,7 @@
 import csv
 import sys
 import os
+import json
 
 class DirectoryAnalyzer:
     def __init__(self, verbose=False, max_scan=-1, table_prefix=""):
@@ -26,12 +27,32 @@ class DirectoryAnalyzer:
     def get_cassandra_tables(self):
         s = ""
         for path, analyzer in self.analyzers.iteritems():
-            table = analyzer.make_cassandra_table(table_prefix=self.table_prefix)
+            table = analyzer.get_cassandra_table(table_prefix=self.table_prefix)
             s += "\n-- Table for %s:\n%s\n" % (path, table)
         return s
 
+    def get_ingest_file(self):
+        return json.dumps(self.get_ingest_json())
 
-class CSVAnalyzer:
+    def get_ingest_json(self):
+        igf = {
+            "sources": {
+            }
+        }
+
+        for f, a in self.analyzers.iteritems():
+            igf["sources"][f] = a.get_ingest_json()
+
+
+class FileAnalyzer:
+    def get_ingest_file(self):
+        igf = {
+            "sources": {
+                self.filename: self.get_ingest_json()
+            }
+        }
+
+class CSVAnalyzer(FileAnalyzer):
     def __init__(self, verbose=False, max_scan=-1):
         self.verbose = verbose
         self.max_scan = max_scan
@@ -115,13 +136,13 @@ class CSVAnalyzer:
         }
         return tlookup[t]
 
-    def make_cassandra_table(self, tablename=None, aftermatter="", table_prefix=""):
+    def get_cassandra_table(self, tablename=None, aftermatter="", table_prefix=""):
         template = "CREATE TABLE IF NOT EXISTS %(table_prefix)s%(name)s (\n\t%(fields)s\n)%(aftermatter)s;"
         fields = []
         if not tablename:
             tablename = self.filename.split("/")[-1].strip(".csv")
         for name, t in self.types.iteritems():
-            fields.append("%s: %s" % (self.name_to_cassandra_name(name), self.type_to_cassandra_type(t)))
+            fields.append("%s %s" % (self.name_to_cassandra_name(name), self.type_to_cassandra_type(t)))
 
         return template % {
                 "table_prefix": table_prefix,
@@ -132,7 +153,8 @@ class CSVAnalyzer:
 if __name__ == "__main__":
     from optparse import OptionParser
     parser = OptionParser()
-    parser.add_option("-d", "--directory", action="append", dest="directory",
+    parser.add_option("-f", "--file", action="append", dest="files", help="Ingest file", default=[])
+    parser.add_option("-d", "--directory", action="append", dest="directories",
                      help="Analyze directory", metavar="DIR", default=[])
     parser.add_option("", "--cassandra", action="store_true", dest="cassandra", default=False,
                      help="Print out Cassandra table specifications for found data.")
@@ -147,9 +169,28 @@ if __name__ == "__main__":
     (options, args) = parser.parse_args()
 
     # print options
-    for d in options.directory:
+    for d in options.directories:
         an = DirectoryAnalyzer(options.verbose, options.max_scan, options.table_prefix)
         an.analyze(d)
         if options.cassandra:
             print an.get_cassandra_tables()
+        if options.ingest:
+            if options.output:
+                with open(options.output, "w+") as fh:
+                    fh.write(an.get_ingest_file)
+            else:
+                print an.get_ingest_file()
+
+    for f in options.files:
+        an = CSVAnalyzer(options.verbose, options.max_scan)
+        an.analyze(f)
+        if options.cassandra:
+            print an.get_cassandra_table(options.table_prefix)
+        if options.ingest:
+            if options.output:
+                with open(options.output, "w+") as fh:
+                    fh.write(an.get_ingest_file)
+            else:
+                print an.get_ingest_file()
+
 
