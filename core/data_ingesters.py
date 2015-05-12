@@ -2,13 +2,16 @@ import sys
 from datetime import datetime
 import csv 
 from cassandra.cluster import Cluster
+from cassandra import InvalidRequest
 from optparse import OptionParser
 
 class ParameterError(ValueError):
     pass
 
 class Outputter:
-    pass
+    def error(self, msg):
+        print "ERROR: %s" % msg
+        raise Exception(msg)
 
 class VerboseOutputter(Outputter):
     def mark(self):
@@ -48,20 +51,32 @@ class IngestCassandra(Ingest):
         self.cluster = Cluster(options.hosts)
         self.outputter = outputter
         self.keyspace = options.cassandra_keyspace
-        self.session = cluster.connect(self.keyspace)
+        try:
+            self.session = self.cluster.connect(self.keyspace)
+        except InvalidRequest, e:
+            self.outputter.error(e)
 
     def __str__(self):
         return "%s:%s" % (self.NAME, self.keyspace)
 
     def insert(self, table, fields):
-        self.session.execute("INSERT INTO %s (%s) VALUES (%s)" % (
-                             table, ",".join(keys(fields)), ",".join(values(fields))))
+        if not table:
+            self.outputter.error("Must specify table.")
+        try:
+            self.session.execute("INSERT INTO %s (%s) VALUES (%s)" % (
+                                 table, 
+                                 ",".join(fields.keys()), 
+                                 ",".join(["%s" for x in fields.values()])), 
+                                 fields.values())
+        except InvalidRequest, e:
+            self.outputter.error(e)
+
 
     def ingest_csv(self, table, dictreader):
         cnt = 0
         starttime = datetime.now()
         lasttime = starttime
-        for row in reader:
+        for row in dictreader:
             self.insert(table, row)
             cnt += 1
             if cnt % 1000 == 0:
@@ -112,7 +127,7 @@ class IngestApp:
         try:
             ingester = self.INGESTERS[self.options.ingester](options=self.options, outputter=outputter)
         except ParameterError, e:
-            print "Error: %s (from %s)" % (e, self.options.ingester)
+            outputter.error("%s (from %s)" % (e, self.options.ingester))
 
         for f in self.options.files:
             outputter.notify("Ingesting %s into %s:%s" % (f, ingester, self.options.table))
