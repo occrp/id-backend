@@ -11,7 +11,7 @@ urlpatterns = patterns('',
 
     url(r'^results/$',       perm('user', search.views.SearchCheck), name='search_results'),
     url(r'^document/$',      perm('any',  search.views.DocumentSearchTemplate), name='search'),
-    url(r'^$',               perm('any',  search.views.DocumentSearchTemplate), name='search'),
+    # url(r'^$',               perm('any',  search.views.DocumentSearchTemplate), name='search'),
     url(r'^document/query/$',perm('any', search.views.DocumentSearchQuery), name='search_documents_query'),
     url(r'^entity/$',        perm('any',  search.views.CombinedSearchHandler), name='search_entities'), # still needed for ajax only
 
