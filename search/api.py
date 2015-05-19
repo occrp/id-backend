@@ -15,6 +15,11 @@ from django.template.defaultfilters import slugify
 from apiclient.discovery import build
 from apiclient.errors import HttpError
 
+class ResultSet(list):
+    def __init__(self, total, results=[]):
+        self.extend(results)
+        self.total = total
+
 class ImageSearchResult(dict):
     def __init__(self, provider, imageurl, resulturl, timestamp, caption, 
                  linkurl=None, linktitle=None, metadata={}):
@@ -26,6 +31,16 @@ class ImageSearchResult(dict):
         self["metadata"] = metadata
         self["link"] = linkurl
         self["linktitle"] = linktitle
+
+class DocumentSearchResult(dict):
+    def __init__(self, provider, resulturl, timestamp, text, 
+                 title, metadata={}):
+        self["provider"] = provider
+        self["timestamp"] = timestamp
+        self["text"] = text
+        self["title"] = title
+        self["result_url"] = resulturl
+        self["metadata"] = metadata
 
 
 class Searcher:
@@ -298,9 +313,17 @@ class DocumentSearchElasticSearch(DocumentSearcher):
 
     def search(self, **kwargs):
         # offset=kwargs.get("offset", 0)
-        results = elastic.search(term=kwargs["q"], index='id_prod')
-        self.result_count = results['hits']['total']
-        return results['hits']['hits']
+        results = elastic.search(term=kwargs["q"], index='id_prod', limit=50)
+        result_count = results['hits']['total']
+        resultset = ResultSet(total=result_count)
+        for r in results['hits']['hits']:
+            text = "<br/>".join(r["highlight"]["text"])
+            i = DocumentSearchResult(self.PROVIDER, 
+                                    r["fields"]["url"], 
+                                    r["fields"]["date_added"], text, 
+                                    r["fields"]["title"], metadata=r)
+            resultset.append(i)
+        return resultset # results['hits']['hits']
 
 
 

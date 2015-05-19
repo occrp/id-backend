@@ -441,3 +441,21 @@ td.search-providers div input[value=YouTube] + span,
 .provider.YouTube {
   background:#c3191e;
 }
+
+
+#search_form .well {
+  display:flex;
+  flex-direction:row;
+  width:80%;
+  justify-content:center; 
+  align-content: stretch;
+}
+
+.search-query {
+  padding: 5px;
+  margin-right: 1em;
+  display: flex;
+  flex-direction:row;
+  width:100%;
+  flex-wrap: nowrap;
+}

@@ -48,11 +48,11 @@ id2.search.renderImageResult = function(item) {
 id2.search.renderDocumentResult = function(item) {
     var result = $('<div class="document-search-result"/>');
     console.log(item);
-    result.append('<h4><a href="' + item.data.fields.url + '" target="_blank">' + item.data.fields.title + '</a></h4>');
-    result.append('<p>' + item.data.highlight.text + '</p>');
+    result.append('<h4><a href="' + item.data.result_url + '" target="_blank">' + item.data.title + '</a></h4>');
+    result.append('<p>' + item.data.text + '</p>');
     var tags = $('<div class="search-tags"/>');
-    for (tag in item.data.fields.tags) {
-        tag = item.data.fields.tags[tag];
+    for (tag in item.data.metadata.fields.tags) {
+        tag = item.data.metadata.fields.tags[tag];
         tags.append('<span class="search-tag">' + tag + '</span>');
     }
     result.append('<div class="search-origin">Source: <span class="provider ' + item.provider + '">'+ item.provider + '</span></div>');
