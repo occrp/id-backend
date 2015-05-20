@@ -461,6 +461,8 @@ class TicketList(PrettyPaginatorMixin, TemplateView, PodaciMixin):
     url_args = {}
 
     def get_context_data(self, **kwargs):
+        self.filter_terms = self.request.GET.get("filter", '')
+
         if 'page' in kwargs:
             self.page_number = int(kwargs.pop('page'))
             if self.page_number is None:
@@ -477,7 +479,8 @@ class TicketList(PrettyPaginatorMixin, TemplateView, PodaciMixin):
                                                                      self.url_name,
                                                                      self.url_args),
             'page_number': self.page_number,
-            'ticket_figures': self.get_ticket_list_figures()
+            'ticket_figures': self.get_ticket_list_figures(),
+            'filter_terms': self.filter_terms
         }
 
         return context
@@ -513,7 +516,12 @@ class TicketList(PrettyPaginatorMixin, TemplateView, PodaciMixin):
         return paged_tickets
 
     def set_paginator_object(self):
-        self.paginator = Paginator(get_actual_tickets(self.get_ticket_set(self.request.user)), self.page_size)
+        ticket_set = self.get_ticket_set(self.request.user)
+        if self.filter_terms:
+            ticket_set = ticket_set.filter(Q(requester__email__contains=self.filter_terms) 
+                                         | Q(requester__first_name__contains=self.filter_terms)
+                                         | Q(requester__last_name__contains=self.filter_terms))
+        self.paginator = Paginator(get_actual_tickets(ticket_set), self.page_size)
 
     def get_ticket_set(self, user):
         return self.tickets
