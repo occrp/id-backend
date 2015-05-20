@@ -23,6 +23,16 @@ class Network(models.Model):
             return "%s - %s" % (self.short_name, self.long_name)
         return self.short_name
 
+class Center(models.Model):
+    short_name = models.CharField(max_length=50)
+    long_name = models.CharField(max_length=100, blank=True)
+    networks = models.ManyToManyField(Network)
+
+    def __unicode__(self):
+        if self.long_name:
+            return "%s - %s" % (self.short_name, self.long_name)
+        return self.short_name
+
 
 ######## User profiles #################
 
