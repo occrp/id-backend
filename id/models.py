@@ -284,7 +284,7 @@ class ExternalDatabase(models.Model, DisplayMixin):
 class AccountRequest(models.Model, DisplayMixin):
     request_type = models.CharField(blank=False, max_length=64, choices=REQUEST_TYPES)
     user = models.ForeignKey(AUTH_USER_MODEL, blank=False)
-    approved = models.BooleanField(default=None, blank=True, verbose_name=_('Approved'))
+    approved = models.NullBooleanField(default=None, blank=True, null=True, verbose_name=_('Approved'))
     date_created = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('Date Created'))
 
@@ -293,6 +293,13 @@ class AccountRequest(models.Model, DisplayMixin):
 
     GROUPS = []
     MAIL_TEMPLATE = 'accountrequest/mail_notification.jinja'
+
+    def __str__(self):
+        return "%s:%s:%s:%s" % (self.user, self.request_type, self.approved, self.date_created)
+
+    class Meta:
+        ordering = ['request_type', 'approved', 'date_created']
+        unique_together = (('user', 'request_type'),)
 
     def get_display_value(self, property_name):
         if property_name != 'approved':
@@ -308,10 +315,10 @@ class AccountRequest(models.Model, DisplayMixin):
         groups, and marks the request as approved.
         """
         if self.request_type == 'volunteer':
-            self.user.is_volunteer = True()
+            self.user.is_volunteer = True
             self.user.save()
         elif self.request_type == 'requester':
-            self.user.is_user = True()
+            self.user.is_user = True
             self.user.save()
 
         self.approved = True
@@ -322,12 +329,19 @@ class AccountRequest(models.Model, DisplayMixin):
         """
         Removes the user from the group!
         """
+        if self.request_type == 'volunteer':
+            self.user.is_volunteer = False
+            self.user.save()
+        elif self.request_type == 'requester':
+            self.user.is_user = False
+            self.user.save()
+
         self.approved = False
         self.save()
         self.notify_rejected()
 
     def notify_received(self):
-        email_notification(
+        self.email_notification(
             to=self.user.email,
             subject=unicode(_('Your Account Request was received')),
             template='mail/account_request/received.jinja',
@@ -335,7 +349,7 @@ class AccountRequest(models.Model, DisplayMixin):
         )
         for admin in AUTH_USER_MODEL.objects.filter(is_superuser=True):
             with templocale(admin.locale or 'en'):
-                email_notification(
+                self.email_notification(
                     to=admin.email,
                     subject=unicode(_('An Account Request was received')),
                     template='mail/account_request/received_admin.jinja',
@@ -343,7 +357,7 @@ class AccountRequest(models.Model, DisplayMixin):
                 )
 
     def notify_approved(self):
-        email_notification(
+        self.email_notification(
             to=self.user.email,
             subject=unicode(_('An update to your Account Request')),
             template='mail/account_request/approved.jinja',
@@ -351,12 +365,15 @@ class AccountRequest(models.Model, DisplayMixin):
         )
 
     def notify_rejected(self):
-        email_notification(
+        self.email_notification(
             to=self.user.email,
             subject=unicode(_('Your Account Request was rejected')),
             template='mail/account_request/rejected.jinja',
             context={'request': self}
         )
+
+    def email_notification(self, to, subject, template, context):
+        pass
 
 class DatabaseScrapeRequest(models.Model):
     url = models.URLField(blank=False, verbose_name=_("URL"))

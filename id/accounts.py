@@ -4,7 +4,10 @@ from django.contrib.auth.decorators import login_required
 #from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from settings.settings import LANGUAGES
+from django.utils.translation import ugettext_lazy as _
 from registration.signals import user_registered
+
+from core.mixins import MessageMixin
 
 from id.models import Profile, AccountRequest
 from id.forms import ProfileUpdateForm, ProfileBasicsForm, ProfileDetailsForm, ProfileAdminForm
@@ -64,42 +67,41 @@ class UserList(ListView):
     paginate_by = 50
     template_name = 'auth/user_list.jinja'
 
-class AccountRequestHome(TemplateView):
-    template_name = 'request_account_home.jinja'
+class AccessRequestCreate(TemplateView):
+    template_name = 'accessrequest/create.jinja'
 
     def get_context_data(self):
-        if self.fallback_response():
-            return {"status": False}
-        req = AccountRequest(request_type=self.REQUEST_TYPE,
-                             user=self.request.user)
-        req.save()
-        self.add_message(_('Request submitted. Our staff will evaluate and '
-                           'respond to your request.'), 'success')
-        return {"status": True, "requested": self.REQUEST_TYPE}
+        request_type = self.request.POST.get("access_type", None)
+        if not request_type:
+            return {"requested": False}
 
-    def fallback_response(self):
         u = self.request.user
         if u.is_user and self.REQUEST_TYPE == 'requester':
-            self.message('You have already been approved as an Information Requester.')
-            return False
+            return {"status": False, "msg": 'You have already been approved as an Information Requester.'}
         if u.is_volunteer and self.REQUEST_TYPE == 'volunteer':
-            self.add_message('You have already been approved as a Volunteer.')
-            return False
-        if AccountRequest.objects.filter(user=u).count() > 0:
-            self.add_message('You already have a request for an account pending.'
-                ' Please be patient.')
-            return False
-        return True
+            return {"status": False, "msg": 'You have already been approved as a Volunteer.'}
+        if AccountRequest.objects.filter(user=u, request_type=self.REQUEST_TYPE).count() > 0:
+            return {"status": False, "msg": 'You already have an access request pending. Please be patient.'}
 
-class AccountRequestList(ListView):
-    template_name = 'id/accountrequest_list.jinja'
+        req = AccountRequest(request_type=request_type, user=self.request.user)
+        req.save()
+        return {"status": True, "requested": request_type}
+
+
+class AccessRequestList(ListView):
+    template_name = 'accessrequest/list.jinja'
     model = AccountRequest
 
-class AccountRequester(AccountRequestHome):
-    template_name = 'accountrequest/confirm_access_requested.jinja'
-    REQUEST_TYPE = 'requester'
+    def get_queryset(self):
+        approve = self.request.GET.get("approve_req", None)
+        deny = self.request.GET.get("deny_req", None)
+        if approve:
+            ar = AccountRequest.objects.get(id=approve)
+            ar.approve()
+        if deny:
+            ar = AccountRequest.objects.get(id=deny)
+            ar.reject()
 
-class AccountVolunteer(AccountRequest):
-    template_name = 'accountrequest/confirm_access_requested.jinja'
-    REQUEST_TYPE = 'volunteer'
+        return AccountRequest.objects.filter(approved=None)
+
 

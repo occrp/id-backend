@@ -46,7 +46,7 @@
                     <li class="{% if url('externaldb_list') in request.path %}active{% endif %}">
                         <a href="{{ url('externaldb_list') }}"><i class="icon-list-alt"></i> {% trans %}External Databases{% endtrans %}</a>
                     </li>
-                    {% if user.is_authenticated() %}
+                    {% if user.is_user %}
                     <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
                         <a href="{{ url('ticket_list') }}"><i class="icon-comments-alt"></i> {% trans %}Expert Help{% endtrans %}</a>
                     </li>
@@ -72,7 +72,7 @@
                                 <a href="{{ url('profile') }}"><i class="icon-user"></i> {% trans %}Profile{% endtrans %}</a>
                             </li>
                             {% if not (user.is_admin or user.is_staff or user.is_volunteer or user.is_user) %}
-                            <li><a href="{{ url('request_account_home') }}"><i class="icon-asterisk"></i> {% trans %}Request Permissions{% endtrans %}</a></li>
+                            <li><a href="{{ url('request_access_create') }}"><i class="icon-asterisk"></i> {% trans %}Request Permissions{% endtrans %}</a></li>
                             {% endif %}
                             {% if user.is_staff or user.is_superuser %}
                             <li  class="{% if url('admin_panel') in request.path %}active{% endif %}">
