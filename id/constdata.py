@@ -40,7 +40,7 @@ REQUESTER_TYPES = (
 )
 
 REQUEST_TYPES = (
-    ('requester', _('Requester')),
+    ('requester', _('Information Requester')),
     ('volunteer', _('Volunteer'))
 )
 

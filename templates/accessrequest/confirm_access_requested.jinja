@@ -1,6 +1,7 @@
 {% extends "base.jinja" %}
 
 {% block content %}
+    {% if requested %}
     <div class="span12">
         {% if status %}
         <h1>{% trans %}Access Requested{% endtrans %}</h1>
@@ -8,9 +9,11 @@
         <p>{% trans %}We've registered your request for access, and our staff will review it as soon as possible.{% endtrans %}</p>
         <p>{% trans %}We will e-mail you when your request has been processed.{% endtrans %}</p>
         {% else %}
-        <h1>{% trans %}Duplicate request{% endtrans %}</h1>
-        <p>{% trans %}We've already gotten a request from you. One is enough.{% endtrans %}</p>
-        <p>{% trans %}We will e-mail you when your request has been processed.{% endtrans %}</p>
+        <h1>{% trans %}Error{% endtrans %}</h1>
+        <p>{{msg}}</p>
         {% endif %}
     </div>
+    {% else %}
+    {% include "partials/_request_access.jinja" %}
+    {% endif %}
 {% endblock %}

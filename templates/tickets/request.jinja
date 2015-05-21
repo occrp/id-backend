@@ -1,4 +1,3 @@
-{% if user.is_user %}
 {% extends "tickets/request_base.jinja" %}
 
 {% block inner_content %}
@@ -6,56 +5,53 @@
         <h1>{% trans %}Request Information{% endtrans %}</h1>
     </div>
 
-    {% if not ticket.id %}
-        {% set button_text = 'Submit' %}
-        {% call macros.help_box() %}
-            {% trans -%}
-                Your request will be routed to our professional researchers and volunteers, who will try to help.
-            {%- endtrans %}
-        {% endcall %}
-    {% else %}
-        {% set button_text = 'Save' %}
-    {% endif %}
+    {% if user.is_user %}
 
-    <form method="POST" class="form-horizontal requestform" enctype="multipart/form-data">
-        {% csrf_token %}
+        {% if not ticket.id %}
+            {% set button_text = 'Submit' %}
+            {% call macros.help_box() %}
+                {% trans -%}
+                    Your request will be routed to our professional researchers and volunteers, who will try to help.
+                {%- endtrans %}
+            {% endcall %}
+        {% else %}
+            {% set button_text = 'Save' %}
+        {% endif %}
 
-        <div class="control-group" style="{% if not ticket_type_form is defined %}display: none;{% endif %}">
-            {% if ticket_type_form is defined %}
-                {{ form_macros.render_form_fragment(ticket_type_form) }}
+        <form method="POST" class="form-horizontal requestform" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="control-group" style="{% if not ticket_type_form is defined %}display: none;{% endif %}">
+                {% if ticket_type_form is defined %}
+                    {{ form_macros.render_form_fragment(ticket_type_form) }}
+                {% endif %}
+            </div>
+
+            {% if person_ownership_form is defined %}
+                <div id="person_ownership_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
+                    {{ form_macros.render_form_fragment(person_ownership_form) }}
+                </div>
             {% endif %}
-        </div>
+            {% if company_ownership_form is defined %}
+                <div id="company_ownership_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
+                    {{ form_macros.render_form_fragment(company_ownership_form) }}
+                </div>
+            {% endif %}
+            {% if other_form is defined %}
+                <div id="other_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
+                    {{ form_macros.render_form_fragment(other_form) }}
+                </div>
 
-        {% if person_ownership_form is defined %}
-            <div id="person_ownership_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
-                {{ form_macros.render_form_fragment(person_ownership_form) }}
+            {% endif %}
+            <div class="request-submit" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
+                {{ form_macros.render_submit(_(button_text), class="btn-primary") }}
             </div>
-        {% endif %}
-        {% if company_ownership_form is defined %}
-            <div id="company_ownership_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
-                {{ form_macros.render_form_fragment(company_ownership_form) }}
-            </div>
-        {% endif %}
-        {% if other_form is defined %}
-            <div id="other_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
-                {{ form_macros.render_form_fragment(other_form) }}
-            </div>
-
-        {% endif %}
-        <div class="request-submit" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
-            {{ form_macros.render_submit(_(button_text), class="btn-primary") }}
-        </div>
-    </form>
+        </form>
+    {% else %}
+        {% include("partials/_request_access.jinja") %}
+    {% endif %}
 {% endblock %}
 
 {% block after_js %}
     <script type="text/javascript" src="{{static('js/request-form.js')}}"></script>
 {% endblock %}
-
-{# data-validation-url="{{ person_ownership_form.Meta.ajax_validation_url }}" #}
-{% else %}
-    {% extends "base.jinja" %}
-    {% block content %}
-    {% include "partials/_request_access.jinja" %}
-    {% endblock %}
-{% endif %}
