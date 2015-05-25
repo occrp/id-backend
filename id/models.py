@@ -317,7 +317,7 @@ class AccountRequest(models.Model, DisplayMixin):
         if self.request_type == 'volunteer':
             self.user.is_volunteer = True
             self.user.save()
-        elif self.request_type == 'requester':
+        elif self.request_type == 'request':
             self.user.is_user = True
             self.user.save()
 
@@ -332,7 +332,7 @@ class AccountRequest(models.Model, DisplayMixin):
         if self.request_type == 'volunteer':
             self.user.is_volunteer = False
             self.user.save()
-        elif self.request_type == 'requester':
+        elif self.request_type == 'request':
             self.user.is_user = False
             self.user.save()
 
