@@ -2,7 +2,11 @@
 
 {% block admin_content %}
 
-{% block crud_table %}
+<ul class="nav nav-tabs">
+  <li role="presentation"{% if "approved" not in request.path and "denied" not in request.path %} class="active"{% endif %}><a href="{{ url('request_access_list') }}"><i class="fa fa-question"></i> {% trans %}New{% endtrans %}</a></li>
+  <li role="presentation"{% if "approved" in request.path %} class="active"{% endif %}><a href="{{ url('request_access_list_approved') }}"><i class="fa fa-check"></i> {% trans %}Approved{% endtrans %}</a></li>
+  <li role="presentation"{% if "denied" in request.path %} class="active"{% endif %}><a href="{{ url('request_access_list_denied') }}"><i class="fa fa-times"></i> {% trans %}Denied{% endtrans %}</a></li>
+</ul>
 
   {% for reqtype in ["request", "volunteer"] %}
     <h3>{{reqtype|capitalize}} waiting for approval</h3>
@@ -24,8 +28,12 @@
           <th><a href="{{ url("profile", req.user.id ) }}">{{req.user.email}}</a></th>
           <th>{{ macros.display_datetime(req.date_created) }}</th>
           <th>
+            {% if req.approved != True %}
             <a class="btn btn-small" href="{{url('request_access_list')}}?approve_req={{req.id}}">{% trans %}Approve{% endtrans %}</a>
+            {% endif %}
+            {% if req.approved != False %}
             <a class="btn btn-small" href="{{url('request_access_list')}}?deny_req={{req.id}}">{% trans %}Deny{% endtrans %}</a>
+            {% endif %}
           </th>
         </tr>
       {% else %}
@@ -35,5 +43,4 @@
     </table>
   {% endfor %}
 
-{% endblock %}
 {% endblock %}
