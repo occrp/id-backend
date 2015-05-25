@@ -17,15 +17,15 @@
         </tr>
       </thead>
       <tbody>
-      {% for user in object_list.filter(request_type=reqtype) %}
+      {% for req in object_list.filter(request_type=reqtype) %}
         <tr>
-          <th>{{user.user.first_name}}</th>
-          <th>{{user.user.last_name}}</th>
-          <th><a href="{{ url("profile", user.user.id ) }}">{{user.user.email}}</a></th>
-          <th>{{ macros.display_datetime(user.date_created) }}</th>
+          <th>{{req.user.first_name}}</th>
+          <th>{{req.user.last_name}}</th>
+          <th><a href="{{ url("profile", req.user.id ) }}">{{req.user.email}}</a></th>
+          <th>{{ macros.display_datetime(req.date_created) }}</th>
           <th>
-            <a class="btn btn-small" href="{{url('request_access_list')}}?approve_req={{user.id}}">{% trans %}Approve{% endtrans %}</a>
-            <a class="btn btn-small" href="{{url('request_access_list')}}?deny_req={{user.id}}">{% trans %}Deny{% endtrans %}</a>
+            <a class="btn btn-small" href="{{url('request_access_list')}}?approve_req={{req.id}}">{% trans %}Approve{% endtrans %}</a>
+            <a class="btn btn-small" href="{{url('request_access_list')}}?deny_req={{req.id}}">{% trans %}Deny{% endtrans %}</a>
           </th>
         </tr>
       {% else %}

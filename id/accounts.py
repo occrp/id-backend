@@ -41,9 +41,8 @@ class ProfileUpdate(UpdateView):
     def get_context_data(self, form):
         obj = self.get_object()
         ctx = super(ProfileUpdate, self).get_context_data()
-        ctx = {
-            "editing_self": obj == self.request.user
-        }
+        ctx["profile"] = obj
+        ctx["editing_self"] = obj == self.request.user
         if self.request.method == "POST":
             ctx["form"] = ProfileUpdateForm(self.request.POST, instance=obj)
             if ctx["form"].is_valid():
