@@ -103,4 +103,13 @@ class AccessRequestList(ListView):
 
         return AccountRequest.objects.filter(approved=None)
 
+class AccessRequestListApproved(AccessRequestList):
+    def get_queryset(self):
+        return AccountRequest.objects.filter(approved=True)
+
+class AccessRequestListDenied(AccessRequestList):
+    def get_queryset(self):
+        return AccountRequest.objects.filter(approved=False)
+
+
 
