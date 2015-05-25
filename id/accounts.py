@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model # as per https://docs.djangoproje
 from settings.settings import LANGUAGES
 from django.utils.translation import ugettext_lazy as _
 from registration.signals import user_registered
+from django.db.models import Q
 
 from core.mixins import MessageMixin
 
@@ -65,6 +66,21 @@ class UserList(ListView):
     model = get_user_model()
     paginate_by = 50
     template_name = 'auth/user_list.jinja'
+
+    def get_queryset(self):
+        filter_terms = self.request.REQUEST.get("filter_terms", "")
+        if filter_terms:
+            query = (Q(email__contains=filter_terms)
+                   | Q(first_name__contains=filter_terms)
+                   | Q(last_name__contains=filter_terms))
+            return self.model.objects.filter(query)
+
+        return self.model.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(UserList, self).get_context_data(**kwargs)
+        context["filter_terms"] = self.request.REQUEST.get("filter_terms", "")
+        return context
 
 class AccessRequestCreate(TemplateView):
     template_name = 'accessrequest/create.jinja'

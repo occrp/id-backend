@@ -5,8 +5,9 @@
 
 
 <div class="input-group pull-right">
-      <input type="text" class="form-control" placeholder="{% trans %}Filter users...{% endtrans %}">
-      <button class="btn btn-default" type="button"><i class="icon-search"></i></button>
+  <form action="{{url('userprofile_list')}}">
+      <input type="text" name="filter_terms" value="{{filter_terms}}" class="form-control" placeholder="{% trans %}Filter users...{% endtrans %}">
+      <button class="btn btn-default" type="submit"><i class="icon-search"></i></button>
 </div>
 
 <h1>{% trans %}User Profiles{% endtrans %}</h1>
@@ -48,7 +49,7 @@
 {% include("partials/_paginator.jinja") %}
 {% else %}
   <div class="alert alert-block alert-warning">
-      {{ no_entries }}
+      {% trans %}No users were found matching your search criteria.{% endtrans %}
   </div>
 {% endif %}
 
