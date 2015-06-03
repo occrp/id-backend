@@ -13,7 +13,7 @@ here = lambda x: os.path.realpath(os.path.join(os.path.realpath(os.path.dirname(
 BASE_DIR = here('../')
 
 try: ID_VERSION = open(".git_current_version").read()
-except: raise Exception("ID Version could not be read: .git_current_version not available")
+except: ID_VERSION = "?.?.? Unknown: ID Version could not be read: .git_current_version not available"
 print "Starting ID version %s" % ID_VERSION
 
 # Allowed hosts:
