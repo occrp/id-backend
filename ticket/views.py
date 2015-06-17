@@ -426,7 +426,7 @@ class TicketDetail(TemplateView, PodaciMixin):
             'open_form': forms.TicketCancelForm(),
             'flag_form': forms.RequestFlagForm(),
             'tag': tag,
-            'result_files': tag.get_files()[1],
+            'result_files': tag.list_files()[1],
             'charge_form': forms.RequestChargeForm(),
             'ticket_detail_view': True,
             'can_join_leave': can_join_leave
