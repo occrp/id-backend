@@ -1,0 +1,22 @@
+<h3 class="primary-highlight">{% trans %}Request Details{% endtrans %}</h3>
+
+<div class="row-fluid">
+    <div class="span7">
+        {{ macros.request_detail(_('Name'), ticket.name) }}
+        {{ macros.request_detail(_('Background'), ticket.background) }}
+        {{ macros.request_detail(_('Biography'), ticket.biography) }}
+        {{ macros.request_detail(_('Business Activities'), ticket.biography) }}
+        {{ macros.request_detail(_('Initial Information'), ticket.initial_information) }}
+        {{ macros.request_detail(_('Sources'), ticket.sources) }}
+        {{ macros.request_detail(_('Story'), ticket.story) }}
+        {{ macros.request_detail(_('Question'), ticket.question) }}
+    </div>
+    <div class="span5">
+        {{ macros.request_detail(_('Country'), ticket.country) }}
+        {{ macros.request_detail(_('Birthplace'), ticket.birthplace) }}
+        {{ macros.request_detail(_('Date of Birth'), ticket.dob) }}
+        {{ macros.request_detail_multivalue(_('Family'), [_('Last Name'), _('First Names'), _('Relation')], ticket.family) }}
+        {{ macros.request_detail_multivalue(_('Connected People'), [_('Last Name'), _('First Names')], ticket.connections) }}
+        {{ macros.request_detail_multivalue(_('Aliases'), [_('Last Name'), _('First Names')], ticket.aliases) }}
+    </div>
+</div>
