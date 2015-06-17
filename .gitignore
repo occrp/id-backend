@@ -48,9 +48,6 @@ coverage.xml
 *.log
 *.log.*
 
-# Git current version (id versioning)
-.git_current_version
-
 # Sphinx documentation
 docs/_build/
 
