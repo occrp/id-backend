@@ -1,5 +1,15 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
+import hashlib
+import os, os.path, shutil, sys
+import magic
+import zipfile
+import StringIO
+import logging
+from datetime import datetime
+from uuid import uuid4
+
 from settings.settings import AUTH_USER_MODEL # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from settings.settings import PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT
 
@@ -11,6 +21,34 @@ from settings.settings import PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT
 # WARNING: NEVER CHANGE THIS IN LIVE SYSTEMS AS ALL WILL BE LOST.
 HASH_DIRS_DEPTH = 3
 HASH_DIRS_LENGTH = 2
+
+
+def random_id():
+    return str(uuid4())
+
+class AuthenticationError(Exception):
+    def __str__(self):
+        return "Access denied"
+
+class FileNotFound(Exception):
+    def __str__(self):
+        return "[File not found]"
+
+
+def sha256sum(filename, blocksize=65536):
+    f = None
+    if type(filename) in [str, unicode]:
+        f = open(filename, "r+b")
+    else:
+        f = filename
+    
+    hash = hashlib.sha256()
+    for block in iter(lambda: f.read(blocksize), ""):
+        hash.update(block)
+
+    f.seek(0)
+    return hash.hexdigest()
+
 
 class PodaciMetadata(models.Model):
     name                = models.CharField(max_length=200)
@@ -40,7 +78,8 @@ class PodaciMetadata(models.Model):
         user = kwargs.pop('user', None)
         super(models.Model, self).__init__(*args, **kwargs)
         if not self.has_permission(user):
-            raise AuthenticationError("User %s has no access to tag %s" % (user, self.pk))
+            raise AuthenticationError("User %s has no access to tag %s" 
+                % (user, self.pk))
 
     def log(self, message):
         """Add a log entry."""
@@ -65,7 +104,10 @@ class PodaciMetadata(models.Model):
         self.log("Added note")
 
     def details_string(self):
-        """Return a formatted details string that describes the object's permissions."""
+        """
+           Return a formatted details string that describes the object's 
+           permissions.
+        """
         s = "%s%s %3dU %3dW %3dN" % (
             ["-","P"][self.public_read], 
             ["-","S"][self.staff_allowed], 
@@ -87,7 +129,8 @@ class PodaciMetadata(models.Model):
             self.allowed_users.add(user.id)
         if write and user not in self.allowed_write_users.objects.all():
             self.allowed_write_users.add(user.id)
-        self.log("Added user '%s' [%d] (write=%s)" % (user.email, user.id, write))
+        self.log("Added user '%s' [%d] (write=%s)" 
+                 % (user.email, user.id, write))
 
     def remove_user(self, user):
         """Revoke user permissions."""
@@ -102,21 +145,25 @@ class PodaciMetadata(models.Model):
     def make_public(self):
         """Allow public reads."""
         self.public_read = True
+        self.save()
         self.log("Made file public.")
 
     def make_private(self):
         """Disallow public reads."""
         self.public_read = False
+        self.save()
         self.log("Made file private.")
 
     def allow_staff(self):
         """Allow all staff members to access (read/write)"""
         self.staff_allowed = True
+        self.save()
         self.log("Made file accessible to all staff.")
 
     def disallow_staff(self):
         """Disallow staff to access"""
         self.staff_allowed = False
+        self.save()
         self.log("Made file inaccessible to staff.")
 
     def has_permission(self, user):
@@ -150,7 +197,8 @@ class PodaciMetadata(models.Model):
 
 
 class PodaciTag(PodaciMetadata):
-    parents             = models.ManyToManyField('PodaciTag', related_name='children')
+    parents             = models.ManyToManyField('PodaciTag', 
+                            related_name='children')
     icon                = models.CharField(max_length=100)
 
     CHANGELOG_CLASS     = 'PodaciTagChangelog'
@@ -219,13 +267,15 @@ class PodaciTag(PodaciMetadata):
 class PodaciFile(PodaciMetadata):
     schema_version      = models.IntegerField(default=3)
     title               = models.CharField(max_length=300)
-    created_by          = models.ForeignKey(AUTH_USER_MODEL, related_name='created_files')
+    created_by          = models.ForeignKey(AUTH_USER_MODEL, 
+                            related_name='created_files')
     is_resident         = models.BooleanField(default=True)
     filename            = models.CharField(max_length=256, blank=True)
     url                 = models.URLField(blank=True)
     sha256              = models.CharField(max_length=65)
     size                = models.IntegerField(default=0)
-    tags                = models.ManyToManyField(PodaciTag, related_name='files')
+    tags                = models.ManyToManyField(PodaciTag, 
+                            related_name='files')
     mimetype            = models.CharField(max_length=65)
     description         = models.TextField(blank=True)
     is_indexed          = models.BooleanField(default=False)
@@ -237,7 +287,8 @@ class PodaciFile(PodaciMetadata):
     def get_filehandle(self, user):
         """Get a file handle to the file itself."""
         if not self.has_permission(user):
-            raise AuthenticationError("User %s has no access to file %s" % (user, self.id))
+            raise AuthenticationError("User %s has no access to file %s" 
+                % (user, self.id))
         if self.is_resident:
             return open(self.resident_location())
         else:
@@ -319,7 +370,8 @@ class PodaciFile(PodaciMetadata):
     def delete(self, sure=False):
         """Delete a file. Make sure you're sure."""
         if not self.id: raise ValueError("No file specified")
-        if not sure: raise ValueError("You don't seem to be sure. (try sure=True)")
+        if not sure:
+            raise ValueError("You don't seem to be sure. (try sure=True)")
         if self.filename:
             try:
                 os.unlink(self.resident_location())
