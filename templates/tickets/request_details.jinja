@@ -25,7 +25,7 @@
                 </h5>
             </div>
         </div>
-    </div> <!-- span5 -->
+    </div>
 
     <div class="span7">
         <div class="header-buttons pull-right">
@@ -39,12 +39,9 @@
                 <a href="#DirectUploadForm" role="button" class="btn podaci_upload" data-toggle="modal" data-key="{{ ticket.id }}">
                     <i class="icon-file-alt"></i> {% trans %}Attach Files{% endtrans %}
                 </a>
-
-                {#<a href="#EntitySearchForm" role="button" data-toggle="modal" class="btn">
-                    <i class="icon-globe"></i> {% trans %}Attach Entities{% endtrans %}
-                </a>#}
             </div>
-            {% if user.is_volunteer or user.can_join_leave %}
+
+            {% if user.is_volunteer or user.is_staff %}
                 {% if user not in ticket.actors() %}
                     <form action="{{ url('ticket_join', pk=ticket.id) }}" method="POST" class="inline-form">
                         {% csrf_token %}
@@ -94,8 +91,6 @@
                             <i class="icon-check"></i> {% trans %}Mark Bill Paid{% endtrans %}
                         </a>
                     </li>
-                    {% endif %}
-                    {% if user.is_superuser  %}
                     <li>
                         <a href="#AdminSettingsModal" role='button'
                            data-modal-url="{{ url('ticket_admin_settings', pk=ticket.id, redirect='details') }}">
@@ -236,161 +231,10 @@
     </div>
 
     <div class="span9 request-details">
-        <h3 class="primary-highlight">{% trans %}Request Details{% endtrans %}</h3>
-
-        <div class="row-fluid">
-            <div class="span7">
-                {{ macros.request_detail(_('Name'), ticket.name) }}
-                {{ macros.request_detail(_('Background'), ticket.background) }}
-                {{ macros.request_detail(_('Biography'), ticket.biography) }}
-                {{ macros.request_detail(_('Business Activities'), ticket.biography) }}
-                {{ macros.request_detail(_('Initial Information'), ticket.initial_information) }}
-                {{ macros.request_detail(_('Sources'), ticket.sources) }}
-                {{ macros.request_detail(_('Story'), ticket.story) }}
-                {{ macros.request_detail(_('Question'), ticket.question) }}
-            </div>
-            <div class="span5">
-                {{ macros.request_detail(_('Country'), ticket.country) }}
-                {{ macros.request_detail(_('Birthplace'), ticket.birthplace) }}
-                {{ macros.request_detail(_('Date of Birth'), ticket.dob) }}
-                {{ macros.request_detail_multivalue(_('Family'), [_('Last Name'), _('First Names'), _('Relation')], ticket.family) }}
-                {{ macros.request_detail_multivalue(_('Connected People'), [_('Last Name'), _('First Names')], ticket.connections) }}
-                {{ macros.request_detail_multivalue(_('Aliases'), [_('Last Name'), _('First Names')], ticket.aliases) }}
-            </div>
-        </div>
-
-        {% if tag.has_files() %}
-        <div class="attached-files">
-            <h3 class="primary-highlight">
-                 <div class="btn-group pull-right" role="group" aria-label="...">
-                    {% include "podaci/partials/_podaci_tag_view_type_selection.jinja" %}
-                   <div class="btn-group">
-                        <button id="podaci_select_menu" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Select <span class="caret"></span></button>
-                        {% include "podaci/partials/_podaci_selection_tools.jinja" %}
-                    </div>
-                    <div class="btn-group">
-                        <button id="podaci_selection_menu" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">No files <span class="caret"></span></button>
-                        {% include "podaci/partials/_podaci_selection_actions.jinja" %}
-                    </div>
-                </div>
-                {% trans %}Attached Files{% endtrans %}
-                {% if user.is_staff or user.is_superuser %}
-                    <a href="#SharingModal" class="btn btn-small pull-right"
-                       data-modal-url="{{ url('share_files', entity_id=ticket.key.urlsafe()) }}">
-                        <i class="icon-group"></i> {% trans %}Sharing{% endtrans %}
-                    </a>
-                {% endif %}
-            </h3>
-            {% include "podaci/partials/_podaci_file_list.jinja" %}
-        </div>
-        {% endif %}
-
-        {#
-        {% if ticket.entities.count() %}
-            <h3 class="primary-highlight">{% trans %}Attached Entities{% endtrans %}</h3>
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>{% trans %}Name{% endtrans %}</th>
-                        <th style="width: 55px;">{% trans %}Actions{% endtrans %}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for entity in ticket.entities.all() %}
-                    <tr>
-                        <td>
-                            <a href="javascript:void(0)" class="entity-view"
-                               data-url="{{ url('entity_view') }}"
-                               data-key="{{ entity.id }}">{{ entity.name }}
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{{ url("request_entity_remove", ticket_id=ticket.id) }}?key={{ entity.id }}" class="btn btn-mini">
-                                <i class="icon-minus-sign"></i>
-                            </a>
-                        </td>
-                    </tr>
-                {% endfor %}
-                    </tbody>
-                </table>
-
-        {% endif %}
-        #}
-
-        <h3 class="primary-highlight">{% trans %}Activity{% endtrans %}</h3>
-        {% if ticket_updates %}
-        <div class="row-fluid discussion">
-            <div class="span12">
-            {% for tu in ticket_updates %}
-                {% if tu.comment %}
-                    <div class="request-update">
-                        <i class="icon-caret-right primary-highlight"></i>
-                        <h5>
-                        <strong>
-                        {% if tu.update_type == "update" %}
-                            <i class="icon-pencil"></i>
-                        {% elif tu.update_type == "close" %}
-                            <i class="icon-ok"></i>
-                        {% elif tu.update_type == "cancel" %}
-                            <i class="icon-minus-sign"></i>
-                        {% elif tu.update_type == "reopen" %}
-                            <i class="icon-unlock"></i>
-                        {% elif tu.update_type == "open" %}
-                            <i class="icon-asterisk"></i>
-                        {% elif tu.update_type == "flag" %}
-                            <i class="icon-flag"></i>
-                        {% elif tu.update_type == "charge" %}
-                            <i class="icon-ticket"></i>
-                        {% elif tu.update_type == "join" %}
-                            <i class="icon-user"></i>
-                        {% elif tu.update_type == "leave" %}
-                            <i class="icon-remove"></i>
-                        {% endif %}
-                        {{ tu.author.display_name }}
-                        </strong>
-
-                        <div class="pull-right soft">
-                            <span class="update-{{ tu.update_type }}">{{ tu.update_type_display() }}</span>
-                            on {{ macros.display_datetime(tu.created) }}
-                        </div>
-
-
-                        </h5>
-                        <p>{{ tu.comment if tu.comment else "" }}</p>
-                        {% if tu.extra_relation -%}
-                            <p>{{ tu.extra_relation.to_ticket_update(tu) }}</p>
-                        {%- endif %}
-                        {% if tu.update_type == 'update' %}
-                            {% if user.is_superuser or user.is_staff %}
-                                <div class="pull-right soft">
-                                    <a data-action="{{ url('ticket_update_remove', pk=tu.id) }}" data-csrf="{{ csrf_token }}" class="anchor_form" href="#">{% trans %}delete comment{% endtrans %}</a>
-                                </div>
-                                <div class="clearfix"></div>
-                            {% endif %}
-                        {% endif %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-            </div>
-        </div>
-        {% else %}
-        <p class="discussion">{% trans %}No updates yet.{% endtrans %}</p>
-        {% endif %}
-
-        {% if ticket.is_open() %}
-        <h4>{% trans %}Leave a Comment{% endtrans %}</h4>
-        <div class="row-fluid">
-            <form class="comment-form" method="POST" action="" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ticket_update_form.as_p()}}
-                <div class="row-fluid">
-                    <div class="span9">
-                        <button class="btn btn-primary pull-right" type="submit">{% trans %}Comment{% endtrans %}</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        {% endif %}
+        {% include "tickets/partials/_ticketdetails.jinja" %}
+        {% include "tickets/partials/_filelist.jinja" %}
+        {% include "tickets/partials/_activity.jinja" %}
+        {% include "tickets/partials/_comment.jinja" %}
     </div>
 </div>
 </div>
@@ -402,7 +246,7 @@
     <script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/vendor/jquery.ui.widget.js')}}"></script>
     <script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
     <script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
-    <script type="text/javascript" src="{{ static('js/podaci.js') }}"></script>
+    <script type="text/javascript" src="{{ static('js/id2/podaci.js') }}"></script>
 {% endblock %}
 
 {% block after_js %}
