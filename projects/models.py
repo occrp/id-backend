@@ -18,7 +18,7 @@ STORYSTATUSES = (
 class Project(models.Model):
     title = models.CharField(max_length=250)
     coordinator = models.ForeignKey(AUTH_USER_MODEL, related_name="coordinator")
-    podaci_root = models.CharField(max_length=50)
+    # podaci_root = models.CharField(max_length=50)
     users = models.ManyToManyField(AUTH_USER_MODEL, related_name="members")
 
     def has_access(self, user):
@@ -40,7 +40,7 @@ class Story(models.Model):
     artists = models.ManyToManyField(AUTH_USER_MODEL, related_name="artists")
 
     published = models.DateField()
-    podaci_root = models.CharField(max_length=50)
+    # podaci_root = models.CharField(max_length=50)
 
     def get_newest_status(self):
         return self.storystatus_set.latest('timestamp')
@@ -61,6 +61,7 @@ class StoryTranslation(models.Model):
     timestamp  = models.DateTimeField(auto_now_add=True)
     translator = models.ForeignKey(AUTH_USER_MODEL)
     verified = models.BooleanField(default=False)
+    live = models.DateTimeField(default=False)
     title = models.CharField(max_length=250)
     text = models.TextField()
 
@@ -83,4 +84,29 @@ class ProjectPlan(models.Model):
     responsible_users = models.ManyToManyField(AUTH_USER_MODEL)
     related_stories = models.ManyToManyField(Story)
     order = models.IntegerField()
+
+
+class CommentModel(models.Model):
+    class Meta:
+        abstract = True
+
+    timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(AUTH_USER_MODEL)
+    text = models.TextField()
+
+class ProjectComments(CommentModel):
+    ref = models.ForeignKey(Project)
+
+class StoryComments(CommentModel):
+    ref = models.ForeignKey(Story)
+
+class StoryVersionComments(CommentModel):
+    ref = models.ForeignKey(StoryVersion)
+
+class TranslationComments(CommentModel):
+    ref = models.ForeignKey(Translation)
+
+class ProjectPlanComments(CommentModel):
+    ref = models.ForeignKey(ProjectPlan)
 
