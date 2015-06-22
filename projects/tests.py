@@ -27,7 +27,7 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data, data)
 
-    def test_project_list(self):
+    def test_list_project(self):
         user = get_user_model().objects.get(email=self.staff_email)
 
         self.helper_create_single_project('democracy for all 1',
@@ -51,6 +51,9 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(len(response.data), 3)
 
         return
+
+    def test_delete_project(self):
+        pass
 
     # -- PROJECT HELPER FUNCTIONS
     def helper_create_single_project(self, project_title, creating_user, coordinator_id, user_ids):
