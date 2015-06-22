@@ -22,11 +22,16 @@ The intended product is a Django application that can exist standalone or plug i
  * Artist
 
 ## Core concepts
+ * Project
  * Story
  * Language
  * Translation
+ * Budget
+ * Plan
+ * Expense
  * Documents (images, PDF files, etc)
  * Artwork (photos, graphics, art) 
+ * User
 
 ## General requirements
  * An Editor can be assigned to 0 or more Stories
@@ -73,8 +78,8 @@ The intended product is a Django application that can exist standalone or plug i
 ## REST Endpoints
 
 ### Project (collection)
- * POST /api/projects/                - Create new project (params: title)
- * GET /api/projects/                 - Get list of projects
+ * POST /api/projects/                 - Create new project (params: title)
+ * GET /api/projects/                  - Get list of projects
 
 ### Project (member)
  * GET /api/projects/<pid>/            - Get project <pid>
