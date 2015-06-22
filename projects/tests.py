@@ -11,12 +11,16 @@ from core.testclient import TestClient
 from core.testclient import APITestClient
 from settings.settings import *
 
+from projects import Project
+
 
 class PipelineAPITest(APITestCase):
     fixtures = ['id/fixtures/initial_data.json']
     staff_email = 'staff@example.com'
 
     # -- PROJECT LEVEL TESTS
+    #
+    #
     def test_create_project(self):
         user = get_user_model().objects.get(email=self.staff_email)
         title = 'democracy for all'
@@ -31,6 +35,9 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(response.data.title, title)
         self.assertEqual(response.data.coordinator.id, coordinator_id)
         self.assertEqual(response.data.users, users)
+
+        helper_cleanup_projects()
+        return
 
     def test_list_project(self):
         user = get_user_model().objects.get(email=self.staff_email)
@@ -55,18 +62,33 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 3)
 
+        helper_cleanup_projects()
         return
 
     def test_delete_project(self):
         user = get_user_model().objects.get(email=self.staff_email)
-        response = self.helper_create_single_project('democracy for all',
-                                                     user,
-                                                     user.id,
-                                                     [user.id])
+        create_response = self.helper_create_single_project('democracy for all',
+                                                            user,
+                                                            user.id,
+                                                            [user.id])
 
-        pass
+        client = APIClient()
+        client.force_authenticate(user=user)
+        response = client.delete(reverse('project_delete', kwargs={'id': create_response.data.id}))
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data.id, create_response.data.id)
+
+        response = client.get(reverse('project_get', kwargs={'id'}))
+
+        self.assertEqual(response.status_code, status_code.HTTP_404_NOT_FOUND)
+
+        helper_cleanup_projects()
+        return
 
     # -- PROJECT HELPER FUNCTIONS
+    #
+    #
     def helper_create_single_project(self, project_title, creating_user, coordinator_id, user_ids):
         url = reverse('project_create')
         client = APIClient()
@@ -78,8 +100,8 @@ class PipelineAPITest(APITestCase):
 
         return client.post(url, data, format='json')
 
-    def test_delete_project(self):
-        pass
+    def helper_cleanup_projects():
+        Project.objects.all().delete()
 
     def test_alter_project(self):
         pass
