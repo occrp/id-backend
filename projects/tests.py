@@ -11,7 +11,7 @@ from core.testclient import TestClient
 from core.testclient import APITestClient
 from settings.settings import *
 
-from projects import Project
+from projects.models import Project
 
 
 class PipelineAPITest(APITestCase):
@@ -26,7 +26,7 @@ class PipelineAPITest(APITestCase):
         title = 'democracy for all'
         coordinator_id = user.id
         users = [user.id]
-        response = self.helper_create_single_project('democracy for all',
+        response = self.helper_create_single_project('create democracy for all',
                                                      user,
                                                      coordinator_id,
                                                      users)
@@ -39,7 +39,7 @@ class PipelineAPITest(APITestCase):
         helper_cleanup_projects()
         return
 
-    def test_list_project(self):
+    def test_list_projects(self):
         user = get_user_model().objects.get(email=self.staff_email)
 
         self.helper_create_single_project('democracy for all 1',
@@ -65,9 +65,26 @@ class PipelineAPITest(APITestCase):
         helper_cleanup_projects()
         return
 
+    def test_get_project(self):
+        user = get_user_model().objects.get(email=self.staff_email)
+        response = self.helper_create_single_project('get democracy for all',
+                                                     user,
+                                                     user.id,
+                                                     [user.id])
+
+        client = APIClient()
+        client.force_authenticate(user=user)
+        response = client.get(reverse('project_get', kwargs={'id': response.data.id}))
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data.id, response.id)
+
+        helper_cleanup_projects()
+        return
+
     def test_delete_project(self):
         user = get_user_model().objects.get(email=self.staff_email)
-        create_response = self.helper_create_single_project('democracy for all',
+        create_response = self.helper_create_single_project('delete democracy for all',
                                                             user,
                                                             user.id,
                                                             [user.id])
@@ -79,7 +96,7 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data.id, create_response.data.id)
 
-        response = client.get(reverse('project_get', kwargs={'id'}))
+        response = client.get(reverse('project_get', kwargs={'id': create_response.data.id}))
 
         self.assertEqual(response.status_code, status_code.HTTP_404_NOT_FOUND)
 
