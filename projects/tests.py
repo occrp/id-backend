@@ -19,13 +19,18 @@ class PipelineAPITest(APITestCase):
     # -- PROJECT LEVEL TESTS
     def test_create_project(self):
         user = get_user_model().objects.get(email=self.staff_email)
+        title = 'democracy for all'
+        coordinator_id = user.id
+        users = [user.id]
         response = self.helper_create_single_project('democracy for all',
                                                      user,
-                                                     user.id,
-                                                     [user.id])
+                                                     coordinator_id,
+                                                     users)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data, data)
+        self.assertEqual(response.data.title, title)
+        self.assertEqual(response.data.coordinator.id, coordinator_id)
+        self.assertEqual(response.data.users, users)
 
     def test_list_project(self):
         user = get_user_model().objects.get(email=self.staff_email)
@@ -53,6 +58,12 @@ class PipelineAPITest(APITestCase):
         return
 
     def test_delete_project(self):
+        user = get_user_model().objects.get(email=self.staff_email)
+        response = self.helper_create_single_project('democracy for all',
+                                                     user,
+                                                     user.id,
+                                                     [user.id])
+
         pass
 
     # -- PROJECT HELPER FUNCTIONS
