@@ -17,7 +17,7 @@ class PipelineAPITest(APITestCase):
     staff_email = 'staff@example.com'
 
     # -- PROJECT LEVEL TESTS
-    def test_project_create(self):
+    def test_create_project(self):
         user = get_user_model().objects.get(email=self.staff_email)
         response = self.helper_create_single_project('democracy for all',
                                                      user,
@@ -27,7 +27,7 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data, data)
 
-    def test_get_project_list(self):
+    def test_project_list(self):
         user = get_user_model().objects.get(email=self.staff_email)
 
         self.helper_create_single_project('democracy for all 1',
@@ -63,6 +63,18 @@ class PipelineAPITest(APITestCase):
                 'users': user_ids}
 
         return client.post(url, data, format='json')
+
+    def test_delete_project(self):
+        pass
+
+    def test_alter_project(self):
+        pass
+
+    def test_assign_project_users(self):
+        pass
+
+    def test_unassign_project_users(self):
+        pass
 
     def test_create_story(self):
         pass
