@@ -7,6 +7,21 @@ from settings.settings import *
 from django.core.urlresolvers import reverse
 
 class PipelineAPITest(APITestCase):
+    def test_create_project(self):
+        pass
+
+    def test_delete_project(self):
+        pass
+
+    def test_alter_project(self):
+        pass
+
+    def test_assign_project_users(self):
+        pass
+
+    def test_unassign_project_users(self):
+        pass
+
     def test_create_story(self):
         pass
 
