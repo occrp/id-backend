@@ -62,6 +62,7 @@ urlpatterns = patterns('',
     url(r'^search/', include('search.urls')),
     url(r'^ticket/', include('ticket.urls')),
     url(r'^podaci/', include('podaci.urls')),
+    url(r'^projects/', include('projects.urls')),
     url(r'^osoba/', include('osoba.urls')),
     url(r'^robots/', include('robots.urls')),
 

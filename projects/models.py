@@ -29,84 +29,86 @@ class Project(models.Model):
         return False
 
 
-class Story(models.Model):
-    project = models.ForeignKey(Project)
-    reporters = models.ManyToManyField(AUTH_USER_MODEL, related_name="reporters")
-    researchers = models.ManyToManyField(AUTH_USER_MODEL, related_name="researchers")
-    editors = models.ManyToManyField(AUTH_USER_MODEL, related_name="editors")
-    copy_editors = models.ManyToManyField(AUTH_USER_MODEL, related_name="copy_editors")
-    fact_checkers = models.ManyToManyField(AUTH_USER_MODEL, related_name="fact_checkers")
-    translators = models.ManyToManyField(AUTH_USER_MODEL, related_name="translators")
-    artists = models.ManyToManyField(AUTH_USER_MODEL, related_name="artists")
+# class Story(models.Model):
+#     project = models.ForeignKey(Project)
+#     reporters = models.ManyToManyField(AUTH_USER_MODEL, related_name="reporters")
+#     researchers = models.ManyToManyField(AUTH_USER_MODEL, related_name="researchers")
+#     editors = models.ManyToManyField(AUTH_USER_MODEL, related_name="editors")
+#     copy_editors = models.ManyToManyField(AUTH_USER_MODEL, related_name="copy_editors")
+#     fact_checkers = models.ManyToManyField(AUTH_USER_MODEL, related_name="fact_checkers")
+#     translators = models.ManyToManyField(AUTH_USER_MODEL, related_name="translators")
+#     artists = models.ManyToManyField(AUTH_USER_MODEL, related_name="artists")
 
-    published = models.DateField()
-    # podaci_root = models.CharField(max_length=50)
+#     published = models.DateField()
+#     # podaci_root = models.CharField(max_length=50)
 
-    def get_newest_status(self):
-        return self.storystatus_set.latest('timestamp')
+#     # def get_newest_status(self):
+#     #     return self.storystatus_set.latest('timestamp')
 
-    def get_history(self):
-        return self.storystatus_set.all()
-
-
-class StoryVersion(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True)
-    authored = models.ForeignKey(AUTH_USER_MODEL)
-    title = models.CharField(max_length=250)
-    text = models.TextField()
+#     # def get_history(self):
+#     #     return self.storystatus_set.all()
 
 
-class StoryTranslation(models.Model):
-    version = models.ForeignKey(StoryVersion)
-    timestamp  = models.DateTimeField(auto_now_add=True)
-    translator = models.ForeignKey(AUTH_USER_MODEL)
-    verified = models.BooleanField(default=False)
-    live = models.DateTimeField(default=False)
-    title = models.CharField(max_length=250)
-    text = models.TextField()
+# class StoryVersion(models.Model):
+#     timestamp = models.DateTimeField(auto_now_add=True)
+#     authored = models.ForeignKey(AUTH_USER_MODEL)
+#     title = models.CharField(max_length=250)
+#     text = models.TextField()
 
 
-class StoryStatus(models.Model):
-    story = models.ForeignKey(Story)
-    set_by = models.ForeignKey(AUTH_USER_MODEL)
-    timestamp = models.DateTimeField(auto_now=True)
-    deadline = models.DateTimeField()
-    status = models.IntegerField(choices=STORYSTATUSES)
-    description = models.CharField(max_length=500)
+# class StoryTranslation(models.Model):
+#     version = models.ForeignKey(StoryVersion)
+#     timestamp = models.DateTimeField(auto_now_add=True)
+#     translator = models.ForeignKey(AUTH_USER_MODEL)
+#     verified = models.BooleanField(default=False)
+#     live = models.DateTimeField(default=False)
+#     title = models.CharField(max_length=250)
+#     text = models.TextField()
 
 
-class ProjectPlan(models.Model):
-    project = models.ForeignKey(Project)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    title = models.CharField(max_length=250)
-    description = models.TextField()
-    responsible_users = models.ManyToManyField(AUTH_USER_MODEL)
-    related_stories = models.ManyToManyField(Story)
-    order = models.IntegerField()
+# # class StoryStatus(models.Model):
+# #     story = models.ForeignKey(Story)
+# #     set_by = models.ForeignKey(AUTH_USER_MODEL)
+# #     timestamp = models.DateTimeField(auto_now=True)
+# #     deadline = models.DateTimeField()
+# #     status = models.IntegerField(choices=STORYSTATUSES)
+# #     description = models.CharField(max_length=500)
 
 
-class CommentModel(models.Model):
-    class Meta:
-        abstract = True
+# class ProjectPlan(models.Model):
+#     project = models.ForeignKey(Project)
+#     start_date = models.DateField()
+#     end_date = models.DateField()
+#     title = models.CharField(max_length=250)
+#     description = models.TextField()
+#     responsible_users = models.ManyToManyField(AUTH_USER_MODEL)
+#     related_stories = models.ManyToManyField(Story)
+#     order = models.IntegerField()
 
-    timestamp = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(AUTH_USER_MODEL)
-    text = models.TextField()
 
-class ProjectComments(CommentModel):
-    ref = models.ForeignKey(Project)
+# class CommentModel(models.Model):
+#     class Meta:
+#         abstract = True
 
-class StoryComments(CommentModel):
-    ref = models.ForeignKey(Story)
+#     timestamp = models.DateTimeField(auto_now_add=True)
+#     updated = models.DateTimeField(auto_now=True)
+#     user = models.ForeignKey(AUTH_USER_MODEL)
+#     text = models.TextField()
 
-class StoryVersionComments(CommentModel):
-    ref = models.ForeignKey(StoryVersion)
+# class ProjectComments(CommentModel):
+#     ref = models.ForeignKey(Project)
 
-class TranslationComments(CommentModel):
-    ref = models.ForeignKey(Translation)
+# class StoryComments(CommentModel):
+#     ref = models.ForeignKey(Story)
 
-class ProjectPlanComments(CommentModel):
-    ref = models.ForeignKey(ProjectPlan)
+# class StoryVersionComments(CommentModel):
+#     ref = models.ForeignKey(StoryVersion)
 
+# class Translation(models.Model):
+#     pass
+
+# class TranslationComments(CommentModel):
+#     ref = models.ForeignKey(Translation)
+
+# class ProjectPlanComments(CommentModel):
+#     ref = models.ForeignKey(ProjectPlan)

@@ -64,6 +64,7 @@ INSTALLED_APPS = (
     # 'osoba',
     'robots',
     'ticket',
+    'projects',
     'django_select2'
 )
 
