@@ -9,6 +9,8 @@ from oauth2client import tools as oauth2tools
 from oauth2client import client as oauth2client
 from oauth2client import file as oauth2file
 from uuid import UUID
+from django.db.models.query import QuerySet
+from django.db.models.sql.query import Query
 
 def convert_group_to_select2field_choices(group):
     result = []
@@ -26,7 +28,11 @@ def json_dumps(data):
     def handledefault(o):
         if isinstance(o, datetime):
             return o.strftime("%s")
-        if hasattr(o, "to_json"):
+        elif isinstance(o, Query):
+            raise ValueError("Cannot JSON serialize a Query for security reasons.")
+        elif isinstance(o, QuerySet):
+            raise ValueError("Cannot JSON serialize a QuerySet out of risk that it will recurse.")
+        elif hasattr(o, "to_json"):
             return o.to_json()
         elif hasattr(o, "__dict__"):
             return o.__dict__
