@@ -29,24 +29,24 @@ class Project(models.Model):
         return False
 
 
-# class Story(models.Model):
-#     project = models.ForeignKey(Project)
-#     reporters = models.ManyToManyField(AUTH_USER_MODEL, related_name="reporters")
-#     researchers = models.ManyToManyField(AUTH_USER_MODEL, related_name="researchers")
-#     editors = models.ManyToManyField(AUTH_USER_MODEL, related_name="editors")
-#     copy_editors = models.ManyToManyField(AUTH_USER_MODEL, related_name="copy_editors")
-#     fact_checkers = models.ManyToManyField(AUTH_USER_MODEL, related_name="fact_checkers")
-#     translators = models.ManyToManyField(AUTH_USER_MODEL, related_name="translators")
-#     artists = models.ManyToManyField(AUTH_USER_MODEL, related_name="artists")
+class Story(models.Model):
+    project = models.ForeignKey(Project)
+    reporters = models.ManyToManyField(AUTH_USER_MODEL, related_name="reporters")
+    researchers = models.ManyToManyField(AUTH_USER_MODEL, related_name="researchers")
+    editors = models.ManyToManyField(AUTH_USER_MODEL, related_name="editors")
+    copy_editors = models.ManyToManyField(AUTH_USER_MODEL, related_name="copy_editors")
+    fact_checkers = models.ManyToManyField(AUTH_USER_MODEL, related_name="fact_checkers")
+    translators = models.ManyToManyField(AUTH_USER_MODEL, related_name="translators")
+    artists = models.ManyToManyField(AUTH_USER_MODEL, related_name="artists")
 
-#     published = models.DateField()
-#     # podaci_root = models.CharField(max_length=50)
+    published = models.DateField()
+    podaci_root = models.CharField(max_length=50)
 
-#     # def get_newest_status(self):
-#     #     return self.storystatus_set.latest('timestamp')
+    def get_newest_status(self):
+        return self.storystatus_set.latest('timestamp')
 
-#     # def get_history(self):
-#     #     return self.storystatus_set.all()
+    def get_history(self):
+        return self.storystatus_set.all()
 
 
 # class StoryVersion(models.Model):
@@ -66,13 +66,13 @@ class Project(models.Model):
 #     text = models.TextField()
 
 
-# # class StoryStatus(models.Model):
-# #     story = models.ForeignKey(Story)
-# #     set_by = models.ForeignKey(AUTH_USER_MODEL)
-# #     timestamp = models.DateTimeField(auto_now=True)
-# #     deadline = models.DateTimeField()
-# #     status = models.IntegerField(choices=STORYSTATUSES)
-# #     description = models.CharField(max_length=500)
+class StoryStatus(models.Model):
+    story = models.ForeignKey(Story)
+    set_by = models.ForeignKey(AUTH_USER_MODEL)
+    timestamp = models.DateTimeField(auto_now=True)
+    deadline = models.DateTimeField()
+    status = models.IntegerField(choices=STORYSTATUSES)
+    description = models.CharField(max_length=500)
 
 
 # class ProjectPlan(models.Model):

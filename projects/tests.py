@@ -17,10 +17,13 @@ from projects.models import Project
 class PipelineAPITest(APITestCase):
     fixtures = ['id/fixtures/initial_data.json']
     staff_email = 'staff@example.com'
+    admin_email = 'admin@example.com'
 
-    # -- PROJECT LEVEL TESTS
+    # -- PROJECT TESTS
     #
     #
+
+    # COLLECTION
     def test_create_project(self):
         user = get_user_model().objects.get(email=self.staff_email)
         title = 'democracy for all'
@@ -65,6 +68,7 @@ class PipelineAPITest(APITestCase):
         helper_cleanup_projects()
         return
 
+    # MEMBER
     def test_get_project(self):
         user = get_user_model().objects.get(email=self.staff_email)
         response = self.helper_create_single_project('get democracy for all',
@@ -103,33 +107,62 @@ class PipelineAPITest(APITestCase):
         helper_cleanup_projects()
         return
 
+    def test_alter_project(self):
+        user = get_user_model().objects.get(email=self.staff_email)
+        create_response = self.helper_create_single_project('alter democracy for all',
+                                                            user,
+                                                            user.id,
+                                                            [user.id])
+
+        altered_title = 'altered title via test'
+        altered_user = get_user_model().objects.get(email=self.admin_email)
+        data = {'title': altered_title,
+                'coordinator': altered_user.id}
+        client = APIClient()
+        client.force_authenticate(user=user)
+        alter_response = client.put(reverse('project_alter', kwargs={'id': create_response.data.id}), data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data.title, altered_title)
+        self.assertEqual(response.data.coordinator, altered_user.id)
+
+        helper_cleanup_projects()
+        return
+
+    # -- PROJECT STORY TESTS
+    #
+    #
+
+    def test_create_story(self):
+        return
+
     # -- PROJECT HELPER FUNCTIONS
     #
     #
-    def helper_create_single_project(self, project_title, creating_user, coordinator_id, user_ids):
+    def helper_create_single_project(self, project_title, creating_user, coordinator, users):
         url = reverse('project_create')
         client = APIClient()
         client.force_authenticate(user=creating_user)
 
         data = {'title': project_title,
-                'coordinator': coordinator_id,
-                'users': user_ids}
+                'coordinator': coordinator,
+                'users': users}
 
         return client.post(url, data, format='json')
+
+    def helper_create_single_story(self, project, reporters, researchers, editors, copy_editors, fact_checkers, translators, artists):
+        pass
 
     def helper_cleanup_projects():
         Project.objects.all().delete()
 
-    def test_alter_project(self):
-        pass
+    #
+    #
 
     def test_assign_project_users(self):
         pass
 
     def test_unassign_project_users(self):
-        pass
-
-    def test_create_story(self):
         pass
 
     def test_delete_story(self):
