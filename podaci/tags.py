@@ -9,8 +9,9 @@ class Create(PodaciView):
         tagname = self.request.POST.get("tag_name", None)
         if not tagname:
             return {"error": "Must supply tag name."}
-        tag = Tag(self.fs)
-        tag.create(tagname)
+        tag = Tag()
+        tag.name = tagname
+        tag.save()
         parent = self.request.POST.get("tag_parents", None)
         if parent:
             tag.parent_add(parent)
@@ -44,16 +45,14 @@ class Details(PodaciView):
             self.breadcrumb_pop()
         self.breadcrumb_push(id)
 
-        tag = Tag(self.fs, id)
-        num_displayed = 1000
-        tag_cnt, tags = self.fs.list_user_tags(self.request.user, root=tag.id, _size=num_displayed)
-        file_cnt, files = self.fs.list_user_files(self.request.user, root=tag.id, _size=num_displayed)
+        tag = PodaciTag(self.fs, id)
+        tags = PodaciTag.objects.filter(allowed_users_read__contains=self.request.user, parents__contains=tag)
+        files = PodaciFile.objects.filter(allowed_users_read__contains=self.request.user, tags__contains=tag)
         return {
             "breadcrumbs": self.get_breadcrumbs(),
             "tag": tag,
-            "num_files_displayed": min(num_displayed, file_cnt),
-            "num_tags": tag_cnt,
-            "num_files": file_cnt,
+            "num_tags": tags.count(),
+            "num_files": files.count(),
             "result_tags": tags,
             "result_files": files,
         }
@@ -69,23 +68,21 @@ class Update(PodaciView):
 
 class Zip(PodaciView):
     # FIXME: Move this logic out of the view!
+    # FIXME: May need to be careful when including huge files. Possibly
+    #          write this as a streamer? (Currently limited to 50MB)
     """
         Return a zip file containing the files belonging to the tag.
-
-        May need to be careful when including huge files. Possibly
-        write this as a streamer? (Currently limited to 50MB by Podaci)
     """
     template_name = "NO_TEMPLATE"
 
     def get(self, request, tid=None, **kwargs):
-        from id.apis.podaci import File
         import zipfile
         import StringIO
         archive_name = "id_archive.zip"
         files = request.GET.getlist("files", [])
 
         if id:
-            self.tag = Tag(self.fs, tid)
+            self.tag = Tag.objects.get(tid)
             archive = self.tag.get_zip()
             archive_name = "%s.zip" % (self.tag.meta["name"])
         elif files:
@@ -93,15 +90,15 @@ class Zip(PodaciView):
             #        Should be farmed out to somewhere nice.
             #        Probably some kind of ephemeral tag thing.
             _50MB = 50 * 1024 * 1024
-            files = [File(self.fs, x) for x in files]
-            totalsize = sum([x.meta.get("size", 0) for x in files])
+            files = File.objects.filter(id__in=files)
+            totalsize = sum([x.size for x in files])
             if totalsize > _50MB:
                 return False
 
             archive = StringIO.StringIO()
             with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as zf:
                 for f in files:
-                    zf.write(f.resident_location(), f.meta["filename"])
+                    zf.write(f.resident_location(), f.filename)
             archive.seek(0)
         else:
             raise ValueError("Must supply tag ID or file list.")
@@ -125,10 +122,10 @@ class Overview(PodaciView):
         o = OverviewAPI("www.overviewproject.org", "ekykvx3qj0jr5fbrzdqtpcrp0")
 
         if id:
-            self.tag = Tag(self.fs, id)
-            docsetid = o.new_docset_from_tag(self.tag)
+            tag = Tag.objects.get(id)
+            docsetid = o.new_docset_from_tag(tag)
         elif files:
-            files = [File(self.fs, x) for x in files]
+            files = File.objects.filter(id__in=files)
             title = "An unnamed selection of files"
             docsetid = o.new_docset_from_files(title, files)
         else:

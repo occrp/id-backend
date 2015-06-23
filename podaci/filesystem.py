@@ -16,7 +16,8 @@ def random_id():
     return str(uuid4())
 
 class AuthenticationError(Exception):
-    pass
+    def __str__(self):
+        return "Access denied"
 
 class FileNotFound(Exception):
     def __str__(self):
