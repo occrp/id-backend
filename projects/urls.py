@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from projects.views import dummy_view
+from projects.views import dummy_view, dummy_story_view
 
 
 urlpatterns = patterns('',
@@ -10,5 +10,7 @@ urlpatterns = patterns('',
     url(r'^project/(?P<id>.+)/delete/$',             dummy_view, name='project_delete'),
     url(r'^project/(?P<id>.+)/add_users/$',          dummy_view, name='project_add_users'),
     url(r'^project/(?P<id>.+)/remove_users/$',       dummy_view, name='project_remove_users'),
-    url(r'^project/(?P<id>.+)/list_users/$',       dummy_view, name='project_list_users')
+    url(r'^project/(?P<id>.+)/list_users/$',         dummy_view, name='project_list_users'),
+
+    url(r'^story/create/$',                          dummy_story_view, name='story_create')
 )

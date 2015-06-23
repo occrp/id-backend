@@ -31,6 +31,7 @@ class Project(models.Model):
 
 class Story(models.Model):
     project = models.ForeignKey(Project)
+    title = models.CharField(max_length=250)
     reporters = models.ManyToManyField(AUTH_USER_MODEL, related_name="reporters")
     researchers = models.ManyToManyField(AUTH_USER_MODEL, related_name="researchers")
     editors = models.ManyToManyField(AUTH_USER_MODEL, related_name="editors")
