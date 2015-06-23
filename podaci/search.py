@@ -1,4 +1,5 @@
 from podaci import PodaciView
+from podaci.models import PodaciFile
 
 class Search(PodaciView):
     template_name = "podaci/search.jinja"
@@ -11,5 +12,8 @@ class SearchMention(PodaciView):
     template_name = None
 
     def get_context_data(self, **kwargs):
-        query = self.request.GET.get("q", None)
-        return self.fs.search_all_by_name(query)
+        # FIXME: This isn't very good
+        query = self.request.GET.get("q")
+        if query:
+            return PodaciFile.objects.filter(name__contains=query)
+        return []

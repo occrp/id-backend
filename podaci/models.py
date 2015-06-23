@@ -74,20 +74,20 @@ class PodaciMetadata(models.Model):
                 value = None
             yield (field_name, value)
 
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
-        super(models.Model, self).__init__(*args, **kwargs)
-        if not self.has_permission(user):
-            raise AuthenticationError("User %s has no access to tag %s" 
-                % (user, self.pk))
+    #def __init__(self, *args, **kwargs):
+    #    user = kwargs.pop('user', None)
+    #    super(models.Model, self).__init__(*args, **kwargs)
+    #    #if not self.has_permission(user):
+    #    #    raise AuthenticationError("User %s has no access to tag %s" 
+    #    #        % (user, self.pk))
 
-    def log(self, message):
+    def log(self, message, user):
         """Add a log entry."""
         if self.CHANGELOG_CLASS:
             # TODO: Make this smarter.
             cl = globals()[self.CHANGELOG_CLASS]()
             cl.ref = self
-            cl.user = self.user
+            cl.user = user
             cl.message = message
             cl.save()
 
@@ -97,11 +97,21 @@ class PodaciMetadata(models.Model):
             # TODO: Make this smarter.
             cl = globals()[self.NOTE_CLASS]()
             cl.ref = self
-            cl.user = self.user
+            cl.user = user
             cl.text = text
             cl.save()
 
-        self.log("Added note")
+        self.log("Added note", user)
+
+    def note_list(self):
+        if self.NOTE_CLASS:
+            return globals()[self.NOTE_CLASS].objects.filter(ref=self)
+        return []
+
+    def note_delete(self, nid):
+        if self.NOTE_CLASS:
+            note = globals()[self.NOTE_CLASS].objects.get(id=nid)
+            note.delete()
 
     def details_string(self):
         """
@@ -110,7 +120,7 @@ class PodaciMetadata(models.Model):
         """
         s = "%s%s %3dU %3dW %3dN" % (
             ["-","P"][self.public_read], 
-            ["-","S"][self.staff_allowed], 
+            ["-","S"][self.staff_read], 
             self.allowed_users_read.count(), 
             self.allowed_users_write.count(), 
             self.notes.count())
@@ -120,51 +130,51 @@ class PodaciMetadata(models.Model):
 
     def to_json(self):
         """Get a JSON blob containing the ID and the object's metadata."""
-        return {"id": self.id, "meta": dict(self.iteritems())}
+        return {"id": self.id}
 
     def add_user(self, user, write=False):
         """Give a user permissions on the object."""
         if not user: return
-        if user not in self.allowed_users.objects.all():
-            self.allowed_users.add(user.id)
-        if write and user not in self.allowed_write_users.objects.all():
-            self.allowed_write_users.add(user.id)
+        if user not in self.allowed_users_read.all():
+            self.allowed_users_read.add(user.id)
+        if write and user not in self.allowed_write_users.all():
+            self.allowed_users_write.add(user.id)
         self.log("Added user '%s' [%d] (write=%s)" 
-                 % (user.email, user.id, write))
+                 % (user.email, user.id, write), user)
 
     def remove_user(self, user):
         """Revoke user permissions."""
         if not user: return
         try:
-            self.allowed_users.remove(user)
-            self.allowed_write_users.remove(user)
-            self.log("Removed user '%s' [%d]" % (user.email, user.id))
+            self.allowed_users_read.remove(user)
+            self.allowed_users_write.remove(user)
+            self.log("Removed user '%s' [%d]" % (user.email, user.id), user)
         except ValueError:
             pass
 
-    def make_public(self):
+    def make_public(self, user):
         """Allow public reads."""
         self.public_read = True
         self.save()
-        self.log("Made file public.")
+        self.log("Made file public.", user)
 
-    def make_private(self):
+    def make_private(self, user):
         """Disallow public reads."""
         self.public_read = False
         self.save()
-        self.log("Made file private.")
+        self.log("Made file private.", user)
 
-    def allow_staff(self):
+    def allow_staff(self, user):
         """Allow all staff members to access (read/write)"""
-        self.staff_allowed = True
+        self.staff_read = True
         self.save()
-        self.log("Made file accessible to all staff.")
+        self.log("Made file accessible to all staff.", user)
 
-    def disallow_staff(self):
+    def disallow_staff(self, user):
         """Disallow staff to access"""
-        self.staff_allowed = False
+        self.staff_read = False
         self.save()
-        self.log("Made file inaccessible to staff.")
+        self.log("Made file inaccessible to staff.", user)
 
     def has_permission(self, user):
         """Check if a given user has read permission."""
@@ -172,10 +182,10 @@ class PodaciMetadata(models.Model):
         if not user: return False
         if user.is_superuser: return True
         if self.public_read: return True
-        if self.staff_allowed and user.is_staff: return True
-        if user in self.allowed_users.objects.all(): return True
+        if self.staff_read and user.is_staff: return True
+        if user in self.allowed_users_read.all(): return True
         if self.DOCTYPE == "file":
-            for t in self.tags.objects.all():
+            for t in self.tags.all():
                 tag = Tag.objects.get(id=t)
                 if tag.has_permission(user):
                     return True
@@ -186,12 +196,11 @@ class PodaciMetadata(models.Model):
         if not user and not self.pk: return True
         if not user: return False
         if user.is_superuser: return True
-        if self.staff_allowed and user.is_staff: return True
-        if user in self.allowed_write_users.objects.all(): return True
+        if self.staff_read and user.is_staff: return True
+        if user in self.allowed_users_write.all(): return True
         if self.DOCTYPE == "file":
-            for t in self.tags.objects.all():
-                tag = Tag.objects.get(id=t)
-                if tag.has_write_permission(user):
+            for t in self.tags.all():
+                if t.has_write_permission(user):
                     return True
         return False
 
@@ -201,6 +210,7 @@ class PodaciTag(PodaciMetadata):
                             related_name='children')
     icon                = models.CharField(max_length=100)
 
+    DOCTYPE             = 'tag'
     CHANGELOG_CLASS     = 'PodaciTagChangelog'
     NOTE_CLASS          = None
 
@@ -210,6 +220,15 @@ class PodaciTag(PodaciMetadata):
 
     def __str__(self):
         return self.__unicode__()
+
+    def to_json(self):
+        fields = ("id", "parents", "icon",
+                  "name", "date_added", "public_read", "staff_read")
+        out = dict([(x, getattr(self, x)) for x in fields])
+        out["tags"] = [x.id for x in self.tags.all()]
+        out["allowed_users_read"] = [x.id for x in self.allowed_users_read.all()]
+        out["allowed_users_write"] = [x.id for x in self.allowed_users_write.all()]
+        return out
 
     def parent_add(self, parenttag):
         """Add a parent tag."""
@@ -232,7 +251,7 @@ class PodaciTag(PodaciMetadata):
     def list_files(self):
         """Return a list of existing files"""
         # TODO: Limit this to only include files the user can see.
-        return self.files.objects.all()
+        return self.files.all()
 
     def list_children(self):
         """Get a list of all children of this tag."""
@@ -268,7 +287,7 @@ class PodaciFile(PodaciMetadata):
     schema_version      = models.IntegerField(default=3)
     title               = models.CharField(max_length=300)
     created_by          = models.ForeignKey(AUTH_USER_MODEL, 
-                            related_name='created_files')
+                            related_name='created_files', blank=True, null=True)
     is_resident         = models.BooleanField(default=True)
     filename            = models.CharField(max_length=256, blank=True)
     url                 = models.URLField(blank=True)
@@ -281,8 +300,20 @@ class PodaciFile(PodaciMetadata):
     is_indexed          = models.BooleanField(default=False)
     is_entity_extracted = models.BooleanField(default=False)
 
+    DOCTYPE             = 'file'
     CHANGELOG_CLASS     = 'PodaciFileChangelog'
     NOTE_CLASS          = 'PodaciFileNote'
+
+    def to_json(self):
+        fields = ("id", "schema_version", "title", "created_by", "is_resident",
+                  "filename", "url", "sha256", "size", "mimetype", 
+                  "description", "is_indexed", "is_entity_extracted",
+                  "name", "date_added", "public_read", "staff_read")
+        out = dict([(x, getattr(self, x)) for x in fields])
+        out["tags"] = [x.id for x in self.tags.all()]
+        out["allowed_users_read"] = [x.id for x in self.allowed_users_read.all()]
+        out["allowed_users_write"] = [x.id for x in self.allowed_users_write.all()]
+        return out
 
     def get_filehandle(self, user):
         """Get a file handle to the file itself."""
@@ -296,18 +327,17 @@ class PodaciFile(PodaciMetadata):
 
     def resident_location(self):
         """Return the resident location of the file."""
-        if self.hash == "": raise Exception("File hash missing")
+        if self.sha256 == "": raise Exception("File hash missing")
         if self.filename == "": raise Exception("Filename missing")
-        hashfragment = self.hash[:HASH_DIRS_DEPTH*HASH_DIRS_LENGTH]
+        hashfragment = self.sha256[:HASH_DIRS_DEPTH*HASH_DIRS_LENGTH]
         bytesets = [iter(hashfragment)]*HASH_DIRS_LENGTH
         dirnames = map(lambda *x: "".join(zip(*x)[0]), *bytesets)
-        hashdirs = os.path.join(dirnames)
-        directory = os.path.join(PODACI_FS_ROOT, hashdirs)
+        directory = os.path.join(PODACI_FS_ROOT, *dirnames)
         try:
             os.makedirs(directory)
         except os.error:
             pass
-        return os.path.join(directory, filename)
+        return os.path.join(directory, self.filename)
 
     def create_from_filehandle(self, fh, filename=None):
         """Given a file handle, create a file."""
@@ -316,7 +346,7 @@ class PodaciFile(PodaciMetadata):
         if not filename:
             filename = "Untitled file"
         self.filename = filename
-        self.hash = sha256sum(fh)
+        self.sha256 = sha256sum(fh)
         self.mimetype = magic.Magic(mime=True).from_buffer(fh.read(100))
 
         fh.seek(0)
@@ -335,7 +365,7 @@ class PodaciFile(PodaciMetadata):
         self.filename = os.path.split(filename)[-1]
         if filename_override:
             self.filename = filename_override
-        self.hash = sha256sum(filename)
+        self.sha256 = sha256sum(filename)
         self.mimetype = magic.Magic(mime=True).from_file(filename)
 
         shutil.copy(filename, self.resident_location())
@@ -357,27 +387,25 @@ class PodaciFile(PodaciMetadata):
         return self.id, self, True
 
     def exists_by_hash(self, sha):
-        raise NotImplementedError()
+        return PodaciFile.objects.filter(sha256=sha).count() > 0
 
     def exists_by_url(self, url):
-        raise NotImplementedError()
+        return PodaciFile.objects.filter(url=url).count() > 0
 
     def _make_resident(self, buf=None):
         """Makes a resident copy of an URL-based file entry."""
         raise NotImplementedError()
         self.is_resident = True
 
-    def delete(self, sure=False):
+    def delete(self):
         """Delete a file. Make sure you're sure."""
         if not self.id: raise ValueError("No file specified")
-        if not sure:
-            raise ValueError("You don't seem to be sure. (try sure=True)")
         if self.filename:
             try:
                 os.unlink(self.resident_location())
             except OSError:
                 pass
-        self.delete()
+        super(PodaciMetadata, self).delete()
         return True
 
 
@@ -400,13 +428,13 @@ class PodaciChangelog(models.Model):
     description         = models.CharField(max_length=200)
 
 class PodaciTagChangelog(PodaciChangelog):
-    ref                 = models.ForeignKey(PodaciTag)
+    ref                 = models.ForeignKey(PodaciTag, related_name="logs")
 
 class PodaciFileChangelog(PodaciChangelog):
-    ref                 = models.ForeignKey(PodaciFile)
+    ref                 = models.ForeignKey(PodaciFile, related_name="logs")
 
 class PodaciFileNote(models.Model):
     user                = models.ForeignKey(AUTH_USER_MODEL)
     timestamp           = models.DateTimeField(auto_now_add=True)
-    ref                 = models.ForeignKey(PodaciFile)
+    ref                 = models.ForeignKey(PodaciFile, related_name="notes")
     description         = models.TextField()
