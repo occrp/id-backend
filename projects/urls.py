@@ -8,5 +8,7 @@ urlpatterns = patterns('',
     url(r'^project/(?P<id>.+)/$',                    dummy_view, name='project_get'),
     url(r'^project/(?P<id>.+)/alter/$',                    dummy_view, name='project_alter'),
     url(r'^project/(?P<id>.+)/delete/$',             dummy_view, name='project_delete'),
-    url(r'^project/(?P<id>.+)/add_users/$',             dummy_view, name='project_add_users')
+    url(r'^project/(?P<id>.+)/add_users/$',             dummy_view, name='project_add_users'),
+    url(r'^project/(?P<id>.+)/remove_users/$',             dummy_view, name='project_remove_users')
+
 )

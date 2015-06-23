@@ -148,7 +148,27 @@ class PipelineAPITest(APITestCase):
         assign_response = client.post(reverse('project_add_users', kwargs={'id': create_response.data.id}), data, format='json')
 
         self.assertEqual(assign_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(assign_response.data), 3)
+        self.assertEqual(len(assign_response.data), 4)
+
+        helper_cleanup_projects()
+        return
+
+    def test_unassign_project_users(self):
+        self.helper_create_dummy_users()
+        project = Project(title='unsassigned user deomcracy for all',
+                          coordinator=self.staff_user)
+        project.save()
+        project.users.add(self.staff_user, self.admin_user, self.volunteer_user, self.user_user)
+        project.save()
+
+        data = {'users': [self.volunteer_user.id]}
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        unassign_response = client.delete(reverse('project_remove_users', kwargs={'id': project.id}), data, format='json')
+        project = Project.objects.get(id=project.id)
+
+        self.assertEqual(unassign_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(project.users.count(), 3)
 
         helper_cleanup_projects()
         return
@@ -194,9 +214,6 @@ class PipelineAPITest(APITestCase):
         return
     #
     #
-
-    def test_unassign_project_users(self):
-        pass
 
     def test_delete_story(self):
         pass
