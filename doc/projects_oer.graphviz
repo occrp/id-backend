@@ -1,0 +1,32 @@
+digraph {
+    Project [bgcolor="#cccccc", style="filled"];
+    User [bgcolor="#cccccc", style="filled"];
+    Story [bgcolor="#cccccc", style="filled"];
+    StoryVersion [bgcolor="#cccccc", style="filled"];
+    Translation [bgcolor="#cccccc", style="filled"];
+    PodaciFile [bgcolor="#cccccc", style="filled"];
+    PodaciTag [bgcolor="#cccccc", style="filled"];
+    Expense;
+    TimeCard;
+    PlanItem;
+    Grant;
+    GrantItem;
+    GrantReport;
+
+    Project -> User [label="∞:∞"];
+    Project -> Story [label="∞:∞"];
+    Story -> StoryVersion [label="1:∞"];
+    StoryVersion -> Translation [label="1:∞"];
+    Project -> PodaciFile [label="∞:∞"];
+    Project -> PodaciTag [label="∞:∞"];
+    Project -> Expense [label="1:∞"];
+    Grant -> Project [label="∞:∞"];
+    Grant -> GrantItem [label="1:∞"];
+    Grant -> GrantReport [label="1:∞"];
+    GrantItem -> PlanItem [label="1:∞"];
+    Project -> PlanItem [label="1:∞"];
+    PlanItem -> User [label="∞:∞"];
+    PlanItem -> Story [label="∞:∞"];    
+    Project -> TimeCard [label="∞:∞"];
+    PodaciFile -> PodaciTag [label="∞:∞"];
+}
