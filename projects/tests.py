@@ -33,101 +33,99 @@ class PipelineAPITest(APITestCase):
 
     # COLLECTION
     def test_create_project(self):
-        user = get_user_model().objects.get(email=self.staff_email)
-        title = 'democracy for all'
-        coordinator_id = user.id
-        users = [user.id]
-        response = self.helper_create_single_project('create democracy for all',
-                                                     user,
-                                                     coordinator_id,
-                                                     users)
+        self.helper_create_dummy_users()
+        create_response = self.helper_create_single_project('create democracy for all',
+                                                     self.staff_user,
+                                                     self.staff_user.id,
+                                                     [self.staff_user.id])
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data.title, title)
-        self.assertEqual(response.data.coordinator.id, coordinator_id)
-        self.assertEqual(response.data.users, users)
+        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(create_response.data.title, title)
+        self.assertEqual(create_response.data.coordinator.id, coordinator_id)
+        self.assertEqual(create_response.data.users, users)
 
         helper_cleanup_projects()
         return
 
     def test_list_projects(self):
-        user = get_user_model().objects.get(email=self.staff_email)
-
+        self.helper_create_dummy_users()
         self.helper_create_single_project('democracy for all 1',
-                                          user,
-                                          user.id,
-                                          [user.id])
+                                          self.staff_user,
+                                          self.staff_user.id,
+                                          [self.staff_user.id])
         self.helper_create_single_project('democracy for all 2',
-                                          user,
-                                          user.id,
-                                          [user.id])
+                                          self.staff_user,
+                                          self.staff_user.id,
+                                          [self.staff_user.id])
         self.helper_create_single_project('democracy for all 3',
-                                          user,
-                                          user.id,
-                                          [user.id])
+                                          self.staff_user,
+                                          self.staff_user.id,
+                                          [self.staff_user.id])
 
         client = APIClient()
-        client.force_authenticate(user=user)
-        response = client.get(reverse('project_list'))
+        client.force_authenticate(user=self.staff_user)
+        list_response = client.get(reverse('project_list'))
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(list_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(list_response.data), 3)
 
         helper_cleanup_projects()
         return
 
     # MEMBER
     def test_get_project(self):
-        user = get_user_model().objects.get(email=self.staff_email)
-        response = self.helper_create_single_project('get democracy for all',
-                                                     user,
-                                                     user.id,
-                                                     [user.id])
+        self.helper_create_dummy_users()
+        create_response = self.helper_create_single_project('get democracy for all',
+                                                     self.staff_user,
+                                                     self.staff_user.id,
+                                                     [self.staff_user.id])
 
         client = APIClient()
-        client.force_authenticate(user=user)
-        response = client.get(reverse('project_get', kwargs={'id': response.data.id}))
+        client.force_authenticate(user=self.staff_user)
+        get_response = client.get(reverse('project_get', kwargs={'id': create_response.data.id}))
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data.id, response.id)
+        self.assertEqual(get_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(get_response.data.id, response.id)
 
         helper_cleanup_projects()
         return
 
     def test_delete_project(self):
-        user = get_user_model().objects.get(email=self.staff_email)
+        self.helper_create_dummy_users()
         create_response = self.helper_create_single_project('delete democracy for all',
-                                                            user,
-                                                            user.id,
-                                                            [user.id])
+                                                            self.staff_user,
+                                                            self.staff_user.id,
+                                                            [self.staff_user.id])
 
         client = APIClient()
-        client.force_authenticate(user=user)
-        response = client.delete(reverse('project_delete', kwargs={'id': create_response.data.id}))
+        client.force_authenticate(user=self.staff_user)
+        delete_response = client.delete(reverse('project_delete', kwargs={'id': create_response.data.id}))
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data.id, create_response.data.id)
+        self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(delete_response.data.id, create_response.data.id)
 
-        response = client.get(reverse('project_get', kwargs={'id': create_response.data.id}))
+        try:
+            project = Project.objects.get(id=create_response.data.id)
+        except Project.DoesNotExist:
+            project = None
 
-        self.assertEqual(response.status_code, status_code.HTTP_404_NOT_FOUND)
+        self.assertEqual(project, None)
 
         helper_cleanup_projects()
         return
 
     def test_alter_project(self):
-        user = get_user_model().objects.get(email=self.staff_email)
+        self.helper_create_dummy_users()
         create_response = self.helper_create_single_project('alter democracy for all',
-                                                            user,
-                                                            user.id,
-                                                            [user.id])
+                                                            self.staff_user,
+                                                            self.staff_user.id,
+                                                            [self.staff_user.id])
 
         altered_title = 'altered title via test'
-        altered_user = get_user_model().objects.get(email=self.admin_email)
         data = {'title': altered_title,
-                'coordinator': altered_user.id}
+                'coordinator': self.admin_user.id}
         client = APIClient()
-        client.force_authenticate(user=user)
+        client.force_authenticate(user=self.staff_user)
         alter_response = client.put(reverse('project_alter', kwargs={'id': create_response.data.id}), data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -139,18 +137,18 @@ class PipelineAPITest(APITestCase):
 
     def test_assign_project_users(self):
         self.helper_create_dummy_users()
-        create_response = self.helper_create_single_project('alter democracy for all',
-                                                            staff_user,
-                                                            user.id,
-                                                            [user.id])
+        create_response = self.helper_create_single_project('assign user democracy for all',
+                                                            self.staff_user,
+                                                            self.staff_user.id,
+                                                            [self.staff_user.id])
 
-        data = {'users': [admin_user.id, volunteer_user.id, user_user.id]}
+        data = {'users': [self.admin_user.id, self.volunteer_user.id, self.user_user.id]}
         client = APIClient()
-        client.force_authenticate(user=creating_user)
-        response = client.post(reverse('project_add_users', kwargs={'id': create_response.data.id}), data, format='json')
+        client.force_authenticate(user=self.staff_user)
+        assign_response = client.post(reverse('project_add_users', kwargs={'id': create_response.data.id}), data, format='json')
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(assign_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(assign_response.data), 3)
 
         helper_cleanup_projects()
         return
@@ -187,11 +185,11 @@ class PipelineAPITest(APITestCase):
     # -- HELPER FUNCTIONS
     #
     #
-    def helper_create_dummy_users():
-        staff_user = get_user_model().objects.get(email=self.staff_email)
-        admin_email = get_user_model().objects.get(email=self.admin_email)
-        volunteer_user = get_user_model().objects.get(email=self.volunteer_email)
-        user_user = get_user_model().objects.get(email=self.user_email)
+    def helper_create_dummy_users(self):
+        self.staff_user = get_user_model().objects.get(email=self.staff_email)
+        self.admin_user = get_user_model().objects.get(email=self.admin_email)
+        self.volunteer_user = get_user_model().objects.get(email=self.volunteer_email)
+        self.user_user = get_user_model().objects.get(email=self.user_email)
 
         return
     #
