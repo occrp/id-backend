@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
@@ -11,7 +13,7 @@ from core.testclient import TestClient
 from core.testclient import APITestClient
 from settings.settings import *
 
-from projects.models import Project
+from projects.models import Project, Story
 
 
 class PipelineAPITest(APITestCase):
@@ -187,13 +189,6 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(list_response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(list_response.data['users']), 4)
 
-    # -- PROJECT STORY TESTS
-    #
-    #
-
-    def test_create_story(self):
-        pass
-
     # -- PROJECT HELPER FUNCTIONS
     #
     #
@@ -217,15 +212,65 @@ class PipelineAPITest(APITestCase):
 
         return client.post(url, data, format='json')
 
-    def helper_create_single_story(self, project, reporters, researchers, editors, copy_editors, fact_checkers, translators, artists):
-        pass
-
     def helper_cleanup_projects(self):
         Project.objects.all().delete()
+
+    # -- PROJECT STORY TESTS
+    #
+    #
+
+    # STORY COLLECTION
+    def test_create_story(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('story create project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+
+        data = {'project_id': project.id,
+                'reporters': [self.user_user],
+                'researchers': [self.user_user],
+                'editors': [self.volunteer_user],
+                'copy_editors': [self.volunteer_user],
+                'fact_checkers': [self.admin_user],
+                'translators': [self.admin_user],
+                'artists': [self.staff_user],
+                'published': ''
+                }
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        create_response = client.post(reverse('story_create'), data)
+
+        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
+
+        try:
+            story = Story.objects.get(id=create_response.data['id'])
+        except Story.DoesNotExist:
+            story = None
+
+        self.assertEqual(story.id, create_response.data['id'])
+        self.assertEqual(story.project.id, project.id)
+        self.assertEqual(story.reporters.all(), [self.user_user])
+        self.assertEqual(story.researchers.all(), [self.user_user])
+        self.assertEqual(story.editors.all(), [self.volunteer_user])
+        self.assertEqual(story.copy_editors.all(), [self.volunteer_user])
+        self.assertEqual(story.fact_checkers.all(), [self.admin_user])
+        self.assertEqual(story.translators.all(), [self.admin_user])
+        self.assertIsInstance(story.datetime, datetime)
+
+    # -- PROJECT HELPER FUNCTIONS
+    #
+    #
+    def helper_create_single_story(self, story_title, reporters, researchers, editors, copy_editors, fact_checkers, translators, artists):
+
+        return
 
     # -- HELPER FUNCTIONS
     #
     #
+
     def helper_create_dummy_users(self):
         self.staff_user = get_user_model().objects.get(email=self.staff_email)
         self.admin_user = get_user_model().objects.get(email=self.admin_email)
