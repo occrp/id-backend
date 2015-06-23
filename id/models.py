@@ -49,13 +49,15 @@ class ProfileManager(BaseUserManager):
             raise ValueError('The email field has to be set.')
         email = self.normalize_email(email)
         user = self.model(email=email, is_staff=is_staff, is_active=True,
-                          is_superuser=is_superuser, date_joined=now, **extra_fields)
+                          is_superuser=is_superuser, date_joined=now, 
+                          **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, password=None, **extra_fields):
-        return self._create_user(email, password, False, False,
+    def create_user(self, email, password=None, is_superuser=False, 
+                    is_staff=False, **extra_fields):
+        return self._create_user(email, password, is_staff, is_superuser, 
                                  **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):
