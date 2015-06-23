@@ -185,8 +185,20 @@ class PipelineAPITest(APITestCase):
         return
 
     def test_list_project_users(self):
+        self.helper_create_dummy_users()
         self.helper_cleanup_projects()
-        return
+
+        project = self.helper_create_single_project('list user democracy for all',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user, self.admin_user, self.volunteer_user, self.user_user])
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        list_response = client.get(reverse('project_list_users', kwargs={'id': project.id}))
+
+        self.assertEqual(list_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(list_response.data['users']), 4)
 
     # -- PROJECT STORY TESTS
     #
