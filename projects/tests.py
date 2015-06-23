@@ -213,6 +213,7 @@ class PipelineAPITest(APITestCase):
         return client.post(url, data, format='json')
 
     def helper_cleanup_projects(self):
+        self.helper_cleanup_stories()
         Project.objects.all().delete()
 
     # -- PROJECT STORY TESTS
@@ -260,12 +261,59 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(story.translators.all(), [self.admin_user])
         self.assertIsInstance(story.datetime, datetime)
 
-    # -- PROJECT HELPER FUNCTIONS
-    #
-    #
-    def helper_create_single_story(self, story_title, reporters, researchers, editors, copy_editors, fact_checkers, translators, artists):
+    def test_delete_story(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
 
-        return
+        project = self.helper_create_single_project('deleting a story project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('delete story', project)
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        delete_response = client.delete(reverse('story_delete', kwargs={'id': story.id}))
+
+        self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
+
+        try:
+            story = Story.objects.get(id=story.id)
+        except Story.DoesNotExist:
+            story = None
+
+        self.assertEqual(story, None)
+
+    # -- STORY HELPER FUNCTIONS
+    #
+    #
+    def helper_create_single_story(self, project, title, reporters, researchers, editors, copy_editors, fact_checkers, translators, artists):
+        story = Story(project=project, title=title, published=datetime.datetime.now())
+        story.save()
+        story.reporters.add(*reporters)
+        story.researchers.add(*researchers)
+        story.editors.add(*editors)
+        story.copy_editors.add(*copy_editors)
+        story.fact_checkers.add(*fact_checkers)
+        story.translators.add(*translators)
+        story.artists.add(*artists)
+        story.save()
+
+        return story
+
+    def helper_create_single_story_dummy_wrapper(self, title, project):
+        return self.helper_create_single_story(title=title,
+                                               project=project,
+                                               reporters=[self.user_user],
+                                               researchers=[self.user_user],
+                                               editors=[self.volunteer_user],
+                                               copy_editors=[self.volunteer_user],
+                                               fact_checkers=[self.admin_user],
+                                               translators=[self.admin_user],
+                                               artists=[self.staff_user])
+
+    def helper_cleanup_stories(self):
+        Story.objects.all().delete()
 
     # -- HELPER FUNCTIONS
     #
@@ -279,9 +327,6 @@ class PipelineAPITest(APITestCase):
 
     #
     #
-
-    def test_delete_story(self):
-        pass
 
     def test_assign_editor(self):
         pass
