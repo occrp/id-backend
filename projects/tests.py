@@ -261,6 +261,28 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(story.translators.all(), [self.admin_user])
         self.assertIsInstance(story.datetime, datetime)
 
+    def test_list_stories(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('story list project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        self.helper_create_single_story_dummy_wrapper('list story 1', project)
+        self.helper_create_single_story_dummy_wrapper('list story 2', project)
+        self.helper_create_single_story_dummy_wrapper('list story 3', project)
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        list_response = client.get(reverse('story_list', kwargs={'id': project.id}))
+
+        self.assertEqual(list_response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(list_response.data, list)
+        self.assertEqual(len(list_response.data), 3)
+        self.assertGreater(list_response.data[0]['id'], 0)
+
+    # STORY COLLECTION
     def test_delete_story(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
@@ -386,9 +408,6 @@ class PipelineAPITest(APITestCase):
         pass
 
     def test_create_translation(self):
-        pass
-
-    def test_list_stories(self):
         pass
 
     def test_prioritize_stories(self):
