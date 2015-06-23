@@ -16,8 +16,16 @@ from projects.models import Project
 
 class PipelineAPITest(APITestCase):
     fixtures = ['id/fixtures/initial_data.json']
+
     staff_email = 'staff@example.com'
     admin_email = 'admin@example.com'
+    volunteer_email = 'volunteer@example.com'
+    user_email = 'user@example.com'
+
+    staff_user = None
+    admin_user = None
+    volunteer_user = None
+    user_user = None
 
     # -- PROJECT TESTS
     #
@@ -129,6 +137,24 @@ class PipelineAPITest(APITestCase):
         helper_cleanup_projects()
         return
 
+    def test_assign_project_users(self):
+        self.helper_create_dummy_users()
+        create_response = self.helper_create_single_project('alter democracy for all',
+                                                            staff_user,
+                                                            user.id,
+                                                            [user.id])
+
+        data = {'users': [admin_user.id, volunteer_user.id, user_user.id]}
+        client = APIClient()
+        client.force_authenticate(user=creating_user)
+        response = client.post(reverse('project_add_users', kwargs={'id': create_response.data.id}), data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 3)
+
+        helper_cleanup_projects()
+        return
+
     # -- PROJECT STORY TESTS
     #
     #
@@ -156,11 +182,20 @@ class PipelineAPITest(APITestCase):
     def helper_cleanup_projects():
         Project.objects.all().delete()
 
-    #
-    #
+        return
 
-    def test_assign_project_users(self):
-        pass
+    # -- HELPER FUNCTIONS
+    #
+    #
+    def helper_create_dummy_users():
+        staff_user = get_user_model().objects.get(email=self.staff_email)
+        admin_email = get_user_model().objects.get(email=self.admin_email)
+        volunteer_user = get_user_model().objects.get(email=self.volunteer_email)
+        user_user = get_user_model().objects.get(email=self.user_email)
+
+        return
+    #
+    #
 
     def test_unassign_project_users(self):
         pass
