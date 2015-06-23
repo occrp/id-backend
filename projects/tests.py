@@ -34,21 +34,24 @@ class PipelineAPITest(APITestCase):
     # COLLECTION
     def test_create_project(self):
         self.helper_create_dummy_users()
-        create_response = self.helper_create_single_project('create democracy for all',
-                                                     self.staff_user,
-                                                     self.staff_user.id,
-                                                     [self.staff_user.id])
+        self.helper_cleanup_projects()
+
+        create_response = self.helper_create_single_project_with_api('create democracy for all',
+                                                                     self.staff_user,
+                                                                     self.staff_user.id,
+                                                                     [self.staff_user.id])
 
         self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(create_response.data.title, title)
         self.assertEqual(create_response.data.coordinator.id, coordinator_id)
         self.assertEqual(create_response.data.users, users)
 
-        helper_cleanup_projects()
         return
 
     def test_list_projects(self):
         self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
         self.helper_create_single_project('democracy for all 1',
                                           self.staff_user,
                                           self.staff_user.id,
@@ -66,100 +69,109 @@ class PipelineAPITest(APITestCase):
         client.force_authenticate(user=self.staff_user)
         list_response = client.get(reverse('project_list'))
 
-        self.assertEqual(list_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(list_response.data), 3)
+        print list_response
 
-        helper_cleanup_projects()
+        self.assertEqual(list_response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(list_response.data, list)
+        self.assertEqual(len(list_response.data), 3)
+        self.assertGreater(list_response.data[0]['id'], 0)
+
         return
 
     # MEMBER
     def test_get_project(self):
         self.helper_create_dummy_users()
-        create_response = self.helper_create_single_project('get democracy for all',
-                                                     self.staff_user,
-                                                     self.staff_user.id,
-                                                     [self.staff_user.id])
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('get democracy for all',
+                                                    self.staff_user,
+                                                    self.staff_user.id,
+                                                    [self.staff_user.id])
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        get_response = client.get(reverse('project_get', kwargs={'id': create_response.data.id}))
+        get_response = client.get(reverse('project_get', kwargs={'id': project.id}))
 
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(get_response.data.id, response.id)
+        self.assertEqual(get_response.data['id'], project.id)
 
-        helper_cleanup_projects()
         return
 
     def test_delete_project(self):
         self.helper_create_dummy_users()
-        create_response = self.helper_create_single_project('delete democracy for all',
-                                                            self.staff_user,
-                                                            self.staff_user.id,
-                                                            [self.staff_user.id])
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('delete democracy for all',
+                                                    self.staff_user,
+                                                    self.staff_user.id,
+                                                    [self.staff_user.id])
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        delete_response = client.delete(reverse('project_delete', kwargs={'id': create_response.data.id}))
+        delete_response = client.delete(reverse('project_delete', kwargs={'id': project.id}))
 
         self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(delete_response.data.id, create_response.data.id)
+        self.assertEqual(delete_response.data['id'], project.id)
 
         try:
-            project = Project.objects.get(id=create_response.data.id)
+            project = Project.objects.get(id=project.id)
         except Project.DoesNotExist:
             project = None
 
         self.assertEqual(project, None)
 
-        helper_cleanup_projects()
         return
 
     def test_alter_project(self):
         self.helper_create_dummy_users()
-        create_response = self.helper_create_single_project('alter democracy for all',
-                                                            self.staff_user,
-                                                            self.staff_user.id,
-                                                            [self.staff_user.id])
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('alter democracy for all',
+                                                    self.staff_user,
+                                                    self.staff_user.id,
+                                                    [self.staff_user.id])
 
         altered_title = 'altered title via test'
         data = {'title': altered_title,
                 'coordinator': self.admin_user.id}
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        alter_response = client.put(reverse('project_alter', kwargs={'id': create_response.data.id}), data, format='json')
+        alter_response = client.put(reverse('project_alter', kwargs={'id': project.id}), data, format='json')
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data.title, altered_title)
-        self.assertEqual(response.data.coordinator, altered_user.id)
+        self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(alter_response.data['title'], altered_title)
+        self.assertEqual(alter_response.data['coordinator'], altered_user.id)
 
-        helper_cleanup_projects()
         return
 
     def test_assign_project_users(self):
         self.helper_create_dummy_users()
-        create_response = self.helper_create_single_project('assign user democracy for all',
-                                                            self.staff_user,
-                                                            self.staff_user.id,
-                                                            [self.staff_user.id])
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('assign user democracy for all',
+                                                    self.staff_user,
+                                                    self.staff_user.id,
+                                                    [self.staff_user.id])
 
         data = {'users': [self.admin_user.id, self.volunteer_user.id, self.user_user.id]}
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        assign_response = client.post(reverse('project_add_users', kwargs={'id': create_response.data.id}), data, format='json')
+        assign_response = client.post(reverse('project_add_users', kwargs={'id': project.id}), data, format='json')
+        project = Project.objects.get(id=project.id)
 
         self.assertEqual(assign_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(assign_response.data), 4)
+        self.assertEqual(project.users.count(), 4)
 
-        helper_cleanup_projects()
         return
 
     def test_unassign_project_users(self):
         self.helper_create_dummy_users()
-        project = Project(title='unsassigned user deomcracy for all',
-                          coordinator=self.staff_user)
-        project.save()
-        project.users.add(self.staff_user, self.admin_user, self.volunteer_user, self.user_user)
-        project.save()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('unassign user democracy for all',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user, self.admin_user, self.volunteer_user, self.user_user])
 
         data = {'users': [self.volunteer_user.id]}
         client = APIClient()
@@ -170,7 +182,10 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(unassign_response.status_code, status.HTTP_200_OK)
         self.assertEqual(project.users.count(), 3)
 
-        helper_cleanup_projects()
+        return
+
+    def test_list_project_users(self):
+        self.helper_cleanup_projects()
         return
 
     # -- PROJECT STORY TESTS
@@ -184,6 +199,15 @@ class PipelineAPITest(APITestCase):
     #
     #
     def helper_create_single_project(self, project_title, creating_user, coordinator, users):
+        project = Project(title=project_title,
+                          coordinator=creating_user)
+        project.save()
+        project.users.add(*users)
+        project.save()
+
+        return project
+
+    def helper_create_single_project_with_api(self, project_title, creating_user, coordinator, users):
         url = reverse('project_create')
         client = APIClient()
         client.force_authenticate(user=creating_user)
@@ -197,7 +221,7 @@ class PipelineAPITest(APITestCase):
     def helper_create_single_story(self, project, reporters, researchers, editors, copy_editors, fact_checkers, translators, artists):
         pass
 
-    def helper_cleanup_projects():
+    def helper_cleanup_projects(self):
         Project.objects.all().delete()
 
         return
@@ -212,6 +236,7 @@ class PipelineAPITest(APITestCase):
         self.user_user = get_user_model().objects.get(email=self.user_email)
 
         return
+
     #
     #
 
