@@ -32,7 +32,8 @@ from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, Tick
 from ticket import forms
 from ticket import constants
 
-from podaci import PodaciMixin, FileSystem, Tag, File
+from podaci import PodaciMixin
+from podaci.models import PodaciTag, PodaciFile
 
 class CompanyTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
     model = CompanyTicket

@@ -3,24 +3,24 @@ from django.http import StreamingHttpResponse
 #from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.template.loader import render_to_string
-from copy import copy
-from podaci.filesystem import File, Tag, FileNotFound
+from podaci.models import PodaciFile, PodaciTag
 
 class Create(PodaciView):
     template_name = "podaci/files/create.jinja"
 
     def get_context_data(self):
-        f = File(self.fs)
-        # print "POST:", self.request.POST
-        # print "FILES:", self.request.FILES
+        f = PodaciFile()
+        f.user = self.request.user
         uploadedfile = self.request.FILES.get("files[]", "")
         if uploadedfile == "":
             return None
         f.create_from_filehandle(uploadedfile)
         tag = self.request.POST.get("tag", None)
-        if tag:
-            tag = Tag(self.fs, tag)
+        try:
+            tag = PodaciTag.objects.get(id=tag)
             f.add_tag(tag)
+        except:
+            pass
         return f
 
 
@@ -28,49 +28,30 @@ class Details(PodaciView):
     template_name = "podaci/files/details.jinja"
 
     def get_context_data(self, id):
-        self.file = File(self.fs)
-        self.file.load(id)
-        users = {}
-        tags = {}
-        notes = []
-        for user in self.file.meta["allowed_users"]:
-            users[user] = get_user_model().objects.get(id=user)
-        for tag in self.file.meta["tags"]:
-            tags[tag] = self.fs.get_tag(tag)
-        notes = copy(self.file.meta["notes"])
-        for note in notes:
-            u = get_user_model().objects.get(id=note["user"])
-            note["user_details"] = {
-                "email": u.email,
-                "first_name": u.first_name,
-                "last_name": u.first_name,
-            }
-
+        self.file = PodaciFile.objects.get(id=id)
         return {
             "file": self.file, 
-            "users": users,
-            "tags": tags,
-            "notes": notes,
+            "users": self.file.allowed_users_read.all(),
+            "tags": self.file.tags.all(),
+            "notes": self.file.notes.all(),
         }
 
 class Delete(PodaciView):
     template_name = "podaci/files/create.jinja"
 
     def get_context_data(self, id):
-        f = File(self.fs)
         try:
-            f.load(id)
-        except FileNotFound:
-            return {"id": id, "deleted": False, "error": "notfound"}
-        status = f.delete(True)
+            f = PodaciFile.objects.get(id=id)
+        except Exception, e:
+            return {"id": id, "deleted": False, "error": e}
+        status = f.delete()
         return {"id": id, "deleted": status}
 
 class Download(PodaciView):
     template_name = "NO_TEMPLATE"
 
     def get(self, request, id, **kwargs):
-        f = File()
-        f.load(id)
+        f = PodaciFile.objects.get(id=id)
         response = StreamingHttpResponse(f.get(), content_type=f.meta["mimetype"])
         if not bool(request.GET.get("download", True)):
             response['Content-Disposition'] = 'attachment; filename=' + f.meta["filename"] 
@@ -84,46 +65,36 @@ class NoteAdd(PodaciView):
     template_name = None
 
     def get_context_data(self, id):
-        self.file = File(self.fs)
-        self.file.load(id)
+        self.file = File.objects.get(id=id)
 
         text = self.request.POST.get("note_text_markedup", "")
         if not text:
             return {"success": False, "error": "A comment cannot be empty."}
 
         success = self.file.add_note(text)
-        meta = copy(self.file.meta)
-        for note in meta["notes"]:
-            u = get_user_model().objects.get(id=note["user"])
-            note["user_details"] = {
-                "email": u.email,
-                "first_name": u.first_name,
-                "last_name": u.first_name,
-            }
-            note["html"] = render_to_string("podaci/partials/_note.jinja", {"note": note})
+        html = []
+        for note in self.file.notes.all():
+            html.append(render_to_string("podaci/partials/_note.jinja", {"note": note}))
 
         return {
             "success": True,
             "status": success,
-            "meta": meta
+            "html": html
         }
 
 class NoteUpdate(PodaciView):
     template_name = None
 
-    def get_context_data(self, id):
-        self.file = File(self.fs)
-        self.file.load(fid)
+    def get_context_data(self, fid, nid, text):
+        self.file = File.objects.get(id=fid)
         return {'status': self.file.note_update(nid, text)}
 
 class NoteDelete(PodaciView):
     template_name = None
 
     def get_context_data(self, fid, nid):
-        self.file = File(self.fs)
-        self.file.load(fid)
+        self.file = File.objects.get(id=fid)
         return {'status': self.file.note_delete(nid)}
 
 class MetaDataAdd(PodaciView):
     template_name = None
-
