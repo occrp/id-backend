@@ -4,7 +4,6 @@ from id.models import *
 from ticket.models import *
 from id.forms import ScraperRequestForm
 from ticket.forms import BudgetForm
-from podaci import FileSystem
 from search.models import SearchRequest
 
 class Panel(TemplateView):
@@ -14,9 +13,8 @@ class Storage(TemplateView):
     template_name = "admin/storage.jinja"
 
     def get_context_data(self):
-        fs = FileSystem(user=self.request.user)
         return {
-            "podaci": fs.status()
+            "podaci": True,
         }
 
 class Statistics(TemplateView):
