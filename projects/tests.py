@@ -31,7 +31,7 @@ class PipelineAPITest(APITestCase):
     #
     #
 
-    # COLLECTION
+    # PROJECT COLLECTION
     def test_create_project(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
@@ -45,8 +45,6 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(create_response.data.title, title)
         self.assertEqual(create_response.data.coordinator.id, coordinator_id)
         self.assertEqual(create_response.data.users, users)
-
-        return
 
     def test_list_projects(self):
         self.helper_create_dummy_users()
@@ -76,9 +74,7 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(len(list_response.data), 3)
         self.assertGreater(list_response.data[0]['id'], 0)
 
-        return
-
-    # MEMBER
+    # PROJECT MEMBER
     def test_get_project(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
@@ -94,8 +90,6 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
         self.assertEqual(get_response.data['id'], project.id)
-
-        return
 
     def test_delete_project(self):
         self.helper_create_dummy_users()
@@ -120,8 +114,6 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(project, None)
 
-        return
-
     def test_alter_project(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
@@ -142,8 +134,7 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(alter_response.data['title'], altered_title)
         self.assertEqual(alter_response.data['coordinator'], altered_user.id)
 
-        return
-
+    # PROJECT USER COLLECTION
     def test_assign_project_users(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
@@ -162,8 +153,6 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(assign_response.status_code, status.HTTP_200_OK)
         self.assertEqual(project.users.count(), 4)
 
-        return
-
     def test_unassign_project_users(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
@@ -181,8 +170,6 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(unassign_response.status_code, status.HTTP_200_OK)
         self.assertEqual(project.users.count(), 3)
-
-        return
 
     def test_list_project_users(self):
         self.helper_create_dummy_users()
@@ -205,7 +192,7 @@ class PipelineAPITest(APITestCase):
     #
 
     def test_create_story(self):
-        return
+        pass
 
     # -- PROJECT HELPER FUNCTIONS
     #
@@ -236,8 +223,6 @@ class PipelineAPITest(APITestCase):
     def helper_cleanup_projects(self):
         Project.objects.all().delete()
 
-        return
-
     # -- HELPER FUNCTIONS
     #
     #
@@ -246,8 +231,6 @@ class PipelineAPITest(APITestCase):
         self.admin_user = get_user_model().objects.get(email=self.admin_email)
         self.volunteer_user = get_user_model().objects.get(email=self.volunteer_email)
         self.user_user = get_user_model().objects.get(email=self.user_email)
-
-        return
 
     #
     #
