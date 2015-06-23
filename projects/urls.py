@@ -12,5 +12,6 @@ urlpatterns = patterns('',
     url(r'^project/(?P<id>.+)/remove_users/$',       dummy_view, name='project_remove_users'),
     url(r'^project/(?P<id>.+)/list_users/$',         dummy_view, name='project_list_users'),
 
-    url(r'^story/create/$',                          dummy_story_view, name='story_create')
+    url(r'^story/create/$',                          dummy_story_view, name='story_create'),
+    url(r'^story/(?P<id>.+)/delete/$',                          dummy_story_view, name='story_delete')
 )
