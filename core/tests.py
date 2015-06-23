@@ -3,28 +3,18 @@ from django.contrib.auth.models import AnonymousUser#, User
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 
 class UserTestCase(TestCase):
+    def anon_user_helper(self):
+        return AnonymousUser()
+
+    def user_helper(self, email, **kwargs):
+        return get_user_model().objects.create_user(email=email, password='top_secret', **kwargs)
+
     def setUp(self):
         self.anonymous_user = AnonymousUser()
-        
-        self.normal_user = get_user_model().objects.create_user(
-            email='testuser@occrp.org', password='top_secret')
-        self.normal_user.is_user = True
-        self.normal_user.save()
-
-        self.volunteer_user = get_user_model().objects.create_user(
-            email='testvolunteer@occrp.org', password='top_secret')
-        self.volunteer_user.is_volunteer = True
-        self.volunteer_user.save()
-
-        self.staff_user = get_user_model().objects.create_user(
-            email='teststaff@occrp.org', password='top_secret')
-        self.staff_user.is_staff = True
-        self.staff_user.save()
-
-        self.admin_user = get_user_model().objects.create_user(
-            email='testsuperuser@occrp.org', password='top_secret')
-        self.admin_user.is_superuser = True
-        self.admin_user.save()
+        self.normal_user = self.user_helper('testuser@occrp.org', is_user=True)
+        self.volunteer_user = self.user_helper('testvolunteer@occrp.org', is_volunteer=True)
+        self.staff_user = self.user_helper('teststaff@occrp.org', is_staff=True)
+        self.admin_user = self.user_helper('testsuperuser@occrp.org', is_superuser=True)
 
     def tearDown(self):
         pass
