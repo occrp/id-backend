@@ -29,3 +29,17 @@ def dummy_story_view(request, id=0, story_id=0, story_version_id=0):
             'versions': []
             }
     return Response(json)
+
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+def dummy_translation_view(request, id=0, story_id=0, story_version_id=0, language_code='en'):
+    json = {'id': 0,
+            'version': 0,
+            'language_code': 0,
+            'timestamp': '',
+            'translator': 0,
+            'verified': True,
+            'live': True,
+            'title': '',
+            'text': ''
+            }
+    return Response(json)

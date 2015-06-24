@@ -13,7 +13,7 @@ from core.testclient import TestClient
 from core.testclient import APITestClient
 from settings.settings import *
 
-from projects.models import Project, Story, StoryVersion
+from projects.models import Project, Story, StoryVersion, StoryTranslation
 
 
 class PipelineAPITest(APITestCase):
@@ -420,6 +420,57 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(story.translators.all(), [self.admin_user])
         self.assertEqual(story.artists.all(), [self.admin_user])
 
+    # def test_add_file_to_story(self):
+    #     self.helper_create_dummy_users()
+    #     self.helper_cleanup_projects()
+
+    #     project = self.helper_create_single_project('adding a file a story project',
+    #                                                 self.staff_user,
+    #                                                 self.staff_user,
+    #                                                 [self.staff_user])
+    #     story = self.helper_create_single_story_dummy_wrapper('story to have file added to', project)
+
+    #     client = APIClient()
+    #     client.force_authenticate(user=self.staff_user)
+    #     delete_response = client.delete(reverse('story_delete', kwargs={'id': story.id}))
+    #     self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
+
+    # -- STORY TRANSLATION TESTS
+    #
+    #
+
+    # STORY TRANSLATION COLLECTION/MEMBER
+    # self.helper_create_dummy_users()
+        # self.helper_cleanup_projects()
+
+        # client = APIClient()
+        # client.force_authenticate(user=self.staff_user)
+        # delete_response = client.delete(reverse('story_delete', kwargs={'id': story.id}))
+
+        # self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
+    def test_get_translation(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('getting a story translation project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation', project)
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version with a translation')
+        story_translation = self.helper_create_single_story_translation_dummy_wrapper(story_version, 'el', 'my greek version')
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        get_response = client.get(reverse('version_translation_get', kwargs={'id': story_version.id, 'language_code': 'el'}))
+
+        self.assertEqual(get_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(get_response.data['version'], story_translation.version.id)
+        self.assertEqual(get_response.data['language_code'], story_translation.language_code)
+        self.assertEqual(get_response.data['translator'], story_translation.translator.id)
+        self.assertEqual(get_response.data['title'], story_translation.title)
+        self.assertEqual(get_response.data['text'], story_translation.text)
+
     # -- PROJECT HELPER FUNCTIONS
     #
     #
@@ -444,7 +495,8 @@ class PipelineAPITest(APITestCase):
         return client.post(url, data, format='json')
 
     def helper_cleanup_projects(self):
-        self.helper_clean_story_versions()
+        self.helper_cleanup_story_translations()
+        self.helper_cleanup_story_versions()
         self.helper_cleanup_stories()
         Project.objects.all().delete()
 
@@ -495,11 +547,35 @@ class PipelineAPITest(APITestCase):
                                                        title=title,
                                                        text='im a dummy story version')
 
+    def helper_create_single_story_translation(self, version, language_code, translator, verified, live, title, text):
+        translation = StoryTranslation(version=version,
+                                       language_code=language_code,
+                                       translator=translator,
+                                       verified=verified,
+                                       live=live,
+                                       title=title,
+                                       text=text)
+        translation.save()
+        return translation
+
+    def helper_create_single_story_translation_dummy_wrapper(self, version, language_code, title):
+        self.helper_set_story_dummy_participants()
+        return self.helper_create_single_story_translation(version=version,
+                                                           language_code=language_code,
+                                                           translator=self.volunteer_user,
+                                                           verified=True,
+                                                           live=True,
+                                                           title=title,
+                                                           text='im a translation! hear me roar!')
+
     def helper_cleanup_stories(self):
         Story.objects.all().delete()
 
-    def helper_clean_story_versions(self):
+    def helper_cleanup_story_versions(self):
         StoryVersion.objects.all().delete()
+
+    def helper_cleanup_story_translations(self):
+        StoryTranslation.objects.all().delete()
 
     def helper_set_story_dummy_participants(self):
         self.dummy_reporters = [self.user_user]
