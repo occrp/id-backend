@@ -141,8 +141,7 @@ class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
     def perform_valid_action(self, form):
         ticket = self.object
 
-        self.podaci_setup()
-        tag = ticket.get_tag(self.fs)
+        tag = ticket.get_tag()
 
         if self.request.user.is_staff or self.request.user.is_superuser:
             ticket.responders.add(self.request.user)
@@ -172,8 +171,7 @@ class TicketActionLeave(TicketActionBaseHandler, PodaciMixin):
     def perform_valid_action(self, form):
         ticket = self.object
 
-        self.podaci_setup()
-        tag = ticket.get_tag(self.fs)
+        tag = ticket.get_tag()
 
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
@@ -266,8 +264,7 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
         current_responders = self.convert_users_to_ids(ticket.responders.all())
         current_volunteers = self.convert_users_to_ids(ticket.volunteers.all())
 
-        self.podaci_setup()
-        tag = ticket.get_tag(self.fs)
+        tag = ticket.get_tag()
 
         if 'redirect' in self.request.POST:
             self.redirect = self.request.POST['redirect']
@@ -401,8 +398,7 @@ class TicketDetail(TemplateView, PodaciMixin):
 
         outstanding = sum([x.cost for x in TicketCharge.objects.filter(reconciled=False)])
 
-        self.podaci_setup()
-        tag = self.ticket.get_tag(self.fs)
+        tag = self.ticket.get_tag()
 
         can_join_leave = False
         if self.request.user != self.ticket.requester:
@@ -712,8 +708,7 @@ class TicketRequest(TemplateView, PodaciMixin):
         ticket.save()
         messages.success(self.request, _('Ticket successfully created.'))
 
-        self.podaci_setup()
-        tag = ticket.get_tag(self.fs)
+        tag = ticket.get_tag()
 
         return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": ticket.id}))
 
