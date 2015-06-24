@@ -36,6 +36,7 @@ class PipelineAPITest(APITestCase):
     dummy_fact_checkers = None
     dummy_translators = None
     dummy_artists = None
+    dummy_version_author = None
 
     # -- PROJECT TESTS
     #
@@ -336,6 +337,28 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(story, None)
 
+    def test_get_story_version(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('getting a story version',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a version to get', project)
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to get')
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        get_response = client.get(reverse('story_version_get', kwargs={'id': story_version.id}))
+
+        self.assertEqual(get_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(get_response.data['id'], story_version.id)
+        self.assertEqual(get_response.data['story'], story.id)
+        self.assertEqual(get_response.data['authored'], story_version.authored.id)
+        self.assertEqual(get_response.data['title'], 'version to get')
+        self.assertEqual(get_response.data['text'], story_version.text)
+
     # -- PROJECT HELPER FUNCTIONS
     #
     #
@@ -404,9 +427,10 @@ class PipelineAPITest(APITestCase):
         return story_version
 
     def helper_create_single_story_version_dummy_wrapper(self, story, title):
+        self.helper_set_story_dummy_participants()
         return self.helper_create_single_story_version(story=story,
                                                        timestamp=datetime.datetime.now(),
-                                                       author=self.volunteer_user,
+                                                       author=self.dummy_version_author,
                                                        title=title,
                                                        text='im a dummy story version')
 
@@ -424,6 +448,7 @@ class PipelineAPITest(APITestCase):
         self.dummy_fact_checkers = [self.admin_user]
         self.dummy_translators = [self.admin_user]
         self.dummy_artists = [self.staff_user]
+        self.dummy_version_author = self.volunteer_user
 
     # -- HELPER FUNCTIONS
     #

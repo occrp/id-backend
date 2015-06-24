@@ -13,8 +13,9 @@ def dummy_view(request, id=0):
     return Response(json)
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
-def dummy_story_view(request, id=0):
+def dummy_story_view(request, id=0, story_id=0, story_version_id=0):
     json = {'id': 0,
+            'story': 0,
             'project_id': 0,
             'reporters': [],
             'researchers': [],
