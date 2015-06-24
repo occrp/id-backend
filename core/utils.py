@@ -31,7 +31,8 @@ def json_dumps(data):
         elif isinstance(o, Query):
             raise ValueError("Cannot JSON serialize a Query for security reasons.")
         elif isinstance(o, QuerySet):
-            raise ValueError("Cannot JSON serialize a QuerySet out of risk that it will recurse.")
+            # This might not be sufficient
+            return [x.id for x in o]
         elif hasattr(o, "to_json"):
             return o.to_json()
         elif hasattr(o, "__dict__"):
