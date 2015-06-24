@@ -481,6 +481,33 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(story_version, None)
 
+    def test_get_translation_of_most_recent_story_version(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('most recent version of a story with translation project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a version to delete', project)
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'not most recent')
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'most recent')
+        story_translation = self.helper_create_single_story_translation_dummy_wrapper(story_version, 'el', 'my greek version')
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        get_response = client.get(reverse('story_version_most_recent_with_translation', kwargs={'id': story.id, 'language_code': 'el'}))
+
+        self.assertEqual(get_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(get_response.data['id'], story_translation.id)
+        self.assertEqual(get_response.data['version'], story_version.id)
+        self.assertEqual(get_response.data['language_code'], story_translation.language_code)
+        self.assertEqual(get_response.data['translator'], story_translation.translator.id)
+        self.assertEqual(get_response.data['verified'], story_translation.verified)
+        self.assertEqual(get_response.data['live'], story_translation.live)
+        self.assertEqual(get_response.data['title'], story_translation.title)
+        self.assertEqual(get_response.data['text'], story_translation.text)
+
     # def test_add_file_to_story(self):
     #     self.helper_create_dummy_users()
     #     self.helper_cleanup_projects()
@@ -501,14 +528,6 @@ class PipelineAPITest(APITestCase):
     #
 
     # STORY TRANSLATION COLLECTION/MEMBER
-    # self.helper_create_dummy_users()
-        # self.helper_cleanup_projects()
-
-        # client = APIClient()
-        # client.force_authenticate(user=self.staff_user)
-        # delete_response = client.delete(reverse('story_delete', kwargs={'id': story.id}))
-
-        # self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
     def test_get_translation(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
