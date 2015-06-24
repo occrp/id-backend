@@ -1,5 +1,4 @@
 from podaci import PodaciView
-from podaci.filesystem import File, Tag
 from django.http import StreamingHttpResponse
 
 class Create(PodaciView):
@@ -9,7 +8,7 @@ class Create(PodaciView):
         tagname = self.request.POST.get("tag_name", None)
         if not tagname:
             return {"error": "Must supply tag name."}
-        tag = Tag()
+        tag = PodaciTag()
         tag.name = tagname
         tag.save()
         parent = self.request.POST.get("tag_parents", None)
@@ -82,24 +81,18 @@ class Zip(PodaciView):
         files = request.GET.getlist("files", [])
 
         if id:
-            self.tag = Tag.objects.get(tid)
-            archive = self.tag.get_zip()
-            archive_name = "%s.zip" % (self.tag.meta["name"])
+            tag = PodaciTag.objects.get(tid)
+            archive_name = "%s.zip" % (tag.name)
+            archive = tag.get_zip()
         elif files:
-            # FIXME: This is a duplicate of podaci.Tag.get_zip.
-            #        Should be farmed out to somewhere nice.
-            #        Probably some kind of ephemeral tag thing.
-            _50MB = 50 * 1024 * 1024
-            files = File.objects.filter(id__in=files)
-            totalsize = sum([x.size for x in files])
-            if totalsize > _50MB:
-                return False
-
-            archive = StringIO.StringIO()
-            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as zf:
-                for f in files:
-                    zf.write(f.resident_location(), f.filename)
-            archive.seek(0)
+            tag = PodaciTag()
+            tag.name = "Temporary"
+            tag.save()
+            files = PodaciFile.objects.filter(id__in=files)
+            for f in files:
+                files.tags.add(tag)
+            archive = tag.get_zip()
+            tag.delete()
         else:
             raise ValueError("Must supply tag ID or file list.")
 
@@ -122,10 +115,10 @@ class Overview(PodaciView):
         o = OverviewAPI("www.overviewproject.org", "ekykvx3qj0jr5fbrzdqtpcrp0")
 
         if id:
-            tag = Tag.objects.get(id)
+            tag = PodaciTag.objects.get(id)
             docsetid = o.new_docset_from_tag(tag)
         elif files:
-            files = File.objects.filter(id__in=files)
+            files = PodaciFile.objects.filter(id__in=files)
             title = "An unnamed selection of files"
             docsetid = o.new_docset_from_files(title, files)
         else:
