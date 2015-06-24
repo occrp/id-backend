@@ -3,17 +3,19 @@ from projects.views import dummy_view, dummy_story_view
 
 
 urlpatterns = patterns('',
-    url(r'^project/create/$',                        dummy_view, name='project_create'),
-    url(r'^project/list/$',                          dummy_view, name='project_list'),
-    url(r'^project/(?P<id>.+)/$',                    dummy_view, name='project_get'),
-    url(r'^project/(?P<id>.+)/alter/$',              dummy_view, name='project_alter'),
-    url(r'^project/(?P<id>.+)/delete/$',             dummy_view, name='project_delete'),
-    url(r'^project/(?P<id>.+)/add_users/$',          dummy_view, name='project_add_users'),
-    url(r'^project/(?P<id>.+)/remove_users/$',       dummy_view, name='project_remove_users'),
-    url(r'^project/(?P<id>.+)/list_users/$',         dummy_view, name='project_list_users'),
+    url(r'^project/create/$',                                           dummy_view, name='project_create'),
+    url(r'^project/list/$',                                             dummy_view, name='project_list'),
+    url(r'^project/(?P<id>.+)/$',                                       dummy_view, name='project_get'),
+    url(r'^project/(?P<id>.+)/alter/$',                                 dummy_view, name='project_alter'),
+    url(r'^project/(?P<id>.+)/delete/$',                                dummy_view, name='project_delete'),
+    url(r'^project/(?P<id>.+)/add_users/$',                             dummy_view, name='project_add_users'),
+    url(r'^project/(?P<id>.+)/remove_users/$',                          dummy_view, name='project_remove_users'),
+    url(r'^project/(?P<id>.+)/list_users/$',                            dummy_view, name='project_list_users'),
 
-    url(r'^story/create/$',                          dummy_story_view, name='story_create'),
-    url(r'^story/(?P<id>.+)/list/$',                          dummy_story_view, name='story_list'),
-    url(r'^story/(?P<id>.+)/details/$',                          dummy_story_view, name='story_details'),
-    url(r'^story/(?P<id>.+)/delete/$',               dummy_story_view, name='story_delete')
+    url(r'^story/create/$',                                             dummy_story_view, name='story_create'),
+    url(r'^story/(?P<id>.+)/list/$',                                    dummy_story_view, name='story_list'),
+    url(r'^story/(?P<id>.+)/details/$',                                 dummy_story_view, name='story_details'),
+    url(r'^story/(?P<id>.+)/delete/$',                                  dummy_story_view, name='story_delete'),
+
+    url(r'^story/version/(?P<id>.+)/$',                                 dummy_story_view, name='story_version_get'),
 )
