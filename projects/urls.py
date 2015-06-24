@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^story/(?P<id>.+)/details/$',                                 dummy_story_view, name='story_details'),
     url(r'^story/(?P<id>.+)/delete/$',                                  dummy_story_view, name='story_delete'),
 
+    url(r'^story/(?P<id>\d+)/version/create/$',                          dummy_story_view, name='story_version_create'),
     url(r'^story/version/(?P<id>\d+)/$',                                 dummy_story_view, name='story_version_get'),
     url(r'^story/version/(?P<id>\d+)/delete/$',                          dummy_story_view, name='story_version_delete'),
 
