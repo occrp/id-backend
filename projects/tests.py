@@ -269,6 +269,9 @@ class PipelineAPITest(APITestCase):
 
         # client = APIClient()
         # client.force_authenticate(user=self.staff_user)
+        # delete_response = client.delete(reverse('story_delete', kwargs={'id': story.id}))
+
+        # self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
 
     def test_get_story_details(self):
         self.helper_create_dummy_users()
@@ -279,9 +282,36 @@ class PipelineAPITest(APITestCase):
                                                     self.staff_user,
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story with details to get', project)
+        self.helper_create_single_story_version_dummy_wrapper(story, 'version 1')
+        self.helper_create_single_story_version_dummy_wrapper(story, 'version 2')
+        self.helper_create_single_story_version_dummy_wrapper(story, 'version 3')
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
+        details_response = client.get(reverse('story_details', kwargs={'id': story.id}))
+
+        self.assertEqual(details_response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(details_response.data['versions'], list)
+        self.assertEqual(len(details_response.data['versions']), 3)
+        # assertion below is to check that the most recent version is the first in the list returned
+        self.assertEqual(details_response.data['versions'][0]['title'], 'version 3')
+        self.assertEqual(story.title, 'story with details to get')
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.reporters.all(),
+                                                             details_response.data['reporters']), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.researchers.all(),
+                                                             details_response.data['researchers']), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.editors.all(),
+                                                             details_response.data['editors']), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.copy_editors.all(),
+                                                             details_response.data['copy_editors']), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.fact_checkers.all(),
+                                                             details_response.data['fact_checkers']), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.researchers.all(),
+                                                             details_response.data['translators']), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.researchers.all(),
+                                                             details_response.data['artists']), True)
+        self.assertEqual(details_response.data['published'], story.published)
+        self.assertEqual(details_response.data['podaci_root'], story.podaci_root)
 
     def test_delete_story(self):
         self.helper_create_dummy_users()
@@ -373,10 +403,10 @@ class PipelineAPITest(APITestCase):
 
         return story_version
 
-    def helper_create_single_story_version_dummy_wrapper(self, title, story):
+    def helper_create_single_story_version_dummy_wrapper(self, story, title):
         return self.helper_create_single_story_version(story=story,
                                                        timestamp=datetime.datetime.now(),
-                                                       authored=self.volunteer_user,
+                                                       author=self.volunteer_user,
                                                        title=title,
                                                        text='im a dummy story version')
 
@@ -404,6 +434,21 @@ class PipelineAPITest(APITestCase):
         self.admin_user = get_user_model().objects.get(email=self.admin_email)
         self.volunteer_user = get_user_model().objects.get(email=self.volunteer_email)
         self.user_user = get_user_model().objects.get(email=self.user_email)
+
+    def helper_all_users_in_list_by_id(self, ids, users):
+        num_users = len(users)
+        num_users_found = 0
+
+        for user in users:
+            for i in ids:
+                if user.id == i:
+                    num_users_found += 1
+                    break
+
+        if num_users == num_users_found:
+            return True
+
+        return False
 
     #
     #

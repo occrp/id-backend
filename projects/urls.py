@@ -14,5 +14,6 @@ urlpatterns = patterns('',
 
     url(r'^story/create/$',                          dummy_story_view, name='story_create'),
     url(r'^story/(?P<id>.+)/list/$',                          dummy_story_view, name='story_list'),
+    url(r'^story/(?P<id>.+)/details/$',                          dummy_story_view, name='story_details'),
     url(r'^story/(?P<id>.+)/delete/$',               dummy_story_view, name='story_delete')
 )
