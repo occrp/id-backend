@@ -10,11 +10,10 @@ class Create(PodaciView):
 
     def get_context_data(self):
         f = PodaciFile()
-        f.user = self.request.user
         uploadedfile = self.request.FILES.get("files[]", "")
         if uploadedfile == "":
             return None
-        f.create_from_filehandle(uploadedfile)
+        f.create_from_filehandle(uploadedfile, user=self.request.user)
         tag = self.request.POST.get("tag", None)
         try:
             tag = PodaciTag.objects.get(id=tag)

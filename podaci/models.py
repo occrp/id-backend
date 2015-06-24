@@ -137,7 +137,7 @@ class PodaciMetadata(models.Model):
         if not user: return
         if user not in self.allowed_users_read.all():
             self.allowed_users_read.add(user.id)
-        if write and user not in self.allowed_write_users.all():
+        if write and user not in self.allowed_users_write.all():
             self.allowed_users_write.add(user.id)
         self.log("Added user '%s' [%d] (write=%s)" 
                  % (user.email, user.id, write), user)
@@ -339,7 +339,7 @@ class PodaciFile(PodaciMetadata):
             pass
         return os.path.join(directory, self.filename)
 
-    def create_from_filehandle(self, fh, filename=None):
+    def create_from_filehandle(self, fh, filename=None, user=None):
         """Given a file handle, create a file."""
         if not filename:
             filename = fh.name
@@ -356,10 +356,12 @@ class PodaciFile(PodaciMetadata):
 
         self.size = os.stat(self.resident_location()).st_size
         self.save()
+        if user:
+            self.add_user(user, write=True)
 
         return self.id, self, True
 
-    def create_from_path(self, filename, filename_override=None):
+    def create_from_path(self, filename, filename_override=None, user=None):
         """Given a file path, create a file."""
         if not os.path.isfile(filename): raise ValueError("File does not exist")
         self.filename = os.path.split(filename)[-1]
@@ -372,14 +374,20 @@ class PodaciFile(PodaciMetadata):
         self.size = os.stat(self.resident_location()).st_size
         self.save()
 
+        if user:
+            self.add_user(user, write=True)
+
         return self.id, self, True
 
-    def create_from_url(self, url, make_resident=False):
+    def create_from_url(self, url, make_resident=False, user=None):
         """Given a URL, create a file. Optionally, make the file resident."""
         self.url = url
         self.is_resident = False
 
         self.save()
+
+        if user:
+            self.add_user(user, write=True)
 
         if make_resident:
             self._make_resident()
