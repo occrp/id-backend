@@ -383,6 +383,43 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(story_version, None)
 
+    def test_alter_story(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('altering a story version',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story to be altered', project)
+
+        data = {'title': 'my altered title',
+                'reporters': [self.admin_user.id],
+                'researchers': [self.admin_user.id],
+                'editors': [self.admin_user.id],
+                'copy_editors': [self.admin_user.id],
+                'fact_checkers': [self.admin_user.id],
+                'translators': [self.admin_user.id],
+                'artists': [self.admin_user.id],
+                'published': ''
+                }
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        alter_response = client.put(reverse('story_alter', kwargs={'id': story.id}), data, format='json')
+
+        self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
+
+        story = Story.objects.get(id=story.id)
+
+        self.assertEqual(story.title, 'my altered title')
+        self.assertEqual(story.reporters.all(), [self.admin_user])
+        self.assertEqual(story.researchers.all(), [self.admin_user])
+        self.assertEqual(story.editors.all(), [self.admin_user])
+        self.assertEqual(story.copy_editors.all(), [self.admin_user])
+        self.assertEqual(story.fact_checkers.all(), [self.admin_user])
+        self.assertEqual(story.translators.all(), [self.admin_user])
+        self.assertEqual(story.artists.all(), [self.admin_user])
+
     # -- PROJECT HELPER FUNCTIONS
     #
     #
@@ -484,9 +521,12 @@ class PipelineAPITest(APITestCase):
         self.volunteer_user = get_user_model().objects.get(email=self.volunteer_email)
         self.user_user = get_user_model().objects.get(email=self.user_email)
 
-    def helper_all_users_in_list_by_id(self, ids, users):
+    def helper_all_users_in_list_by_id(self, users, ids):
         num_users = len(users)
         num_users_found = 0
+
+        if len(ids) != len(users):
+            return False
 
         for user in users:
             for i in ids:
@@ -548,9 +588,6 @@ class PipelineAPITest(APITestCase):
         pass
 
     def test_write_story(self):
-        pass
-
-    def test_alter_story(self):
         pass
 
     def test_add_art(self):
