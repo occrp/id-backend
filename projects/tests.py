@@ -359,6 +359,38 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(get_response.data['title'], 'version to get')
         self.assertEqual(get_response.data['text'], story_version.text)
 
+    def test_create_story_version(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('adding a story version project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a version to be added', project)
+
+        data = {'story': story.id,
+                'authored': self.staff_user,
+                'title': 'my added version',
+                'text': 'my added version text'
+                }
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        create_response = client.delete(reverse('story_version_create', kwargs={'id': story.id}))
+
+        self.assertEqual(create_response.status_code, status.HTTP_200_OK)
+
+        try:
+            story_version = StoryVersion.objects.get(id=create_response.data['id'])
+        except:
+            story_version = None
+
+        self.assertEqual(story_version, StoryVersion)
+        self.assertEqual(story_version.story.id, data['story'])
+        self.assertEqual(story_version.authored.id, data['authored'])
+        self.assertEqual(story_version.title, data['title'])
+        self.assertEqual(story_version.text, data['text'])
+
     def test_delete_story_version(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
