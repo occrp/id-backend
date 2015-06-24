@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from projects.views import dummy_view, dummy_story_view
+from projects.views import dummy_view, dummy_story_view, dummy_translation_view
 
 
 urlpatterns = patterns('',
@@ -18,6 +18,9 @@ urlpatterns = patterns('',
     url(r'^story/(?P<id>.+)/details/$',                                 dummy_story_view, name='story_details'),
     url(r'^story/(?P<id>.+)/delete/$',                                  dummy_story_view, name='story_delete'),
 
-    url(r'^story/version/(?P<id>.+)/$',                                 dummy_story_view, name='story_version_get'),
-    url(r'^story/version/(?P<id>.+)/delete/$',                          dummy_story_view, name='story_version_delete'),
+    url(r'^story/version/(?P<id>\d+)/$',                                 dummy_story_view, name='story_version_get'),
+    url(r'^story/version/(?P<id>\d+)/delete/$',                          dummy_story_view, name='story_version_delete'),
+
+    url(r'^story/version/(?P<id>\d+)/translation/(?P<language_code>\w+)/$', dummy_translation_view, name='version_translation_get'),
+
 )

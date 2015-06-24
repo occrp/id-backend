@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from settings.settings import AUTH_USER_MODEL
 
@@ -58,14 +60,15 @@ class StoryVersion(models.Model):
     text = models.TextField()
 
 
-# class StoryTranslation(models.Model):
-#     version = models.ForeignKey(StoryVersion)
-#     timestamp = models.DateTimeField(auto_now_add=True)
-#     translator = models.ForeignKey(AUTH_USER_MODEL)
-#     verified = models.BooleanField(default=False)
-#     live = models.DateTimeField(default=False)
-#     title = models.CharField(max_length=250)
-#     text = models.TextField()
+class StoryTranslation(models.Model):
+    version = models.ForeignKey(StoryVersion)
+    language_code = models.CharField(max_length=2)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    translator = models.ForeignKey(AUTH_USER_MODEL)
+    verified = models.BooleanField(default=False)
+    live = models.BooleanField(default=False)
+    title = models.CharField(max_length=250)
+    text = models.TextField()
 
 
 class StoryStatus(models.Model):
