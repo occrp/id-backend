@@ -359,6 +359,30 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(get_response.data['title'], 'version to get')
         self.assertEqual(get_response.data['text'], story_version.text)
 
+    def test_delete_story_version(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('deleting a story version',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a version to delete', project)
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to delete')
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        delete_response = client.delete(reverse('story_version_delete', kwargs={'id': story.id}))
+
+        self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
+
+        try:
+            story_version = StoryVersion.objects.get(id=story_version.id)
+        except StoryVersion.DoesNotExist:
+            story_version = None
+
+        self.assertEqual(story_version, None)
+
     # -- PROJECT HELPER FUNCTIONS
     #
     #
