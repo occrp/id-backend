@@ -24,6 +24,7 @@ def dummy_story_view(request, id=0):
             'translators': [],
             'artists': [],
             'published': '',
-            'podaci_root': ''
+            'podaci_root': '',
+            'versions': []
             }
     return Response(json)
