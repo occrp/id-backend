@@ -13,7 +13,7 @@ from core.testclient import TestClient
 from core.testclient import APITestClient
 from settings.settings import *
 
-from projects.models import Project, Story
+from projects.models import Project, Story, StoryVersion
 
 
 class PipelineAPITest(APITestCase):
@@ -28,6 +28,14 @@ class PipelineAPITest(APITestCase):
     admin_user = None
     volunteer_user = None
     user_user = None
+
+    dummy_reporters = None
+    dummy_researchers = None
+    dummy_editors = None
+    dummy_copy_editors = None
+    dummy_fact_checkers = None
+    dummy_translators = None
+    dummy_artists = None
 
     # -- PROJECT TESTS
     #
@@ -189,33 +197,6 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(list_response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(list_response.data['users']), 4)
 
-    # -- PROJECT HELPER FUNCTIONS
-    #
-    #
-    def helper_create_single_project(self, project_title, creating_user, coordinator, users):
-        project = Project(title=project_title,
-                          coordinator=creating_user)
-        project.save()
-        project.users.add(*users)
-        project.save()
-
-        return project
-
-    def helper_create_single_project_with_api(self, project_title, creating_user, coordinator, users):
-        url = reverse('project_create')
-        client = APIClient()
-        client.force_authenticate(user=creating_user)
-
-        data = {'title': project_title,
-                'coordinator': coordinator,
-                'users': users}
-
-        return client.post(url, data, format='json')
-
-    def helper_cleanup_projects(self):
-        self.helper_cleanup_stories()
-        Project.objects.all().delete()
-
     # -- PROJECT STORY TESTS
     #
     #
@@ -282,7 +263,26 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(len(list_response.data), 3)
         self.assertGreater(list_response.data[0]['id'], 0)
 
-    # STORY COLLECTION
+    # STORY MEMBER
+        # self.helper_create_dummy_users()
+        # self.helper_cleanup_projects()
+
+        # client = APIClient()
+        # client.force_authenticate(user=self.staff_user)
+
+    def test_get_story_details(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('getting a story project with details',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with details to get', project)
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+
     def test_delete_story(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
@@ -306,6 +306,34 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(story, None)
 
+    # -- PROJECT HELPER FUNCTIONS
+    #
+    #
+    def helper_create_single_project(self, project_title, creating_user, coordinator, users):
+        project = Project(title=project_title,
+                          coordinator=creating_user)
+        project.save()
+        project.users.add(*users)
+        project.save()
+
+        return project
+
+    def helper_create_single_project_with_api(self, project_title, creating_user, coordinator, users):
+        url = reverse('project_create')
+        client = APIClient()
+        client.force_authenticate(user=creating_user)
+
+        data = {'title': project_title,
+                'coordinator': coordinator,
+                'users': users}
+
+        return client.post(url, data, format='json')
+
+    def helper_cleanup_projects(self):
+        self.helper_clean_story_versions()
+        self.helper_cleanup_stories()
+        Project.objects.all().delete()
+
     # -- STORY HELPER FUNCTIONS
     #
     #
@@ -324,18 +352,48 @@ class PipelineAPITest(APITestCase):
         return story
 
     def helper_create_single_story_dummy_wrapper(self, title, project):
+        self.helper_set_story_dummy_participants()
         return self.helper_create_single_story(title=title,
                                                project=project,
-                                               reporters=[self.user_user],
-                                               researchers=[self.user_user],
-                                               editors=[self.volunteer_user],
-                                               copy_editors=[self.volunteer_user],
-                                               fact_checkers=[self.admin_user],
-                                               translators=[self.admin_user],
-                                               artists=[self.staff_user])
+                                               reporters=self.dummy_reporters,
+                                               researchers=self.dummy_researchers,
+                                               editors=self.dummy_editors,
+                                               copy_editors=self.dummy_copy_editors,
+                                               fact_checkers=self.dummy_fact_checkers,
+                                               translators=self.dummy_fact_checkers,
+                                               artists=self.dummy_artists)
+
+    def helper_create_single_story_version(self, story, timestamp, author, title, text):
+        story_version = StoryVersion(story=story,
+                                     timestamp=timestamp,
+                                     authored=author,
+                                     title=title,
+                                     text=text)
+        story_version.save()
+
+        return story_version
+
+    def helper_create_single_story_version_dummy_wrapper(self, title, story):
+        return self.helper_create_single_story_version(story=story,
+                                                       timestamp=datetime.datetime.now(),
+                                                       authored=self.volunteer_user,
+                                                       title=title,
+                                                       text='im a dummy story version')
 
     def helper_cleanup_stories(self):
         Story.objects.all().delete()
+
+    def helper_clean_story_versions(self):
+        StoryVersion.objects.all().delete()
+
+    def helper_set_story_dummy_participants(self):
+        self.dummy_reporters = [self.user_user]
+        self.dummy_researchers = [self.user_user]
+        self.dummy_editors = [self.volunteer_user]
+        self.dummy_copy_editors = [self.volunteer_user]
+        self.dummy_fact_checkers = [self.admin_user]
+        self.dummy_translators = [self.admin_user]
+        self.dummy_artists = [self.staff_user]
 
     # -- HELPER FUNCTIONS
     #
