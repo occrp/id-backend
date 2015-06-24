@@ -50,11 +50,12 @@ class Story(models.Model):
         return self.storystatus_set.all()
 
 
-# class StoryVersion(models.Model):
-#     timestamp = models.DateTimeField(auto_now_add=True)
-#     authored = models.ForeignKey(AUTH_USER_MODEL)
-#     title = models.CharField(max_length=250)
-#     text = models.TextField()
+class StoryVersion(models.Model):
+    story = models.ForeignKey(Story, related_name="versions")
+    timestamp = models.DateTimeField(auto_now_add=True)
+    authored = models.ForeignKey(AUTH_USER_MODEL)
+    title = models.CharField(max_length=250)
+    text = models.TextField()
 
 
 # class StoryTranslation(models.Model):
