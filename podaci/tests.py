@@ -236,7 +236,7 @@ class PodaciWebInterfaceTest(UserTestCase):
         self.assertEqual(data["public_read"], False)
         self.assertEqual(data["mimetype"], "text/plain")
         # Clean up after ourselves...
-        f = File.objects.get(id=data["id"])
+        f = PodaciFile.objects.get(id=data["id"])
         f.delete()
 
     #def test_podaci_files_create_fail(self):
@@ -277,7 +277,7 @@ class PodaciWebInterfaceTest(UserTestCase):
         self.assertIn("tags", data)
         self.assertIn("notes", data)
         self.assertIn("users", data)
-        f.delete(True)
+        f.delete()
 
     def test_podaci_tags_create(self):
         pass # res = self.req_as_staff('podaci_tags_create')

@@ -6,7 +6,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from core.mixins import DisplayMixin
-from podaci.filesystem import Tag
+from podaci.models import PodaciTag
 
 from constants import *
 from utils import *
@@ -42,7 +42,8 @@ class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
     deadline = models.DateField(null=True, blank=True, verbose_name=_('Deadline'))
     sensitive = models.BooleanField(default=False, verbose_name=_('Sensitive?'))
 
-    tag_id = models.CharField(max_length=60, blank=True)    # Refers to this Ticket's Podaci tag.
+    tag = models.ForeignKey(PodaciTag, blank=True, null=True)
+    # tag_id = models.CharField(max_length=60, blank=True)    # Refers to this Ticket's Podaci tag.
 
     def most_fields(self):
         '''Return an iterator of tuples (verbose name, display value)
@@ -175,16 +176,15 @@ class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
 
         ndb.put_multi(charges)
 
-    def get_tag(self, fs):
-        if self.tag_id:
-            tag = Tag(fs)
-            tag.load(self.tag_id)
-            return tag
+    def get_tag(self):
+        if self.tag:
+            return self.tag
         else:
             tag_name = "Ticket %d" % self.id
-            tag = Tag(fs)
-            tag.create(tag_name)
-            self.tag_id = tag.id
+            tag = PodaciTag()
+            tag.name = tag_name
+            tag.save()
+            self.tag = tag
             self.save()
             return tag
 

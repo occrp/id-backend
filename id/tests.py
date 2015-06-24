@@ -32,22 +32,3 @@ class DatabaseLookup(TestCase):
 		"""Select a country from the country list"""
 		pass
 
-
-class ExpertTickets(TestCase):
-	def setUp(self):
-		pass
-
-	def test_create_person_ticket(self):
-		pass
-
-	def test_create_business_ticket(self):
-		pass
-
-	def test_create_other_ticket(self):
-		pass
-
-	def test_mark_ticket_done(self):
-		pass
-
-
-
