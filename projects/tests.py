@@ -337,84 +337,6 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(story, None)
 
-    def test_get_story_version(self):
-        self.helper_create_dummy_users()
-        self.helper_cleanup_projects()
-
-        project = self.helper_create_single_project('getting a story version',
-                                                    self.staff_user,
-                                                    self.staff_user,
-                                                    [self.staff_user])
-        story = self.helper_create_single_story_dummy_wrapper('story with a version to get', project)
-        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to get')
-
-        client = APIClient()
-        client.force_authenticate(user=self.staff_user)
-        get_response = client.get(reverse('story_version_get', kwargs={'id': story_version.id}))
-
-        self.assertEqual(get_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(get_response.data['id'], story_version.id)
-        self.assertEqual(get_response.data['story'], story.id)
-        self.assertEqual(get_response.data['authored'], story_version.authored.id)
-        self.assertEqual(get_response.data['title'], 'version to get')
-        self.assertEqual(get_response.data['text'], story_version.text)
-
-    def test_create_story_version(self):
-        self.helper_create_dummy_users()
-        self.helper_cleanup_projects()
-
-        project = self.helper_create_single_project('adding a story version project',
-                                                    self.staff_user,
-                                                    self.staff_user,
-                                                    [self.staff_user])
-        story = self.helper_create_single_story_dummy_wrapper('story with a version to be added', project)
-
-        data = {'story': story.id,
-                'authored': self.staff_user,
-                'title': 'my added version',
-                'text': 'my added version text'
-                }
-        client = APIClient()
-        client.force_authenticate(user=self.staff_user)
-        create_response = client.delete(reverse('story_version_create', kwargs={'id': story.id}))
-
-        self.assertEqual(create_response.status_code, status.HTTP_200_OK)
-
-        try:
-            story_version = StoryVersion.objects.get(id=create_response.data['id'])
-        except:
-            story_version = None
-
-        self.assertEqual(story_version, StoryVersion)
-        self.assertEqual(story_version.story.id, data['story'])
-        self.assertEqual(story_version.authored.id, data['authored'])
-        self.assertEqual(story_version.title, data['title'])
-        self.assertEqual(story_version.text, data['text'])
-
-    def test_delete_story_version(self):
-        self.helper_create_dummy_users()
-        self.helper_cleanup_projects()
-
-        project = self.helper_create_single_project('deleting a story version',
-                                                    self.staff_user,
-                                                    self.staff_user,
-                                                    [self.staff_user])
-        story = self.helper_create_single_story_dummy_wrapper('story with a version to delete', project)
-        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to delete')
-
-        client = APIClient()
-        client.force_authenticate(user=self.staff_user)
-        delete_response = client.delete(reverse('story_version_delete', kwargs={'id': story.id}))
-
-        self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
-
-        try:
-            story_version = StoryVersion.objects.get(id=story_version.id)
-        except StoryVersion.DoesNotExist:
-            story_version = None
-
-        self.assertEqual(story_version, None)
-
     def test_alter_story(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
@@ -451,6 +373,113 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(story.fact_checkers.all(), [self.admin_user])
         self.assertEqual(story.translators.all(), [self.admin_user])
         self.assertEqual(story.artists.all(), [self.admin_user])
+
+    def test_get_story_version(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('getting a story version',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a version to get', project)
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to get')
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        get_response = client.get(reverse('story_version_get', kwargs={'id': story_version.id}))
+
+        self.assertEqual(get_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(get_response.data['id'], story_version.id)
+        self.assertEqual(get_response.data['story'], story.id)
+        self.assertEqual(get_response.data['authored'], story_version.authored.id)
+        self.assertEqual(get_response.data['title'], 'version to get')
+        self.assertEqual(get_response.data['text'], story_version.text)
+
+    def test_create_story_version(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('adding a story version project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a version to be added', project)
+
+        data = {'story': story.id,
+                'authored': self.staff_user.id,
+                'title': 'my added version',
+                'text': 'my added version text'
+                }
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        create_response = client.post(reverse('story_version_create', kwargs={'id': story.id}), data, format='json')
+
+        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
+
+        try:
+            story_version = StoryVersion.objects.get(id=create_response.data['id'])
+        except:
+            story_version = None
+
+        self.assertEqual(story_version, StoryVersion)
+        self.assertEqual(story_version.story.id, data['story'])
+        self.assertEqual(story_version.authored.id, data['authored'])
+        self.assertEqual(story_version.title, data['title'])
+        self.assertEqual(story_version.text, data['text'])
+
+    def test_alter_story_version(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('altering a story version project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a version to be altered', project)
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to be altered')
+
+        data = {'story': story.id,
+                'authored': self.volunteer_user.id,
+                'title': 'my altered title',
+                'text': 'my altered text'
+                }
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        alter_response = client.put(reverse('story_version_alter', kwargs={'id': story_version.id}), data, format='json')
+
+        self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
+
+        story_version = StoryVersion.objects.get(id=story_version.id)
+
+        self.assertEqual(story_version.story.id, story.id)
+        self.assertEqual(story_version.authored.id, data['authored'])
+        self.assertEqual(story_version.title, data['title'])
+        self.assertEqual(story_version.text, data['text'])
+
+    def test_delete_story_version(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('deleting a story version',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a version to delete', project)
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to delete')
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        delete_response = client.delete(reverse('story_version_delete', kwargs={'id': story.id}))
+
+        self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
+
+        try:
+            story_version = StoryVersion.objects.get(id=story_version.id)
+        except StoryVersion.DoesNotExist:
+            story_version = None
+
+        self.assertEqual(story_version, None)
 
     # def test_add_file_to_story(self):
     #     self.helper_create_dummy_users()
