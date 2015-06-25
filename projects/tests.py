@@ -571,11 +571,11 @@ class PipelineAPITest(APITestCase):
         client.force_authenticate(user=self.staff_user)
         create_response = client.post(reverse('version_translation_create', kwargs={'id': story.id}), data, format='json')
 
-        self.assertEqual(create_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
 
         try:
             translation = StoryTranslation.object.get(id=create_response.data['id'])
-        except:
+        except StoryTranslation.DoesNotExist:
             translation = None
 
         self.assertIsInstance(translation, StoryTranslation)
@@ -584,6 +584,43 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(translation.verified, data['verified'])
         self.assertEqual(translation.title, data['title'])
         self.assertEqual(translation.text, data['text'])
+
+    def test_alter_translation(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('altering a story translation project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation to be altered', project)
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version with a translation to be altered')
+        story_translation = self.helper_create_single_story_translation_dummy_wrapper(story_version, 'el', 'my greek version')
+
+        data = {'language_code': 'ru',
+                'translator': self.staff_user.id,
+                'verified': 0,
+                'live': 0,
+                'title': 'my great russian title',
+                'text': 'my great russian text'}
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        alter_response = client.put(reverse('version_translation_alter', kwargs={'id': story_translation.id}), data, format='json')
+
+        self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
+
+        try:
+            modified_translation = StoryTranslation.objects.get(id=alter_response.data['id'])
+        except StoryTranslation.DoesNotExist:
+            modified_translation = None
+
+        self.assertIsInstance(modified_translation, StoryTranslation)
+        self.assertEqual(modified_translation.id, story_translation.id)
+        self.assertEqual(modified_translation.language_code, data['language_code'])
+        self.assertEqual(modified_translation.translator.id, data['translator'])
+        self.assertEqual(modified_translation.verified, data['verified'])
+        self.assertEqual(modified_translation.title, data['title'])
+        self.assertEqual(modified_translation.text, data['text'])
 
     # -- PROJECT HELPER FUNCTIONS
     #
