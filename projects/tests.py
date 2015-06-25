@@ -84,7 +84,7 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(list_response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(list_response.data, list)
         self.assertEqual(len(list_response.data), 3)
-        self.assertGreater(list_response.data[0]['id'], 0)
+        self.assertGreater(list_response.data[0]['id'], 1)
 
     # PROJECT MEMBER
     def test_get_project(self):
@@ -691,6 +691,33 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(self.helper_all_users_in_list_by_id(project_plan.related_stories, data['responsible_users']), True)
         self.assertEqual(project_plan.order, data['order'])
 
+    def test_list_project_plans(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('listing project plans project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story for a project plan list', project)
+        project_plan = self.helper_create_single_project_plan_dummer_wrapper(project=project,
+                                                                             title='my project plan 1',
+                                                                             related_stories=[story],
+                                                                             order=1)
+        project_plan = self.helper_create_single_project_plan_dummer_wrapper(project=project,
+                                                                             title='my project plan 2',
+                                                                             related_stories=[story],
+                                                                             order=2)
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        list_response = client.get(reverse('project_plan_list', kwargs={'id': story.id}))
+
+        self.assertEqual(list_response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(list_response.data, list)
+        self.assertEqual(len(list_response.data), 2)
+        self.assertEqual(list_response.data[0]['id'], 1)
+
     # -- PROJECT HELPER FUNCTIONS
     #
     #
@@ -740,14 +767,14 @@ class PipelineAPITest(APITestCase):
 
     def helper_create_single_project_plan_dummer_wrapper(self, project, title, related_stories, order):
         self.helper_set_story_dummy_participants()
-        return self.helper_create_single_project(project=project,
-                                                 start_date=datetime.datetme.now(),
-                                                 end_date=datetime.datetime.now() + datetime.datetime.timedelta(7),
-                                                 title=title,
-                                                 description='dummy project plan description',
-                                                 responsible_users=self.dummy_project_plan_users,
-                                                 related_stories=related_stories,
-                                                 order=order)
+        return self.helper_create_single_project_plan(project=project,
+                                                      start_date=datetime.datetime.now(),
+                                                      end_date=datetime.datetime.now() + datetime.timedelta(7),
+                                                      title=title,
+                                                      description='dummy project plan description',
+                                                      responsible_users=self.dummy_project_plan_users,
+                                                      related_stories=related_stories,
+                                                      order=order)
 
     def helper_cleanup_project_plans(self):
         ProjectPlan.objects.all().delete()
