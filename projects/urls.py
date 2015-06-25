@@ -28,5 +28,6 @@ urlpatterns = patterns('',
 
     url(r'^story/version/(?P<id>\d+)/translation/(?P<language_code>\w+)/$', dummy_translation_view, name='version_translation_get'),
     url(r'^story/version/(?P<id>\d+)/translation/create/$',             dummy_translation_view, name='version_translation_create'),
+    url(r'^story/version/translation/(?P<id>\d+)/alter/$',             dummy_translation_view, name='version_translation_alter'),
 
 )
