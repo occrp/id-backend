@@ -43,3 +43,17 @@ def dummy_translation_view(request, id=0, story_id=0, story_version_id=0, langua
             'text': ''
             }
     return Response(json)
+
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+def dummy_plan_view(request, id=0):
+    json = {'id': 0,
+            'project': 0,
+            'start_date': 0,
+            'end_date': 0,
+            'title': '',
+            'description': '',
+            'responsible_users': [],
+            'related_stories': [],
+            'order': -1
+            }
+    return Response(json)
