@@ -17,7 +17,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 
 import django
 from settings.settings import *
-from podaci.filesystem import *
+from podaci.models import PodaciTag, PodaciFile
 #from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.contrib.auth import authenticate
@@ -60,10 +60,6 @@ class PodaciShell(cmd.Cmd):
             print("The email or password were incorrect.")
             sys.exit()
 
-        self.fs = FileSystem(
-            PODACI_SERVERS, PODACI_ES_INDEX, 
-            PODACI_FS_ROOT, user)
-
     def do_tags(self, line):
         params = line.split(" ")
         count, tags = self.fs.list_tags()
@@ -84,8 +80,8 @@ class PodaciShell(cmd.Cmd):
         if details:
             params.remove("-l")
 
-        tag = params[0]
-        count, files = self.fs.list_files(tag)
+        tag = PodaciTag.objects.get(id=params[0])
+        files = tag.list_files()
         if details:
             print "%-30s %-20s %-12s %s" % ("Name", "ID", "Added", "Pub User Writ Note Files")
             for f in files:

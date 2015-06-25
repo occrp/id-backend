@@ -39,12 +39,15 @@ class List(PodaciView):
 class Details(PodaciView):
     template_name = "podaci/tags/details.jinja"
 
-    def get_context_data(self, id):
+    def get_context_data(self, id=None):
         while self.breadcrumb_exists(id):
             self.breadcrumb_pop()
         self.breadcrumb_push(id)
 
-        tag = PodaciTag(self.fs, id)
+        print "Details: Tag ID %d." % (id)
+        tag = None
+        if id:
+            tag = PodaciTag.objects.get(id)
         tags = PodaciTag.objects.filter(allowed_users_read__contains=self.request.user, parents__contains=tag)
         files = PodaciFile.objects.filter(allowed_users_read__contains=self.request.user, tags__contains=tag)
         return {
