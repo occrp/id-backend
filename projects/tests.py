@@ -718,6 +718,101 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(len(list_response.data), 2)
         self.assertEqual(list_response.data[0]['id'], 1)
 
+    #PROJECT PLAN MEMBERS
+    def helper_get_project_plan(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('getting a project plan project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story for a project plan get', project)
+        project_plan = self.helper_create_single_project_plan_dummer_wrapper(project=project,
+                                                                             title='my project plan',
+                                                                             related_stories=[story],
+                                                                             order=1)
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        get_response = client.get(reverse('project_plan_get', kwargs={'id': project_plan.id}))
+
+        self.assertEqual(get_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(project_plan.id, get_response.data['id'])
+        self.assertEqual(project_plan.start_date, get_response.data['start_date'])
+        self.assertEqual(project_plan.end_date, get_response.data['end_date'])
+        self.assertEqual(project_plan.title, get_response.data['title'])
+        self.assertEqual(project_plan.description, get_response.data['description'])
+        self.assertEqual(self.helper_all_users_in_list_by_id(project_plan.responsible_users, data['responsible_users']), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(project_plan.related_stories, data['related_stories']), True)
+        self.assertEqual(project_plan.order, get_response.data['order'])
+
+    def helper_alter_project_plan(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('altering a project plan project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story for a project plan alter', project)
+        project_plan = self.helper_create_single_project_plan_dummer_wrapper(project=project,
+                                                                             title='my project plan',
+                                                                             related_stories=[story],
+                                                                             order=1)
+        story_1 = self.helper_create_single_story_dummy_wrapper('story for a project plan 1', project)
+
+        data = {'start_date': datetime.datetime.now() + datetime.timedelta(10),
+                'end_date': datetime.datetime.now() + datetime.timedelta(10),
+                'title': 'my altered title',
+                'description': 'my altered description',
+                'responsible_users': [self.volunteer_user.id, self.user_user.id],
+                'related_stories': [story_1.id],
+                'order': 5}
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        alter_response = client.put(reverse('project_plan_alter', kwargs={'id': project_plan.id}))
+
+        self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
+
+        project_plan = ProjectPlan.objects.get(id=project_plan.id)
+
+        self.assertIsInstance(project_plan, ProjectPlan)
+        self.assertEqual(project_plan.start_date, data['start_date'])
+        self.assertEqual(project_plan.end_date, data['end_date'])
+        self.assertEqual(project_plan.title, data['title'])
+        self.assertEqual(project_plan.description, data['description'])
+        self.assertEqual(self.helper_all_users_in_list_by_id(project_plan.responsible_users, data['responsible_users']), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(project_plan.related_stories, data['responsible_users']), True)
+        self.assertEqual(project_plan.order, data['order'])
+
+    def helper_delete_project_plan(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('deleting a project plan project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story for a project plan delete', project)
+        project_plan = self.helper_create_single_project_plan_dummer_wrapper(project=project,
+                                                                             title='my project plan',
+                                                                             related_stories=[story],
+                                                                             order=1)
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        delete_response = client.delete(reverse('project_plan_delete', kwargs={'id': story.id}))
+
+        self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
+
+        try:
+            project_plan = ProjectPlan.objects.get(id=project_plan.id)
+        except ProjectPlan.DoesNotExist:
+            project_plan = None
+
+        self.assertEqual(project_plan, None)
+
     # -- PROJECT HELPER FUNCTIONS
     #
     #
