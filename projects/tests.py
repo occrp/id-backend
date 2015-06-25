@@ -13,7 +13,7 @@ from core.testclient import TestClient
 from core.testclient import APITestClient
 from settings.settings import *
 
-from projects.models import Project, Story, StoryVersion, StoryTranslation
+from projects.models import Project, Story, StoryVersion, StoryTranslation, ProjectPlan
 
 
 class PipelineAPITest(APITestCase):
@@ -37,6 +37,7 @@ class PipelineAPITest(APITestCase):
     dummy_translators = None
     dummy_artists = None
     dummy_version_author = None
+    dummy_project_plan_users = None
 
     # -- PROJECT TESTS
     #
@@ -647,6 +648,49 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(story_translation, None)
 
+    # -- PROJECT PLAN TESTS
+    #
+    #
+
+    # PROJECT PLAN COLLECTION
+    def test_create_project_plan(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('creating a project plan project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story_1 = self.helper_create_single_story_dummy_wrapper('story for a project plan 1', project)
+        story_2 = self.helper_create_single_story_dummy_wrapper('story for a project plan 2', project)
+
+        data = {'start_date': datetime.datetime.now(),
+                'end_date': datetime.datetime.now(),
+                'title': 'my api project plan',
+                'description': 'my api project plan description',
+                'responsible_users': [self.volunteer_user.id, self.user_user.id],
+                'related_stories': [story_1.id, story_2.id],
+                'order': 1}
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        create_response = client.post(reverse('project_plan_create', kwargs={'id': project.id}), data, format='json')
+
+        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
+
+        try:
+            project_plan = ProjectPlan.objects.get(id=create_response.data['id'])
+        except ProjectPlan.DoesNotExist:
+            project_plan = None
+
+        self.assertIsInstance(project_plan, ProjectPlan)
+        self.assertEqual(project_plan.start_date, data['start_date'])
+        self.assertEqual(project_plan.end_date, data['end_date'])
+        self.assertEqual(project_plan.title, data['title'])
+        self.assertEqual(project_plan.description, data['description'])
+        self.assertEqual(self.helper_all_users_in_list_by_id(project_plan.responsible_users, data['responsible_users']), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(project_plan.related_stories, data['responsible_users']), True)
+        self.assertEqual(project_plan.order, data['order'])
+
     # -- PROJECT HELPER FUNCTIONS
     #
     #
@@ -674,7 +718,39 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_story_translations()
         self.helper_cleanup_story_versions()
         self.helper_cleanup_stories()
+        self.helper_cleanup_project_plans()
         Project.objects.all().delete()
+
+    # -- PROJECT PLAN HELPER FUNCTIONS
+    #
+    #
+    def helper_create_single_project_plan(self, project, start_date, end_date, title, description, responsible_users, related_stories, order):
+        plan = ProjectPlan(project=project,
+                           start_date=start_date,
+                           end_date=end_date,
+                           title=title,
+                           description=description,
+                           order=order)
+        plan.save()
+        plan.responsible_users.add(*responsible_users)
+        plan.related_stories.add(*related_stories)
+        plan.save()
+
+        return plan
+
+    def helper_create_single_project_plan_dummer_wrapper(self, project, title, related_stories, order):
+        self.helper_set_story_dummy_participants()
+        return self.helper_create_single_project(project=project,
+                                                 start_date=datetime.datetme.now(),
+                                                 end_date=datetime.datetime.now() + datetime.datetime.timedelta(7),
+                                                 title=title,
+                                                 description='dummy project plan description',
+                                                 responsible_users=self.dummy_project_plan_users,
+                                                 related_stories=related_stories,
+                                                 order=order)
+
+    def helper_cleanup_project_plans(self):
+        ProjectPlan.objects.all().delete()
 
     # -- STORY HELPER FUNCTIONS
     #
@@ -762,6 +838,7 @@ class PipelineAPITest(APITestCase):
         self.dummy_translators = [self.admin_user]
         self.dummy_artists = [self.staff_user]
         self.dummy_version_author = self.volunteer_user
+        self.dummy_project_plan_users = [self.user_user, self.volunteer_user]
 
     # -- HELPER FUNCTIONS
     #

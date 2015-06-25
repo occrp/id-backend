@@ -80,15 +80,15 @@ class StoryStatus(models.Model):
     description = models.CharField(max_length=500)
 
 
-# class ProjectPlan(models.Model):
-#     project = models.ForeignKey(Project)
-#     start_date = models.DateField()
-#     end_date = models.DateField()
-#     title = models.CharField(max_length=250)
-#     description = models.TextField()
-#     responsible_users = models.ManyToManyField(AUTH_USER_MODEL)
-#     related_stories = models.ManyToManyField(Story)
-#     order = models.IntegerField()
+class ProjectPlan(models.Model):
+    project = models.ForeignKey(Project)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    title = models.CharField(max_length=250)
+    description = models.TextField()
+    responsible_users = models.ManyToManyField(AUTH_USER_MODEL)
+    related_stories = models.ManyToManyField(Story)
+    order = models.IntegerField()
 
 
 # class CommentModel(models.Model):
