@@ -16,8 +16,8 @@
         {% endif %}
         <tr><th>Tags:</th><td>
             {% if file.has_write_permission(user) %}<a class="btn btn-small pull-right podaci_edit_tags">Edit tags</a>{% endif %}
-            {% for tag in file.tags %}
-            <a href="{{url('podaci_tags_details', tag)}}">{{tags[tag].meta.name}}</a>
+            {% for tag in file.tags.all() %}
+                <a href="{{url('podaci_tags_details', tag)}}">{{tag.name}}</a>
             {%- if not loop.last %},{% endif %}
             {% else %}
             No tags added.
@@ -88,10 +88,10 @@
                 </tr>
             </thead>
             <tbody>
-                {% for k,v in file.meta.extra.iteritems() %}
+                {% for k in file.metadata.all() %}
                 <tr>
-                    <td>{{k}}</td>
-                    <td><textarea name="{{k}}">{{v}}</textarea></td>
+                    <td>{{k.key}}</td>
+                    <td><textarea name="{{k.id}}">{{k.value}}</textarea></td>
                 </tr>
                 {% endfor %}
             </tbody>

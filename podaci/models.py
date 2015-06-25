@@ -416,6 +416,32 @@ class PodaciFile(PodaciMetadata):
         super(PodaciMetadata, self).delete()
         return True
 
+    def get_thumbnail(self, width=680, height=460):
+        """Return a thumbnail of a file."""
+        # Todo: Perhaps this belongs elsewhere?
+        if self.mimetype:
+            basetype, subtype = self.mimetype.split("/")
+        else:
+            return False
+
+        if basetype == "image":
+            # We are dealing with an image!
+            #from PIL import Image
+            #i = Image.open(self.resident_location())
+            #i.thumbnail((width,height), Image.ANTIALIAS)
+            return False
+        elif basetype == "application":
+            return False
+        # TODO: Build me
+        return False
+
+    def get_thumbnail_as_img_tag(self):
+        img = self.get_thumbnail()
+        if img:
+            return '<img src="%s"/>' % img
+        else:
+            return ''
+
 
 class PodaciTriples(models.Model):
     class Meta:
@@ -425,7 +451,7 @@ class PodaciTriples(models.Model):
     value               = models.TextField()
 
 class PodaciFileTriples(PodaciTriples):
-    ref                 = models.ForeignKey(PodaciFile)
+    ref                 = models.ForeignKey(PodaciFile, related_name="metadata")
 
 class PodaciChangelog(models.Model):
     class Meta:
