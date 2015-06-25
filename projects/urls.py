@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^project/(?P<id>.+)/list_users/$',                            dummy_view, name='project_list_users'),
 
     url(r'^project/(?P<id>\d+)/plan/create/$',                          dummy_plan_view, name='project_plan_create'),
+    url(r'^project/(?P<id>\d+)/plan/list/$',                          dummy_plan_view, name='project_plan_list'),
 
     url(r'^story/create/$',                                             dummy_story_view, name='story_create'),
     url(r'^story/(?P<id>.+)/list/$',                                    dummy_story_view, name='story_list'),
