@@ -9,12 +9,6 @@ import os, shutil
 import time
 import json
 
-class Strawman:
-    def __init__(self, email, admin=False):
-        self.id = 1
-        self.email = email
-        self.is_superuser = admin
-
 
 class PodaciAPITest(TestCase):
     def setUp(self):
