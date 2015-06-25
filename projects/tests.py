@@ -551,6 +551,40 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(get_response.data['title'], story_translation.title)
         self.assertEqual(get_response.data['text'], story_translation.text)
 
+    def test_create_translation(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('creating a story translation project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation to be created', project)
+
+        data = {'language_code': 'el',
+                'translator': self.volunteer_user.id,
+                'verified': 1,
+                'live': 0,
+                'title': 'my greek translation',
+                'text': 'pou einai o anthropos?'}
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        create_response = client.post(reverse('version_translation_create', kwargs={'id': story.id}), data, format='json')
+
+        self.assertEqual(create_response.status_code, status.HTTP_200_OK)
+
+        try:
+            translation = StoryTranslation.object.get(id=create_response.data['id'])
+        except:
+            translation = None
+
+        self.assertIsInstance(translation, StoryTranslation)
+        self.assertEqual(translation.language_code, data['language_code'])
+        self.assertEqual(translation.translator.id, data['translator'])
+        self.assertEqual(translation.verified, data['verified'])
+        self.assertEqual(translation.title, data['title'])
+        self.assertEqual(translation.text, data['text'])
+
     # -- PROJECT HELPER FUNCTIONS
     #
     #
@@ -750,9 +784,6 @@ class PipelineAPITest(APITestCase):
         pass
 
     def test_add_documents(self):
-        pass
-
-    def test_create_translation(self):
         pass
 
     def test_prioritize_stories(self):
