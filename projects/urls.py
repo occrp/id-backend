@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^story/(?P<id>.+)/delete/$',                                  dummy_story_view, name='story_delete'),
 
     url(r'^story/(?P<id>\d+)/version/create/$',                          dummy_story_view, name='story_version_create'),
-    url(r'^story/version/(?P<id>\d+)/translation/(?P<language_code>\w+)/$',
+    url(r'^story/most_recent_version/(?P<id>\d+)/translation/(?P<language_code>\w+)/$',
         dummy_translation_view,
         name='story_version_most_recent_with_translation'),
     url(r'^story/(?P<id>\d+)/live/$',                                   dummy_story_view, name='story_version_get'),
@@ -29,5 +29,6 @@ urlpatterns = patterns('',
     url(r'^story/version/(?P<id>\d+)/translation/(?P<language_code>\w+)/$', dummy_translation_view, name='version_translation_get'),
     url(r'^story/version/(?P<id>\d+)/translation/create/$',             dummy_translation_view, name='version_translation_create'),
     url(r'^story/version/translation/(?P<id>\d+)/alter/$',             dummy_translation_view, name='version_translation_alter'),
+    url(r'^story/version/translation/(?P<id>\d+)/delete/$',             dummy_translation_view, name='version_translation_delete'),
 
 )

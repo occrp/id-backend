@@ -622,6 +622,31 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(modified_translation.title, data['title'])
         self.assertEqual(modified_translation.text, data['text'])
 
+    def test_delete_translation(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('altering a story translation project',
+                                                    self.staff_user,
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation to be deleted', project)
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version with a translation to be deleted')
+        story_translation = self.helper_create_single_story_translation_dummy_wrapper(story_version, 'el', 'my greek version')
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        delete_response = client.delete(reverse('version_translation_delete', kwargs={'id': story_translation.id}))
+
+        self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
+
+        try:
+            story_translation = StoryTranslation.objects.get(id=story_translation.id)
+        except StoryTranslation.DoesNotExist:
+            story_translation = None
+
+        self.assertEqual(story_translation, None)
+
     # -- PROJECT HELPER FUNCTIONS
     #
     #
