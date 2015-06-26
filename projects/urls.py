@@ -1,8 +1,14 @@
 from django.conf.urls import patterns, include, url
 from projects.views import dummy_view, dummy_story_view, dummy_translation_view, dummy_plan_view
+from projects import views
 
 
 urlpatterns = patterns('',
+#    url(r'^$', views.api_root),
+
+    url(r'^projects/$',                                                 views.ProjectList.as_view(), name='project_list'),
+    url(r'^projects/(?P<pk>[0-9]+)/$',                                  views.ProjectDetail.as_view()),
+
     url(r'^project/create/$',                                           dummy_view, name='project_create'),
     url(r'^project/list/$',                                             dummy_view, name='project_list'),
     url(r'^project/(?P<id>.+)/$',                                       dummy_view, name='project_get'),
@@ -38,3 +44,8 @@ urlpatterns = patterns('',
     url(r'^story/version/translation/(?P<id>\d+)/delete/$',             dummy_translation_view, name='version_translation_delete'),
 
 )
+
+urlpatterns += [
+    url(r'^api-auth/', include('rest_framework.urls',
+                               namespace='rest_framework')),
+]
