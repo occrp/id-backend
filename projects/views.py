@@ -22,7 +22,10 @@ def api_root(request, format=None):
         'projects': reverse('project_list', request=request, format=format)
     })
 
-class ProjectList(generics.ListAPIView):
+# -- PROJECT VIEWS
+#
+#
+class ProjectList(generics.ListCreateAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
