@@ -7,7 +7,7 @@ urlpatterns = patterns('',
     url(r'^$', views.api_root),
 
     url(r'^projects/$',                                                 views.ProjectList.as_view(), name='project_list'),
-    url(r'^projects/(?P<pk>[0-9]+)/$',                                  views.ProjectDetail.as_view()),
+    url(r'^projects/(?P<pk>[0-9]+)/$',                                  views.ProjectDetail.as_view(), name='project_detail'),
 
     url(r'^project/create/$',                                           dummy_view, name='project_create'),
     url(r'^project/list/$',                                             dummy_view, name='project_list_old'),
