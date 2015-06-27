@@ -8,8 +8,8 @@ from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework.reverse import reverse
 
-from projects.models import Project
-from projects.serializers import ProjectSerializer
+from projects.models import Project, Story
+from projects.serializers import ProjectSerializer, StorySerializer
 
 import simplejson
 
@@ -32,6 +32,26 @@ class ProjectList(generics.ListCreateAPIView):
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+
+# -- STORY VIEWS
+#
+#
+class StoryList(generics.ListCreateAPIView):
+    queryset = Story.objects.all()
+    serializer_class = StorySerializer
+
+    def get_queryset(self):
+        try:
+            project_id = int(self.kwargs['project_id'])
+            stories = Story.objects.filter(project__id=project_id)
+        except Story.DoesNotExist:
+            stories = []
+
+        return stories
+
+    def perform_create(self, serializer):
+        serializer.save(podaci_root='somepodaciroot')
+
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def dummy_view(request, id=0):
