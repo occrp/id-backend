@@ -4,13 +4,13 @@ from projects import views
 
 
 urlpatterns = patterns('',
-#    url(r'^$', views.api_root),
+    url(r'^$', views.api_root),
 
     url(r'^projects/$',                                                 views.ProjectList.as_view(), name='project_list'),
     url(r'^projects/(?P<pk>[0-9]+)/$',                                  views.ProjectDetail.as_view()),
 
     url(r'^project/create/$',                                           dummy_view, name='project_create'),
-    url(r'^project/list/$',                                             dummy_view, name='project_list'),
+    url(r'^project/list/$',                                             dummy_view, name='project_list_old'),
     url(r'^project/(?P<id>.+)/$',                                       dummy_view, name='project_get'),
     url(r'^project/(?P<id>.+)/alter/$',                                 dummy_view, name='project_alter'),
     url(r'^project/(?P<id>.+)/delete/$',                                dummy_view, name='project_delete'),
