@@ -81,13 +81,13 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
-        self.helper_create_single_project('democracy for all 1',
+        project_1 = self.helper_create_single_project('democracy for all 1',
                                           self.staff_user,
                                           [self.staff_user])
-        self.helper_create_single_project('democracy for all 2',
+        project_2 = self.helper_create_single_project('democracy for all 2',
                                           self.admin_user,
                                           [self.volunteer_user])
-        self.helper_create_single_project('democracy for all 3',
+        project_3 = self.helper_create_single_project('democracy for all 3',
                                           self.staff_user,
                                           [self.staff_user, self.volunteer_user])
 
@@ -101,21 +101,21 @@ class PipelineAPITest(APITestCase):
         self.assertIsInstance(results, list)
         self.assertEqual(len(results), 3)
 
-        self.assertEqual(results[0]['id'], 1)
+        self.assertEqual(results[0]['id'], project_1.id)
         self.assertEqual(results[0]['title'], 'democracy for all 1')
         self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], [results[0]['coordinator']]),
                          True)
         self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], results[0]['users']),
                          True)
 
-        self.assertEqual(results[1]['id'], 2)
+        self.assertEqual(results[1]['id'], project_2.id)
         self.assertEqual(results[1]['title'], 'democracy for all 2')
         self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user], [results[1]['coordinator']]),
                          True)
         self.assertEqual(self.helper_all_users_in_list_by_id([self.volunteer_user], results[1]['users']),
                          True)
 
-        self.assertEqual(results[2]['id'], 3)
+        self.assertEqual(results[2]['id'], project_3.id)
         self.assertEqual(results[2]['title'], 'democracy for all 3')
         self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], [results[2]['coordinator']]),
                          True)
@@ -129,15 +129,20 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('get democracy for all',
                                                     self.staff_user,
-                                                    self.staff_user.id,
-                                                    [self.staff_user.id])
+                                                    [self.staff_user])
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        get_response = client.get(reverse('project_get', kwargs={'id': project.id}))
+        get_response = client.get(reverse('project_detail', kwargs={'pk': project.id}))
 
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
+
         self.assertEqual(get_response.data['id'], project.id)
+        self.assertEqual(get_response.data['title'], project.title)
+        self.assertEqual(self.helper_all_users_in_list_by_id([project.coordinator], [get_response.data['coordinator']]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(project.users.all(), get_response.data['users']),
+                         True)
 
     def test_delete_project(self):
         self.helper_create_dummy_users()
@@ -145,15 +150,13 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('delete democracy for all',
                                                     self.staff_user,
-                                                    self.staff_user.id,
-                                                    [self.staff_user.id])
+                                                    [self.staff_user])
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        delete_response = client.delete(reverse('project_delete', kwargs={'id': project.id}))
+        delete_response = client.delete(reverse('project_detail', kwargs={'pk': project.id}))
 
-        self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(delete_response.data['id'], project.id)
+        self.assertEqual(delete_response.status_code, status.HTTP_204_NO_CONTENT)
 
         try:
             project = Project.objects.get(id=project.id)
@@ -168,19 +171,35 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('alter democracy for all',
                                                     self.staff_user,
-                                                    self.staff_user.id,
-                                                    [self.staff_user.id])
+                                                    [self.staff_user])
 
-        altered_title = 'altered title via test'
-        data = {'title': altered_title,
-                'coordinator': self.admin_user.id}
+        data = {'title': 'altered title',
+                'coordinator': self.admin_user.id,
+                'users': [self.volunteer_user.id, self.user_user.id, self.staff_user.id]}
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        alter_response = client.put(reverse('project_alter', kwargs={'id': project.id}), data, format='json')
+        alter_response = client.put(reverse('project_detail', kwargs={'pk': project.id}), data, format='json')
 
         self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(alter_response.data['title'], altered_title)
-        self.assertEqual(alter_response.data['coordinator'], altered_user.id)
+        self.assertEqual(alter_response.data['id'], project.id)
+        self.assertEqual(alter_response.data['title'], 'altered title')
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user], [alter_response.data['coordinator']]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.volunteer_user, self.user_user, self.staff_user], alter_response.data['users']),
+                         True)
+
+        try:
+            project = Project.objects.get(id=project.id)
+        except Project.DoesNotExist:
+            project = None
+
+        self.assertIsInstance(project, Project)
+        self.assertEqual(alter_response.data['title'], project.title)
+        self.assertEqual(alter_response.data['title'], 'altered title')
+        self.assertEqual(self.helper_all_users_in_list_by_id([project.coordinator], [alter_response.data['coordinator']]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(project.users.all(), alter_response.data['users']),
+                         True)
 
     # PROJECT USER COLLECTION
     def test_assign_project_users(self):

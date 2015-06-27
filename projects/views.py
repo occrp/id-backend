@@ -29,12 +29,9 @@ class ProjectList(generics.ListCreateAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
-class ProjectDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
+class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def dummy_view(request, id=0):
