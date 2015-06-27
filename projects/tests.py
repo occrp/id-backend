@@ -48,15 +48,34 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
-        create_response = self.helper_create_single_project_with_api('create democracy for all',
-                                                                     self.staff_user,
-                                                                     self.staff_user.id,
-                                                                     [self.staff_user.id])
+        data = {'title': 'my created project',
+                'coordinator': self.staff_user.id,
+                'users': [self.volunteer_user.id, self.staff_user.id]
+                }
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        create_response = client.post(reverse('project_list'), data, format='json')
 
         self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(create_response.data.title, title)
-        self.assertEqual(create_response.data.coordinator.id, coordinator_id)
-        self.assertEqual(create_response.data.users, users)
+
+        results = create_response.data
+        self.assertEqual(results['title'], 'my created project')
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], [results['coordinator']]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user, self.volunteer_user], results['users']),
+                         True)
+
+        try:
+            project = Project.objects.get(id=results['id'])
+        except Project.DoesNotExist:
+            project = None
+
+        self.assertIsInstance(project, Project)
+        self.assertEqual(project.title, results['title'])
+        self.assertEqual(self.helper_all_users_in_list_by_id([project.coordinator], [results['coordinator']]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(project.users.all(), results['users']),
+                         True)
 
     def test_list_projects(self):
         self.helper_create_dummy_users()
@@ -64,27 +83,44 @@ class PipelineAPITest(APITestCase):
 
         self.helper_create_single_project('democracy for all 1',
                                           self.staff_user,
-                                          self.staff_user.id,
-                                          [self.staff_user.id])
+                                          [self.staff_user])
         self.helper_create_single_project('democracy for all 2',
-                                          self.staff_user,
-                                          self.staff_user.id,
-                                          [self.staff_user.id])
+                                          self.admin_user,
+                                          [self.volunteer_user])
         self.helper_create_single_project('democracy for all 3',
                                           self.staff_user,
-                                          self.staff_user.id,
-                                          [self.staff_user.id])
+                                          [self.staff_user, self.volunteer_user])
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
         list_response = client.get(reverse('project_list'))
 
-        print list_response
-
         self.assertEqual(list_response.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(list_response.data, list)
-        self.assertEqual(len(list_response.data), 3)
-        self.assertGreater(list_response.data[0]['id'], 1)
+
+        results = list_response.data['results']
+        self.assertIsInstance(results, list)
+        self.assertEqual(len(results), 3)
+
+        self.assertEqual(results[0]['id'], 1)
+        self.assertEqual(results[0]['title'], 'democracy for all 1')
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], [results[0]['coordinator']]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], results[0]['users']),
+                         True)
+
+        self.assertEqual(results[1]['id'], 2)
+        self.assertEqual(results[1]['title'], 'democracy for all 2')
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user], [results[1]['coordinator']]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.volunteer_user], results[1]['users']),
+                         True)
+
+        self.assertEqual(results[2]['id'], 3)
+        self.assertEqual(results[2]['title'], 'democracy for all 3')
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], [results[2]['coordinator']]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user, self.volunteer_user], results[2]['users']),
+                         True)
 
     # PROJECT MEMBER
     def test_get_project(self):
@@ -816,25 +852,14 @@ class PipelineAPITest(APITestCase):
     # -- PROJECT HELPER FUNCTIONS
     #
     #
-    def helper_create_single_project(self, project_title, creating_user, coordinator, users):
+    def helper_create_single_project(self, project_title, coordinator, users):
         project = Project(title=project_title,
-                          coordinator=creating_user)
+                          coordinator=coordinator)
         project.save()
         project.users.add(*users)
         project.save()
 
         return project
-
-    def helper_create_single_project_with_api(self, project_title, creating_user, coordinator, users):
-        url = reverse('project_create')
-        client = APIClient()
-        client.force_authenticate(user=creating_user)
-
-        data = {'title': project_title,
-                'coordinator': coordinator,
-                'users': users}
-
-        return client.post(url, data, format='json')
 
     def helper_cleanup_projects(self):
         self.helper_cleanup_story_translations()
@@ -973,6 +998,11 @@ class PipelineAPITest(APITestCase):
         self.user_user = get_user_model().objects.get(email=self.user_email)
 
     def helper_all_users_in_list_by_id(self, users, ids):
+        """
+        users is a list of django user objects
+        ids assumes a multidimensional list/dict
+        """
+
         num_users = len(users)
         num_users_found = 0
 
@@ -981,7 +1011,7 @@ class PipelineAPITest(APITestCase):
 
         for user in users:
             for i in ids:
-                if user.id == i:
+                if user.id == i['id']:
                     num_users_found += 1
                     break
 
