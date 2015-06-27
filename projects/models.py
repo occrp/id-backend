@@ -32,7 +32,7 @@ class Project(models.Model):
 
 
 class Story(models.Model):
-    project = models.ForeignKey(Project)
+    project = models.ForeignKey(Project, related_name='stories')
     title = models.CharField(max_length=250)
     reporters = models.ManyToManyField(AUTH_USER_MODEL, related_name="reporters")
     researchers = models.ManyToManyField(AUTH_USER_MODEL, related_name="researchers")
@@ -42,7 +42,7 @@ class Story(models.Model):
     translators = models.ManyToManyField(AUTH_USER_MODEL, related_name="translators")
     artists = models.ManyToManyField(AUTH_USER_MODEL, related_name="artists")
 
-    published = models.DateField()
+    published = models.DateField(null=True)
     podaci_root = models.CharField(max_length=50)
 
     def get_newest_status(self):

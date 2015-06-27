@@ -34,7 +34,7 @@ class UserField(serializers.RelatedField):
                           'last_name': value.last_name}
         return representation
 
-# -- PROJECT SERIALIZERS
+# -- PROJECT SERIALIZERS/FIELDS/VALIDATORS
 #
 #
 class ProjectSerializer(serializers.ModelSerializer):
@@ -44,3 +44,33 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ('id', 'title', 'coordinator', 'users')
+
+# -- STORY SERIALIZERS
+#
+#
+class StorySerializer(serializers.ModelSerializer):
+    project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
+    reporters = UserField(many=True, queryset=get_user_model().objects.all())
+    researchers = UserField(many=True, queryset=get_user_model().objects.all())
+    editors = UserField(many=True, queryset=get_user_model().objects.all())
+    copy_editors = UserField(many=True, queryset=get_user_model().objects.all())
+    fact_checkers = UserField(many=True, queryset=get_user_model().objects.all())
+    translators = UserField(many=True, queryset=get_user_model().objects.all())
+    artists = UserField(many=True, queryset=get_user_model().objects.all())
+    published = serializers.DateField(allow_null=True, required=False)
+    podaci_root = serializers.CharField(max_length=50, read_only=True, required=False)
+
+    class Meta:
+        model = Story
+        fields = ('id',
+                  'project',
+                  'title',
+                  'reporters',
+                  'researchers',
+                  'editors',
+                  'copy_editors',
+                  'fact_checkers',
+                  'translators',
+                  'artists',
+                  'published',
+                  'podaci_root')
