@@ -301,25 +301,48 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('story create project',
-                                                    self.staff_user,
+                                                    'story create description',
                                                     self.staff_user,
                                                     [self.staff_user])
 
-        data = {'project_id': project.id,
-                'reporters': [self.user_user],
-                'researchers': [self.user_user],
-                'editors': [self.volunteer_user],
-                'copy_editors': [self.volunteer_user],
-                'fact_checkers': [self.admin_user],
-                'translators': [self.admin_user],
-                'artists': [self.staff_user],
-                'published': ''
+        data = {'project': project.id,
+                'title': 'my story!',
+                'thesis': 'my thesis!',
+                'reporters': [self.user_user.id],
+                'researchers': [self.user_user.id],
+                'editors': [self.volunteer_user.id],
+                'copy_editors': [self.volunteer_user.id],
+                'fact_checkers': [self.admin_user.id],
+                'translators': [self.admin_user.id],
+                'artists': [self.staff_user.id],
+                'published': None
                 }
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        create_response = client.post(reverse('story_create'), data)
+        create_response = client.post(reverse('story_list', kwargs={'project_id': project.id}), data, format='json')
+        print create_response
 
         self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
+
+        self.assertEqual(create_response.data['project'], project.id)
+        self.assertEqual(create_response.data['title'], data['title'])
+        self.assertEqual(create_response.data['thesis'], data['thesis'])
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.user_user], create_response.data['reporters']),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.user_user], create_response.data['researchers']),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.volunteer_user], create_response.data['editors']),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.volunteer_user], create_response.data['copy_editors']),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user], create_response.data['fact_checkers']),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user], create_response.data['translators']),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], create_response.data['artists']),
+                         True)
+        if create_response.data['published'] is not None:
+            self.assertIsInstance(create_response.data['published'], datetime)
 
         try:
             story = Story.objects.get(id=create_response.data['id'])
@@ -328,13 +351,25 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(story.id, create_response.data['id'])
         self.assertEqual(story.project.id, project.id)
-        self.assertEqual(story.reporters.all(), [self.user_user])
-        self.assertEqual(story.researchers.all(), [self.user_user])
-        self.assertEqual(story.editors.all(), [self.volunteer_user])
-        self.assertEqual(story.copy_editors.all(), [self.volunteer_user])
-        self.assertEqual(story.fact_checkers.all(), [self.admin_user])
-        self.assertEqual(story.translators.all(), [self.admin_user])
-        self.assertIsInstance(story.datetime, datetime)
+        self.assertEqual(story.title, create_response.data['title'])
+        self.assertEqual(story.thesis, create_response.data['thesis'])
+
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.reporters.all(), [self.user_user]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.researchers.all(), [self.user_user]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.editors.all(), [self.volunteer_user]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.copy_editors.all(), [self.volunteer_user]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.fact_checkers.all(), [self.admin_user]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.translators.all(), [self.admin_user]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.artists.all(), [self.staff_user]),
+                         True)
+        if story.published is not None:
+            self.assertIsInstance(story.published, datetime)
 
     def test_list_stories(self):
         self.helper_create_dummy_users()
@@ -1057,7 +1092,7 @@ class PipelineAPITest(APITestCase):
     def helper_all_users_in_list_by_id(self, users, ids):
         """
         users is a list of django user objects
-        ids assumes a multidimensional list/dict
+        ids assumes a multidimensional list of dicts OR list of users
         """
 
         num_users = len(users)
@@ -1068,9 +1103,14 @@ class PipelineAPITest(APITestCase):
 
         for user in users:
             for i in ids:
-                if user.id == i['id']:
-                    num_users_found += 1
-                    break
+                if isinstance(i, dict):
+                    if user.id == i['id']:
+                        num_users_found += 1
+                        break
+                else:
+                    if user.id == i.id:
+                        num_users_found += 1
+                        break
 
         if num_users == num_users_found:
             return True

@@ -52,6 +52,10 @@ class StoryList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(podaci_root='somepodaciroot')
 
+class StoryDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Story.objects.all()
+    serializer_class = StorySerializer
+
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def dummy_view(request, id=0):
