@@ -112,7 +112,7 @@ class StoryList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         try:
-            project_id = int(self.kwargs['project_id'])
+            project_id = int(self.kwargs['pk'])
             stories = Story.objects.filter(project__id=project_id)
         except Story.DoesNotExist:
             stories = []
