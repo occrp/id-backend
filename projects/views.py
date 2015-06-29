@@ -1,15 +1,19 @@
+from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.http import Http404
 
 from rest_framework import generics
 from rest_framework import mixins
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework.reverse import reverse
+from rest_framework.views import APIView
 
 from projects.models import Project, Story
-from projects.serializers import ProjectSerializer, StorySerializer
+from projects.serializers import ProjectSerializer, StorySerializer, UserSerializer
 
 import simplejson
 
@@ -32,6 +36,69 @@ class ProjectList(generics.ListCreateAPIView):
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+
+class UsersBase(APIView):
+
+    def get_object(self, pk):
+        try:
+            return get_user_model().objects.get(id=pk)
+        except get_user_model().DoesNotExist:
+            raise Http404
+
+    def get_users_by_id_or_list(self, ids):
+
+        users = []
+
+        if isinstance(ids, int):
+            users = [self.get_object(ids)]
+        if isinstance(ids, list):
+            for i in ids:
+                users.append(self.get_object(i))
+
+        return users
+
+class ProjectUsers(UsersBase):
+
+    def get_project(self, pk):
+        try:
+            return Project.objects.get(id=pk)
+        except Project.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        project = self.get_project(pk)
+
+        if len(project.users.all()) > 0:
+            serializer = UserSerializer(project.users.all(), many=True)
+            return Response(serializer.data)
+
+        return Response({})
+
+    def put(self, request, pk, format=None):
+        project = self.get_project(pk)
+        user_ids = request.data['users']
+        users = self.get_users_by_id_or_list(user_ids)
+
+        try:
+            project.users.add(*users)
+        except:
+            raise Http404
+
+        serializer = UserSerializer(users, many=True)
+
+        return Response(serializer.data)
+
+    def delete(self, request, pk, format=None):
+        project = self.get_project(pk)
+        user_ids = request.data['users']
+        users = self.get_users_by_id_or_list(user_ids)
+
+        try:
+            project.users.remove(*users)
+        except:
+            raise Http404
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 # -- STORY VIEWS
 #
