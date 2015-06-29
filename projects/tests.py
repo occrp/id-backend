@@ -321,8 +321,7 @@ class PipelineAPITest(APITestCase):
                 }
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        create_response = client.post(reverse('story_list', kwargs={'project_id': project.id}), data, format='json')
-        print create_response
+        create_response = client.post(reverse('story_list', kwargs={'pk': project.id}), data, format='json')
 
         self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
 
