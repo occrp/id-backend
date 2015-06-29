@@ -8,8 +8,9 @@ urlpatterns = patterns('',
 
     url(r'^projects/$',                                                 views.ProjectList.as_view(), name='project_list'),
     url(r'^projects/(?P<pk>[0-9]+)/$',                                  views.ProjectDetail.as_view(), name='project_detail'),
+    url(r'^projects/(?P<pk>[0-9]+)/users/$',                            views.ProjectUsers.as_view(), name='project_users'),
 
-    url(r'^project/(?P<project_id>[0-9]+)/stories/$',                   views.StoryList.as_view(), name='story_list'),
+    url(r'^projects/(?P<project_id>[0-9]+)/stories/$',                   views.StoryList.as_view(), name='story_list'),
     url(r'^story/(?P<pk>[0-9]+)/$',                                     views.StoryDetail.as_view(), name='story_detail'),
 
     url(r'^project/create/$',                                           dummy_view, name='project_create'),
