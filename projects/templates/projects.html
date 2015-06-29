@@ -1,4 +1,5 @@
-<html lang="en" ng-app="ID2Projects">
+<!-- This is standalone HTML done in Material, to be cannibalized later -->
+<html lang="en">
   <head>
     <link rel="stylesheet" href="/static/bower_components/angular-material/angular-material.min.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic"/>
@@ -14,7 +15,7 @@
         <h1>ID2 Projects</h1>
       </div>
     </md-toolbar>
-    <div layout="row" flex>
+    <div layout="row" flex ng-app="ID2Projects">
         <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
             <md-list>
                 <md-list-item class="md-2-line" ng-repeat="it in projects.menuitems" ng-click="projects.goto(it)"
@@ -26,7 +27,7 @@
                        </div>
                 </md-list-item>
             </md-list>
-            </md-sidenav>
+        </md-sidenav>
         <div layout="column" flex id="content">
             <md-content layout="column" flex class="md-padding">
                 <md-fab-trigger>
