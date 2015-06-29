@@ -51,6 +51,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 #
 class StorySerializer(serializers.ModelSerializer):
     project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
+    thesis = serializers.CharField(max_length=500, allow_null=True, allow_blank=True, required=False)
     reporters = UserField(many=True, queryset=get_user_model().objects.all())
     researchers = UserField(many=True, queryset=get_user_model().objects.all())
     editors = UserField(many=True, queryset=get_user_model().objects.all())
@@ -66,6 +67,7 @@ class StorySerializer(serializers.ModelSerializer):
         fields = ('id',
                   'project',
                   'title',
+                  'thesis',
                   'reporters',
                   'researchers',
                   'editors',
