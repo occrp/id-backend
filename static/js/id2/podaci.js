@@ -187,7 +187,6 @@ Podaci.init_fileupload = function() {
             progress + '%'
         );
     }).on('fileuploaddone', function (e, data) {
-        // FIXME: This does not know which file just got completed.
         if (data.id) {
             $(data.context.children()[index]).removeClass("podaci-file-pending");
             $(data.context.children()[index]).children[0]
