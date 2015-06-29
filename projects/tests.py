@@ -101,14 +101,17 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project_1 = self.helper_create_single_project('democracy for all 1',
-                                          self.staff_user,
-                                          [self.staff_user])
+                                                      'description 1',
+                                                      self.staff_user,
+                                                      [self.staff_user])
         project_2 = self.helper_create_single_project('democracy for all 2',
-                                          self.admin_user,
-                                          [self.volunteer_user])
+                                                      'description 2',
+                                                      self.admin_user,
+                                                      [self.volunteer_user])
         project_3 = self.helper_create_single_project('democracy for all 3',
-                                          self.staff_user,
-                                          [self.staff_user, self.volunteer_user])
+                                                      'description 3',
+                                                      self.staff_user,
+                                                      [self.staff_user, self.volunteer_user])
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
@@ -122,6 +125,7 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(results[0]['id'], project_1.id)
         self.assertEqual(results[0]['title'], 'democracy for all 1')
+        self.assertEqual(results[0]['description'], 'description 1')
         self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], [results[0]['coordinator']]),
                          True)
         self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], results[0]['users']),
@@ -129,6 +133,7 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(results[1]['id'], project_2.id)
         self.assertEqual(results[1]['title'], 'democracy for all 2')
+        self.assertEqual(results[1]['description'], 'description 2')
         self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user], [results[1]['coordinator']]),
                          True)
         self.assertEqual(self.helper_all_users_in_list_by_id([self.volunteer_user], results[1]['users']),
@@ -136,6 +141,7 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(results[2]['id'], project_3.id)
         self.assertEqual(results[2]['title'], 'democracy for all 3')
+        self.assertEqual(results[2]['description'], 'description 3')
         self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], [results[2]['coordinator']]),
                          True)
         self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user, self.volunteer_user], results[2]['users']),
@@ -147,6 +153,7 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('get democracy for all',
+                                                    'description 1 democracy',
                                                     self.staff_user,
                                                     [self.staff_user])
 
@@ -158,6 +165,7 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(get_response.data['id'], project.id)
         self.assertEqual(get_response.data['title'], project.title)
+        self.assertEqual(get_response.data['description'], project.description)
         self.assertEqual(self.helper_all_users_in_list_by_id([project.coordinator], [get_response.data['coordinator']]),
                          True)
         self.assertEqual(self.helper_all_users_in_list_by_id(project.users.all(), get_response.data['users']),
@@ -168,6 +176,7 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('delete democracy for all',
+                                                    'delete description',
                                                     self.staff_user,
                                                     [self.staff_user])
 
@@ -189,10 +198,12 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('alter democracy for all',
+                                                    'alter description',
                                                     self.staff_user,
                                                     [self.staff_user])
 
         data = {'title': 'altered title',
+                'description': '',
                 'coordinator': self.admin_user.id,
                 'users': [self.volunteer_user.id, self.user_user.id, self.staff_user.id]}
         client = APIClient()
@@ -202,6 +213,7 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
         self.assertEqual(alter_response.data['id'], project.id)
         self.assertEqual(alter_response.data['title'], 'altered title')
+        self.assertEqual(alter_response.data['description'], '')
         self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user], [alter_response.data['coordinator']]),
                          True)
         self.assertEqual(self.helper_all_users_in_list_by_id([self.volunteer_user, self.user_user, self.staff_user], alter_response.data['users']),
@@ -214,7 +226,7 @@ class PipelineAPITest(APITestCase):
 
         self.assertIsInstance(project, Project)
         self.assertEqual(alter_response.data['title'], project.title)
-        self.assertEqual(alter_response.data['title'], 'altered title')
+        self.assertEqual(alter_response.data['description'], project.description)
         self.assertEqual(self.helper_all_users_in_list_by_id([project.coordinator], [alter_response.data['coordinator']]),
                          True)
         self.assertEqual(self.helper_all_users_in_list_by_id(project.users.all(), alter_response.data['users']),
@@ -890,8 +902,9 @@ class PipelineAPITest(APITestCase):
     # -- PROJECT HELPER FUNCTIONS
     #
     #
-    def helper_create_single_project(self, project_title, coordinator, users):
-        project = Project(title=project_title,
+    def helper_create_single_project(self, title, description, coordinator, users):
+        project = Project(title=title,
+                          description=description,
                           coordinator=coordinator)
         project.save()
         project.users.add(*users)
