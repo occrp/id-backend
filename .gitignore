@@ -58,3 +58,4 @@ data/importers/UserProfile.dupes
 
 
 data/importers/GeoNames/output/*.csv
+db.sqlite3
