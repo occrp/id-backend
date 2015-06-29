@@ -51,9 +51,9 @@
       * @extends {ol.control.Control}
       * @param {Object=} opt_options Control options.
       * 
-      * id2 controls on the map -- ceter-on-selection and address geocoding
+      * ID2 controls on the map -- ceter-on-selection and address geocoding
       */
-    id2.ID2Controls = function(opt_options) {
+    ID2.ID2Controls = function(opt_options) {
 
       var options = opt_options || {};
 
@@ -97,8 +97,8 @@
       var this_ = this;
       var centerMap = function(e) {
         /* this is where magic happens */
-        if (id2.circle != false) {
-          id2.flyToExtent(id2.circle.getExtent())
+        if (ID2.circle != false) {
+          ID2.flyToExtent(ID2.circle.getExtent())
         }
         /* not submitting the form is a good idea */
         return false;
@@ -153,7 +153,7 @@
       });
 
     };
-    ol.inherits(id2.ID2Controls, ol.control.Control);
+    ol.inherits(ID2.ID2Controls, ol.control.Control);
     
 
     //
@@ -166,7 +166,7 @@
           collapsible: false
         })
       }).extend([
-        new id2.ID2Controls()
+        new ID2.ID2Controls()
       ]),
       target: 'map',
       layers: [
@@ -184,33 +184,33 @@
     });
     
     /* vector source and layer for our range circle */
-    id2.vectorSource = new ol.source.Vector({
+    ID2.vectorSource = new ol.source.Vector({
       projection: 'EPSG:4326'
     });
-    id2.vectorLayer = new ol.layer.Vector({
-      source: id2.vectorSource
+    ID2.vectorLayer = new ol.layer.Vector({
+      source: ID2.vectorSource
     });
-    map.addLayer(id2.vectorLayer);
+    map.addLayer(ID2.vectorLayer);
     
     /* the circle */
-    id2.circle = false
-    id2.circleFeature = false
+    ID2.circle = false
+    ID2.circleFeature = false
     
-    id2.setCircle = function() {
+    ID2.setCircle = function() {
       var radius = ($('input[name=radius]').val() / ol.proj.METERS_PER_UNIT.m) * 2;
       
       var lon = $('input[name=lon]').val() * 1 // we need a number here
       var lat = $('input[name=lat]').val() * 1 // an here
       
-      id2.circle = new ol.geom.Circle(
+      ID2.circle = new ol.geom.Circle(
         ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'), radius, 'XY'
       )
-      if (id2.circleFeature != false) {
-        id2.vectorSource.removeFeature(id2.circleFeature)
+      if (ID2.circleFeature != false) {
+        ID2.vectorSource.removeFeature(ID2.circleFeature)
       }
-      id2.circleFeature = new ol.Feature(id2.circle);
+      ID2.circleFeature = new ol.Feature(ID2.circle);
       // Source and vector layer
-      id2.vectorSource.addFeature(id2.circleFeature);
+      ID2.vectorSource.addFeature(ID2.circleFeature);
       
       // enable the "center on selection" button
       $('.ol-map-id2-controls .ol-map-center-on-selection-button').removeAttr('disabled')
@@ -218,7 +218,7 @@
     
     
     /* calculating a sane radius from a given zoom level */
-    id2.getRadiusRootFromZoom = function(zoom) {
+    ID2.getRadiusRootFromZoom = function(zoom) {
       if (zoom <= 7) return 22359
       return (22359 / Math.pow(1.4, (zoom - 6)))
     }
@@ -228,7 +228,7 @@
     $(function() {
         /* make sure radius is handled */
         $('input[name=radius_root]')
-          .on('change', id2.setCircle)
+          .on('change', ID2.setCircle)
           .on('input', function(){
             // a nice logarithmic radius control
             radius = Math.floor(Math.pow((this.value / 100), 2))
@@ -243,7 +243,7 @@
           if (!$('input[name=lat]').is(':valid')) return false
           if (!$('input[name=lon]').is(':valid')) return false
           /* yay, set the circle */
-          id2.setCircle()
+          ID2.setCircle()
           /* pan animation */
           var panimation = ol.animation.pan({
             source: map.getView().getCenter(),
@@ -252,7 +252,7 @@
           map.beforeRender(panimation);
           /* center */
           map.getView().setCenter(
-            id2.circle.getCenter()
+            ID2.circle.getCenter()
           )
         })
         /* handle the map address geocoding search button */
@@ -266,16 +266,16 @@
           })
           .on('keypress', function(e){
             if (e.which == 13) {
-              id2.geoSearch()
+              ID2.geoSearch()
             }
           })
         $('.ol-map-id2-controls .ol-map-search-button').on('click', function(e){
-          id2.geoSearch()
+          ID2.geoSearch()
         })
         /* searching upon enter */
         $('.image-search-inputs-container input[name=q]').on('keypress', function(e){
           if (e.which == 13) {
-            id2.search.startImageSearch();
+            ID2.Search.startImageSearch();
           }
         })
         /* close search results */
@@ -302,14 +302,14 @@
       $('input[name=lon]').val(lonlat[0])
       $('input[name=lat]').val(lonlat[1])
       /* set the selection circle */
-      id2.setCircle()
+      ID2.setCircle()
     })
     
     /* change the radius to fit the zoom level -- if the circle has not yet been set */
     map.getView().on('change:resolution', function(e) {
       /* only if the circle has not yet been set */
-      if (id2.circle == false) {
-        radius = id2.getRadiusRootFromZoom(map.getView().getZoom())
+      if (ID2.circle == false) {
+        radius = ID2.getRadiusRootFromZoom(map.getView().getZoom())
         $('input[name=radius_root]')
           .val(radius)
           .trigger('input')
@@ -317,7 +317,7 @@
     })
 
     
-    id2.geoSearch = function() {
+    ID2.geoSearch = function() {
       $('.ol-map-id2-results').empty()
       var q = 'https://nominatim.openstreetmap.org/search?format=json&q=' + $('.ol-map-id2-controls  input.ol-map-search-box').val()
       $.getJSON(
@@ -336,7 +336,7 @@
                 .attr('maxlon', item.boundingbox[3])
               result.append("<span class=\"display-name\">" + item.display_name + "</span>")
               result.append("<span class=\"latlon\">lat: <lat>" + item.lat + "</lat>, lon: <lon>" + item.lon + "</lon></span>")
-              result.on('click', id2.geoResultClick)
+              result.on('click', ID2.geoResultClick)
               $('.ol-map-id2-results').append(result);
             }
           }
@@ -345,7 +345,7 @@
     
     
     /* bouncing and panning the map to fit an extent (i.e. selection circle, search result, etc) neatly */
-    id2.flyToExtent = function(extent){
+    ID2.flyToExtent = function(extent){
       /* pan animation */
       var panimation = ol.animation.pan({
         source: map.getView().getCenter(),
@@ -393,7 +393,7 @@
     }
     
     /* show the clicked result on the map */
-    id2.geoResultClick = function(){
+    ID2.geoResultClick = function(){
       /* extent */
       var extent = [
         $(this).attr('minlon') * 1,
@@ -404,7 +404,7 @@
       /* translate */
       extent = ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", "EPSG:3857"));
       /* fly */
-      id2.flyToExtent(extent)
+      ID2.flyToExtent(extent)
       
       /* that's it, don't  handle this click any further */
       return false;
