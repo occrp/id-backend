@@ -245,12 +245,12 @@ class PipelineAPITest(APITestCase):
         data = {'users': [self.admin_user.id, self.volunteer_user.id, self.user_user.id]}
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        assign_response = client.patch(reverse('project_detail', kwargs={'pk': project.id}), data, format='json')
+        assign_response = client.put(reverse('project_users', kwargs={'pk': project.id}), data, format='json')
 
         self.assertEqual(assign_response.status_code, status.HTTP_200_OK)
 
         project = Project.objects.get(id=project.id)
-        self.assertEqual(project.users.count(), 3)
+        self.assertEqual(project.users.count(), 4)
         self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user, self.volunteer_user, self.user_user], assign_response.data['users']),
                          True)
 
@@ -266,13 +266,13 @@ class PipelineAPITest(APITestCase):
         data = {'users': [self.volunteer_user.id]}
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        unassign_response = client.patch(reverse('project_detail', kwargs={'pk': project.id}), data, format='json')
+        unassign_response = client.delete(reverse('project_users', kwargs={'pk': project.id}), data, format='json')
 
-        self.assertEqual(unassign_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(unassign_response.status_code, status.HTTP_204_NO_CONTENT)
 
         project = Project.objects.get(id=project.id)
-        self.assertEqual(project.users.count(), 1)
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.volunteer_user], unassign_response.data['users']),
+        self.assertEqual(project.users.count(), 3)
+        self.assertEqual(self.helper_all_users_in_list_by_id(project.users.all(), [self.staff_user, self.admin_user, self.user_user]),
                          True)
 
     def test_list_project_users(self):
@@ -280,16 +280,18 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('list user democracy for all',
-                                                    self.staff_user,
+                                                    'list description',
                                                     self.staff_user,
                                                     [self.staff_user, self.admin_user, self.volunteer_user, self.user_user])
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        list_response = client.get(reverse('project_list_users', kwargs={'id': project.id}))
+        list_response = client.get(reverse('project_users', kwargs={'pk': project.id}))
 
         self.assertEqual(list_response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(list_response.data['users']), 4)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user, self.admin_user, self.volunteer_user, self.user_user], list_response.data['users']),
+                         True)
 
     # -- PROJECT STORY TESTS
     #
