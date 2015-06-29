@@ -49,6 +49,41 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         data = {'title': 'my created project',
+                'description': 'my project description',
+                'coordinator': self.staff_user.id,
+                'users': [self.volunteer_user.id, self.staff_user.id]
+                }
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        create_response = client.post(reverse('project_list'), data, format='json')
+
+        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
+
+        # assert results in reply are what we expected
+        results = create_response.data
+        self.assertEqual(results['title'], 'my created project')
+        self.assertEqual(results['description'], 'my project description')
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], [results['coordinator']]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user, self.volunteer_user], results['users']),
+                         True)
+
+        # get the object from the database and test against reply
+        try:
+            project = Project.objects.get(id=results['id'])
+        except Project.DoesNotExist:
+            project = None
+
+        self.assertIsInstance(project, Project)
+        self.assertEqual(project.title, results['title'])
+        self.assertEqual(project.description, results['description'])
+        self.assertEqual(self.helper_all_users_in_list_by_id([project.coordinator], [results['coordinator']]),
+                         True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(project.users.all(), results['users']),
+                         True)
+
+        # test again without a description
+        data = {'title': 'my created project 2',
                 'coordinator': self.staff_user.id,
                 'users': [self.volunteer_user.id, self.staff_user.id]
                 }
@@ -59,23 +94,7 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
 
         results = create_response.data
-        self.assertEqual(results['title'], 'my created project')
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], [results['coordinator']]),
-                         True)
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user, self.volunteer_user], results['users']),
-                         True)
-
-        try:
-            project = Project.objects.get(id=results['id'])
-        except Project.DoesNotExist:
-            project = None
-
-        self.assertIsInstance(project, Project)
-        self.assertEqual(project.title, results['title'])
-        self.assertEqual(self.helper_all_users_in_list_by_id([project.coordinator], [results['coordinator']]),
-                         True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(project.users.all(), results['users']),
-                         True)
+        self.assertEqual(results['description'] == "" or results['description'] is None, True)
 
     def test_list_projects(self):
         self.helper_create_dummy_users()

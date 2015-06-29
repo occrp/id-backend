@@ -19,6 +19,7 @@ STORYSTATUSES = (
 
 class Project(models.Model):
     title = models.CharField(max_length=250)
+    description = models.CharField(max_length=250, blank=True, null=True)
     coordinator = models.ForeignKey(AUTH_USER_MODEL, related_name="coordinator")
     # podaci_root = models.CharField(max_length=50)
     users = models.ManyToManyField(AUTH_USER_MODEL, related_name="members")
