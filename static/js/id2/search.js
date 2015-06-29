@@ -1,13 +1,12 @@
+ID2 = ID2 || {};
+ID2.Search = {};
 
-var id2 = {};
-id2.search = {};
-
-id2.search.init = function() {
-    $("#search_submit").on("click", id2.search.startSearch);
-    $("#search_form").on("submit", id2.search.startSearch);
+ID2.Search.init = function() {
+    $("#search_submit").on("click", ID2.Search.startSearch);
+    $("#search_form").on("submit", ID2.Search.startSearch);
 };
 
-id2.search.checkResults = function(searchid, resultcallback) {
+ID2.Search.checkResults = function(searchid, resultcallback) {
     console.log("Checking results...")
     $.getJSON("/search/results/", {"id": searchid}, function(data) {
         if (data.status) {
@@ -26,15 +25,15 @@ id2.search.checkResults = function(searchid, resultcallback) {
                     scrollTop: $('#search_results').offset().top
                 }, 1000);
             } else {
-                window.setTimeout(function() { id2.search.checkResults(searchid, resultcallback); }, data.checkin_after);
+                window.setTimeout(function() { ID2.Search.checkResults(searchid, resultcallback); }, data.checkin_after);
             }
         } else {
-            window.setTimeout(function() { id2.search.checkResults(searchid, resultcallback); }, 2000);
+            window.setTimeout(function() { ID2.Search.checkResults(searchid, resultcallback); }, 2000);
         }
     });
 };
 
-id2.search.renderImageResult = function(item) {
+ID2.Search.renderImageResult = function(item) {
     var timestamp = new Date(item.data.timestamp*1000);
     result = $('<div class="image-search-result"/>');
     result.append('<a href="'+item.data.result_url+'"><img src="'+item.data.image_url+'"/></a>');
@@ -45,7 +44,7 @@ id2.search.renderImageResult = function(item) {
     return result;
 };
 
-id2.search.renderDocumentResult = function(item) {
+ID2.Search.renderDocumentResult = function(item) {
     var result = $('<div class="document-search-result"/>');
     console.log(item);
     result.append('<h4><a href="' + item.data.result_url + '" target="_blank">' + item.data.title + '</a></h4>');
@@ -73,38 +72,38 @@ id2.search.renderDocumentResult = function(item) {
               </div>*/
 };
 
-id2.search.renderDefaultResult = function(item) {
+ID2.Search.renderDefaultResult = function(item) {
     result = $('<div class="result">' + item + '</div>');
     return result;
 };
 
-id2.search.resultcallbacks = {
-    "image": id2.search.renderImageResult,
-    "document": id2.search.renderDocumentResult,
-    "default": id2.search.renderDefaultResult,
+ID2.Search.resultcallbacks = {
+    "image": ID2.Search.renderImageResult,
+    "document": ID2.Search.renderDocumentResult,
+    "default": ID2.Search.renderDefaultResult,
 }
 
-id2.search.urls = {
+ID2.Search.urls = {
     // FIXME: Get this from elsewhere
     "image": "/search/image/query/",
     "document": "/search/document/query/",
 }
 
-id2.search.startSearch = function() {
+ID2.Search.startSearch = function() {
     console.log("STARTING SEARCH");
     $("#search_results").empty();
     $("#search_statistics").hide();
     var type = $("#search_form").data("type");
-    var callback = id2.search.resultcallbacks[type];
+    var callback = ID2.Search.resultcallbacks[type];
     if (!callback) {
-        callback = id2.search.resultcallbacks["default"];
+        callback = ID2.Search.resultcallbacks["default"];
     }
-    url = id2.search.urls[type];
+    url = ID2.Search.urls[type];
     $.getJSON(url, $("#search_form").serialize(), function(data) {
         if (data.status) {
             $("#searching_notice").show();
             window.setTimeout(function() { 
-                id2.search.checkResults(data.searchid, callback); 
+                ID2.Search.checkResults(data.searchid, callback); 
             }, data.checkin_after);
         }
     });
@@ -112,5 +111,5 @@ id2.search.startSearch = function() {
 };
 
 $(function() {
-    id2.search.init();
+    ID2.Search.init();
 });
