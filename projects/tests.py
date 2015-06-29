@@ -238,36 +238,42 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('assign user democracy for all',
+                                                    'assign description',
                                                     self.staff_user,
-                                                    self.staff_user.id,
-                                                    [self.staff_user.id])
+                                                    [self.staff_user])
 
         data = {'users': [self.admin_user.id, self.volunteer_user.id, self.user_user.id]}
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        assign_response = client.post(reverse('project_add_users', kwargs={'id': project.id}), data, format='json')
-        project = Project.objects.get(id=project.id)
+        assign_response = client.patch(reverse('project_detail', kwargs={'pk': project.id}), data, format='json')
 
         self.assertEqual(assign_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(project.users.count(), 4)
+
+        project = Project.objects.get(id=project.id)
+        self.assertEqual(project.users.count(), 3)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user, self.volunteer_user, self.user_user], assign_response.data['users']),
+                         True)
 
     def test_unassign_project_users(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('unassign user democracy for all',
-                                                    self.staff_user,
+                                                    'unassign description',
                                                     self.staff_user,
                                                     [self.staff_user, self.admin_user, self.volunteer_user, self.user_user])
 
         data = {'users': [self.volunteer_user.id]}
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        unassign_response = client.delete(reverse('project_remove_users', kwargs={'id': project.id}), data, format='json')
-        project = Project.objects.get(id=project.id)
+        unassign_response = client.patch(reverse('project_detail', kwargs={'pk': project.id}), data, format='json')
 
         self.assertEqual(unassign_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(project.users.count(), 3)
+
+        project = Project.objects.get(id=project.id)
+        self.assertEqual(project.users.count(), 1)
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.volunteer_user], unassign_response.data['users']),
+                         True)
 
     def test_list_project_users(self):
         self.helper_create_dummy_users()
