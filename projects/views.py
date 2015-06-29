@@ -72,7 +72,7 @@ class ProjectUsers(UsersBase):
             serializer = UserSerializer(project.users.all(), many=True)
             return Response(serializer.data)
 
-        return Response({})
+        return Response([])
 
     def put(self, request, pk, format=None):
         project = self.get_project(pk)
