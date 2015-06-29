@@ -70,9 +70,11 @@ class ProjectUsers(UsersBase):
 
         if len(project.users.all()) > 0:
             serializer = UserSerializer(project.users.all(), many=True)
-            return Response(serializer.data)
+            json = {'users': serializer.data}
+            return Response(json)
 
-        return Response([])
+        json = {'users': []}
+        return Response(json)
 
     def put(self, request, pk, format=None):
         project = self.get_project(pk)
@@ -86,7 +88,8 @@ class ProjectUsers(UsersBase):
 
         serializer = UserSerializer(users, many=True)
 
-        return Response(serializer.data)
+        json = {'users': serializer.data}
+        return Response(json)
 
     def delete(self, request, pk, format=None):
         project = self.get_project(pk)
