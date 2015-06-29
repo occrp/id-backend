@@ -38,12 +38,13 @@ class UserField(serializers.RelatedField):
 #
 #
 class ProjectSerializer(serializers.ModelSerializer):
+    description = serializers.CharField(max_length=250, allow_null=True, allow_blank=True, required=False)
     coordinator = UserField(queryset=get_user_model().objects.all())
     users = UserField(many=True, queryset=get_user_model().objects.all())
 
     class Meta:
         model = Project
-        fields = ('id', 'title', 'coordinator', 'users')
+        fields = ('id', 'title', 'description', 'coordinator', 'users')
 
 # -- STORY SERIALIZERS
 #
