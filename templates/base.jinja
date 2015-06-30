@@ -15,8 +15,8 @@
     <meta name="id_version" content="{{id_version()}}"/>
 
     <link rel="stylesheet" href="{{ static("css/main.css") }}"/>
-    <link rel="stylesheet" href="{{ static("components/font-awesome/css/font-awesome.min.css") }}"/>
-    <link href="{{ static("components/jquery-mentions-input/jquery.mentionsInput.css") }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{ static("bower_components/font-awesome/css/font-awesome.min.css") }}"/>
+    <link rel="stylesheet" href="{{ static("bower_components/jquery-mentions-input/jquery.mentionsInput.css") }}" type="text/css">
     <link rel="stylesheet" href="{{ static('css/search.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ static('css/ol.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ static('css/tooltips.css') }}" type="text/css">
@@ -145,25 +145,25 @@
 {% block js %}
     <script type="text/javascript" src="{{ url('django.views.i18n.javascript_catalog') }}"></script>
     <script type="text/javascript" src="{{ static("js/i18n.js") }}"></script>
-    <script type="text/javascript" src="{{ static("components/jquery/jquery.min.js") }}"></script>
-    <script type="text/javascript" src="{{ static("components/underscore/underscore-min.js") }}"></script>
-    <script type="text/javascript" src="{{ static("components/bootstrap/js/bootstrap.js") }}"></script>
-    <script type="text/javascript" src="{{ static("components/bootstrap-datepicker/js/bootstrap-datepicker.js") }}"></script>
-    <script type="text/javascript" src="{{ static("components/select2/select2.min.js") }}"></script>
-    <script type="text/javascript" src="{{ static("components/moment/min/moment.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/jquery/jquery.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/underscore/underscore-min.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/bootstrap.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/select2/select2.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/moment/min/moment.min.js") }}"></script>
     {% if LANGUAGE_LC != "en" %}
-        <script type="text/javascript" src="{{ static("components/bootstrap-datepicker/js/locales/bootstrap-datepicker." + LANGUAGE_LC + ".js") }}"></script>
-        <script type="text/javascript" src="{{ static("components/select2/select2_locale_" + LANGUAGE_LC + ".js") }}"></script>
-        <script type="text/javascript" src="{{ static("components/moment/min/lang/" + LANGUAGE_LC + ".js") }}"></script>
+        <script type="text/javascript" src="{{ static("bower_components/bootstrap-datepicker/js/locales/bootstrap-datepicker." + LANGUAGE_LC + ".js") }}"></script>
+        <script type="text/javascript" src="{{ static("bower_components/select2/select2_locale_" + LANGUAGE_LC + ".js") }}"></script>
+        <script type="text/javascript" src="{{ static("bower_components/moment/min/lang/" + LANGUAGE_LC + ".js") }}"></script>
     {% else %}
-        <script type="text/javascript" src="{{ static("components/moment/min/lang/en-gb.js") }}"></script>
+        <script type="text/javascript" src="{{ static("bower_components/moment/min/lang/en-gb.js") }}"></script>
     {% endif %}
-    <script type="text/javascript" src="{{ static("components/spin.js/spin.js") }}"></script>
-    <script type="text/javascript" src="{{ static("components/spin.js/jquery.spin.js") }}"></script>
-    <script type="text/javascript" src="{{ static("components/jquery.scrollTo/jquery.scrollTo.min.js") }}"></script>
-    <script type="text/javascript" src="{{ static("components/jquery-mentions-input/lib/jquery.elastic.js") }}"></script>
-    <script type="text/javascript" src="{{ static("components/jquery-mentions-input/jquery.mentionsInput.js") }}"></script>
-    <script type="text/javascript" src="{{ static("js/equalheights.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/spin.js/spin.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/spin.js/jquery.spin.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/jquery.scrollTo/jquery.scrollTo.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/jquery-mentions-input/lib/jquery.elastic.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/jquery-mentions-input/jquery.mentionsInput.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/jquery.equalheights/jquery.equalheights.min.js") }}"></script>
     <script type="text/javascript" src="{{ static("js/bootstrap-fileupload.js") }}"></script>
     <script type="text/javascript">
         $('[data-toggle=tooltip]').tooltip();
