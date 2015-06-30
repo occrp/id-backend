@@ -69,6 +69,7 @@ The intended product is a Django application that can exist standalone or plug i
  * Fully integration tested
  * All core logic in models or separate classes, not in views or templates
  * No unit composition in units
+ * 
 
 ## REST Endpoints
 
@@ -124,3 +125,7 @@ The intended product is a Django application that can exist standalone or plug i
  * PUT /api/plans/<plid>/              - Update a plan
  * DELETE /api/plans/<plid>/           - Delete a plan
 
+## REST Endpoint Guidelines
+* A User can only see a Project they are coordinator of or are a member of
+* A User can see all stories in a Project they are a member of
+* A User can only alter a story if they are assigned to it
