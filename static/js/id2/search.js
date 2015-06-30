@@ -1,4 +1,4 @@
-ID2 = ID2 || {};
+var ID2 = ID2 || {};
 ID2.Search = {};
 
 ID2.Search.init = function() {
