@@ -26,16 +26,9 @@ def api_root(request, format=None):
         'projects': reverse('project_list', request=request, format=format)
     })
 
-# -- PROJECT VIEWS
+# -- USER VIEWS
 #
 #
-class ProjectList(generics.ListCreateAPIView):
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
-
-class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
 
 class UsersBase(APIView):
 
@@ -56,6 +49,34 @@ class UsersBase(APIView):
                 users.append(self.get_object(i))
 
         return users
+
+# -- PROJECT VIEWS
+#
+#
+class ProjectQuerySetMixin:
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            projects = Project.objects.all()
+        else:
+            projects = Project.objects.filter(coordinator=self.request.user)
+
+        return projects
+
+class ProjectList(ProjectQuerySetMixin, generics.ListCreateAPIView):
+    serializer_class = ProjectSerializer
+
+    def post(self, request, *args, **kwargs):
+        request.data['coordinator'] = request.user.id
+        return super(ProjectList, self).post(request, *args, **kwargs)
+
+
+class ProjectDetail(ProjectQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+    def put(self, request, *args, **kwargs):
+        request.data['coordinator'] = request.user.id
+        return super(ProjectList, self).put(request, *args, **kwargs)
 
 class ProjectUsers(UsersBase):
 
@@ -126,6 +147,7 @@ class StoryDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Story.objects.all()
     serializer_class = StorySerializer
 
+##
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def dummy_view(request, id=0):
