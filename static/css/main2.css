@@ -1,6 +1,6 @@
-@import "../components/roboto-font/roboto.css";
+@import "../bower_components/roboto-fontface/css/roboto-fontface.css";
 
-@import "../components/select2/select2.css";
+@import "../bower_components/select2/select2.css";
 /** Form widgets **/
 .multiwidgetcontainer .widget {
   margin-bottom: 5px;

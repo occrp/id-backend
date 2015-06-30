@@ -1,6 +1,6 @@
-@import "../components/roboto-font/roboto.css";
+@import "../bower_components/roboto-fontface/css/roboto-fontface.css";
 
-@import "../components/select2/select2.css";
+@import "../bower_components/select2/select2.css";
 /*!
  * Bootstrap v2.3.2
  *
@@ -6454,8 +6454,8 @@ h3 {
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('../components/font-awesome/font/fontawesome-webfont.eot?v=3.2.1');
-  src: url('../components/font-awesome/font/fontawesome-webfont.eot?#iefix&v=3.2.1') format('embedded-opentype'), url('../components/font-awesome/font/fontawesome-webfont.woff?v=3.2.1') format('woff'), url('../components/font-awesome/font/fontawesome-webfont.ttf?v=3.2.1') format('truetype'), url('../components/font-awesome/font/fontawesome-webfont.svg#fontawesomeregular?v=3.2.1') format('svg');
+  src: url('../bower_components/font-awesome/font/fontawesome-webfont.eot?v=3.2.1');
+  src: url('../bower_components/font-awesome/font/fontawesome-webfont.eot?#iefix&v=3.2.1') format('embedded-opentype'), url('../bower_components/font-awesome/font/fontawesome-webfont.woff?v=3.2.1') format('woff'), url('../bower_components/font-awesome/font/fontawesome-webfont.ttf?v=3.2.1') format('truetype'), url('../bower_components/font-awesome/font/fontawesome-webfont.svg#fontawesomeregular?v=3.2.1') format('svg');
   font-weight: normal;
   font-style: normal;
 }
