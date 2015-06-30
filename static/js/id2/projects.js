@@ -5,12 +5,12 @@ ID2.Projects.config(function($interpolateProvider) {
   $interpolateProvider.endSymbol(']]');
 });
 
-ID2.Projects.controller('ID2ProjectsController', ['$scope', '$mdSidenav', '$mdDialog', '$http',  function($scope, $mdSidenav, $mdDialog, $http) {
+ID2.Projects.controller('ID2ProjectsController', ['$scope', '$mdSidenav', '$mdDialog', '$http', function($scope, $mdSidenav, $mdDialog, $http) {
     $scope.toggleSidenav = function(menuId) {
         $mdSidenav(menuId).toggle();
     };
 
-    $scope.goto = function(item) {
+    $scope.selectProject = function(item) {
         console.log("going to " + item);
     }
 
@@ -22,6 +22,7 @@ ID2.Projects.controller('ID2ProjectsController', ['$scope', '$mdSidenav', '$mdDi
             targetEvent: ev,
         })
         .then(function(data) {
+            if (!data) { return; }
             console.log(data);
             $http.post('/api/projects/', data).
                 success(function(data, status, headers, config) {
@@ -52,18 +53,7 @@ ID2.Projects.controller('ID2ProjectsController', ['$scope', '$mdSidenav', '$mdDi
     $scope.projectList = []
     $scope.projectListUpdate();
 
-    this.menuitems = [
-        {"icon": "fa-search", "name": "Search"},
-        {"icon": "fa-database", "name": "Databases"},
-        {"icon": "fa-ticket", "name": "Tickets"},
-        {"icon": "fa-folder", "name": "Projects"},
-    ];
-    this.appselected = this.menuitems[1];
-
     function DialogController($scope, $mdDialog) {
-        $scope.hide = function() {
-            $mdDialog.hide();
-        };
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
