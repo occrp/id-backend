@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.http import Http404
 
 from rest_framework import generics
-from rest_framework import mixins
+from rest_framework import mixins as rest_framework_mixins
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -13,6 +13,7 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from projects.models import Project, Story
+from projects.mixins import ProjectQuerySetMixin, StoryQuerySetMixin
 from projects.serializers import ProjectSerializer, StorySerializer, UserSerializer
 
 import simplejson
@@ -53,15 +54,6 @@ class UsersBase(APIView):
 # -- PROJECT VIEWS
 #
 #
-class ProjectQuerySetMixin:
-    def get_queryset(self):
-        if self.request.user.is_superuser:
-            projects = Project.objects.all()
-        else:
-            projects = Project.objects.filter(coordinator=self.request.user)
-
-        return projects
-
 class ProjectList(ProjectQuerySetMixin, generics.ListCreateAPIView):
     serializer_class = ProjectSerializer
 
@@ -76,7 +68,7 @@ class ProjectDetail(ProjectQuerySetMixin, generics.RetrieveUpdateDestroyAPIView)
 
     def put(self, request, *args, **kwargs):
         request.data['coordinator'] = request.user.id
-        return super(ProjectDetail, self).put(request, *args, **kwargs)
+        return super(ProjectList, self).put(request, *args, **kwargs)
 
 class ProjectUsers(UsersBase):
 
@@ -127,7 +119,7 @@ class ProjectUsers(UsersBase):
 # -- STORY VIEWS
 #
 #
-class StoryList(generics.ListCreateAPIView):
+class StoryList(StoryQuerySetMixin, generics.ListCreateAPIView):
     queryset = Story.objects.all()
     serializer_class = StorySerializer
 
@@ -143,7 +135,7 @@ class StoryList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(podaci_root='somepodaciroot')
 
-class StoryDetail(generics.RetrieveUpdateDestroyAPIView):
+class StoryDetail(StoryQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Story.objects.all()
     serializer_class = StorySerializer
 
