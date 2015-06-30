@@ -61,6 +61,12 @@ The intended product is a Django application that can exist standalone or plug i
  * A Journalist, Researcher, Editor, Copy Editor or Translator can post questions or comments on a story or versions of stories that others assigned to the story are notified about and can view.
  * An Editor can lock a story against changes 
  * A User who's assigned to a Project can post comments on the project 
+ * A User can create a Project
+ * A User can add other users to projects they coordinate
+ * A User can only see a Project they are coordinator of or are a member of
+ * An Admin can see every Project, if they choose to
+ * A User can see all stories in a Project they are a member of
+ * A User can only alter a story if they are assigned to it
 
 ## Cross-functional Requirements
  * Application interactions provided through Web Components
