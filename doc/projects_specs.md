@@ -129,3 +129,4 @@ The intended product is a Django application that can exist standalone or plug i
 * A User can only see a Project they are coordinator of or are a member of
 * A User can see all stories in a Project they are a member of
 * A User can only alter a story if they are assigned to it
+* A User can add other users to a project they coordinate
