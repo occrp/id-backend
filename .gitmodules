@@ -1,3 +1,0 @@
-[submodule "static/components/jquery-mentions-input"]
-	path = static/components/jquery-mentions-input
-	url = git@github.com:podio/jquery-mentions-input.git

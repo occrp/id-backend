@@ -2,7 +2,7 @@
   "name": "investigative-dashboard",
   "version": "2.0.0",
   "dependencies": {
-    "bootstrap": "2.3.2",
+    "bootstrap": "~3.3.5",
     "bootstrap-datepicker": "1.1.1",
     "select2": "3.4.0",
     "spin.js": "1.3.0",
@@ -11,6 +11,8 @@
     "font-awesome": "4.2.0",
     "jquery.scrollTo": "1.4.6",
     "blueimp-file-upload": "9.9.3",
-    "angular-material": "~0.10.0"
+    "angular-material": "~0.10.0",
+    "jquery.equalheights": "~1.5.2",
+    "jquery-mentions-input": "~1.6.0"
   }
 }
