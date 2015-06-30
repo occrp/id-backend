@@ -37,6 +37,7 @@ class UserField(serializers.RelatedField):
 # -- PROJECT SERIALIZERS/FIELDS/VALIDATORS
 #
 #
+
 class ProjectSerializer(serializers.ModelSerializer):
     description = serializers.CharField(max_length=250, allow_null=True, allow_blank=True, required=False)
     coordinator = UserField(queryset=get_user_model().objects.all())
