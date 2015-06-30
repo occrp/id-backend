@@ -13,6 +13,7 @@
     "blueimp-file-upload": "9.9.3",
     "angular-material": "~0.10.0",
     "jquery.equalheights": "~1.5.2",
-    "jquery-mentions-input": "~1.6.0"
+    "jquery-mentions-input": "~1.6.0",
+    "roboto-fontface": "~0.4.2"
   }
 }
