@@ -126,7 +126,6 @@ class ProjectUsers(UsersBase):
 #
 #
 class StoryList(StoryListQuerySetMixin, generics.ListCreateAPIView):
-    queryset = Story.objects.all()
     serializer_class = StorySerializer
 
     def get_queryset(self):
@@ -136,12 +135,10 @@ class StoryList(StoryListQuerySetMixin, generics.ListCreateAPIView):
         serializer.save(podaci_root='somepodaciroot')
 
 class StoryDetail(StoryQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = Story.objects.all()
     serializer_class = StorySerializer
 
     def put(self, request, *args, **kwargs):
         if not request.user.is_superuser:
-            print 'im not a super user and im in put'
             if 'project' in request.data:
                 own_result = Project.objects.all().filter(id=request.data['project']) \
                              .filter(Q(coordinator=request.user) | Q(users__in=[request.user])).count()
