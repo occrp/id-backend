@@ -1,0 +1,17 @@
+<md-content layout="column" flex class="md-padding">
+    <md-button class="md-fab" style="position:absolute; right:0px;" aria-label="New Project" ng-click="newProject($event)">
+        <md-icon md-font-icon="fa-plus" class="fa fa-2x"></md-icon>
+    </md-button>
+    <h1>Projects</h1>
+
+    <md-list>
+        <md-list-item class="md-3-line" ng-repeat="it in projectList" ng-click="selectProject(it)">
+            <md-icon md-font-icon="fa-folder" class="fa fa-2x"></md-icon>
+            <div class="md-list-item-text">
+                <h3>{{it.title}}</h3>
+                <h4>{{it.description}}</h4>
+                <p>{{it.coordinator.email}}</p>
+            </div>
+        </md-list-item>
+    </md-list>
+</md-content>
