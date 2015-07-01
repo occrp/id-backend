@@ -1,5 +1,5 @@
 from django.db.models import Q
-from projects.models import Project, Story
+from projects.models import Project, Story, StoryVersion
 
 class ProjectQuerySetMixin(object):
     def get_queryset(self):
@@ -11,7 +11,7 @@ class ProjectQuerySetMixin(object):
 class StoryQuerySetBaseMixin(object):
     def user_in_story_filter(self, story_objects, user):
         return story_objects.filter(Q(reporters__in=[user]) |
-                                    Q(researchers__in=[user]) |
+                                       Q(researchers__in=[user]) |
                                     Q(editors__in=[user]) |
                                     Q(copy_editors__in=[user]) |
                                     Q(fact_checkers__in=[user]) |
@@ -33,4 +33,21 @@ class StoryListQuerySetMixin(StoryQuerySetMixin):
         stories = super(StoryListQuerySetMixin, self).get_queryset()
         return stories.filter(project__id=project_id)
 
-# class StoryVersionQuerySet(object):
+class StoryVersionListQuerySetMixin(StoryQuerySetBaseMixin):
+    def get_queryset(self, story_id):
+        if self.request.user.is_superuser:
+            return StoryVersion.objects.all()
+
+        try:
+            story = Story.objects.filter(id=story_id)
+        except Story.DoesNotExist:
+            return []
+
+        print story
+        story = self.user_in_story_filter(story, self.request.user)
+        print story
+        if story.count() == 0:
+            print "0 count, woops!"
+            return []
+
+        return StoryVersion.objects.all()
