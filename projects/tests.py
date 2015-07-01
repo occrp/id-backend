@@ -205,8 +205,7 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(alter_response.data['id'], project.id)
         self.assertEqual(alter_response.data['title'], 'altered title')
         self.assertEqual(alter_response.data['description'], '')
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user], [alter_response.data['coordinator']]),
-                         True)
+        self.assertEqual(alter_response.data['coordinator']['id'], self.staff_user.id)
         self.assertEqual(self.helper_all_users_in_list_by_id([self.volunteer_user, self.user_user, self.staff_user], alter_response.data['users']),
                          True)
 
@@ -431,16 +430,16 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('deleting a story project',
-                                                    self.staff_user,
+                                                    'delting a story project description',
                                                     self.staff_user,
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('delete story', project)
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        delete_response = client.delete(reverse('story_delete', kwargs={'id': story.id}))
+        delete_response = client.delete(reverse('story_detail', kwargs={'pk': story.id}))
 
-        self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(delete_response.status_code, status.HTTP_204_NO_CONTENT)
 
         try:
             story = Story.objects.get(id=story.id)
