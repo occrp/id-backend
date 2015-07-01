@@ -10,7 +10,7 @@ class ProjectQuerySetMixin:
 
 
 class StoryQuerySetMixin:
-    def get_queryset(self):
+    def get_queryset(self, project_id=0):
         if self.request.user.is_superuser:
             print "apparently i am  super user!"
             stories = Story.objects.all()
@@ -25,7 +25,7 @@ class StoryQuerySetMixin:
                                            Q(artists__in=[self.request.user]) |
                                            Q(project__coordinator=self.request.user))
 
-        if 'project_id' in self.kwargs:
-            stories.objects.filter(project__id=int(self.kwargs['project_id']))
+        if project_id > 0:
+            stories.filter(project__id=project_id)
 
         return stories
