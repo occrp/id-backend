@@ -133,6 +133,19 @@ class StoryDetail(StoryQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Story.objects.all()
     serializer_class = StorySerializer
 
+    def put(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            print 'im not a super user and im in put'
+            if 'project' in request.data:
+                own_result = Project.objects.all().filter(id=request.data['project']).filter(coordinator=request.user).count()
+
+                print "own_result"
+                print own_result
+                if own_result == 0:
+                    return Response({'details': "not possible to change project to one that does not exist or you don't own"},
+                                    status=status.HTTP_403_FORBIDDEN)
+
+        return super(StoryDetail, self).put(request, *args, **kwargs)
 ##
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
