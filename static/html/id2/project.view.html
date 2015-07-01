@@ -1,0 +1,74 @@
+<div layout="column" flex>
+    <h1>
+        <a href="#/projects"><b style="margin-right: 1em;" class="fa fa-angle-left"></b></a> <b class="fa fa-folder"></b> {{project.title}}</h1>
+
+    <div>Members: <span style="padding-right: 1em;" ng-repeat="user in project.users"><a href="/accounts/profile/{{user.id}}">{{user.name}}</a></span></div>
+
+    <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="Stories">
+            <md-content class="md-padding">
+                <md-button class="md-fab" style="position:fixed; right:0px;" aria-label="New Story" ng-click="newStory($event)">
+                    <md-icon md-font-icon="fa-plus" class="fa fa-2x"></md-icon>
+                </md-button>
+                <md-list>
+                    <md-list-item class="md-3-line" ng-repeat="it in storyList" ng-click="openStory(it)">
+                        <md-icon md-font-icon="fa-newspaper-o" class="fa fa-2x"></md-icon>
+                        <div class="md-list-item-text">
+                            <h3>{{it.title}}</h3>
+                            <h4>{{it.thesis}}</h4>
+                            <p>Authors: <span style="padding-right: 1em;" ng-repeat="user in it.authors"><a href="/accounts/profile/{{user.id}}">{{user.name}}</a></span></p>
+                        </div>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </md-tab>
+
+        <md-tab label="Research">
+            <md-content class="md-padding">
+                ...
+            </md-content>
+        </md-tab>
+
+        <md-tab label="Planning">
+            <md-content class="md-padding">
+                ...
+            </md-content>
+        </md-tab>
+
+        <md-tab label="Costs">
+            <md-content class="md-padding">
+                ...
+            </md-content>
+        </md-tab>
+
+        <md-tab label="Settings">
+            <md-content class="md-padding">
+                <h5>Coordinator:</h5>
+                <md-chips>
+                    <md-chip>{{project.coordinator.email}}</md-chip>
+                </md-chips>
+
+                <h5>Members:</h5>
+                <md-contact-chips
+                    placeholder="Members"
+                    ng-model="project.users"
+                    md-contacts="getUsers($query)"
+                    md-contact-name="email"
+                    md-contact-image="image"
+                    md-contact-email="email"
+                    md-require-match
+                    filter-selected="true">
+                </md-contact-chips>
+
+                <h5>Other details:</h5>
+                <md-input-container>
+                    <label>Description</label>
+                    <input ng-model="project.description" md-maxlength="200"/>
+                </md-input-container>
+
+                {{project.users}}
+            </md-content>
+        </md-tab>
+    </md-tabs>
+
+</div>

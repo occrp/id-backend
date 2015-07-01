@@ -2,30 +2,7 @@
 
 {% block content %}
 <link rel="stylesheet" href="/static/bower_components/angular-material/angular-material.min.css"/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic"/>
-<link rel="stylesheet" href="/static/bower_components/font-awesome/css/font-awesome.min.css"/>
-<div layout="row" flex ng-app="ID2Projects" ng-controller="ID2ProjectsController as projects">
-    <md-content layout="column" flex class="md-padding">
-        <md-button class="md-fab" style="position:absolute; right:0px;" aria-label="New Project" ng-click="newProject($event)">
-            <md-icon md-font-icon="fa-plus" class="fa fa-2x"></md-icon>
-        </md-button>
-        <h1>Projects</h1>
-
-        <md-list>
-            <md-list-item class="md-3-line" ng-repeat="it in projectList" ng-click="projects.selectProject(it)">
-                <md-icon md-font-icon="fa-folder" class="fa fa-2x"></md-icon>
-                <div class="md-list-item-text">
-                    <h3>[[it.title]]</h3>
-                    <h4>[[it.description]]</h4>
-                    <p>[[it.coordinator.email]]</p>
-                </div>
-            </md-list-item>
-        </md-list>
-    </md-content>
+<div layout="row" flex ng-view>
 </div>
-<script src="/static/bower_components/angular/angular.min.js"></script>
-<script src="/static/bower_components/angular-animate/angular-animate.min.js"></script>
-<script src="/static/bower_components/angular-aria/angular-aria.min.js"></script>
-<script src="/static/bower_components/angular-material/angular-material.min.js"></script>
-<script src="/static/js/id2/projects.js"></script>
+
 {% endblock %}
