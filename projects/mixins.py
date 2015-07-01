@@ -8,19 +8,23 @@ class ProjectQuerySetMixin(object):
         else:
             return Project.objects.filter(coordinator=self.request.user)
 
-class StoryQuerySetMixin(object):
+class StoryQuerySetBaseMixin(object):
+    def user_in_story_filter(self, story_objects, user):
+        return story_objects.filter(Q(reporters__in=[user]) |
+                                    Q(researchers__in=[user]) |
+                                    Q(editors__in=[user]) |
+                                    Q(copy_editors__in=[user]) |
+                                    Q(fact_checkers__in=[user]) |
+                                    Q(translators__in=[user]) |
+                                    Q(artists__in=[user]) |
+                                    Q(project__coordinator=user))
+
+class StoryQuerySetMixin(StoryQuerySetBaseMixin):
     def get_queryset(self):
         if self.request.user.is_superuser:
             stories = Story.objects.all()
         else:
-            stories = Story.objects.filter(Q(reporters__in=[self.request.user]) |
-                                           Q(researchers__in=[self.request.user]) |
-                                           Q(editors__in=[self.request.user]) |
-                                           Q(copy_editors__in=[self.request.user]) |
-                                           Q(fact_checkers__in=[self.request.user]) |
-                                           Q(translators__in=[self.request.user]) |
-                                           Q(artists__in=[self.request.user]) |
-                                           Q(project__coordinator=self.request.user))
+            stories = self.user_in_story_filter(Story.objects.all(), self.request.user)
 
         return stories
 
@@ -28,3 +32,5 @@ class StoryListQuerySetMixin(StoryQuerySetMixin):
     def get_queryset(self, project_id):
         stories = super(StoryListQuerySetMixin, self).get_queryset()
         return stories.filter(project__id=project_id)
+
+# class StoryVersionQuerySet(object):
