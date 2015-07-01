@@ -14,7 +14,8 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from projects.models import Project, Story, StoryVersion
-from projects.mixins import ProjectQuerySetMixin, StoryQuerySetMixin, StoryListQuerySetMixin
+from projects.mixins import (
+    ProjectQuerySetMixin, StoryQuerySetMixin, StoryListQuerySetMixin, StoryVersionListQuerySetMixin)
 from projects.serializers import (
     ProjectSerializer, StorySerializer, UserSerializer, StoryVersionSerializer)
 
@@ -28,6 +29,7 @@ def api_root(request, format=None):
     return Response({
         'projects': reverse('project_list', request=request, format=format),
         'stories': reverse('story_list', kwargs={'pk': 0}, request=request, format=format),
+        'story detail': reverse('story_detail', kwargs={'pk': 0}, request=request, format=format),
         'story versions': reverse('story_version_list', kwargs={'pk': 0}, request=request, format=format)
     })
 
@@ -153,9 +155,12 @@ class StoryDetail(StoryQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
 # -- STORY VERSION VIEWS
 #
 #
-class StoryVersionList(generics.ListCreateAPIView):
+class StoryVersionList(StoryVersionListQuerySetMixin, generics.ListCreateAPIView):
     queryset = StoryVersion.objects.all()
-    serializer = StoryVersionSerializer
+    serializer_class = StoryVersionSerializer
+
+    def get_queryset(self):
+        return super(StoryVersionList, self).get_queryset(self.kwargs['pk'])
 ##
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
