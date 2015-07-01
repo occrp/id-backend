@@ -124,13 +124,7 @@ class StoryList(StoryQuerySetMixin, generics.ListCreateAPIView):
     serializer_class = StorySerializer
 
     def get_queryset(self):
-        try:
-            project_id = int(self.kwargs['pk'])
-            stories = Story.objects.filter(project__id=project_id)
-        except Story.DoesNotExist:
-            stories = []
-
-        return stories
+        return super(StoryList, self).get_queryset(self.kwargs['pk'])
 
     def perform_create(self, serializer):
         serializer.save(podaci_root='somepodaciroot')
