@@ -62,6 +62,7 @@ class StorySerializer(serializers.ModelSerializer):
     artists = UserField(many=True, queryset=get_user_model().objects.all())
     published = serializers.DateField(allow_null=True, required=False)
     podaci_root = serializers.CharField(max_length=50, read_only=True, required=False)
+    version_count = serializers.IntegerField(source='versions.count', read_only=True)
 
     class Meta:
         model = Story
@@ -77,4 +78,5 @@ class StorySerializer(serializers.ModelSerializer):
                   'translators',
                   'artists',
                   'published',
-                  'podaci_root')
+                  'podaci_root',
+                  'version_count')
