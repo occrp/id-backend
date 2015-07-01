@@ -368,32 +368,27 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('story list project',
+                                                    'story lst project description',
                                                     self.staff_user,
-                                                    self.staff_user,
-                                                    [self.staff_user])
+                                                    [self.volunteer_user])
         self.helper_create_single_story_dummy_wrapper('list story 1', project)
         self.helper_create_single_story_dummy_wrapper('list story 2', project)
-        self.helper_create_single_story_dummy_wrapper('list story 3', project)
+        self.helper_create_single_story(project, 'list story 3', reporters=[self.user_user])
 
         client = APIClient()
-        client.force_authenticate(user=self.staff_user)
-        list_response = client.get(reverse('story_list', kwargs={'id': project.id}))
+        client.force_authenticate(user=self.volunteer_user)
+        list_response = client.get(reverse('story_list', kwargs={'pk': project.id}))
 
         self.assertEqual(list_response.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(list_response.data, list)
-        self.assertEqual(len(list_response.data), 3)
-        self.assertGreater(list_response.data[0]['id'], 0)
+
+        results = list_response.data['results']
+        self.assertIsInstance(results, list)
+        # we should only see 2 results as volunteer_user should not be able to see story 3
+        self.assertEqual(len(results), 2)
+        self.assertEqual(results[0]['title'], 'list story 1')
+        self.assertEqual(results[1]['title'], 'list story 2')
 
     # STORY MEMBER
-        # self.helper_create_dummy_users()
-        # self.helper_cleanup_projects()
-
-        # client = APIClient()
-        # client.force_authenticate(user=self.staff_user)
-        # delete_response = client.delete(reverse('story_delete', kwargs={'id': story.id}))
-
-        # self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
-
     def test_get_story_details(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
@@ -986,16 +981,23 @@ class PipelineAPITest(APITestCase):
     # -- STORY HELPER FUNCTIONS
     #
     #
-    def helper_create_single_story(self, project, title, reporters, researchers, editors, copy_editors, fact_checkers, translators, artists):
+    def helper_create_single_story(self, project, title, reporters=[], researchers=[], editors=[], copy_editors=[], fact_checkers=[], translators=[], artists=[]):
         story = Story(project=project, title=title, published=datetime.datetime.now())
         story.save()
-        story.reporters.add(*reporters)
-        story.researchers.add(*researchers)
-        story.editors.add(*editors)
-        story.copy_editors.add(*copy_editors)
-        story.fact_checkers.add(*fact_checkers)
-        story.translators.add(*translators)
-        story.artists.add(*artists)
+        if len(reporters) > 0:
+            story.reporters.add(*reporters)
+        if len(researchers) > 0:
+            story.researchers.add(*researchers)
+        if len(editors) > 0:
+            story.editors.add(*editors)
+        if len(copy_editors) > 0:
+            story.copy_editors.add(*copy_editors)
+        if len(fact_checkers) > 0:
+            story.fact_checkers.add(*fact_checkers)
+        if len(translators) > 0:
+            story.translators.add(*translators)
+        if len(artists) > 0:
+            story.artists.add(*artists)
         story.save()
 
         return story
