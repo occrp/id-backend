@@ -13,9 +13,10 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
-from projects.models import Project, Story
-from projects.mixins import ProjectQuerySetMixin, StoryQuerySetMixin
-from projects.serializers import ProjectSerializer, StorySerializer, UserSerializer
+from projects.models import Project, Story, StoryVersion
+from projects.mixins import ProjectQuerySetMixin, StoryQuerySetMixin, StoryListQuerySetMixin
+from projects.serializers import (
+    ProjectSerializer, StorySerializer, UserSerializer, StoryVersionSerializer)
 
 import simplejson
 
@@ -25,7 +26,8 @@ import simplejson
 @api_view(('GET',))
 def api_root(request, format=None):
     return Response({
-        'projects': reverse('project_list', request=request, format=format)
+        'projects': reverse('project_list', request=request, format=format),
+        'stories': reverse('story_list', kwargs={'pk': 0}, request=request, format=format)
     })
 
 # -- USER VIEWS
@@ -120,7 +122,7 @@ class ProjectUsers(UsersBase):
 # -- STORY VIEWS
 #
 #
-class StoryList(StoryQuerySetMixin, generics.ListCreateAPIView):
+class StoryList(StoryListQuerySetMixin, generics.ListCreateAPIView):
     queryset = Story.objects.all()
     serializer_class = StorySerializer
 
@@ -146,6 +148,13 @@ class StoryDetail(StoryQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
                                     status=status.HTTP_403_FORBIDDEN)
 
         return super(StoryDetail, self).put(request, *args, **kwargs)
+
+# -- STORY VERSION VIEWS
+#
+#
+class StoryVersionList(generics.ListCreateAPIView):
+    queryset = StoryVersion.objects.all()
+    serializer = StoryVersionSerializer
 ##
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
