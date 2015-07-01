@@ -28,7 +28,12 @@ class UserField(serializers.RelatedField):
         return user
 
     def to_representation(self, value):
+        if value.first_name == "" or value.last_name == "":
+            name_representation = value.email
+        else:
+            name_representation = "%s %s" % (value.first_name, value.last_name)
         representation = {'id': value.id,
+                          'name': name_representation,
                           'email': value.email,
                           'first_name': value.first_name,
                           'last_name': value.last_name}
