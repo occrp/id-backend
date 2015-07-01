@@ -27,7 +27,8 @@ import simplejson
 def api_root(request, format=None):
     return Response({
         'projects': reverse('project_list', request=request, format=format),
-        'stories': reverse('story_list', kwargs={'pk': 0}, request=request, format=format)
+        'stories': reverse('story_list', kwargs={'pk': 0}, request=request, format=format),
+        'story versions': reverse('story_version_list', kwargs={'pk': 0}, request=request, format=format)
     })
 
 # -- USER VIEWS
