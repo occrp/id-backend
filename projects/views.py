@@ -68,7 +68,7 @@ class ProjectDetail(ProjectQuerySetMixin, generics.RetrieveUpdateDestroyAPIView)
 
     def put(self, request, *args, **kwargs):
         request.data['coordinator'] = request.user.id
-        return super(ProjectList, self).put(request, *args, **kwargs)
+        return super(ProjectDetail, self).put(request, *args, **kwargs)
 
 class ProjectUsers(UsersBase):
 
