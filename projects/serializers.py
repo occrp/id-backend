@@ -86,3 +86,19 @@ class StorySerializer(serializers.ModelSerializer):
                   'published',
                   'podaci_root',
                   'version_count')
+
+# -- STORY VERSION SERIALIZERS
+#
+#
+class StoryVersionSerializer(serializers.ModelSerializer):
+    story = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
+    author = UserField(queryset=get_user_model().objects.all())
+
+    class Meta:
+        model = StoryVersion
+        fields = {'id',
+                  'story',
+                  'timestamp',
+                  'author',
+                  'title',
+                  'test'}
