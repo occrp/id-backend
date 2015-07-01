@@ -2,6 +2,7 @@ import datetime
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.utils import timezone
 
 from rest_framework.test import APIRequestFactory, APIClient, APITestCase
 from rest_framework.reverse import reverse
@@ -452,13 +453,15 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
-        project = self.helper_create_single_project('altering a story version',
-                                                    self.staff_user,
+        project = self.helper_create_single_project('altering a story project',
+                                                    'altering a story project description',
                                                     self.staff_user,
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story to be altered', project)
 
+        altered_date = timezone.now()
         data = {'title': 'my altered title',
+                'project': story.project.id,
                 'reporters': [self.admin_user.id],
                 'researchers': [self.admin_user.id],
                 'editors': [self.admin_user.id],
@@ -466,24 +469,32 @@ class PipelineAPITest(APITestCase):
                 'fact_checkers': [self.admin_user.id],
                 'translators': [self.admin_user.id],
                 'artists': [self.admin_user.id],
-                'published': ''
+                'published': altered_date.isoformat()
                 }
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        alter_response = client.put(reverse('story_alter', kwargs={'id': story.id}), data, format='json')
+        alter_response = client.put(reverse('story_detail', kwargs={'pk': story.id}), data, format='json')
 
         self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
 
         story = Story.objects.get(id=story.id)
 
         self.assertEqual(story.title, 'my altered title')
-        self.assertEqual(story.reporters.all(), [self.admin_user])
-        self.assertEqual(story.researchers.all(), [self.admin_user])
-        self.assertEqual(story.editors.all(), [self.admin_user])
-        self.assertEqual(story.copy_editors.all(), [self.admin_user])
-        self.assertEqual(story.fact_checkers.all(), [self.admin_user])
-        self.assertEqual(story.translators.all(), [self.admin_user])
-        self.assertEqual(story.artists.all(), [self.admin_user])
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.reporters.all(),
+                                                             [self.admin_user]), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.researchers.all(),
+                                                             [self.admin_user]), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.editors.all(),
+                                                             [self.admin_user]), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.copy_editors.all(),
+                                                             [self.admin_user]), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.fact_checkers.all(),
+                                                             [self.admin_user]), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.translators.all(),
+                                                             [self.admin_user]), True)
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.artists.all(),
+                                                             [self.admin_user]), True)
+        self.assertGreater(1, self.helper_datetime_datetime_compare(story.published, altered_date))
 
     def test_get_story_version(self):
         self.helper_create_dummy_users()
@@ -1077,6 +1088,9 @@ class PipelineAPITest(APITestCase):
         string_datetime = datetime.datetime.strptime(string, "%Y-%m-%dT%H:%M:%SZ")
 
         return (string_datetime - datetime_object).total_seconds()
+
+    def helper_datetime_datetime_compare(self, datetime_object_1, datetime_object_2):
+        return (datetime_object_1 - datetime_object_2).total_seconds()
 
     def helper_create_dummy_users(self):
         self.staff_user = get_user_model().objects.get(email=self.staff_email)
