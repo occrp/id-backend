@@ -44,7 +44,7 @@ class Story(models.Model):
     translators = models.ManyToManyField(AUTH_USER_MODEL, related_name="translators")
     artists = models.ManyToManyField(AUTH_USER_MODEL, related_name="artists")
 
-    published = models.DateField(null=True)
+    published = models.DateTimeField(null=True)
     podaci_root = models.CharField(max_length=50)
 
     def get_newest_status(self):

@@ -394,7 +394,7 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('getting a story project with details',
-                                                    self.staff_user,
+                                                    'gettiing a story project with details description',
                                                     self.staff_user,
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story with details to get', project)
@@ -404,13 +404,10 @@ class PipelineAPITest(APITestCase):
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        details_response = client.get(reverse('story_details', kwargs={'id': story.id}))
+        details_response = client.get(reverse('story_detail', kwargs={'pk': story.id}))
 
         self.assertEqual(details_response.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(details_response.data['versions'], list)
-        self.assertEqual(len(details_response.data['versions']), 3)
-        # assertion below is to check that the most recent version is the first in the list returned
-        self.assertEqual(details_response.data['versions'][0]['title'], 'version 3')
+
         self.assertEqual(story.title, 'story with details to get')
         self.assertEqual(self.helper_all_users_in_list_by_id(story.reporters.all(),
                                                              details_response.data['reporters']), True)
@@ -422,12 +419,16 @@ class PipelineAPITest(APITestCase):
                                                              details_response.data['copy_editors']), True)
         self.assertEqual(self.helper_all_users_in_list_by_id(story.fact_checkers.all(),
                                                              details_response.data['fact_checkers']), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.researchers.all(),
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.translators.all(),
                                                              details_response.data['translators']), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.researchers.all(),
+        self.assertEqual(self.helper_all_users_in_list_by_id(story.artists.all(),
                                                              details_response.data['artists']), True)
-        self.assertEqual(details_response.data['published'], story.published)
+
+        if details_response.data['published'] is not None:
+            self.assertGreater(1, self.helper_string_datetime_compare(details_response.data['published'], story.published))
+
         self.assertEqual(details_response.data['podaci_root'], story.podaci_root)
+        self.assertEqual(details_response.data['version_count'], 3)
 
     def test_delete_story(self):
         self.helper_create_dummy_users()
@@ -1076,6 +1077,11 @@ class PipelineAPITest(APITestCase):
     # -- HELPER FUNCTIONS
     #
     #
+
+    def helper_string_datetime_compare(self, string, datetime_object):
+        string_datetime = datetime.datetime.strptime(string, "%Y-%m-%dT%H:%M:%SZ")
+
+        return (string_datetime - datetime_object).total_seconds()
 
     def helper_create_dummy_users(self):
         self.staff_user = get_user_model().objects.get(email=self.staff_email)
