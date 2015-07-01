@@ -106,7 +106,7 @@ class PipelineAPITest(APITestCase):
                                                       [self.staff_user])
         project_2 = self.helper_create_single_project('democracy for all 2',
                                                       'description 2',
-                                                      self.staff_user,
+                                                      self.volunteer_user,
                                                       [self.volunteer_user])
         project_3 = self.helper_create_single_project('democracy for all 3',
                                                       'description 3',
@@ -121,30 +121,21 @@ class PipelineAPITest(APITestCase):
 
         results = list_response.data['results']
         self.assertIsInstance(results, list)
-        self.assertEqual(len(results), 3)
+        # we should only see two since one of which we created belongs to another user
+        self.assertEqual(len(results), 2)
 
         self.assertEqual(results[0]['id'], project_1.id)
         self.assertEqual(results[0]['title'], 'democracy for all 1')
         self.assertEqual(results[0]['description'], 'description 1')
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], [results[0]['coordinator']]),
-                         True)
+        self.assertEqual(self.staff_user.id, results[0]['coordinator']['id'])
         self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], results[0]['users']),
                          True)
 
-        self.assertEqual(results[1]['id'], project_2.id)
-        self.assertEqual(results[1]['title'], 'democracy for all 2')
-        self.assertEqual(results[1]['description'], 'description 2')
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], [results[1]['coordinator']]),
-                         True)
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.volunteer_user], results[1]['users']),
-                         True)
-
-        self.assertEqual(results[2]['id'], project_3.id)
-        self.assertEqual(results[2]['title'], 'democracy for all 3')
-        self.assertEqual(results[2]['description'], 'description 3')
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], [results[2]['coordinator']]),
-                         True)
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user, self.volunteer_user], results[2]['users']),
+        self.assertEqual(results[1]['id'], project_3.id)
+        self.assertEqual(results[1]['title'], 'democracy for all 3')
+        self.assertEqual(results[1]['description'], 'description 3')
+        self.assertEqual(self.staff_user.id, results[1]['coordinator']['id'])
+        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user, self.volunteer_user], results[1]['users']),
                          True)
 
     # PROJECT MEMBER
