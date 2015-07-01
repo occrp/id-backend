@@ -57,7 +57,7 @@ class Story(models.Model):
 class StoryVersion(models.Model):
     story = models.ForeignKey(Story, related_name="versions")
     timestamp = models.DateTimeField(auto_now_add=True)
-    authored = models.ForeignKey(AUTH_USER_MODEL)
+    author = models.ForeignKey(AUTH_USER_MODEL)
     title = models.CharField(max_length=250)
     text = models.TextField()
 
