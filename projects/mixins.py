@@ -12,10 +12,8 @@ class ProjectQuerySetMixin:
 class StoryQuerySetMixin:
     def get_queryset(self, project_id=0):
         if self.request.user.is_superuser:
-            print "apparently i am  super user!"
             stories = Story.objects.all()
         else:
-            print "im not a super user!!!"
             stories = Story.objects.filter(Q(reporters__in=[self.request.user]) |
                                            Q(researchers__in=[self.request.user]) |
                                            Q(editors__in=[self.request.user]) |
