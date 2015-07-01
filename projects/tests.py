@@ -333,8 +333,6 @@ class PipelineAPITest(APITestCase):
                          True)
         self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], create_response.data['artists']),
                          True)
-        if create_response.data['published'] is not None:
-            self.assertIsInstance(create_response.data['published'], datetime)
 
         try:
             story = Story.objects.get(id=create_response.data['id'])
@@ -360,8 +358,6 @@ class PipelineAPITest(APITestCase):
                          True)
         self.assertEqual(self.helper_all_users_in_list_by_id(story.artists.all(), [self.staff_user]),
                          True)
-        if story.published is not None:
-            self.assertIsInstance(story.published, datetime)
 
     def test_list_stories(self):
         self.helper_create_dummy_users()
