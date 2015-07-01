@@ -141,8 +141,6 @@ class StoryDetail(StoryQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
                 own_result = Project.objects.all().filter(id=request.data['project']) \
                              .filter(Q(coordinator=request.user) | Q(users__in=[request.user])).count()
 
-                print "own_result"
-                print own_result
                 if own_result == 0:
                     return Response({'details': "not possible to change project to one that does not exist or you don't own"},
                                     status=status.HTTP_403_FORBIDDEN)
