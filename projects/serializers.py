@@ -91,14 +91,14 @@ class StorySerializer(serializers.ModelSerializer):
 #
 #
 class StoryVersionSerializer(serializers.ModelSerializer):
-    story = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
+    story = serializers.PrimaryKeyRelatedField(queryset=Story.objects.all())
     author = UserField(queryset=get_user_model().objects.all())
 
     class Meta:
         model = StoryVersion
-        fields = {'id',
+        fields = ('id',
                   'story',
                   'timestamp',
                   'author',
                   'title',
-                  'test'}
+                  'text')
