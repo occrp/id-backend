@@ -15,7 +15,8 @@ from rest_framework.views import APIView
 
 from projects.models import Project, Story, StoryVersion
 from projects.mixins import (
-    ProjectQuerySetMixin, StoryQuerySetMixin, StoryListQuerySetMixin, StoryVersionListQuerySetMixin)
+    ProjectQuerySetMixin, StoryQuerySetMixin, StoryListQuerySetMixin, StoryVersionListQuerySetMixin,
+    ProjectMembershipMixin)
 from projects.serializers import (
     ProjectSerializer, StorySerializer, UserSerializer, StoryVersionSerializer)
 
@@ -125,7 +126,7 @@ class ProjectUsers(UsersBase):
 # -- STORY VIEWS
 #
 #
-class StoryList(StoryListQuerySetMixin, generics.ListCreateAPIView):
+class StoryList(StoryListQuerySetMixin, ProjectMembershipMixin, generics.ListCreateAPIView):
     serializer_class = StorySerializer
 
     def get_queryset(self):
@@ -134,18 +135,20 @@ class StoryList(StoryListQuerySetMixin, generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(podaci_root='somepodaciroot')
 
-class StoryDetail(StoryQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
+    def post(self, request, *args, **kwargs):
+        if not self.user_is_project_user(request.user, request.data['project']):
+            return Response({'details': "not possible to use a project that does not exist or you don't own"},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        return super(StoryList, self).post(request, *args, **kwargs)
+
+class StoryDetail(StoryQuerySetMixin, ProjectMembershipMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StorySerializer
 
     def put(self, request, *args, **kwargs):
-        if not request.user.is_superuser:
-            if 'project' in request.data:
-                own_result = Project.objects.all().filter(id=request.data['project']) \
-                             .filter(Q(coordinator=request.user) | Q(users__in=[request.user])).count()
-
-                if own_result == 0:
-                    return Response({'details': "not possible to change project to one that does not exist or you don't own"},
-                                    status=status.HTTP_403_FORBIDDEN)
+        if not self.user_is_project_user(request.user, request.data['project']):
+            return Response({'details': "not possible to change project to one that does not exist or you don't own"},
+                            status=status.HTTP_403_FORBIDDEN)
 
         return super(StoryDetail, self).put(request, *args, **kwargs)
 
