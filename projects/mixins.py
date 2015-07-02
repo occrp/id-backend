@@ -11,7 +11,7 @@ class ProjectQuerySetMixin(object):
 class StoryQuerySetBaseMixin(object):
     def user_in_story_filter(self, story_objects, user):
         return story_objects.filter(Q(reporters__in=[user]) |
-                                       Q(researchers__in=[user]) |
+                                    Q(researchers__in=[user]) |
                                     Q(editors__in=[user]) |
                                     Q(copy_editors__in=[user]) |
                                     Q(fact_checkers__in=[user]) |
@@ -43,11 +43,9 @@ class StoryVersionListQuerySetMixin(StoryQuerySetBaseMixin):
         except Story.DoesNotExist:
             return []
 
-        print story
         story = self.user_in_story_filter(story, self.request.user)
-        print story
+
         if story.count() == 0:
-            print "0 count, woops!"
             return []
 
         return StoryVersion.objects.all()
