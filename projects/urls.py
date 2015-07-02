@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^stories/(?P<pk>[0-9]+)/$',                                   views.StoryDetail.as_view(), name='story_detail'),
 
     url(r'^stories/(?P<pk>[0-9]+)/versions/$',                          views.StoryVersionList.as_view(), name='story_version_list'),
+    url(r'^stories/versions/(?P<pk>[0-9]+)/$',                          views.StoryVersionDetail.as_view(), name='story_version_detail'),
 
     url(r'^project/create/$',                                           dummy_view, name='project_create'),
     url(r'^project/list/$',                                             dummy_view, name='project_list_old'),
