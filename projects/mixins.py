@@ -1,6 +1,22 @@
 from django.db.models import Q
 from projects.models import Project, Story, StoryVersion
 
+# -- PROJECT MIXINS
+#
+#
+class ProjectMembershipMixin(object):
+    def user_is_project_user(self, user, project_id):
+        if user.is_superuser:
+            return True
+
+        result = Project.objects.all().filter(id=project_id) \
+                 .filter(Q(coordinator=user) | Q(users__in=[user])).count()
+
+        if result == 0:
+            return False
+
+        return True
+
 class ProjectQuerySetMixin(object):
     def get_queryset(self):
         if self.request.user.is_superuser:
@@ -8,6 +24,9 @@ class ProjectQuerySetMixin(object):
         else:
             return Project.objects.filter(coordinator=self.request.user)
 
+# -- STORY MIXINS
+#
+#
 class StoryQuerySetBaseMixin(object):
     def user_in_story_filter(self, story_objects, user):
         return story_objects.filter(Q(reporters__in=[user]) |
@@ -33,6 +52,9 @@ class StoryListQuerySetMixin(StoryQuerySetMixin):
         stories = super(StoryListQuerySetMixin, self).get_queryset()
         return stories.filter(project__id=project_id)
 
+# -- STORY VERSION MIXINS
+#
+#
 class StoryVersionListQuerySetMixin(StoryQuerySetBaseMixin):
     def get_queryset(self, story_id):
         if self.request.user.is_superuser:
