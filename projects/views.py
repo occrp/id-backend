@@ -15,8 +15,8 @@ from rest_framework.views import APIView
 
 from projects.models import Project, Story, StoryVersion
 from projects.mixins import (
-    ProjectQuerySetMixin, StoryQuerySetMixin, StoryListQuerySetMixin, StoryVersionListQuerySetMixin,
-    ProjectMembershipMixin)
+    ProjectMembershipMixin, ProjectQuerySetMixin, StoryQuerySetMixin, StoryListQuerySetMixin,
+    StoryVersionQuerySetMixin, StoryVersionListQuerySetMixin)
 from projects.serializers import (
     ProjectSerializer, StorySerializer, UserSerializer, StoryVersionSerializer)
 
@@ -31,7 +31,8 @@ def api_root(request, format=None):
         'projects': reverse('project_list', request=request, format=format),
         'stories': reverse('story_list', kwargs={'pk': 0}, request=request, format=format),
         'story detail': reverse('story_detail', kwargs={'pk': 0}, request=request, format=format),
-        'story versions': reverse('story_version_list', kwargs={'pk': 0}, request=request, format=format)
+        'story versions': reverse('story_version_list', kwargs={'pk': 0}, request=request, format=format),
+        'story version detail': reverse('story_version_detail', kwargs={'pk': 0}, request=request, format=format)
     })
 
 # -- USER VIEWS
@@ -126,7 +127,7 @@ class ProjectUsers(UsersBase):
 # -- STORY VIEWS
 #
 #
-class StoryList(StoryListQuerySetMixin, ProjectMembershipMixin, generics.ListCreateAPIView):
+class StoryList(ProjectMembershipMixin, StoryListQuerySetMixin, generics.ListCreateAPIView):
     serializer_class = StorySerializer
 
     def get_queryset(self):
@@ -136,18 +137,18 @@ class StoryList(StoryListQuerySetMixin, ProjectMembershipMixin, generics.ListCre
         serializer.save(podaci_root='somepodaciroot')
 
     def post(self, request, *args, **kwargs):
-        if not self.user_is_project_user(request.user, request.data['project']):
-            return Response({'details': "not possible to use a project that does not exist or you don't own"},
+        if not self.user_is_project_user(request.data['project'], request.user):
+            return Response({'details': "not possible to use a project that does not exist or you don't belong to"},
                             status=status.HTTP_403_FORBIDDEN)
 
         return super(StoryList, self).post(request, *args, **kwargs)
 
-class StoryDetail(StoryQuerySetMixin, ProjectMembershipMixin, generics.RetrieveUpdateDestroyAPIView):
+class StoryDetail(ProjectMembershipMixin, StoryQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StorySerializer
 
     def put(self, request, *args, **kwargs):
-        if not self.user_is_project_user(request.user, request.data['project']):
-            return Response({'details': "not possible to change project to one that does not exist or you don't own"},
+        if not self.user_is_project_user(request.data['project'], request.user):
+            return Response({'details': "not possible to change project to one that does not exist or you don't belong to"},
                             status=status.HTTP_403_FORBIDDEN)
 
         return super(StoryDetail, self).put(request, *args, **kwargs)
@@ -156,11 +157,29 @@ class StoryDetail(StoryQuerySetMixin, ProjectMembershipMixin, generics.RetrieveU
 #
 #
 class StoryVersionList(StoryVersionListQuerySetMixin, generics.ListCreateAPIView):
-    queryset = StoryVersion.objects.all()
     serializer_class = StoryVersionSerializer
 
     def get_queryset(self):
         return super(StoryVersionList, self).get_queryset(self.kwargs['pk'])
+
+    def post(self, request, *args, **kwargs):
+        if not self.user_is_story_user(request.data['story'], request.user):
+            return Response({'details': "not possible to use a story that does not exist or you don't belong to"},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        return super(StoryVersionList, self).post(request, *args, **kwargs)
+
+
+class StoryVersionDetail(StoryVersionQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = StoryVersionSerializer
+
+    def put(self, request, *args, **kwargs):
+        if not self.user_is_story_user(request.data['story'], request.user):
+            return Response({'details': "not possible to change story to one that does not exist or you don't belong to"},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        return super(StoryVersionDetail, self).put(request, *args, **kwargs)
+
 ##
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
