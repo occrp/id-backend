@@ -523,19 +523,19 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('adding a story version project',
-                                                    self.staff_user,
+                                                    'adding a story version project description',
                                                     self.staff_user,
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story with a version to be added', project)
 
         data = {'story': story.id,
-                'authored': self.staff_user.id,
+                'author': self.staff_user.id,
                 'title': 'my added version',
                 'text': 'my added version text'
                 }
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        create_response = client.post(reverse('story_version_create', kwargs={'id': story.id}), data, format='json')
+        create_response = client.post(reverse('story_version_list', kwargs={'pk': story.id}), data, format='json')
 
         self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
 
@@ -544,9 +544,9 @@ class PipelineAPITest(APITestCase):
         except:
             story_version = None
 
-        self.assertEqual(story_version, StoryVersion)
+        self.assertIsInstance(story_version, StoryVersion)
         self.assertEqual(story_version.story.id, data['story'])
-        self.assertEqual(story_version.authored.id, data['authored'])
+        self.assertEqual(story_version.author.id, data['author'])
         self.assertEqual(story_version.title, data['title'])
         self.assertEqual(story_version.text, data['text'])
 
