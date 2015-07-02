@@ -366,20 +366,20 @@ class PipelineAPITest(APITestCase):
         project = self.helper_create_single_project('story list project',
                                                     'story lst project description',
                                                     self.staff_user,
-                                                    [self.volunteer_user])
-        self.helper_create_single_story_dummy_wrapper('list story 1', project)
-        self.helper_create_single_story_dummy_wrapper('list story 2', project)
-        self.helper_create_single_story(project, 'list story 3', reporters=[self.user_user])
+                                                    [self.staff_user])
+        self.helper_create_single_story(project, 'list story 1', reporters=[self.user_user])
+        self.helper_create_single_story(project, 'list story 2', reporters=[self.user_user])
+        self.helper_create_single_story(project, 'list story 3')
 
         client = APIClient()
-        client.force_authenticate(user=self.volunteer_user)
+        client.force_authenticate(user=self.user_user)
         list_response = client.get(reverse('story_list', kwargs={'pk': project.id}))
 
         self.assertEqual(list_response.status_code, status.HTTP_200_OK)
 
         results = list_response.data['results']
         self.assertIsInstance(results, list)
-        # we should only see 2 results as volunteer_user should not be able to see story 3
+        # only 2 because user_user should not be able to see story 3
         self.assertEqual(len(results), 2)
         self.assertEqual(results[0]['title'], 'list story 1')
         self.assertEqual(results[1]['title'], 'list story 2')
