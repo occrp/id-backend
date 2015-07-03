@@ -655,7 +655,7 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('getting a story translation project',
-                                                    self.staff_user,
+                                                    'getting a story translation project description',
                                                     self.staff_user,
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation', project)
@@ -664,12 +664,12 @@ class PipelineAPITest(APITestCase):
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        get_response = client.get(reverse('version_translation_get', kwargs={'id': story_version.id, 'language_code': 'el'}))
+        get_response = client.get(reverse('story_translation_detail', kwargs={'pk': story_translation.id}))
 
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
         self.assertEqual(get_response.data['version'], story_translation.version.id)
         self.assertEqual(get_response.data['language_code'], story_translation.language_code)
-        self.assertEqual(get_response.data['translator'], story_translation.translator.id)
+        self.assertEqual(get_response.data['translator']['id'], story_translation.translator.id)
         self.assertEqual(get_response.data['title'], story_translation.title)
         self.assertEqual(get_response.data['text'], story_translation.text)
 
