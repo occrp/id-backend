@@ -1,5 +1,5 @@
 from django.db.models import Q
-from projects.models import Project, Story, StoryVersion
+from projects.models import Project, Story, StoryVersion, StoryTranslation
 
 # -- PROJECT MIXINS
 #
@@ -83,24 +83,6 @@ class StoryListQuerySetMixin(StoryQuerySetMixin):
 # -- STORY VERSION MIXINS
 #
 #
-# class StoryVersionListQuerySetMixin(StoryQuerySetBaseMixin):
-#     def get_queryset(self, story_id):
-#         if self.request.user.is_superuser:
-#             return StoryVersion.objects.all()
-
-#         try:
-#             story = Story.objects.filter(id=story_id)
-#         except Story.DoesNotExist:
-#             return []
-
-#         story = self.user_in_story_filter(story, self.request.user)
-
-#         if story.count() == 0:
-#             return []
-
-#         return StoryVersion.objects.all()
-
-# class StoryVersionDetailQuerySetMixin(StoryQuerySetMixin):
 class StoryVersionQuerySetMixin(StoryQuerySetBaseMixin):
     def get_queryset(self):
         if self.request.user.is_superuser:
@@ -122,3 +104,31 @@ class StoryVersionListQuerySetMixin(StoryVersionQuerySetMixin):
     def get_queryset(self, story_id):
         story_versions = super(StoryVersionListQuerySetMixin, self).get_queryset()
         return story_versions.filter(story__id=story_id)
+
+# -- STORY TRANSLATION MIXINS
+#
+#
+class StoryTranslationQuerySetMixin(StoryQuerySetBaseMixin):
+    def user_is_story_user(self, version_id, user):
+        try:
+            story = StoryVersion.objects.get(id=version_id).story
+            return super(StoryTranslationQuerySetMixin, self).user_is_story_user(story.id, user)
+        except StoryVersion.DoesNotExist:
+            return False
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return StoryTranslation.objects.all()
+        else:
+            story_translations = StoryTranslation.objects.filter(Q(translator=self.request.user) |
+                                                                 Q(version__author=self.request.user) |
+                                                                 Q(version__story__reporters__in=[self.request.user]) |
+                                                                 Q(version__story__researchers__in=[self.request.user]) |
+                                                                 Q(version__story__editors__in=[self.request.user]) |
+                                                                 Q(version__story__copy_editors__in=[self.request.user]) |
+                                                                 Q(version__story__fact_checkers__in=[self.request.user]) |
+                                                                 Q(version__story__translators__in=[self.request.user]) |
+                                                                 Q(version__story__artists__in=[self.request.user]) |
+                                                                 Q(version__story__project__coordinator=self.request.user) |
+                                                                 Q(version__story__project__users__in=[self.request.user]))
+            return story_translations
