@@ -678,12 +678,14 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('creating a story translation project',
-                                                    self.staff_user,
+                                                    'creating a story translation project description',
                                                     self.staff_user,
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation to be created', project)
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'story version to get a translation')
 
-        data = {'language_code': 'el',
+        data = {'version': story_version.id,
+                'language_code': 'el',
                 'translator': self.volunteer_user.id,
                 'verified': 1,
                 'live': 0,
@@ -691,16 +693,17 @@ class PipelineAPITest(APITestCase):
                 'text': 'pou einai o anthropos?'}
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        create_response = client.post(reverse('version_translation_create', kwargs={'id': story.id}), data, format='json')
+        create_response = client.post(reverse('story_translation_list', kwargs={'pk': story_version.id}), data, format='json')
 
         self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
 
         try:
-            translation = StoryTranslation.object.get(id=create_response.data['id'])
+            translation = StoryTranslation.objects.get(id=create_response.data['id'])
         except StoryTranslation.DoesNotExist:
             translation = None
 
         self.assertIsInstance(translation, StoryTranslation)
+        self.assertEqual(translation.version.id, story_version.id)
         self.assertEqual(translation.language_code, data['language_code'])
         self.assertEqual(translation.translator.id, data['translator'])
         self.assertEqual(translation.verified, data['verified'])
