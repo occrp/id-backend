@@ -10,6 +10,10 @@
                 <md-button class="md-fab" style="position:fixed; right:0px;" aria-label="New Story" ng-click="newStory($event)">
                     <md-icon md-font-icon="fa-plus" class="fa fa-2x"></md-icon>
                 </md-button>
+                <div ng-hide="storyList.length" class="md-whiteframe-z3 md-padding" style="font-size:130%; width: 60%; margin-top: 3em; margin-left: auto; margin-right: auto; text-align: center;">
+                    <h3>You currently don't have any stories in this project!</h3>
+                    <p>You can create a new story by clicking the big plus button!</p>
+                </div>
                 <md-list>
                     <md-list-item class="md-3-line" ng-repeat="it in storyList" ng-click="openStory(it)">
                         <md-icon md-font-icon="fa-newspaper-o" class="fa fa-2x"></md-icon>

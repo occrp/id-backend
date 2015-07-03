@@ -4,6 +4,11 @@
     </md-button>
     <h1>Projects</h1>
 
+    <div ng-hide="projectList.length" class="md-whiteframe-z3 md-padding" style="font-size:130%; width: 60%; margin-top: 3em; margin-left: auto; margin-right: auto; text-align: center;">
+        <h3>You currently don't have any projects!</h3>
+        <p>You can create a project by clicking the big plus button!</p>
+    </div>
+
     <md-list>
         <md-list-item class="md-3-line" ng-repeat="it in projectList" ng-click="selectProject(it)">
             <md-icon md-font-icon="fa-folder" class="fa fa-2x"></md-icon>
