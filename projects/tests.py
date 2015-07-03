@@ -555,27 +555,27 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('altering a story version project',
-                                                    self.staff_user,
+                                                    'altering a story version project description',
                                                     self.staff_user,
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story with a version to be altered', project)
         story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to be altered')
 
         data = {'story': story.id,
-                'authored': self.volunteer_user.id,
+                'author': self.volunteer_user.id,
                 'title': 'my altered title',
                 'text': 'my altered text'
                 }
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        alter_response = client.put(reverse('story_version_alter', kwargs={'id': story_version.id}), data, format='json')
+        alter_response = client.put(reverse('story_version_detail', kwargs={'pk': story_version.id}), data, format='json')
 
         self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
 
         story_version = StoryVersion.objects.get(id=story_version.id)
 
         self.assertEqual(story_version.story.id, story.id)
-        self.assertEqual(story_version.authored.id, data['authored'])
+        self.assertEqual(story_version.author.id, data['author'])
         self.assertEqual(story_version.title, data['title'])
         self.assertEqual(story_version.text, data['text'])
 
