@@ -194,6 +194,15 @@ class StoryTranslationList(StoryTranslationQuerySetMixin, generics.ListCreateAPI
 
         return super(StoryTranslationList, self).post(request, *args, **kwargs)
 
+class StoryTranslationDetail(StoryTranslationQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = StoryTranslationSerializer
+
+    def put(self, request, *args, **kwargs):
+        if not self.user_is_story_user(request.data['version'], request.user):
+            return Response({'details': "not possible to change story version to one that does not exist or you don't belong to"},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        return super(StoryTranslationDetail, self).put(request, *args, **kwargs)
 ##
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
