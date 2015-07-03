@@ -496,6 +496,36 @@ class PipelineAPITest(APITestCase):
                                                              [self.admin_user]), True)
         self.assertGreater(1, self.helper_datetime_datetime_compare(story.published, altered_date))
 
+    # -- STORY VERSION TESTS
+    #
+    #
+    def test_list_story_versions(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('listing a story version',
+                                                    'listing a story version description',
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a versions to list', project)
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to list 1')
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to list 2')
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to list 3')
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        list_response = client.get(reverse('story_version_list', kwargs={'pk': story.id}))
+
+        self.assertEqual(list_response.status_code, status.HTTP_200_OK)
+
+        results = list_response.data['results']
+        self.assertIsInstance(results, list)
+
+        self.assertEqual(len(results), 3)
+        self.assertEqual(results[0]['title'], 'version to list 1')
+        self.assertEqual(results[1]['title'], 'version to list 2')
+        self.assertEqual(results[2]['title'], 'version to list 3')
+
     def test_get_story_version(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
