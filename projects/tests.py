@@ -1024,7 +1024,7 @@ class PipelineAPITest(APITestCase):
     def helper_create_single_story_version(self, story, timestamp, author, title, text):
         story_version = StoryVersion(story=story,
                                      timestamp=timestamp,
-                                     authored=author,
+                                     author=author,
                                      title=title,
                                      text=text)
         story_version.save()
