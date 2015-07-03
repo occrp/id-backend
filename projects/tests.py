@@ -715,14 +715,15 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('altering a story translation project',
-                                                    self.staff_user,
+                                                    'altering a story translation project description',
                                                     self.staff_user,
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation to be altered', project)
         story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version with a translation to be altered')
         story_translation = self.helper_create_single_story_translation_dummy_wrapper(story_version, 'el', 'my greek version')
 
-        data = {'language_code': 'ru',
+        data = {'version': story_version.id,
+                'language_code': 'ru',
                 'translator': self.staff_user.id,
                 'verified': 0,
                 'live': 0,
@@ -730,7 +731,7 @@ class PipelineAPITest(APITestCase):
                 'text': 'my great russian text'}
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        alter_response = client.put(reverse('version_translation_alter', kwargs={'id': story_translation.id}), data, format='json')
+        alter_response = client.put(reverse('story_translation_detail', kwargs={'pk': story_translation.id}), data, format='json')
 
         self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
 
