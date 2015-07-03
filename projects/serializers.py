@@ -102,3 +102,23 @@ class StoryVersionSerializer(serializers.ModelSerializer):
                   'author',
                   'title',
                   'text')
+
+
+# -- STORY TRANSLATION SERIALIZERS
+#
+#
+class StoryTranslationSerializer(serializers.ModelSerializer):
+    version = serializers.PrimaryKeyRelatedField(queryset=StoryVersion.objects.all())
+    translator = UserField(queryset=get_user_model().objects.all())
+
+    class Meta:
+        model = StoryTranslation
+        field = ('id',
+                 'version',
+                 'language_code',
+                 'timestamp',
+                 'translator',
+                 'verified',
+                 'live',
+                 'title',
+                 'text')

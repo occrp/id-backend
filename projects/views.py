@@ -13,12 +13,12 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
-from projects.models import Project, Story, StoryVersion
+from projects.models import Project, Story, StoryVersion, StoryTranslation
 from projects.mixins import (
     ProjectMembershipMixin, ProjectQuerySetMixin, StoryQuerySetMixin, StoryListQuerySetMixin,
-    StoryVersionQuerySetMixin, StoryVersionListQuerySetMixin)
+    StoryVersionQuerySetMixin, StoryVersionListQuerySetMixin, StoryTranslationQuerySetMixin)
 from projects.serializers import (
-    ProjectSerializer, StorySerializer, UserSerializer, StoryVersionSerializer)
+    ProjectSerializer, StorySerializer, UserSerializer, StoryVersionSerializer, StoryTranslationSerializer)
 
 import simplejson
 
@@ -32,7 +32,8 @@ def api_root(request, format=None):
         'stories': reverse('story_list', kwargs={'pk': 0}, request=request, format=format),
         'story detail': reverse('story_detail', kwargs={'pk': 0}, request=request, format=format),
         'story versions': reverse('story_version_list', kwargs={'pk': 0}, request=request, format=format),
-        'story version detail': reverse('story_version_detail', kwargs={'pk': 0}, request=request, format=format)
+        'story version detail': reverse('story_version_detail', kwargs={'pk': 0}, request=request, format=format),
+        'story translations': reverse('story_translation_list', kwargs={'pk': 0}, request=request, format=format)
     })
 
 # -- USER VIEWS
@@ -174,11 +175,24 @@ class StoryVersionDetail(StoryVersionQuerySetMixin, generics.RetrieveUpdateDestr
     serializer_class = StoryVersionSerializer
 
     def put(self, request, *args, **kwargs):
-        if not self.user_is_story_user(request.data['story'], request.user):
+        if not self.user_is_story_user(request.data['version'], request.user):
             return Response({'details': "not possible to change story to one that does not exist or you don't belong to"},
                             status=status.HTTP_403_FORBIDDEN)
 
         return super(StoryVersionDetail, self).put(request, *args, **kwargs)
+
+# -- STORY TRANSLATION VIEWS
+#
+#
+class StoryTranslationList(StoryTranslationQuerySetMixin, generics.ListCreateAPIView):
+    serializer_class = StoryTranslationSerializer
+
+    def post(self, request, *args, **kwargs):
+        if not self.user_is_story_user(request.data['version'], request.user):
+            return Response({'details': "not possible to use a story version that does not exist or you don't belong to"},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        return super(StoryTranslationList, self).post(request, *args, **kwargs)
 
 ##
 
