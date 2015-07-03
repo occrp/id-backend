@@ -175,7 +175,7 @@ class StoryVersionDetail(StoryVersionQuerySetMixin, generics.RetrieveUpdateDestr
     serializer_class = StoryVersionSerializer
 
     def put(self, request, *args, **kwargs):
-        if not self.user_is_story_user(request.data['version'], request.user):
+        if not self.user_is_story_user(request.data['story'], request.user):
             return Response({'details': "not possible to change story to one that does not exist or you don't belong to"},
                             status=status.HTTP_403_FORBIDDEN)
 
