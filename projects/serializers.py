@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
 
-from projects.models import *
+from projects.models import Project, Story, StoryVersion, StoryTranslation, ProjectPlan
 
 # -- USER SERIALIZERS/FIELDS
 #
@@ -53,7 +53,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = ('id', 'title', 'description', 'coordinator', 'users', 'story_count')
 
-# -- STORY SERIALIZERS
+# -- STORY SERIALIZERS/FIELS
 #
 #
 class StorySerializer(serializers.ModelSerializer):
@@ -87,6 +87,29 @@ class StorySerializer(serializers.ModelSerializer):
                   'podaci_root',
                   'version_count')
 
+class StoryField(serializers.RelatedField):
+
+    def to_internal_value(self, value):
+        try:
+            story_id = int(value)
+        except ValueError:
+            raise serializers.ValidationError('id must be an integer and correspond to an existing story')
+
+        try:
+            story = Story.objects.get(id=story_id)
+        except Story.DoesNotExist:
+            raise serializers.ValidationError('story does not exist')
+
+        return story
+
+    def to_representation(self, value):
+        representation = {'id': value.id,
+                          'title': value.title,
+                          'thesis': value.thesis,
+                          'published': value.published,
+                          'podaci_root': value.podaci_root}
+        return representation
+
 # -- STORY VERSION SERIALIZERS
 #
 #
@@ -113,12 +136,32 @@ class StoryTranslationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StoryTranslation
-        field = ('id',
-                 'version',
-                 'language_code',
-                 'timestamp',
-                 'translator',
-                 'verified',
-                 'live',
-                 'title',
-                 'text')
+        fields = ('id',
+                  'version',
+                  'language_code',
+                  'timestamp',
+                  'translator',
+                  'verified',
+                  'live',
+                  'title',
+                  'text')
+
+
+# -- PROJECT PLAN SERIALIZERS
+#
+#
+class ProjectPlanSerializer(serializers.ModelSerializer):
+    project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
+    responsible_users = UserField(many=True, queryset=get_user_model().objects.all())
+    related_stories = StoryField(many=True, queryset=Story.objects.all())
+
+    class Meta:
+        model = ProjectPlan
+        fields = ('project',
+                  'start_date',
+                  'end_date',
+                  'title',
+                  'description',
+                  'responsible_users',
+                  'related_stories',
+                  'order')
