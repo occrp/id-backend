@@ -910,12 +910,12 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(results[1]['title'], 'my project plan 2')
 
     #PROJECT PLAN MEMBERS
-    def helper_get_project_plan(self):
+    def test_get_project_plan(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('getting a project plan project',
-                                                    self.staff_user,
+                                                    'getting a projeect plan project description',
                                                     self.staff_user,
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story for a project plan get', project)
@@ -926,24 +926,22 @@ class PipelineAPITest(APITestCase):
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        get_response = client.get(reverse('project_plan_detail', kwargs={'id': project_plan.id}))
+        get_response = client.get(reverse('project_plan_detail', kwargs={'pk': project_plan.id}))
 
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
         self.assertEqual(project_plan.id, get_response.data['id'])
-        self.assertEqual(project_plan.start_date, get_response.data['start_date'])
-        self.assertEqual(project_plan.end_date, get_response.data['end_date'])
+        self.assertGreater(1, self.helper_string_date_compare(get_response.data['start_date'], project_plan.start_date))
+        self.assertGreater(1, self.helper_string_date_compare(get_response.data['end_date'], project_plan.end_date))
         self.assertEqual(project_plan.title, get_response.data['title'])
         self.assertEqual(project_plan.description, get_response.data['description'])
-        self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.responsible_users, data['responsible_users']), True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.related_stories, data['related_stories']), True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.responsible_users.all(), get_response.data['responsible_users']), True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.related_stories.all(), get_response.data['related_stories']), True)
         self.assertEqual(project_plan.order, get_response.data['order'])
 
-    def helper_alter_project_plan(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('altering a project plan project',
-                                                    self.staff_user,
                                                     self.staff_user,
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story for a project plan alter', project)
@@ -1044,8 +1042,8 @@ class PipelineAPITest(APITestCase):
     def helper_create_single_project_plan_dummer_wrapper(self, project, title, related_stories, order):
         self.helper_set_story_dummy_participants()
         return self.helper_create_single_project_plan(project=project,
-                                                      start_date=datetime.datetime.now(),
-                                                      end_date=datetime.datetime.now() + datetime.timedelta(7),
+                                                      start_date=datetime.datetime.now().date(),
+                                                      end_date=datetime.datetime.now().date() + datetime.timedelta(7),
                                                       title=title,
                                                       description='dummy project plan description',
                                                       responsible_users=self.dummy_project_plan_users,
