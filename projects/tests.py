@@ -641,23 +641,23 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('most recent version of a story with translation project',
-                                                    self.staff_user,
+                                                    'most recent version of a story with translation project description',
                                                     self.staff_user,
                                                     [self.staff_user])
-        story = self.helper_create_single_story_dummy_wrapper('story with a version to delete', project)
+        story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation', project)
         story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'not most recent')
         story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'most recent')
         story_translation = self.helper_create_single_story_translation_dummy_wrapper(story_version, 'el', 'my greek version')
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        get_response = client.get(reverse('story_version_most_recent_with_translation', kwargs={'id': story.id, 'language_code': 'el'}))
-
+        get_response = client.get(reverse('story_live_version_in_language', kwargs={'pk': story.id, 'language_code': 'el'}))
+        
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
         self.assertEqual(get_response.data['id'], story_translation.id)
         self.assertEqual(get_response.data['version'], story_version.id)
         self.assertEqual(get_response.data['language_code'], story_translation.language_code)
-        self.assertEqual(get_response.data['translator'], story_translation.translator.id)
+        self.assertEqual(get_response.data['translator']['id'], story_translation.translator.id)
         self.assertEqual(get_response.data['verified'], story_translation.verified)
         self.assertEqual(get_response.data['live'], story_translation.live)
         self.assertEqual(get_response.data['title'], story_translation.title)
