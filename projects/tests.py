@@ -938,10 +938,12 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.related_stories.all(), get_response.data['related_stories']), True)
         self.assertEqual(project_plan.order, get_response.data['order'])
 
+    def test_alter_project_plan(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('altering a project plan project',
+                                                    'altering a project plan project description',
                                                     self.staff_user,
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story for a project plan alter', project)
@@ -951,8 +953,9 @@ class PipelineAPITest(APITestCase):
                                                                              order=1)
         story_1 = self.helper_create_single_story_dummy_wrapper('story for a project plan 1', project)
 
-        data = {'start_date': datetime.datetime.now() + datetime.timedelta(10),
-                'end_date': datetime.datetime.now() + datetime.timedelta(10),
+        data = {'project': project.id,
+                'start_date': (datetime.datetime.now().date() + datetime.timedelta(10)).strftime("%Y-%m-%d"),
+                'end_date': (datetime.datetime.now().date() + datetime.timedelta(10)).strftime("%Y-%m-%d"),
                 'title': 'my altered title',
                 'description': 'my altered description',
                 'responsible_users': [self.volunteer_user.id, self.user_user.id],
@@ -960,22 +963,22 @@ class PipelineAPITest(APITestCase):
                 'order': 5}
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        alter_response = client.put(reverse('project_plan_alter', kwargs={'id': project_plan.id}))
+        alter_response = client.put(reverse('project_plan_detail', kwargs={'pk': project_plan.id}), data, format='json')
 
         self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
 
         project_plan = ProjectPlan.objects.get(id=project_plan.id)
 
         self.assertIsInstance(project_plan, ProjectPlan)
-        self.assertEqual(project_plan.start_date, data['start_date'])
-        self.assertEqual(project_plan.end_date, data['end_date'])
+        self.assertGreater(1, self.helper_string_date_compare(alter_response.data['start_date'], project_plan.start_date))
+        self.assertGreater(1, self.helper_string_date_compare(alter_response.data['end_date'], project_plan.end_date))
         self.assertEqual(project_plan.title, data['title'])
         self.assertEqual(project_plan.description, data['description'])
-        self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.responsible_users, data['responsible_users']), True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.related_stories, data['responsible_users']), True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.responsible_users.all(), [self.volunteer_user, self.user_user]), True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.related_stories.all(), [story_1]), True)
         self.assertEqual(project_plan.order, data['order'])
 
-    def helper_delete_project_plan(self):
+    def test_delete_project_plan(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
