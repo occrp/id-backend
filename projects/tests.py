@@ -871,8 +871,8 @@ class PipelineAPITest(APITestCase):
             project_plan = None
 
         self.assertIsInstance(project_plan, ProjectPlan)
-        self.assertGreater(1, self.helper_string_datetime_compare(data['start_date'], project_plan.start_date))
-        self.assertGreater(1, self.helper_string_datetime_compare(data['end_date'], project_plan.end_date))
+        self.assertGreater(1, self.helper_string_date_compare(data['start_date'], project_plan.start_date))
+        self.assertGreater(1, self.helper_string_date_compare(data['end_date'], project_plan.end_date))
         self.assertEqual(project_plan.title, data['title'])
         self.assertEqual(project_plan.description, data['description'])
         self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.responsible_users.all(), [self.volunteer_user, self.user_user]), True)
@@ -1156,7 +1156,7 @@ class PipelineAPITest(APITestCase):
 
         return (string_datetime - datetime_object).total_seconds()
 
-    def helper_string_datetime_compare(self, string, date_object):
+    def helper_string_date_compare(self, string, date_object):
         string_date = datetime.datetime.strptime(string, "%Y-%m-%d").date()
 
         return (string_date - date_object).total_seconds()
