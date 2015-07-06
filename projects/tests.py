@@ -884,7 +884,7 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('listing project plans project',
-                                                    self.staff_user,
+                                                    'listing a project plans project description',
                                                     self.staff_user,
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story for a project plan list', project)
@@ -899,12 +899,15 @@ class PipelineAPITest(APITestCase):
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        list_response = client.get(reverse('project_plan_list', kwargs={'id': story.id}))
+        list_response = client.get(reverse('project_plan_list', kwargs={'pk': project.id}))
 
         self.assertEqual(list_response.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(list_response.data, list)
-        self.assertEqual(len(list_response.data), 2)
-        self.assertEqual(list_response.data[0]['id'], 1)
+
+        results = list_response.data['results']
+        self.assertIsInstance(results, list)
+        self.assertEqual(len(results), 2)
+        self.assertEqual(results[0]['title'], 'my project plan 1')
+        self.assertEqual(results[1]['title'], 'my project plan 2')
 
     #PROJECT PLAN MEMBERS
     def helper_get_project_plan(self):
@@ -923,7 +926,7 @@ class PipelineAPITest(APITestCase):
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        get_response = client.get(reverse('project_plan_get', kwargs={'id': project_plan.id}))
+        get_response = client.get(reverse('project_plan_detail', kwargs={'id': project_plan.id}))
 
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
         self.assertEqual(project_plan.id, get_response.data['id'])
