@@ -188,9 +188,6 @@ class StoryVersionLive(APIView):
                                                        Q(language_code=language_code) &
                                                        Q(live=True)).order_by("-timestamp")
 
-        print story_version.title
-        print story_version.timestamp
-
         if translations.count() == 0:
             return Response({"details": "translation for specified language not found"},
                             status=status.HTTP_404_NOT_FOUND)
