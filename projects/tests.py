@@ -652,7 +652,7 @@ class PipelineAPITest(APITestCase):
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
         get_response = client.get(reverse('story_live_version_in_language', kwargs={'pk': story.id, 'language_code': 'el'}))
-        
+
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
         self.assertEqual(get_response.data['id'], story_translation.id)
         self.assertEqual(get_response.data['version'], story_version.id)
@@ -683,29 +683,8 @@ class PipelineAPITest(APITestCase):
     #
 
     # STORY TRANSLATION COLLECTION/MEMBER
-    def test_get_translation(self):
-        self.helper_create_dummy_users()
-        self.helper_cleanup_projects()
 
-        project = self.helper_create_single_project('getting a story translation project',
-                                                    'getting a story translation project description',
-                                                    self.staff_user,
-                                                    [self.staff_user])
-        story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation', project)
-        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version with a translation')
-        story_translation = self.helper_create_single_story_translation_dummy_wrapper(story_version, 'el', 'my greek version')
-
-        client = APIClient()
-        client.force_authenticate(user=self.staff_user)
-        get_response = client.get(reverse('story_translation_detail', kwargs={'pk': story_translation.id}))
-
-        self.assertEqual(get_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(get_response.data['version'], story_translation.version.id)
-        self.assertEqual(get_response.data['language_code'], story_translation.language_code)
-        self.assertEqual(get_response.data['translator']['id'], story_translation.translator.id)
-        self.assertEqual(get_response.data['title'], story_translation.title)
-        self.assertEqual(get_response.data['text'], story_translation.text)
-
+    # COLLECTION TESTS
     def test_create_translation(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
@@ -742,6 +721,56 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(translation.verified, data['verified'])
         self.assertEqual(translation.title, data['title'])
         self.assertEqual(translation.text, data['text'])
+
+    def test_list_translations(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('listing a story translation project',
+                                                    'listing a story translation project description',
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a version with translations', project)
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version with a translation')
+        self.helper_create_single_story_translation_dummy_wrapper(story_version, 'el', 'my greek version')
+        self.helper_create_single_story_translation_dummy_wrapper(story_version, 'ru', 'my russian version')
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        list_response = client.get(reverse('story_translation_list', kwargs={'pk': story_version.id}))
+
+        self.assertEqual(list_response.status_code, status.HTTP_200_OK)
+
+        results = list_response.data['results']
+        self.assertIsInstance(results, list)
+
+        self.assertEqual(len(results), 2)
+        self.assertEqual(results[0]['title'], 'my greek version')
+        self.assertEqual(results[1]['title'], 'my russian version')
+
+    # MEMBER TESTS
+    def test_get_translation(self):
+        self.helper_create_dummy_users()
+        self.helper_cleanup_projects()
+
+        project = self.helper_create_single_project('getting a story translation project',
+                                                    'getting a story translation project description',
+                                                    self.staff_user,
+                                                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation', project)
+        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version with a translation')
+        story_translation = self.helper_create_single_story_translation_dummy_wrapper(story_version, 'el', 'my greek version')
+
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        get_response = client.get(reverse('story_translation_detail', kwargs={'pk': story_translation.id}))
+
+        self.assertEqual(get_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(get_response.data['version'], story_translation.version.id)
+        self.assertEqual(get_response.data['language_code'], story_translation.language_code)
+        self.assertEqual(get_response.data['translator']['id'], story_translation.translator.id)
+        self.assertEqual(get_response.data['title'], story_translation.title)
+        self.assertEqual(get_response.data['text'], story_translation.text)
 
     def test_alter_translation(self):
         self.helper_create_dummy_users()
