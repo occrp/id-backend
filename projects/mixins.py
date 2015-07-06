@@ -138,3 +138,47 @@ class StoryTranslationListQuerySetMixin(StoryTranslationQuerySetMixin):
         story_translations = super(StoryTranslationListQuerySetMixin, self).get_queryset()
         story_translations = story_translations.filter(version__id=version_id)
         return story_translations
+
+# -- PROJECT PLAN MIXINS
+#
+#
+class ProjectPlanQuerySetMixin(object):
+    def user_in_project(self, project_id, user):
+        project_count = Project.objects.filter(id=project_id).filter(Q(users__in=[user]) |
+                                                                     Q(coordinator=user)).count()
+        if project_count > 0:
+            return True
+
+        return False
+
+    def stories_in_project(self, project_id, story_ids):
+        if not isinstance(story_ids, list):
+            story_ids = [story_ids]
+
+        id_count = 0
+        stories = Story.objects.filter(project__id=project_id)
+
+        for i in stories:
+            for j in story_ids:
+                if i.id == j:
+                    id_count += 1
+
+        if id_count == len(story_ids):
+            return True
+
+        return False
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return ProjectPlan.objects.all()
+        else:
+            plans = ProjectPlan.objects.filter(Q(project__users__in=[self.request.user]) |
+                                               Q(project__coordinator=self.request.user))
+
+            return plans
+
+class ProjectPlanListQuerySetMixin(ProjectPlanQuerySetMixin):
+    def get_queryset(self, project_id):
+        plans = super(ProjectPlanListQuerySetMixin, self).get_queryset()
+        plans = plans.filter(project__id=project_id)
+        return plans

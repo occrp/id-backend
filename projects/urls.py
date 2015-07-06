@@ -10,6 +10,9 @@ urlpatterns = patterns('',
     url(r'^projects/(?P<pk>[0-9]+)/$',                                  views.ProjectDetail.as_view(), name='project_detail'),
     url(r'^projects/(?P<pk>[0-9]+)/users/$',                            views.ProjectUsers.as_view(), name='project_users'),
 
+    url(r'^projects/(?P<pk>[0-9]+)/plans/$',                            views.ProjectPlanList.as_view(), name='project_plan_list'),
+    url(r'^projects/plans/(?P<pk>[0-9]+)/$',                            views.ProjectPlanDetail.as_view(), name='project_plan_detail'),
+
     url(r'^projects/(?P<pk>[0-9]+)/stories/$',                          views.StoryList.as_view(), name='story_list'),
     url(r'^stories/(?P<pk>[0-9]+)/$',                                   views.StoryDetail.as_view(), name='story_detail'),
 
