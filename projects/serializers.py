@@ -157,7 +157,8 @@ class ProjectPlanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProjectPlan
-        fields = ('project',
+        fields = ('id',
+                  'project',
                   'start_date',
                   'end_date',
                   'title',
