@@ -64,9 +64,9 @@ class PipelineAPITest(APITestCase):
         results = create_response.data
         self.assertEqual(results['title'], 'my created project')
         self.assertEqual(results['description'], 'my project description')
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], [results['coordinator']]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user], [results['coordinator']]),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user, self.volunteer_user], results['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.volunteer_user], results['users']),
                          True)
 
         # get the object from the database and test against reply
@@ -78,9 +78,9 @@ class PipelineAPITest(APITestCase):
         self.assertIsInstance(project, Project)
         self.assertEqual(project.title, results['title'])
         self.assertEqual(project.description, results['description'])
-        self.assertEqual(self.helper_all_users_in_list_by_id([project.coordinator], [results['coordinator']]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([project.coordinator], [results['coordinator']]),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(project.users.all(), results['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(), results['users']),
                          True)
 
         # test again without a description
@@ -129,14 +129,14 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(results[0]['title'], 'democracy for all 1')
         self.assertEqual(results[0]['description'], 'description 1')
         self.assertEqual(self.staff_user.id, results[0]['coordinator']['id'])
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], results[0]['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user], results[0]['users']),
                          True)
 
         self.assertEqual(results[1]['id'], project_3.id)
         self.assertEqual(results[1]['title'], 'democracy for all 3')
         self.assertEqual(results[1]['description'], 'description 3')
         self.assertEqual(self.staff_user.id, results[1]['coordinator']['id'])
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user, self.volunteer_user], results[1]['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.volunteer_user], results[1]['users']),
                          True)
 
     # PROJECT MEMBER
@@ -158,9 +158,9 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(get_response.data['id'], project.id)
         self.assertEqual(get_response.data['title'], project.title)
         self.assertEqual(get_response.data['description'], project.description)
-        self.assertEqual(self.helper_all_users_in_list_by_id([project.coordinator], [get_response.data['coordinator']]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([project.coordinator], [get_response.data['coordinator']]),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(project.users.all(), get_response.data['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(), get_response.data['users']),
                          True)
 
     def test_delete_project(self):
@@ -207,7 +207,7 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(alter_response.data['title'], 'altered title')
         self.assertEqual(alter_response.data['description'], '')
         self.assertEqual(alter_response.data['coordinator']['id'], self.staff_user.id)
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.volunteer_user, self.user_user, self.staff_user], alter_response.data['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.volunteer_user, self.user_user, self.staff_user], alter_response.data['users']),
                          True)
 
         try:
@@ -218,9 +218,9 @@ class PipelineAPITest(APITestCase):
         self.assertIsInstance(project, Project)
         self.assertEqual(alter_response.data['title'], project.title)
         self.assertEqual(alter_response.data['description'], project.description)
-        self.assertEqual(self.helper_all_users_in_list_by_id([project.coordinator], [alter_response.data['coordinator']]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([project.coordinator], [alter_response.data['coordinator']]),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(project.users.all(), alter_response.data['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(), alter_response.data['users']),
                          True)
 
     # PROJECT USER COLLECTION
@@ -242,7 +242,7 @@ class PipelineAPITest(APITestCase):
 
         project = Project.objects.get(id=project.id)
         self.assertEqual(project.users.count(), 4)
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user, self.volunteer_user, self.user_user], assign_response.data['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.admin_user, self.volunteer_user, self.user_user], assign_response.data['users']),
                          True)
 
     def test_unassign_project_users(self):
@@ -263,7 +263,7 @@ class PipelineAPITest(APITestCase):
 
         project = Project.objects.get(id=project.id)
         self.assertEqual(project.users.count(), 3)
-        self.assertEqual(self.helper_all_users_in_list_by_id(project.users.all(), [self.staff_user, self.admin_user, self.user_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(), [self.staff_user, self.admin_user, self.user_user]),
                          True)
 
     def test_list_project_users(self):
@@ -281,7 +281,7 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(list_response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(list_response.data['users']), 4)
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user, self.admin_user, self.volunteer_user, self.user_user], list_response.data['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.admin_user, self.admin_user, self.volunteer_user, self.user_user], list_response.data['users']),
                          True)
 
     # -- PROJECT STORY TESTS
@@ -319,19 +319,19 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(create_response.data['project'], project.id)
         self.assertEqual(create_response.data['title'], data['title'])
         self.assertEqual(create_response.data['thesis'], data['thesis'])
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.user_user], create_response.data['reporters']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.user_user], create_response.data['reporters']),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.user_user], create_response.data['researchers']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.user_user], create_response.data['researchers']),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.volunteer_user], create_response.data['editors']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.volunteer_user], create_response.data['editors']),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.volunteer_user], create_response.data['copy_editors']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.volunteer_user], create_response.data['copy_editors']),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user], create_response.data['fact_checkers']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.admin_user], create_response.data['fact_checkers']),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.admin_user], create_response.data['translators']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.admin_user], create_response.data['translators']),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id([self.staff_user], create_response.data['artists']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user], create_response.data['artists']),
                          True)
 
         try:
@@ -344,19 +344,19 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(story.title, create_response.data['title'])
         self.assertEqual(story.thesis, create_response.data['thesis'])
 
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.reporters.all(), [self.user_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.reporters.all(), [self.user_user]),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.researchers.all(), [self.user_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.researchers.all(), [self.user_user]),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.editors.all(), [self.volunteer_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.editors.all(), [self.volunteer_user]),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.copy_editors.all(), [self.volunteer_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.copy_editors.all(), [self.volunteer_user]),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.fact_checkers.all(), [self.admin_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.fact_checkers.all(), [self.admin_user]),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.translators.all(), [self.admin_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.translators.all(), [self.admin_user]),
                          True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.artists.all(), [self.staff_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.artists.all(), [self.staff_user]),
                          True)
 
     def test_list_stories(self):
@@ -405,19 +405,19 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(details_response.status_code, status.HTTP_200_OK)
 
         self.assertEqual(story.title, 'story with details to get')
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.reporters.all(),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.reporters.all(),
                                                              details_response.data['reporters']), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.researchers.all(),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.researchers.all(),
                                                              details_response.data['researchers']), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.editors.all(),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.editors.all(),
                                                              details_response.data['editors']), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.copy_editors.all(),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.copy_editors.all(),
                                                              details_response.data['copy_editors']), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.fact_checkers.all(),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.fact_checkers.all(),
                                                              details_response.data['fact_checkers']), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.translators.all(),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.translators.all(),
                                                              details_response.data['translators']), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.artists.all(),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.artists.all(),
                                                              details_response.data['artists']), True)
 
         if details_response.data['published'] is not None:
@@ -480,19 +480,19 @@ class PipelineAPITest(APITestCase):
         story = Story.objects.get(id=story.id)
 
         self.assertEqual(story.title, 'my altered title')
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.reporters.all(),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.reporters.all(),
                                                              [self.admin_user]), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.researchers.all(),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.researchers.all(),
                                                              [self.admin_user]), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.editors.all(),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.editors.all(),
                                                              [self.admin_user]), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.copy_editors.all(),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.copy_editors.all(),
                                                              [self.admin_user]), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.fact_checkers.all(),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.fact_checkers.all(),
                                                              [self.admin_user]), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.translators.all(),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.translators.all(),
                                                              [self.admin_user]), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(story.artists.all(),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.artists.all(),
                                                              [self.admin_user]), True)
         self.assertGreater(1, self.helper_datetime_datetime_compare(story.published, altered_date))
 
@@ -845,14 +845,15 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('creating a project plan project',
-                                                    self.staff_user,
+                                                    'creating a project plan project description',
                                                     self.staff_user,
                                                     [self.staff_user])
         story_1 = self.helper_create_single_story_dummy_wrapper('story for a project plan 1', project)
         story_2 = self.helper_create_single_story_dummy_wrapper('story for a project plan 2', project)
 
-        data = {'start_date': datetime.datetime.now(),
-                'end_date': datetime.datetime.now(),
+        data = {'project': project.id,
+                'start_date': datetime.datetime.now().strftime("%Y-%m-%d"),
+                'end_date': datetime.datetime.now().strftime("%Y-%m-%d"),
                 'title': 'my api project plan',
                 'description': 'my api project plan description',
                 'responsible_users': [self.volunteer_user.id, self.user_user.id],
@@ -860,7 +861,7 @@ class PipelineAPITest(APITestCase):
                 'order': 1}
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        create_response = client.post(reverse('project_plan_create', kwargs={'id': project.id}), data, format='json')
+        create_response = client.post(reverse('project_plan_list', kwargs={'pk': project.id}), data, format='json')
 
         self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
 
@@ -870,12 +871,12 @@ class PipelineAPITest(APITestCase):
             project_plan = None
 
         self.assertIsInstance(project_plan, ProjectPlan)
-        self.assertEqual(project_plan.start_date, data['start_date'])
-        self.assertEqual(project_plan.end_date, data['end_date'])
+        self.assertGreater(1, self.helper_string_datetime_compare(data['start_date'], project_plan.start_date))
+        self.assertGreater(1, self.helper_string_datetime_compare(data['end_date'], project_plan.end_date))
         self.assertEqual(project_plan.title, data['title'])
         self.assertEqual(project_plan.description, data['description'])
-        self.assertEqual(self.helper_all_users_in_list_by_id(project_plan.responsible_users, data['responsible_users']), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(project_plan.related_stories, data['responsible_users']), True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.responsible_users.all(), [self.volunteer_user, self.user_user]), True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.related_stories.all(), [story_1, story_2]), True)
         self.assertEqual(project_plan.order, data['order'])
 
     def test_list_project_plans(self):
@@ -930,8 +931,8 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(project_plan.end_date, get_response.data['end_date'])
         self.assertEqual(project_plan.title, get_response.data['title'])
         self.assertEqual(project_plan.description, get_response.data['description'])
-        self.assertEqual(self.helper_all_users_in_list_by_id(project_plan.responsible_users, data['responsible_users']), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(project_plan.related_stories, data['related_stories']), True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.responsible_users, data['responsible_users']), True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.related_stories, data['related_stories']), True)
         self.assertEqual(project_plan.order, get_response.data['order'])
 
     def helper_alter_project_plan(self):
@@ -969,8 +970,8 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(project_plan.end_date, data['end_date'])
         self.assertEqual(project_plan.title, data['title'])
         self.assertEqual(project_plan.description, data['description'])
-        self.assertEqual(self.helper_all_users_in_list_by_id(project_plan.responsible_users, data['responsible_users']), True)
-        self.assertEqual(self.helper_all_users_in_list_by_id(project_plan.related_stories, data['responsible_users']), True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.responsible_users, data['responsible_users']), True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_plan.related_stories, data['responsible_users']), True)
         self.assertEqual(project_plan.order, data['order'])
 
     def helper_delete_project_plan(self):
@@ -1155,6 +1156,11 @@ class PipelineAPITest(APITestCase):
 
         return (string_datetime - datetime_object).total_seconds()
 
+    def helper_string_datetime_compare(self, string, date_object):
+        string_date = datetime.datetime.strptime(string, "%Y-%m-%d").date()
+
+        return (string_date - date_object).total_seconds()
+
     def helper_datetime_datetime_compare(self, datetime_object_1, datetime_object_2):
         return (datetime_object_1 - datetime_object_2).total_seconds()
 
@@ -1164,7 +1170,7 @@ class PipelineAPITest(APITestCase):
         self.volunteer_user = get_user_model().objects.get(email=self.volunteer_email)
         self.user_user = get_user_model().objects.get(email=self.user_email)
 
-    def helper_all_users_in_list_by_id(self, users, ids):
+    def helper_all_objects_in_list_by_id(self, users, ids):
         """
         users is a list of django user objects
         ids assumes a multidimensional list of dicts OR list of users
@@ -1178,6 +1184,7 @@ class PipelineAPITest(APITestCase):
 
         for user in users:
             for i in ids:
+
                 if isinstance(i, dict):
                     if user.id == i['id']:
                         num_users_found += 1
