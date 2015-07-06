@@ -16,7 +16,8 @@ from rest_framework.views import APIView
 from projects.models import Project, Story, StoryVersion, StoryTranslation
 from projects.mixins import (
     ProjectMembershipMixin, ProjectQuerySetMixin, StoryQuerySetMixin, StoryListQuerySetMixin,
-    StoryVersionQuerySetMixin, StoryVersionListQuerySetMixin, StoryTranslationQuerySetMixin)
+    StoryVersionQuerySetMixin, StoryVersionListQuerySetMixin, StoryTranslationQuerySetMixin,
+    StoryTranslationListQuerySetMixin)
 from projects.serializers import (
     ProjectSerializer, StorySerializer, UserSerializer, StoryVersionSerializer, StoryTranslationSerializer)
 
@@ -208,8 +209,11 @@ class StoryVersionDetail(StoryVersionQuerySetMixin, generics.RetrieveUpdateDestr
 # -- STORY TRANSLATION VIEWS
 #
 #
-class StoryTranslationList(StoryTranslationQuerySetMixin, generics.ListCreateAPIView):
+class StoryTranslationList(StoryTranslationListQuerySetMixin, generics.ListCreateAPIView):
     serializer_class = StoryTranslationSerializer
+
+    def get_queryset(self):
+        return super(StoryTranslationList, self).get_queryset(self.kwargs['pk'])
 
     def post(self, request, *args, **kwargs):
         if not self.user_is_story_user(request.data['version'], request.user):

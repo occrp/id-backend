@@ -1,5 +1,5 @@
 from django.db.models import Q
-from projects.models import Project, Story, StoryVersion, StoryTranslation
+from projects.models import Project, Story, StoryVersion, StoryTranslation, ProjectPlan
 
 # -- PROJECT MIXINS
 #
@@ -132,3 +132,9 @@ class StoryTranslationQuerySetMixin(StoryQuerySetBaseMixin):
                                                                  Q(version__story__project__coordinator=self.request.user) |
                                                                  Q(version__story__project__users__in=[self.request.user]))
             return story_translations
+
+class StoryTranslationListQuerySetMixin(StoryTranslationQuerySetMixin):
+    def get_queryset(self, version_id):
+        story_translations = super(StoryTranslationListQuerySetMixin, self).get_queryset()
+        story_translations = story_translations.filter(version__id=version_id)
+        return story_translations
