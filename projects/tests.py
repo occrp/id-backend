@@ -983,7 +983,7 @@ class PipelineAPITest(APITestCase):
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('deleting a project plan project',
-                                                    self.staff_user,
+                                                    'deleting a project plan project description',
                                                     self.staff_user,
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story for a project plan delete', project)
@@ -994,9 +994,9 @@ class PipelineAPITest(APITestCase):
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        delete_response = client.delete(reverse('project_plan_delete', kwargs={'id': story.id}))
+        delete_response = client.delete(reverse('project_plan_detail', kwargs={'pk': project_plan.id}))
 
-        self.assertEqual(delete_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(delete_response.status_code, status.HTTP_204_NO_CONTENT)
 
         try:
             project_plan = ProjectPlan.objects.get(id=project_plan.id)
