@@ -17,9 +17,10 @@ from projects.models import Project, Story, StoryVersion, StoryTranslation
 from projects.mixins import (
     ProjectMembershipMixin, ProjectQuerySetMixin, StoryQuerySetMixin, StoryListQuerySetMixin,
     StoryVersionQuerySetMixin, StoryVersionListQuerySetMixin, StoryTranslationQuerySetMixin,
-    StoryTranslationListQuerySetMixin)
+    StoryTranslationListQuerySetMixin, ProjectPlanQuerySetMixin, ProjectPlanListQuerySetMixin)
 from projects.serializers import (
-    ProjectSerializer, StorySerializer, UserSerializer, StoryVersionSerializer, StoryTranslationSerializer)
+    ProjectSerializer, StorySerializer, UserSerializer, StoryVersionSerializer, StoryTranslationSerializer,
+    ProjectPlanSerializer)
 
 import simplejson
 
@@ -34,7 +35,9 @@ def api_root(request, format=None):
         'story detail': reverse('story_detail', kwargs={'pk': 0}, request=request, format=format),
         'story versions': reverse('story_version_list', kwargs={'pk': 0}, request=request, format=format),
         'story version detail': reverse('story_version_detail', kwargs={'pk': 0}, request=request, format=format),
-        'story translations': reverse('story_translation_list', kwargs={'pk': 0}, request=request, format=format)
+        'story translations': reverse('story_translation_list', kwargs={'pk': 0}, request=request, format=format),
+        'project plans': reverse('project_plan_list', kwargs={'pk': 0}, request=request, format=format),
+        'project plan detail': reverse('project_plan_detail', kwargs={'pk': 0}, request=request, format=format)
     })
 
 # -- USER VIEWS
@@ -231,6 +234,41 @@ class StoryTranslationDetail(StoryTranslationQuerySetMixin, generics.RetrieveUpd
                             status=status.HTTP_403_FORBIDDEN)
 
         return super(StoryTranslationDetail, self).put(request, *args, **kwargs)
+
+# -- PROJECT PLAN VIEWS
+#
+#
+class ProjectPlanList(ProjectPlanListQuerySetMixin, generics.ListCreateAPIView):
+    serializer_class = ProjectPlanSerializer
+
+    def get_queryset(self):
+        return super(ProjectPlanList, self).get_queryset(self.kwargs['pk'])
+
+    def post(self, request, *args, **kwargs):
+        if not self.user_in_project(request.data['project'], request.user):
+            return Response({'details': "not possible to use a project that does not exist or you don't belong to"},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        if not self.stories_in_project(request.data['project'], request.data['related_stories']):
+            return Response({'details': "not possible to use stories that do not exist or don't belong to the project"},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        return super(ProjectPlanList, self).post(request, *args, **kwargs)
+
+class ProjectPlanDetail(ProjectPlanQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProjectPlanSerializer
+
+    def put(self, request, *args, **kwargs):
+        if not self.user_in_project(request.data['project'], request.user):
+            return Response({'details': "not possible to change to a project that does not exist or you don't belong to"},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        if not self.stories_in_project(request.data['project'], request.data['related_stories']):
+            return Response({'details': "not possible to use stories that do not exist or don't belong to the project"},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        return super(ProjectPlanDetail, self).put(request, *args, **kwargs)
+
 ##
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
