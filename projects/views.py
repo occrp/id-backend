@@ -170,6 +170,30 @@ class StoryVersionList(StoryVersionListQuerySetMixin, generics.ListCreateAPIView
 
         return super(StoryVersionList, self).post(request, *args, **kwargs)
 
+class StoryVersionLive(APIView):
+
+    def get(self, request, pk, language_code, format=None):
+        story_versions = StoryVersion.objects.filter(story__id=pk).order_by('-timestamp', '-id')
+
+        if story_versions.count() == 0:
+            return Response({"details": "story not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        story_version = story_versions[0]
+
+        translations = StoryTranslation.objects.filter(Q(version__id=story_version.id) &
+                                                       Q(language_code=language_code) &
+                                                       Q(live=True)).order_by("-timestamp")
+
+        print story_version.title
+        print story_version.timestamp
+
+        if translations.count() == 0:
+            return Response({"details": "translation for specified language not found"},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        serializer = StoryTranslationSerializer(translations[0])
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class StoryVersionDetail(StoryVersionQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StoryVersionSerializer

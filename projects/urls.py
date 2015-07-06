@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^projects/(?P<pk>[0-9]+)/stories/$',                          views.StoryList.as_view(), name='story_list'),
     url(r'^stories/(?P<pk>[0-9]+)/$',                                   views.StoryDetail.as_view(), name='story_detail'),
 
+    url(r'^stories/(?P<pk>[0-9]+)/live/(?P<language_code>[a-zA-Z]+)/$', views.StoryVersionLive.as_view(), name='story_live_version_in_language'),
     url(r'^stories/(?P<pk>[0-9]+)/versions/$',                          views.StoryVersionList.as_view(), name='story_version_list'),
     url(r'^stories/versions/(?P<pk>[0-9]+)/$',                          views.StoryVersionDetail.as_view(), name='story_version_detail'),
 
