@@ -31,6 +31,13 @@ class DirectoryAnalyzer:
             s += "\n-- Table for %s:\n%s\n" % (path, table)
         return s
 
+    def get_mysql_tables(self):
+        s = ""
+        for path, analyzer in self.analyzers.iteritems():
+            table = analyzer.get_mysql_table(table_prefix=self.table_prefix)
+            s += "\n-- Table for %s:\n%s\n" % (path, table)
+        return s
+
     def get_ingest_file(self):
         return json.dumps(self.get_ingest_json())
 
@@ -125,8 +132,14 @@ class CSVAnalyzer(FileAnalyzer):
             res[key] = self.get_datatype(value)
         return res
 
-    def name_to_cassandra_name(self, name):
+    def name_to_database_name(self, name):
         return name.lower().replace(" ", "_").replace("-", "_").replace(",", "_")
+
+    def name_to_cassandra_name(self, name):
+        return self.name_to_database_name(name)
+
+    def name_to_mysql_name(self, name):
+        return self.name_to_database_name(name)
 
     def type_to_cassandra_type(self, t):
         tlookup = {
@@ -136,19 +149,36 @@ class CSVAnalyzer(FileAnalyzer):
         }
         return tlookup[t]
 
+    def type_to_mysql_type(self, t):
+        tlookup = {
+            str:    "text",
+            int:    "int",
+            float:  "double",
+        }
+        return tlookup[t]
+
+    def get_mysql_table(self, tablename=None, aftermatter="", table_prefix=""):
+        template = "CREATE TABLE IF NOT EXISTS %(table_prefix)s%(name)s (\n\t%(fields)s\n)%(aftermatter)s;"
+        return self.generate_database_table(template, tablename, aftermatter, table_prefix, self.name_to_mysql_name, self.type_to_mysql_type)
+
     def get_cassandra_table(self, tablename=None, aftermatter="", table_prefix=""):
         template = "CREATE TABLE IF NOT EXISTS %(table_prefix)s%(name)s (\n\t%(fields)s\n)%(aftermatter)s;"
+        return self.generate_database_table(template, tablename, aftermatter, table_prefix, self.name_to_cassandra_name, self.type_to_cassandra_type)
+
+    def generate_database_table(self, template, tablename=None, aftermatter="", table_prefix="", name_interpolator=lambda(x):x, type_interpolator=lambda(x):x):
         fields = []
         if not tablename:
             tablename = self.filename.split("/")[-1].strip(".csv")
         for name, t in self.types.iteritems():
-            fields.append("%s %s" % (self.name_to_cassandra_name(name), self.type_to_cassandra_type(t)))
-
+            fields.append("%s %s" % (name_interpolator(name), type_interpolator(t)))
+        
         return template % {
                 "table_prefix": table_prefix,
                 "name": self.name_to_cassandra_name(tablename), 
                 "fields": ",\n\t".join(fields),
-                "aftermatter": aftermatter}
+                "aftermatter": aftermatter
+        }
+
 
 if __name__ == "__main__":
     from optparse import OptionParser
@@ -157,7 +187,9 @@ if __name__ == "__main__":
     parser.add_option("-d", "--directory", action="append", dest="directories",
                      help="Analyze directory", metavar="DIR", default=[])
     parser.add_option("", "--cassandra", action="store_true", dest="cassandra", default=False,
-                     help="Print out Cassandra table specifications for found data.")
+                     help="Output Cassandra table specifications for found data.")
+    parser.add_option("", "--mysql", action="store_true", dest="mysql", default=False,
+                     help="Ouput MySQL table specifications for found data.")
     parser.add_option("-M", "--max-scan", type="int", default=-1, dest="max_scan",
                      help="The maximum number of file entries that should be scanned to determine types.")
     parser.add_option("-q", "--quiet",
@@ -174,6 +206,8 @@ if __name__ == "__main__":
         an.analyze(d)
         if options.cassandra:
             print an.get_cassandra_tables()
+        if options.mysql:
+            print an.get_mysql_tables()
         if options.ingest:
             if options.output:
                 with open(options.output, "w+") as fh:
@@ -186,11 +220,11 @@ if __name__ == "__main__":
         an.analyze(f)
         if options.cassandra:
             print an.get_cassandra_table(options.table_prefix)
-        if options.ingest:
-            if options.output:
-                with open(options.output, "w+") as fh:
-                    fh.write(an.get_ingest_file)
-            else:
-                print an.get_ingest_file()
+        #if options.file:
+        #    if options.output:
+        #        with open(options.output, "w+") as fh:
+        #            fh.write(an.get_ingest_file)
+        #    else:
+        #        print an.get_ingest_file()
 
 
