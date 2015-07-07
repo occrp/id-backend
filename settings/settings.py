@@ -126,17 +126,6 @@ DATABASES = {
 }
 
 
-NEO4J_DATABASES = {
-    'default': {
-        'HOST': NEO4J_HOST,
-        'PORT': NEO4J_PORT,
-        'ENDPOINT': NEO4J_ENDPOINT
-    }
-}
-
-# DATABASE_ROUTERS = ['neo4django.utils.Neo4djangoIntegrationRouter']
-
-
 # our own precious User model
 # as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
 AUTH_USER_MODEL = 'id.Profile'
