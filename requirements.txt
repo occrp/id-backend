@@ -17,3 +17,4 @@ django_select2
 djangorestframework
 oauth2client
 google-api-python-client
+rules
