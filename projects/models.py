@@ -16,20 +16,38 @@ STORYSTATUSES = (
     (11, "Published"),
 )
 
+PROJECTUSERTYPES = (
+    (1, "Coordinator"),
+    (2, "User")
+)
+
+STORYUSERTYPES = (
+    (1, "Reporter"),
+    (2, "Researcher"),
+    (3, "Editor"),
+    (4, "Copy Editor"),
+    (5, "Fact Checker"),
+    (6, "Translator"),
+    (7, "Artist")
+)
 
 class Project(models.Model):
     title = models.CharField(max_length=250)
     description = models.CharField(max_length=250, blank=True, null=True)
-    coordinator = models.ForeignKey(AUTH_USER_MODEL, related_name="coordinator")
+    users = models.ManyToManyField(AUTH_USER_MODEL, through="ProjectUser", related_name="members")
     # podaci_root = models.CharField(max_length=50)
-    users = models.ManyToManyField(AUTH_USER_MODEL, related_name="members")
 
-    def has_access(self, user):
+    def hs_access(self, user):
         if user == self.coordinator:
             return True
         if user in self.users.all():
             return True
         return False
+
+class ProjectUser(models.Model):
+    project = models.ForeignKey(Project)
+    user = models.ForeignKey(AUTH_USER_MODEL)
+    user_type = models.IntegerField(choices=PROJECTUSERTYPES)
 
 
 class Story(models.Model):
