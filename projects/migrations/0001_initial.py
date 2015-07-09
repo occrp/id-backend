@@ -18,8 +18,6 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(max_length=250)),
                 ('description', models.CharField(max_length=250, null=True, blank=True)),
-                ('coordinator', models.ForeignKey(related_name='coordinator', to=settings.AUTH_USER_MODEL)),
-                ('users', models.ManyToManyField(related_name='members', to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },
@@ -35,6 +33,18 @@ class Migration(migrations.Migration):
                 ('description', models.TextField()),
                 ('order', models.IntegerField()),
                 ('project', models.ForeignKey(to='projects.Project')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ProjectUser',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('user_type', models.IntegerField(choices=[(1, b'Coordinator'), (2, b'User')])),
+                ('project', models.ForeignKey(to='projects.Project')),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },
@@ -122,6 +132,12 @@ class Migration(migrations.Migration):
             model_name='projectplan',
             name='responsible_users',
             field=models.ManyToManyField(to=settings.AUTH_USER_MODEL),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='project',
+            name='users',
+            field=models.ManyToManyField(related_name='members', through='projects.ProjectUser', to=settings.AUTH_USER_MODEL),
             preserve_default=True,
         ),
     ]
