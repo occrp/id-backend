@@ -8,19 +8,18 @@ from rest_framework import generics
 from rest_framework import mixins as rest_framework_mixins
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from projects.models import Project, Story, StoryVersion, StoryTranslation
-from projects.mixins import (
-    ProjectMembershipMixin, ProjectQuerySetMixin, StoryQuerySetMixin, StoryListQuerySetMixin,
-    StoryVersionQuerySetMixin, StoryVersionListQuerySetMixin, StoryTranslationQuerySetMixin,
-    StoryTranslationListQuerySetMixin, ProjectPlanQuerySetMixin, ProjectPlanListQuerySetMixin)
-from projects.serializers import (
-    ProjectSerializer, StorySerializer, UserSerializer, StoryVersionSerializer, StoryTranslationSerializer,
-    ProjectPlanSerializer)
+from projects.mixins import *
+from projects.permissions import *
+from projects.serializers import *
+
+from settings.settings import REST_FRAMEWORK
 
 import simplejson
 
@@ -71,13 +70,18 @@ class ProjectList(ProjectQuerySetMixin, generics.ListCreateAPIView):
     serializer_class = ProjectSerializer
 
     def post(self, request, *args, **kwargs):
-        request.data['coordinator'] = request.user.id
+        if not isinstance(request.data['coordinators'], list):
+            request.data['coordinators'] = []
+
+        if request.user.id not in request.data['coordinators']:
+            request.data['coordinators'].append(request.user.id)
+
         return super(ProjectList, self).post(request, *args, **kwargs)
 
 
 class ProjectDetail(ProjectQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    permission_classes = (IsAuthenticated, CanAlterDeleteProject,)
 
     def put(self, request, *args, **kwargs):
         request.data['coordinator'] = request.user.id
