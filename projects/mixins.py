@@ -22,7 +22,8 @@ class ProjectQuerySetMixin(object):
         if self.request.user.is_superuser:
             return Project.objects.all()
         else:
-            return Project.objects.filter(coordinator=self.request.user)
+            return Project.objects.filter(Q(users__in=[self.request.user]) |
+                                          Q(coordinators__in=[self.request.user])).distinct()
 
 # -- STORY MIXINS
 #
