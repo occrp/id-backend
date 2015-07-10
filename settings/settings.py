@@ -79,6 +79,11 @@ MIDDLEWARE_CLASSES = (
     'podaci.middleware.PodaciExceptionMiddleware',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'rules.permissions.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 TEMPLATE_CONTEXT_PROCESSORS += (
     "django.core.context_processors.request",
