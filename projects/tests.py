@@ -49,12 +49,13 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
+        client = APIClient()
+
         data = {'title': 'my created project',
                 'description': 'my project description',
-                'coordinator': self.staff_user.id,
-                'users': [self.volunteer_user.id, self.staff_user.id]
+                'coordinators': [self.admin_user.id],
+                'users': [self.volunteer_user.id, self.staff_user.id, self.admin_user.id]
                 }
-        client = APIClient()
         client.force_authenticate(user=self.staff_user)
         create_response = client.post(reverse('project_list'), data, format='json')
 
@@ -64,12 +65,15 @@ class PipelineAPITest(APITestCase):
         results = create_response.data
         self.assertEqual(results['title'], 'my created project')
         self.assertEqual(results['description'], 'my project description')
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user], [results['coordinator']]),
+
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.admin_user],
+                                                               results['coordinators']),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.volunteer_user], results['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.volunteer_user, self.admin_user],
+                                                               results['users']),
                          True)
 
-        # get the object from the database and test against reply
+        # get the object from the database and test against call data
         try:
             project = Project.objects.get(id=results['id'])
         except Project.DoesNotExist:
@@ -78,24 +82,89 @@ class PipelineAPITest(APITestCase):
         self.assertIsInstance(project, Project)
         self.assertEqual(project.title, results['title'])
         self.assertEqual(project.description, results['description'])
-        self.assertEqual(self.helper_all_objects_in_list_by_id([project.coordinator], [results['coordinator']]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.coordinators.all(),
+                                                               [self.staff_user, self.admin_user]),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(), results['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(),
+                                                               [self.staff_user, self.volunteer_user, self.admin_user]),
                          True)
 
         # test again without a description
+        #
         data = {'title': 'my created project 2',
-                'coordinator': self.staff_user.id,
-                'users': [self.volunteer_user.id, self.staff_user.id]
+                'coordinators': [self.admin_user.id],
+                'users': [self.volunteer_user.id, self.staff_user.id, self.admin_user.id]
                 }
-        client = APIClient()
         client.force_authenticate(user=self.staff_user)
         create_response = client.post(reverse('project_list'), data, format='json')
 
         self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
 
         results = create_response.data
+        self.assertEqual(results['title'], 'my created project 2')
         self.assertEqual(results['description'] == "" or results['description'] is None, True)
+
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.admin_user],
+                                                               results['coordinators']),
+                         True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.volunteer_user, self.admin_user],
+                                                               results['users']),
+                         True)
+
+        # get the object from the database and test against call data
+        try:
+            project = Project.objects.get(id=results['id'])
+        except Project.DoesNotExist:
+            project = None
+
+        self.assertIsInstance(project, Project)
+        self.assertEqual(project.title, results['title'])
+        self.assertEqual(project.description == "" or project.description is None, True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.coordinators.all(),
+                                                               [self.staff_user, self.admin_user]),
+                         True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(),
+                                                               [self.staff_user, self.volunteer_user, self.admin_user]),
+                         True)
+
+        ## test with coordinator as just an integer and explicit coordinator as creator
+        data = {'title': 'my created project 3',
+                'description': 'my project description 3',
+                'coordinators': self.staff_user.id,
+                'users': [self.volunteer_user.id, self.staff_user.id, self.admin_user.id]
+                }
+        client.force_authenticate(user=self.staff_user)
+        create_response = client.post(reverse('project_list'), data, format='json')
+
+        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
+
+        # assert results in reply are what we expected
+        results = create_response.data
+        self.assertEqual(results['title'], 'my created project 3')
+        self.assertEqual(results['description'], 'my project description 3')
+
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user],
+                                                               results['coordinators']),
+                         True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.volunteer_user, self.admin_user],
+                                                               results['users']),
+                         True)
+
+        # get the object from the database and test against call data
+        try:
+            project = Project.objects.get(id=results['id'])
+        except Project.DoesNotExist:
+            project = None
+
+        self.assertIsInstance(project, Project)
+        self.assertEqual(project.title, results['title'])
+        self.assertEqual(project.description, results['description'])
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.coordinators.all(),
+                                                               [self.staff_user]),
+                         True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(),
+                                                               [self.staff_user, self.volunteer_user, self.admin_user]),
+                         True)
 
     def test_list_projects(self):
         self.helper_create_dummy_users()
