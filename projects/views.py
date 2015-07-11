@@ -71,7 +71,10 @@ class ProjectList(ProjectQuerySetMixin, generics.ListCreateAPIView):
 
     def post(self, request, *args, **kwargs):
         if not isinstance(request.data['coordinators'], list):
-            request.data['coordinators'] = []
+            if isinstance(request.data['coordinators'], int):
+                request.data['coordinators'] = [request.data['coordinators']]
+            else:
+                request.data['coordinators'] = []
 
         if request.user.id not in request.data['coordinators']:
             request.data['coordinators'].append(request.user.id)
@@ -84,7 +87,15 @@ class ProjectDetail(ProjectQuerySetMixin, generics.RetrieveUpdateDestroyAPIView)
     permission_classes = (IsAuthenticated, CanAlterDeleteProject,)
 
     def put(self, request, *args, **kwargs):
-        request.data['coordinator'] = request.user.id
+        if not isinstance(request.data['coordinators'], list):
+            if isinstance(request.data['coordinators'], int):
+                request.data['coordinators'] = [request.data['coordinators']]
+            else:
+                request.data['coordinators'] = []
+
+        if request.user.id not in request.data['coordinators']:
+            request.data['coordinators'].append(request.user.id)
+
         return super(ProjectDetail, self).put(request, *args, **kwargs)
 
 class ProjectUsers(UsersBase):
