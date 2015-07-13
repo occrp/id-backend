@@ -284,13 +284,28 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('delete democracy for all',
                                                     'delete description',
-                                                    self.staff_user,
-                                                    [self.staff_user])
+                                                    [self.staff_user],
+                                                    [self.staff_user, self.user_user])
+
+        client = APIClient()
+        client.force_authenticate(user=self.user_user)
+        delete_response = client.delete(reverse('project_detail', kwargs={'pk': project.id}))
+
+        # user_user should be able to see the project, but not alter or delete it
+        self.assertEqual(delete_response.status_code, status.HTTP_403_FORBIDDEN)
+
+        try:
+            project = Project.objects.get(id=project.id)
+        except Project.DoesNotExist:
+            project = None
+
+        self.assertIsInstance(project, Project)
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
         delete_response = client.delete(reverse('project_detail', kwargs={'pk': project.id}))
 
+        # try deletion again with user that had deletion rights
         self.assertEqual(delete_response.status_code, status.HTTP_204_NO_CONTENT)
 
         try:
@@ -299,6 +314,7 @@ class PipelineAPITest(APITestCase):
             project = None
 
         self.assertEqual(project, None)
+
 
     def test_alter_project(self):
         self.helper_create_dummy_users()
