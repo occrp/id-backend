@@ -450,17 +450,25 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('list user democracy for all',
                                                     'list description',
-                                                    self.staff_user,
-                                                    [self.staff_user, self.admin_user, self.volunteer_user, self.user_user])
+                                                    [self.staff_user],
+                                                    [self.staff_user, self.admin_user, self.volunteer_user])
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
         list_response = client.get(reverse('project_users', kwargs={'pk': project.id}))
 
         self.assertEqual(list_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(list_response.data['users']), 4)
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.admin_user, self.admin_user, self.volunteer_user, self.user_user], list_response.data['users']),
+        self.assertEqual(len(list_response.data['users']), 3)
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.admin_user, self.admin_user, self.volunteer_user],
+                                                               list_response.data['users']),
                          True)
+
+        # try listing project users again with user not in the project, should get 404
+        client = APIClient()
+        client.force_authenticate(user=self.user_user)
+        list_response = client.get(reverse('project_users', kwargs={'pk': project.id}))
+
+        self.assertEqual(list_response.status_code, status.HTTP_404_NOT_FOUND)
 
     # -- PROJECT STORY TESTS
     #
