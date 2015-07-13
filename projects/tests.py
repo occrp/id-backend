@@ -401,21 +401,35 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
+        project_users = [self.staff_user]
         project = self.helper_create_single_project('assign user democracy for all',
                                                     'assign description',
-                                                    self.staff_user,
-                                                    [self.staff_user])
+                                                    [self.staff_user],
+                                                    project_users)
 
-        data = {'users': [self.admin_user.id, self.volunteer_user.id, self.user_user.id]}
+        project_users_to_add = [self.volunteer_user]
+        project_users_altered = [self.staff_user, self.volunteer_user]
+        data = {'users': [i.id for i in project_users_to_add]}
+
+        client = APIClient()
+        client.force_authenticate(user=self.user_user)
+        assign_response = client.put(reverse('project_users', kwargs={'pk': project.id}), data, format='json')
+
+        # since user is not in project, it should appear as if it doesn't exist
+        self.assertEqual(assign_response.status_code, status.HTTP_404_NOT_FOUND)
+
+        project = Project.objects.get(id=project.id)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(),
+                                                               project_users),
+                         True)
+
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
         assign_response = client.put(reverse('project_users', kwargs={'pk': project.id}), data, format='json')
 
-        self.assertEqual(assign_response.status_code, status.HTTP_200_OK)
-
         project = Project.objects.get(id=project.id)
-        self.assertEqual(project.users.count(), 4)
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.admin_user, self.volunteer_user, self.user_user], assign_response.data['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(),
+                                                               project_users_altered),
                          True)
 
     def test_unassign_project_users(self):
