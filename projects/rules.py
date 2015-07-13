@@ -17,9 +17,6 @@ def is_project_coordinator(self, user, instance):
 def is_project_member(self, user, instance):
     project = find_project_in_context_or_get(self, instance)
 
-    print "trying to print my project"
-    print project
-
     if user in project.users.all():
         return True
 
