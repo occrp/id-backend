@@ -10,7 +10,7 @@ from projects.models import Project, Story, StoryVersion, StoryTranslation, Proj
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'first_name', 'last_name')
+        fields = ('id', 'display_name', 'email', 'first_name', 'last_name')
 
 class UserField(serializers.RelatedField):
 
@@ -28,16 +28,8 @@ class UserField(serializers.RelatedField):
         return user
 
     def to_representation(self, value):
-        if value.first_name == "" or value.last_name == "":
-            name_representation = value.email
-        else:
-            name_representation = "%s %s" % (value.first_name, value.last_name)
-        representation = {'id': value.id,
-                          'name': name_representation,
-                          'email': value.email,
-                          'first_name': value.first_name,
-                          'last_name': value.last_name}
-        return representation
+        representation = UserSerializer(value)
+        return representation.data
 
 # -- PROJECT SERIALIZERS/FIELDS/VALIDATORS
 #
