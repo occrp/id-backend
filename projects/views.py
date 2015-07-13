@@ -14,6 +14,8 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
+import rules
+
 from projects.models import Project, Story, StoryVersion, StoryTranslation
 from projects.mixins import *
 from projects.permissions import *
@@ -99,6 +101,7 @@ class ProjectDetail(ProjectQuerySetMixin, generics.RetrieveUpdateDestroyAPIView)
         return super(ProjectDetail, self).put(request, *args, **kwargs)
 
 class ProjectUsers(UsersBase):
+    permission_classes = (IsAuthenticated, CanAlterDeleteProject,)
 
     def get_project(self, pk):
         try:
@@ -108,41 +111,58 @@ class ProjectUsers(UsersBase):
 
     def get(self, request, pk, format=None):
         project = self.get_project(pk)
+        permission_class = CanAlterDeleteProject()
 
-        if len(project.users.all()) > 0:
-            serializer = UserSerializer(project.users.all(), many=True)
-            json = {'users': serializer.data}
+        if(permission_class.has_object_permission(request, None, project)):
+
+            if len(project.users.all()) > 0:
+                serializer = UserSerializer(project.users.all(), many=True)
+                json = {'users': serializer.data}
+                return Response(json)
+
+            json = {'users': []}
             return Response(json)
 
-        json = {'users': []}
-        return Response(json)
+        return Response({'details': "You do not have permission to perform this action."},
+                        status=status.HTTP_403_FORBIDDEN)
 
     def put(self, request, pk, format=None):
         project = self.get_project(pk)
-        user_ids = request.data['users']
-        users = self.get_users_by_id_or_list(user_ids)
+        permission_class = CanAlterDeleteProject()
 
-        try:
-            project.users.add(*users)
-        except:
-            raise Http404
+        if(permission_class.has_object_permission(request, None, project)):
+            user_ids = request.data['users']
+            users = self.get_users_by_id_or_list(user_ids)
+            try:
+                project.users.add(*users)
+            except:
+                raise Http404
 
-        serializer = UserSerializer(users, many=True)
+            serializer = UserSerializer(users, many=True)
 
-        json = {'users': serializer.data}
-        return Response(json)
+            json = {'users': serializer.data}
+            return Response(json)
+
+        return Response({'details': "You do not have permission to perform this action."},
+                        status=status.HTTP_403_FORBIDDEN)
 
     def delete(self, request, pk, format=None):
         project = self.get_project(pk)
-        user_ids = request.data['users']
-        users = self.get_users_by_id_or_list(user_ids)
+        permission_class = CanAlterDeleteProject()
 
-        try:
-            project.users.remove(*users)
-        except:
-            raise Http404
+        if(permission_class.has_object_permission(request, None, project)):
+            user_ids = request.data['users']
+            users = self.get_users_by_id_or_list(user_ids)
 
-        return Response(status=status.HTTP_204_NO_CONTENT)
+            try:
+                project.users.remove(*users)
+            except:
+                raise Http404
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response({'details': "You do not have permission to perform this action."},
+                        status=status.HTTP_403_FORBIDDEN)
 
 # -- STORY VIEWS
 #
