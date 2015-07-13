@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.http import HttpResponse
@@ -123,8 +125,12 @@ class ProjectUsers(UsersBase):
             json = {'users': []}
             return Response(json)
 
-        return Response({'details': "You do not have permission to perform this action."},
-                        status=status.HTTP_403_FORBIDDEN)
+        if rules.test_rule('is_project_member', request.user, project):
+            return Response({'detail': "You do not have permission to perform this action."},
+                            status=status.HTTP_403_FORBIDDEN)
+        else:
+            return Response({'detail': "Not found."},
+                            status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, pk, format=None):
         project = self.get_project(pk)
@@ -143,8 +149,12 @@ class ProjectUsers(UsersBase):
             json = {'users': serializer.data}
             return Response(json)
 
-        return Response({'details': "You do not have permission to perform this action."},
-                        status=status.HTTP_403_FORBIDDEN)
+        if rules.test_rule('is_project_member', request.user, project):
+            return Response({'detail': "You do not have permission to perform this action."},
+                            status=status.HTTP_403_FORBIDDEN)
+        else:
+            return Response({'detail': "Not found."},
+                            status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, pk, format=None):
         project = self.get_project(pk)
@@ -161,8 +171,12 @@ class ProjectUsers(UsersBase):
 
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        return Response({'details': "You do not have permission to perform this action."},
-                        status=status.HTTP_403_FORBIDDEN)
+        if rules.test_rule('is_project_member', request.user, project):
+            return Response({'detail': "You do not have permission to perform this action."},
+                            status=status.HTTP_403_FORBIDDEN)
+        else:
+            return Response({'detail': "Not found."},
+                            status=status.HTTP_404_NOT_FOUND)
 
 # -- STORY VIEWS
 #
