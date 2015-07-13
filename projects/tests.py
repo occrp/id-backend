@@ -315,30 +315,75 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(project, None)
 
-
     def test_alter_project(self):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
         project = self.helper_create_single_project('alter democracy for all',
                                                     'alter description',
-                                                    self.staff_user,
-                                                    [self.staff_user])
+                                                    [self.staff_user],
+                                                    [self.staff_user, self.user_user])
 
         data = {'title': 'altered title',
-                'description': '',
-                'coordinator': self.admin_user.id,
+                'description': 'my altered description',
+                'coordinators': [self.staff_user.id, self.admin_user.id],
                 'users': [self.volunteer_user.id, self.user_user.id, self.staff_user.id]}
+
+        client = APIClient()
+        client.force_authenticate(user=self.user_user)
+        alter_response = client.put(reverse('project_detail', kwargs={'pk': project.id}), data, format='json')
+
+        # user_user should not be able to alter the project
+        self.assertEqual(alter_response.status_code, status.HTTP_403_FORBIDDEN)
+
+        try:
+            project_altered = Project.objects.get(id=project.id)
+        except Project.DoesNotExist:
+            project_altered = None
+
+        self.assertIsInstance(project, Project)
+        self.assertEqual(project_altered.id, project.id)
+        self.assertEqual(project_altered.title, project.title)
+        self.assertEqual(project_altered.description, project.description)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_altered.coordinators.all(),
+                                                               project.coordinators.all()),
+                         True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_altered.coordinators.all(),
+                                                               project.coordinators.all()),
+                         True)
+
+        # try again with user with alter privelages
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
         alter_response = client.put(reverse('project_detail', kwargs={'pk': project.id}), data, format='json')
 
         self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
+
+        try:
+            project_altered = Project.objects.get(id=project.id)
+        except Project.DoesNotExist:
+            project_altered = None
+
+        self.assertIsInstance(project, Project)
+
         self.assertEqual(alter_response.data['id'], project.id)
         self.assertEqual(alter_response.data['title'], 'altered title')
-        self.assertEqual(alter_response.data['description'], '')
-        self.assertEqual(alter_response.data['coordinator']['id'], self.staff_user.id)
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.volunteer_user, self.user_user, self.staff_user], alter_response.data['users']),
+        self.assertEqual(alter_response.data['description'], 'my altered description')
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.admin_user],
+                                                               alter_response.data['coordinators']),
+                         True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.volunteer_user, self.user_user, self.staff_user],
+                                                               alter_response.data['users']),
+                         True)
+
+        self.assertEqual(project_altered.id, project.id)
+        self.assertEqual(project_altered.title, 'altered title')
+        self.assertEqual(project_altered.description, 'my altered description')
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.admin_user],
+                                                               alter_response.data['coordinators']),
+                         True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.volunteer_user, self.user_user, self.staff_user],
+                                                               alter_response.data['users']),
                          True)
 
         try:
@@ -349,9 +394,11 @@ class PipelineAPITest(APITestCase):
         self.assertIsInstance(project, Project)
         self.assertEqual(alter_response.data['title'], project.title)
         self.assertEqual(alter_response.data['description'], project.description)
-        self.assertEqual(self.helper_all_objects_in_list_by_id([project.coordinator], [alter_response.data['coordinator']]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_altered.coordinators.all(),
+                                                               [self.staff_user, self.admin_user]),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(), alter_response.data['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_altered.users.all(),
+                                                               [self.volunteer_user, self.user_user, self.staff_user]),
                          True)
 
     # PROJECT USER COLLECTION
