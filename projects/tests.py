@@ -1379,7 +1379,12 @@ class PipelineAPITest(APITestCase):
                     if user.id == i['id']:
                         num_users_found += 1
                         break
+                elif isinstance(i, int) or isinstance(i, long):
+                    if user.id == i:
+                        num_users_found += 1
+                        break
                 else:
+                    # assume user objects
                     if user.id == i.id:
                         num_users_found += 1
                         break
