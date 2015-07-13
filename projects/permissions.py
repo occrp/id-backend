@@ -1,5 +1,10 @@
+from __future__ import absolute_import
+
 import rules
+
 from rest_framework import permissions
+
+import projects.rules
 
 class CanAlterDeleteProject(permissions.BasePermission):
 
