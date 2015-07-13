@@ -127,7 +127,7 @@ class PipelineAPITest(APITestCase):
                                                                [self.staff_user, self.volunteer_user, self.admin_user]),
                          True)
 
-        ## test with coordinator as just an integer and explicit coordinator as creator
+        # test with coordinator as just an integer (as opposed to array of integers) and explicit coordinator as creator
         data = {'title': 'my created project 3',
                 'description': 'my project description 3',
                 'coordinators': self.staff_user.id,
@@ -172,15 +172,15 @@ class PipelineAPITest(APITestCase):
 
         project_1 = self.helper_create_single_project('democracy for all 1',
                                                       'description 1',
-                                                      self.staff_user,
+                                                      [self.staff_user],
                                                       [self.staff_user])
         project_2 = self.helper_create_single_project('democracy for all 2',
                                                       'description 2',
-                                                      self.volunteer_user,
+                                                      [self.volunteer_user],
                                                       [self.volunteer_user])
         project_3 = self.helper_create_single_project('democracy for all 3',
                                                       'description 3',
-                                                      self.staff_user,
+                                                      [self.staff_user],
                                                       [self.staff_user, self.volunteer_user])
 
         client = APIClient()
@@ -197,16 +197,53 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(results[0]['id'], project_1.id)
         self.assertEqual(results[0]['title'], 'democracy for all 1')
         self.assertEqual(results[0]['description'], 'description 1')
-        self.assertEqual(self.staff_user.id, results[0]['coordinator']['id'])
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user], results[0]['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user],
+                                                               results[0]['coordinators']),
+                         True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user],
+                                                               results[0]['users']),
                          True)
 
         self.assertEqual(results[1]['id'], project_3.id)
         self.assertEqual(results[1]['title'], 'democracy for all 3')
         self.assertEqual(results[1]['description'], 'description 3')
-        self.assertEqual(self.staff_user.id, results[1]['coordinator']['id'])
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.volunteer_user], results[1]['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user],
+                                                               results[1]['coordinators']),
                          True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.volunteer_user],
+                                                               results[1]['users']),
+                         True)
+
+        # test again with a list call for the volunteer user, should only see 2 results
+        client = APIClient()
+        client.force_authenticate(user=self.volunteer_user)
+        list_response = client.get(reverse('project_list'))
+
+        results = list_response.data['results']
+        self.assertIsInstance(results, list)
+        # we should only see two since one of which we created belongs to another user
+        self.assertEqual(len(results), 2)
+
+        self.assertEqual(results[0]['id'], project_2.id)
+        self.assertEqual(results[0]['title'], 'democracy for all 2')
+        self.assertEqual(results[0]['description'], 'description 2')
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.volunteer_user],
+                                                               results[0]['coordinators']),
+                         True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.volunteer_user],
+                                                               results[0]['users']),
+                         True)
+
+        self.assertEqual(results[1]['id'], project_3.id)
+        self.assertEqual(results[1]['title'], 'democracy for all 3')
+        self.assertEqual(results[1]['description'], 'description 3')
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user],
+                                                               results[1]['coordinators']),
+                         True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.volunteer_user],
+                                                               results[1]['users']),
+                         True)
+
 
     # PROJECT MEMBER
     def test_get_project(self):
@@ -1077,11 +1114,11 @@ class PipelineAPITest(APITestCase):
     # -- PROJECT HELPER FUNCTIONS
     #
     #
-    def helper_create_single_project(self, title, description, coordinator, users):
+    def helper_create_single_project(self, title, description, coordinators, users):
         project = Project(title=title,
-                          description=description,
-                          coordinator=coordinator)
+                          description=description)
         project.save()
+        project.coordinators.add(*coordinators)
         project.users.add(*users)
         project.save()
 
