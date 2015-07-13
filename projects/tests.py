@@ -252,7 +252,7 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('get democracy for all',
                                                     'description 1 democracy',
-                                                    self.staff_user,
+                                                    [self.staff_user],
                                                     [self.staff_user])
 
         client = APIClient()
@@ -264,10 +264,19 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(get_response.data['id'], project.id)
         self.assertEqual(get_response.data['title'], project.title)
         self.assertEqual(get_response.data['description'], project.description)
-        self.assertEqual(self.helper_all_objects_in_list_by_id([project.coordinator], [get_response.data['coordinator']]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user],
+                                                               get_response.data['coordinators']),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(), get_response.data['users']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user],
+                                                               get_response.data['users']),
                          True)
+
+        ## try get call again with different user, should be no results
+        client = APIClient()
+        client.force_authenticate(user=self.volunteer_user)
+        get_response = client.get(reverse('project_detail', kwargs={'pk': project.id}))
+
+        self.assertEqual(get_response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_delete_project(self):
         self.helper_create_dummy_users()
