@@ -319,86 +319,81 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
-        project = self.helper_create_single_project('alter democracy for all',
-                                                    'alter description',
-                                                    [self.staff_user],
-                                                    [self.staff_user, self.user_user])
+        project_title = 'title before alter'
+        project_description = 'description before alter'
+        project_coordinators = [self.staff_user]
+        project_users = [self.staff_user, self.user_user]
+        project = self.helper_create_single_project(project_title,
+                                                    project_description,
+                                                    project_coordinators,
+                                                    project_users)
+        project_id = project.id
 
-        data = {'title': 'altered title',
-                'description': 'my altered description',
-                'coordinators': [self.staff_user.id, self.admin_user.id],
-                'users': [self.volunteer_user.id, self.user_user.id, self.staff_user.id]}
+        project_title_altered = 'altered title'
+        project_description_altered = 'my altered description'
+        project_coordinators_altered = [self.staff_user, self.admin_user]
+        project_users_altered = [self.volunteer_user, self.user_user, self.staff_user]
+
+        data = {'title': project_title_altered,
+                'description': project_description_altered,
+                'coordinators': [i.id for i in project_coordinators_altered],
+                'users': [i.id for i in project_users_altered]}
 
         client = APIClient()
         client.force_authenticate(user=self.user_user)
-        alter_response = client.put(reverse('project_detail', kwargs={'pk': project.id}), data, format='json')
+        alter_response = client.put(reverse('project_detail', kwargs={'pk': project_id}), data, format='json')
 
         # user_user should not be able to alter the project
         self.assertEqual(alter_response.status_code, status.HTTP_403_FORBIDDEN)
 
         try:
-            project_altered = Project.objects.get(id=project.id)
+            project = Project.objects.get(id=project_id)
         except Project.DoesNotExist:
-            project_altered = None
+            project = None
 
         self.assertIsInstance(project, Project)
-        self.assertEqual(project_altered.id, project.id)
-        self.assertEqual(project_altered.title, project.title)
-        self.assertEqual(project_altered.description, project.description)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(project_altered.coordinators.all(),
-                                                               project.coordinators.all()),
+        self.assertEqual(project.id, project_id)
+        self.assertEqual(project.title, project_title)
+        self.assertEqual(project.description, project_description)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.coordinators.all(),
+                                                               project_coordinators),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(project_altered.coordinators.all(),
-                                                               project.coordinators.all()),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(),
+                                                               project_users),
                          True)
 
         # try again with user with alter privelages
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        alter_response = client.put(reverse('project_detail', kwargs={'pk': project.id}), data, format='json')
+        alter_response = client.put(reverse('project_detail', kwargs={'pk': project_id}), data, format='json')
 
         self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
 
         try:
-            project_altered = Project.objects.get(id=project.id)
-        except Project.DoesNotExist:
-            project_altered = None
-
-        self.assertIsInstance(project, Project)
-
-        self.assertEqual(alter_response.data['id'], project.id)
-        self.assertEqual(alter_response.data['title'], 'altered title')
-        self.assertEqual(alter_response.data['description'], 'my altered description')
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.admin_user],
-                                                               alter_response.data['coordinators']),
-                         True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.volunteer_user, self.user_user, self.staff_user],
-                                                               alter_response.data['users']),
-                         True)
-
-        self.assertEqual(project_altered.id, project.id)
-        self.assertEqual(project_altered.title, 'altered title')
-        self.assertEqual(project_altered.description, 'my altered description')
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user, self.admin_user],
-                                                               alter_response.data['coordinators']),
-                         True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.volunteer_user, self.user_user, self.staff_user],
-                                                               alter_response.data['users']),
-                         True)
-
-        try:
-            project = Project.objects.get(id=project.id)
+            project = Project.objects.get(id=alter_response.data['id'])
         except Project.DoesNotExist:
             project = None
 
         self.assertIsInstance(project, Project)
-        self.assertEqual(alter_response.data['title'], project.title)
-        self.assertEqual(alter_response.data['description'], project.description)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(project_altered.coordinators.all(),
-                                                               [self.staff_user, self.admin_user]),
+
+        self.assertEqual(alter_response.data['id'], project_id)
+        self.assertEqual(alter_response.data['title'], project_title_altered)
+        self.assertEqual(alter_response.data['description'], project_description_altered)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_coordinators_altered,
+                                                               alter_response.data['coordinators']),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(project_altered.users.all(),
-                                                               [self.volunteer_user, self.user_user, self.staff_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project_users_altered,
+                                                               alter_response.data['users']),
+                         True)
+
+        self.assertEqual(project.id, project_id)
+        self.assertEqual(project.title, project_title_altered)
+        self.assertEqual(project.description, project_description_altered)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.coordinators.all(),
+                                                               project_coordinators_altered),
+                         True)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(),
+                                                               project_users_altered),
                          True)
 
     # PROJECT USER COLLECTION
