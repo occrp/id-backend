@@ -422,12 +422,29 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
+        project_users = [self.staff_user, self.admin_user, self.user_user]
         project = self.helper_create_single_project('unassign user democracy for all',
                                                     'unassign description',
-                                                    self.staff_user,
-                                                    [self.staff_user, self.admin_user, self.volunteer_user, self.user_user])
+                                                    [self.staff_user],
+                                                    project_users)
 
-        data = {'users': [self.volunteer_user.id]}
+        project_users_to_remove = [self.user_user]
+        project_users_altered = [self.staff_user, self.admin_user]
+        data = {'users': [i.id for i in project_users_to_remove]}
+
+        client = APIClient()
+        client.force_authenticate(user=self.volunteer_user)
+        unassign_response = client.delete(reverse('project_users', kwargs={'pk': project.id}), data, format='json')
+
+        # since user is not in project, it should appear as if it doesn't exist
+        self.assertEqual(unassign_response.status_code, status.HTTP_404_NOT_FOUND)
+
+        project = Project.objects.get(id=project.id)
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(),
+                                                               project_users),
+                         True)
+
+        # try again with coordinator user
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
         unassign_response = client.delete(reverse('project_users', kwargs={'pk': project.id}), data, format='json')
@@ -435,8 +452,8 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(unassign_response.status_code, status.HTTP_204_NO_CONTENT)
 
         project = Project.objects.get(id=project.id)
-        self.assertEqual(project.users.count(), 3)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(), [self.staff_user, self.admin_user, self.user_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(project.users.all(),
+                                                               project_users_altered),
                          True)
 
     def test_list_project_users(self):
