@@ -29,10 +29,14 @@ def is_project_member(self, user, instance):
 #
 #
 @rules.predicate(bind=True)
-def is_story_member(self, user, instance):
+def is_story_editor(self, user, instance):
     story = find_story_in_context_or_get(self, instance)
 
-    count = Story.objects.filter()
+    if user in story.editors.all():
+        return True
+
+    return False
+
 # -- GLOBAL RULES
 #
 #
@@ -92,6 +96,9 @@ def travese_to_story(instance):
 #
 #
 rules.add_perm('project.can_alter_or_delete_project', is_project_coordinator | is_superuser)
-rules.add_perm('project.can_view_project', is_project_member | is_superuser)
+rules.add_perm('project.can_view_project', is_project_coordinator | is_project_member | is_superuser)
 
 rules.add_perm('story.can_create_story', is_project_coordinator | is_superuser)
+rules.add_perm('story.can_alter_or_delete_story', is_project_coordinator | is_story_editor | is_superuser)
+
+rules.add_rule('project.is_project_coordinator', is_project_coordinator)
