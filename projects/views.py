@@ -113,7 +113,7 @@ class ProjectUsers(UsersBase):
 
     def get(self, request, pk, format=None):
         project = self.get_project(pk)
-        permission_class = CanAlterDeleteProject()
+        permission_class = CanViewAlterDeleteProjectUsers()
 
         if(permission_class.has_object_permission(request, None, project)):
 
@@ -125,7 +125,7 @@ class ProjectUsers(UsersBase):
             json = {'users': []}
             return Response(json)
 
-        if rules.test_rule('is_project_member', request.user, project):
+        if rules.test_rule('project.is_project_member', request.user, project):
             return Response({'detail': "You do not have permission to perform this action."},
                             status=status.HTTP_403_FORBIDDEN)
         else:
@@ -134,7 +134,7 @@ class ProjectUsers(UsersBase):
 
     def put(self, request, pk, format=None):
         project = self.get_project(pk)
-        permission_class = CanAlterDeleteProject()
+        permission_class = CanViewAlterDeleteProjectUsers()
 
         if(permission_class.has_object_permission(request, None, project)):
             user_ids = request.data['users']
@@ -149,7 +149,7 @@ class ProjectUsers(UsersBase):
             json = {'users': serializer.data}
             return Response(json)
 
-        if rules.test_rule('is_project_member', request.user, project):
+        if rules.test_rule('project.is_project_member', request.user, project):
             return Response({'detail': "You do not have permission to perform this action."},
                             status=status.HTTP_403_FORBIDDEN)
         else:
@@ -158,7 +158,7 @@ class ProjectUsers(UsersBase):
 
     def delete(self, request, pk, format=None):
         project = self.get_project(pk)
-        permission_class = CanAlterDeleteProject()
+        permission_class = CanViewAlterDeleteProjectUsers()
 
         if(permission_class.has_object_permission(request, None, project)):
             user_ids = request.data['users']
@@ -171,7 +171,7 @@ class ProjectUsers(UsersBase):
 
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        if rules.test_rule('is_project_member', request.user, project):
+        if rules.test_rule('project.is_project_member', request.user, project):
             return Response({'detail': "You do not have permission to perform this action."},
                             status=status.HTTP_403_FORBIDDEN)
         else:
