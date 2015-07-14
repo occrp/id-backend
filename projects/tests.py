@@ -244,7 +244,6 @@ class PipelineAPITest(APITestCase):
                                                                results[1]['users']),
                          True)
 
-
     # PROJECT MEMBER
     def test_get_project(self):
         self.helper_create_dummy_users()
