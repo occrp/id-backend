@@ -181,7 +181,7 @@ class ProjectUsers(UsersBase):
 # -- STORY VIEWS
 #
 #
-class StoryList(ProjectMembershipMixin, StoryListQuerySetMixin, generics.ListCreateAPIView):
+class StoryList(StoryListQuerySetMixin, generics.ListCreateAPIView):
     serializer_class = StorySerializer
     permission_classes = (IsAuthenticated, CanCreateStory,)
 
@@ -200,15 +200,46 @@ class StoryList(ProjectMembershipMixin, StoryListQuerySetMixin, generics.ListCre
 
         return super(StoryList, self).post(request, *args, **kwargs)
 
-class StoryDetail(ProjectMembershipMixin, StoryQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
+class StoryDetail(StoryQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StorySerializer
+    permission_classes = (IsAuthenticated, CanAlterDeleteStory,)
+
+    def patch(self, request, *args, **kwargs):
+        response = self.verify_project(request)
+        if isinstance(response, Response):
+            return response
+
+        return super(StoryDetail, self).patch(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
-        if not self.user_is_project_user(request.data['project'], request.user):
-            return Response({'details': "not possible to change project to one that does not exist or you don't belong to"},
-                            status=status.HTTP_403_FORBIDDEN)
+
+        response = self.verify_project(request)
+        if isinstance(response, Response):
+            return response
 
         return super(StoryDetail, self).put(request, *args, **kwargs)
+
+    def verify_project(self, request):
+        try:
+            story = Story.objects.get(id=self.kwargs['pk'])
+        except:
+            return Response({'detail': "Not found."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        if int(request.data['project']) == int(story.project.id):
+            return True
+
+        try:
+            project = Project.objects.get(id=request.data['project'])
+        except Project.DoesNotExist:
+            return Response({'detail': "not possible to change project to one that does not exist or you are not a coordinator of"},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        if not rules.test_rule('project.is_project_coordinator', request.user, project):
+            return Response({'detail': "not possible to change project to one that does not exist or you are not a coordinator of"},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        return True
 
 # -- STORY VERSION VIEWS
 #
