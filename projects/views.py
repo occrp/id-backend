@@ -103,7 +103,7 @@ class ProjectDetail(ProjectQuerySetMixin, generics.RetrieveUpdateDestroyAPIView)
         return super(ProjectDetail, self).put(request, *args, **kwargs)
 
 class ProjectUsers(UsersBase):
-    permission_classes = (IsAuthenticated, CanAlterDeleteProject,)
+    permission_classes = (IsAuthenticated,)
 
     def get_project(self, pk):
         try:
@@ -183,6 +183,7 @@ class ProjectUsers(UsersBase):
 #
 class StoryList(ProjectMembershipMixin, StoryListQuerySetMixin, generics.ListCreateAPIView):
     serializer_class = StorySerializer
+    permission_classes = (IsAuthenticated, CanCreateStory,)
 
     def get_queryset(self):
         return super(StoryList, self).get_queryset(self.kwargs['pk'])
@@ -191,9 +192,11 @@ class StoryList(ProjectMembershipMixin, StoryListQuerySetMixin, generics.ListCre
         serializer.save(podaci_root='somepodaciroot')
 
     def post(self, request, *args, **kwargs):
-        if not self.user_is_project_user(request.data['project'], request.user):
-            return Response({'details': "not possible to use a project that does not exist or you don't belong to"},
-                            status=status.HTTP_403_FORBIDDEN)
+        if 'pk' in self.kwargs:
+            request.data['project'] = self.kwargs['pk']
+        else:
+            return Response({'detail': "Bad request."},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         return super(StoryList, self).post(request, *args, **kwargs)
 
