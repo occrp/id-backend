@@ -1,6 +1,7 @@
 from django.db.models import Q
-from projects.models import Project, Story, StoryVersion, StoryTranslation, ProjectPlan
 
+from projects.models import Project, Story, StoryVersion, StoryTranslation, ProjectPlan
+from projects import utils
 # -- PROJECT MIXINS
 #
 #
@@ -29,38 +30,19 @@ class ProjectQuerySetMixin(object):
 #
 #
 class StoryQuerySetBaseMixin(object):
-    def user_in_story_filter(self, story_objects, user):
-        return story_objects.filter(Q(reporters__in=[user]) |
-                                    Q(researchers__in=[user]) |
-                                    Q(editors__in=[user]) |
-                                    Q(copy_editors__in=[user]) |
-                                    Q(fact_checkers__in=[user]) |
-                                    Q(translators__in=[user]) |
-                                    Q(artists__in=[user]))
 
     def user_is_story_user(self, story_id, user):
         story = Story.objects.all().filter(id=story_id)
-        result = self.user_in_story_filter(story, user).count()
+        result = utils.user_in_story_filter(story, user).count()
 
         if result == 0:
             return False
 
         return True
 
-    def user_in_story_or_project_filter(self, story_objects, user):
-        return story_objects.filter(Q(reporters__in=[user]) |
-                                    Q(researchers__in=[user]) |
-                                    Q(editors__in=[user]) |
-                                    Q(copy_editors__in=[user]) |
-                                    Q(fact_checkers__in=[user]) |
-                                    Q(translators__in=[user]) |
-                                    Q(artists__in=[user]) |
-                                    Q(project__coordinator=user) |
-                                    Q(project__users__in=[user]))
-
     def user_is_story_or_project_user(self, story_id, user):
         story = Story.objects.all().filter(id=story_id)
-        result = self.user_in_story_or_project_filter(story, user).count()
+        result = utils.user_in_story_or_project_filter(story, user).count()
 
         if result == 0:
             return False
@@ -72,7 +54,7 @@ class StoryQuerySetMixin(StoryQuerySetBaseMixin):
         if self.request.user.is_superuser:
             stories = Story.objects.all()
         else:
-            stories = self.user_in_story_or_project_filter(Story.objects.all(), self.request.user)
+            stories = utils.user_in_story_or_project_filter(Story.objects.all(), self.request.user)
 
         return stories
 
