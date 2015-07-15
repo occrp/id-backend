@@ -598,12 +598,28 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('story list project',
                                                     'story lst project description',
-                                                    self.staff_user,
+                                                    [self.staff_user],
                                                     [self.staff_user])
-        self.helper_create_single_story(project, 'list story 1', reporters=[self.user_user])
-        self.helper_create_single_story(project, 'list story 2', reporters=[self.user_user])
+        self.helper_create_single_story(project, 'list story 1', editors=[self.user_user])
+        self.helper_create_single_story(project, 'list story 2', editors=[self.user_user])
         self.helper_create_single_story(project, 'list story 3')
 
+        # staff_user should be able to see all 3
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        list_response = client.get(reverse('story_list', kwargs={'pk': project.id}))
+
+        self.assertEqual(list_response.status_code, status.HTTP_200_OK)
+
+        results = list_response.data['results']
+        self.assertIsInstance(results, list)
+        # only 2 because user_user should not be able to see story 3
+        self.assertEqual(len(results), 3)
+        self.assertEqual(results[0]['title'], 'list story 1')
+        self.assertEqual(results[1]['title'], 'list story 2')
+        self.assertEqual(results[2]['title'], 'list story 3')
+
+        # user_user should only be able to see 2 since he is not a project member, but an editor on 2 of them
         client = APIClient()
         client.force_authenticate(user=self.user_user)
         list_response = client.get(reverse('story_list', kwargs={'pk': project.id}))
