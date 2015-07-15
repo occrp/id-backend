@@ -506,7 +506,7 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('story create project',
                                                     'story create description',
-                                                    self.staff_user,
+                                                    [self.staff_user],
                                                     [self.staff_user])
 
         data = {'project': project.id,
@@ -521,6 +521,15 @@ class PipelineAPITest(APITestCase):
                 'artists': [self.staff_user.id],
                 'published': None
                 }
+
+        client = APIClient()
+        client.force_authenticate(user=self.user_user)
+        create_response = client.post(reverse('story_list', kwargs={'pk': project.id}), data, format='json')
+
+        # user_user should not be able to create a story since he isn't a coordinator
+        self.assertEqual(create_response.status_code, status.HTTP_403_FORBIDDEN)
+
+        # try call again with coordinator user
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
         create_response = client.post(reverse('story_list', kwargs={'pk': project.id}), data, format='json')
@@ -530,19 +539,26 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(create_response.data['project'], project.id)
         self.assertEqual(create_response.data['title'], data['title'])
         self.assertEqual(create_response.data['thesis'], data['thesis'])
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.user_user], create_response.data['reporters']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.user_user],
+                                                               create_response.data['reporters']),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.user_user], create_response.data['researchers']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.user_user],
+                                                               create_response.data['researchers']),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.volunteer_user], create_response.data['editors']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.volunteer_user],
+                                                               create_response.data['editors']),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.volunteer_user], create_response.data['copy_editors']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.volunteer_user],
+                                                               create_response.data['copy_editors']),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.admin_user], create_response.data['fact_checkers']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.admin_user],
+                                                               create_response.data['fact_checkers']),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.admin_user], create_response.data['translators']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.admin_user],
+                                                               create_response.data['translators']),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user], create_response.data['artists']),
+        self.assertEqual(self.helper_all_objects_in_list_by_id([self.staff_user],
+                                                               create_response.data['artists']),
                          True)
 
         try:
@@ -550,24 +566,30 @@ class PipelineAPITest(APITestCase):
         except Story.DoesNotExist:
             story = None
 
-        self.assertEqual(story.id, create_response.data['id'])
         self.assertEqual(story.project.id, project.id)
         self.assertEqual(story.title, create_response.data['title'])
         self.assertEqual(story.thesis, create_response.data['thesis'])
 
-        self.assertEqual(self.helper_all_objects_in_list_by_id(story.reporters.all(), [self.user_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.reporters.all(),
+                                                               [self.user_user]),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(story.researchers.all(), [self.user_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.researchers.all(),
+                                                               [self.user_user]),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(story.editors.all(), [self.volunteer_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.editors.all(),
+                                                               [self.volunteer_user]),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(story.copy_editors.all(), [self.volunteer_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.copy_editors.all(),
+                                                               [self.volunteer_user]),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(story.fact_checkers.all(), [self.admin_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.fact_checkers.all(),
+                                                               [self.admin_user]),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(story.translators.all(), [self.admin_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.translators.all(),
+                                                               [self.admin_user]),
                          True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(story.artists.all(), [self.staff_user]),
+        self.assertEqual(self.helper_all_objects_in_list_by_id(story.artists.all(),
+                                                               [self.staff_user]),
                          True)
 
     def test_list_stories(self):
