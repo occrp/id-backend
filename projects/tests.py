@@ -792,14 +792,39 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
-        project = self.helper_create_single_project('altering a story project',
-                                                    'altering a story project description',
-                                                    self.staff_user,
-                                                    [self.staff_user])
-        story = self.helper_create_single_story_dummy_wrapper('story to be altered', project)
+        project = self.helper_create_single_project(
+            'altering a story project',
+            'altering a story project description',
+            [self.staff_user],
+            [self.staff_user]
+        )
+        story = self.helper_create_single_story(
+            project,
+            'story to be altered',
+            thesis='story to be altered thesis',
+            editors=[self.staff_user, self.user_user],
+            reporters=[self.volunteer_user]
+        )
+        print story.published.isoformat()
+        story_id = story.id
+
+        story_reference = {'title': story.title,
+                           'thesis': story.thesis,
+                           'project': story.project,
+                           'reporters': story.reporters.all(),
+                           'researchers': story.researchers.all(),
+                           'editors': story.editors.all(),
+                           'copy_editors': story.copy_editors.all(),
+                           'fact_checkers': story.fact_checkers.all(),
+                           'translators': story.fact_checkers.all(),
+                           'artists': story.artists.all(),
+                           'published': story.published.isoformat(),
+                           'podaci_root': story.podaci_root
+                           }
 
         altered_date = timezone.now()
         data = {'title': 'my altered title',
+                'thesis': 'my altered thesis',
                 'project': story.project.id,
                 'reporters': [self.admin_user.id],
                 'researchers': [self.admin_user.id],
@@ -810,30 +835,229 @@ class PipelineAPITest(APITestCase):
                 'artists': [self.admin_user.id],
                 'published': altered_date.isoformat()
                 }
+
+        # try and modify as a user without that isn't on the projbect
+        # user should not be able to see the project at all
+        client = APIClient()
+        client.force_authenticate(user=self.user2_user)
+        alter_response = client.put(
+            reverse('story_detail',
+                    kwargs={'pk': story_id}),
+            data,
+            format='json'
+        )
+
+        self.assertEqual(alter_response.status_code, status.HTTP_404_NOT_FOUND)
+
+        story = Story.objects.get(id=story_id)
+
+        self.assertEqual(story.title, story_reference['title'])
+        self.assertEqual(story.thesis, story_reference['thesis'])
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.reporters.all(),
+                story_reference['reporters']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.researchers.all(),
+                story_reference['researchers']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.editors.all(),
+                story_reference['editors']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.copy_editors.all(),
+                story_reference['copy_editors']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.fact_checkers.all(),
+                story_reference['fact_checkers']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.translators.all(),
+                story_reference['translators']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.artists.all(),
+                story_reference['artists']),
+            True)
+        self.assertEqual(
+            story.published.isoformat(),
+            story_reference['published']
+        )
+        self.assertEqual(story.podaci_root, story_reference['podaci_root'])
+
+        # try and modify as a user without that doesn't have permissions
+        client = APIClient()
+        client.force_authenticate(user=self.volunteer_user)
+        alter_response = client.put(
+            reverse('story_detail',
+                    kwargs={'pk': story_id}),
+            data,
+            format='json'
+        )
+
+        self.assertEqual(alter_response.status_code, status.HTTP_403_FORBIDDEN)
+
+        story = Story.objects.get(id=story_id)
+
+        self.assertEqual(story.title, story_reference['title'])
+        self.assertEqual(story.thesis, story_reference['thesis'])
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.reporters.all(),
+                story_reference['reporters']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.researchers.all(),
+                story_reference['researchers']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.editors.all(),
+                story_reference['editors']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.copy_editors.all(),
+                story_reference['copy_editors']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.fact_checkers.all(),
+                story_reference['fact_checkers']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.translators.all(),
+                story_reference['translators']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.artists.all(),
+                story_reference['artists']),
+            True)
+        self.assertEqual(
+            story.published.isoformat(),
+            story_reference['published']
+        )
+        self.assertEqual(story.podaci_root, story_reference['podaci_root'])
+
+        # this should work since staff_user is an editor
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        alter_response = client.put(reverse('story_detail', kwargs={'pk': story.id}), data, format='json')
+        alter_response = client.put(
+            reverse('story_detail',
+                    kwargs={'pk': story_id}),
+            data,
+            format='json'
+        )
 
         self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
 
-        story = Story.objects.get(id=story.id)
+        story = Story.objects.get(id=story_id)
+        result = alter_response.data
 
-        self.assertEqual(story.title, 'my altered title')
-        self.assertEqual(self.helper_all_objects_in_list_by_id(story.reporters.all(),
-                                                             [self.admin_user]), True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(story.researchers.all(),
-                                                             [self.admin_user]), True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(story.editors.all(),
-                                                             [self.admin_user]), True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(story.copy_editors.all(),
-                                                             [self.admin_user]), True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(story.fact_checkers.all(),
-                                                             [self.admin_user]), True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(story.translators.all(),
-                                                             [self.admin_user]), True)
-        self.assertEqual(self.helper_all_objects_in_list_by_id(story.artists.all(),
-                                                             [self.admin_user]), True)
-        self.assertGreater(1, self.helper_datetime_datetime_compare(story.published, altered_date))
+        self.assertEqual(result['id'], story_id)
+        self.assertEqual(result['title'], story.title)
+        self.assertEqual(result['thesis'], story.thesis)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.reporters.all(),
+                result['reporters']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.researchers.all(),
+                result['researchers']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.editors.all(),
+                result['editors']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.copy_editors.all(),
+                result['copy_editors']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.fact_checkers.all(),
+                result['fact_checkers']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.translators.all(),
+                result['translators']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.artists.all(),
+                result['artists']),
+            True)
+        self.assertGreater(
+            1,
+            self.helper_string_datetime_compare(
+                result['published'],
+                story.published
+            )
+        )
+        self.assertEqual(result['podaci_root'], story.podaci_root)
+
+        self.assertEqual(story.title, data['title'])
+        self.assertEqual(story.thesis, data['thesis'])
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.reporters.all(),
+                data['reporters']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.researchers.all(),
+                data['researchers']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.editors.all(),
+                data['editors']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.copy_editors.all(),
+                data['copy_editors']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.fact_checkers.all(),
+                data['fact_checkers']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.translators.all(),
+                data['translators']),
+            True)
+        self.assertEqual(
+            self.helper_all_objects_in_list_by_id(
+                story.artists.all(),
+                data['artists']),
+            True)
+        self.assertGreater(
+            1,
+            self.helper_datetime_datetime_compare(
+                altered_date,
+                story.published
+            )
+        )
+        self.assertEqual(story.podaci_root, story_reference['podaci_root'])
 
     # -- STORY VERSION TESTS
     #
@@ -1416,6 +1640,7 @@ class PipelineAPITest(APITestCase):
         if len(artists) > 0:
             story.artists.add(*artists)
         story.save()
+        story = Story.objects.get(id=story.id)
 
         return story
 
@@ -1495,9 +1720,14 @@ class PipelineAPITest(APITestCase):
     #
 
     def helper_string_datetime_compare(self, string, datetime_object):
-        string_datetime = datetime.datetime.strptime(string, "%Y-%m-%dT%H:%M:%SZ")
+        try:
+            string_datetime = datetime.datetime.strptime(string, "%Y-%m-%dT%H:%M:%SZ")
+        except ValueError:
+            pass
 
-        return (string_datetime - datetime_object).total_seconds()
+        string_datetime = datetime.datetime.strptime(string, "%Y-%m-%dT%H:%M:%S.%fZ")
+
+        return (string_datetime - datetime_object.replace(tzinfo=None)).total_seconds()
 
     def helper_string_date_compare(self, string, date_object):
         string_date = datetime.datetime.strptime(string, "%Y-%m-%d").date()
