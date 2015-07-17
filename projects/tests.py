@@ -24,11 +24,13 @@ class PipelineAPITest(APITestCase):
     admin_email = 'admin@example.com'
     volunteer_email = 'volunteer@example.com'
     user_email = 'user@example.com'
+    user2_email = 'user2@example.com'
 
     staff_user = None
     admin_user = None
     volunteer_user = None
     user_user = None
+    user2_user = None
 
     dummy_reporters = None
     dummy_researchers = None
@@ -640,13 +642,27 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('getting a story project with details',
                                                     'gettiing a story project with details description',
-                                                    self.staff_user,
+                                                    [self.staff_user],
                                                     [self.staff_user])
-        story = self.helper_create_single_story_dummy_wrapper('story with details to get', project)
+        story = self.helper_create_single_story(project,
+                                                'story with details to get',
+                                                thesis='story with a thesis!',
+                                                editors=[self.user_user],
+                                                reporters=[self.user2_user])
         self.helper_create_single_story_version_dummy_wrapper(story, 'version 1')
         self.helper_create_single_story_version_dummy_wrapper(story, 'version 2')
         self.helper_create_single_story_version_dummy_wrapper(story, 'version 3')
 
+        client = APIClient()
+        client.force_authenticate(user=self.volunteer_user)
+        details_response = client.get(reverse('story_detail', kwargs={'pk': story.id}))
+
+        # volunteer_user should not be able to find the story. good for
+        # security, as it doesn't provided unauthorized users knowledge of somethings
+        # existances
+        self.assertEqual(details_response.status_code, status.HTTP_404_NOT_FOUND)
+
+        # staff_user (coordinator) should be able to get the story
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
         details_response = client.get(reverse('story_detail', kwargs={'pk': story.id}))
@@ -654,26 +670,51 @@ class PipelineAPITest(APITestCase):
         self.assertEqual(details_response.status_code, status.HTTP_200_OK)
 
         self.assertEqual(story.title, 'story with details to get')
+        self.assertEqual(story.thesis, details_response.data['thesis'])
         self.assertEqual(self.helper_all_objects_in_list_by_id(story.reporters.all(),
-                                                             details_response.data['reporters']), True)
+                                                               details_response.data['reporters']),
+                         True)
         self.assertEqual(self.helper_all_objects_in_list_by_id(story.researchers.all(),
-                                                             details_response.data['researchers']), True)
+                                                               details_response.data['researchers']),
+                         True)
         self.assertEqual(self.helper_all_objects_in_list_by_id(story.editors.all(),
-                                                             details_response.data['editors']), True)
+                                                               details_response.data['editors']),
+                         True)
         self.assertEqual(self.helper_all_objects_in_list_by_id(story.copy_editors.all(),
-                                                             details_response.data['copy_editors']), True)
+                                                               details_response.data['copy_editors']),
+                         True)
         self.assertEqual(self.helper_all_objects_in_list_by_id(story.fact_checkers.all(),
-                                                             details_response.data['fact_checkers']), True)
+                                                               details_response.data['fact_checkers']),
+                         True)
         self.assertEqual(self.helper_all_objects_in_list_by_id(story.translators.all(),
-                                                             details_response.data['translators']), True)
+                                                               details_response.data['translators']),
+                         True)
         self.assertEqual(self.helper_all_objects_in_list_by_id(story.artists.all(),
-                                                             details_response.data['artists']), True)
-
-        if details_response.data['published'] is not None:
-            self.assertGreater(1, self.helper_string_datetime_compare(details_response.data['published'], story.published))
-
+                                                               details_response.data['artists']),
+                         True)
+        self.assertGreater(1, self.helper_string_datetime_compare(details_response.data['published'], story.published))
         self.assertEqual(details_response.data['podaci_root'], story.podaci_root)
         self.assertEqual(details_response.data['version_count'], 3)
+
+        verified_response = details_response.data.copy()
+
+        # try again as user_user (story editor)
+        client = APIClient()
+        client.force_authenticate(user=self.user_user)
+        details_response = client.get(reverse('story_detail', kwargs={'pk': story.id}))
+
+        self.assertEqual(details_response.status_code, status.HTTP_200_OK)
+
+        self.assertEqual(verified_response, details_response.data)
+
+        # try again as user2_user (regular member/reporter)
+        client = APIClient()
+        client.force_authenticate(user=self.user2_user)
+        details_response = client.get(reverse('story_detail', kwargs={'pk': story.id}))
+
+        self.assertEqual(details_response.status_code, status.HTTP_200_OK)
+
+        self.assertEqual(verified_response, details_response.data)
 
     def test_delete_story(self):
         self.helper_create_dummy_users()
@@ -1308,8 +1349,8 @@ class PipelineAPITest(APITestCase):
     # -- STORY HELPER FUNCTIONS
     #
     #
-    def helper_create_single_story(self, project, title, reporters=[], researchers=[], editors=[], copy_editors=[], fact_checkers=[], translators=[], artists=[]):
-        story = Story(project=project, title=title, published=datetime.datetime.now())
+    def helper_create_single_story(self, project, title, thesis="", reporters=[], researchers=[], editors=[], copy_editors=[], fact_checkers=[], translators=[], artists=[]):
+        story = Story(project=project, title=title, thesis="", published=datetime.datetime.now())
         story.save()
         if len(reporters) > 0:
             story.reporters.add(*reporters)
@@ -1422,6 +1463,7 @@ class PipelineAPITest(APITestCase):
         self.admin_user = get_user_model().objects.get(email=self.admin_email)
         self.volunteer_user = get_user_model().objects.get(email=self.volunteer_email)
         self.user_user = get_user_model().objects.get(email=self.user_email)
+        self.user2_user = get_user_model().objects.get(email=self.user2_email)
 
     def helper_all_objects_in_list_by_id(self, users, ids):
         """
