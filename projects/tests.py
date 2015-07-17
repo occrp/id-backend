@@ -720,17 +720,66 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
-        project = self.helper_create_single_project('deleting a story project',
-                                                    'delting a story project description',
-                                                    self.staff_user,
-                                                    [self.staff_user])
-        story = self.helper_create_single_story_dummy_wrapper('delete story', project)
+        project = self.helper_create_single_project(
+            'deleting a story project',
+            'delting a story project description',
+            [self.staff_user],
+            [self.staff_user]
+        )
+        story = self.helper_create_single_story(
+            project,
+            'delete story',
+            editors=[self.staff_user],
+            reporters=[self.user_user]
+        )
 
+        # try as as a reporter, this shouldn't work
+        client = APIClient()
+        client.force_authenticate(user=self.user_user)
+        delete_response = client.delete(
+            reverse('story_detail',
+                    kwargs={'pk': story.id})
+        )
+
+        self.assertEqual(delete_response.status_code,
+                         status.HTTP_403_FORBIDDEN)
+
+        try:
+            story = Story.objects.get(id=story.id)
+        except Story.DoesNotExist:
+            story = None
+
+        self.assertIsInstance(story, Story)
+
+        # try as a user that doesn't belong to the story, should not even be
+        # able to see the story
+        client = APIClient()
+        client.force_authenticate(user=self.volunteer_user)
+        delete_response = client.delete(
+            reverse('story_detail',
+                    kwargs={'pk': story.id})
+        )
+
+        self.assertEqual(delete_response.status_code,
+                         status.HTTP_404_NOT_FOUND)
+
+        try:
+            story = Story.objects.get(id=story.id)
+        except Story.DoesNotExist:
+            story = None
+
+        self.assertIsInstance(story, Story)
+
+        # delete as editor, this should work
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        delete_response = client.delete(reverse('story_detail', kwargs={'pk': story.id}))
+        delete_response = client.delete(
+            reverse('story_detail',
+                    kwargs={'pk': story.id})
+        )
 
-        self.assertEqual(delete_response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(delete_response.status_code,
+                         status.HTTP_204_NO_CONTENT)
 
         try:
             story = Story.objects.get(id=story.id)
