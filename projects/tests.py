@@ -1405,25 +1405,59 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
-        project = self.helper_create_single_project('deleting a story version',
-                                                    'deleting a story version description',
-                                                    self.staff_user,
-                                                    [self.staff_user])
-        story = self.helper_create_single_story_dummy_wrapper('story with a version to delete', project)
-        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to delete')
+        project = self.helper_create_single_project(
+            'deleting a story version',
+            'deleting a story version description',
+            [self.staff_user],
+            [self.staff_user]
+        )
+        story = self.helper_create_single_story(
+            project,
+            'story with a version to delete',
+            editors=[self.user_user],
+            fact_checkers=[self.volunteer_user]
+        )
+        story_version = self.helper_create_single_story_version(
+            story,
+            title='version to delete',
+            author=self.user_user
+        )
 
+        # try deleting with user2_user
         client = APIClient()
-        client.force_authenticate(user=self.staff_user)
-        delete_response = client.delete(reverse('story_version_detail', kwargs={'pk': story_version.id}))
+        client.force_authenticate(user=self.user2_user)
+        delete_response = client.delete(
+            reverse('story_version_detail',
+                    kwargs={'pk': story_version.id}
+                    )
+        )
+
+        self.assertEqual(delete_response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(StoryVersion.objects.all().count(), 1)
+
+        # try deleting with volunteer_user
+        client = APIClient()
+        client.force_authenticate(user=self.volunteer_user)
+        delete_response = client.delete(
+            reverse('story_version_detail',
+                    kwargs={'pk': story_version.id}
+                    )
+        )
+
+        self.assertEqual(delete_response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(StoryVersion.objects.all().count(), 1)
+
+        # try deleting with user2_user
+        client = APIClient()
+        client.force_authenticate(user=self.user_user)
+        delete_response = client.delete(
+            reverse('story_version_detail',
+                    kwargs={'pk': story_version.id}
+                    )
+        )
 
         self.assertEqual(delete_response.status_code, status.HTTP_204_NO_CONTENT)
-
-        try:
-            story_version = StoryVersion.objects.get(id=story_version.id)
-        except StoryVersion.DoesNotExist:
-            story_version = None
-
-        self.assertEqual(story_version, None)
+        self.assertEqual(StoryVersion.objects.all().count(), 0)
 
     def test_get_translation_of_most_recent_story_version(self):
         self.helper_create_dummy_users()
