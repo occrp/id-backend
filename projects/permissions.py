@@ -83,5 +83,9 @@ class CanAlterDeleteStoryVersion(permissions.BasePermission):
             return request.user.has_perm('story_version.can_view_story_version',
                                          obj)
         else:
-            return request.user.has_perm('story_version.can_alter_or_delete_story_version',
-                                         obj)
+            if request.method.upper() == "DELETE":
+                return request.user.has_perm('story_version.can_delete_story_version',
+                                             obj)
+            else:
+                return request.user.has_perm('story_version.can_alter_story_version',
+                                             obj)
