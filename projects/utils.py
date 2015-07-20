@@ -32,3 +32,14 @@ def user_in_story_or_project_from_story_version_filter(story_version_objects, us
                                         Q(story__artists__in=[user]) |
                                         Q(story__project__coordinators=user) |
                                         Q(story__project__users__in=[user])).distinct()
+
+def user_in_story_or_project_from_story_translation_filter(story_translation_objects, user):
+    return story_translation_objects.filter(Q(version__story__reporters__in=[user]) |
+                                            Q(version__story__researchers__in=[user]) |
+                                            Q(version__story__editors__in=[user]) |
+                                            Q(version__story__copy_editors__in=[user]) |
+                                            Q(version__story__fact_checkers__in=[user]) |
+                                            Q(version__story__translators__in=[user]) |
+                                            Q(version__story__artists__in=[user]) |
+                                            Q(version__story__project__coordinators=user) |
+                                            Q(version__story__project__users__in=[user])).distinct()
