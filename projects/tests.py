@@ -1160,25 +1160,80 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
-        project = self.helper_create_single_project('listing a story version',
-                                                    'listing a story version description',
-                                                    self.staff_user,
-                                                    [self.staff_user])
-        story = self.helper_create_single_story_dummy_wrapper('story with a versions to list', project)
-        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to list 1')
-        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to list 2')
-        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to list 3')
+        project = self.helper_create_single_project(
+            'listing a story version',
+            'listing a story version description',
+            [self.staff_user],
+            [self.staff_user, self.user_user]
+        )
+        story = self.helper_create_single_story(
+            project,
+            'story with a versions to list',
+            editors=[self.user_user],
+            translators=[self.volunteer_user]
+        )
+        story_version = self.helper_create_single_story_version(
+            story,
+            title="version to list 1",
+            author=self.user_user
+        )
+        story_version = self.helper_create_single_story_version(
+            story,
+            title="version to list 2",
+            author=self.user_user
+        )
+        story_version = self.helper_create_single_story_version(
+            story,
+            title="version to list 3",
+            author=self.user_user
+        )
 
+        # try to list as user2_user, should not be able to see anything
         client = APIClient()
-        client.force_authenticate(user=self.staff_user)
-        list_response = client.get(reverse('story_version_list', kwargs={'pk': story.id}))
+        client.force_authenticate(user=self.user2_user)
+        list_response = client.get(
+            reverse('story_version_list',
+                    kwargs={'pk': story.id}
+                    )
+        )
 
         self.assertEqual(list_response.status_code, status.HTTP_200_OK)
 
         results = list_response.data['results']
         self.assertIsInstance(results, list)
+        self.assertEqual(len(results), 0)
 
+        # try to list as volunteer_user, should be able to see 3
+        client = APIClient()
+        client.force_authenticate(user=self.volunteer_user)
+        list_response = client.get(
+            reverse('story_version_list',
+                    kwargs={'pk': story.id}
+                    )
+        )
+
+        self.assertEqual(list_response.status_code, status.HTTP_200_OK)
+
+        results = list_response.data['results']
+        self.assertIsInstance(results, list)
         self.assertEqual(len(results), 3)
+
+        # try to list as staff_user, should be able to see 3
+        client = APIClient()
+        client.force_authenticate(user=self.staff_user)
+        list_response = client.get(
+            reverse('story_version_list',
+                    kwargs={'pk': story.id}
+                    )
+        )
+
+        self.assertEqual(list_response.status_code, status.HTTP_200_OK)
+
+        results = list_response.data['results']
+        self.assertIsInstance(results, list)
+        self.assertEqual(len(results), 3)
+
+        # test the titles, this should be good enough
         self.assertEqual(results[0]['title'], 'version to list 1')
         self.assertEqual(results[1]['title'], 'version to list 2')
         self.assertEqual(results[2]['title'], 'version to list 3')
@@ -1716,12 +1771,16 @@ class PipelineAPITest(APITestCase):
                                                translators=self.dummy_fact_checkers,
                                                artists=self.dummy_artists)
 
-    def helper_create_single_story_version(self, story, timestamp, author, title, text):
+    def helper_create_single_story_version(self, story, timestamp=None, author=None, title="", text=""):
         story_version = StoryVersion(story=story,
-                                     timestamp=timestamp,
-                                     author=author,
                                      title=title,
                                      text=text)
+        if timestamp is None:
+            story_version.timestamp = datetime.datetime.now()
+
+        if author is not None:
+            story_version.author = author
+
         story_version.save()
 
         return story_version
