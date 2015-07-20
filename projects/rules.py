@@ -1,8 +1,11 @@
 from __future__ import absolute_import
 
+from django.db.models import Q
+
 import rules
 
 from projects.models import Project, ProjectPlan, Story, StoryVersion, StoryTranslation
+from projects.utils import user_in_story_filter
 
 # -- PROJECT RULES
 #
@@ -29,10 +32,40 @@ def is_project_member(self, user, instance):
 #
 #
 @rules.predicate(bind=True)
+def is_story_member(self, user, instance):
+    story = find_story_in_context_or_get(self, instance)
+
+    count = user_in_story_filter(Story.objects.filter(id=story.id),
+                                 user).count()
+
+    if count > 0:
+        return True
+
+    return False
+
+@rules.predicate(bind=True)
 def is_story_editor(self, user, instance):
     story = find_story_in_context_or_get(self, instance)
 
     if user in story.editors.all():
+        return True
+
+    return False
+
+@rules.predicate(bind=True)
+def is_story_copy_editor(self, user, instance):
+    story = find_story_in_context_or_get(self, instance)
+
+    if user in story.copy_editors.all():
+        return True
+
+    return False
+
+@rules.predicate(bind=True)
+def is_story_reporter(self, user, instance):
+    story = find_story_in_context_or_get(self, instance)
+
+    if user in story.reporters.all():
         return True
 
     return False
@@ -95,11 +128,47 @@ def travese_to_story(instance):
 # -- SETUP THE RULES/PERMISSIONS
 #
 #
-rules.add_perm('project.can_alter_or_delete_project', is_project_coordinator | is_superuser)
-rules.add_perm('project.can_view_project', is_project_coordinator | is_project_member | is_superuser)
+rules.add_rule('project.is_project_coordinator',
+               is_project_coordinator)
 
-rules.add_perm('story.can_create_story', is_project_coordinator | is_superuser)
-rules.add_perm('story.can_alter_or_delete_story', is_project_coordinator | is_story_editor | is_superuser)
+rules.add_rule('project.is_project_member',
+               is_project_member)
 
-rules.add_rule('project.is_project_coordinator', is_project_coordinator)
-rules.add_rule('project.is_project_member', is_project_member)
+rules.add_rule('story_version.can_change_story',
+               is_project_coordinator |
+               is_story_editor)
+
+rules.add_perm('project.can_alter_or_delete_project',
+               is_project_coordinator |
+               is_superuser)
+
+rules.add_perm('project.can_view_project',
+               is_project_coordinator |
+               is_project_member |
+               is_superuser)
+
+rules.add_perm('story.can_create_story',
+               is_project_coordinator |
+               is_superuser)
+
+rules.add_perm('story.can_alter_or_delete_story',
+               is_project_coordinator |
+               is_story_editor |
+               is_superuser)
+
+rules.add_perm('story_version.can_create_story_version',
+               is_project_coordinator |
+               is_story_editor |
+               is_story_copy_editor |
+               is_story_reporter)
+
+rules.add_perm('story_version.can_view_story_version',
+               is_story_member |
+               is_project_coordinator |
+               is_project_member)
+
+rules.add_perm('story_version.can_alter_or_delete_story_version',
+               is_project_coordinator |
+               is_story_editor |
+               is_story_copy_editor |
+               is_story_reporter)
