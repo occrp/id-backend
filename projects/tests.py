@@ -1304,30 +1304,102 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
-        project = self.helper_create_single_project('altering a story version project',
-                                                    'altering a story version project description',
-                                                    self.staff_user,
-                                                    [self.staff_user])
-        story = self.helper_create_single_story_dummy_wrapper('story with a version to be altered', project)
-        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to be altered')
+        project = self.helper_create_single_project(
+            'altering a story version project',
+            'altering a story version project description',
+            [self.staff_user],
+            [self.staff_user]
+        )
+        story = self.helper_create_single_story(
+            project,
+            'story with a version to be altered',
+            editors=[self.user_user, self.staff_user],
+            artists=[self.volunteer_user]
+        )
+        story_version = self.helper_create_single_story_version(
+            story,
+            title='version to be altered',
+            author=self.user_user
+        )
+        # fixes the datetime comparison issue
+        story_version = StoryVersion.objects.get(id=story_version.id)
+
+        story_version_title = story_version.title
+        story_version_text = story_version.text
+        story_version_author = story_version.author
+        story_version_timestamp = story_version.timestamp
 
         data = {'story': story.id,
-                'author': self.volunteer_user.id,
+                'author': self.staff_user.id,
                 'title': 'my altered title',
-                'text': 'my altered text'
+                'text': 'my altered text',
+                'timestamp': (datetime.datetime.now() + datetime.timedelta(3)).isoformat()
                 }
+
+        # try modification with volunteer_user, should receive a 403
         client = APIClient()
-        client.force_authenticate(user=self.staff_user)
-        alter_response = client.put(reverse('story_version_detail', kwargs={'pk': story_version.id}), data, format='json')
+        client.force_authenticate(user=self.volunteer_user)
+        alter_response = client.put(
+            reverse('story_version_detail',
+                    kwargs={'pk': story_version.id}
+                    ),
+            data,
+            format='json'
+        )
+
+        self.assertEqual(alter_response.status_code, status.HTTP_403_FORBIDDEN)
+
+        # try modification with volunteer_user, should receive a 404
+        client = APIClient()
+        client.force_authenticate(user=self.user2_user)
+        alter_response = client.put(
+            reverse('story_version_detail',
+                    kwargs={'pk': story_version.id}
+                    ),
+            data,
+            format='json'
+        )
+
+        self.assertEqual(alter_response.status_code, status.HTTP_404_NOT_FOUND)
+
+        # test to make sure our story version hasn't modified
+        story_version = StoryVersion.objects.get(id=story_version.id)
+        self.assertEqual(story_version.author.id, story_version_author.id)
+        self.assertEqual(story_version.title, story_version_title)
+        self.assertEqual(story_version.text, story_version_text)
+        self.assertEqual(story_version.timestamp.isoformat(),
+                         story_version_timestamp.isoformat())
+
+        # try modification as user_user
+        client = APIClient()
+        client.force_authenticate(user=self.user_user)
+        alter_response = client.put(
+            reverse('story_version_detail',
+                    kwargs={'pk': story_version.id}
+                    ),
+            data,
+            format='json'
+        )
 
         self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
 
         story_version = StoryVersion.objects.get(id=story_version.id)
+        result = alter_response.data
+
+        self.assertEqual(data['story'], result['story'])
+        self.assertEqual(data['author'], result['author']['id'])
+        self.assertEqual(data['title'], result['title'])
+        self.assertEqual(data['text'], result['text'])
 
         self.assertEqual(story_version.story.id, story.id)
-        self.assertEqual(story_version.author.id, data['author'])
-        self.assertEqual(story_version.title, data['title'])
-        self.assertEqual(story_version.text, data['text'])
+        self.assertEqual(story_version.author.id, result['author']['id'])
+        self.assertEqual(story_version.title, result['title'])
+        self.assertEqual(story_version.text, result['text'])
+        self.assertGreater(1,
+                           self.helper_string_datetime_compare(result['timestamp'],
+                                                               story_version.timestamp
+                                                               )
+                           )
 
     def test_delete_story_version(self):
         self.helper_create_dummy_users()
@@ -1880,10 +1952,8 @@ class PipelineAPITest(APITestCase):
     def helper_string_datetime_compare(self, string, datetime_object):
         try:
             string_datetime = datetime.datetime.strptime(string, "%Y-%m-%dT%H:%M:%SZ")
-        except ValueError:
-            pass
-
-        string_datetime = datetime.datetime.strptime(string, "%Y-%m-%dT%H:%M:%S.%fZ")
+        except ValueError as e:
+            string_datetime = datetime.datetime.strptime(string, "%Y-%m-%dT%H:%M:%S.%fZ")
 
         return (string_datetime - datetime_object.replace(tzinfo=None)).total_seconds()
 
