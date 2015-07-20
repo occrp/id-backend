@@ -316,19 +316,23 @@ class StoryVersionDetail(StoryVersionQuerySetMixin, generics.RetrieveUpdateDestr
 #
 class StoryTranslationList(StoryTranslationListQuerySetMixin, generics.ListCreateAPIView):
     serializer_class = StoryTranslationSerializer
+    permission_classes = (IsAuthenticated, CanCreateListStoryTranslation)
 
     def get_queryset(self):
         return super(StoryTranslationList, self).get_queryset(self.kwargs['pk'])
 
     def post(self, request, *args, **kwargs):
-        if not self.user_is_story_user(request.data['version'], request.user):
-            return Response({'details': "not possible to use a story version that does not exist or you don't belong to"},
-                            status=status.HTTP_403_FORBIDDEN)
+        if 'pk' in self.kwargs:
+            request.data['version'] = self.kwargs['pk']
+        else:
+            return Response({'detail': "Bad request."},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         return super(StoryTranslationList, self).post(request, *args, **kwargs)
 
 class StoryTranslationDetail(StoryTranslationQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StoryTranslationSerializer
+    permission_classes = (IsAuthenticated, CanAlterDeleteStoryTranslation)
 
     def put(self, request, *args, **kwargs):
         if not self.user_is_story_user(request.data['version'], request.user):
@@ -336,6 +340,28 @@ class StoryTranslationDetail(StoryTranslationQuerySetMixin, generics.RetrieveUpd
                             status=status.HTTP_403_FORBIDDEN)
 
         return super(StoryTranslationDetail, self).put(request, *args, **kwargs)
+
+    def verify_translation(self, request):
+        try:
+            story_version = StoryVersion.objects.get(id=self.kwargs['pk'])
+        except:
+            return Response({'detail': "Not found."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        if int(request.data['story']) == int(story_version.story.id):
+            return True
+
+        try:
+            story = Story.objects.get(id=request.data['story'])
+        except Story.DoesNotExist:
+            return Response({'detail': "not possible to change story to one that does not exist or you are not an editor of"},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        if not rules.test_rule('story_version.can_change_story', request.user, story):
+            return Response({'detail': "not possible to change story to one that does not exist or you are not an editor of"},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        return True
 
 # -- PROJECT PLAN VIEWS
 #
