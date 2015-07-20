@@ -79,6 +79,17 @@ def is_story_fact_checker(self, user, instance):
 
     return False
 
+@rules.predicate(bind=True)
+def is_story_translator(self, user, instance):
+    story = find_story_in_context_or_get(self, instance)
+
+    print "in is story translator"
+
+    if user in story.translators.all():
+        return True
+
+    return False
+
 # -- GLOBAL RULES
 #
 #
@@ -188,3 +199,22 @@ rules.add_perm('story_version.can_delete_story_version',
                is_story_editor |
                is_story_copy_editor |
                is_story_reporter)
+
+rules.add_perm('story_translation.can_create_story_translation',
+               is_project_coordinator |
+               is_story_editor |
+               is_story_copy_editor |
+               is_story_reporter |
+               is_story_translator)
+
+rules.add_perm('story_translation.can_view_story_translation',
+               is_story_member |
+               is_project_member |
+               is_project_coordinator)
+
+rules.add_perm('story_translation.can_alter_or_delete_translation',
+               is_project_coordinator |
+               is_story_editor |
+               is_story_copy_editor |
+               is_story_reporter |
+               is_story_translator)
