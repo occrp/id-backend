@@ -70,6 +70,15 @@ def is_story_reporter(self, user, instance):
 
     return False
 
+@rules.predicate(bind=True)
+def is_story_fact_checker(self, user, instance):
+    story = find_story_in_context_or_get(self, instance)
+
+    if user in story.fact_checkers.all():
+        return True
+
+    return False
+
 # -- GLOBAL RULES
 #
 #
@@ -167,7 +176,14 @@ rules.add_perm('story_version.can_view_story_version',
                is_project_coordinator |
                is_project_member)
 
-rules.add_perm('story_version.can_alter_or_delete_story_version',
+rules.add_perm('story_version.can_alter_story_version',
+               is_project_coordinator |
+               is_story_editor |
+               is_story_copy_editor |
+               is_story_reporter |
+               is_story_fact_checker)
+
+rules.add_perm('story_version.can_delete_story_version',
                is_project_coordinator |
                is_story_editor |
                is_story_copy_editor |
