@@ -98,17 +98,11 @@ class StoryTranslationQuerySetMixin(StoryQuerySetBaseMixin):
         if self.request.user.is_superuser:
             return StoryTranslation.objects.all()
         else:
-            story_translations = StoryTranslation.objects.filter(Q(translator=self.request.user) |
-                                                                 Q(version__author=self.request.user) |
-                                                                 Q(version__story__reporters__in=[self.request.user]) |
-                                                                 Q(version__story__researchers__in=[self.request.user]) |
-                                                                 Q(version__story__editors__in=[self.request.user]) |
-                                                                 Q(version__story__copy_editors__in=[self.request.user]) |
-                                                                 Q(version__story__fact_checkers__in=[self.request.user]) |
-                                                                 Q(version__story__translators__in=[self.request.user]) |
-                                                                 Q(version__story__artists__in=[self.request.user]) |
-                                                                 Q(version__story__project__coordinator=self.request.user) |
-                                                                 Q(version__story__project__users__in=[self.request.user]))
+            story_translations = utils.user_in_story_or_project_from_story_translation_filter(
+                StoryTranslation.objects.all(),
+                self.request.user
+            )
+
             return story_translations
 
 class StoryTranslationListQuerySetMixin(StoryTranslationQuerySetMixin):
