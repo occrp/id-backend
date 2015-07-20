@@ -1463,18 +1463,42 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
-        project = self.helper_create_single_project('most recent version of a story with translation project',
-                                                    'most recent version of a story with translation project description',
-                                                    self.staff_user,
-                                                    [self.staff_user])
-        story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation', project)
-        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'not most recent')
-        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'most recent')
-        story_translation = self.helper_create_single_story_translation_dummy_wrapper(story_version, 'el', 'my greek version')
+        project = self.helper_create_single_project(
+            'most recent version of a story with translation project',
+            'most recent version of a story with translation project description',
+            [self.staff_user],
+            [self.staff_user]
+        )
+        story = self.helper_create_single_story(
+            project,
+            'story with a version with a translation',
+            editors=[self.staff_user]
+        )
+        story_version = self.helper_create_single_story_version(
+            story,
+            title='not most recent',
+            author=self.staff_user
+        )
+        story_version = self.helper_create_single_story_version(
+            story,
+            title='most recent',
+            author=self.staff_user
+        )
+        story_translation = self.helper_create_single_story_translation(
+            story_version,
+            language_code="el",
+            text="my greek version",
+            translator=self.volunteer_user,
+            live=True
+        )
 
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        get_response = client.get(reverse('story_live_version_in_language', kwargs={'pk': story.id, 'language_code': 'el'}))
+        get_response = client.get(
+            reverse('story_live_version_in_language',
+                    kwargs={'pk': story.id, 'language_code': 'el'}
+                    )
+        )
 
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
         self.assertEqual(get_response.data['id'], story_translation.id)
@@ -1938,7 +1962,7 @@ class PipelineAPITest(APITestCase):
                                                        title=title,
                                                        text='im a dummy story version')
 
-    def helper_create_single_story_translation(self, version, language_code, translator, verified, live, title, text):
+    def helper_create_single_story_translation(self, version, language_code="en", translator=None, verified=False, live=False, title="", text=""):
         translation = StoryTranslation(version=version,
                                        language_code=language_code,
                                        translator=translator,
