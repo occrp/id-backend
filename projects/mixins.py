@@ -71,15 +71,10 @@ class StoryVersionQuerySetMixin(StoryQuerySetBaseMixin):
         if self.request.user.is_superuser:
             return StoryVersion.objects.all()
         else:
-            story_versions = StoryVersion.objects.filter(Q(story__reporters__in=[self.request.user]) |
-                                                         Q(story__researchers__in=[self.request.user]) |
-                                                         Q(story__editors__in=[self.request.user]) |
-                                                         Q(story__copy_editors__in=[self.request.user]) |
-                                                         Q(story__fact_checkers__in=[self.request.user]) |
-                                                         Q(story__translators__in=[self.request.user]) |
-                                                         Q(story__artists__in=[self.request.user]) |
-                                                         Q(story__project__coordinator=self.request.user) |
-                                                         Q(story__project__users__in=[self.request.user]))
+            story_versions = utils.user_in_story_or_project_from_story_version_filter(
+                StoryVersion.objects.all(),
+                self.request.user
+            )
 
             return story_versions
 
