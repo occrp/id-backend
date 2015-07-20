@@ -1243,22 +1243,61 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
-        project = self.helper_create_single_project('getting a story version',
-                                                    'getting a story version description',
-                                                    self.staff_user,
-                                                    [self.staff_user])
-        story = self.helper_create_single_story_dummy_wrapper('story with a version to get', project)
-        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version to get')
+        project = self.helper_create_single_project(
+            'getting a story version',
+            'getting a story version description',
+            [self.staff_user],
+            [self.staff_user]
+        )
+        story = self.helper_create_single_story(
+            project,
+            'story with a version to get',
+            editors=[self.volunteer_user],
+            copy_editors=[self.user_user]
+        )
+        story_version = self.helper_create_single_story_version(
+            story,
+            title='version to get',
+            author=self.volunteer_user
+        )
 
+        # try with user2_user, should not be able to see anything
+        client = APIClient()
+        client.force_authenticate(user=self.user2_user)
+        get_response = client.get(
+            reverse('story_version_detail',
+                    kwargs={'pk': story_version.id}
+                    )
+        )
+
+        self.assertEqual(get_response.status_code, status.HTTP_404_NOT_FOUND)
+
+        # try with staff_user, should be able to see the story version
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        get_response = client.get(reverse('story_version_detail', kwargs={'pk': story_version.id}))
+        get_response = client.get(
+            reverse('story_version_detail',
+                    kwargs={'pk': story_version.id}
+                    )
+        )
 
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
+
+        # try with volunteer_user, should be able to see the story version
+        client = APIClient()
+        client.force_authenticate(user=self.volunteer_user)
+        get_response = client.get(
+            reverse('story_version_detail',
+                    kwargs={'pk': story_version.id}
+                    )
+        )
+
+        self.assertEqual(get_response.status_code, status.HTTP_200_OK)
+
         self.assertEqual(get_response.data['id'], story_version.id)
         self.assertEqual(get_response.data['story'], story.id)
         self.assertEqual(get_response.data['author']['id'], story_version.author.id)
-        self.assertEqual(get_response.data['title'], 'version to get')
+        self.assertEqual(get_response.data['title'], story_version.title)
         self.assertEqual(get_response.data['text'], story_version.text)
 
     def test_alter_story_version(self):
