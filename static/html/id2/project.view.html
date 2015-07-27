@@ -1,8 +1,10 @@
 <div layout="column" flex>
-    <h1>
-        <a href="#/projects"><b style="margin-right: 1em;" class="fa fa-angle-left"></b></a> <b class="fa fa-folder"></b> {{project.title}}</h1>
-
-    <div>Members: <span style="padding-right: 1em;" ng-repeat="user in project.users"><a href="/accounts/profile/{{user.id}}">{{user.name}}</a></span></div>
+    <h1><a href="#/projects"><b style="margin-right: 1em;" class="fa fa-angle-left"></b></a> <b class="fa fa-folder"></b> {{project.title}}
+        <div style="float:right; position: absolute; right: 0px; top: 0px;">
+            <md-button class="md-fab" ng-href="/accounts/profile/{{project.coordinator.id}}"><md-icon>{{project.coordinator.name}}</md-icon></md-button>
+            <md-button class="md-fab" ng-href="/accounts/profile/{{user.id}}"  ng-repeat="user in project.users"><md-icon>{{user.name}}</md-icon></md-button>
+        </div>
+    </h1>
 
     <md-tabs md-dynamic-height md-border-bottom>
         <md-tab label="Stories">
@@ -11,8 +13,9 @@
                     <md-icon md-font-icon="fa-plus" class="fa fa-2x"></md-icon>
                 </md-button>
                 <div ng-hide="storyList.length" class="md-whiteframe-z3 md-padding" style="font-size:130%; width: 60%; margin-top: 3em; margin-left: auto; margin-right: auto; text-align: center;">
+                    <i class="fa fa-3x fa-newspaper-o"></i>
                     <h3>You currently don't have any stories in this project!</h3>
-                    <p>You can create a new story by clicking the big plus button!</p>
+                    <p>You can create a new story by clicking the big plus button.</p>
                 </div>
                 <md-list>
                     <md-list-item class="md-3-line" ng-repeat="it in storyList" ng-click="openStory(it)">
@@ -29,7 +32,22 @@
 
         <md-tab label="Research">
             <md-content class="md-padding">
-                ...
+                <md-button class="md-fab" style="position:fixed; right:0px;" aria-label="Import data" ng-click="searchData($event)">
+                    <md-icon md-font-icon="fa-plus" class="fa fa-2x"></md-icon>
+                </md-button>
+                <div ng-hide="documents.length" class="md-whiteframe-z3 md-padding" style="font-size:130%; width: 60%; margin-top: 3em; margin-left: auto; margin-right: auto; text-align: center;">
+                    <i class="fa fa-3x fa-database"></i>
+                    <h3>You currently don't have any data in this project!</h3>
+                    <p>You can drop files onto this space, or press the big plus button to add data from your collection.</p>
+                </div>
+
+                <div ng-show="documents.length" class="md-padding" layout="row">
+                    <md-grid-list>
+                        <md-grid-tile ng-repeat="{{documents}}">
+                            ...
+                        </md-grid-tile>
+                    </md-grid-list>
+                </div>
             </md-content>
         </md-tab>
 
@@ -40,8 +58,19 @@
         </md-tab>
 
         <md-tab label="Costs">
-            <md-content class="md-padding">
-                ...
+            <md-content class="md-padding" layout="row">
+                <div class="md-whiteframe-z1 md-padding md-margin" style="position: relative;" flex>
+                    <md-button class="md-fab" style="position:absolute; right:0px;" aria-label="Add expense" ng-click="addExpense($event)">
+                        <md-icon md-font-icon="fa-plus" class="fa fa-2x"></md-icon>
+                    </md-button>
+                    <h3>Expenses</h3>
+                </div>
+                <div class="md-whiteframe-z1 md-padding md-margin" style="position: relative;" flex>
+                    <md-button class="md-fab" style="position:absolute; right:0px;" aria-label="Register time" ng-click="addTimecard($event)">
+                        <md-icon md-font-icon="fa-plus" class="fa fa-2x"></md-icon>
+                    </md-button>
+                    <h3>Timecards</h3>
+                </div>
             </md-content>
         </md-tab>
 
