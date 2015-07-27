@@ -64,7 +64,6 @@ urlpatterns = patterns('',
     url(r'^podaci/', include('podaci.urls')),
     url(r'^projects/', perm('staff', TemplateView, template_name='projects.jinja'), name='projects'),
     url(r'^api/', include('projects.urls')),
-    url(r'^osoba/', include('osoba.urls')),
     url(r'^robots/', include('robots.urls')),
 
     url(r'^i18n/', include('django.conf.urls.i18n')),
