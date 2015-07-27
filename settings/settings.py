@@ -158,6 +158,11 @@ LANGUAGES = (
     ('uk', u'Українська'),
 )
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES':
+        ('rest_framework.permissions.IsAuthenticated',),
+    'PAGE_SIZE': 10
+}
 
 from django.conf.global_settings import DATE_INPUT_FORMATS
 DATE_INPUT_FORMATS += ('%d/%m/%y',)
