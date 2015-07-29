@@ -58,6 +58,7 @@ urlpatterns = patterns('',
     url(r'^accounts/register/$',            RegistrationView.as_view(template_name='registration/registration_form.jinja'), name='registration_register'),
     url(r'^accounts/register/complete/$',   TemplateView.as_view(template_name='registration/registration_complete.jinja'), name='registration_complete'),
     url(r'^accounts/register/closed/$',     TemplateView.as_view(template_name='registration/registration_closed.jinja'), name='registration_disallowed'),
+    url(r'^accounts/social/', include('social_auth.urls')),
 
     url(r'^search/', include('search.urls')),
     url(r'^ticket/', include('ticket.urls')),
