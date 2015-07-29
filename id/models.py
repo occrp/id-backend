@@ -7,6 +7,7 @@ from ticket.constants import *
 from ticket.models import TicketCharge
 from settings.settings import LANGUAGES, AUTH_USER_MODEL
 from django.utils import timezone
+from datetime import datetime, timedelta
 
 class Network(models.Model):
     short_name = models.CharField(max_length=50)
@@ -49,27 +50,27 @@ class ProfileManager(BaseUserManager):
             raise ValueError('The email field has to be set.')
         email = self.normalize_email(email)
         user = self.model(email=email, is_staff=is_staff, is_active=True,
-                          is_superuser=is_superuser, date_joined=now, 
+                          is_superuser=is_superuser, date_joined=now,
                           **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, password=None, is_superuser=False, 
+    def create_user(self, email, password=None, is_superuser=False,
                     is_staff=False, **extra_fields):
-        return self._create_user(email, password, is_staff, is_superuser, 
+        return self._create_user(email, password, is_staff, is_superuser,
                                  **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):
         print(email)
         return self._create_user(email, password, True, True,
                                  **extra_fields)
-      
+
 # our own User model replacement
 # as per http://stackoverflow.com/questions/20415627/how-to-properly-extend-django-user-model
 #
 class Profile(AbstractBaseUser, PermissionsMixin):
-    
+
     email = models.EmailField(_('E-mail Address'), max_length=254, unique=True, blank=False)
 
     user_created = models.DateTimeField(auto_now_add=True)
@@ -89,7 +90,6 @@ class Profile(AbstractBaseUser, PermissionsMixin):
 
     is_user = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=True)
     is_volunteer = models.BooleanField(default=False)
     is_active   = models.BooleanField(default=True)
     date_joined = models.DateTimeField(_('Date Joined'), default=timezone.now)
@@ -122,10 +122,10 @@ class Profile(AbstractBaseUser, PermissionsMixin):
     # Django auth module settings
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-    
+
     # object manager
     objects = ProfileManager()
-    
+
     def get_full_name(self):
         return self.display_name()
 
@@ -134,7 +134,7 @@ class Profile(AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
-    
+
 
     def can_write_to(self, obj):
         '''
@@ -156,8 +156,8 @@ class Profile(AbstractBaseUser, PermissionsMixin):
 
     def groups_display(self):
         return ', '.join(x.capitalize() for x in ['user', 'staff', 'volunteer', 'admin'] if getattr(self, 'is_%s' % x))
-    
-    
+
+
     @property
     def num_requests(self):
         # XXX beware, this is expensive!
@@ -230,6 +230,38 @@ class Profile(AbstractBaseUser, PermissionsMixin):
         elif self.requester_type == 'cost_plus':
             return _('Covering cost+ (requester pays for documents, and also '
                      'for our work)')
+
+    def tickets_assigned_open(self):
+        res = self.tickets_responded.filter(status__in=['new', 'in-progress'])
+        vol = self.tickets_volunteered.filter(status__in=['new', 'in-progress'])
+        rs = [x.id for x in res]
+        rs.extend([x.id for x in vol])
+        tot = set(rs)
+        return len(tot)
+
+    def tickets_assigned_closed(self):
+        res = self.tickets_responded.filter(status__in=['closed'])
+        vol = self.tickets_volunteered.filter(status__in=['closed'])
+        rs = [x.id for x in res]
+        rs.extend([x.id for x in vol])
+        tot = set(rs)
+        return len(tot)
+
+    def tickets_assigned_total(self):
+        return self.tickets_assigned_open() + self.tickets_assigned_closed()
+
+    def tickets_average_resolution_time(self):
+        if (self.tickets_assigned_total() == 0):
+            return timedelta(days=0)
+
+        res = self.tickets_responded.filter(status__in=['closed'])
+        vol = self.tickets_volunteered.filter(status__in=['closed'])
+        tot = list(res)
+        tot.extend(list(vol))
+        tot = set(tot)
+        times = [x.resolution_time() for x in tot]
+        average_timedelta = sum(times, timedelta(0)) / len(times)
+        return average_timedelta
 
     def to_json(self):
         return {"id": self.id, "email": self.email}
@@ -388,4 +420,3 @@ class DatabaseScrapeRequest(models.Model):
 
     #def minusone(self, user):
     #    self.plusone.remove(user)
-
