@@ -162,6 +162,23 @@ class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
     def is_open(self):
         return self.status in OPEN_TICKET_STATUSES
 
+    def resolution_time(self):
+        if self.status != 'closed':
+            return datetime.timedelta(0)
+
+        for update in self.ticketupdate.all():
+            starttime = None
+            endtime = None
+            if update.update_type == "open":
+                starttime = update.created
+            elif update.update_type == "close":
+                endtime = update.created
+
+        if startdate and enddate:
+            return enddate - startdate
+
+        return datetime.timedelta(0)
+
     def mark_charges_paid(self, paid_status):
         # TODO: FIXME
         """

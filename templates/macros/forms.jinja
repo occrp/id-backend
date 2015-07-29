@@ -36,7 +36,7 @@
 {% endmacro %}
 
 {% macro render_classedtextareafield(field) %}
-    <textarea class="{{ field.css_class }}" 
+    <textarea class="{{ field.css_class }}"
             {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %}
             name="{{ field.name }}" id="{{ field.name }}" rows="{{ field.rows }}">{{ field.value if field.value else '' }}</textarea>
 {% endmacro %}
@@ -66,10 +66,10 @@
 {% endmacro %}
 
 {% macro render_select2field(field) %}
-    <input type="hidden" name="{{ field.html_name }}" id="{{ field.auto_id }}" 
+    <input type="hidden" name="{{ field.html_name }}" id="{{ field.auto_id }}"
             value="{% if field.field.widget.attrs.value != None %}{{ field.field.widget.attrs.value }}{% endif %}"
-           data-provide="select2-field" 
-           data-placeholder="{% if field.field.widget.attrs.placeholder != None %}{{ field.field.widget.attrs.placeholder }}{% endif %}" 
+           data-provide="select2-field"
+           data-placeholder="{% if field.field.widget.attrs.placeholder != None %}{{ field.field.widget.attrs.placeholder }}{% endif %}"
            data-ajax-url="{{ field.field.widget.attrs.ajax_url }}"
            data-multiple="{{ field.field.widget.attrs.multiple }}"
            {% if field.field.widget.attrs.options %}
@@ -135,8 +135,8 @@
                 {% if get_field_type(field) != 'FileField'
                     and get_field_type(field) != 'HiddenFileField' %}
                     {{ render_errors(field) }}
-                    {{ render_helptext(field) }}
                 {% endif %}
+                {{ render_helptext(field) }}
             </div>
         </div>
     {% endif %}
@@ -163,8 +163,8 @@
 {% endmacro %}
 
 {% macro render_form(form, submit_class="btn-primary", submit_title="", class="form-horizontal") %}
-    <form method="POST" class="{{ class }}" 
-        enctype="multipart/form-data" 
+    <form method="POST" class="{{ class }}"
+        enctype="multipart/form-data"
         {% if form.Meta and form.Meta.ajax_validation_url -%}
             data-validation-url="{{ form.Meta.ajax_validation_url }}"
         {%- endif %}>

@@ -744,3 +744,19 @@ class TicketBudgetFeesOverview(CSVorJSONResponseMixin, TemplateView):
             "title": "Budget Fees",
             "budgets": Budget.objects.all(),
         }
+
+class TicketResolutionWorkload(TemplateView):
+    template_name = 'tickets/ticket_resolution_workload.jinja'
+
+    def get_context_data(self):
+        return {
+            "researchers": get_user_model().objects.filter(
+                Q(is_volunteer=True) | Q(is_staff=True) | Q(is_superuser=True)
+            )
+        }
+
+class TicketResolutionTime(TemplateView):
+    template_name = 'tickets/ticket_resolution_time.jinja'
+
+    def get_context_data(self):
+        return {}
