@@ -15,16 +15,12 @@ ALLOWED_HOSTS = ["127.0.0.1:8000"]
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-DATABASE_ENGINE = 'django.db.backends.mysql'
+DATABASE_ENGINE = 'django.db.backends.postgres'
 DATABASE_HOST = '127.0.0.1'
 DATABASE_PORT = '3306'
 DATABASE_NAME = 'test'
-DATABASE_USER = os.environ.get('MYSQL_USER')
-DATABASE_PASSWORD = os.environ.get('MYSQL_PASSWORD')
-
-NEO4J_HOST = 'localhost'
-NEO4J_PORT = '7474'
-NEO4J_ENDPOINT = '/db/data'
+DATABASE_USER = os.environ.get('POSTGRES_USER')
+DATABASE_PASSWORD = os.environ.get('POSTGRES_PASSWORD')
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
