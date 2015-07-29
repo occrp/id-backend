@@ -23,7 +23,7 @@ from django.views.generic import TemplateView, UpdateView, FormView
 
 from django.db.models import Count, Sum
 
-from core.mixins import JSONResponseMixin, PrettyPaginatorMixin
+from core.mixins import JSONResponseMixin, CSVorJSONResponseMixin, PrettyPaginatorMixin
 from core.utils import *
 from id.models import Network
 from ticket.utils import *
@@ -444,7 +444,7 @@ class TicketDetail(TemplateView, PodaciMixin):
         comment.save()
         return HttpResponseRedirect(reverse('ticket_details', kwargs={ "ticket_id":self.ticket.id}))
 
-class TicketList(PrettyPaginatorMixin, TemplateView, PodaciMixin):
+class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView, PodaciMixin):
     template_name = "tickets/request_list.jinja"
     page_name = ""
     ticket_list_name = ""
@@ -456,6 +456,8 @@ class TicketList(PrettyPaginatorMixin, TemplateView, PodaciMixin):
     paginator = None
     url_name = 'ticket_list'
     url_args = {}
+    CONTEXT_ITEMS_KEY = "tickets"
+    CONTEXT_TITLE_KEY = "page_name"
 
     def get_context_data(self, **kwargs):
         self.filter_terms = self.request.GET.get("filter", '')
@@ -515,7 +517,7 @@ class TicketList(PrettyPaginatorMixin, TemplateView, PodaciMixin):
     def set_paginator_object(self):
         ticket_set = self.get_ticket_set(self.request.user)
         if self.filter_terms:
-            ticket_set = ticket_set.filter(Q(requester__email__contains=self.filter_terms) 
+            ticket_set = ticket_set.filter(Q(requester__email__contains=self.filter_terms)
                                          | Q(requester__first_name__contains=self.filter_terms)
                                          | Q(requester__last_name__contains=self.filter_terms))
         self.paginator = Paginator(get_actual_tickets(ticket_set), self.page_size)
@@ -713,26 +715,32 @@ class TicketRequest(TemplateView, PodaciMixin):
         return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": ticket.id}))
 
 
-class TicketUserFeesOverview(TemplateView):
+class TicketUserFeesOverview(CSVorJSONResponseMixin, TemplateView):
     template_name = 'tickets/ticket_user_fees_overview.jinja'
+    CONTEXT_ITEMS_KEY = "users"
 
     def get_context_data(self):
         return {
+            "title": "User Fees",
             "users": get_user_model().objects.annotate(payment_count=Count('ticketcharge')).annotate(payment_total=Sum('ticketcharge__cost')).filter(payment_count__gt=0)
         }
 
-class TicketNetworkFeesOverview(TemplateView):
+class TicketNetworkFeesOverview(CSVorJSONResponseMixin, TemplateView):
     template_name = 'tickets/ticket_network_fees_overview.jinja'
+    CONTEXT_ITEMS_KEY = "networks"
 
     def get_context_data(self):
         return {
+            "title": "Network Fees",
             "networks": Network.objects.all(),
         }
 
-class TicketBudgetFeesOverview(TemplateView):
+class TicketBudgetFeesOverview(CSVorJSONResponseMixin, TemplateView):
     template_name = 'tickets/ticket_budget_fees_overview.jinja'
+    CONTEXT_ITEMS_KEY = "budgets"
 
     def get_context_data(self):
         return {
+            "title": "Budget Fees",
             "budgets": Budget.objects.all(),
         }

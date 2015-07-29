@@ -14,10 +14,14 @@
         <h4>{% trans %}{{ ticket_list_name }}{% endtrans %}</h4>
     {{ macros.render_ticket_table(tickets, ROUTE_NAME, paginator_object) }}
 
+    <div class="pull-right">
+        <a class="btn btn-small" href="?format=csv"><i class="fa fa-file-excel-o"></i> {% trans %}Download as CSV{% endtrans %}</a>
+        <a class="btn btn-small" href="?format=json"><i class="fa fa-file-o"></i> {% trans %}Download as JSON{% endtrans %}</a>
+    </div>
+
     {% else %}
         <div class="alert alert-block alert-warning">
             {% trans %}No open requests found.{% endtrans %}
         </div>
     {% endif %}
-
 {% endblock %}

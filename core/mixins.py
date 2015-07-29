@@ -1,9 +1,10 @@
 import json
-
+import csv
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import models
 from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
+from django.utils.text import slugify
 
 from core.utils import json_dumps
 
@@ -45,6 +46,44 @@ class JSONResponseMixin(object):
         "Convert the context dictionary into a JSON object"
         return json_dumps(self.get_context_data())
 
+
+class CSVorJSONResponseMixin(object):
+    def render_to_response(self, context, **response_kwargs):
+        if 'csv' in self.request.GET.get('format', ''):
+            if hasattr(self, "CONTEXT_TITLE_KEY"):
+                title = unicode(context[self.CONTEXT_TITLE_KEY])
+            else:
+                title = unicode(context['title'])
+
+            if hasattr(self, "CONTEXT_ITEMS_KEY"):
+                ctxkey = self.CONTEXT_ITEMS_KEY
+            else:
+                ctxkey = 'items'
+
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = ('attachment; filename="%s.csv"'
+                                               % slugify(title))
+
+            writer = csv.writer(response)
+
+            for item in context[ctxkey]:
+                writer.writerow(item)
+
+            return response
+        elif 'json' in self.request.GET.get('format', ''):
+            if hasattr(self, "CONTEXT_TITLE_KEY"):
+                title = unicode(context[self.CONTEXT_TITLE_KEY])
+            else:
+                title = unicode(context['title'])
+
+            response = HttpResponse(content_type='text/json')
+            response['Content-Disposition'] = ('attachment; filename="%s.json"'
+                                               % slugify(title))
+            response.write(json_dumps(self.get_context_data()))
+
+            return response
+        else:
+            return super(CSVorJSONResponseMixin, self).render_to_response(context, **response_kwargs)
 
 class MessageMixin(object):
     def add_message(self, message, level='success'):
