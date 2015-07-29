@@ -56,6 +56,7 @@ INSTALLED_APPS = (
     'registration',
     'django_jinja',
     'rest_framework',
+    'social_auth',
 
     'core',
     'id',
@@ -80,9 +81,17 @@ MIDDLEWARE_CLASSES = (
 )
 
 AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.google.GoogleOAuth2Backend',
     'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
+GOOGLE_OAUTH2_CLIENT_ID      = '206887598454-nigepmham8557t4uq72dqhgh159p3b1t.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET  = 'f6b3cUIp00sDoiRSLfyqAQkH'
+
+# our own precious User model
+# as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
+AUTH_USER_MODEL = 'id.Profile'
+SOCIAL_AUTH_USER_MODEL = 'id.Profile'
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 TEMPLATE_CONTEXT_PROCESSORS += (
@@ -125,10 +134,6 @@ DATABASES = {
     }
 }
 
-
-# our own precious User model
-# as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
-AUTH_USER_MODEL = 'id.Profile'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
