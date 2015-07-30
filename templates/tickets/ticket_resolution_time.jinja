@@ -1,0 +1,18 @@
+{% extends "tickets/request_base.jinja" %}
+
+{% block inner_content %}
+
+<h2>Ticket Resolution</h2>
+
+<div style="height: auto; border-top: 2px solid #f00; border-bottom: 2px solid #f00; padding-top: 6px; padding-bottom: 6px; text-align:center;">
+    <h3>Average Request Resolution Time</h3>
+
+    <h1>{{averagetime}}</h1>
+
+    (calculated from {{count}} most recently closed tickets)
+</div>
+
+...
+
+
+{% endblock %}

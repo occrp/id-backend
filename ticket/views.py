@@ -752,11 +752,21 @@ class TicketResolutionWorkload(TemplateView):
         return {
             "researchers": get_user_model().objects.filter(
                 Q(is_volunteer=True) | Q(is_staff=True) | Q(is_superuser=True)
-            )
+            ).order_by("-is_superuser", "-is_staff", "-is_volunteer")
         }
 
 class TicketResolutionTime(TemplateView):
     template_name = 'tickets/ticket_resolution_time.jinja'
 
     def get_context_data(self):
-        return {}
+        tickets = Ticket.objects.filter(status="closed")[:100]
+        times = [x.resolution_time() for x in tickets]
+        if len(times) == 0:
+            average_timedelta = timedelta(0)
+        else:
+            average_timedelta = sum(times, timedelta(0)) / len(times)
+
+        return {
+            "averagetime": average_timedelta,
+            "count": tickets.count()
+        }
