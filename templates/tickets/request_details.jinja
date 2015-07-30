@@ -121,7 +121,7 @@
     {% if ticket_detail_view is defined %}
         <div id="alerts" class="container">
             {% if messages %}
-                {% for message in messages %}  
+                {% for message in messages %}
                     <div class="alert alert-detail alert-block alert-{{ message.tags }}">
                         <a class="close" data-dismiss="alert">×</a>
                         {{ message }}
@@ -243,9 +243,6 @@
 {% block js %}
     {{ super() }}
     <script type="text/javascript" src="{{ static('js/entity-view.js') }}"></script>
-    <script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/vendor/jquery.ui.widget.js')}}"></script>
-    <script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
-    <script type="text/javascript" src="{{ static('components/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
     <script type="text/javascript" src="{{ static('js/id2/podaci.js') }}"></script>
 {% endblock %}
 
@@ -253,18 +250,18 @@
     {{ super() }}
     <div class="modal hide" id="entity-viewer"></div>
     {% include "podaci/partials/_podaci_upload_model.jinja" %}
-    
+
     {{ modal_macros.render_modal(open_form, url('ticket_open', pk=ticket.id), "ReqReopenForm", _("Re-Open Request"), _("Submit"), "", csrf_token) }}
-    
+
     {{ modal_macros.render_modal(close_form, url('ticket_close', pk=ticket.id), "ReqCloseForm", _("Close Request"), _("Submit"), "", csrf_token) }}
 
     {{ modal_macros.render_modal(cancel_form, url('ticket_cancel', pk=ticket.id), "ReqCancelForm", _("Cancel Request"), _("Submit"), "", csrf_token) }}
 
     {{ modal_macros.render_modal(mark_paid_form, url('request_mark_paid', pk=ticket.id), "MarkPaidForm", _("Mark Paid"), _("Save"), "", csrf_token) }}
-    
+
     {{ modal_macros.render_modal(charge_form, url('request_charge_add', pk=ticket.id), "ChargeForm", _("Add Charge"), _("Add"), "", csrf_token) }}
-    
+
     {{ modal_macros.render_dynamic_modal('SharingModal', _('Share Attached Files'), _('Save')) }}
-    
+
     {{ modal_macros.render_dynamic_modal('AdminSettingsModal', _('Request Settings'), _('Save')) }}
 {% endblock %}

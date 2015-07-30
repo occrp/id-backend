@@ -423,7 +423,7 @@ class TicketDetail(TemplateView, PodaciMixin):
             'open_form': forms.TicketCancelForm(),
             'flag_form': forms.RequestFlagForm(),
             'tag': tag,
-            'result_files': tag.list_files()[1],
+            'result_files': tag.list_files(),
             'charge_form': forms.RequestChargeForm(),
             'ticket_detail_view': True,
             'can_join_leave': can_join_leave
@@ -749,10 +749,18 @@ class TicketResolutionWorkload(TemplateView):
     template_name = 'tickets/ticket_resolution_workload.jinja'
 
     def get_context_data(self):
+        researchers = get_user_model().objects.filter(
+            Q(is_volunteer=True) | Q(is_staff=True) | Q(is_superuser=True)
+        )
+        sort = self.request.GET.get("sort", "role")
+        if sort == "role":
+            researchers = researchers.order_by("-is_superuser", "-is_staff",
+                "-is_volunteer")
+        #elif sort == "time":
+        #    researchers = researchers.annotate(open_tickets=Count('ticket__'))
+
         return {
-            "researchers": get_user_model().objects.filter(
-                Q(is_volunteer=True) | Q(is_staff=True) | Q(is_superuser=True)
-            ).order_by("-is_superuser", "-is_staff", "-is_volunteer")
+            "researchers": researchers
         }
 
 class TicketResolutionTime(TemplateView):
