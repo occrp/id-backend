@@ -166,16 +166,16 @@ class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
         if self.status != 'closed':
             return datetime.timedelta(0)
 
-        for update in self.ticketupdate.all():
-            starttime = None
-            endtime = None
+        starttime = None
+        endtime = None
+        for update in self.ticketupdate_set.all():
             if update.update_type == "open":
                 starttime = update.created
             elif update.update_type == "close":
                 endtime = update.created
 
-        if startdate and enddate:
-            return enddate - startdate
+        if starttime and endtime:
+            return endtime - starttime
 
         return datetime.timedelta(0)
 

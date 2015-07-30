@@ -259,9 +259,12 @@ class Profile(AbstractBaseUser, PermissionsMixin):
         tot = list(res)
         tot.extend(list(vol))
         tot = set(tot)
-        times = [x.resolution_time() for x in tot]
-        average_timedelta = sum(times, timedelta(0)) / len(times)
-        return average_timedelta
+        if len(tot) > 0:
+            times = [x.resolution_time() for x in tot]
+            average_timedelta = sum(times, timedelta(0)) / len(times)
+            return average_timedelta
+        else:
+            return timedelta(0)
 
     def to_json(self):
         return {"id": self.id, "email": self.email}
