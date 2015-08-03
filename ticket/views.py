@@ -214,6 +214,7 @@ class TicketAddCharge(TicketActionBaseHandler):
 
     def perform_invalid_action(self, form):
         pass
+        #self.add_message(_('Error adding charge.'))
 
     def perform_valid_action(self, ticket, form):
         charge = models.TicketCharge(
@@ -237,7 +238,7 @@ class TicketAddCharge(TicketActionBaseHandler):
             extra_relation=charge
         ).save()
 
-        self.add_message(_('The new charge was added to the request.'))
+        #self.add_message(_('The new charge was added to the request.'))
 
 
 class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
