@@ -315,7 +315,14 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
         return context
 
     def get_success_url(self):
-        return reverse_lazy(self.redirect)
+        try:
+            response = reverse_lazy(self.redirect)
+            return respose
+        except Exception:
+            pass
+
+        response = reverse_lazy(self.redirect, kwargs={'ticket_id': self.object.id})
+        return response
 
 
 class TicketUpdateRemoveHandler(TicketActionBaseHandler):
