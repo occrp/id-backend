@@ -213,32 +213,22 @@ class TicketAddCharge(TicketActionBaseHandler):
     form_class = forms.RequestChargeForm
 
     def perform_invalid_action(self, form):
-        pass
-        #self.add_message(_('Error adding charge.'))
+        messages.error(self.request, _('Error adding charge.'))
 
-    def perform_valid_action(self, ticket, form):
-        charge = models.TicketCharge(
-            parent=self.object.id,
-            ticket=self.object.id,
+    def perform_valid_action(self, form):
+        charge = TicketCharge(
+            ticket=self.object,
             user=self.request.user,
-            item=form.item.data,
-            cost=form.cost.data,
-            cost_original_currency=form.cost_original_currency.data,
-            original_currency=form.original_currency.data
+            item=form.cleaned_data['item'],
+            cost=form.cleaned_data['cost'],
+            cost_original_currency=form.cleaned_data['cost_original_currency'],
+            original_currency=form.cleaned_data['original_currency']
         ).save()
 
-        models.TicketUpdate(
-            parent=self.object.id,
-            ticket=self.object.id,
-            author=self.request.user,
-            update_type=models.get_choice(
-                _('Charge Added'),
-                models.TICKET_UPDATE_TYPES),
-            comment=form.comment.data,
-            extra_relation=charge
-        ).save()
-
-        #self.add_message(_('The new charge was added to the request.'))
+        self.perform_ticket_update(self.object,
+                                   'Charge Added',
+                                   "$%.2f" % float(form.cleaned_data['cost']) + " - " + form.cleaned_data['item'])
+        return super(TicketAddCharge, self).perform_valid_action(form)
 
 
 class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
