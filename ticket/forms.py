@@ -41,8 +41,12 @@ class RequestChargeForm(forms.ModelForm):
         model = models.TicketCharge
         exclude = ['ticket', 'user', 'created']
         widgets = {
-            'cost_original_currency': forms.Select(choices=constants.CURRENCIES),
+            'original_currency': forms.Select(choices=constants.CURRENCIES),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(RequestChargeForm, self).__init__(*args, **kwargs)
+        self.fields['reconciled_date'].widget.attrs.update({'class': 'datepicker'})
 
     #comment = forms.CharField(label=_("Comment to Requester"), widget=forms.Textarea)
     #item = forms.CharField(label=_("Item"), required=True)
