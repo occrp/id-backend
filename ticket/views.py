@@ -779,3 +779,19 @@ class TicketResolutionTime(TemplateView):
             "averagetime": average_timedelta,
             "count": tickets.count()
         }
+
+class TicketReport(CSVorJSONResponseMixin, TemplateView):
+    template_name = 'tickets/ticket_report.jinja'
+    CONTEXT_ITEMS_KEY = "tickets"
+
+    def get_context_data(self):
+        startdate = self.request.GET.get('startdate', None)
+        enddate = self.request.GET.get('enddate', None)
+
+        tickets = Ticket.objects.all()
+        if startdate:
+            tickets = tickets.filter(created__gt=startdate)
+        if enddate:
+            tickets = tickets.filter(created__lte=enddate)
+
+        return {'tickets': tickets, 'title': 'Ticket report'}
