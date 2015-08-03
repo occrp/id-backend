@@ -1,0 +1,52 @@
+{% extends "tickets/request_base.jinja" %}
+
+{% block inner_content %}
+
+<h2>Ticket Report</h2>
+
+<form method="GET" class="form-horizontal" role="form">
+    <div class="form-group input-daterange">
+        <label class="control-label col-sm-2" for="startdate">Date range: </label>
+        <input type="text" name="startdate" class="input-small col-sm-3" value="2012-04-05" />
+        <span class="add-on">to</span>
+        <input type="text" name="enddate" class="input-small col-sm-3" value="2012-04-19" />
+        <button type="submit" class="btn btn-primary col-sm-3">Filter</button>
+    </div>
+</form>
+
+<table class="table table-striped table-border">
+    <tr>
+        <th>Request date</th>
+        <th>Person Requesting Info</th>
+        <th>Country</th>
+        <th>Organization</th>
+        <th>Network</th>
+        <th>Request Title</th>
+    </tr>
+    {% for ticket in tickets %}
+    <tr>
+        <td style="white-space:nowrap;">{{ticket.created|date('Y-m-d')}}</td>
+        <td><a href="{{url('profile', ticket.requester.id)}}">{{ticket.requester}}</a></td>
+        <td>{{ticket.requester.country}}</td>
+        <td>{{ticket.requester.organization_membership}}</td>
+        <td>{{ticket.requester.network}}</td>
+        <td>{{ticket.summary}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="pull-right">
+    <a class="btn btn-small" href="?format=csv"><i class="fa fa-file-excel-o"></i> {% trans %}Download as CSV{% endtrans %}</a>
+    <a class="btn btn-small" href="?format=json"><i class="fa fa-file-o"></i> {% trans %}Download as JSON{% endtrans %}</a>
+</div>
+
+{% endblock %}
+{% block after_js %}
+<script>
+$(function() {
+    $(".input-daterange input").each(function (){
+        $(this).datepicker("clearDates");
+    });
+});
+</script>
+{% endblock %}

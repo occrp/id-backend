@@ -57,7 +57,12 @@ class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
     # User-facing fields
     @property
     def summary(self):
-        return ""
+        if hasattr(self, "personticket"):
+            return PersonTicket.get_summary(self.personticket)
+        elif hasattr(self, "companyticket"):
+            return CompanyTicket.get_summary(self.companyticket)
+        else:
+            return OtherTicket.get_summary(self.otherticket)
 
     def get_type_icon(self):
         if self.ticket_type == 'person_ownership': return 'user'
@@ -230,8 +235,10 @@ class PersonTicket(Ticket):
 
     @property
     def summary(self):
-        return "%s" % smart_truncate(self.name, 150)
+        return self.get_summary()
 
+    def get_summary(self):
+        return "%s" % smart_truncate(self.name, 150)
 
     def most_fields(self):
         '''Return an iterator of tuples (verbose name, display value)
@@ -260,6 +267,9 @@ class CompanyTicket(Ticket):
 
     @property
     def summary(self):
+        return self.get_summary()
+
+    def get_summary(self):
         return "%s" % (smart_truncate(self.name, 150))
 
     def get_country(self):
@@ -282,6 +292,9 @@ class OtherTicket(Ticket):
 
     @property
     def summary(self):
+        return self.get_summary()
+
+    def get_summary(self):
         words = unicode(self.question).split(" ")
         text = ""
         for word in words:
