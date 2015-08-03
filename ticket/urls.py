@@ -47,6 +47,7 @@ urlpatterns = patterns('',
 
     url(r'^manage/workload$',        perm('staff', ticket.views.TicketResolutionWorkload), name='ticket_researcher_workload'),
     url(r'^manage/worktime$',        perm('staff', ticket.views.TicketResolutionTime), name='ticket_resolution_time'),
+    url(r'^manage/report$',          perm('staff', ticket.views.TicketReport), name='ticket_monthly_report'),
     url(r'^(?P<pk>[0-9]+)/close/$',  perm('user', ticket.views.TicketActionClose), name='ticket_close'),
     url(r'^(?P<pk>[0-9]+)/open/$',   perm('user', ticket.views.TicketActionOpen), name='ticket_open'),
     url(r'^(?P<pk>[0-9]+)/cancel/$', perm('user', ticket.views.TicketActionCancel), name='ticket_cancel'),
