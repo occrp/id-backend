@@ -24,7 +24,7 @@ class TicketPaidForm(forms.Form):
     Update a ticket with it's payment status (from within the ticket).
     """
     comment = forms.CharField(
-        label=_("Comment"), 
+        label=_("Comment"),
         widget=forms.Textarea)
     paid_status = forms.ChoiceField(
         label=_("Paid Status"),
@@ -39,11 +39,11 @@ class RequestChargeForm(forms.ModelForm):
     """
     class Meta:
         model = models.TicketCharge
-        exclude = ['ticket', 'user']
+        exclude = ['ticket', 'user', 'created']
         widgets = {
-            'cost_original_currency': forms.Select(choices=constants.CURRENCIES)
+            'cost_original_currency': forms.Select(choices=constants.CURRENCIES),
         }
-        
+
     #comment = forms.CharField(label=_("Comment to Requester"), widget=forms.Textarea)
     #item = forms.CharField(label=_("Item"), required=True)
     #cost = forms.DecimalField(label=_("Cost (USD)"), required=True)
