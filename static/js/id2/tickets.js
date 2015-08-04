@@ -11,6 +11,22 @@ ID2.Tickets.filterCurrent = function() {
 	window.location.href = $.param.querystring(window.location.href, 'filter=' + filter);
 }
 
+ID2.Tickets.assign_user = function(ticket, user, callback) {
+    $.post('/ticket/' + ticket + '/join/', {'user': user}), function(data) {
+        if (callback) {
+            callback(data);
+        }
+    });
+}
+
+ID2.Tickets.unassign_user = function(ticket, user) {
+    $.post('/ticket/' + ticket + '/leave/', {'user': user}), function(data) {
+        if (callback) {
+            callback(data);
+        }
+    });
+}
+
 $(function() {
 	ID2.tickets.init();
 });
