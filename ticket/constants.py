@@ -88,10 +88,10 @@ TICKET_STATUS = (
 )
 
 TICKET_STATUS_ICONS = (
-    ('new', 'circle'),
-    ('in-progress', 'spinner'),
-    ('closed', 'check'),
-    ('cancelled', 'close')
+    ('new', 'star-o'),
+    ('in-progress', 'star-half-o'),
+    ('closed', 'star'),
+    ('cancelled', 'times')
 )
 
 OPEN_TICKET_STATUSES = ['new', 'in-progress']
