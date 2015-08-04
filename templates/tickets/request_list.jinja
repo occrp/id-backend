@@ -11,8 +11,45 @@
     </div>
 
     {% if tickets %}
-        <h4>{% trans %}{{ ticket_list_name }}{% endtrans %}</h4>
-    {{ macros.render_ticket_table(tickets, ROUTE_NAME, paginator_object) }}
+    {#{ macros.render_ticket_table(tickets, ROUTE_NAME, paginator_object) }#}
+    {% for ticket in tickets %}
+    <div class="pull-left" style="font-size: 35px; padding-top: 20px; width: 60px; height: 80px;"><i class="fa fa-{{ticket.get_type_icon()}}"></i></div>
+    <div style="border-bottom: 1px solid #ccc; padding: 20px; padding-top: 10px; margin-bottom: 10px;">
+        <div class="pull-right" style="font-variant: small-caps;">{{ticket.status}} <i class="fa fa-{{ticket.get_status_icon()}}"></i></div>
+        <h4><a href="{{url('ticket_details', ticket.id)}}">{{ticket.summary}}</a></h4>
+
+        <div style="line-height: 1.2em; margin-bottom: 0.5em;">
+            <span style="display:inline-block; width:6.5em;">Requested by</span>
+            <a href="{{url('profile', ticket.requester.id)}}">{{ticket.requester}}</a> on <b>{{ticket.created|date('Y-m-d')}}</b>, complete by <b>{{ticket.deadline|date('Y-m-d')}}</b>.
+        </div>
+
+        <div>
+            <span style="display:inline-block; width:6.5em;">Assigned to</span>
+            {% if ticket.actors(false)|length > 0 %}
+                {% for actor in ticket.actors(false) %}
+                    <span style="background: #eee; padding: 2px; border: 1px solid #ccc;">
+                        <a href="{{ url('profile', pk=actor.id)}}">{{ actor.display_name }}</a>
+                        <a href="" onclick="ID2.Ticket.removeResponder({{ticket.id}}, {{actor.id}});"><i class="fa fa-close"></i></a>
+                    </span>
+                    {% if loop.length > 0 and not loop.last %}, {% endif %}
+                {% endfor %}.
+            {% else %}
+                {% trans %}nobody{% endtrans %}.
+            {% endif %}
+            <div class="pull-right">
+                {% if user.is_user or user.is_volunteer %}
+                    {% if user not in ticket.actors() %}
+                    <a class="btn btn-small"><i class="fa fa-user-plus"></i> Join</a>
+                    {% else %}
+                    <a class="btn btn-small"><i class="fa fa-user-times"></i> Leave</a>
+                    {% endif %}
+                {% endif %}
+                {% if user.is_staff %}<a class="btn btn-small"><i class="fa fa-plus"></i> Assign</a>{% endif %}
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
 
     <div class="pull-right">
         <a class="btn btn-small" href="?format=csv"><i class="fa fa-file-excel-o"></i> {% trans %}Download as CSV{% endtrans %}</a>

@@ -140,25 +140,30 @@ class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
 
     def perform_valid_action(self, form):
         ticket = self.object
-
+        adduser = None
+        added = False
         tag = ticket.get_tag()
 
         if self.request.user.is_staff or self.request.user.is_superuser:
-            ticket.responders.add(self.request.user)
-            self.success_messages = [_('You have successfully been added to the ticket.')]
-            self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.display_name + unicode(_(' has joined the ticket')))
-            self.transition_ticket_from_new(ticket)
-            tag.add_user(self.request.user, True)
-            return super(TicketActionJoin, self).perform_valid_action(form)
+            uid = self.request.POST.get("user", self.request.user.id)
+            adduser = get_user_model().get(id=uid)
+            if adduser.is_user or adduser.is_staff or adduser.is_superuser:
+                ticket.responders.add(adduser)
+            else:
+                ticket.volunteers.add(adduser)
+            added = True
 
-        elif self.request.user.is_volunteer:
-            ticket.volunteers.add(self.request.user)
-            self.success_messages = [_('You have successfully been added to the ticket.')]
-            self.perform_ticket_update(ticket, 'Responder Joined', self.request.user.display_name + unicode(_(' has joined the ticket')))
-            self.transition_ticket_from_new(ticket)
-            tag.add_user(self.request.user, True)
-            return super(TicketActionJoin, self).perform_valid_action(form)
+        if self.request.user.is_volunteer:
+            adduser = self.request.user
+            ticket.volunteers.add(adduser)
+            added = True
 
+        if added:
+            self.success_messages = [_('You have successfully been added to the ticket.')]
+            self.perform_ticket_update(ticket, 'Responder Joined', adduser.display_name + unicode(_(' has joined the ticket')))
+            self.transition_ticket_from_new(ticket)
+            tag.add_user(adduser, True)
+            return super(TicketActionJoin, self).perform_valid_action(form)
         else:
             self.perform_invalid_action(form)
 
