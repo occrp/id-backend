@@ -47,41 +47,51 @@ class JSONResponseMixin(object):
         return json_dumps(self.get_context_data())
 
 
-class CSVorJSONResponseMixin(object):
+class CSVResponder(object):
+    def render_csv(self):
+        if hasattr(self, "CONTEXT_TITLE_KEY"):
+            title = unicode(context[self.CONTEXT_TITLE_KEY])
+        else:
+            title = unicode(context['title'])
+
+        if hasattr(self, "CONTEXT_ITEMS_KEY"):
+            ctxkey = self.CONTEXT_ITEMS_KEY
+        else:
+            ctxkey = 'items'
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = ('attachment; filename="%s.csv"'
+                                           % slugify(title))
+
+        writer = csv.writer(response)
+
+        for item in context[ctxkey]:
+            writer.writerow(item)
+
+        return response
+
+class JSONResponder(object):
+    def render_json(self):
+        if hasattr(self, "CONTEXT_TITLE_KEY"):
+            title = unicode(context[self.CONTEXT_TITLE_KEY])
+        else:
+            title = unicode(context['title'])
+
+        response = HttpResponse(content_type='text/json')
+        response['Content-Disposition'] = ('attachment; filename="%s.json"'
+                                           % slugify(title))
+        response.write(json_dumps(self.get_context_data()))
+
+        return response
+
+class CSVorJSONResponseMixin(CSVResponder, JSONResponder):
     def render_to_response(self, context, **response_kwargs):
         if 'csv' in self.request.GET.get('format', ''):
-            if hasattr(self, "CONTEXT_TITLE_KEY"):
-                title = unicode(context[self.CONTEXT_TITLE_KEY])
-            else:
-                title = unicode(context['title'])
-
-            if hasattr(self, "CONTEXT_ITEMS_KEY"):
-                ctxkey = self.CONTEXT_ITEMS_KEY
-            else:
-                ctxkey = 'items'
-
-            response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = ('attachment; filename="%s.csv"'
-                                               % slugify(title))
-
-            writer = csv.writer(response)
-
-            for item in context[ctxkey]:
-                writer.writerow(item)
-
-            return response
+            return self.render_csv()
         elif 'json' in self.request.GET.get('format', ''):
-            if hasattr(self, "CONTEXT_TITLE_KEY"):
-                title = unicode(context[self.CONTEXT_TITLE_KEY])
-            else:
-                title = unicode(context['title'])
-
-            response = HttpResponse(content_type='text/json')
-            response['Content-Disposition'] = ('attachment; filename="%s.json"'
-                                               % slugify(title))
-            response.write(json_dumps(self.get_context_data()))
-
-            return response
+            return self.render_json()
+        elif self.request.is_ajax():
+            return self.render_json()
         else:
             return super(CSVorJSONResponseMixin, self).render_to_response(context, **response_kwargs)
 
