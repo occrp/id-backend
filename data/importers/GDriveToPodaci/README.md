@@ -3,8 +3,8 @@
 Once you [set-up a working environment](../../README.md) and [imports all data from Google AppEngine to the database](../README.md), you can download and import all Google Drive files and folders into Podaci.
 
 The export/import has two phases:
-1. export/import Ticket-related files and folders;
-2. export/import everything else.
+ 1. export/import Ticket-related files and folders;
+ 2. export/import everything else.
 
 ## Requirements
 
