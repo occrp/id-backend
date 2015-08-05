@@ -1,9 +1,9 @@
 # Google AppEngine Data Export and Import
 
 To get data from Google AppEngine to our own database, we need a couple of things:
-1. a working investigative-dashboard-2 django app
-2. old investigative dashboard sources
-3. Google AppEngine Python SDK
+ 1. a working investigative-dashboard-2 django app
+ 2. old investigative dashboard sources
+ 3. Google AppEngine Python SDK
 
 ## Requirements
 
@@ -13,9 +13,9 @@ Old Investigative Dashboard sources:
 ```
 
 Google AppEngine Python SDK:
-1. go to https://cloud.google.com/appengine/downloads
-2. download "Google AppEngine SDK for Python"
-3. unzip it to a folder (we'll assume `google_appengine` in the directory where `id` and `id2` sources landed)
+ 1. go to https://cloud.google.com/appengine/downloads
+ 2. download "Google AppEngine SDK for Python"
+ 3. unzip it to a folder (we'll assume `google_appengine` in the directory where `id` and `id2` sources landed)
 
 Investigative Dashboard 2 sources:
 ```
@@ -33,11 +33,11 @@ You're ready to go.
 ## Export/Import
 
 Exporting the data, and then importing them into our own database consists of a few steps:
-1. export data as CSV from Google AppEngine
-2. import UserProfile data
-3. import Ticket data
-4. import TicketUpdates data
-5. import TicketCharges data
+ 1. export data as CSV from Google AppEngine
+ 2. import UserProfile data
+ 3. import Ticket data
+ 4. import TicketUpdates data
+ 5. import TicketCharges data
 
 And yes, we do have nice scripts for everything.
 
