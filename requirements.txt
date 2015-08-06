@@ -19,3 +19,4 @@ oauth2client
 google-api-python-client
 rules
 django-social-auth
+psycopg2

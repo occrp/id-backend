@@ -1,4 +1,7 @@
 # UserProfiles_to_DjangoUsers.py
+# 
+# this is the first importer to run
+# Tickets_to_ID2Tickets comes next
 
 import sys
 import getopt
@@ -7,6 +10,7 @@ from os.path import dirname
 import os
 import json
 from django.db.utils import IntegrityError
+from django.core.management import call_command
 import django
 import pickle
 
@@ -29,6 +33,11 @@ def convert(in_file):
     
     print "Setting up django..."
     django.setup()
+    # make sure django db is set up properly
+    call_command('makemigrations')
+    call_command('syncdb', interactive=False)
+    print "+-- done."
+    
     # grabbing the highest id in the Profile database so as not to overwrite existing entries
     try:
         cnt = get_user_model().objects.latest('id').id

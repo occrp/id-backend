@@ -1,4 +1,7 @@
 # Tickets_to_ID2Tickets.py
+#
+# second importer to run, after UserProfiles_to_DjangoUsers
+# next, TicketUpdates_to_ID2TicketUpdates
 
 import sys
 import getopt
@@ -131,6 +134,8 @@ def convert(in_file):
     # we need that regex for the 'responders' field
     r = re.compile("u'UserProfile', (\d+)L, _app")
 
+    # stats
+    ignored = 0
     i = 0
     gkeys = {}
     for ticket in tickets:
@@ -158,7 +163,8 @@ def convert(in_file):
                 # did we actually get anything?
                 if not value:
                     # no. break -- this will make the else part of the for not execute
-                    print("+-- ignoring this ticket update due to missing user! you'll find all missing user gkeys in %s" % user_missing_file)
+                    print("+-- ignoring this ticket due to missing user! you'll find all missing user gkeys in %s" % user_missing_file)
+                    ignored += 1
                     break
             # we don't need time here
             elif key in ['deadline', 'dob']:
@@ -221,7 +227,9 @@ def convert(in_file):
             except IntegrityError, e:
                 print "Skipping dupe: %s" % (e)
       
-    print "\rAdding tickets: Done.                                                                 "
+    print "\rAdding tickets: Done.                                                              "
+    print "\n+-- processed %d individual tickets" % (i)
+    print   "    +-- ignored %d ticket due to missing user data" % (ignored)
     
     # we need to save the old_google_key-related data
     try:
