@@ -67,6 +67,9 @@ class Story(models.Model):
     def get_history(self):
         return self.storystatus_set.all()
 
+    class Meta:
+        ordering = ['-id']
+
 
 class StoryVersion(models.Model):
     story = models.ForeignKey(Story, related_name="versions")
