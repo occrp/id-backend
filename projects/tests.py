@@ -1593,7 +1593,7 @@ class PipelineAPITest(APITestCase):
 
         self.assertEqual(len(results), 2)
         self.assertEqual(results[1]['title'], 'my greek version')
-        self.assertEqual(results[2]['title'], 'my russian version')
+        self.assertEqual(results[0]['title'], 'my russian version')
 
     # MEMBER TESTS
     def test_get_translation(self):
