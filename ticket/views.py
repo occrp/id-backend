@@ -228,13 +228,58 @@ class TicketAddCharge(TicketActionBaseHandler):
             cost=form.cleaned_data['cost'],
             cost_original_currency=form.cleaned_data['cost_original_currency'],
             original_currency=form.cleaned_data['original_currency']
-        ).save()
+        )
+
+        if form.cleaned_data['reconciled']:
+            charge.reconciled = True
+            charge.reconciled_date = form.cleaned_data['reconciled_date']
+
+        charge.save()
 
         self.perform_ticket_update(self.object,
                                    'Charge Added',
                                    "$%.2f" % float(form.cleaned_data['cost']) + " - " + form.cleaned_data['item'])
         return super(TicketAddCharge, self).perform_valid_action(form)
 
+class TicketModifyCharge(TicketUpdateMixin, UpdateView):
+    model = TicketCharge
+    template_name = 'modals/form_basic.jinja'
+    form_class = forms.RequestChargeForm
+
+    # it should be noted here that this is ugly
+    # when using the get, the pk stands for the
+    def get(self, request, pk, status='success'):
+        super(TicketModifyCharge, self).get(self, request)
+
+        t = render_to_string('modals/form_basic.jinja', self.get_context_data())
+        return JsonResponse({'status': status, 'html': t})
+
+    def get_context_data(self, **kwargs):
+        context = super(TicketModifyCharge, self).get_context_data(**kwargs)
+        context['csrf'] = get_token(self.request)
+        context['form_action'] = reverse_lazy('request_charge_modify', kwargs={'pk': self.object.id})
+        context['form'] = self.get_form(self.form_class)
+        return context
+
+    def form_invalid(self, form):
+        self.perform_invalid_action(form)
+        return HttpResponse('error updating charge', status_code=400)
+
+    def form_valid(self, form):
+        self.perform_valid_action(form)
+
+        # just to get the ticket to save
+        response = super(TicketModifyCharge, self).form_valid(form, [_('Charge successfully updated.')])
+
+        return JsonResponse({'success':'success'})
+
+    def perform_invalid_action(self, form):
+        messages.error(self.request, _('Error updating charge.'))
+
+    def perform_valid_action(self, form):
+        self.perform_ticket_update(self.object.ticket,
+                                   'Charge Modified',
+                                   "$%.2f" % float(form.cleaned_data['cost']) + " - " + form.cleaned_data['item'])
 
 class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
     model = Ticket

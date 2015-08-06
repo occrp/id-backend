@@ -19,78 +19,88 @@
   /**
    * Captures form submissions and sends
    */
-  FormRegistry.handleSubmit = function($modal, keepEvents) {
+  FormRegistry.handleSubmit = function($modal, keepEvents, use_ajax) {
     var $body = $('.modal-body', $modal);
     var $content = $('.modal-content', $modal);
     var $submit = $('.submit', $modal);
     var spinner = new IDSpinner({before: $submit});
 
     // Register submit handler
-    $submit.on('click', function() {
+    $submit.on('click', function(e) {
+      e.preventDefault();
       var $form = $('form', $modal);
       if(can_serialize($form)){
-      var action = $form.attr('action');
-      spinner.spin();
-      $form.submit();
-      // $.ajax({
-      //   url: action,
-      //   type: 'POST',
-      //   data: $form.serialize(),
-      //   success: function(data) {
-      //     if (data.status == 'error') {
-      //       // Replace modal body with error HTML and ensure the form
-      //       // action doesn't get lost
-      //       $content.html(data.html);
-      //       $('form', $content).attr('action', action);
+        var action = $form.attr('action');
+        spinner.spin();
 
-      //       App.initWidgets();
-      //       var err = $('.error', $modal);
-      //       if (err.length > 0) {
-      //         $body.scrollTo(err);
-      //       }
-      //     } else {
-      //       if (data.message) {
+        if(use_ajax) {
 
-      //         $modal.modal('hide')
-      //         Alert.show(data.message, 'success', $('#alerts'), $('body'));
-      //         // var search = window.location.search;
-      //         // if (search.length > 0) {
-      //         //   if (search.search("data=") > -1 ) {
-      //         //     // replace the data url param
-      //         //     search = search.substr(0, search.search("data=")) + "data=" + data.data;
-      //         //   } else {
-      //         //     // append the data url param
-      //         //     search += "&data=" + data.data;
-      //         //   }
-      //         // } else {
-      //         //   // append the blank url param
-      //         //   search = "?data=" + data.data;
-      //         // }
-      //         // if (window.location.search == search) {
-      //         //   window.location.reload()
-      //         // } else {
-      //         //   window.location.search = search;
-      //         // }
+          $.ajax({
+            url: action,
+            type: 'POST',
+            data: $form.serialize(),
+            success: function(data) {
+              if (data.status == 'error') {
+                // Replace modal body with error HTML and ensure the form
+                // action doesn't get lost
+                $content.html(data.html);
+                $('form', $content).attr('action', action);
 
-      //       } else {
-      //         window.location.reload();
-      //       }
-      //     }
-      //   },
-      //   error: function() {
-      //     Alert.show('There was an error submitting this form. Please try ' +
-      //       'again.', 'error', $('.modal-alerts', $modal), $body);
-      //   },
-      //   complete: function () {
-      //     spinner.stop();
-      //   }
-      // });
-      return false;
-}
+                App.initWidgets();
+                var err = $('.error', $modal);
+                if (err.length > 0) {
+                  $body.scrollTo(err);
+                }
+              } else {
 
-else {
-    $form.submit();
-}
+                if (data.message) {
+
+                  $modal.modal('hide')
+                  Alert.show(data.message, 'success', $('#alerts'), $('body'));
+                  // var search = window.location.search;
+                  // if (search.length > 0) {
+                  //   if (search.search("data=") > -1 ) {
+                  //     // replace the data url param
+                  //     search = search.substr(0, search.search("data=")) + "data=" + data.data;
+                  //   } else {
+                  //     // append the data url param
+                  //     search += "&data=" + data.data;
+                  //   }
+                  // } else {
+                  //   // append the blank url param
+                  //   search = "?data=" + data.data;
+                  // }
+                  // if (window.location.search == search) {
+                  //   window.location.reload()
+                  // } else {
+                  //   window.location.search = search;
+                  // }
+
+                } else {
+                  window.scrollTo(0, 0);
+                  window.location.reload();
+                }
+              }
+            },
+            error: function() {
+              Alert.show('There was an error submitting this form. Please try ' +
+                'again.', 'error', $('.modal-alerts', $modal), $body);
+            },
+            complete: function () {
+              spinner.stop();
+            }
+          });
+        } else {
+
+          $form.submit();
+        }
+
+        return false;
+
+      } else {
+        $form.submit();
+      }
+
     });
 
     if (!keepEvents) {
@@ -105,8 +115,12 @@ else {
   /**
    * Provide the ID of the modal you wish to hook up.
    */
-  FormRegistry.register = function(modalID) {
-    FormRegistry.handleSubmit($('#' + modalID), true);
+  FormRegistry.register = function(modalID, use_ajax) {
+    if(!use_ajax) {
+      use_ajax = false;
+    }
+
+    FormRegistry.handleSubmit($('#' + modalID), true, use_ajax);
   };
 
   /**
@@ -126,7 +140,7 @@ else {
       success: function(data) {
         $content.html(data.html);
         App.initWidgets();
-        FormRegistry.handleSubmit($modal, false);
+        FormRegistry.handleSubmit($modal, false, true);
       },
       error: function() {
         Alert.show('There was an error loading this dialog. Please try again.',

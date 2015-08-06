@@ -67,6 +67,7 @@ TICKET_TYPES = (
 TICKET_UPDATE_TYPES = (
     ('update', _('Updated')),
     ('charge', _('Charge Added')),
+    ('charge_modified', _('Charge Modified')),
     ('paid', _('Reconciled Charges')),
     ('close', _('Closed')),
     ('cancel', _('Cancelled')),
