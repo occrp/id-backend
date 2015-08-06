@@ -1,4 +1,7 @@
 # TicketUpdates_to_ID2TicketUpdates.py
+#
+# third importer to run, after Tickets_to_ID2Tickets
+# next, TicketCharges_to_ID2TicketCharges
 
 import sys
 import getopt
@@ -94,6 +97,12 @@ def convert(in_file):
 
     print "... Got %d ticket updates" % (len(tupdts))
 
+
+    # stats
+    ignored = {
+      'user'   : 0,
+      'ticket' : 0
+    }
     i = 0
     for tupdt in tupdts:
         i += 1
@@ -113,6 +122,7 @@ def convert(in_file):
                 if not value:
                     # no. break -- this will make the else part of the for not execute
                     print("+-- ignoring this ticket update due to missing user! you'll find all missing user gkeys in %s" % user_missing_file)
+                    ignored['user'] += 1
                     break
             # this has to be a Ticket instance
             elif key == "ticket":
@@ -121,6 +131,7 @@ def convert(in_file):
                 if not value:
                     # no. break -- this will make the else part of the for not execute
                     print("+-- ignoring this ticket update due to missing ticket! you'll find all missing ticket gkeys in %s" % ticket_missing_file)
+                    ignored['ticket'] += 1
                     break
             # set the attribute
             setattr(t, key, value)
@@ -137,6 +148,9 @@ def convert(in_file):
                 print "Skipping dupe: %s" % (e)
       
     print "\rAdding ticket updates: Done.                                                              "
+    print "\n+-- processed %d individual ticket updates" % (i)
+    print   "    +-- ignored %d ticket updates due to missing user data" % (ignored['user'])
+    print   "    +-- ignored %d ticket updates due to missing ticket data" % (ignored['ticket'])
 
 
 if __name__ == "__main__":
