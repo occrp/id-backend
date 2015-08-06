@@ -617,9 +617,9 @@ class PipelineAPITest(APITestCase):
         self.assertIsInstance(results, list)
         # only 2 because user_user should not be able to see story 3
         self.assertEqual(len(results), 3)
-        self.assertEqual(results[0]['title'], 'list story 1')
+        self.assertEqual(results[2]['title'], 'list story 1')
         self.assertEqual(results[1]['title'], 'list story 2')
-        self.assertEqual(results[2]['title'], 'list story 3')
+        self.assertEqual(results[0]['title'], 'list story 3')
 
         # user_user should only be able to see 2 since he is not a project member, but an editor on 2 of them
         client = APIClient()
@@ -1233,10 +1233,10 @@ class PipelineAPITest(APITestCase):
         self.assertIsInstance(results, list)
         self.assertEqual(len(results), 3)
 
-        # test the titles, this should be good enough
-        self.assertEqual(results[0]['title'], 'version to list 1')
+        # test the titles, this should be good enough (note default ordering)
+        self.assertEqual(results[2]['title'], 'version to list 1')
         self.assertEqual(results[1]['title'], 'version to list 2')
-        self.assertEqual(results[2]['title'], 'version to list 3')
+        self.assertEqual(results[0]['title'], 'version to list 3')
 
     # MEMBER TESTS
     def test_get_story_version(self):
@@ -1592,8 +1592,8 @@ class PipelineAPITest(APITestCase):
         self.assertIsInstance(results, list)
 
         self.assertEqual(len(results), 2)
-        self.assertEqual(results[0]['title'], 'my greek version')
-        self.assertEqual(results[1]['title'], 'my russian version')
+        self.assertEqual(results[1]['title'], 'my greek version')
+        self.assertEqual(results[2]['title'], 'my russian version')
 
     # MEMBER TESTS
     def test_get_translation(self):
