@@ -17,6 +17,8 @@ Google AppEngine Python SDK:
  2. download "Google AppEngine SDK for Python"
  3. unzip it to a folder (we'll assume `google_appengine` in the directory where `id` and `id2` sources landed)
 
+*Warning: Google App Engine currently contains [a bug](https://code.google.com/p/googleappengine/issues/detail?id=12214) that makes it unusable with our script*. It is adviseable to use an older version of Google App Engine.
+
 Investigative Dashboard 2 sources:
 ```
  git clone https://github.com/occrp/investigative-dashboard-2.git
