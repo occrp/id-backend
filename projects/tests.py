@@ -1791,7 +1791,7 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('altering a project plan project',
                                                     'altering a project plan project description',
-                                                    self.staff_user,
+                                                    [self.staff_user],
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story for a project plan alter', project)
         project_plan = self.helper_create_single_project_plan_dummer_wrapper(project=project,
@@ -1831,7 +1831,7 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('deleting a project plan project',
                                                     'deleting a project plan project description',
-                                                    self.staff_user,
+                                                    [self.staff_user],
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story for a project plan delete', project)
         project_plan = self.helper_create_single_project_plan_dummer_wrapper(project=project,
