@@ -19,8 +19,8 @@ DATABASE_ENGINE = 'django.db.backends.postgresql_psycopg2'
 DATABASE_HOST = '127.0.0.1'
 DATABASE_PORT = '3306'
 DATABASE_NAME = 'test'
-DATABASE_USER = os.environ.get('POSTGRES_USER')
-DATABASE_PASSWORD = os.environ.get('POSTGRES_PASSWORD')
+DATABASE_USER = os.environ.get('PG_USER')
+DATABASE_PASSWORD = os.environ.get('PG_PASSWORD')
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
