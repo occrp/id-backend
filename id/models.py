@@ -34,7 +34,6 @@ class Center(models.Model):
             return "%s - %s" % (self.short_name, self.long_name)
         return self.short_name
 
-
 ######## User profiles #################
 
 # managing the profiles
@@ -135,6 +134,15 @@ class Profile(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
+    def notify(self, text, url=None, params={}):
+        n = Notification(user=self)
+        n.create(text, url, params)
+
+    def get_notifications(self, start=0, count=10):
+        return self.notification_set.all()[start:count]
+
+    def unseen_notifications_count(self):
+        return self.notification_set.filter(is_seen=False).count()
 
     def can_write_to(self, obj):
         '''
@@ -286,6 +294,29 @@ class Profile(AbstractBaseUser, PermissionsMixin):
         #         UserDetailsVolunteerMixin.Meta.fields +
         #         UserDetailsRequesterMixin.Meta.fields)
         # editable_fields = ('first_name', 'last_name') + tuple(x for x in fields if x not in ('display_name',))
+
+
+class Notification(models.Model):
+    user            = models.ForeignKey(AUTH_USER_MODEL)
+    timestamp       = models.DateTimeField(auto_now_add=True)
+    is_seen         = models.BooleanField(default=False)
+    text            = models.CharField(max_length=50)
+    url_base        = models.CharField(max_length=50, blank=True, null=True)
+    url_params      = models.CharField(max_length=200, blank=True, null=True)
+
+    def seen(self):
+        self.is_seen = True
+        self.save()
+
+    def create(self, text, urlname=None, params={}):
+        self.text = text
+        self.url_base = urlname
+        self.url_params = json_dumps(params)
+        self.save()
+
+    def get_urlparams(self):
+        return json_loads(self.url_params)
+
 
 
 ######## External databases ############
