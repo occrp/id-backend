@@ -1,4 +1,4 @@
-{% macro modal_shell(modal_id, title, submit_text, dynamic_body=False) %}
+{% macro modal_shell(modal_id, title, submit_text, dynamic_body=False, use_ajax_submit=False) %}
     <div class="modal hide fade" id="{{ modal_id }}" role="dialog">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -13,20 +13,20 @@
         </div>
         {% if not dynamic_body %}
             <script type="text/javascript">
-                FormRegistry.register("{{ modal_id }}");
+                FormRegistry.register("{{ modal_id }}"{%if use_ajax_submit %}, true{% endif %});
             </script>
         {% endif %}
     </div>
 {% endmacro %}
 
-{% macro render_modal(form, form_action, modal_id, title, submit_text, enctype, csrf) %}
-    {% call modal_shell(modal_id, title, submit_text) %}
+{% macro render_modal(form, form_action, modal_id, title, submit_text, enctype, csrf, use_ajax_submit=False) %}
+    {% call modal_shell(modal_id, title, submit_text, False, use_ajax_submit) %}
         {% include 'modals/form_basic.jinja' %}
     {% endcall %}
 {% endmacro %}
 
-{% macro render_dynamic_modal(modal_id, title, submit_text) %}
-    {% call modal_shell(modal_id, title, submit_text, True) %}{% endcall %}
+{% macro render_dynamic_modal(modal_id, title, submit_text, use_ajax_submit=False) %}
+    {% call modal_shell(modal_id, title, submit_text, True, use_ajax_submit) %}{% endcall %}
 {% endmacro %}
 
 {% macro render_html_modal(modal_id, title, submit_text, content) %}

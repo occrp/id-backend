@@ -218,7 +218,12 @@
                     {% for charge in charges %}
                         <tr class="{% if charge.reconciled %}reconciled{% endif %}">
                             <td class='money'>${{ "%0.2f"|format(charge.cost) }}</td>
-                            <td class='item muted'>{{ charge.item }}</td>
+                            <td class='item muted'>
+                                <a href="#ChargeModifyModal"
+                                   data-modal-url="{{ url("request_charge_modify", pk=charge.id) }}">
+                                    {{ charge.item }}
+                                </a>
+                            </td>
                         </tr>
                     {% endfor %}
                     </table>
@@ -264,4 +269,6 @@
     {{ modal_macros.render_dynamic_modal('SharingModal', _('Share Attached Files'), _('Save')) }}
 
     {{ modal_macros.render_dynamic_modal('AdminSettingsModal', _('Request Settings'), _('Save')) }}
+
+    {{ modal_macros.render_dynamic_modal('ChargeModifyModal', _('Modify Charge'), _('Save'), True) }}
 {% endblock %}
