@@ -617,9 +617,9 @@ class PipelineAPITest(APITestCase):
         self.assertIsInstance(results, list)
         # only 2 because user_user should not be able to see story 3
         self.assertEqual(len(results), 3)
-        self.assertEqual(results[0]['title'], 'list story 1')
+        self.assertEqual(results[2]['title'], 'list story 1')
         self.assertEqual(results[1]['title'], 'list story 2')
-        self.assertEqual(results[2]['title'], 'list story 3')
+        self.assertEqual(results[0]['title'], 'list story 3')
 
         # user_user should only be able to see 2 since he is not a project member, but an editor on 2 of them
         client = APIClient()
@@ -632,8 +632,8 @@ class PipelineAPITest(APITestCase):
         self.assertIsInstance(results, list)
         # only 2 because user_user should not be able to see story 3
         self.assertEqual(len(results), 2)
-        self.assertEqual(results[0]['title'], 'list story 1')
-        self.assertEqual(results[1]['title'], 'list story 2')
+        self.assertEqual(results[1]['title'], 'list story 1')
+        self.assertEqual(results[0]['title'], 'list story 2')
 
     # STORY MEMBER
     def test_get_story_details(self):
