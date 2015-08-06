@@ -617,9 +617,9 @@ class PipelineAPITest(APITestCase):
         self.assertIsInstance(results, list)
         # only 2 because user_user should not be able to see story 3
         self.assertEqual(len(results), 3)
-        self.assertEqual(results[2]['title'], 'list story 1')
+        self.assertEqual(results[0]['title'], 'list story 1')
         self.assertEqual(results[1]['title'], 'list story 2')
-        self.assertEqual(results[0]['title'], 'list story 3')
+        self.assertEqual(results[2]['title'], 'list story 3')
 
         # user_user should only be able to see 2 since he is not a project member, but an editor on 2 of them
         client = APIClient()
@@ -1623,13 +1623,17 @@ class PipelineAPITest(APITestCase):
         self.helper_create_dummy_users()
         self.helper_cleanup_projects()
 
-        project = self.helper_create_single_project('altering a story translation project',
-                                                    'altering a story translation project description',
-                                                    [self.staff_user],
-                                                    [self.staff_user])
-        story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation to be altered', project)
-        story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version with a translation to be altered')
-        story_translation = self.helper_create_single_story_translation_dummy_wrapper(story_version, 'el', 'my greek version')
+        project = self.helper_create_single_project(
+                    'altering a story translation project',
+                    'altering a story translation project description',
+                    [self.staff_user],
+                    [self.staff_user])
+        story = self.helper_create_single_story_dummy_wrapper(
+            'story with a version with a translation to be altered', project)
+        story_version = self.helper_create_single_story_version_dummy_wrapper(
+            story, 'version with a translation to be altered')
+        story_translation = self.helper_create_single_story_translation_dummy_wrapper(
+            story_version, 'el', 'my greek version')
 
         data = {'version': story_version.id,
                 'language_code': 'ru',
@@ -1640,7 +1644,8 @@ class PipelineAPITest(APITestCase):
                 'text': 'my great russian text'}
         client = APIClient()
         client.force_authenticate(user=self.staff_user)
-        alter_response = client.put(reverse('story_translation_detail', kwargs={'pk': story_translation.id}), data, format='json')
+        alter_response = client.put(reverse('story_translation_detail',
+                    kwargs={'pk': story_translation.id}), data, format='json')
 
         self.assertEqual(alter_response.status_code, status.HTTP_200_OK)
 
