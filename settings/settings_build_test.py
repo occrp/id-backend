@@ -15,7 +15,7 @@ ALLOWED_HOSTS = ["127.0.0.1:8000"]
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-DATABASE_ENGINE = 'django.db.backends.postgres'
+DATABASE_ENGINE = 'django.db.backends.postgresql_psycopg2'
 DATABASE_HOST = '127.0.0.1'
 DATABASE_PORT = '3306'
 DATABASE_NAME = 'test'
