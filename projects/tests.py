@@ -1538,7 +1538,7 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('creating a story translation project',
                                                     'creating a story translation project description',
-                                                    self.staff_user,
+                                                    [self.staff_user],
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation to be created', project)
         story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'story version to get a translation')
@@ -1575,7 +1575,7 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('listing a story translation project',
                                                     'listing a story translation project description',
-                                                    self.staff_user,
+                                                    [self.staff_user],
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story with a version with translations', project)
         story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version with a translation')
@@ -1602,7 +1602,7 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('getting a story translation project',
                                                     'getting a story translation project description',
-                                                    self.staff_user,
+                                                    [self.staff_user],
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation', project)
         story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version with a translation')
@@ -1625,7 +1625,7 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('altering a story translation project',
                                                     'altering a story translation project description',
-                                                    self.staff_user,
+                                                    [self.staff_user],
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation to be altered', project)
         story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version with a translation to be altered')
@@ -1663,7 +1663,7 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('deleting a story translation project',
                                                     'deleting a story translation project',
-                                                    self.staff_user,
+                                                    [self.staff_user],
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story with a version with a translation to be deleted', project)
         story_version = self.helper_create_single_story_version_dummy_wrapper(story, 'version with a translation to be deleted')
@@ -1693,7 +1693,7 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('creating a project plan project',
                                                     'creating a project plan project description',
-                                                    self.staff_user,
+                                                    [self.staff_user],
                                                     [self.staff_user])
         story_1 = self.helper_create_single_story_dummy_wrapper('story for a project plan 1', project)
         story_2 = self.helper_create_single_story_dummy_wrapper('story for a project plan 2', project)
@@ -1732,7 +1732,7 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('listing project plans project',
                                                     'listing a project plans project description',
-                                                    self.staff_user,
+                                                    [self.staff_user],
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story for a project plan list', project)
         project_plan = self.helper_create_single_project_plan_dummer_wrapper(project=project,
@@ -1763,7 +1763,7 @@ class PipelineAPITest(APITestCase):
 
         project = self.helper_create_single_project('getting a project plan project',
                                                     'getting a projeect plan project description',
-                                                    self.staff_user,
+                                                    [self.staff_user],
                                                     [self.staff_user])
         story = self.helper_create_single_story_dummy_wrapper('story for a project plan get', project)
         project_plan = self.helper_create_single_project_plan_dummer_wrapper(project=project,
