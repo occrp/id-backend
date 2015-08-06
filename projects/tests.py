@@ -805,7 +805,7 @@ class PipelineAPITest(APITestCase):
             editors=[self.staff_user, self.user_user],
             reporters=[self.volunteer_user]
         )
-        print story.published.isoformat()
+        # print story.published.isoformat()
         story_id = story.id
 
         story_reference = {'title': story.title,
