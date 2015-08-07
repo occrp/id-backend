@@ -26,6 +26,7 @@ class List(PodaciView):
     def get_context_data(self):
         # FIXME: What happens if a user has >1000 tags?
         num_displayed = 1000
+        print "Foo"
         tag_cnt, tags = self.fs.list_user_tags(self.request.user, root=None, _size=num_displayed)
         if self.request.GET.get("structure", "") == "select2":
             return {"pagination": {"more": False}, "results": [{"id": x.id, "text": x["name"]} for x in tags]}
@@ -128,4 +129,3 @@ class Overview(PodaciView):
             return {"ok": False, "error": "Must supply tag ID or file list."}
 
         return {"ok": True, "docsetid": docsetid}
-
