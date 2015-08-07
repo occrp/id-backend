@@ -34,6 +34,22 @@ class FileNotFound(Exception):
     def __str__(self):
         return "[File not found]"
 
+class ZipSetMixin:
+    def get_zip(self):
+        """Return a Zip file containing the files in this tag. Limited to 50MB archives."""
+        # To prevent insane loads, we're going to limit this to 50MB archives for now.
+        _50MB = 50 * 1024 * 1024
+        files = self.get_files()[1]
+        totalsize = sum([x.size for x in files])
+        if totalsize > _50MB:
+            return False
+
+        zstr = StringIO.StringIO()
+        with zipfile.ZipFile(zstr, "w", zipfile.ZIP_DEFLATED) as zf:
+            for f in files:
+                zf.write(f.resident_location(), f.filename)
+        zstr.seek(0)
+        return zstr
 
 def sha256sum(filename, blocksize=65536):
     f = None
@@ -50,7 +66,7 @@ def sha256sum(filename, blocksize=65536):
     return hash.hexdigest()
 
 
-class PodaciTag(models.Model):
+class PodaciTag(models.Model, ZipSetMixin):
     name                = models.CharField(max_length=100, unique=True)
     icon                = models.CharField(max_length=100)
 
@@ -73,22 +89,6 @@ class PodaciTag(models.Model):
         """Return a list of existing files"""
         # TODO: Limit this to only include files the user can see.
         return self.files.all()
-
-    def get_zip(self):
-        """Return a Zip file containing the files in this tag. Limited to 50MB archives."""
-        # To prevent insane loads, we're going to limit this to 50MB archives for now.
-        _50MB = 50 * 1024 * 1024
-        files = self.get_files()[1]
-        totalsize = sum([x.size for x in files])
-        if totalsize > _50MB:
-            return False
-
-        zstr = StringIO.StringIO()
-        with zipfile.ZipFile(zstr, "w", zipfile.ZIP_DEFLATED) as zf:
-            for f in files:
-                zf.write(f.resident_location(), f.filename)
-        zstr.seek(0)
-        return zstr
 
     def has_files(self):
         """Return the number of files associated with this tag."""
@@ -381,8 +381,8 @@ class PodaciFile(models.Model):
             return ''
 
 
-class PodaciCollection(models.Model):
-    
+class PodaciCollection(models.Model, ZipSetMixin):
+
     schema_version      = models.IntegerField(default=3)
     title               = models.CharField(max_length=300)
     owner               = models.ForeignKey(AUTH_USER_MODEL,
@@ -390,27 +390,24 @@ class PodaciCollection(models.Model):
     description         = models.TextField(blank=True)
     files               = models.ManyToManyField(PodaciFile,
                             related_name='collections')
-    
+
     def file_add(self, cfile):
         if cfile not in self.files.all():
             self.files.add(cfile)
 
     def file_remove(self, cfile):
         self.files.remove(cfile)
-    
+
     def tag_add(self, parenttag):
         """ tagging a collection simply tags all files within """
         for f in self.files.all():
             f.tag_add(parenttag)
-    
+
     def tag_remove(self, parenttag):
         """ same with removing a tag """
         for f in self.files.all():
             f.tag_remove(parenttag)
-            
-    def delete(self):
-        """ should be simple enough """
-        
+
     def to_json(self):
         fields = ("id", "title", "description", "owner")
         out = dict([(x, getattr(self, x)) for x in fields])
@@ -421,22 +418,6 @@ class PodaciCollection(models.Model):
         """Return a list of existing files"""
         # TODO: Limit this to only include files the user can see.
         return self.files.all()
-
-    def get_zip(self):
-        """Return a Zip file containing the files in this tag. Limited to 50MB archives."""
-        # To prevent insane loads, we're going to limit this to 50MB archives for now.
-        _50MB = 50 * 1024 * 1024
-        files = self.get_files()[1]
-        totalsize = sum([x.size for x in files])
-        if totalsize > _50MB:
-            return False
-
-        zstr = StringIO.StringIO()
-        with zipfile.ZipFile(zstr, "w", zipfile.ZIP_DEFLATED) as zf:
-            for f in files:
-                zf.write(f.resident_location(), f.filename)
-        zstr.seek(0)
-        return zstr
 
     def has_files(self):
         """Return the number of files associated with this tag."""
