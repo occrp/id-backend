@@ -1,13 +1,14 @@
 from django.conf.urls import patterns, include, url
 from podaci import views
 from django.views.generic import TemplateView
+from core.auth import perm
 
 urlpatterns = patterns('',
-    url(r'^$', TemplateView(template_name='podaci/tags/details.jinja')),
+    url(r'^$', perm('any', TemplateView, template_name="podaci/tags/details.jinja"), name="podaci_info_home"),
     url(r'^search/$', views.Search.as_view(), name='podaci_search'),
     url(r'^file/$', views.FileList.as_view(), name='podaci_file_list'),
     url(r'^file/(?P<id>[0-9]+)/$', views.FileDetail.as_view(), name='podaci_file_detail'),
-    url(r'^file/(?P<id>.+)/download/$', views.FileDownload.as_view(), name='podaci_file_download'),
+    # url(r'^file/(?P<id>.+)/download/$', views.FileDownload.as_view(), name='podaci_file_download'),
 
     url(r'^tag/$', views.TagList.as_view(), name='podaci_tag_list'),
     url(r'^tag/(?P<id>[0-9]+)/$', views.TagDetail.as_view(), name='podaci_tag_detail'),
