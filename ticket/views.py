@@ -146,7 +146,7 @@ class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
 
         if self.request.user.is_staff or self.request.user.is_superuser:
             uid = self.request.POST.get("user", self.request.user.id)
-            adduser = get_user_model().get(id=uid)
+            adduser = get_user_model().objects.get(id=uid)
             if adduser.is_user or adduser.is_staff or adduser.is_superuser:
                 ticket.responders.add(adduser)
             else:
