@@ -455,6 +455,31 @@ class PodaciFile(PodaciMetadata):
             return ''
 
 
+class PodaciCollection(models.Model):
+    
+    schema_version      = models.IntegerField(default=3)
+    title               = models.CharField(max_length=300)
+    owner               = models.ForeignKey(AUTH_USER_MODEL,
+                            related_name='created_files', blank=True, null=True)
+    description         = models.TextField(blank=True)
+    files               = models.ManyToManyField(PodaciFile,
+                            related_name='collections')
+    
+    def tag_add(self, parenttag):
+        """ tagging a collection simply tags all files within """
+        for f in self.files.all():
+            f.tag_add(parenttag)
+    
+    def tag_remove(self, parenttag):
+        """ same with removing a tag """
+        for f in self.files.all():
+            f.tag_remove(parenttag)
+            
+    def delete(self):
+        """ should be simple enough """
+    
+
+
 class PodaciTriples(models.Model):
     class Meta:
         abstract = True
