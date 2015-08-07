@@ -19,11 +19,13 @@
     <div class="span9">
         <input class="searchbox" type="search" placeholder="Search in files"/>
 
-        <div class="resultbox">asdfasdf</div>
+        <div class="resultbox">
+            {% include "podaci/partials/_podaci_file_list.jinja" %}            
+        </div>
 
         {% include "podaci/partials/_podaci_tag_view_type_selection.jinja" %}
 
-        {% include "podaci/partials/_podaci_file_list.jinja" %}
+
     </div>
 
 </div>
