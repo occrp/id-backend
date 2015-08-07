@@ -7,7 +7,8 @@ from rest_framework import generics
 from rest_framework import views
 
 class Search(views.APIView):
-    pass
+    def get(self, request):
+        pass
 
 class FileQuerySetMixin(object):
     def get_queryset(self):

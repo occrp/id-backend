@@ -135,7 +135,7 @@ class PodaciFile(models.Model):
 
     def log(self, message, user):
         """Add a log entry."""
-        cl = PodaciFileChangelog(ref=self, user=user, message=message)
+        cl = PodaciFileChangelog(ref=self, user=user, description=message)
         cl.save()
 
     def note_add(self, text, user):
@@ -344,7 +344,6 @@ class PodaciFile(models.Model):
                 os.unlink(self.resident_location())
             except OSError:
                 pass
-        super(PodaciMetadata, self).delete()
         return True
 
     def tag_add(self, tag):
@@ -438,4 +437,4 @@ class PodaciFileNote(models.Model):
     user                = models.ForeignKey(AUTH_USER_MODEL)
     timestamp           = models.DateTimeField(auto_now_add=True)
     ref                 = models.ForeignKey(PodaciFile, related_name="notes")
-    description         = models.TextField()
+    text                = models.TextField()
