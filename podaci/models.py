@@ -388,7 +388,7 @@ class PodaciCollection(models.Model):
     schema_version      = models.IntegerField(default=3)
     title               = models.CharField(max_length=300)
     owner               = models.ForeignKey(AUTH_USER_MODEL,
-                            related_name='created_files', blank=True, null=True)
+                            related_name='created_collections', blank=True, null=True)
     description         = models.TextField(blank=True)
     files               = models.ManyToManyField(PodaciFile,
                             related_name='collections')
@@ -405,7 +405,37 @@ class PodaciCollection(models.Model):
             
     def delete(self):
         """ should be simple enough """
-    
+        
+    def to_json(self):
+        fields = ("id", "title", "description", "owner")
+        out = dict([(x, getattr(self, x)) for x in fields])
+        out["files"] = [x.id for x in self.files.all()]
+        return out
+
+    def list_files(self):
+        """Return a list of existing files"""
+        # TODO: Limit this to only include files the user can see.
+        return self.files.all()
+
+    def get_zip(self):
+        """Return a Zip file containing the files in this tag. Limited to 50MB archives."""
+        # To prevent insane loads, we're going to limit this to 50MB archives for now.
+        _50MB = 50 * 1024 * 1024
+        files = self.get_files()[1]
+        totalsize = sum([x.size for x in files])
+        if totalsize > _50MB:
+            return False
+
+        zstr = StringIO.StringIO()
+        with zipfile.ZipFile(zstr, "w", zipfile.ZIP_DEFLATED) as zf:
+            for f in files:
+                zf.write(f.resident_location(), f.filename)
+        zstr.seek(0)
+        return zstr
+
+    def has_files(self):
+        """Return the number of files associated with this tag."""
+        return self.files.count() > 0
 
 
 
