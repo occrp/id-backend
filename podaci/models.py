@@ -50,18 +50,79 @@ def sha256sum(filename, blocksize=65536):
     return hash.hexdigest()
 
 
-class PodaciMetadata(models.Model):
+class PodaciTag(Models.model):
+    name                = models.CharField(max_length=100)
+    icon                = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        if not self.id: return "[Uninitialized tag object]"
+        return "[Tag %s] %s" % (self.id, self.name)
+
+    def __str__(self):
+        return self.__unicode__()
+
+    def to_json(self):
+        fields = ("id", "parents", "icon",
+                  "name", "date_added", "public_read", "staff_read")
+        out = dict([(x, getattr(self, x)) for x in fields])
+        out["tags"] = [x.id for x in self.tags.all()]
+        out["allowed_users_read"] = [x.id for x in self.allowed_users_read.all()]
+        out["allowed_users_write"] = [x.id for x in self.allowed_users_write.all()]
+        return out
+
+    def list_files(self):
+        """Return a list of existing files"""
+        # TODO: Limit this to only include files the user can see.
+        return self.files.all()
+
+    def get_zip(self):
+        """Return a Zip file containing the files in this tag. Limited to 50MB archives."""
+        # To prevent insane loads, we're going to limit this to 50MB archives for now.
+        _50MB = 50 * 1024 * 1024
+        files = self.get_files()[1]
+        totalsize = sum([x.size for x in files])
+        if totalsize > _50MB:
+            return False
+
+        zstr = StringIO.StringIO()
+        with zipfile.ZipFile(zstr, "w", zipfile.ZIP_DEFLATED) as zf:
+            for f in files:
+                zf.write(f.resident_location(), f.filename)
+        zstr.seek(0)
+        return zstr
+
+    def has_files(self):
+        """Return the number of files associated with this tag."""
+        return self.files.count() > 0
+
+
+
+class PodaciFile(Models.model):
     name                = models.CharField(max_length=200)
     date_added          = models.DateTimeField(auto_now_add=True)
     public_read         = models.BooleanField(default=False)
     staff_read          = models.BooleanField(default=False)
+
     allowed_users_read  = models.ManyToManyField(AUTH_USER_MODEL,
         related_name='%(class)s_files_perm_read')
     allowed_users_write = models.ManyToManyField(AUTH_USER_MODEL,
         related_name='%(class)s_files_perm_write')
 
-    class Meta:
-        abstract = True
+    schema_version      = models.IntegerField(default=3)
+    title               = models.CharField(max_length=300)
+    created_by          = models.ForeignKey(AUTH_USER_MODEL,
+                            related_name='created_files', blank=True, null=True)
+    is_resident         = models.BooleanField(default=True)
+    filename            = models.CharField(max_length=256, blank=True)
+    url                 = models.URLField(blank=True)
+    sha256              = models.CharField(max_length=65)
+    size                = models.IntegerField(default=0)
+    tags                = models.ManyToManyField(PodaciTag,
+                            related_name='files')
+    mimetype            = models.CharField(max_length=65)
+    description         = models.TextField(blank=True)
+    is_indexed          = models.BooleanField(default=False)
+    is_entity_extracted = models.BooleanField(default=False)
 
     def __getitem__(self, key):
         return getattr(self, key)
@@ -74,44 +135,23 @@ class PodaciMetadata(models.Model):
                 value = None
             yield (field_name, value)
 
-    #def __init__(self, *args, **kwargs):
-    #    user = kwargs.pop('user', None)
-    #    super(models.Model, self).__init__(*args, **kwargs)
-    #    #if not self.has_permission(user):
-    #    #    raise AuthenticationError("User %s has no access to tag %s"
-    #    #        % (user, self.pk))
-
     def log(self, message, user):
         """Add a log entry."""
-        if self.CHANGELOG_CLASS:
-            # TODO: Make this smarter.
-            cl = globals()[self.CHANGELOG_CLASS]()
-            cl.ref = self
-            cl.user = user
-            cl.message = message
-            cl.save()
+        cl = PodaciFileChangelog(ref=self, user=user, message=message)
+        cl.save()
 
     def note_add(self, text, user):
         """Add a log entry."""
-        if self.NOTE_CLASS:
-            # TODO: Make this smarter.
-            cl = globals()[self.NOTE_CLASS]()
-            cl.ref = self
-            cl.user = user
-            cl.text = text
-            cl.save()
-
+        cl = PodaciFileNote(ref=self, user=user, text=text)
+        cl.save()
         self.log("Added note", user)
 
     def note_list(self):
-        if self.NOTE_CLASS:
-            return globals()[self.NOTE_CLASS].objects.filter(ref=self)
-        return []
+        return PodaciFileNote.objects.filter(ref=self)
 
     def note_delete(self, nid):
-        if self.NOTE_CLASS:
-            note = globals()[self.NOTE_CLASS].objects.get(id=nid)
-            note.delete()
+        note = PodaciFileNote.objects.get(id=nid)
+        note.delete()
 
     def details_string(self):
         """
@@ -124,8 +164,6 @@ class PodaciMetadata(models.Model):
             self.allowed_users_read.count(),
             self.allowed_users_write.count(),
             self.notes.count())
-        if self.DOCTYPE == "tag":
-            s += " %4dF" % (self.list_files().count())
         return s
 
     def to_json(self):
@@ -188,11 +226,6 @@ class PodaciMetadata(models.Model):
         if self.public_read: return True
         if self.staff_read and user.is_staff: return True
         if user in self.allowed_users_read.all(): return True
-        if self.DOCTYPE == "file":
-            for t in self.tags.all():
-                tag = Tag.objects.get(id=t)
-                if tag.has_permission(user):
-                    return True
         return False
 
     def has_write_permission(self, user):
@@ -202,111 +235,7 @@ class PodaciMetadata(models.Model):
         if user.is_superuser: return True
         if self.staff_read and user.is_staff: return True
         if user in self.allowed_users_write.all(): return True
-        if self.DOCTYPE == "file":
-            for t in self.tags.all():
-                if t.has_write_permission(user):
-                    return True
         return False
-
-
-class PodaciTag(PodaciMetadata):
-    parents             = models.ManyToManyField('PodaciTag',
-                            related_name='children')
-    icon                = models.CharField(max_length=100)
-
-    DOCTYPE             = 'tag'
-    CHANGELOG_CLASS     = 'PodaciTagChangelog'
-    NOTE_CLASS          = None
-
-    def __unicode__(self):
-        if not self.id: return "[Uninitialized tag object]"
-        return "[Tag %s] %s" % (self.id, self.name)
-
-    def __str__(self):
-        return self.__unicode__()
-
-    def to_json(self):
-        fields = ("id", "parents", "icon",
-                  "name", "date_added", "public_read", "staff_read")
-        out = dict([(x, getattr(self, x)) for x in fields])
-        out["tags"] = [x.id for x in self.tags.all()]
-        out["allowed_users_read"] = [x.id for x in self.allowed_users_read.all()]
-        out["allowed_users_write"] = [x.id for x in self.allowed_users_write.all()]
-        return out
-
-    def parent_add(self, parenttag):
-        """Add a parent tag."""
-        if parenttag not in self.parents.all():
-            self.parents.add(parenttag)
-
-    def parent_remove(self, parenttag):
-        """Disown a parent tag."""
-        self.parents.remove(parenttag)
-
-    def child_add(self, childtag):
-        """Add a child tag."""
-        if self not in childtag.parents.all():
-            childtag.parents.add(self)
-
-    def child_remove(self, childtag):
-        """Disown a child tag."""
-        childtag.parents.remove(self)
-
-    def list_files(self):
-        """Return a list of existing files"""
-        # TODO: Limit this to only include files the user can see.
-        return self.files.all()
-
-    def list_children(self):
-        """Get a list of all children of this tag."""
-        raise NotImplementedError()
-
-    def list_parents(self):
-        """Get a list of all parents of this tag."""
-        raise NotImplementedError()
-
-    def get_zip(self):
-        """Return a Zip file containing the files in this tag. Limited to 50MB archives."""
-        # To prevent insane loads, we're going to limit this to 50MB archives for now.
-        _50MB = 50 * 1024 * 1024
-        files = self.get_files()[1]
-        totalsize = sum([x.size for x in files])
-        if totalsize > _50MB:
-            return False
-
-        zstr = StringIO.StringIO()
-        with zipfile.ZipFile(zstr, "w", zipfile.ZIP_DEFLATED) as zf:
-            for f in files:
-                zf.write(f.resident_location(), f.filename)
-        zstr.seek(0)
-        return zstr
-
-    def has_files(self):
-        """Return the number of files associated with this tag."""
-        return self.files.count() > 0
-
-
-
-class PodaciFile(PodaciMetadata):
-    schema_version      = models.IntegerField(default=3)
-    title               = models.CharField(max_length=300)
-    created_by          = models.ForeignKey(AUTH_USER_MODEL,
-                            related_name='created_files', blank=True, null=True)
-    is_resident         = models.BooleanField(default=True)
-    filename            = models.CharField(max_length=256, blank=True)
-    url                 = models.URLField(blank=True)
-    sha256              = models.CharField(max_length=65)
-    size                = models.IntegerField(default=0)
-    tags                = models.ManyToManyField(PodaciTag,
-                            related_name='files')
-    mimetype            = models.CharField(max_length=65)
-    description         = models.TextField(blank=True)
-    is_indexed          = models.BooleanField(default=False)
-    is_entity_extracted = models.BooleanField(default=False)
-
-    DOCTYPE             = 'file'
-    CHANGELOG_CLASS     = 'PodaciFileChangelog'
-    NOTE_CLASS          = 'PodaciFileNote'
 
     def to_json(self):
         fields = ("id", "schema_version", "title", "created_by", "is_resident",
@@ -420,13 +349,12 @@ class PodaciFile(PodaciMetadata):
         super(PodaciMetadata, self).delete()
         return True
 
-    def tag_add(self, parenttag):
-        if parenttag not in self.tags.all():
-            self.tags.add(parenttag)
+    def tag_add(self, tag):
+        if tag not in self.tags.all():
+            self.tags.add(tag)
 
-    def tag_remove(self, parenttag):
-        self.tags.remove(parenttag)
-
+    def tag_remove(self, tag):
+        self.tags.remove(tag)
 
     def get_thumbnail(self, width=680, height=460):
         """Return a thumbnail of a file."""
@@ -455,29 +383,16 @@ class PodaciFile(PodaciMetadata):
             return ''
 
 
-class PodaciTriples(models.Model):
-    class Meta:
-        abstract = True
-
+class PodaciFileTriples(models.Model):
     key                 = models.CharField(max_length=200)
     value               = models.TextField()
-
-class PodaciFileTriples(PodaciTriples):
     ref                 = models.ForeignKey(PodaciFile, related_name="metadata")
 
-class PodaciChangelog(models.Model):
-    class Meta:
-        abstract = True
-
+class PodaciFileChangelog(models.Model):
+    ref                 = models.ForeignKey(PodaciFile, related_name="logs")
     user                = models.ForeignKey(AUTH_USER_MODEL)
     timestamp           = models.DateTimeField(auto_now_add=True)
     description         = models.CharField(max_length=200)
-
-class PodaciTagChangelog(PodaciChangelog):
-    ref                 = models.ForeignKey(PodaciTag, related_name="logs")
-
-class PodaciFileChangelog(PodaciChangelog):
-    ref                 = models.ForeignKey(PodaciFile, related_name="logs")
 
 class PodaciFileNote(models.Model):
     user                = models.ForeignKey(AUTH_USER_MODEL)
