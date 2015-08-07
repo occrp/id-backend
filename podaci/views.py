@@ -1,23 +1,29 @@
-from podaci.models import PodaciFile, PodaciTag
-from podaci.serializers import FileSerializer, TagSerializer
+from podaci.models import PodaciFile, PodaciTag, PodaciCollection
+from podaci.serializers import FileSerializer, TagSerializer, CollectionSerializer
 
 from rest_framework import mixins
 from rest_framework import generics
+from rest_framework import views
 
-class Search(generics.ListCreateAPIView):
-	pass
+class Search(views.APIView):
+    pass
 
-class File(generics.ListCreateAPIView):
-	pass
+class FileList(generics.ListCreateAPIView):
+    serializer_class = FileSerializer
+    # permission_classes = (IsAuthenticated, CanAlterDeleteProject,)
+    pass
 
-class Tag(generics.ListCreateAPIView):
-	pass
+class TagList(generics.ListCreateAPIView):
+    serializer_class = TagSerializer
+    # permission_classes = (IsAuthenticated, CanAlterDeleteProject,)
+    pass
 
-class Collection(generics.ListCreateAPIView):
-	pass
+class CollectionList(generics.ListCreateAPIView):
+    serializer_class = CollectionSerializer
+    # permission_classes = (IsAuthenticated, CanAlterDeleteProject,)
 
-class Note(generics.ListCreateAPIView):
-	pass
+class NoteList(generics.ListCreateAPIView):
+    pass
 
-class MetaData(generics.ListCreateAPIView):
-	pass
+class MetaDataList(generics.ListCreateAPIView):
+    pass
