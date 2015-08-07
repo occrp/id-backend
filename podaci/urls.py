@@ -1,8 +1,9 @@
 from django.conf.urls import patterns, include, url
 from podaci import views
+from django.views.generic import TemplateView
 
 urlpatterns = patterns('',
-    url(r'^$', view.api_root),
+    url(r'^$', TemplateView(template_name='podaci/tags/details.jinja')),
     url(r'^search/$', views.Search.as_view(), name='podaci_search'),
     url(r'^file/$', views.FileList.as_view(), name='podaci_file_list'),
     url(r'^file/(?P<id>[0-9]+)/$', views.FileDetail.as_view(), name='podaci_file_detail'),
