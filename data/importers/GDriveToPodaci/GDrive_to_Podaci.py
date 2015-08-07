@@ -4,7 +4,7 @@
 #
 # that's kind of needed too:
 # pip install pycrypto
-# pip install --upgrade google-api-python-client 
+# pip install --upgrade google-api-python-client
 
 import sys
 import os
@@ -30,8 +30,8 @@ def file_to_str(filename):
     path = os.path.join(os.path.dirname(__file__), filename)
     with open(path, 'r') as f:
         return f.read()
-      
-      
+
+
 # getting the pickled data from a pickle file
 def get_pickled_data(picklepath):
     with open(picklepath, 'rb') as picklefile:
@@ -64,17 +64,17 @@ def create_system_service():
 
 # get contents of a folder
 def list_folder_contents(service, folder_id):
-    
+
     print 'Listing folder: %s' % folder_id
     file_list = []
-    
+
     page_token = None
     while True:
         try:
             param = {}
             if page_token:
                 param['pageToken'] = page_token
-            
+
             # folder GET
             print '+-- running service.children()...'
             children = service.children().list(folderId=folder_id, **param).execute()
@@ -84,17 +84,17 @@ def list_folder_contents(service, folder_id):
             for child in children.get('items', []):
                 print '     +-- file id: %s' % (child['id'])
             file_list.extend(children.get('items', []))
-                
+
             # paging
             page_token = children.get('nextPageToken')
             if not page_token:
                 break
-        
+
         # whoops!
         except errors.HttpError, error:
             print 'An error occurred: %s' % error
             break
-    
+
     # return the file lits
     return file_list
 
@@ -150,7 +150,7 @@ def handle_gdrive_file(service, f):
                 return False
             else:
                 print '     +-- checksums do not match, downloading...'
-        
+
     # download the bugger
     with open(f['localPath'], 'wb') as dfile:
         download_file(service, f['id'], dfile)
@@ -159,71 +159,74 @@ def handle_gdrive_file(service, f):
 
 def podacify_file(ticket_id, f):
     print '+-- podacifying...'
-    
+
     # assuming:
     # - fs is a global FileSystem instance
     # - metatag is a global Tag instance, being the Tickets meta tag
-    
+
     ### TICKET
     # first, we need the ticket
     ticket = Ticket.objects.get(id=ticket_id)
     print '     +-- ticket : %s' % ticket_id
     print '     +-- file   : %s' % f['localPath']
-    
+
     # user for this file
-    fs.user = ticket.requester
-    
+    # fs.user = ticket.requester
+
     ### TAG
     tag = ticket.tag_id
     if tag:
         try:
             # get the tag
-            tag = fs.get_tag(tag)
+            tag = Tag.objects.get(id=tag)
         except:
             # create the tag
-            tag = fs.create_tag('Ticket %d' % ticket.id)
+            tag = Tag(name='Ticket %d' % ticket.id)
+            tag.save()
             ticket.tag_id = tag.id
             ticket.save()
     else:
         # create the tag
-        tag = fs.create_tag('Ticket %d' % ticket.id)
+        tag = Tag(name='Ticket %d' % ticket.id)
+        tag.save()
         ticket.tag_id = tag.id
         ticket.save()
-    
+
     # set permissions, etc
     if ticket.is_public:
         tag.make_public() # the tag and related files have to have the same visibility as the ticket
     tag.allow_staff()     # staff has to have r/w access to all imported tickets, and related files
-    
+
     # add requester (ro)
     tag.add_user(ticket.requester, write=False)
-    
+
     # add volunteers (rw)
     for v in ticket.volunteers.all():
         tag.add_user(v, write=True)
-    
+
     # add the metatag
     tag.parent_add(metatag)
-    
+
     ### FILE
     # create the file
-    pfile = fs.create_file(f['localPath'])
-    
+    pfile = File()
+    pfile.create_from_path(f['localPath'])
+
     # put the id into the imported_files list, to be pickled and saved to a file later
     # legacy Google ID of the file itself, needed for later downloading of files that were not in any ticket-related folder
     imported_files[f['id']] =  {
       'folder'      : f['legacyGoogleFolderId'], # legacy Google Folder ID the file was in
       'md5Checksum' : f['md5Checksum']
     }
-    
+
     # add the tags
-    pfile.add_tag(tag)
-    
+    pfile.tag_add(tag)
+
 
 
 def handle_folder_id(service, ticket_id, folder_id):
     file_ids_list = list_folder_contents(service, folder_id)
-    
+
     # get file metadata
     file_info_list = []
     for f in file_ids_list:
@@ -236,7 +239,7 @@ def handle_folder_id(service, ticket_id, folder_id):
             file_info_list.append(f)
         else:
             print '     +-- %s: file already imported, md5Checksum matches; not downloading' % f['id']
-        
+
     # whoohoo, we have a file list!
     # interesting bits are:
     # - mimeType
@@ -244,40 +247,40 @@ def handle_folder_id(service, ticket_id, folder_id):
     # - title
     # - originalFilename
     # - md5Checksum
-    
+
     # make sure the output directory exists and is a directory
     # name: /tmp/id_gdrive_downloads/<folder-id>/
     dfolder = os.path.join('/tmp/id_gdrive_downloads/', folder_id)
     if not os.path.exists(dfolder):
         os.makedirs(dfolder)
-    
+
     # let's download some files!
     print 'Retrieving files...'
     for f in file_info_list:
-        
+
         print '+-- file: %s (md5: %s)' % (f['originalFilename'], f['md5Checksum'])
         # filename
         f['localPath'] = os.path.join(dfolder, f['originalFilename'])
         f['legacyGoogleFolderId'] = folder_id
-        
+
         # download/checksum the file
         handle_gdrive_file(service, f)
-        
+
         # handle the podaci side of things
         podacify_file(ticket_id, f)
-        
+
         # remove the file?
         if not keep_downloads:
             os.remove(f['localPath'])
-            
+
     # remove the folder?
     if not keep_downloads:
         os.rmdir(dfolder)
-        
+
 
 
 if __name__ == "__main__":
-    
+
     keep_downloads = False
     try:
         # requried args
@@ -295,7 +298,7 @@ if __name__ == "__main__":
         print("\nRun via:\n\t%s </path/to/legacy-investigative-dashboard> <drive-folder-ids-file-path> [--keep]\n" % sys.argv[0])
         print("Temporary files are being saved in:\n\t/tmp/id_gdrive_downloads/<folder-id>/<individual-filenames>\n\nOptional --keep parameter makes the script not delete the downloaded temporary files after Podaci import.\nFiles on GDrive are not automatically deleted under any circumstances.\n")
         sys.exit()
-    
+
     # imported files ids pickled dump file
     imported_files_file = os.path.join(
         os.path.dirname(
@@ -303,16 +306,16 @@ if __name__ == "__main__":
             drivefolderids_path
           )
         ), 'GDrive.importedfiles')
-    
-    
+
+
     # the "d" is silent
     print "Setting up django..."
     django.setup()
-    
+
     # make sure we have the config available
     sys.path.append(os.path.abspath("%s/app/config/" % idpath))
     from production import config
-    
+
     # pickled drive folder ids are required
     print "Loading pickled drive folder ids from %s..." % drivefolderids_path
     try:
@@ -321,7 +324,7 @@ if __name__ == "__main__":
     except e:
         print '+-- error loading pickled drive folder ids: %s' % e
         sys.exit(1)
-    
+
     # files already imported
     print "Loading imported files data..."
     try:
@@ -330,22 +333,16 @@ if __name__ == "__main__":
         print '+-- loaded %d imported file data from %s' % (len(imported_files), imported_files_file)
     except:
         print "+-- warning, no imported file data loaded, tried from %s." % imported_files_file
-    
-    
-    # user
-    u = Profile.objects.get(email='admin@example.com') # FIXME
+
+
     # podaci tickets meta tag
-    try:
-        metatag = Tag.get_tag('Tickets_Meta_Tag')
-    except:
-        metatag = Tag(fs)
-        metatag.id = 'Tickets_Meta_Tag'
-        metatag.create('Tickets Meta Tag')
-    
+    metatag, created = Tag.objects.get_or_create(name='Tickets_Meta_Tag')
+    metatag.allow_staff()
+
     # create the damn gdrive service
     service = create_system_service()
-    
-    
+
+
     # handling the keyboard interrupt gracefully
     try:
         # get folder contents
@@ -358,10 +355,10 @@ if __name__ == "__main__":
             os.rmdir('/tmp/id_gdrive_downloads/')
     except KeyboardInterrupt:
         print 'KeyboardInterrupt caught, exitin gracefully'
-    except Exception as e:
-       print 'Exception caught: %s (%s); exiting gracefully' % (e, type(e))
-      
-    
+    #except Exception as e:
+    #   print 'Exception caught: %s (%s); exiting gracefully' % (e, type(e))
+
+
     # have we actually saved any files?
     if imported_files:
         try:
