@@ -32,10 +32,9 @@ from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, Tick
 from ticket import forms
 from ticket import constants
 
-from podaci import PodaciMixin
 from podaci.models import PodaciTag, PodaciFile
 
-class CompanyTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
+class CompanyTicketUpdate(TicketUpdateMixin, UpdateView):
     model = CompanyTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.CompanyTicketForm
@@ -49,7 +48,7 @@ class CompanyTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
     def __init__(self, *args, **kwargs):
         super(CompanyTicketUpdate, self).__init__(*args, **kwargs)
 
-class OtherTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
+class OtherTicketUpdate(TicketUpdateMixin, UpdateView):
     model = OtherTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.OtherTicketForm
@@ -63,7 +62,7 @@ class OtherTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
     def __init__(self, *args, **kwargs):
         super(OtherTicketUpdate, self).__init__(*args, **kwargs)
 
-class PersonTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
+class PersonTicketUpdate(TicketUpdateMixin, UpdateView):
     model = PersonTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.PersonTicketForm
@@ -132,7 +131,7 @@ class TicketActionClose(TicketActionBaseHandler):
         return super(TicketActionClose, self).perform_valid_action(form)
 
 
-class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
+class TicketActionJoin(TicketActionBaseHandler):
     form_class = forms.TicketEmptyForm
 
     def perform_invalid_action(self, form):
@@ -167,7 +166,7 @@ class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
         else:
             self.perform_invalid_action(form)
 
-class TicketActionLeave(TicketActionBaseHandler, PodaciMixin):
+class TicketActionLeave(TicketActionBaseHandler):
     form_class = forms.TicketEmptyForm
 
     def perform_invalid_action(self, form):
@@ -281,7 +280,7 @@ class TicketModifyCharge(TicketUpdateMixin, UpdateView):
                                    'Charge Modified',
                                    "$%.2f" % float(form.cleaned_data['cost']) + " - " + form.cleaned_data['item'])
 
-class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
+class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
     model = Ticket
     template_name = "modals/form_basic.jinja"
     form_class = forms.TicketAdminSettingsForm
@@ -401,7 +400,7 @@ class TicketUpdateRemoveHandler(TicketActionBaseHandler):
         super(TicketUpdateRemoveHandler, self).__init__(*args, **kwargs)
 
 
-class TicketDetail(TemplateView, PodaciMixin):
+class TicketDetail(TemplateView):
     template_name = "tickets/request_details.jinja"
     """
     View for the requester of a ticket to view what is currently going on,
@@ -492,7 +491,7 @@ class TicketDetail(TemplateView, PodaciMixin):
         comment.save()
         return HttpResponseRedirect(reverse('ticket_details', kwargs={ "ticket_id":self.ticket.id}))
 
-class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView, PodaciMixin):
+class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
     template_name = "tickets/request_list.jinja"
     page_name = ""
     ticket_list_name = ""
@@ -687,7 +686,7 @@ class TicketListUpcomingDeadline(TicketList):
             "-created")
 
 
-class TicketRequest(TemplateView, PodaciMixin):
+class TicketRequest(TemplateView):
     template_name = "tickets/request.jinja"
 
     # runs when django forms clean the data but before django saves the object
