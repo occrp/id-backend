@@ -34,7 +34,7 @@ class FileNotFound(Exception):
     def __str__(self):
         return "[File not found]"
 
-class ZipSetMixin:
+class ZipSetMixin(object):
     def get_zip(self):
         """Return a Zip file containing the files in this tag. Limited to 50MB archives."""
         # To prevent insane loads, we're going to limit this to 50MB archives for now.
@@ -66,7 +66,7 @@ def sha256sum(filename, blocksize=65536):
     return hash.hexdigest()
 
 
-class PodaciTag(models.Model, ZipSetMixin):
+class PodaciTag(ZipSetMixin, models.Model):
     name                = models.CharField(max_length=100, unique=True)
     icon                = models.CharField(max_length=100)
 
@@ -380,7 +380,7 @@ class PodaciFile(models.Model):
         else:
             return ''
 
-class PodaciCollection(models.Model, ZipSetMixin):
+class PodaciCollection(ZipSetMixin, models.Model):
 
     name                = models.CharField(max_length=300)
     owner               = models.ForeignKey(AUTH_USER_MODEL,
