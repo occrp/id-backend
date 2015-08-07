@@ -4,28 +4,25 @@
 <div class="row">
     <div class="span3 collectionfilters">
         <ul>
-            <li><a href=""><i class="fa fa-chevron-right"></i> Everything</a></li>
-            <li class="selected"><a href=""><i class="fa fa-chevron-down"></i> My collections</a>
-                <ul>
-                    <li><a href=""><i class="fa fa-folder"></i> Russia</a></li>
-                    <li><a href=""><i class="fa fa-folder"></i> Ukraine</a></li>
-                    <li class="selected"><a href=""><i class="fa fa-folder"></i> Magnitsky</a></li>
+            <li><a data-collection="all"><i class="fa fa-chevron-right"></i> Everything</a></li>
+            <li><a data-collection="mine"><i class="fa fa-chevron-right"></i> My collections</a>
+                <ul id="mycollections">
+
                 </ul>
             </li>
-            <li><a href=""><i class="fa fa-chevron-right"></i> Shared with me</a></li>
+            <li><a data-collection="shared"><i class="fa fa-chevron-right"></i> Shared with me</a>
+                <ul id="sharedcollections">
+                </ul>
+            </li>
         </ul>
     </div>
 
     <div class="span9">
-        <input class="searchbox" type="search" placeholder="Search in files"/>
+        <input id="searchbox" class="searchbox" type="search" placeholder="Search in files"/>
 
-        <div class="resultbox">
-            {% include "podaci/partials/_podaci_file_list.jinja" %}            
+        <div class="resultbox" id="resultbox">
+
         </div>
-
-        {% include "podaci/partials/_podaci_tag_view_type_selection.jinja" %}
-
-
     </div>
 
 </div>

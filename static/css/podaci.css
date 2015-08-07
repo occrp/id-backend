@@ -115,3 +115,67 @@ li > a.FIXME {
 .note_text {
 	font-size: 120%;
 }
+
+.collectionfilters, .searchbox {
+	box-shadow: 5px 5px 20px;
+}
+
+.collectionfilters ul {
+	padding: 0px;
+	margin: 0px;
+}
+
+.collectionfilters ul li {
+	display: block;
+	font-size: 120%;
+}
+
+.collectionfilters ul li a {
+	padding: 15px;
+	display: block;
+}
+
+.collectionfilters ul li a:hover {
+	text-decoration: none;
+	background: #eee;
+}
+
+.collectionfilters ul li a.selected {
+	border-right: 12px solid #f00;
+	background-color: #ffe9e9;
+}
+
+.collectionfilters ul li ul li {
+	font-size: 90%;
+}
+
+.collectionfilters ul li ul li a {
+	padding: 10px;
+	padding-left: 25px;
+}
+
+input.searchbox {
+	box-shadow: 5px 5px 20px;
+	display: block;
+	margin-bottom: 40px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;
+	max-width: 500px;
+	width: 100%;
+	font-size: 120%;
+	padding: 16px;
+	border-radius: 15px;
+	overflow: hidden;
+	border: none;
+}
+
+input.searchbox:focus {
+	box-shadow: 5px 5px 20px;
+}
+
+.resultbox {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 800px;
+}
