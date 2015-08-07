@@ -51,7 +51,7 @@ def sha256sum(filename, blocksize=65536):
 
 
 class PodaciTag(models.Model):
-    name                = models.CharField(max_length=100)
+    name                = models.CharField(max_length=100, unique=True)
     icon                = models.CharField(max_length=100)
 
     def __unicode__(self):
@@ -62,12 +62,11 @@ class PodaciTag(models.Model):
         return self.__unicode__()
 
     def to_json(self):
-        fields = ("id", "parents", "icon",
-                  "name", "date_added", "public_read", "staff_read")
+        fields = ("id", "name", "icon")
         out = dict([(x, getattr(self, x)) for x in fields])
-        out["tags"] = [x.id for x in self.tags.all()]
-        out["allowed_users_read"] = [x.id for x in self.allowed_users_read.all()]
-        out["allowed_users_write"] = [x.id for x in self.allowed_users_write.all()]
+        files = self.list_files()
+        out["file_count"] = files.count()
+        out["files"] = [x.id for x in files]
         return out
 
     def list_files(self):
@@ -94,7 +93,6 @@ class PodaciTag(models.Model):
     def has_files(self):
         """Return the number of files associated with this tag."""
         return self.files.count() > 0
-
 
 
 class PodaciFile(models.Model):

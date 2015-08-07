@@ -41,8 +41,7 @@ class PodaciAPITest(TestCase):
     def test_list_tags(self):
         tags = PodaciTag.objects.all()
         for tag in tags:
-            if tag.has_permission(self.fs.user):
-                tag.list_files()
+            tag.list_files()
 
     def test_find_nonexistant_file(self):
         ## Check for non-existent file by hash:
@@ -168,28 +167,6 @@ class PodaciFileTest(UserTestCase):
         f.delete()
 
 
-class PodaciTagTest(TestCase):
-    def setUp(self):
-        if not os.path.isdir(PODACI_FS_ROOT):
-            os.mkdir(PODACI_FS_ROOT)
-
-    def tearDown(self):
-        shutil.rmtree(PODACI_FS_ROOT)
-
-    def test_has_files(self):
-        f = PodaciFile()
-        f.create_from_path("requirements.txt")
-        t = PodaciTag(name="thistest")
-        t.save()
-        self.assertEqual(t.has_files(), 0)
-        f.tags.add(t)
-        self.assertEqual(t.has_files(), 1)
-        f.tags.remove(t)
-        self.assertEqual(t.has_files(), 0)
-        t.delete()
-        f.delete()
-
-
 class PodaciWebInterfaceTest(UserTestCase):
     def req_as_staff(self, urlname, get=False, args={}, dset={}):
         client = TestClient()
@@ -221,7 +198,7 @@ class PodaciWebInterfaceTest(UserTestCase):
 
     def test_podaci_files_create_success(self):
         with open("requirements.txt") as fp:
-            res = self.req_as_staff('podaci_files_create', 
+            res = self.req_as_staff('podaci_files_create',
                 dset={"files[]": [fp]})
         data = json.loads(res.content)
         self.assertEqual(data["filename"], "requirements.txt")
@@ -249,7 +226,7 @@ class PodaciWebInterfaceTest(UserTestCase):
     def test_podaci_files_delete(self):
         f = PodaciFile()
         f.create_from_path("requirements.txt")
-        res = self.req_as_staff('podaci_files_delete', 
+        res = self.req_as_staff('podaci_files_delete',
                                 args={"id": f.id})
         data = json.loads(res.content)
         self.assertEqual(data["deleted"], True)
@@ -264,7 +241,7 @@ class PodaciWebInterfaceTest(UserTestCase):
     def test_podaci_files_details(self):
         f = PodaciFile()
         f.create_from_path("requirements.txt")
-        res = self.req_as_staff('podaci_files_details', 
+        res = self.req_as_staff('podaci_files_details',
                                 args={"id": f.id})
         data = json.loads(res.content)
         self.assertIn("file", data)
@@ -293,4 +270,3 @@ class PodaciWebInterfaceTest(UserTestCase):
 
     def test_podaci_tags_details(self):
         pass # res = self.req_as_staff('podaci_tags_details')
-
