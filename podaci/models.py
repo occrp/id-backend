@@ -385,8 +385,7 @@ class PodaciFile(Models.model):
 
 class PodaciCollection(models.Model):
     
-    schema_version      = models.IntegerField(default=3)
-    title               = models.CharField(max_length=300)
+    name                = models.CharField(max_length=300)
     owner               = models.ForeignKey(AUTH_USER_MODEL,
                             related_name='created_collections', blank=True, null=True)
     description         = models.TextField(blank=True)
@@ -414,7 +413,7 @@ class PodaciCollection(models.Model):
         """ should be simple enough """
         
     def to_json(self):
-        fields = ("id", "title", "description", "owner")
+        fields = ("id", "name", "description", "owner")
         out = dict([(x, getattr(self, x)) for x in fields])
         out["files"] = [x.id for x in self.files.all()]
         return out
