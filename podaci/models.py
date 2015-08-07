@@ -34,47 +34,7 @@ class FileNotFound(Exception):
     def __str__(self):
         return "[File not found]"
 
-
-def sha256sum(filename, blocksize=65536):
-    f = None
-    if type(filename) in [str, unicode]:
-        f = open(filename, "r+b")
-    else:
-        f = filename
-
-    hash = hashlib.sha256()
-    for block in iter(lambda: f.read(blocksize), ""):
-        hash.update(block)
-
-    f.seek(0)
-    return hash.hexdigest()
-
-
-class PodaciTag(Models.model):
-    name                = models.CharField(max_length=100)
-    icon                = models.CharField(max_length=100)
-
-    def __unicode__(self):
-        if not self.id: return "[Uninitialized tag object]"
-        return "[Tag %s] %s" % (self.id, self.name)
-
-    def __str__(self):
-        return self.__unicode__()
-
-    def to_json(self):
-        fields = ("id", "parents", "icon",
-                  "name", "date_added", "public_read", "staff_read")
-        out = dict([(x, getattr(self, x)) for x in fields])
-        out["tags"] = [x.id for x in self.tags.all()]
-        out["allowed_users_read"] = [x.id for x in self.allowed_users_read.all()]
-        out["allowed_users_write"] = [x.id for x in self.allowed_users_write.all()]
-        return out
-
-    def list_files(self):
-        """Return a list of existing files"""
-        # TODO: Limit this to only include files the user can see.
-        return self.files.all()
-
+class ZipSetMixin:
     def get_zip(self):
         """Return a Zip file containing the files in this tag. Limited to 50MB archives."""
         # To prevent insane loads, we're going to limit this to 50MB archives for now.
@@ -91,13 +51,51 @@ class PodaciTag(Models.model):
         zstr.seek(0)
         return zstr
 
+def sha256sum(filename, blocksize=65536):
+    f = None
+    if type(filename) in [str, unicode]:
+        f = open(filename, "r+b")
+    else:
+        f = filename
+
+    hash = hashlib.sha256()
+    for block in iter(lambda: f.read(blocksize), ""):
+        hash.update(block)
+
+    f.seek(0)
+    return hash.hexdigest()
+
+
+class PodaciTag(models.Model, ZipSetMixin):
+    name                = models.CharField(max_length=100, unique=True)
+    icon                = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        if not self.id: return "[Uninitialized tag object]"
+        return "[Tag %s] %s" % (self.id, self.name)
+
+    def __str__(self):
+        return self.__unicode__()
+
+    def to_json(self):
+        fields = ("id", "name", "icon")
+        out = dict([(x, getattr(self, x)) for x in fields])
+        files = self.list_files()
+        out["file_count"] = files.count()
+        out["files"] = [x.id for x in files]
+        return out
+
+    def list_files(self):
+        """Return a list of existing files"""
+        # TODO: Limit this to only include files the user can see.
+        return self.files.all()
+
     def has_files(self):
         """Return the number of files associated with this tag."""
         return self.files.count() > 0
 
 
-
-class PodaciFile(Models.model):
+class PodaciFile(models.Model):
     name                = models.CharField(max_length=200)
     date_added          = models.DateTimeField(auto_now_add=True)
     public_read         = models.BooleanField(default=False)
@@ -382,36 +380,32 @@ class PodaciFile(Models.model):
         else:
             return ''
 
+class PodaciCollection(models.Model, ZipSetMixin):
 
-class PodaciCollection(models.Model):
-    
     name                = models.CharField(max_length=300)
     owner               = models.ForeignKey(AUTH_USER_MODEL,
                             related_name='created_collections', blank=True, null=True)
     description         = models.TextField(blank=True)
     files               = models.ManyToManyField(PodaciFile,
                             related_name='collections')
-    
+
     def file_add(self, cfile):
         if cfile not in self.files.all():
             self.files.add(cfile)
 
     def file_remove(self, cfile):
         self.files.remove(cfile)
-    
+
     def tag_add(self, parenttag):
         """ tagging a collection simply tags all files within """
         for f in self.files.all():
             f.tag_add(parenttag)
-    
+
     def tag_remove(self, parenttag):
         """ same with removing a tag """
         for f in self.files.all():
             f.tag_remove(parenttag)
-            
-    def delete(self):
-        """ should be simple enough """
-        
+
     def to_json(self):
         fields = ("id", "name", "description", "owner")
         out = dict([(x, getattr(self, x)) for x in fields])
@@ -422,22 +416,6 @@ class PodaciCollection(models.Model):
         """Return a list of existing files"""
         # TODO: Limit this to only include files the user can see.
         return self.files.all()
-
-    def get_zip(self):
-        """Return a Zip file containing the files in this tag. Limited to 50MB archives."""
-        # To prevent insane loads, we're going to limit this to 50MB archives for now.
-        _50MB = 50 * 1024 * 1024
-        files = self.get_files()[1]
-        totalsize = sum([x.size for x in files])
-        if totalsize > _50MB:
-            return False
-
-        zstr = StringIO.StringIO()
-        with zipfile.ZipFile(zstr, "w", zipfile.ZIP_DEFLATED) as zf:
-            for f in files:
-                zf.write(f.resident_location(), f.filename)
-        zstr.seek(0)
-        return zstr
 
     def has_files(self):
         """Return the number of files associated with this tag."""
