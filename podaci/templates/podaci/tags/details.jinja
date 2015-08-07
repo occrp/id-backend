@@ -1,32 +1,30 @@
 {% extends "podaci_base.jinja" %}
 
 {% block podaci_content %}
-<div class="span12" style="margin-top: -20px">
-    <div class="breadcrumbs">
-        <a href="{{url('podaci_info_home')}}">Tags</a>{% if breadcrumbs %} &gt; {% endif %}
-        {% for bc in breadcrumbs %}
-        <a href="{{url('podaci_tags_details', bc.id)}}">{{bc.name}}</a>{% if not loop.last %} &gt; {% endif %}
-        {% endfor %}
+<div class="row">
+    <div class="span3 collectionfilters">
+        <ul>
+            <li><a href=""><i class="fa fa-chevron-right"></i> Everything</a></li>
+            <li class="selected"><a href=""><i class="fa fa-chevron-down"></i> My collections</a>
+                <ul>
+                    <li><a href=""><i class="fa fa-folder"></i> Russia</a></li>
+                    <li><a href=""><i class="fa fa-folder"></i> Ukraine</a></li>
+                    <li class="selected"><a href=""><i class="fa fa-folder"></i> Magnitsky</a></li>
+                </ul>
+            </li>
+            <li><a href=""><i class="fa fa-chevron-right"></i> Shared with me</a></li>
+        </ul>
     </div>
-</div>
 
-<div class="span2 well">
-    <h4>{% if tag %}Subtags{% else %}Your tags{% endif %}</h4>
-    <h6>{{num_tags}} tags</h6>
-    <ul class="podaci-tags" {% if tag %} data-tag="{{tag.id}}"{% endif %}>
-    {% for tag in result_tags %}
-        <li><a href="{{url('podaci_tags_details', tag.id)}}"><i class="icon-tag"></i> {{tag.meta.name}}</a></li>
-    {% endfor %}
-    </ul>
-</div>
+    <div class="span9">
+        <input class="searchbox" type="search" placeholder="Search in files"/>
 
-<div class="span9">
-    {% include "podaci/partials/_podaci_tag_view_type_selection.jinja" %}
+        <div class="resultbox">asdfasdf</div>
 
-    <h3>{% if tag %}{{tag.name}}{% else %}Your files{% endif %}</h3>
-    <h6>{{num_files}} files / <span id="num_files_displayed">{{num_files_displayed}} shown</span></h6>
+        {% include "podaci/partials/_podaci_tag_view_type_selection.jinja" %}
+
         {% include "podaci/partials/_podaci_file_list.jinja" %}
+    </div>
+
 </div>
-
-
 {% endblock %}

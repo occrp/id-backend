@@ -13,10 +13,10 @@ from uuid import uuid4
 from settings.settings import AUTH_USER_MODEL # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from settings.settings import PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT
 
-# More depth means deeper nesting, which increases lookup speed but makes 
+# More depth means deeper nesting, which increases lookup speed but makes
 # backups exponentially harder
 # More length means more directories per nest level, which reduces lookup
-# speed but may provide good balance towards depth. 
+# speed but may provide good balance towards depth.
 # DEPTH=3, LENGTH=2 is a reasonable default.
 # WARNING: NEVER CHANGE THIS IN LIVE SYSTEMS AS ALL WILL BE LOST.
 HASH_DIRS_DEPTH = 3
@@ -41,7 +41,7 @@ def sha256sum(filename, blocksize=65536):
         f = open(filename, "r+b")
     else:
         f = filename
-    
+
     hash = hashlib.sha256()
     for block in iter(lambda: f.read(blocksize), ""):
         hash.update(block)
@@ -55,9 +55,9 @@ class PodaciMetadata(models.Model):
     date_added          = models.DateTimeField(auto_now_add=True)
     public_read         = models.BooleanField(default=False)
     staff_read          = models.BooleanField(default=False)
-    allowed_users_read  = models.ManyToManyField(AUTH_USER_MODEL, 
+    allowed_users_read  = models.ManyToManyField(AUTH_USER_MODEL,
         related_name='%(class)s_files_perm_read')
-    allowed_users_write = models.ManyToManyField(AUTH_USER_MODEL, 
+    allowed_users_write = models.ManyToManyField(AUTH_USER_MODEL,
         related_name='%(class)s_files_perm_write')
 
     class Meta:
@@ -78,7 +78,7 @@ class PodaciMetadata(models.Model):
     #    user = kwargs.pop('user', None)
     #    super(models.Model, self).__init__(*args, **kwargs)
     #    #if not self.has_permission(user):
-    #    #    raise AuthenticationError("User %s has no access to tag %s" 
+    #    #    raise AuthenticationError("User %s has no access to tag %s"
     #    #        % (user, self.pk))
 
     def log(self, message, user):
@@ -115,14 +115,14 @@ class PodaciMetadata(models.Model):
 
     def details_string(self):
         """
-           Return a formatted details string that describes the object's 
+           Return a formatted details string that describes the object's
            permissions.
         """
         s = "%s%s %3dU %3dW %3dN" % (
-            ["-","P"][self.public_read], 
-            ["-","S"][self.staff_read], 
-            self.allowed_users_read.count(), 
-            self.allowed_users_write.count(), 
+            ["-","P"][self.public_read],
+            ["-","S"][self.staff_read],
+            self.allowed_users_read.count(),
+            self.allowed_users_write.count(),
             self.notes.count())
         if self.DOCTYPE == "tag":
             s += " %4dF" % (self.list_files().count())
@@ -139,7 +139,7 @@ class PodaciMetadata(models.Model):
             self.allowed_users_read.add(user.id)
         if write and user not in self.allowed_users_write.all():
             self.allowed_users_write.add(user.id)
-        self.log("Added user '%s' [%d] (write=%s)" 
+        self.log("Added user '%s' [%d] (write=%s)"
                  % (user.email, user.id, write), user)
 
     def remove_user(self, user):
@@ -152,29 +152,33 @@ class PodaciMetadata(models.Model):
         except ValueError:
             pass
 
-    def make_public(self, user):
+    def make_public(self, user=None):
         """Allow public reads."""
         self.public_read = True
         self.save()
-        self.log("Made file public.", user)
+        if user:
+            self.log("Made file public.", user)
 
-    def make_private(self, user):
+    def make_private(self, user=None):
         """Disallow public reads."""
         self.public_read = False
         self.save()
-        self.log("Made file private.", user)
+        if user:
+            self.log("Made file private.", user)
 
-    def allow_staff(self, user):
+    def allow_staff(self, user=None):
         """Allow all staff members to access (read/write)"""
         self.staff_read = True
         self.save()
-        self.log("Made file accessible to all staff.", user)
+        if user:
+            self.log("Made file accessible to all staff.", user)
 
-    def disallow_staff(self, user):
+    def disallow_staff(self, user=None):
         """Disallow staff to access"""
         self.staff_read = False
         self.save()
-        self.log("Made file inaccessible to staff.", user)
+        if user:
+            self.log("Made file inaccessible to staff.", user)
 
     def has_permission(self, user):
         """Check if a given user has read permission."""
@@ -206,7 +210,7 @@ class PodaciMetadata(models.Model):
 
 
 class PodaciTag(PodaciMetadata):
-    parents             = models.ManyToManyField('PodaciTag', 
+    parents             = models.ManyToManyField('PodaciTag',
                             related_name='children')
     icon                = models.CharField(max_length=100)
 
@@ -232,7 +236,7 @@ class PodaciTag(PodaciMetadata):
 
     def parent_add(self, parenttag):
         """Add a parent tag."""
-        if parenttag not in self.parents.objects.all():
+        if parenttag not in self.parents.all():
             self.parents.add(parenttag)
 
     def parent_remove(self, parenttag):
@@ -241,7 +245,7 @@ class PodaciTag(PodaciMetadata):
 
     def child_add(self, childtag):
         """Add a child tag."""
-        if self not in childtag.parents.objects.all():
+        if self not in childtag.parents.all():
             childtag.parents.add(self)
 
     def child_remove(self, childtag):
@@ -286,14 +290,14 @@ class PodaciTag(PodaciMetadata):
 class PodaciFile(PodaciMetadata):
     schema_version      = models.IntegerField(default=3)
     title               = models.CharField(max_length=300)
-    created_by          = models.ForeignKey(AUTH_USER_MODEL, 
+    created_by          = models.ForeignKey(AUTH_USER_MODEL,
                             related_name='created_files', blank=True, null=True)
     is_resident         = models.BooleanField(default=True)
     filename            = models.CharField(max_length=256, blank=True)
     url                 = models.URLField(blank=True)
     sha256              = models.CharField(max_length=65)
     size                = models.IntegerField(default=0)
-    tags                = models.ManyToManyField(PodaciTag, 
+    tags                = models.ManyToManyField(PodaciTag,
                             related_name='files')
     mimetype            = models.CharField(max_length=65)
     description         = models.TextField(blank=True)
@@ -306,7 +310,7 @@ class PodaciFile(PodaciMetadata):
 
     def to_json(self):
         fields = ("id", "schema_version", "title", "created_by", "is_resident",
-                  "filename", "url", "sha256", "size", "mimetype", 
+                  "filename", "url", "sha256", "size", "mimetype",
                   "description", "is_indexed", "is_entity_extracted",
                   "name", "date_added", "public_read", "staff_read")
         out = dict([(x, getattr(self, x)) for x in fields])
@@ -318,7 +322,7 @@ class PodaciFile(PodaciMetadata):
     def get_filehandle(self, user):
         """Get a file handle to the file itself."""
         if not self.has_permission(user):
-            raise AuthenticationError("User %s has no access to file %s" 
+            raise AuthenticationError("User %s has no access to file %s"
                 % (user, self.id))
         if self.is_resident:
             return open(self.resident_location())
@@ -415,6 +419,14 @@ class PodaciFile(PodaciMetadata):
                 pass
         super(PodaciMetadata, self).delete()
         return True
+
+    def tag_add(self, parenttag):
+        if parenttag not in self.tags.all():
+            self.tags.add(parenttag)
+
+    def tag_remove(self, parenttag):
+        self.tags.remove(parenttag)
+
 
     def get_thumbnail(self, width=680, height=460):
         """Return a thumbnail of a file."""
