@@ -21,7 +21,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 sys.path.append(os.path.abspath("../../../"))
 from id.models import *
 from ticket.models import *
-from podaci import File, Tag, FileSystem
+from podaci.models import PodaciFile as File, PodaciTag as Tag
 
 imported_files = {}
 
@@ -293,7 +293,7 @@ if __name__ == "__main__":
                 raise ValueError
     except ValueError:
         print("\nRun via:\n\t%s </path/to/legacy-investigative-dashboard> <drive-folder-ids-file-path> [--keep]\n" % sys.argv[0])
-        print("Temporary files are being saved in:\n\t/tmp/id_gdrive_downloads/<folder-id>/<individual-filenames>\n\nOptional --keep parameter makes the script not delete the downloaded files after Podaci import.\n")
+        print("Temporary files are being saved in:\n\t/tmp/id_gdrive_downloads/<folder-id>/<individual-filenames>\n\nOptional --keep parameter makes the script not delete the downloaded temporary files after Podaci import.\nFiles on GDrive are not automatically deleted under any circumstances.\n")
         sys.exit()
     
     # imported files ids pickled dump file
@@ -334,11 +334,9 @@ if __name__ == "__main__":
     
     # user
     u = Profile.objects.get(email='admin@example.com') # FIXME
-    # podaci filesystem
-    fs = FileSystem(user=u)
     # podaci tickets meta tag
     try:
-        metatag = fs.get_tag('Tickets_Meta_Tag')
+        metatag = Tag.get_tag('Tickets_Meta_Tag')
     except:
         metatag = Tag(fs)
         metatag.id = 'Tickets_Meta_Tag'

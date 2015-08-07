@@ -12,8 +12,8 @@ id2dataimports:
   command: /bin/bash
   volumes:
     - "../export-prod/:/data"
-    - "data/:/usr/src/id2/data/"
     - "./:/usr/src/id2/"
+    - "../google_appengine/:/usr/src/google_appengine/"
     - "../investigative-dashboard/:/usr/src/id/"
 neo4j:
   image: tpires/neo4j
