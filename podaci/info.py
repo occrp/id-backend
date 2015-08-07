@@ -1,5 +1,6 @@
 from podaci import PodaciView
 from podaci.models import PodaciTag, PodaciFile
+from django.db.models import Q
 
 class Home(PodaciView):
     template_name = "podaci/home.jinja"
@@ -7,14 +8,20 @@ class Home(PodaciView):
     def get_context_data(self):
         self.clear_breadcrumbs()
         num_displayed = 40
-        tags = PodaciTag.objects.filter(allowed_users_read=self.request.user, parents=None)
+        tagterms = Q(allowed_users_read=self.request.user)
+        if self.request.user.is_staff:
+            tagterms |= Q(staff_read=True)
+            stafftags = PodaciTag.objects.filter(staff_read=True)
+        else:
+            stafftags = []
+        tags = PodaciTag.objects.filter(parents=None).filter(tagterms)
+        publictags = PodaciTag.objects.filter(public_read=True)
         files = PodaciFile.objects.filter(allowed_users_read=self.request.user, tags=None)
         return {
-            "num_files_displayed": files.count(),
-            "num_tags": tags.count(),
-            "num_files": files.count(),
-            "result_tags": tags,
-            "result_files": files,
+            "piles": tags,
+            "files": files,
+            "public_piles": publictags,
+            "staff_piles": stafftags,
         }
 
 
