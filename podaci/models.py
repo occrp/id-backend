@@ -393,6 +393,13 @@ class PodaciCollection(models.Model):
     files               = models.ManyToManyField(PodaciFile,
                             related_name='collections')
     
+    def file_add(self, cfile):
+        if cfile not in self.files.all():
+            self.files.add(cfile)
+
+    def file_remove(self, cfile):
+        self.files.remove(cfile)
+    
     def tag_add(self, parenttag):
         """ tagging a collection simply tags all files within """
         for f in self.files.all():
