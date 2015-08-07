@@ -161,7 +161,7 @@ class TicketActionJoin(TicketActionBaseHandler):
             self.success_messages = [_('You have successfully been added to the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Joined', adduser.display_name + unicode(_(' has joined the ticket')))
             self.transition_ticket_from_new(ticket)
-            tag.add_user(adduser, True)
+            # tag.add_user(adduser, True)
             return super(TicketActionJoin, self).perform_valid_action(form)
         else:
             self.perform_invalid_action(form)
@@ -179,14 +179,14 @@ class TicketActionLeave(TicketActionBaseHandler):
 
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
-            tag.remove_user(self.request.user)
+            # tag.remove_user(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.display_name + unicode(_(' has left the ticket')))
 
             return super(TicketActionLeave, self).perform_valid_action(form)
         elif self.request.user in ticket.volunteers.all():
             ticket.volunteers.remove(self.request.user)
-            tag.remove_user(self.request.user)
+            # tag.remove_user(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.display_name + unicode(_(' has left the ticket')))
 
