@@ -50,7 +50,7 @@ def sha256sum(filename, blocksize=65536):
     return hash.hexdigest()
 
 
-class PodaciTag(Models.model):
+class PodaciTag(models.Model):
     name                = models.CharField(max_length=100)
     icon                = models.CharField(max_length=100)
 
@@ -97,7 +97,7 @@ class PodaciTag(Models.model):
 
 
 
-class PodaciFile(Models.model):
+class PodaciFile(models.Model):
     name                = models.CharField(max_length=200)
     date_added          = models.DateTimeField(auto_now_add=True)
     public_read         = models.BooleanField(default=False)
