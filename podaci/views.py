@@ -11,16 +11,27 @@ class Search(views.APIView):
 class FileList(generics.ListCreateAPIView):
     serializer_class = FileSerializer
     # permission_classes = (IsAuthenticated, CanAlterDeleteProject,)
-    pass
+
+    def get_queryset(self):
+        return PodaciFile.objects.all()
+
+class FileDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = FileSerializer
 
 class TagList(generics.ListCreateAPIView):
     serializer_class = TagSerializer
     # permission_classes = (IsAuthenticated, CanAlterDeleteProject,)
     pass
 
+class TagDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = TagSerializer
+
 class CollectionList(generics.ListCreateAPIView):
     serializer_class = CollectionSerializer
     # permission_classes = (IsAuthenticated, CanAlterDeleteProject,)
+
+class CollectionDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = CollectionSerializer
 
 class NoteList(generics.ListCreateAPIView):
     pass
