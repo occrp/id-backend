@@ -353,6 +353,10 @@ class PodaciFile(models.Model):
     def tag_remove(self, tag):
         self.tags.remove(tag)
 
+    @property
+    def thumbnail(self):
+        return "/static/img/podaci/file.png"
+
     def get_thumbnail(self, width=680, height=460):
         """Return a thumbnail of a file."""
         # Todo: Perhaps this belongs elsewhere?
@@ -372,12 +376,6 @@ class PodaciFile(models.Model):
         # TODO: Build me
         return False
 
-    def get_thumbnail_as_img_tag(self):
-        img = self.get_thumbnail()
-        if img:
-            return '<img src="%s"/>' % img
-        else:
-            return ''
 
 class PodaciCollection(ZipSetMixin, models.Model):
 
