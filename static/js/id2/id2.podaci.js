@@ -42,6 +42,28 @@ ID2.Podaci.search = function(q) {
     });
 };
 
+ID2.Podaci.get_file_list = function() {
+    $("#resultbox").empty();
+    $.getJSON("/podaci/file/", function(data) {
+        for (i in data.results) {
+            file = data.results[i];
+            ID2.Podaci.add_file_to_results(file);
+        }
+    });
+}
+
+ID2.Podaci.add_file_to_results = function(file) {
+    var fo = $("<div>");
+    fo.hide;
+    fo.addClass("podaci-file");
+    fo.append("<img src=\"" + file.thumbnail + "\" class=\"podaci-file-thumbnail\"/>");
+    fo.append("<span class=\"podaci-file-filename\">" + (file.name || file.filename) + "</span>");
+    fo.attr("data-id", file.id);
+    fo.click(ID2.Podaci.file_click);
+    $("#resultbox").append(fo);
+    fo.hide().slideDown(600);
+}
+
 ID2.Podaci.search_term_add = function(term) {
     var v = $("#searchbox").val();
     v += " " + term;
@@ -125,16 +147,14 @@ ID2.Podaci.listmode_list = function() {
 
 ID2.Podaci.update_selection = function() {
     var not_selected = _.difference(
-        $.map($(".podaci-files-list .podaci-file"), function(e) { return $(e).data("id") },
+        $.map($(".podaci-file"), function(e) { return $(e).data("id") },
         ID2.Podaci.selection));
 
     for (idx in not_selected) { // It might be faster to just apply this to $(".podaci-file"), without a loop?
         $(".podaci-file[data-id='" + not_selected[idx] + "']").removeClass("podaci-file-selected");
-        $(".podaci-file[data-id='" + not_selected[idx] + "'] .podaci_file_select_box").prop("checked", false);
     }
     for (idx in ID2.Podaci.selection) {
         $(".podaci-file[data-id='" + ID2.Podaci.selection[idx] + "']").addClass("podaci-file-selected");
-        $(".podaci-file[data-id='" + ID2.Podaci.selection[idx] + "'] .podaci_file_select_box").prop("checked", true);
     }
 
     if (ID2.Podaci.selection.length == 0 && not_selected.length == 0) {
@@ -169,13 +189,13 @@ ID2.Podaci.select_toggle = function(id) {
 
 ID2.Podaci.select_invert = function() {
     ID2.Podaci.selection = _.difference(
-        $.map($(".podaci-files-list .podaci-file"), function(e) { return $(e).data("id") }),
+        $.map($(".podaci-file"), function(e) { return $(e).data("id") }),
         ID2.Podaci.selection);
     ID2.Podaci.update_selection();
 };
 
 ID2.Podaci.select_all = function() {
-    ID2.Podaci.selection = $.map($(".podaci-files-list .podaci-file"), function(e) { return $(e).data("id") });
+    ID2.Podaci.selection = $.map($(".podaci-file"), function(e) { return $(e).data("id") });
     ID2.Podaci.update_selection();
 };
 
@@ -430,7 +450,7 @@ ID2.Podaci.open_in_overview = function() {
 }
 
 ID2.Podaci.file_click = function(e) {
-    id = $(e.target).closest("li").data("id");
+    id = $(e.target).closest("div").data("id");
     e.preventDefault();
     e.stopPropagation();
     if (ID2.Podaci.selection.indexOf(id) == -1) {
