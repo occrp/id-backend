@@ -7,9 +7,10 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'icon', 'files')
 
 class FileSerializer(serializers.ModelSerializer):
+    thumbnail = serializers.CharField(read_only=True)
     class Meta:
         model = PodaciFile
-        fields = ('id', 'name', 'title', 'date_added', 'created_by', 'filename', 'url', 'sha256', 'size', 'mimetype', 'description', 'tags', 'collections')
+        fields = ('id', 'name', 'title', 'date_added', 'created_by', 'filename', 'url', 'sha256', 'size', 'mimetype', 'description', 'tags', 'collections', 'thumbnail')
 
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
