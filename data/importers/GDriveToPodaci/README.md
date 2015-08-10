@@ -28,7 +28,8 @@ The `GDriveToPodaci.py` script handles this part. It uses (old) `investigative-d
  Temporary files are being saved in:
          /tmp/id_gdrive_downloads/<folder-id>/<individual-filenames>
  
- Optional --keep parameter makes the script not delete the downloaded files after Podaci import
+ Optional --keep parameter makes the script not delete the downloaded temporary files after Podaci import.
+ Files on GDrive are not automatically deleted under any circumstances.
 ```
 
 **Warning: there is a *lot* of data on Google Drive**. The script deletes each file after successful import to Podaci, so it should need the `/tmp` directory to be able to hold all those files, *unless `--keep` is passed*.

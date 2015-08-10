@@ -33,10 +33,9 @@ from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, Tick
 from ticket import forms
 from ticket import constants
 
-from podaci import PodaciMixin
 from podaci.models import PodaciTag, PodaciFile
 
-class CompanyTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
+class CompanyTicketUpdate(TicketUpdateMixin, UpdateView):
     model = CompanyTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.CompanyTicketForm
@@ -50,7 +49,7 @@ class CompanyTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
     def __init__(self, *args, **kwargs):
         super(CompanyTicketUpdate, self).__init__(*args, **kwargs)
 
-class OtherTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
+class OtherTicketUpdate(TicketUpdateMixin, UpdateView):
     model = OtherTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.OtherTicketForm
@@ -64,7 +63,7 @@ class OtherTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
     def __init__(self, *args, **kwargs):
         super(OtherTicketUpdate, self).__init__(*args, **kwargs)
 
-class PersonTicketUpdate(TicketUpdateMixin, UpdateView, PodaciMixin):
+class PersonTicketUpdate(TicketUpdateMixin, UpdateView):
     model = PersonTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.PersonTicketForm
@@ -133,7 +132,7 @@ class TicketActionClose(TicketActionBaseHandler):
         return super(TicketActionClose, self).perform_valid_action(form)
 
 
-class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
+class TicketActionJoin(TicketActionBaseHandler):
     form_class = forms.TicketEmptyForm
 
     def perform_invalid_action(self, form):
@@ -147,7 +146,7 @@ class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
 
         if self.request.user.is_staff or self.request.user.is_superuser:
             uid = self.request.POST.get("user", self.request.user.id)
-            adduser = get_user_model().get(id=uid)
+            adduser = get_user_model().objects.get(id=uid)
             if adduser.is_user or adduser.is_staff or adduser.is_superuser:
                 ticket.responders.add(adduser)
             else:
@@ -163,7 +162,7 @@ class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
             self.success_messages = [_('You have successfully been added to the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Joined', adduser.display_name + unicode(_(' has joined the ticket')))
             self.transition_ticket_from_new(ticket)
-            tag.add_user(adduser, True)
+            # tag.add_user(adduser, True)
             return super(TicketActionJoin, self).perform_valid_action(form)
         else:
             self.perform_invalid_action(form)
@@ -246,7 +245,7 @@ def TicketActionUnassign(request, pk):
                             status=403)
 
 
-class TicketActionLeave(TicketActionBaseHandler, PodaciMixin):
+class TicketActionLeave(TicketActionBaseHandler):
     form_class = forms.TicketEmptyForm
 
     def form_valid(self, form):
@@ -279,7 +278,8 @@ class TicketActionLeave(TicketActionBaseHandler, PodaciMixin):
 
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
-            tag.remove_user(self.request.user)
+            # tag.remove_user(self.request.user)
+            self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.display_name + unicode(_(' has left the ticket')))
 
             if is_ajax_call:
@@ -288,7 +288,7 @@ class TicketActionLeave(TicketActionBaseHandler, PodaciMixin):
 
         elif self.request.user in ticket.volunteers.all():
             ticket.volunteers.remove(self.request.user)
-            tag.remove_user(self.request.user)
+            self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.display_name + unicode(_(' has left the ticket')))
 
             if is_ajax_call:
@@ -383,7 +383,7 @@ class TicketModifyCharge(TicketUpdateMixin, UpdateView):
                                    'Charge Modified',
                                    "$%.2f" % float(form.cleaned_data['cost']) + " - " + form.cleaned_data['item'])
 
-class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView, PodaciMixin):
+class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
     model = Ticket
     template_name = "modals/form_basic.jinja"
     form_class = forms.TicketAdminSettingsForm
@@ -503,7 +503,7 @@ class TicketUpdateRemoveHandler(TicketActionBaseHandler):
         super(TicketUpdateRemoveHandler, self).__init__(*args, **kwargs)
 
 
-class TicketDetail(TemplateView, PodaciMixin):
+class TicketDetail(TemplateView):
     template_name = "tickets/request_details.jinja"
     """
     View for the requester of a ticket to view what is currently going on,
@@ -594,7 +594,7 @@ class TicketDetail(TemplateView, PodaciMixin):
         comment.save()
         return HttpResponseRedirect(reverse('ticket_details', kwargs={ "ticket_id":self.ticket.id}))
 
-class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView, PodaciMixin):
+class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
     template_name = "tickets/request_list.jinja"
     page_name = ""
     ticket_list_name = ""
@@ -789,7 +789,7 @@ class TicketListUpcomingDeadline(TicketList):
             "-created")
 
 
-class TicketRequest(TemplateView, PodaciMixin):
+class TicketRequest(TemplateView):
     template_name = "tickets/request.jinja"
 
     # runs when django forms clean the data but before django saves the object

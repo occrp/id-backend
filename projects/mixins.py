@@ -11,7 +11,7 @@ class ProjectMembershipMixin(object):
             return True
 
         result = Project.objects.all().filter(id=project_id) \
-                 .filter(Q(coordinator=user) | Q(users__in=[user])).count()
+                 .filter(Q(coordinators__in=[user]) | Q(users__in=[user])).count()
 
         if result == 0:
             return False
@@ -117,7 +117,7 @@ class StoryTranslationListQuerySetMixin(StoryTranslationQuerySetMixin):
 class ProjectPlanQuerySetMixin(object):
     def user_in_project(self, project_id, user):
         project_count = Project.objects.filter(id=project_id).filter(Q(users__in=[user]) |
-                                                                     Q(coordinator=user)).count()
+                                                                     Q(coordinators__in=[user])).count()
         if project_count > 0:
             return True
 
@@ -145,7 +145,7 @@ class ProjectPlanQuerySetMixin(object):
             return ProjectPlan.objects.all()
         else:
             plans = ProjectPlan.objects.filter(Q(project__users__in=[self.request.user]) |
-                                               Q(project__coordinator=self.request.user))
+                                               Q(project__coordinators__in=[self.request.user]))
 
             return plans
 

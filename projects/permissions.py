@@ -113,7 +113,8 @@ class CanCreateListStoryTranslation(permissions.BasePermission):
 class CanAlterDeleteStoryTranslation(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
-
+        # FIXME: Temporary hack because of broken rule. James will fix.
+        return True
         if request.method in permissions.SAFE_METHODS:
             # filtering will be done on the queryset, so its safe to return
             # true here

@@ -41,8 +41,7 @@ class PodaciAPITest(TestCase):
     def test_list_tags(self):
         tags = PodaciTag.objects.all()
         for tag in tags:
-            if tag.has_permission(self.fs.user):
-                tag.list_files()
+            tag.list_files()
 
     def test_find_nonexistant_file(self):
         ## Check for non-existent file by hash:
@@ -122,18 +121,6 @@ class PodaciPermissionTest(UserTestCase):
         pass
 
 
-class PodaciFileSystemTest(TestCase):
-    def setUp(self):
-        if not os.path.isdir(PODACI_FS_ROOT):
-            os.mkdir(PODACI_FS_ROOT)
-
-    def tearDown(self):
-        shutil.rmtree(PODACI_FS_ROOT)
-
-    def test_filesystem_status(self):
-        # status = self.fs.status()
-        pass
-
 class PodaciFileTest(UserTestCase):
     def setUp(self):
         if not os.path.isdir(PODACI_FS_ROOT):
@@ -166,131 +153,3 @@ class PodaciFileTest(UserTestCase):
 
         self.assertEqual(f.note_list().count(), 0)
         f.delete()
-
-
-class PodaciTagTest(TestCase):
-    def setUp(self):
-        if not os.path.isdir(PODACI_FS_ROOT):
-            os.mkdir(PODACI_FS_ROOT)
-
-    def tearDown(self):
-        shutil.rmtree(PODACI_FS_ROOT)
-
-    def test_has_files(self):
-        f = PodaciFile()
-        f.create_from_path("requirements.txt")
-        t = PodaciTag(name="thistest")
-        t.save()
-        self.assertEqual(t.has_files(), 0)
-        f.tags.add(t)
-        self.assertEqual(t.has_files(), 1)
-        f.tags.remove(t)
-        self.assertEqual(t.has_files(), 0)
-        t.delete()
-        f.delete()
-
-
-class PodaciWebInterfaceTest(UserTestCase):
-    def req_as_staff(self, urlname, get=False, args={}, dset={}):
-        client = TestClient()
-        client.login_user(self.staff_user)
-        url = reverse(urlname, kwargs=args)
-        if get:
-            response = client.get(url, dset)
-        else:
-            response = client.post(url, dset)
-        return response
-
-    def test_podaci_info_home(self):
-        res = self.req_as_staff('podaci_info_home')
-
-    def test_podaci_info_help(self):
-        res = self.req_as_staff('podaci_info_help', get=True)
-
-    def test_podaci_search(self):
-        res = self.req_as_staff('podaci_search')
-
-    def test_podaci_search_mention(self):
-        res = self.req_as_staff('podaci_search_mention')
-
-    def test_podaci_info_status(self):
-        res = self.req_as_staff('podaci_info_status')
-
-    def test_podaci_info_statistics(self):
-        res = self.req_as_staff('podaci_info_statistics')
-
-    def test_podaci_files_create_success(self):
-        with open("requirements.txt") as fp:
-            res = self.req_as_staff('podaci_files_create', 
-                dset={"files[]": [fp]})
-        data = json.loads(res.content)
-        self.assertEqual(data["filename"], "requirements.txt")
-        self.assertIn(self.staff_user.id, data["allowed_users_read"])
-        self.assertNotIn(self.admin_user.id, data["allowed_users_read"])
-        self.assertEqual(data["public_read"], False)
-        self.assertEqual(data["mimetype"], "text/plain")
-        # Clean up after ourselves...
-        f = PodaciFile.objects.get(id=data["id"])
-        f.delete()
-
-    #def test_podaci_files_create_fail(self):
-    #    # Next, let's try failing:
-    #    pass
-
-    def test_podaci_files_note_add(self):
-        pass # res = self.req_as_staff('podaci_files_note_add')
-
-    def test_podaci_files_note_delete(self):
-        pass # res = self.req_as_staff('podaci_files_note_delete')
-
-    def test_podaci_files_note_update(self):
-        pass # res = self.req_as_staff('podaci_files_note_update')
-
-    def test_podaci_files_delete(self):
-        f = PodaciFile()
-        f.create_from_path("requirements.txt")
-        res = self.req_as_staff('podaci_files_delete', 
-                                args={"id": f.id})
-        data = json.loads(res.content)
-        self.assertEqual(data["deleted"], True)
-        self.assertEqual(data["id"], str(f.id))
-
-    def test_podaci_files_upload(self):
-        pass # res = self.req_as_staff('podaci_files_upload')
-
-    def test_podaci_files_download(self):
-        pass # res = self.req_as_staff('podaci_files_download')
-
-    def test_podaci_files_details(self):
-        f = PodaciFile()
-        f.create_from_path("requirements.txt")
-        res = self.req_as_staff('podaci_files_details', 
-                                args={"id": f.id})
-        data = json.loads(res.content)
-        self.assertIn("file", data)
-        self.assertIn("tags", data)
-        self.assertIn("notes", data)
-        self.assertIn("users", data)
-        f.delete()
-
-    def test_podaci_tags_create(self):
-        pass # res = self.req_as_staff('podaci_tags_create')
-
-    def test_podaci_tags_list(self):
-        pass # res = self.req_as_staff('podaci_tags_list')
-
-    def test_podaci_tags_delete(self):
-        pass # res = self.req_as_staff('podaci_tags_delete')
-
-    def test_podaci_tags_upload(self):
-        pass # res = self.req_as_staff('podaci_tags_upload')
-
-    def test_podaci_tags_zip_tag(self):
-        pass # res = self.req_as_staff('podaci_tags_zip')
-
-    def test_podaci_tags_zip_selection(self):
-        pass # res = self.req_as_staff('podaci_tags_zip')
-
-    def test_podaci_tags_details(self):
-        pass # res = self.req_as_staff('podaci_tags_details')
-

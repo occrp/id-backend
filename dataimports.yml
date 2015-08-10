@@ -6,27 +6,26 @@ id2dataimports:
   expose:
     - "8000"
   links:
-    - mysql
+    - postgres
     - neo4j
     - elasticsearch
   command: /bin/bash
   volumes:
     - "../export-prod/:/data"
-    - "data/:/usr/src/id2/data/"
     - "./:/usr/src/id2/"
+    - "../google_appengine/:/usr/src/google_appengine/"
     - "../investigative-dashboard/:/usr/src/id/"
 neo4j:
   image: tpires/neo4j
   cap_add:
     - SYS_RESOURCE
-mysql:
-  image: mysql:5.7
+postgres:
+  image: postgres
   volumes:
-    - 'mysql_charset.cnf:/etc/mysql/conf.d/charset.cnf'
+    - 'db/:/var/lib/postgresql/data'
   environment:
-    MYSQL_ROOT_PASSWORD: root
-    MYSQL_USER:     id2
-    MYSQL_PASSWORD: id2
-    MYSQL_DATABASE: id2
+    POSTGRES_USER:     id2
+    POSTGRES_PASSWORD: id2
+    POSTGRES_DATABASE: id2
 elasticsearch:
   image: elasticsearch:1.5
