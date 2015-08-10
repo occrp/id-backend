@@ -27,22 +27,19 @@
             <span style="display:inline-block; width:6.5em;">Assigned to</span>
             {% if ticket.actors(false)|length > 0 %}
                 {% for actor in ticket.actors(false) %}
-                    <span style="background: #eee; padding: 2px; border: 1px solid #ccc;">
+                    <span class="assignee" style="background: #eee; padding: 2px; border: 1px solid #ccc;">
                         <a href="{{ url('profile', pk=actor.id)}}">{{ actor.display_name }}</a>
-                        <a href="" onclick="ID2.Ticket.removeResponder({{ticket.id}}, {{actor.id}});"><i class="fa fa-close"></i></a>
+                        <a class="remove_user" href="#" data-key="{{ticket.id}}" data-user="{{actor.id}}"><i class="fa fa-close"></i></a>
                     </span>
-                    {% if loop.length > 0 and not loop.last %}, {% endif %}
-                {% endfor %}.
+                {% endfor %}
             {% else %}
-                {% trans %}nobody{% endtrans %}.
+                
             {% endif %}
             <div class="pull-right">
                 {% if user.is_user or user.is_volunteer %}
-                    {% if user not in ticket.actors() %}
-                    <a class="btn btn-small"><i class="fa fa-user-plus"></i> Join</a>
-                    {% else %}
-                    <a class="btn btn-small"><i class="fa fa-user-times"></i> Leave</a>
-                    {% endif %}
+                    <a style="{% if user in ticket.actors() %}display: none;{% endif %}" class="btn btn-small join_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-plus"></i> Join</a>
+
+                    <a style="{% if user not in ticket.actors() %}display: none;{% endif %}" class="btn btn-small leave_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-times"></i> Leave</a>
                 {% endif %}
                 {% if user.is_staff %}<a class="btn btn-small"><i class="fa fa-plus"></i> Assign</a>{% endif %}
             </div>
