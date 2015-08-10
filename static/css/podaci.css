@@ -53,26 +53,83 @@ li > a.FIXME {
 	overflow: auto;
 }
 
-.podaci-file {
+.podaci-file-card {
 	position: relative;
 	display: inline-block;
 	width:	160px;
-	height: 204px;
+	height: 220px;
 	margin-right: 10px;
 	margin-bottom: 6px;
 	border: 1px solid #ccc;
 	box-shadow: 2px 2px 4px;
 	text-align: center;
-	overflow-x: hidden;
+	overflow: hidden;
 	cursor: pointer;
 }
 
+.podaci-file {
+	display: block;
+	border-bottom: 1px solid #ccc;
+	padding: 10px;
+	padding-top: 16px;
+	height: 100px;
+	overflow: hidden;
+}
+
+.podaci-file .podaci-filename {
+	font-size: 140%;
+	cursor: pointer;
+}
+
+.podaci-file .podaci-filetype {
+	padding: 3px;
+	float: right;
+}
+
+.podaci-file .podaci-filesize {
+	padding: 3px;
+	float: right;
+}
+
+.podaci-file .podaci-selectbar {
+	float: left;
+	min-width: 12px;
+	min-height: 100px;
+	background: #ccc;
+	cursor: pointer;
+}
+
+.podaci-file.podaci-file-selected  > .podaci-selectbar {
+	background: #f00;
+}
+
+.podaci-file .podaci-tags {
+	display: block;
+}
+
+.podaci-file .podaci-tags a {
+	display: inline-block;
+	padding-right: 8px;
+}
+
+.podaci-file .podaci-tags a::before {
+	content: "#";
+	color: #f00;
+}
+
+.podaci-file .podaci-description {
+	display: block;
+}
+
 .podaci-file .podaci-file-thumbnail {
-	width: 160px;
-	height: 160px;
+	float: left;
+	width: 100px;
+	height: 100px;
 	padding: 0px;
 	margin: 0px;
 	overflow: hidden;
+	vertical-align: top;
+	cursor: pointer;
 }
 
 .progress-bar-success {
@@ -143,8 +200,13 @@ li > a.FIXME {
 	font-size: 120%;
 }
 
-.collectionfilters, .searchbox, .toolbox {
+.collections, .searchbox, .toolbox {
 	box-shadow: 5px 5px 20px;
+}
+
+.collections #collection-new {
+	display: inline-block;
+	padding: 10px;
 }
 
 .collectionfilters ul {
@@ -162,9 +224,10 @@ li > a.FIXME {
 	display: block;
 }
 
-.collectionfilters ul li a:hover {
+.collectionfilters ul li a:hover, .collections a:hover {
 	text-decoration: none;
 	background: #eee;
+	cursor: pointer;
 }
 
 .collectionfilters ul li a.selected {
@@ -216,4 +279,13 @@ input.searchbox:focus {
 	margin-left: auto;
 	margin-right: auto;
 	max-width: 980px;
+}
+
+
+.in {
+	display: block;
+}
+
+.drop-on-me {
+	background-color: #f99;
 }

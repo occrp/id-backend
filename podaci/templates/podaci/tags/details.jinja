@@ -2,7 +2,11 @@
 
 {% block podaci_content %}
 <div class="row">
-    <div class="span3 collectionfilters">
+    <div class="span3 collections">
+        <div style="text-align: right; border-bottom: 1px solid #ccc;">
+            <a id="collection-new"><i class="fa fa-plus"></i> New</a>
+        </div>
+        <div class="collectionfilters">
         <ul>
             <li><a data-collection="all"><i class="fa fa-chevron-right"></i> Everything</a></li>
             <li><a data-collection="mine"><i class="fa fa-chevron-right"></i> My collections</a>
@@ -15,14 +19,19 @@
                 </ul>
             </li>
         </ul>
+        </div>
     </div>
 
     <div class="span9">
         <div class="row podacitools">
             <input id="searchbox" class="searchbox" type="search" placeholder="Search in files"/>
-            <div class="toolbox">
-                {% include "podaci/partials/_podaci_selection_actions.jinja" %}
+            <div class="toolbox nav nav-horizontal">
+                <li class="dropdown"><a class="btn" href="#" data-toggle="dropdown">Select</a>
                 {% include "podaci/partials/_podaci_selection_tools.jinja" %}
+                </li>
+                <li class="dropdown"><a class="btn" href="#" id="podaci_selection_menu" data-toggle="dropdown">Selection</a>
+                {% include "podaci/partials/_podaci_selection_actions.jinja" %}
+                </li>
             </div>
         </div>
 

@@ -355,9 +355,11 @@ class PodaciFile(models.Model):
 
     @property
     def thumbnail(self):
+        if os.path.isfile(self.thumbnail_real_location(160,160)):
+            return self.thumbnail_uri(160,160)
         return "/static/img/podaci/file.png"
 
-    def get_thumbnail(self, width=680, height=460):
+    def gen_thumbnail(self, width=680, height=460):
         """Return a thumbnail of a file."""
         # Todo: Perhaps this belongs elsewhere?
         if self.mimetype:
@@ -366,26 +368,49 @@ class PodaciFile(models.Model):
             return False
 
         if basetype == "image":
-            # We are dealing with an image!
-            #from PIL import Image
-            #i = Image.open(self.resident_location())
-            #i.thumbnail((width,height), Image.ANTIALIAS)
-            return False
+            return self.thumbnail_imagemagick(width, height)
         elif basetype == "application":
+            if subtype == "pdf":
+                return self.thumbnail_imagemagick(width, height)
+
             return False
-        # TODO: Build me
         return False
 
+    def thumbnail_real_location(self, width, height):
+        return "/home/smari/Projects/OCCRP/id2/static/thumbnails/%s" % (self.thumbnail_filename(width, height))
+
+    def thumbnail_uri(self, width, height):
+        return "/static/thumbnails/%s" % (self.thumbnail_filename(width, height))
+
+    def thumbnail_filename(self, width, height):
+        return "%s_%dx%d.png" % (self.sha256, width, height)
+
+    def thumbnail_imagemagick(self, width, height):
+        try:
+            import subprocess
+            params = ['convert',
+                      '-density', '300',
+                      '-resize', '%dx%d' % (width, height),
+                      self.resident_location(),
+                      self.thumbnail_real_location(width, height)]
+            subprocess.check_call(params)
+            return self.thumbnail_uri(width, height)
+        except:
+            return False
 
 class PodaciCollection(ZipSetMixin, models.Model):
 
     name                = models.CharField(max_length=300)
     owner               = models.ForeignKey(AUTH_USER_MODEL,
-                            related_name='created_collections', blank=True, null=True)
-    shared              = models.BooleanField(default=False)
+                            related_name='collections')
     description         = models.TextField(blank=True)
     files               = models.ManyToManyField(PodaciFile,
                             related_name='collections')
+    shared_with         = models.ManyToManyField(AUTH_USER_MODEL)
+
+    class Meta:
+        unique_together = (('name', 'owner'),)
+        ordering = ('name',)
 
     def file_add(self, cfile):
         if cfile not in self.files.all():
