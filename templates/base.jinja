@@ -127,6 +127,7 @@
 
 <div id="content">
     <div class="before-content">
+        {% if ticket_detail_view is not defined %}
         <div id="alerts" class="container">
                 {% for message in messages %}
                     <div class="alert alert-block alert-{{ message.tags }}">
@@ -135,6 +136,7 @@
                     </div>
                 {% endfor %}
         </div>
+        {% endif %}
         {% block before_content %}{% endblock %}
     </div>
 
