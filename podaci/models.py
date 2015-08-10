@@ -382,6 +382,7 @@ class PodaciCollection(ZipSetMixin, models.Model):
     name                = models.CharField(max_length=300)
     owner               = models.ForeignKey(AUTH_USER_MODEL,
                             related_name='created_collections', blank=True, null=True)
+    shared              = models.BooleanField(default=False)
     description         = models.TextField(blank=True)
     files               = models.ManyToManyField(PodaciFile,
                             related_name='collections')

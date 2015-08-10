@@ -18,7 +18,13 @@
     </div>
 
     <div class="span9">
-        <input id="searchbox" class="searchbox" type="search" placeholder="Search in files"/>
+        <div class="row podacitools">
+            <input id="searchbox" class="searchbox" type="search" placeholder="Search in files"/>
+            <div class="toolbox">
+                {% include "podaci/partials/_podaci_selection_actions.jinja" %}
+                {% include "podaci/partials/_podaci_selection_tools.jinja" %}
+            </div>
+        </div>
 
         <div class="resultbox" id="resultbox">
 

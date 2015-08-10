@@ -37,19 +37,47 @@ ID2.Podaci.init = function() {
 };
 
 ID2.Podaci.search = function(q) {
+    ID2.Podaci.results_clear();
     $.getJSON("/podaci/search/", {"q": q}, function(data) {
-
+        console.log("Search results back!");
+        for (i in data.results) {
+            file = data.results[i];
+            ID2.Podaci.add_file_to_results(file);
+        }
     });
 };
 
+ID2.Podaci.searchbox_keyup = function(e) {
+    var code = (e.keyCode ? e.keyCode : e.which);
+    if (ID2.Podaci.searchbox_timer) {
+        clearTimeout(ID2.Podaci.searchbox_timer);
+        console.log("Timer reset");
+    }
+    if (code == 13) {
+        ID2.Podaci.trigger_search();
+    } else {
+        ID2.Podaci.searchbox_timer = setTimeout(ID2.Podaci.trigger_search, 2000);
+    }
+}
+
+ID2.Podaci.trigger_search = function() {
+    console.log("Search triggered");
+    q = $("#searchbox").val();
+    ID2.Podaci.search(q);
+}
+
 ID2.Podaci.get_file_list = function() {
-    $("#resultbox").empty();
+    ID2.Podaci.results_clear();
     $.getJSON("/podaci/file/", function(data) {
         for (i in data.results) {
             file = data.results[i];
             ID2.Podaci.add_file_to_results(file);
         }
     });
+}
+
+ID2.Podaci.results_clear = function() {
+    $("#resultbox").empty();
 }
 
 ID2.Podaci.add_file_to_results = function(file) {
@@ -536,6 +564,7 @@ ID2.Podaci.callbacks = {
     "#extra_metadata_save click": ID2.Podaci.metadata_save,
 
     ".collectionfilters a click": ID2.Podaci.collection_filter_click,
+    "#searchbox keyup": ID2.Podaci.searchbox_keyup,
 };
 
 
