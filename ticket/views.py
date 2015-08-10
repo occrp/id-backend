@@ -19,6 +19,7 @@ from django.template.loader import render_to_string
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 from django.views.generic import TemplateView, UpdateView, FormView
 
 from django.db.models import Count, Sum
@@ -167,13 +168,111 @@ class TicketActionJoin(TicketActionBaseHandler, PodaciMixin):
         else:
             self.perform_invalid_action(form)
 
+def TicketActionAssign(request, pk):
+    ticket = Ticket.objects.get(id=int(pk))
+    tag = ticket.get_tag()
+    user = get_user_model().objects.get(id=request.POST.get('user'))
+    success = False
+
+    if request.user.is_staff or request.user.is_superuser:
+        if user.is_user or user.is_staff or user.is_superuser:
+            ticket.responders.add(user)
+        else:
+            ticket.volunteers.add(user)
+        success = True
+
+    if request.user.is_volunteer:
+        ticket.volunteers.add(request.user)
+        success = True
+
+    if success:
+        perform_ticket_update(ticket, 'Responder Joined', user.display_name + unicode(_(' has joined the ticket')), user)
+        transition_ticket_from_new(ticket)
+        tag.add_user(user, True)
+
+        if request.user.id == user.id:
+            success_message = ugettext("You have successfully been added to the ticket")
+        else:
+            success_message = user.display_name + ugettext(' has been added to the ticket.')
+
+        return JsonResponse({'message': success_message,
+                            'status': 'success'})
+    else:
+
+        if request.user.id == user.id:
+            error_message = ugettext('There was an error adding you to the ticket.')
+        else:
+            error_message = ugettext('There was an error adding the user to the ticket.')
+
+        return JsonResponse({'message': error_message,
+                             'status': 'error'},
+                            status=403)
+
+
+def TicketActionUnassign(request, pk):
+    ticket = Ticket.objects.get(id=int(pk))
+    tag = ticket.get_tag()
+    user = get_user_model().objects.get(id=request.POST.get('user'))
+    success = False
+
+    if user in ticket.responders.all():
+        ticket.responders.remove(user)
+        tag.remove_user(user)
+        perform_ticket_update(ticket, 'Responder Left', user.display_name + ' has left the ticket', user)
+        success = True
+
+    elif user in ticket.volunteers.all():
+        ticket.volunteers.remove(user)
+        tag.remove_user(user)
+        perform_ticket_update(ticket, 'Responder Left', user.display_name + ' has left the ticket', user)
+        success = True
+
+    if success:
+        if request.user.id == user.id:
+            success_message = ugettext("You have successfully been removed from the ticket")
+        else:
+            success_message = user.display_name + ugettext(' has been removed from the ticket.')
+
+        return JsonResponse({'message': success_message,
+                            'status': 'success'})
+    else:
+        if request.user.id == user.id:
+            error_message = ugettext('There was an error removing you from the ticket.')
+        else:
+            error_message = ugettext('There was an error removing the user from the ticket.')
+
+        return JsonResponse({'message': error_message,
+                             'status': 'error'},
+                            status=403)
+
+
 class TicketActionLeave(TicketActionBaseHandler, PodaciMixin):
     form_class = forms.TicketEmptyForm
 
+    def form_valid(self, form):
+
+        if self.request.is_ajax():
+            self.assign_user(form, False)
+
+            if not self.force_invalid:
+                return JsonResponse({'message': ugettext('You have successfully been removed from the ticket.'),
+                                     'status': 'success'})
+            else:
+                return JsonResponse({'message': ugettext('There was an error removing you from the ticket'),
+                                     'status': 'error'},
+                                    status=403)
+
+        else:
+            return super(TicketActionLeave, self).form_valid(form)
+
     def perform_invalid_action(self, form):
+        print form
         messages.error(self.request, _('There was an error removing you from the ticket.'))
 
     def perform_valid_action(self, form):
+        self.assign_user(form, True)
+
+    def assign_user(self, form, is_ajax_call):
         ticket = self.object
 
         tag = ticket.get_tag()
@@ -181,20 +280,23 @@ class TicketActionLeave(TicketActionBaseHandler, PodaciMixin):
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
             tag.remove_user(self.request.user)
-            self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.display_name + unicode(_(' has left the ticket')))
 
-            return super(TicketActionLeave, self).perform_valid_action(form)
+            if is_ajax_call:
+                self.success_messages = [_('You have successfully been removed from the ticket.')]
+                return super(TicketActionLeave, self).perform_valid_action(form)
+
         elif self.request.user in ticket.volunteers.all():
             ticket.volunteers.remove(self.request.user)
             tag.remove_user(self.request.user)
-            self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.display_name + unicode(_(' has left the ticket')))
 
-            return super(TicketActionLeave, self).perform_valid_action(form)
+            if is_ajax_call:
+                self.success_messages = [_('You have successfully been removed from the ticket.')]
+                return super(TicketActionLeave, self).perform_valid_action(form)
         else:
+            print ""
             self.force_invalid = True
-
 
 class TicketActionOpen(TicketActionBaseHandler):
 
