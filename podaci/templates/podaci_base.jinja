@@ -1,19 +1,15 @@
 {% extends "base.jinja" %}
 
 {% block content %}
+
 <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
 
+<!--
 <nav class="navbar navbar-podaci">
     <div class="container-fluid navbar-inner">
         <ul class="nav navbar-nav">
             <li><a href="/podaci/"><i class="icon-file"></i></a></li>
             <li><a class="podaci_upload">Upload</a></li>
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Create</a>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a class="podaci_create_tag">New tag</a></li>
-                    <li><a class="FIXME podaci_create_text_file">New text file</a></li>
-                </ul>
-            </li>
         </ul>
         <ul class="nav navbar-nav pull-right">
             <li><a id="podaci-list-mode-icons"><i class="icon-folder-open"></i></a></li>
@@ -28,6 +24,7 @@
         </ul>
     </div>
 </nav>
+-->
 
 <div class="row">
 	{% block podaci_content %}{% endblock %}
@@ -44,5 +41,5 @@
 	<script type="text/javascript" src="{{ static('bower_components/blueimp-file-upload/js/vendor/jquery.ui.widget.js')}}"></script>
 	<script type="text/javascript" src="{{ static('bower_components/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
 	<script type="text/javascript" src="{{ static('bower_components/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
-	<script type="text/javascript" src="{{ static('js/id2/podaci.js') }}"></script>
+	<script type="text/javascript" src="{{ static('js/id2/id2.podaci.js') }}"></script>
 {% endblock %}

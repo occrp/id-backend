@@ -99,8 +99,13 @@ def convert(in_file):
 
         tchrgs.append(tchrg)
 
-    print "... Got %d ticket charges" % (len(tchrgs))
+    print "... Got %d ticket charges\n" % (len(tchrgs))
 
+    # stats
+    ignored = {
+      'user'   : 0,
+      'ticket' : 0
+    }
     i = 0
     for tchrg in tchrgs:
         i += 1
@@ -119,7 +124,8 @@ def convert(in_file):
                 # did we actually get anything?
                 if not value:
                     # no. break -- this will make the else part of the for not execute
-                    print("+-- ignoring this ticket update due to missing user! you'll find all missing user gkeys in %s" % user_missing_file)
+                    print("\n     +-- ignoring this ticket charge due to missing user! you'll find all missing user gkeys in %s" % user_missing_file)
+                    ignored['user'] += 1
                     break
             # this has to be a Ticket instance
             elif key == "ticket":
@@ -127,7 +133,8 @@ def convert(in_file):
                 # did we actually get anything?
                 if not value:
                     # no. break -- this will make the else part of the for not execute
-                    print("+-- ignoring this ticket update due to missing ticket! you'll find all missing ticket gkeys in %s" % ticket_missing_file)
+                    print("\n     +-- ignoring this ticket charge due to missing ticket! you'll find all missing ticket gkeys in %s" % ticket_missing_file)
+                    ignored['ticket'] += 1
                     break
             elif key in ['created', 'reconciled_date']:
                 #print '     +-- value is: %s' % value
@@ -149,6 +156,9 @@ def convert(in_file):
                 print "Skipping dupe: %s" % (e)
       
     print "\rAdding ticket updates: Done.                                                              "
+    print "\n+-- processed %d individual ticket charges" % (i)
+    print   "    +-- ignored %d ticket charges due to missing user data" % (ignored['user'])
+    print   "    +-- ignored %d ticket charges due to missing ticket data" % (ignored['ticket'])
 
 
 if __name__ == "__main__":

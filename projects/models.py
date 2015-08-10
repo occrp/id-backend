@@ -45,6 +45,7 @@ class Project(models.Model):
             return True
         return False
 
+
 class Story(models.Model):
     project = models.ForeignKey(Project, related_name='stories')
     title = models.CharField(max_length=250)
@@ -66,6 +67,9 @@ class Story(models.Model):
     def get_history(self):
         return self.storystatus_set.all()
 
+    class Meta:
+        ordering = ['-id']
+
 
 class StoryVersion(models.Model):
     story = models.ForeignKey(Story, related_name="versions")
@@ -73,6 +77,9 @@ class StoryVersion(models.Model):
     author = models.ForeignKey(AUTH_USER_MODEL)
     title = models.CharField(max_length=250)
     text = models.TextField()
+
+    class Meta:
+        ordering = ['-timestamp']
 
 
 class StoryTranslation(models.Model):
@@ -85,6 +92,9 @@ class StoryTranslation(models.Model):
     title = models.CharField(max_length=250)
     text = models.TextField()
 
+    class Meta:
+        ordering = ['-timestamp']
+
 
 class StoryStatus(models.Model):
     story = models.ForeignKey(Story)
@@ -93,6 +103,9 @@ class StoryStatus(models.Model):
     deadline = models.DateTimeField()
     status = models.IntegerField(choices=STORYSTATUSES)
     description = models.CharField(max_length=500)
+
+    class Meta:
+        ordering = ['-timestamp']
 
 
 class ProjectPlan(models.Model):
@@ -104,6 +117,9 @@ class ProjectPlan(models.Model):
     responsible_users = models.ManyToManyField(AUTH_USER_MODEL)
     related_stories = models.ManyToManyField(Story)
     order = models.IntegerField()
+
+    class Meta:
+        ordering = ['order']
 
 
 # class CommentModel(models.Model):
