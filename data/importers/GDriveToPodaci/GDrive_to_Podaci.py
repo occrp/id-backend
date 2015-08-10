@@ -192,20 +192,8 @@ def podacify_file(ticket_id, f):
         ticket.tag_id = tag.id
         ticket.save()
 
-    # set permissions, etc
-    if ticket.is_public:
-        tag.make_public() # the tag and related files have to have the same visibility as the ticket
-    tag.allow_staff()     # staff has to have r/w access to all imported tickets, and related files
-
-    # add requester (ro)
-    tag.add_user(ticket.requester, write=False)
-
-    # add volunteers (rw)
-    for v in ticket.volunteers.all():
-        tag.add_user(v, write=True)
-
     # add the metatag
-    tag.parent_add(metatag)
+    # tag.parent_add(metatag)
 
     ### FILE
     # create the file
@@ -222,6 +210,17 @@ def podacify_file(ticket_id, f):
     # add the tags
     pfile.tag_add(tag)
 
+    # set permissions, etc
+    if ticket.is_public:
+        pfile.make_public() # the tag and related files have to have the same visibility as the ticket
+    pfile.allow_staff()     # staff has to have r/w access to all imported tickets, and related files
+
+    # add requester (ro)
+    pfile.add_user(ticket.requester, write=False)
+
+    # add volunteers (rw)
+    for v in ticket.volunteers.all():
+        pfile.add_user(v, write=True)
 
 
 def handle_folder_id(service, ticket_id, folder_id):
@@ -337,7 +336,7 @@ if __name__ == "__main__":
 
     # podaci tickets meta tag
     metatag, created = Tag.objects.get_or_create(name='Tickets_Meta_Tag')
-    metatag.allow_staff()
+    # metatag.allow_staff()
 
     # create the damn gdrive service
     service = create_system_service()
