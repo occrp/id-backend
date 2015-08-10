@@ -118,6 +118,15 @@ class CollectionDetail(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return PodaciCollection.objects.filter(owner=self.request.user)
 
+    # def put(self, request, pk, **kwargs):
+    #    try:
+    #        obj = PodaciCollection.objects.get(pk=pk, owner=self.request.user)
+    #    except:
+    #        print "ERRORRRRRR"
+    #
+    #    add_files = request.data.getlist("add_files[]", [])
+    #    remove_files = request.data.getlist("remove_files[]", [])
+    #    return self.render()
 
 class NoteList(generics.ListCreateAPIView):
     pass

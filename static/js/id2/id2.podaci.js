@@ -1,3 +1,31 @@
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+String.prototype.truncate =
+    function(n){
+        var p  = new RegExp("^.{0," + n + "}[\\S]*", 'g');
+        var re = this.match(p);
+        var l  = re[0].length;
+        var re = re[0].replace(/\s$/,'');
+
+        if (l < this.length) return re + '&hellip;';
+        return this;
+    };
 
 function filesizeformat(fileSizeInBytes) {
     // Purloined from http://stackoverflow.com/questions/10420352/converting-file-size-in-bytes-to-human-readable
@@ -16,6 +44,18 @@ var ID2 = ID2 || {};
 ID2.Podaci = {};
 
 ID2.Podaci.init = function() {
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
     for (cb in ID2.Podaci.callbacks) {
         var item = cb.split(" ");
         var event = item.pop();
@@ -23,23 +63,17 @@ ID2.Podaci.init = function() {
         $(selector).on(event, ID2.Podaci.callbacks[cb]);
     }
 
-    // ID2.Podaci.search("");
-    ID2.Podaci.update_collections();
-
-    ID2.Podaci.tagid = $("#podaci_tag_id").val();
-    ID2.Podaci.fileid = $("#podaci_file_id").val();
     ID2.Podaci.selection = [];
     ID2.Podaci.update_selection();
+    ID2.Podaci.search("");
+    ID2.Podaci.update_collections();
+
     ID2.Podaci.init_fileupload();
-    ID2.Podaci.init_listmode();
-    ID2.Podaci.init_taggedtext();
-    ID2.Podaci.init_edit_tags();
 };
 
 ID2.Podaci.search = function(q) {
     ID2.Podaci.results_clear();
     $.getJSON("/podaci/search/", {"q": q}, function(data) {
-        console.log("Search results back!");
         for (i in data.results) {
             file = data.results[i];
             ID2.Podaci.add_file_to_results(file);
@@ -51,7 +85,6 @@ ID2.Podaci.searchbox_keyup = function(e) {
     var code = (e.keyCode ? e.keyCode : e.which);
     if (ID2.Podaci.searchbox_timer) {
         clearTimeout(ID2.Podaci.searchbox_timer);
-        console.log("Timer reset");
     }
     if (code == 13) {
         ID2.Podaci.trigger_search();
@@ -61,7 +94,6 @@ ID2.Podaci.searchbox_keyup = function(e) {
 }
 
 ID2.Podaci.trigger_search = function() {
-    console.log("Search triggered");
     q = $("#searchbox").val();
     ID2.Podaci.search(q);
 }
@@ -81,16 +113,59 @@ ID2.Podaci.results_clear = function() {
 }
 
 ID2.Podaci.add_file_to_results = function(file) {
+    var tags = $("<span>");
+    tags.addClass("podaci-tags");
+    for (tag in file.tags) {
+        tag = file.tags[tag];
+        tags.append("<a data-tag=\"" + tag.id + "\">" + tag.name + "</a>");
+    }
+
+    var mimeinfo = $("<a data-mimetype=\"" + file.mimetype + "\" class=\"podaci-filetype\">" + file.mimetype.split("/")[1].toUpperCase() + "</a>");
+    mimeinfo.click(function() { ID2.Podaci.search_term_add("mime:" + file.mimetype); })
+
+    var filename = $("<a class=\"podaci-filename\">" + (file.name || file.filename) + "</a>");
+    filename.click = ID2.Podaci.file_doubleclick;
+
+    var selectbar = $("<div class=\"podaci-selectbar\">");
+    selectbar.click(ID2.Podaci.file_click);
+
+    var thumbnail = $("<img src=\"" + file.thumbnail + "\" class=\"podaci-file-thumbnail\"/>");
+    thumbnail.click(ID2.Podaci.file_click);
+
     var fo = $("<div>");
-    fo.hide;
     fo.addClass("podaci-file");
-    fo.append("<img src=\"" + file.thumbnail + "\" class=\"podaci-file-thumbnail\"/>");
-    fo.append("<span class=\"podaci-file-filename\">" + (file.name || file.filename) + "</span>");
+    fo.append(selectbar);
+    fo.append(thumbnail);
+    fo.append("<span class=\"podaci-filesize\">" + filesizeformat(file.size) + "</span>");
+    fo.append(mimeinfo);
+    fo.append(filename);
+    fo.append(tags);
+    fo.append("<div class=\"podaci-description\">" + file.description.truncate(200) + "</div>")
     fo.attr("data-id", file.id);
-    fo.click(ID2.Podaci.file_click);
+
+    fo.attr("draggable", true);
+    fo.on("dragstart", ID2.Podaci.selection_drag);
     $("#resultbox").append(fo);
-    fo.hide().slideDown(600);
 }
+
+ID2.Podaci.selection_drag = function(e) {
+    console.log(e);
+    //e.dataTransfer.setData("text", ID2.Podaci.selection);
+};
+
+ID2.Podaci.selection_drop = function(e) {
+    e.preventDefault();
+    $(e.target).removeClass("drop-on-me");
+    var id = $(e.target).data("collectionid")
+    $.ajax("/podaci/collection/" + id + "/", {
+        type: "PATCH",
+        data: {"files": ID2.Podaci.selection}
+    }).done(function(data) {
+        console.log(data);
+    }).fail(function(data) {
+        console.log(data);
+    });
+};
 
 ID2.Podaci.search_term_add = function(term) {
     var v = $("#searchbox").val();
@@ -105,19 +180,32 @@ ID2.Podaci.search_term_remove = function(term) {
 };
 
 ID2.Podaci.update_collections = function() {
-    console.log("Updating collections");
     $.getJSON("/podaci/collection/", function(data) {
-        console.log("Collections:", data);
         $("#mycollections").empty();
         for (collection in data.results) {
-            collection = data.results[collection];
-            $("#mycollections").append("<li><a data-collection=\"" + collection.id + "\"><i class=\"fa fa-folder\"></i> " + collection.name + "</a></li>");
+            ID2.Podaci.add_collection(data.results[collection]);
         }
     });
 };
 
+ID2.Podaci.add_collection = function(collection) {
+    var col = $("<a data-collectionid=\"" + collection.id + "\" data-collection=\"" + collection.name + "\"><i class=\"fa fa-folder\"></i> " + collection.name + "<span class=\"pull-right badge\">" + collection.files.length + "</span></a>");
+    col.click(ID2.Podaci.collection_filter_click);
+    colli = $("<li>");
+    colli.append(col);
+    col.on("dragover", function(e) {
+        e.preventDefault();
+        col.addClass("drop-on-me");
+    });
+    col.on("dragleave", function(e) {
+        e.preventDefault();
+        col.removeClass("drop-on-me");
+    })
+    colli.on("drop", ID2.Podaci.selection_drop);
+    $("#mycollections").append(colli);
+}
+
 ID2.Podaci.collection_filter_click = function(e) {
-    console.log("FOO!");
     collectionid = $(e.target).data("collection");
     e.preventDefault();
     e.stopPropagation();
@@ -131,47 +219,6 @@ ID2.Podaci.collection_filter_click = function(e) {
 
 }
 
-ID2.Podaci.init_edit_tags = function() {
-    $("#podaci_add_tags_input").select2({
-        ajax: {
-            url: "/podaci/tag/list/?format=json&structure=select2",
-            dataType: 'json',
-            delay: 250,
-            processResults: function (data, page) {
-                return data;
-            }
-        },
-        minimumInputLength: 1,
-    });
-};
-
-ID2.Podaci.init_taggedtext = function() {
-    $('textarea.tagged_text').mentionsInput({
-        onDataRequest: function (mode, query, callback) {
-            $.getJSON('/podaci/search/mention/', { "format": "json", "q": query }, function(data) {
-                callback.call(this, data);
-            });
-        }
-    });
-};
-
-ID2.Podaci.init_listmode = function() {
-    ID2.Podaci.listmode_icons();
-};
-
-ID2.Podaci.listmode_icons = function() {
-    $(".podaci-files-list").hide();
-    $(".podaci-files-icons").show();
-    $("#podaci-list-mode-icons").addClass("active");
-    $("#podaci-list-mode-list").removeClass("active");
-};
-
-ID2.Podaci.listmode_list = function() {
-    $(".podaci-files-icons").hide();
-    $(".podaci-files-list").show();
-    $("#podaci-list-mode-list").addClass("active");
-    $("#podaci-list-mode-icons").removeClass("active");
-};
 
 ID2.Podaci.update_selection = function() {
     var not_selected = _.difference(
@@ -207,10 +254,8 @@ ID2.Podaci.deselect = function(selection) {
 
 ID2.Podaci.select_toggle = function(id) {
     if (ID2.Podaci.selection.indexOf(id) == -1) {
-        console.log("Selecting " + id);
         ID2.Podaci.select([id]);
     } else {
-        console.log("Deselecting " + id);
         ID2.Podaci.deselect([id]);
     }
 };
@@ -234,7 +279,6 @@ ID2.Podaci.select_none = function() {
 
 ID2.Podaci.select_toggle_checkbox = function(e) {
     id = $(e.target).parent().parent().data("id");
-    console.log("Toggling " + id);
     ID2.Podaci.select_toggle(id);
 }
 
@@ -334,18 +378,18 @@ ID2.Podaci.remove_tags = function() {
     $("#podaci_remove_tags_modal").modal();
 };
 
-ID2.Podaci.create_tag_submit = function() {
-    $.post('/podaci/tag/create/',
-           $("#podaci_create_tag_form").serialize(),
-           function(data) {
-        if (data.error) {
-            console.log("ERROR: ", data.error);
-            $("#podaci_create_tag_error").html(data.error);
-            $("#podaci_create_tag_error").show();
-        } else {
-            $("#podaci_create_tag_modal").modal("hide");
-            setTimeout(ID2.Podaci.refresh_tags, 300);
+ID2.Podaci.create_collection_submit = function() {
+    $.post('/podaci/collection/', $("#podaci_create_collection_form").serialize(),
+            function(data) {
+        $("#podaci_create_collection_modal").modal("hide");
+        ID2.Podaci.add_collection(data);
+    }).fail(function(data) {
+        console.log("ERROR: ", data);
+        if (data.responseJSON.non_field_errors[0] == "The fields name, owner must make a unique set.") {
+            $("#podaci_create_collection_error").html("You already have a collection with this name.");
+            $("#podaci_create_collection_error").show();
         }
+
     });
 };
 
@@ -478,7 +522,7 @@ ID2.Podaci.open_in_overview = function() {
 }
 
 ID2.Podaci.file_click = function(e) {
-    id = $(e.target).closest("div").data("id");
+    id = $(e.target).parent().closest("div").data("id");
     e.preventDefault();
     e.stopPropagation();
     if (ID2.Podaci.selection.indexOf(id) == -1) {
@@ -489,7 +533,10 @@ ID2.Podaci.file_click = function(e) {
 };
 
 ID2.Podaci.file_doubleclick = function(e) {
-    window.location = $(e.target).closest("a")[0].href;
+    e.preventDefault();
+    e.stopPropagation();
+    $("#file-modal").modal();
+    // window.location = $(e.target).closest("a")[0].href;
 };
 
 ID2.Podaci.get_user_tags = function(callback) {
@@ -541,10 +588,7 @@ ID2.Podaci.callbacks = {
     ".podaci_upload click": ID2.Podaci.upload_click,
     ".podaci_upload_dropzone drop": ID2.Podaci.upload_click,
     ".podaci_edit_users click": ID2.Podaci.edit_users,
-    ".podaci_add_tags click": ID2.Podaci.add_tags,
-    ".podaci_remove_tags click": ID2.Podaci.remove_tags,
-    ".podaci_create_tag click": ID2.Podaci.create_tag,
-    "#podaci_create_tag_btn click": ID2.Podaci.create_tag_submit,
+    "#podaci_create_collection_btn click": ID2.Podaci.create_collection_submit,
 
     ".podaci_btn_select_all click": ID2.Podaci.select_all,
     ".podaci_btn_select_none click": ID2.Podaci.select_none,
@@ -565,6 +609,8 @@ ID2.Podaci.callbacks = {
 
     ".collectionfilters a click": ID2.Podaci.collection_filter_click,
     "#searchbox keyup": ID2.Podaci.searchbox_keyup,
+    "#collection-new click": function() { $("#podaci_create_collection_modal").modal(); },
+
 };
 
 
