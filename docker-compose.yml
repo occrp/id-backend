@@ -1,6 +1,10 @@
 # docker compose config
 # http://docs.docker.com/compose/
 #
+# this is the production configuration
+# if you're looking for data import config, use dataimports.yml as your
+# compose file
+# 
 id2:
   build: .
   expose:
