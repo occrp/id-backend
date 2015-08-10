@@ -162,7 +162,7 @@ class TicketActionJoin(TicketActionBaseHandler):
             self.success_messages = [_('You have successfully been added to the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Joined', adduser.display_name + unicode(_(' has joined the ticket')))
             self.transition_ticket_from_new(ticket)
-            # tag.add_user(adduser, True)
+            # #tag.add_user(adduser, True)
             return super(TicketActionJoin, self).perform_valid_action(form)
         else:
             self.perform_invalid_action(form)
@@ -187,7 +187,7 @@ def TicketActionAssign(request, pk):
     if success:
         perform_ticket_update(ticket, 'Responder Joined', user.display_name + unicode(_(' has joined the ticket')), user)
         transition_ticket_from_new(ticket)
-        tag.add_user(user, True)
+        #tag.add_user(user, True)
 
         if request.user.id == user.id:
             success_message = ugettext("You have successfully been added to the ticket")
@@ -418,13 +418,13 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
         for i in form_responders:
             if i not in current_responders:
                 u = get_user_model().objects.get(pk=i)
-                tag.add_user(u, True)
+                #tag.add_user(u, True)
                 self.perform_ticket_update(ticket, 'Responder Joined', u.display_name + unicode(_(' has joined the ticket')))
 
         for i in form_volunteers:
             if i not in current_volunteers:
                 u = get_user_model().objects.get(pk=i)
-                tag.add_user(u, True)
+                #tag.add_user(u, True)
                 self.perform_ticket_update(ticket, 'Responder Joined', u.display_name + unicode(_(' has joined the ticket')))
 
         for i in current_responders:
