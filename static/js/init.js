@@ -7,7 +7,7 @@
     DateTime.init();
     Select2Field.init();
     RelationshipTypeField.init();
-    $('select').select2({width: '220px'});
+    $('select:not(.not_select2)').select2({width: '220px'});
     ExternalDBs.init();
   };
 
