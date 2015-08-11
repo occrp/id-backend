@@ -216,13 +216,13 @@ def TicketActionUnassign(request, pk):
 
     if user in ticket.responders.all():
         ticket.responders.remove(user)
-        tag.remove_user(user)
+        #tag.remove_user(user)
         perform_ticket_update(ticket, 'Responder Left', user.display_name + ' has left the ticket', user)
         success = True
 
     elif user in ticket.volunteers.all():
         ticket.volunteers.remove(user)
-        tag.remove_user(user)
+        #tag.remove_user(user)
         perform_ticket_update(ticket, 'Responder Left', user.display_name + ' has left the ticket', user)
         success = True
 
@@ -278,7 +278,7 @@ class TicketActionLeave(TicketActionBaseHandler):
 
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
-            # tag.remove_user(self.request.user)
+            # #tag.remove_user(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.display_name + unicode(_(' has left the ticket')))
 
@@ -430,13 +430,13 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
         for i in current_responders:
             if i not in form_responders:
                 u = get_user_model().objects.get(pk=i)
-                tag.remove_user(u)
+                #tag.remove_user(u)
                 self.perform_ticket_update(ticket, 'Responder Left', u.display_name + unicode(_(' has left the ticket')))
 
         for i in current_volunteers:
             if i not in form_volunteers:
                 u = get_user_model().objects.get(pk=i)
-                tag.remove_user(u)
+                #tag.remove_user(u)
                 self.perform_ticket_update(ticket, 'Responder Left', u.display_name + unicode(_(' has left the ticket')))
 
         return super(TicketAdminSettingsHandler, self).form_valid(form)
@@ -629,8 +629,13 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
                                                                      self.url_args),
             'page_number': self.page_number,
             'ticket_figures': self.get_ticket_list_figures(),
-            'filter_terms': self.filter_terms
+            'filter_terms': self.filter_terms,
+            'possible_assignees': get_user_model().objects.filter(Q(is_superuser=True) |
+                                                                  Q(is_staff=True) |
+                                                                  Q(is_volunteer=True))
         }
+
+        print context['possible_assignees']
 
         return context
 
