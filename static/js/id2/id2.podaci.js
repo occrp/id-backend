@@ -156,11 +156,13 @@ ID2.Podaci.selection_drag = function(e) {
 ID2.Podaci.selection_drop = function(e) {
     e.preventDefault();
     $(e.target).removeClass("drop-on-me");
+    var targetli = $(e.target).closest("li");
     var id = $(e.target).data("collectionid")
     $.ajax("/podaci/collection/" + id + "/", {
         type: "PATCH",
-        data: {"files": ID2.Podaci.selection}
+        data: {"add_files": ID2.Podaci.selection}
     }).done(function(data) {
+        ID2.Podaci.add_collection(data, targetli);
         console.log(data);
     }).fail(function(data) {
         console.log(data);
@@ -188,10 +190,15 @@ ID2.Podaci.update_collections = function() {
     });
 };
 
-ID2.Podaci.add_collection = function(collection) {
+ID2.Podaci.add_collection = function(collection, targetli) {
     var col = $("<a data-collectionid=\"" + collection.id + "\" data-collection=\"" + collection.name + "\"><i class=\"fa fa-folder\"></i> " + collection.name + "<span class=\"pull-right badge\">" + collection.files.length + "</span></a>");
     col.click(ID2.Podaci.collection_filter_click);
-    colli = $("<li>");
+    if (targetli) {
+        colli = targetli;
+        colli.empty();
+    } else {
+        colli = $("<li>");
+    }
     colli.append(col);
     col.on("dragover", function(e) {
         e.preventDefault();
@@ -201,8 +208,10 @@ ID2.Podaci.add_collection = function(collection) {
         e.preventDefault();
         col.removeClass("drop-on-me");
     })
-    colli.on("drop", ID2.Podaci.selection_drop);
-    $("#mycollections").append(colli);
+    col.on("drop", ID2.Podaci.selection_drop);
+    if (!targetli) {
+        $("#mycollections").append(colli);
+    }
 }
 
 ID2.Podaci.collection_filter_click = function(e) {
