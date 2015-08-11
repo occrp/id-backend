@@ -37,7 +37,7 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
         textterms = []
         tags = []
         other_terms = Q()
-        collections = None
+        collections = []
 
         for term in terms:
             if term.startswith("#"):
@@ -46,16 +46,16 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
             elif term.startswith("in:"):
                 collection = term.split("in:")[1]
                 if collection == "all":
-                    collections = None
+                    collections = []
                 elif collection == "mine":
-                    collections = PodaciCollection.objects.filter(
-                        owner=request.user)
+                    collections.extend(PodaciCollection.objects.filter(
+                        owner=self.request.user))
                 elif collection == "shared":
-                    collections = PodaciCollection.objects.filter(
-                        owner=request.user, shared=True)
+                    collections.extend(PodaciCollection.objects.filter(
+                        owner=self.request.user, shared=True))
                 else:
-                    collections = PodaciCollection.objects.filter(
-                        owner=request.user, name=collection)
+                    collections.extend(PodaciCollection.objects.filter(
+                        owner=self.request.user, name=collection.replace("+", " ")))
             elif term.startswith("mime:"):
                 mime = term.split("mime:")[1]
                 other_terms |= Q(mimetype=mime)
@@ -82,8 +82,8 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
 
         search_terms = base_terms & text_terms & tag_terms & other_terms
 
-        if collections:
-            search_terms &= Q(collections__in=collections)
+        for col in collections:
+            search_terms &= Q(collections__in=[col])
 
         print search_terms
         return PodaciFile.objects.filter(search_terms)
@@ -118,15 +118,35 @@ class CollectionDetail(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return PodaciCollection.objects.filter(owner=self.request.user)
 
-    # def put(self, request, pk, **kwargs):
-    #    try:
-    #        obj = PodaciCollection.objects.get(pk=pk, owner=self.request.user)
-    #    except:
-    #        print "ERRORRRRRR"
-    #
-    #    add_files = request.data.getlist("add_files[]", [])
-    #    remove_files = request.data.getlist("remove_files[]", [])
-    #    return self.render()
+    def patch(self, request, pk, **kwargs):
+        try:
+            collection = PodaciCollection.objects.get(pk=pk,
+                            owner=self.request.user)
+        except:
+            print "ERRORRRRRR"
+
+        add_files = request.data.getlist("add_files[]", [])
+        remove_files = request.data.getlist("remove_files[]", [])
+        for f in add_files:
+            try:
+                file = PodaciFile.objects.get(id=f)
+                if file.has_permission(self.request.user):
+                    collection.file_add(file)
+            except Exception, e:
+                print "Error:", e
+                continue
+
+        for f in remove_files:
+            try:
+                file = PodaciFile.objects.get(id=f)
+                if file.has_permission(self.request.user):
+                    collection.file_remove(file)
+            except Exception, e:
+                print "Error:", e
+                continue
+
+        return super(CollectionDetail, self).patch(request, pk, **kwargs)
+
 
 class NoteList(generics.ListCreateAPIView):
     pass
