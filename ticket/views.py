@@ -35,6 +35,88 @@ from ticket import constants
 
 from podaci.models import PodaciTag, PodaciFile
 
+class AdminOustandingChargesList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
+    template_name = 'tickets/admin/admin_charges_outstanding.jinja'
+    page_name = "Outstanding Charges"
+    ticket_list_name = ""
+    charges = []
+    page_number = 1
+    page_size = 10
+    page_buttons = 5
+    page_buttons_padding = 2
+    paginator = None
+    url_name = 'ticket_admin_outstanding_charges'
+    url_args = {}
+    CONTEXT_ITEMS_KEY = "tickets"
+    CONTEXT_TITLE_KEY = "page_name"
+
+    def get_context_data(self, **kwargs):
+        self.filter_terms = self.request.GET.get("filter", '')
+
+        if 'page' in kwargs:
+            self.page_number = int(kwargs.pop('page'))
+            if self.page_number is None:
+                self.page_number = 1
+
+        context = {
+            'page_name': self.page_name,
+            'charges': self.get_paged_charges(self.page_number),
+            'paginator_object': self.create_pretty_pagination_object(self.paginator,
+                                                                     self.page_number,
+                                                                     self.page_buttons,
+                                                                     self.page_buttons_padding,
+                                                                     self.url_name,
+                                                                     self.url_args),
+            'page_number': self.page_number,
+            'ticket_figures': self.get_ticket_list_figures(),
+            'filter_terms': self.filter_terms
+        }
+
+        return context
+
+    def get_ticket_list_figures(self):
+        ticket_figures = {
+            'all_open': TicketListAllOpen().get_ticket_set(self.request.user).count(),
+            'all_closed': TicketListAllClosed().get_ticket_set(self.request.user).count(),
+            'my_open': TicketListMyOpen().get_ticket_set(self.request.user).count(),
+            'my_closed': TicketListMyClosed().get_ticket_set(self.request.user).count(),
+            'my_assigned': TicketListMyAssigned().get_ticket_set(self.request.user).count(),
+            'my_assigned_closed': TicketListMyAssignedClosed().get_ticket_set(self.request.user).count(),
+            'public': TicketListPublic().get_ticket_set(self.request.user).count(),
+            'public_closed': TicketListPublicClosed().get_ticket_set(self.request.user).count(),
+            'unassigned': TicketListUnassigned().get_ticket_set(self.request.user).count(),
+            'upcoming_deadline': TicketListUpcomingDeadline().get_ticket_set(self.request.user).count(),
+            'oustanding_charges': AdminOustandingChargesList().get_charges_set().count()
+        }
+
+        return ticket_figures
+
+    def get_paged_charges(self, page_number):
+        self.set_paginator_object()
+
+        try:
+            paged_charges = self.paginator.page(page_number)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            paged_charges = self.paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            paged_charges = self.paginator.page(self.paginator.num_pages)
+
+        return paged_charges
+
+    def get_charges_set(self):
+        return TicketCharge.objects.filter(reconciled=False)
+
+    def set_paginator_object(self):
+        charges_set = self.get_charges_set()
+
+        self.paginator = Paginator(charges_set, self.page_size)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AdminOustandingChargesList, self).dispatch(*args, **kwargs)
+
 class CompanyTicketUpdate(TicketUpdateMixin, UpdateView):
     model = CompanyTicket
     template_name = 'tickets/request.jinja'
@@ -265,7 +347,6 @@ class TicketActionLeave(TicketActionBaseHandler):
             return super(TicketActionLeave, self).form_valid(form)
 
     def perform_invalid_action(self, form):
-        print form
         messages.error(self.request, _('There was an error removing you from the ticket.'))
 
     def perform_valid_action(self, form):
@@ -295,7 +376,6 @@ class TicketActionLeave(TicketActionBaseHandler):
                 self.success_messages = [_('You have successfully been removed from the ticket.')]
                 return super(TicketActionLeave, self).perform_valid_action(form)
         else:
-            print ""
             self.force_invalid = True
 
 class TicketActionOpen(TicketActionBaseHandler):
@@ -520,7 +600,6 @@ class TicketDetail(TemplateView):
         elif hasattr(self.ticket, "otherticket"):
             self.ticket = self.ticket.otherticket
         else:
-            print dir(self.ticket)
             raise ValueError("Unknown ticket type")
 
         if not self.ticket:
@@ -635,7 +714,6 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
                                                                   Q(is_volunteer=True))
         }
 
-        print context['possible_assignees']
 
         return context
 
@@ -650,7 +728,8 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
             'public': TicketListPublic().get_ticket_set(self.request.user).count(),
             'public_closed': TicketListPublicClosed().get_ticket_set(self.request.user).count(),
             'unassigned': TicketListUnassigned().get_ticket_set(self.request.user).count(),
-            'upcoming_deadline': TicketListUpcomingDeadline().get_ticket_set(self.request.user).count()
+            'upcoming_deadline': TicketListUpcomingDeadline().get_ticket_set(self.request.user).count(),
+            'oustanding_charges': AdminOustandingChargesList().get_charges_set().count()
         }
 
         return ticket_figures

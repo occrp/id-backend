@@ -70,6 +70,6 @@ urlpatterns = patterns('',
     url(r'^fees/customer/$',         perm('staff', requests.AdminCustomerChargesHandler), name='ticket_admin_customer_charges'),
     url(r'^fees/(?P<charge_key>.+)/reconcile/$',
                                      perm('staff', requests.AdminChargeReconcileInlineHandler), name='ticket_admin_reconcile_charges'),
-    url(r'^fees/outstanding/$',      perm('staff', requests.AdminOutstandingChargesHandler), name='ticket_admin_outstanding_charges'),
-
+    url(r'^fees/outstanding/$',      perm('staff', ticket.views.AdminOustandingChargesList), name='ticket_admin_outstanding_charges'),
+    url(r'^fees/outstanding/(?P<page>\d+)/$', perm('staff', ticket.views.AdminOustandingChargesList), name='ticket_admin_outstanding_charges'),
 )
