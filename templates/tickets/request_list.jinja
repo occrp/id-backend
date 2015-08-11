@@ -1,5 +1,8 @@
 {% extends "tickets/request_base.jinja" %}
 
+{% block before_content %}
+    <link rel="stylesheet" href="{{ static('css/jquery.dropdown.min.css') }}"/>
+{% endblock %}
 
 
 {% block inner_content %}
@@ -41,7 +44,22 @@
 
                     <a style="{% if user not in ticket.actors() %}display: none;{% endif %}" class="btn btn-small leave_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-times"></i> Leave</a>
                 {% endif %}
-                {% if user.is_staff %}<a class="btn btn-small"><i class="fa fa-plus"></i> Assign</a>{% endif %}
+                {% if user.is_staff %}
+                    <a class="btn btn-small" data-jq-dropdown="#jq-dropdown-{{ ticket.id }}"><i class="fa fa-plus"></i> Assign</a>
+                    <div id="jq-dropdown-{{ ticket.id }}" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-right">
+                        <div class="jq-dropdown-panel">
+                            <select class="not_select2" data-key="{{ticket.id}}">
+                                    <option value="0">--- select a user</option>
+                                {% for possible_assignee in possible_assignees %}
+                                    <option value="{{ possible_assignee.id }}" {% if possible_assignee in ticket.actors(false) %}
+                                        style="display: none;"
+                                    {% endif %}>{{ possible_assignee.display_name }}</option>
+                                {% endfor %}
+                            </select>
+                            <a class="add_assignee_btn btn btn-small" ><i class="fa fa-plus"></i> Add</a>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
 
         </div>
@@ -58,4 +76,9 @@
             {% trans %}No open requests found.{% endtrans %}
         </div>
     {% endif %}
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+    <script type="text/javascript" src="{{ static('js/jquery.dropdown.min.js') }}"></script>
 {% endblock %}

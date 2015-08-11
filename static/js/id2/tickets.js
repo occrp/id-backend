@@ -15,6 +15,18 @@ ID2.Tickets.buttonHandlers = function() {
         ID2.Tickets.leave_user($(this).data('key'), $(this).data('user'), $(this).data('display-name'), $(this));
     });
 
+    $(".add_assignee_btn").off("click");
+    $(".add_assignee_btn").on("click", function(event) {
+        select = $(this).parent().find('select')
+        event.preventDefault();
+
+        if($(select).find('option:selected').val() == 0) {
+            return;
+        }
+
+        ID2.Tickets.assign_user($(select).data('key'), $(select).find('option:selected').val(), $(select).find('option:selected').text(), $(select));
+    });
+
     $(".join_btn").off("click");
     $(".join_btn").on("click", function(event) {
         event.preventDefault();
@@ -41,10 +53,56 @@ ID2.Tickets.createAssigneeSpan = function(ticket, user, display_name) {
     </span>';
 }
 
-ID2.Tickets.assign_user = function(ticket, user, callback) {
-    $.post('/ticket/' + ticket + '/join/', {'user': user}, function(data) {
-        if (callback) {
-            callback(data);
+ID2.Tickets.updateAssigneeSelect = function(working_element, user, visible) {
+    found_visible = false;
+    working_element.find('option').each(function(e) {
+        if($(this).val() == user) {
+            if(visible) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        }
+
+        if($(this).val() == 0) {
+            $(this).attr("selected", "selected")
+        } else {
+            $(this).removeAttr("selected");
+        }
+    });
+
+}
+
+// ID2.Tickets.assign_user = function(ticket, user, callback) {
+//     $.post('/ticket/' + ticket + '/join/', {'user': user}, function(data) {
+//         if (callback) {
+//             callback(data);
+//         }
+//     });
+// }
+
+ID2.Tickets.assign_user = function(ticket, user, display_name, working_element) {
+    $.ajax({
+        url: '/ticket/' + ticket + '/assign/',
+        type: 'POST',
+        data: {'user': user},
+        success: function(data) {
+            ID2.Tickets.updateAssigneeSelect(working_element, user, false);
+
+            if(user == current_user_id) {
+                leave_button = working_element.parent().parent().parent().find('.leave_btn');
+                leave_button.css('display', '');
+                join_button = leave_button.parent().find('.join_btn');
+                join_button.css('display', 'none');
+            }
+
+            working_element.parent().parent().parent().parent().find('span').first().after(
+                ID2.Tickets.createAssigneeSpan(ticket, user, display_name)
+            );
+            ID2.Tickets.buttonHandlers();
+        },
+        error: function(data) {
+            Alert.show(data.responseJSON.message, 'error', $('#alerts'), $('body'));
         }
     });
 }
@@ -55,6 +113,8 @@ ID2.Tickets.unassign_user = function(ticket, user, removable_element) {
         type: 'POST',
         data: {'user': user},
         success: function(data) {
+
+            ID2.Tickets.updateAssigneeSelect(removable_element.parent().find('.pull-right').find('select'), user, true);
 
             if(user == current_user_id) {
                 leave_button = removable_element.parent().find('.pull-right').find('.leave_btn');
@@ -77,6 +137,9 @@ ID2.Tickets.join_user = function(ticket, user, display_name, working_element) {
         type: 'POST',
         data: {'user': user},
         success: function(data) {
+
+            ID2.Tickets.updateAssigneeSelect(working_element.parent().find('select'), user, false);
+
             working_element.css('display', 'none');
             leave_button = working_element.parent().find('.leave_btn');
             leave_button.css('display', '');
@@ -98,6 +161,9 @@ ID2.Tickets.leave_user = function(ticket, user, display_name, working_element) {
         type: 'POST',
         data: {'user': user},
         success: function(data) {
+
+            ID2.Tickets.updateAssigneeSelect(working_element.parent().find('select'), user, true);
+
             working_element.css('display', 'none');
             join_button = working_element.parent().find('.join_btn');
             join_button.css('display', '');
@@ -110,26 +176,6 @@ ID2.Tickets.leave_user = function(ticket, user, display_name, working_element) {
         },
         error: function(data) {
             Alert.show(data.responseJSON.message, 'error', $('#alerts'), $('body'));
-        }
-    });
-}
-
-ID2.Tickets.join = function(e) {
-    ticket = $(this).data('key')
-
-    $.ajax({
-        url: "/ticket/" + ticket + "/leave/",
-        type: "POST",
-        data: {},
-        success: function(data) {
-            if(data.status != 'success') {
-                alert(data.message);
-            } else {
-                alert(data.message);
-            }
-        },
-        error: function(data) {
-            alert(data.message);
         }
     });
 }
