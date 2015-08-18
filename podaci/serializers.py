@@ -11,7 +11,7 @@ class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = PodaciFile
         # depth = 1
-        fields = ('id', 'name', 'title', 'date_added', 'created_by', 'filename', 'url', 'sha256', 'size', 'mimetype', 'description', 'tags', 'collections', 'thumbnail')
+        fields = ('id', 'name', 'title', 'date_added', 'created_by', 'filename', 'url', 'sha256', 'size', 'mimetype', 'description', 'tags', 'collections', 'thumbnail', 'public_read', 'staff_read')
 
 class CollectionSerializer(serializers.ModelSerializer):
     # FIXME: This needs to be unhidden before Sharing is implemented
