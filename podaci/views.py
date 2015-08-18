@@ -55,7 +55,7 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
                         owner=self.request.user, shared=True))
                 else:
                     collections.extend(PodaciCollection.objects.filter(
-                        owner=self.request.user, name=collection.replace("+", " ")))
+                        owner=self.request.user, name=collection.replace("_", " ")))
             elif term.startswith("mime:"):
                 mime = term.split("mime:")[1]
                 other_terms |= Q(mimetype=mime)
