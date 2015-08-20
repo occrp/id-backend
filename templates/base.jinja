@@ -127,7 +127,7 @@
 
 <div id="content">
     <div class="before-content">
-        {% if messages and ticket_detail_view is not defined %}
+        {% if ticket_detail_view is not defined %}
         <div id="alerts" class="container">
                 {% for message in messages %}
                     <div class="alert alert-block alert-{{ message.tags }}">
@@ -191,6 +191,8 @@
         _.templateSettings = {
             interpolate: /\{\{(.+?)\}\}/g
         };
+
+        current_user_id = {{ user.id }};
     </script>
 
     <script type="text/javascript" src="{{ static("js/widgets.js") }}"></script>

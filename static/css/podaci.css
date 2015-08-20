@@ -53,17 +53,83 @@ li > a.FIXME {
 	overflow: auto;
 }
 
-.podaci-files li.podaci-file {
+.podaci-file-card {
+	position: relative;
 	display: inline-block;
-	width:	200px;
+	width:	160px;
+	height: 220px;
+	margin-right: 10px;
+	margin-bottom: 6px;
+	border: 1px solid #ccc;
+	box-shadow: 2px 2px 4px;
 	text-align: center;
-	padding-top: 20px;
-	overflow-x: hidden;
+	overflow: hidden;
+	cursor: pointer;
 }
 
-.podaci-icon-big {
-	font-size: 64px;
-	min-width: 200px;
+.podaci-file {
+	display: block;
+	border-bottom: 1px solid #ccc;
+	padding: 10px;
+	padding-top: 16px;
+	height: 100px;
+	overflow: hidden;
+}
+
+.podaci-file .podaci-filename {
+	font-size: 140%;
+	cursor: pointer;
+}
+
+.podaci-file .podaci-filetype {
+	padding: 3px;
+	float: right;
+}
+
+.podaci-file .podaci-filesize {
+	padding: 3px;
+	float: right;
+}
+
+.podaci-file .podaci-selectbar {
+	float: left;
+	min-width: 12px;
+	min-height: 100px;
+	background: #ccc;
+	cursor: pointer;
+}
+
+.podaci-file.podaci-file-selected  > .podaci-selectbar {
+	background: #f00;
+}
+
+.podaci-file .podaci-tags {
+	display: block;
+}
+
+.podaci-file .podaci-tags a {
+	display: inline-block;
+	padding-right: 8px;
+}
+
+.podaci-file .podaci-tags a::before {
+	content: "#";
+	color: #f00;
+}
+
+.podaci-file .podaci-description {
+	display: block;
+}
+
+.podaci-file .podaci-file-thumbnail {
+	float: left;
+	width: 100px;
+	height: 100px;
+	padding: 0px;
+	margin: 0px;
+	overflow: hidden;
+	vertical-align: top;
+	cursor: pointer;
 }
 
 .progress-bar-success {
@@ -82,7 +148,25 @@ li > a.FIXME {
 
 .podaci-file-selected {
 	background: #ddd;
-	border-radius: 15px;
+}
+
+.podaci-file-tools {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	display: none;
+	background: #fff;
+	border-radius: 20px;
+	padding: 6px;
+	margin: 4px;
+	width: 20px;
+	height: 20px;
+	vertical-align: middle;
+	font-size: 20px;
+}
+
+.podaci-file-selected > .podaci-file-tools {
+	display: block;
 }
 
 .podaci-file-public > a {
@@ -114,4 +198,98 @@ li > a.FIXME {
 
 .note_text {
 	font-size: 120%;
+}
+
+.collections, .searchbox, .toolbox {
+	box-shadow: 5px 5px 20px;
+}
+
+.collections {
+	position: fixed;
+}
+
+.collections #collection-new {
+	display: inline-block;
+	padding: 10px;
+}
+
+.collectionfilters ul {
+	padding: 0px;
+	margin: 0px;
+}
+
+.collectionfilters ul li {
+	display: block;
+	font-size: 120%;
+}
+
+.collectionfilters ul li a {
+	padding: 15px;
+	display: block;
+}
+
+.collectionfilters ul li a:hover, .collections a:hover {
+	text-decoration: none;
+	background: #eee;
+	cursor: pointer;
+}
+
+.collectionfilters ul li a.selected {
+	border-right: 12px solid #f00;
+	background-color: #ffe9e9;
+}
+
+.collectionfilters ul li ul li {
+	font-size: 90%;
+}
+
+.collectionfilters ul li ul li a {
+	padding: 10px;
+	padding-left: 25px;
+}
+
+div.podacitools {
+	display: block;
+	margin-bottom: 40px;
+	margin-left: 20px;
+	margin-top: 0px;
+}
+
+input.searchbox {
+	box-shadow: 5px 5px 20px;
+	max-width: 500px;
+	width: 100%;
+	font-size: 120%;
+	padding: 16px;
+	border-radius: 15px;
+	overflow: hidden;
+	border: none;
+}
+
+div.toolbox {
+	position: relative;
+	display: inline-block;
+	margin-left: 30px;
+	height: 30px;
+	margin-top: 0px;
+	top: -10px;
+}
+
+input.searchbox:focus {
+	box-shadow: 5px 5px 20px;
+}
+
+.resultbox {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 980px;
+}
+
+
+.in {
+	display: block;
+}
+
+.drop-on-me {
+	background-color: #f99;
 }

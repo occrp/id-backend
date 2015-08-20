@@ -50,16 +50,24 @@ class TicketUpdateMixin(object):
             return reverse_lazy(self.redirect)
 
     def perform_ticket_update(self, ticket, update_type, comment):
-        ticket_update = TicketUpdate(ticket=ticket)
-        ticket_update.author = self.request.user
-        ticket_update.update_type = constants.get_choice(update_type, constants.TICKET_UPDATE_TYPES)
-        ticket_update.comment = comment
-        ticket_update.save()
+        perform_ticket_update(ticket, update_type, comment, self.request.user)
 
     def transition_ticket_from_new(self, ticket):
-        if ticket.status == constants.get_choice('New', constants.TICKET_STATUS):
-            ticket.status = constants.get_choice('In Progress', constants.TICKET_STATUS)
-            ticket.save()
+        transition_ticket_from_new(ticket)
+
+# stand alone
+def perform_ticket_update(ticket, update_type, comment, user):
+    ticket_update = TicketUpdate(ticket=ticket)
+    ticket_update.author = user
+    ticket_update.update_type = constants.get_choice(update_type, constants.TICKET_UPDATE_TYPES)
+    ticket_update.comment = comment
+    ticket_update.save()
+
+# stand alone
+def transition_ticket_from_new(ticket):
+    if ticket.status == constants.get_choice('New', constants.TICKET_STATUS):
+        ticket.status = constants.get_choice('In Progress', constants.TICKET_STATUS)
+        ticket.save()
 
 class TicketCreateMixin(object):
 
