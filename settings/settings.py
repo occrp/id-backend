@@ -166,7 +166,7 @@ LANGUAGES = (
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES':
         ('rest_framework.permissions.IsAuthenticated',),
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 30
 }
 
 from django.conf.global_settings import DATE_INPUT_FORMATS

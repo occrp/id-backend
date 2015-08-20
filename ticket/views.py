@@ -19,6 +19,7 @@ from django.template.loader import render_to_string
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 from django.views.generic import TemplateView, UpdateView, FormView
 
 from django.db.models import Count, Sum
@@ -33,6 +34,88 @@ from ticket import forms
 from ticket import constants
 
 from podaci.models import PodaciTag, PodaciFile
+
+class AdminOustandingChargesList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
+    template_name = 'tickets/admin/admin_charges_outstanding.jinja'
+    page_name = "Outstanding Charges"
+    ticket_list_name = ""
+    charges = []
+    page_number = 1
+    page_size = 10
+    page_buttons = 5
+    page_buttons_padding = 2
+    paginator = None
+    url_name = 'ticket_admin_outstanding_charges'
+    url_args = {}
+    CONTEXT_ITEMS_KEY = "tickets"
+    CONTEXT_TITLE_KEY = "page_name"
+
+    def get_context_data(self, **kwargs):
+        self.filter_terms = self.request.GET.get("filter", '')
+
+        if 'page' in kwargs:
+            self.page_number = int(kwargs.pop('page'))
+            if self.page_number is None:
+                self.page_number = 1
+
+        context = {
+            'page_name': self.page_name,
+            'charges': self.get_paged_charges(self.page_number),
+            'paginator_object': self.create_pretty_pagination_object(self.paginator,
+                                                                     self.page_number,
+                                                                     self.page_buttons,
+                                                                     self.page_buttons_padding,
+                                                                     self.url_name,
+                                                                     self.url_args),
+            'page_number': self.page_number,
+            'ticket_figures': self.get_ticket_list_figures(),
+            'filter_terms': self.filter_terms
+        }
+
+        return context
+
+    def get_ticket_list_figures(self):
+        ticket_figures = {
+            'all_open': TicketListAllOpen().get_ticket_set(self.request.user).count(),
+            'all_closed': TicketListAllClosed().get_ticket_set(self.request.user).count(),
+            'my_open': TicketListMyOpen().get_ticket_set(self.request.user).count(),
+            'my_closed': TicketListMyClosed().get_ticket_set(self.request.user).count(),
+            'my_assigned': TicketListMyAssigned().get_ticket_set(self.request.user).count(),
+            'my_assigned_closed': TicketListMyAssignedClosed().get_ticket_set(self.request.user).count(),
+            'public': TicketListPublic().get_ticket_set(self.request.user).count(),
+            'public_closed': TicketListPublicClosed().get_ticket_set(self.request.user).count(),
+            'unassigned': TicketListUnassigned().get_ticket_set(self.request.user).count(),
+            'upcoming_deadline': TicketListUpcomingDeadline().get_ticket_set(self.request.user).count(),
+            'oustanding_charges': AdminOustandingChargesList().get_charges_set().count()
+        }
+
+        return ticket_figures
+
+    def get_paged_charges(self, page_number):
+        self.set_paginator_object()
+
+        try:
+            paged_charges = self.paginator.page(page_number)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            paged_charges = self.paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            paged_charges = self.paginator.page(self.paginator.num_pages)
+
+        return paged_charges
+
+    def get_charges_set(self):
+        return TicketCharge.objects.filter(reconciled=False)
+
+    def set_paginator_object(self):
+        charges_set = self.get_charges_set()
+
+        self.paginator = Paginator(charges_set, self.page_size)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AdminOustandingChargesList, self).dispatch(*args, **kwargs)
 
 class CompanyTicketUpdate(TicketUpdateMixin, UpdateView):
     model = CompanyTicket
@@ -161,39 +244,139 @@ class TicketActionJoin(TicketActionBaseHandler):
             self.success_messages = [_('You have successfully been added to the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Joined', adduser.display_name + unicode(_(' has joined the ticket')))
             self.transition_ticket_from_new(ticket)
-            tag.add_user(adduser, True)
+            # #tag.add_user(adduser, True)
             return super(TicketActionJoin, self).perform_valid_action(form)
         else:
             self.perform_invalid_action(form)
 
+def TicketActionAssign(request, pk):
+    ticket = Ticket.objects.get(id=int(pk))
+    tag = ticket.get_tag()
+    user = get_user_model().objects.get(id=request.POST.get('user'))
+    success = False
+
+    if request.user.is_staff or request.user.is_superuser:
+        if user.is_user or user.is_staff or user.is_superuser:
+            ticket.responders.add(user)
+        else:
+            ticket.volunteers.add(user)
+        success = True
+
+    if request.user.is_volunteer:
+        ticket.volunteers.add(request.user)
+        success = True
+
+    if success:
+        perform_ticket_update(ticket, 'Responder Joined', user.display_name + unicode(_(' has joined the ticket')), user)
+        transition_ticket_from_new(ticket)
+        #tag.add_user(user, True)
+
+        if request.user.id == user.id:
+            success_message = ugettext("You have successfully been added to the ticket")
+        else:
+            success_message = user.display_name + ugettext(' has been added to the ticket.')
+
+        return JsonResponse({'message': success_message,
+                            'status': 'success'})
+    else:
+
+        if request.user.id == user.id:
+            error_message = ugettext('There was an error adding you to the ticket.')
+        else:
+            error_message = ugettext('There was an error adding the user to the ticket.')
+
+        return JsonResponse({'message': error_message,
+                             'status': 'error'},
+                            status=403)
+
+
+def TicketActionUnassign(request, pk):
+    ticket = Ticket.objects.get(id=int(pk))
+    tag = ticket.get_tag()
+    user = get_user_model().objects.get(id=request.POST.get('user'))
+    success = False
+
+    if user in ticket.responders.all():
+        ticket.responders.remove(user)
+        #tag.remove_user(user)
+        perform_ticket_update(ticket, 'Responder Left', user.display_name + ' has left the ticket', user)
+        success = True
+
+    elif user in ticket.volunteers.all():
+        ticket.volunteers.remove(user)
+        #tag.remove_user(user)
+        perform_ticket_update(ticket, 'Responder Left', user.display_name + ' has left the ticket', user)
+        success = True
+
+    if success:
+        if request.user.id == user.id:
+            success_message = ugettext("You have successfully been removed from the ticket")
+        else:
+            success_message = user.display_name + ugettext(' has been removed from the ticket.')
+
+        return JsonResponse({'message': success_message,
+                            'status': 'success'})
+    else:
+        if request.user.id == user.id:
+            error_message = ugettext('There was an error removing you from the ticket.')
+        else:
+            error_message = ugettext('There was an error removing the user from the ticket.')
+
+        return JsonResponse({'message': error_message,
+                             'status': 'error'},
+                            status=403)
+
+
 class TicketActionLeave(TicketActionBaseHandler):
     form_class = forms.TicketEmptyForm
+
+    def form_valid(self, form):
+
+        if self.request.is_ajax():
+            self.assign_user(form, False)
+
+            if not self.force_invalid:
+                return JsonResponse({'message': ugettext('You have successfully been removed from the ticket.'),
+                                     'status': 'success'})
+            else:
+                return JsonResponse({'message': ugettext('There was an error removing you from the ticket'),
+                                     'status': 'error'},
+                                    status=403)
+
+        else:
+            return super(TicketActionLeave, self).form_valid(form)
 
     def perform_invalid_action(self, form):
         messages.error(self.request, _('There was an error removing you from the ticket.'))
 
     def perform_valid_action(self, form):
+        self.assign_user(form, True)
+
+    def assign_user(self, form, is_ajax_call):
         ticket = self.object
 
         tag = ticket.get_tag()
 
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
-            tag.remove_user(self.request.user)
+            # #tag.remove_user(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.display_name + unicode(_(' has left the ticket')))
 
-            return super(TicketActionLeave, self).perform_valid_action(form)
+            if is_ajax_call:
+                self.success_messages = [_('You have successfully been removed from the ticket.')]
+                return super(TicketActionLeave, self).perform_valid_action(form)
+
         elif self.request.user in ticket.volunteers.all():
             ticket.volunteers.remove(self.request.user)
-            tag.remove_user(self.request.user)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.display_name + unicode(_(' has left the ticket')))
 
-            return super(TicketActionLeave, self).perform_valid_action(form)
+            if is_ajax_call:
+                self.success_messages = [_('You have successfully been removed from the ticket.')]
+                return super(TicketActionLeave, self).perform_valid_action(form)
         else:
             self.force_invalid = True
-
 
 class TicketActionOpen(TicketActionBaseHandler):
 
@@ -315,25 +498,25 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
         for i in form_responders:
             if i not in current_responders:
                 u = get_user_model().objects.get(pk=i)
-                tag.add_user(u, True)
+                #tag.add_user(u, True)
                 self.perform_ticket_update(ticket, 'Responder Joined', u.display_name + unicode(_(' has joined the ticket')))
 
         for i in form_volunteers:
             if i not in current_volunteers:
                 u = get_user_model().objects.get(pk=i)
-                tag.add_user(u, True)
+                #tag.add_user(u, True)
                 self.perform_ticket_update(ticket, 'Responder Joined', u.display_name + unicode(_(' has joined the ticket')))
 
         for i in current_responders:
             if i not in form_responders:
                 u = get_user_model().objects.get(pk=i)
-                tag.remove_user(u)
+                #tag.remove_user(u)
                 self.perform_ticket_update(ticket, 'Responder Left', u.display_name + unicode(_(' has left the ticket')))
 
         for i in current_volunteers:
             if i not in form_volunteers:
                 u = get_user_model().objects.get(pk=i)
-                tag.remove_user(u)
+                #tag.remove_user(u)
                 self.perform_ticket_update(ticket, 'Responder Left', u.display_name + unicode(_(' has left the ticket')))
 
         return super(TicketAdminSettingsHandler, self).form_valid(form)
@@ -417,7 +600,6 @@ class TicketDetail(TemplateView):
         elif hasattr(self.ticket, "otherticket"):
             self.ticket = self.ticket.otherticket
         else:
-            print dir(self.ticket)
             raise ValueError("Unknown ticket type")
 
         if not self.ticket:
@@ -526,8 +708,12 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
                                                                      self.url_args),
             'page_number': self.page_number,
             'ticket_figures': self.get_ticket_list_figures(),
-            'filter_terms': self.filter_terms
+            'filter_terms': self.filter_terms,
+            'possible_assignees': get_user_model().objects.filter(Q(is_superuser=True) |
+                                                                  Q(is_staff=True) |
+                                                                  Q(is_volunteer=True))
         }
+
 
         return context
 
@@ -542,7 +728,8 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
             'public': TicketListPublic().get_ticket_set(self.request.user).count(),
             'public_closed': TicketListPublicClosed().get_ticket_set(self.request.user).count(),
             'unassigned': TicketListUnassigned().get_ticket_set(self.request.user).count(),
-            'upcoming_deadline': TicketListUpcomingDeadline().get_ticket_set(self.request.user).count()
+            'upcoming_deadline': TicketListUpcomingDeadline().get_ticket_set(self.request.user).count(),
+            'oustanding_charges': AdminOustandingChargesList().get_charges_set().count()
         }
 
         return ticket_figures

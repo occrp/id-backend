@@ -122,7 +122,11 @@
                     </li>
 
                     <li class="{% if 'ticket_admin_outstanding_charges' in ROUTE_NAME %}active{% endif %}">
-                        <a href="{{ url('ticket_admin_outstanding_charges') }}"><i class="icon-ticket"></i> {% trans %}Outstanding Charges{% endtrans %}</a>
+                        <a href="{{ url('ticket_admin_outstanding_charges') }}"><i class="icon-ticket"></i> {% trans %}Outstanding Charges{% endtrans %}
+                        {% if ticket_figures is defined %}
+                            ({{ ticket_figures.oustanding_charges }})
+                        {% endif %}
+                        </a>
                     </li>
                 {% endif %}
            </ul>

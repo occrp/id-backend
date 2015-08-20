@@ -11,14 +11,16 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'icon', 'files')
 
 class FileSerializer(serializers.ModelSerializer):
+    thumbnail = serializers.CharField(read_only=True)
     class Meta:
         model = PodaciFile
-        fields = ('id', 'name', 'title', 'date_added', 'created_by', 'filename',
-                  'url', 'sha256', 'size', 'mimetype', 'description', 'tags', 'collections')
+        # depth = 1
+        fields = ('id', 'name', 'title', 'date_added', 'created_by', 'filename', 'url', 'sha256', 'size', 'mimetype', 'description', 'tags', 'collections', 'thumbnail', 'public_read', 'staff_read')
 
 class CollectionSerializer(serializers.ModelSerializer):
-    # we need files
-    # but only those that the user has access to
+    # FIXME: This needs to be unhidden before Sharing is implemented
+    owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = PodaciCollection
-        fields = ('id', 'name', 'description', 'owner', 'files')
+        # depth = 1
+        fields = ('id', 'name', 'description', 'owner', 'files', 'shared_with')
