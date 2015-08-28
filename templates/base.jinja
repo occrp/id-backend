@@ -14,20 +14,19 @@
     <meta name="viewport" content="width=device-width"/>
     <meta name="id_version" content="{{id_version()}}"/>
 
-    <link rel="stylesheet" href="{{ static("css/main.css") }}"/>
+
     <link rel="stylesheet" href="{{ static("bower_components/font-awesome/css/font-awesome.min.css") }}"/>
     <link rel="stylesheet" href="{{ static("bower_components/jquery-mentions-input/jquery.mentionsInput.css") }}" type="text/css">
-    <link rel="stylesheet" href="{{ static('css/search.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ static('css/ol.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ static('css/tooltips.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ static("css/main.css") }}"/>
+    <link rel="stylesheet" href="{{ static("css/search.css") }}" type="text/css">
+    <link rel="stylesheet" href="{{ static("css/ol.css") }}" type="text/css">
+    <link rel="stylesheet" href="{{ static("css/tooltips.css") }}" type="text/css">
+    <link rel="stylesheet" href="{{ static("css/notifications.css") }}" type="text/css">
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
 <div id="wrap">
 <div id="header">
-    <div class="logo-holder">
-        <a href="/"><img src="{{ static("img/id-logo.png")}}" alt="" /></a>
-    </div>
     <div class="navbar navbar-static-top">
         <div class="navbar-inner">
             <div class="container">
@@ -38,6 +37,9 @@
             </a>
             {% if not exception %}
             <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <a href="/"><img style="max-height:40px; padding-top:7px;" src="/static/img/id-logo-2.png"/></a>
+                </ul>
                 {% if request.path != '/' or user.is_authenticated() %}
                 <ul class="nav">
                     <li  class="{% if url('search') in request.path %}active{% endif %}">
@@ -65,15 +67,26 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-globe"></i>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            {% if not notifications %}
-                            <li><div style="padding: 4px; text-align: center;">No notifications</div></li>
-                            {% else %}
-                            {% for notification in notifications %}
-                                <li><a href="{{notification.url}}">{{notification.text}}</a></li>
-                            {% endfor %}
+                            {% if user.unseen_notifications_count() > 0 %}
+                            <span style="position: absolute; left:22px; top: 32px;" class="label label-warning">{{user.unseen_notifications_count()}}</span>
                             {% endif %}
+                        </a>
+                        <ul class="dropdown-menu notifications" role="menu">
+                            {% for notification in user.get_notifications() %}
+                                <li class="top">
+                                    <a href="" onclick="">Mark All as Read</a>
+                                </li>
+                                <li {% if not notification.is_seen %}class="unseen"{% endif %}>
+                                    {% if notification.url_base %}
+                                        <a href="{{url(notification.url_base, notification.get_urlparams())}}">{{notification.text}}</a>
+                                    {% else %}
+                                        <a>{{notification.text}}</a>
+                                    {% endif %}
+                                    <div class="pull-right actions"><i fa fa-circle{% if notification.is_seen %}-o{% endif %}"></i></div>
+                                </li>
+                            {% else %}
+                                <li><div style="padding: 4px; text-align: center;">No notifications</div></li>
+                            {% endfor %}
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -161,21 +174,18 @@
     <script type="text/javascript" src="{{ static("js/i18n.js") }}"></script>
     <script type="text/javascript" src="{{ static("bower_components/jquery/dist/jquery.min.js") }}"></script>
     <script type="text/javascript" src="{{ static("bower_components/underscore/underscore-min.js") }}"></script>
-    <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/bootstrap-tooltip.js") }}"></script>
-    <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/bootstrap-dropdown.js") }}"></script>
-    <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/bootstrap-alert.js") }}"></script>
-    <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/bootstrap-tab.js") }}"></script>
-    <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/bootstrap-button.js") }}"></script>
-    <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/bootstrap-modal.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/modal.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/tooltip.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/dropdown.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/alert.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/tab.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/button.js") }}"></script>
     <script type="text/javascript" src="{{ static("bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js") }}"></script>
-    <script type="text/javascript" src="{{ static("bower_components/select2/select2.min.js") }}"></script>
-    <script type="text/javascript" src="{{ static("bower_components/moment/min/moment.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/select2/dist/js/select2.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/moment/min/moment-with-locales.min.js") }}"></script>
     {% if LANGUAGE_LC != "en" %}
         <script type="text/javascript" src="{{ static("bower_components/bootstrap-datepicker/js/locales/bootstrap-datepicker." + LANGUAGE_LC + ".js") }}"></script>
         <script type="text/javascript" src="{{ static("bower_components/select2/select2_locale_" + LANGUAGE_LC + ".js") }}"></script>
-        <script type="text/javascript" src="{{ static("bower_components/moment/min/lang/" + LANGUAGE_LC + ".js") }}"></script>
-    {% else %}
-        <script type="text/javascript" src="{{ static("bower_components/moment/min/lang/en-gb.js") }}"></script>
     {% endif %}
     <script type="text/javascript" src="{{ static("bower_components/spin.js/spin.js") }}"></script>
     <script type="text/javascript" src="{{ static("bower_components/spin.js/jquery.spin.js") }}"></script>
@@ -187,7 +197,7 @@
     <script type="text/javascript">
         $('[data-toggle=tooltip]').tooltip();
         $.fn.datepicker.defaults = $.extend({}, $.fn.datepicker.defaults, {language: "{{ LANGUAGE_LC }}", format: "yyyy-mm-dd" });
-        moment.lang("{{ LANGUAGE_LC }}");
+        moment.locale("{{ LANGUAGE_LC }}");
         _.templateSettings = {
             interpolate: /\{\{(.+?)\}\}/g
         };

@@ -63,6 +63,7 @@ ID2.Podaci.init = function() {
         $(selector).on(event, ID2.Podaci.callbacks[cb]);
     }
 
+    ID2.Podaci.current_files = [];
     ID2.Podaci.selection = [];
     ID2.Podaci.update_selection();
     ID2.Podaci.search("");
@@ -110,9 +111,21 @@ ID2.Podaci.get_file_list = function() {
 
 ID2.Podaci.results_clear = function() {
     $("#resultbox").empty();
+    ID2.Podaci.current_files = [];
+}
+
+ID2.Podaci.render_resultset = function() {
+    for (f in ID2.Podaci.current_files) {
+        ID2.Podaci.render_file_to_resultset(ID2.Podaci.current_files[f]);
+    }
 }
 
 ID2.Podaci.add_file_to_results = function(file) {
+    ID2.Podaci.current_files.push(file);
+    ID2.Podaci.render_file_to_resultset(file);
+}
+
+ID2.Podaci.render_file_to_resultset = function(file) {
     var tags = $("<span>");
     tags.addClass("podaci-tags");
     for (tag in file.tags) {
@@ -143,14 +156,20 @@ ID2.Podaci.add_file_to_results = function(file) {
     fo.append("<div class=\"podaci-description\">" + file.description.truncate(200) + "</div>")
     fo.attr("data-id", file.id);
 
+    if (file.public_read) {
+        fo.append("<div class=\"podaci-file-public\">Public</div>");
+    }
+    if (file.staff_read) {
+        fo.append("<div class=\"podaci-file-staff\">OCCRP Staff Access</div>");
+    }
+
     fo.attr("draggable", true);
     fo.on("dragstart", ID2.Podaci.selection_drag);
     $("#resultbox").append(fo);
 }
 
 ID2.Podaci.selection_drag = function(e) {
-    console.log(e);
-    //e.dataTransfer.setData("text", ID2.Podaci.selection);
+    // ...
 };
 
 ID2.Podaci.selection_drop = function(e) {
@@ -173,12 +192,14 @@ ID2.Podaci.search_term_add = function(term) {
     var v = $("#searchbox").val();
     v += " " + term;
     $("#searchbox").val(v);
+    ID2.Podaci.trigger_search();
 };
 
 ID2.Podaci.search_term_remove = function(term) {
     var v = $("#searchbox").val();
     v = v.replace(" " + term, "");
     $("#searchbox").val(v);
+    ID2.Podaci.trigger_search();
 };
 
 ID2.Podaci.update_collections = function() {
@@ -191,7 +212,7 @@ ID2.Podaci.update_collections = function() {
 };
 
 ID2.Podaci.add_collection = function(collection, targetli) {
-    var col = $("<a data-collectionid=\"" + collection.id + "\" data-collection=\"" + collection.name + "\"><i class=\"fa fa-folder\"></i> " + collection.name + "<span class=\"pull-right badge\">" + collection.files.length + "</span></a>");
+    var col = $("<a data-collectionid=\"" + collection.id + "\" data-collection=\"" + collection.name.replace(" ", "_") + "\"><i class=\"fa fa-folder\"></i> " + collection.name + "<span class=\"pull-right badge\">" + collection.files.length + "</span></a>");
     col.click(ID2.Podaci.collection_filter_click);
     if (targetli) {
         colli = targetli;
@@ -292,13 +313,31 @@ ID2.Podaci.select_toggle_checkbox = function(e) {
 }
 
 ID2.Podaci.init_fileupload = function() {
+    var col = $('.resultbox');
+    ID2.Podaci.results_cache = [];
+
+    col.on("dragover", function(e) {
+        e.preventDefault();
+        col.addClass("dropzone");
+        col.empty();
+    });
+    col.on("dragleave", function(e) {
+        e.preventDefault();
+        col.removeClass("dropzone");
+        ID2.Podaci.render_resultset();
+    });
+    col.on("drop", function(e) {
+        ID2.Podaci.results_clear();
+        col.removeClass("dropzone");
+    });
+
     $('.podaci_upload_files').fileupload({
         url: '/podaci/file/create/',
         dataType: 'json',
         done: function (e, data) {
             setTimeout(ID2.Podaci.refresh_files, 300);
         },
-        dropzone: $(".podaci_upload_dropzone"),
+        dropzone: $(".resultbox"),
         disableImageResize: /Android(?!.*Chrome)|Opera/
             .test(window.navigator.userAgent),
     }).on('fileuploadadd', function (e, data) {
@@ -307,8 +346,6 @@ ID2.Podaci.init_fileupload = function() {
             var node = $('<tr class="podaci-file podaci-file-pending"/>');
             var linkcolumn = node.append('<td/>')
             linkcolumn.append('<a>'+file.name+'</a>');
-            node.append('<td><textarea></textarea></td>');
-            node.appendTo(data.context);
         });
     }).on('fileuploadprocessalways', function (e, data) {
         console.log("fileuploadprocessalways");
@@ -337,25 +374,10 @@ ID2.Podaci.init_fileupload = function() {
             progress + '%'
         );
     }).on('fileuploaddone', function (e, data) {
-        if (data.id) {
-            $(data.context.children()[index]).removeClass("podaci-file-pending");
-            $(data.context.children()[index]).children[0]
-                .prop('href', '/podaci/file/' + data.id + '/');
-        } else if (data.error) {
-            var error = $('<span class="text-danger"/>').text(data.error);
-            $(data.context.children()[index])
-                .append('<br>')
-                .append(error);
-        }
-        setTimeout(ID2.Podaci.refresh_files, 300);
+        console.log(data);
+        ID2.Podaci.add_file_to_results(data.result);
     }).on('fileuploadfail', function (e, data) {
         // FIXME: Test failure modes. Make this pretty.
-        $.each(data.files, function (index) {
-            var error = $('<span class="text-danger"/>').text('File upload failed.');
-            $(data.context.children()[index])
-                .append('<br>')
-                .append(error);
-        });
     });
 };
 
@@ -402,25 +424,6 @@ ID2.Podaci.create_collection_submit = function() {
     });
 };
 
-ID2.Podaci.refresh_tags = function() {
-    $(".podaci-tags").each(function(index, el) {
-        var tag = $(el).data("tag");
-        $.getJSON('/podaci/tag/' + tag + '/', {format: "json"},
-                  function(data) {
-            if (data.error) {
-                console.log("ERROR: ", data.error);
-            } else {
-                $(el).empty();
-                console.log(data);
-                for (idx in data.result_tags) {
-                    tag = data.result_tags[idx];
-                    console.log(tag);
-                    $(el).append('<li><a href="/podaci/tag/' + tag.id + '/"><i class="icon-tag"></i> ' + tag.meta.name + '</a></li>');
-                }
-            }
-        });
-    });
-};
 
 ID2.Podaci.refresh_files = function() {
     // FIXME: This currently fetches tag info, but discards it.
@@ -531,6 +534,7 @@ ID2.Podaci.open_in_overview = function() {
 }
 
 ID2.Podaci.file_click = function(e) {
+    console.log("file click");
     id = $(e.target).parent().closest("div").data("id");
     e.preventDefault();
     e.stopPropagation();
@@ -542,19 +546,14 @@ ID2.Podaci.file_click = function(e) {
 };
 
 ID2.Podaci.file_doubleclick = function(e) {
+    console.log("filename click");
     e.preventDefault();
     e.stopPropagation();
-    $("#file-modal").modal();
+    console.log("Showing modal!");
+    $("#file-modal").modal("show");
     // window.location = $(e.target).closest("a")[0].href;
 };
 
-ID2.Podaci.get_user_tags = function(callback) {
-    $.getJSON("/podaci/tag/list/", {format:"json"}, callback);
-};
-
-ID2.Podaci.get_user_tags_url = function(callback) {
-    return "/podaci/tag/list/?format=json";
-};
 
 ID2.Podaci.update_notes = function(meta) {
     $("#file_notes").empty();
@@ -594,8 +593,8 @@ ID2.Podaci.metadata_save = function() {
 
 // FIXME: Normalize on _ or - .. using both is silly.
 ID2.Podaci.callbacks = {
-    ".podaci_upload click": ID2.Podaci.upload_click,
-    ".podaci_upload_dropzone drop": ID2.Podaci.upload_click,
+    "#podaci-upload click": ID2.Podaci.upload_click,
+    ".podaci-upload_dropzone drop": ID2.Podaci.upload_click,
     ".podaci_edit_users click": ID2.Podaci.edit_users,
     "#podaci_create_collection_btn click": ID2.Podaci.create_collection_submit,
 
