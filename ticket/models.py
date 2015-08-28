@@ -41,6 +41,7 @@ class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
     user_pays = models.BooleanField(default=True)
     deadline = models.DateField(null=True, blank=True, verbose_name=_('Deadline'))
     sensitive = models.BooleanField(default=False, verbose_name=_('Sensitive?'))
+    whysensitive = models.CharField(max_length=150, blank=True, verbose_name=_('Why is it sensitive?'))
 
     tag = models.ForeignKey(PodaciTag, blank=True, null=True)
     # tag_id = models.CharField(max_length=60, blank=True)    # Refers to this Ticket's Podaci tag.
@@ -214,24 +215,27 @@ class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
 class PersonTicket(Ticket):
     """ Person ownership request """
     ticket_type = 'person_ownership'
-    name = models.CharField(max_length=512, blank=False, verbose_name=_('Name'))
+    name = models.CharField(max_length=512, blank=False, verbose_name=_('First/other names'))
+    surname = models.CharField(max_length=100, blank=False, verbose_name=_('Last names'))
     aliases = models.TextField(blank=True, verbose_name=_('Aliases'), help_text=_("Other names they are known by"))
-    background = models.TextField(blank=False, verbose_name=_('Background'))
-    biography = models.TextField(blank=False, verbose_name=_('Biography'))
-    family = models.TextField(blank=True, verbose_name=_('Family'))
+    dob = models.DateField(null=True, blank=True, verbose_name=_('Date of Birth'))
+    background = models.TextField(blank=False, max_length=300, verbose_name=_('Your story'))
+    family = models.TextField(blank=True, verbose_name=_('Family and associates'))
     business_activities = models.TextField(
         blank=False,
+        max_length=300,
         verbose_name=_('Business Activities'))
-    dob = models.DateField(null=True, blank=True, verbose_name=_('Date of Birth'))
-    birthplace = models.CharField(max_length=128,
-        blank=False,
-        verbose_name=_('Place of Birth'))
     initial_information = models.TextField(
+        max_length=150,
         blank=False,
         verbose_name=_('Where have you looked?'))
-    location = models.CharField(max_length=128,
-        blank=False,
-        verbose_name=_('Location'))
+    # biography = models.TextField(blank=False, verbose_name=_('Biography'))
+    #birthplace = models.CharField(max_length=128,
+    #    blank=False,
+    #    verbose_name=_('Place of Birth'))
+    #location = models.CharField(max_length=128,
+    #    blank=False,
+    #    verbose_name=_('Location'))
 
     @property
     def summary(self):
@@ -260,9 +264,9 @@ class CompanyTicket(Ticket):
     country = models.CharField(max_length=100, choices=COUNTRIES,
                              blank=False,
                              verbose_name=_('Country Registered'))
-    background = models.TextField(blank=False, verbose_name=_('Background'))
-    sources = models.TextField(blank=False, verbose_name=_('Sources'))
-    story = models.TextField(blank=False, verbose_name=_('Your Story'))
+    background = models.TextField(max_length=300, blank=False, verbose_name=_('Your story'))
+    sources = models.TextField(blank=False, max_length=150, verbose_name=_('Where have you looked?'))
+    # story = models.TextField(blank=False, verbose_name=_('Your Story'))
     connections = models.TextField(blank=True, verbose_name=_('Connected People'))
 
     @property
@@ -279,7 +283,7 @@ class CompanyTicket(Ticket):
         '''Return an iterator of tuples (verbose name, display value)
         for all fields which can be shown to everybody on the ticket'''
         output = Ticket.most_fields(self)
-        for i in ('name', 'country', 'background', 'sources', 'story',
+        for i in ('name', 'country', 'background', 'sources',
                   'connections'):
             output.append((self._properties[i]._verbose_name, self.get_display_value(i)))
         return output

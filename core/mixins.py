@@ -48,7 +48,7 @@ class JSONResponseMixin(object):
 
 
 class CSVResponder(object):
-    def render_csv(self):
+    def render_csv(self, context):
         if hasattr(self, "CONTEXT_TITLE_KEY"):
             title = unicode(context[self.CONTEXT_TITLE_KEY])
         else:
@@ -71,7 +71,7 @@ class CSVResponder(object):
         return response
 
 class JSONResponder(object):
-    def render_json(self):
+    def render_json(self, context):
         if hasattr(self, "CONTEXT_TITLE_KEY"):
             title = unicode(context[self.CONTEXT_TITLE_KEY])
         else:
@@ -87,11 +87,11 @@ class JSONResponder(object):
 class CSVorJSONResponseMixin(CSVResponder, JSONResponder):
     def render_to_response(self, context, **response_kwargs):
         if 'csv' in self.request.GET.get('format', ''):
-            return self.render_csv()
+            return self.render_csv(context)
         elif 'json' in self.request.GET.get('format', ''):
-            return self.render_json()
+            return self.render_json(context)
         elif self.request.is_ajax():
-            return self.render_json()
+            return self.render_json(context)
         else:
             return super(CSVorJSONResponseMixin, self).render_to_response(context, **response_kwargs)
 

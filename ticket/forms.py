@@ -95,10 +95,10 @@ class PersonTicketForm(TicketForm):
 
     class Meta(TicketForm.Meta):
         model = models.PersonTicket
-        fields = ('name', 'aliases', 'background', 'biography',
-                  'family', 'business_activities', 'dob', 'birthplace',
-                  'initial_information', 'location', 'deadline',
-                  'sensitive')
+        fields = ('name', 'surname', 'aliases', 'dob', 'family',
+                  'business_activities', 'initial_information', 'background',
+                  'deadline', 'sensitive', 'whysensitive')
+
         # field_args = {
         #     'aliases': {'description': _("Other names they are known by")},
         #     'background': {
@@ -121,10 +121,10 @@ class PersonTicketForm(TicketForm):
         self.fields['deadline'].widget.attrs.update({'class': 'datepicker deadline'})
         self.fields['dob'].widget.attrs.update({'class': 'datepicker dob'})
         self.fields['background'].widget.attrs.update({'class': 'span8', 'placeholder': _('What do you know so far?'), 'rows': '6'})
-        self.fields['biography'].widget.attrs.update({'class': 'span8', 'rows': '6'})
+        # self.fields['biography'].widget.attrs.update({'class': 'span8', 'rows': '6'})
         self.fields['business_activities'].widget.attrs.update({'class': 'span8', 'rows': '6'})
         self.fields['initial_information'].widget.attrs.update({'class': 'span8', 'placeholder': _('Any information you already have.'), 'rows': '6'})
-        self.fields['location'].widget.attrs.update({'placeholder': _('Where are you researching?')})
+        # self.fields['location'].widget.attrs.update({'placeholder': _('Where are you researching?')})
         self.prefix = "person"
 
 
@@ -137,7 +137,7 @@ class CompanyTicketForm(TicketForm):
     class Meta(TicketForm.Meta):
         model = models.CompanyTicket
         fields = ('name', 'country', 'background', 'sources',
-                  'story', 'connections', 'deadline', 'sensitive')
+                  'connections', 'deadline', 'sensitive', 'whysensitive')
         # field_args = {
         #     'country': {'choices': constants.COUNTRIES},
         #     'background': {
@@ -160,14 +160,14 @@ class CompanyTicketForm(TicketForm):
         super(CompanyTicketForm, self).__init__(*args, **kwargs)
         self.fields['deadline'].widget.attrs.update({'class': 'datepicker deadline'})
         self.fields['background'].widget.attrs.update({'class': 'span8', 'placeholder': _('What do you know so far?'), 'rows': '6'})
-        self.fields['story'].widget.attrs.update({'class': 'span8', 'placeholder': _('What story are you working on?'), 'rows': '6'})
+        # self.fields['story'].widget.attrs.update({'class': 'span8', 'placeholder': _('What story are you working on?'), 'rows': '6'})
         self.fields['sources'].widget.attrs.update({'class': 'span8', 'placeholder': _('What sources do you have so far?'), 'rows': '6'})
         self.prefix = "company"
 
 class OtherTicketForm(TicketForm):
     class Meta(TicketForm.Meta):
         model = models.OtherTicket
-        fields = ('question', 'deadline', 'sensitive')
+        fields = ('question', 'deadline', 'sensitive', 'whysensitive')
         field_args = {
             'question': {
                 'css_class': 'span8',
