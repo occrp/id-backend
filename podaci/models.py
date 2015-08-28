@@ -402,7 +402,7 @@ class PodaciCollection(ZipSetMixin, models.Model):
 
     name                = models.CharField(max_length=300)
     owner               = models.ForeignKey(AUTH_USER_MODEL,
-                            related_name='collections')
+                            related_name='collections', default=1)
     description         = models.TextField(blank=True)
     files               = models.ManyToManyField(PodaciFile,
                             related_name='collections')
