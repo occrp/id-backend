@@ -12,6 +12,27 @@ id2:
   links:
     - postgres
     - elasticsearch
+  volumes:
+    - "./:/usr/src/id2/"
+    - "settings/settings_local.py-docker:/usr/src/id2/settings/settings_local.py"
+    
+# dataimports version
+id2dataimports:
+  build: .
+  expose:
+    - "8000"
+  links:
+    - postgres
+    - elasticsearch
+  volumes:
+    - "./:/usr/src/id2/"
+    - "settings/settings_local.py-docker:/usr/src/id2/settings/settings_local.py"
+    - "../export-prod/:/data"
+    - "../google_appengine/:/usr/src/google_appengine/"
+    - "../investigative-dashboard/:/usr/src/id/"
+  command: /bin/date
+
+# postgres
 postgres:
   image: postgres
   volumes:
@@ -20,5 +41,7 @@ postgres:
     POSTGRES_USER:     id2
     POSTGRES_PASSWORD: id2
     POSTGRES_DATABASE: id2
+
+# elasticsearch    
 elasticsearch:
   image: elasticsearch

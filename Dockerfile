@@ -21,11 +21,12 @@ RUN pip install --upgrade pip
 COPY requirements.txt /usr/src/id2/
 RUN pip install -r requirements.txt
 
+# these are volume-mounted now
 COPY . /usr/src/id2/
-COPY ./settings/settings_local.py-docker /usr/src/id2/settings/settings_local.py
-RUN mkdir -p /var/log/id2/
+#COPY ./settings/settings_local.py-docker /usr/src/id2/settings/settings_local.py
 
-VOLUME /data
+# this can be volume-mounted
+RUN mkdir -p /var/log/id2/
 
 EXPOSE 8000
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
