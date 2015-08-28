@@ -12,7 +12,7 @@ from rest_framework.response import Response
 
 class HasPodaciFileAccess(permissions.BasePermission):
     
-    has_permission(self, request, view):
+    def has_permission(self, request, view):
         # a read-only method?
         if request.method in permissions.SAFE_METHODS:
             return PodaciFile.objects.get(id=request.kwargs.get('pk', None)).has_permission(request.user)
@@ -23,7 +23,7 @@ class HasPodaciFileAccess(permissions.BasePermission):
 
 class HasPodaciCollectionAccess(permissions.BasePermission):
     
-    has_permission(self, request, view):
+    def has_permission(self, request, view):
         # simple enough
         # only the owner has access to a collection
         return ( PodaciCollection.objects.get(id=request.kwargs.get('pk', None)).owner == request.user )
