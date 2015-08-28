@@ -25,15 +25,10 @@ li > a.FIXME {
 	padding: 8px 15px 8px;
 }
 
-.podaci_upload_dropzone {
-	min-height: 100px;
-	border: 3px solid #fff;
+.dropzone {
+	min-height: 300px;
+	border: 5px dashed #f00;
 }
-
-.podaci_upload_dropzone:dragover {
-	border: 3px dashed #ddd;
-}
-
 
 .podaci-files {
 
@@ -208,7 +203,16 @@ li > a.FIXME {
 	position: fixed;
 }
 
-.collections #collection-new {
+.collections .top-actions {
+ 	text-align: right;
+	border-bottom: 1px solid #ccc;
+}
+
+.collections .tagcloud {
+	border-bottom: 1px solid #ccc;
+}
+
+.collections .top-actions a {
 	display: inline-block;
 	padding: 10px;
 }
@@ -249,15 +253,21 @@ li > a.FIXME {
 }
 
 div.podacitools {
+	position: fixed;
 	display: block;
+	width: 800px;
 	margin-bottom: 40px;
 	margin-left: 20px;
 	margin-top: 0px;
+	flex: 1;
+	flex-direction: row;
 }
 
 input.searchbox {
+	position: relative;
 	box-shadow: 5px 5px 20px;
 	max-width: 500px;
+	min-width: 300px;
 	width: 100%;
 	font-size: 120%;
 	padding: 16px;
@@ -267,12 +277,10 @@ input.searchbox {
 }
 
 div.toolbox {
-	position: relative;
-	display: inline-block;
-	margin-left: 30px;
+	display: flex;
+	float: right;
 	height: 30px;
 	margin-top: 0px;
-	top: -10px;
 }
 
 input.searchbox:focus {
@@ -280,7 +288,8 @@ input.searchbox:focus {
 }
 
 .resultbox {
-	margin-left: auto;
+	margin-top: 70px;
+	margin-left: 20px;
 	margin-right: auto;
 	max-width: 980px;
 }
