@@ -5,6 +5,9 @@ from django.db.models import Q
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework import views
+from rest_framework import status
+from rest_framework.parsers import FileUploadParser
+from rest_framework.response import Response
 
 class FileQuerySetMixin(object):
     def get_base_terms(self):
@@ -95,6 +98,17 @@ class FileList(FileQuerySetMixin, generics.ListCreateAPIView):
 
 class FileDetail(FileQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = FileSerializer
+
+class FileUploadView(generics.CreateAPIView):
+    parser_classes = (FileUploadParser,)
+
+    def create(self, request, *args, **kwargs):
+        file_obj = request.FILES['files[]']
+        pfile = PodaciFile()
+        pfile.create_from_filehandle(file_obj)
+        print "Created: ", pfile
+        serializer = FileSerializer(pfile)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class TagList(generics.ListCreateAPIView):
     serializer_class = TagSerializer
