@@ -1,5 +1,11 @@
 from podaci.models import PodaciFile, PodaciTag, PodaciCollection
 from rest_framework import serializers
+from id.models import Profile
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ('id', 'email')
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,15 +14,19 @@ class TagSerializer(serializers.ModelSerializer):
 
 class FileSerializer(serializers.ModelSerializer):
     thumbnail = serializers.CharField(read_only=True)
+    # created_by = ProfileSerializer()
+
     class Meta:
         model = PodaciFile
-        # depth = 1
+        depth = 0
         fields = ('id', 'name', 'title', 'date_added', 'created_by', 'filename', 'url', 'sha256', 'size', 'mimetype', 'description', 'tags', 'collections', 'thumbnail', 'public_read', 'staff_read')
 
 class CollectionSerializer(serializers.ModelSerializer):
     # FIXME: This needs to be unhidden before Sharing is implemented
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    #owner = ProfileSerializer()
+    #shared_with = ProfileSerializer() # many=True)
     class Meta:
         model = PodaciCollection
-        # depth = 1
-        fields = ('id', 'name', 'description', 'owner', 'files', 'shared_with')
+        depth = 0
+        fields = ('id', 'name', 'description', 'files', 'owner', 'shared_with')
