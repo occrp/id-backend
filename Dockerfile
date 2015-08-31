@@ -33,8 +33,8 @@ RUN rm /usr/src/id2/settings/settings_local.py /usr/src/id2/settings/settings_lo
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN npm install -g bower
 RUN cd static/ && bower --allow-root install
-RUN npm uninstall bower && npm prune
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get purge npm nodejs git && apt-get autoremove && rm /usr/bin/node
+RUN npm uninstall bower
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get -y purge npm nodejs git && apt-get -y autoremove && rm /usr/bin/node
 
 # this can be volume-mounted
 RUN mkdir -p /var/log/id2/
