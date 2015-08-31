@@ -14,6 +14,37 @@ id2:
     - elasticsearch
   volumes:
     - "settings/settings_local.py-docker:/usr/src/id2/settings/settings_local.py"
+
+# development version
+id2dev:
+  build: .
+  expose:
+    - "8000"
+  links:
+    - postgres
+    - elasticsearch
+  volumes:
+    - "settings/settings_local.py-docker:/usr/src/id2/settings/settings_local.py"
+    # explicitly bind-mounting each and every directory
+    # because bower
+    - "./tools:/usr/src/id2/tools"
+    - "./core:/usr/src/id2/core"
+    - "./settings:/usr/src/id2/settings"
+    - "./locale:/usr/src/id2/locale"
+    - "./doc:/usr/src/id2/doc"
+    - "./projects:/usr/src/id2/projects"
+    - "./robots:/usr/src/id2/robots"
+    - "./data:/usr/src/id2/data"
+    - "./ticket:/usr/src/id2/ticket"
+    - "./templates:/usr/src/id2/templates"
+    - "./search:/usr/src/id2/search"
+    - "./id:/usr/src/id2/id"
+    - "./podaci:/usr/src/id2/podaci"
+    - "./static/js:/usr/src/id2/static/js"
+    - "./static/css:/usr/src/id2/static/css"
+    - "./static/html:/usr/src/id2/static/html"
+    - "./static/less:/usr/src/id2/static/less"
+    - "./static/img:/usr/src/id2/static/img"
     
 # dataimports version
 id2dataimports:
