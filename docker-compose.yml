@@ -13,7 +13,6 @@ id2:
     - postgres
     - elasticsearch
   volumes:
-    - "./:/usr/src/id2/"
     - "settings/settings_local.py-docker:/usr/src/id2/settings/settings_local.py"
     
 # dataimports version
