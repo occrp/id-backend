@@ -1,4 +1,4 @@
-#coding:utf-8
+# -*- coding: utf-8 -*-
 """
 Django settings for id project.
 
@@ -34,7 +34,6 @@ if not SECRET_KEY:
     raise Exception('You need to specify Django SECRET_KEY in the settings_local.py!')
 if not "CREDENTIALS_DIR" in vars():
     raise Exception('You need to specify a path to CREDENTIALS_DIR in settings_local.py')
-
 
 TEMPLATE_LOADERS = (
     'django_jinja.loaders.FileSystemLoader',
