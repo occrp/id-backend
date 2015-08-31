@@ -28,7 +28,6 @@ class HasPodaciCollectionAccess(permissions.BasePermission):
         # only the owner has access to a collection
         return ( PodaciCollection.objects.get(id=request.kwargs.get('pk', None)).owner == request.user )
 
-
 class FileQuerySetMixin(object):
     def get_base_terms(self):
         if self.request.user.is_superuser:
@@ -146,7 +145,7 @@ class TagDetail(generics.RetrieveAPIView):
 
 class CollectionList(generics.ListCreateAPIView):
     serializer_class = CollectionSerializer
-    permission_classes = (IsAutenticated, HasPodaciCollectionAccess,)
+    permission_classes = (permissions.IsAuthenticated, HasPodaciCollectionAccess,)
 
     def get_queryset(self):
         return PodaciCollection.objects.filter(owner=self.request.user)
@@ -154,7 +153,7 @@ class CollectionList(generics.ListCreateAPIView):
 
 class CollectionDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CollectionSerializer
-    permission_classes = (IsAutenticated, HasPodaciCollectionAccess,)
+    permission_classes = (permissions.IsAuthenticated, HasPodaciCollectionAccess,)
 
     def get_queryset(self):
         return PodaciCollection.objects.filter(owner=self.request.user)
