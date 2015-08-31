@@ -3717,14 +3717,7 @@ input[type="submit"].btn.btn-mini {
   min-height: 56px;
   padding-left: 20px;
   padding-right: 20px;
-  background-color: #3a4953;
-  background-image: -moz-linear-gradient(top, #3a4953, #3a4953);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#3a4953), to(#3a4953));
-  background-image: -webkit-linear-gradient(top, #3a4953, #3a4953);
-  background-image: -o-linear-gradient(top, #3a4953, #3a4953);
-  background-image: linear-gradient(to bottom, #3a4953, #3a4953);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3a4953', endColorstr='#ff3a4953', GradientType=0);
+  background-color: #000;
   border: 1px solid #303c44;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;

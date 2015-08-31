@@ -11,18 +11,18 @@ from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 
 class HasPodaciFileAccess(permissions.BasePermission):
-    
+
     def has_permission(self, request, view):
         # a read-only method?
         if request.method in permissions.SAFE_METHODS:
             return PodaciFile.objects.get(id=request.kwargs.get('pk', None)).has_permission(request.user)
-        
+
         # otherwise...
         return PodaciFile.objects.get(id=request.kwargs.get('pk', None)).has_write_permission(request.user)
 
 
 class HasPodaciCollectionAccess(permissions.BasePermission):
-    
+
     def has_permission(self, request, view):
         # simple enough
         # only the owner has access to a collection
@@ -109,7 +109,7 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
 
         print search_terms
         return PodaciFile.objects.filter(search_terms)
-    
+
 
 class FileList(FileQuerySetMixin, generics.ListCreateAPIView):
     serializer_class = FileSerializer
