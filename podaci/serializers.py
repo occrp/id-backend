@@ -10,7 +10,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     # we need files
     # but only those that the user has access to
-    files = UserField(many=True, queryset=PodaciFile.objects.filter())
+    #files = UserField(many=True, queryset=PodaciFile.objects.filter())
     
     class Meta:
         model = PodaciTag
