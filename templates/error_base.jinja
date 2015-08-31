@@ -1,9 +1,14 @@
 {% extends 'base.jinja' %}
 
+{% block body_class %}splash has-full-page-header{% endblock %}
+{% block before_content %}
+    <div class="page-header full-page-header"><h2>{% block page_header %}{% endblock %}</h2>
+        {% block error_content %}{% endblock %}
+    </div>
+{% endblock %}
 {% block content %}
     <div class="span12">
-        <div class='page-header'><h1>{% block page_header %}{% endblock %}</h1></div>
-        <p>{% block error_content %}{% endblock %}</p>
+        {% block error_details %}{% endblock %}
     </div>
 {% endblock %}
 {% block js %}{% endblock %}
