@@ -5,9 +5,8 @@ Version 2 of the Investigative Dashboard.
 
 ## Databases
 
- * MySQL for tickets and accounts.
+ * SQLite/MySQL/PostgreSQL for tickets and accounts.
  * ElasticSearch for document storage.
- * Neo4j for graph storage.
 
 ## Testing
 
@@ -34,14 +33,14 @@ Obviously, you'll need [Docker](http://docker.io/). [Go here](https://docs.docke
 ```
 
 Containers running these images are required prerequisites for running Inverstigative Dashboard 2:
- * [tpires/neo4j](https://registry.hub.docker.com/u/tpires/neo4j/)
- * [mysql](https://registry.hub.docker.com/_/mysql/)
+ * [mysql](https://registry.hub.docker.com/_/mysql/) or [postgres](https://hub.docker.com/_/postgres/) (ignore if using SQLite)
+ * [elasticsearch](https://hub.docker.com/_/elasticsearch/)
 
 Hence:
 
 ```
- docker pull tpires/neo4j
- docker pull mysql
+ docker pull mysql # or postgres
+ docker pull elasticsearch
 ```
 
 Now go grab some coffee, this will take a while (depending on available bandwidth).
@@ -53,7 +52,7 @@ Time to build Investigative Dashboard 2 image (you only have to do it once, or e
  docker build -t id2 /path/to/investigative-dashboard-2
 ```
 
-After the build is complete, we can start running things. Run `mysql` (again, you can use whatever container name you feel like; we're using `id2-mysql` here):
+After the build is complete, we can start running things. Run `mysql` or `postgres` (again, you can use whatever container name you feel like; we're using `id2-mysql` here):
 ```
  docker run -d \
    --name id2-mysql \
@@ -66,31 +65,30 @@ After the build is complete, we can start running things. Run `mysql` (again, yo
 
 **Credentials used above are just an example, do change them when running Investigative Dashboard 2 anywhere near an open Internet connection**, and once you do, remember to change them also in `settings/settings_local.py-docker` file!
 
-Now, run `neo4j`:
+Now, run `elasticsearch`:
 ```
  docker run -d \
-   --name id2-neo4j \
-   --cap-add SYS_RESOURCE \
-   tpires/neo4j
+   --name id2-elasticsearch \
+   elasticsearch
 ```
 
 Run Investigative Dashboard 2:
 ```
  docker run -d \
    --name id2 \
-   --link id2-neo4j:neo4j \
+   --link id2-elasticsearch:elasticsearch \
    --link id2-mysql:mysql \
    --expose "8000" \
    id2
 ```
 
-Check the IP addresses of `id2-neo4j` and `id2` containers:
+Check the IP addresses of and `id2` container:
+
 ```
- docker inspect -f '{{.NetworkSettings.IPAddress}}' id2-neo4j
  docker inspect -f '{{.NetworkSettings.IPAddress}}' id2
 ```
 
-Fire up a browser and check if everything works by visiting `http://<id2-neo4j IP address>:7474/` and `http://<id2 IP address>:8000/`. You should see Neo4j's browser main page, and Investigative Dashboard's main page, respectively.
+Fire up a browser and check if everything works by visiting `http://<id2 IP address>:8000/`. You should see Investigative Dashboard's main page.
 
 #### With docker-compose
 
@@ -104,26 +102,43 @@ Yes, you can use [docker-compose](http://docs.docker.com/compose/) to have all t
 Get some info on the containers being run:
 ```
  $ ../docker-compose ps
-             Name                            Command               State         Ports        
- ---------------------------------------------------------------------------------------------
- investigativedashboard2_id2_1     python manage.py runserver ...   Up      8000/tcp           
- investigativedashboard2_mysql_1   /entrypoint.sh mysqld            Up      3306/tcp           
- investigativedashboard2_neo4j_1   /bin/bash -c /launch.sh          Up      1337/tcp, 7474/tcp 
+                    Name                                Command               State          Ports        
+ -------------------------------------------------------------------------------------------------------
+ investigativedashboard2_elasticsearch_1    /docker-entrypoint.sh elas ...   Up       9200/tcp, 9300/tcp 
+ investigativedashboard2_id2_1              python manage.py runserver ...   Up       8000/tcp           
+ investigativedashboard2_mysql_1            /entrypoint.sh mysqld            Up      3306/tcp           
 ```
 
-Check the IP addresses of `*_neo4j_` and `*_id2_*` (in the case above: `investigativedashboard2_neo4j_1`, `investigativedashboard2_id2_1`, respectively) containers:
+Check the IP address of `*_id2_*` (in the case above: `investigativedashboard2_id2_1`) container:
+
 ```
- docker inspect -f '{{.NetworkSettings.IPAddress}}' investigativedashboard2_neo4j_1
  docker inspect -f '{{.NetworkSettings.IPAddress}}' investigativedashboard2_id2_1
 ```
 
-Fire up a browser and check if everything works by visiting `http://<*_neo4j_* IP address>:7474/` and `http://*_id2_* IP address>:8000/`. You should see Neo4j's browser main page, and Investigative Dashboard's main page, respectively.
+Fire up a browser and check if everything works by visiting `http://*_id2_* IP address>:8000/`. You should see Investigative Dashboard's main page.
 
 ### Running locally
 
 ```
  ./manage.py runserver
 ```
+
+## Development accounts
+
+When running in a development environment there are several debug users available. To have these accounts set up, run:
+
+```
+ ./manage.py loaddata id/fixtures/*
+```
+
+**Do not run this in production!!**
+
+Development/debug user accounts are:
+ - `nonuser@example.com` : `asdf`
+ - `nuser@example.com` : `asdf`
+ - `volunteer@example.com` : `asdf`
+ - `staff@example.com` : `asdf`
+ - `admin@example.com` : `asdf`
 
 ## Data
 
