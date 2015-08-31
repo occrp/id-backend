@@ -1,34 +1,36 @@
 {% extends "base.jinja" %}
 {% block content %}
 
-<h1>{% if editing_self %}{% trans %}Your profile{% endtrans %}{% else %}{% trans %}Profile for user {% endtrans %}{{profile.email}}{% endif %}</h1>
-<div class="tabpanel">
-    <form action="/accounts/profile/" method="POST">
-    {%csrf_token%}
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="profile" class="active"><a href="#basics" aria-controls="basics" role="tab" data-toggle="tab">{% trans %}Basics{% endtrans %}</a></li>
-        <li role="profile"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">{% trans %}Details{% endtrans %}</a></li>
-        {% if user.is_superuser %}
-        <li role="profile"><a href="#permissions" aria-controls="permissions" role="tab" data-toggle="tab">{% trans %}Permissions{% endtrans %}</a></li>
-        {% endif %}
-    </ul>
+<div class="profile-container">
+    <h1>{% if editing_self %}{% trans %}Your profile{% endtrans %}{% else %}{% trans %}Profile for user {% endtrans %}{{profile.email}}{% endif %}</h1>
+    <div class="tabpanel">
+        <form action="/accounts/profile/" method="POST">
+        {%csrf_token%}
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="profile" class="active"><a href="#basics" aria-controls="basics" role="tab" data-toggle="tab">{% trans %}Basics{% endtrans %}</a></li>
+            <li role="profile"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">{% trans %}Details{% endtrans %}</a></li>
+            {% if user.is_superuser %}
+            <li role="profile"><a href="#permissions" aria-controls="permissions" role="tab" data-toggle="tab">{% trans %}Permissions{% endtrans %}</a></li>
+            {% endif %}
+        </ul>
 
-    <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="basics">
-            {{ form_macros.render_form_fragment(form_basics) }}
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="basics">
+                {{ form_macros.render_form_fragment(form_basics) }}
+            </div>
+            <div role="tabpanel" class="tab-pane" id="details">
+                {{ form_macros.render_form_fragment(form_details) }}
+            </div>
+            {% if user.is_superuser %}
+            <div role="tabpanel" class="tab-pane" id="permissions">
+                {{ form_macros.render_form_fragment(form_admin) }}
+            </div>
+            {% endif %}
         </div>
-        <div role="tabpanel" class="tab-pane" id="details">
-            {{ form_macros.render_form_fragment(form_details) }}
-        </div>
-        {% if user.is_superuser %}
-        <div role="tabpanel" class="tab-pane" id="permissions">
-            {{ form_macros.render_form_fragment(form_admin) }}
-        </div>
-        {% endif %}
+
+        <label></label><input class="btn primary" type="submit" value="{% trans %}Save{% endtrans %}"/>
+        </form>
     </div>
-
-    <label></label><input class="btn primary" type="submit" value="{% trans %}Save{% endtrans %}"/>
-    </form>
 </div>
 
 {% endblock %}

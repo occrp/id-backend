@@ -9114,3 +9114,55 @@ ul.advisory_committee li {
 .requestform li {
   display: block;
 }
+/** Your Profile **/
+
+.profile-container h1 {
+    text-align:center;
+}
+
+.profile-container ul.nav {
+    text-align:center;
+    margin-bottom:0px;
+}
+
+.profile-container .nav-tabs > li {
+    display:inline-block;
+    float:none;
+}
+
+.profile-container .tab-content {
+    text-align:center;
+    overflow:visible;
+    text-align:center;
+}
+
+.profile-container .tab-content .tab-pane {
+    background: #f7f9f8;
+    box-shadow: 3px 3px 5px #999;
+    padding-bottom:32px;
+    margin-bottom:-24px;
+    text-align:left;
+    width:auto;
+    margin-left:auto;
+    margin-right:auto;
+    padding:2em;
+    max-width:1024px;
+}
+
+.profile-container .tab-content .tab-pane .control-group {
+    display:inline-block;
+    padding:20px;
+}
+
+.profile-container .tab-content .tab-pane.active {
+    display:inline-block;
+}
+
+.profile-container .tabpanel .btn {
+    margin:auto;
+    position:relative;
+    display:block;
+    width:40%;
+    max-width:200px;
+    box-shadow: 3px 3px 5px #999;
+}
