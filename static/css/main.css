@@ -1,6 +1,6 @@
 @import "../bower_components/roboto-fontface/css/roboto-fontface.css";
 
-@import "../bower_components/select2/select2.css";
+@import "../bower_components/select2/dist/css/select2.min.css";
 /*!
  * Bootstrap v2.3.2
  *
@@ -2839,19 +2839,7 @@ input[type="button"].btn-block {
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   background-color: #00bac1;
-  background-image: -moz-linear-gradient(top, #00cad1, #00a3a8);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#00cad1), to(#00a3a8));
-  background-image: -webkit-linear-gradient(top, #00cad1, #00a3a8);
-  background-image: -o-linear-gradient(top, #00cad1, #00a3a8);
-  background-image: linear-gradient(to bottom, #00cad1, #00a3a8);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff00cad1', endColorstr='#ff00a3a8', GradientType=0);
-  border-color: #00a3a8 #00a3a8 #00595c;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #00a3a8;
-  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 .btn-primary:hover,
 .btn-primary:focus,
@@ -2865,7 +2853,7 @@ input[type="button"].btn-block {
 }
 .btn-primary:active,
 .btn-primary.active {
-  background-color: #007175 \9;
+  background-color:  #007175;
 }
 .btn-warning {
   color: #ffffff;
@@ -3212,7 +3200,7 @@ input[type="submit"].btn.btn-mini {
   background-color: #5c6f7a;
 }
 .btn-group.open .btn-primary.dropdown-toggle {
-  background-color: #00a3a8;
+  background-color: #982022;
 }
 .btn-group.open .btn-warning.dropdown-toggle {
   background-color: #dd4814;
@@ -8530,6 +8518,8 @@ a > [class*=" icon-"] {
 /** Typography **/
 .primary-highlight {
   color: #f31d35;
+  font-size: 160%;
+  text-shadow: 1px 1px 7px #fff;
 }
 .secondary-highlight {
   color: #00cad1;
@@ -8702,29 +8692,41 @@ span.highlight {
 /** Splash **/
 .splash .full-page-header {
   text-align: center;
+  background: url('/static/img/splash_bg1.jpg') #f6f7f5;
+  background-size: 100%;
+  box-shadow: inset 0px -4px 9px #ccc;
+}
+.splash .btn {
+    box-shadow:  4px 4px 9px #666;
 }
 .splash-item {
-  background: #f7f9f8;
+  max-width:27%;
+  min-width:20%;
+  display: inline-block;
+  background: #f0f1f0;
   position: relative;
+  margin: 20px;
   margin-bottom: 40px;
-  padding: 0 25px 44px;
   text-align: center;
 }
 .splash-item .btn {
   position: absolute;
-  width: 130px;
+  width: 150px;
   left: 50%;
   margin-left: -90px;
   bottom: -16px;
   padding: 12px 16px;
 }
+.splash-item .btn i {
+  padding-right: 5px;
+}
 .splash-item .desc {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 300;
   line-height: 26px;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 25px;
-  margin: 30px 0;
+  margin: 20px 0;
+  padding: 24px;
+  padding-top: 5px;
 }
 /** Tables **/
 .crud-list {
