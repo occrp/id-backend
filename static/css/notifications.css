@@ -1,0 +1,48 @@
+
+ul.notifications {
+
+}
+
+ul.notifications li {
+    display: block;
+    width: 400px;
+    min-height: 30px;
+    padding: 7px;
+}
+
+ul.notifications li > div.actions {
+    display: none;
+}
+
+ul.notifications li:hover > div.actions {
+    display: inline-block;
+}
+
+ul.notifications li.unseen {
+    background-color: #ccc;
+}
+
+ul.notifications li:hover {
+    background-color: #ddd;
+}
+
+ul.notifications li.top {
+    border-bottom: 1px solid #ccc;
+    height: 30px;
+    font-size: 90%;
+    text-align: right;
+}
+
+ul.notifications li.top:hover {
+    background-color: #fff;
+}
+
+ul.notifications li a {
+    display: inline;
+}
+
+.notifications li a:hover {
+    background: inherit;
+    color: #f00;
+    text-decoration: underline;
+}
