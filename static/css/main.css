@@ -9114,20 +9114,29 @@ ul.advisory_committee li {
 .requestform li {
   display: block;
 }
-/** Your Profile **/
 
+/** Your Profile **/
 .profile-container h1 {
     text-align:center;
 }
 
 .profile-container ul.nav {
     text-align:center;
-    margin-bottom:0px;
+    margin-bottom:-12px;
+    border-bottom:none;
 }
 
 .profile-container .nav-tabs > li {
     display:inline-block;
     float:none;
+}
+
+.profile-container .nav-tabs > li > a {
+    box-shadow: 3px 3px 5px #999;
+}
+
+.profile-container .nav-tabs > li > a:focus {
+    border:none;
 }
 
 .profile-container .tab-content {
@@ -9152,6 +9161,10 @@ ul.advisory_committee li {
 .profile-container .tab-content .tab-pane .control-group {
     display:inline-block;
     padding:20px;
+}
+
+.profile-container .tab-content .tab-pane .control-group > .controls > textarea {
+    width:100%;
 }
 
 .profile-container .tab-content .tab-pane.active {
