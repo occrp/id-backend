@@ -67,6 +67,7 @@ ID2.Podaci.init = function() {
     ID2.Podaci.selection = [];
     ID2.Podaci.update_selection();
     ID2.Podaci.search("");
+    ID2.Podaci.query = '';
     ID2.Podaci.update_collections();
 
     ID2.Podaci.init_fileupload();
@@ -75,6 +76,7 @@ ID2.Podaci.init = function() {
 ID2.Podaci.search = function(q) {
     ID2.Podaci.results_clear();
     $.getJSON("/podaci/search/", {"q": q}, function(data) {
+        ID2.Podaci.query = q;
         for (i in data.results) {
             file = data.results[i];
             ID2.Podaci.add_file_to_results(file);
@@ -166,6 +168,7 @@ ID2.Podaci.render_file_to_resultset = function(file) {
 
     fo.attr("draggable", true);
     fo.on("dragstart", ID2.Podaci.selection_drag);
+    fo.on("click", ".podaci-tags a", ID2.Podaci.tag_click);
     $("#resultbox").append(fo);
 }
 
@@ -201,6 +204,15 @@ ID2.Podaci.search_term_remove = function(term) {
     v = v.replace(" " + term, "");
     $("#searchbox").val(v);
     ID2.Podaci.trigger_search();
+};
+
+ID2.Podaci.search_term_toggle = function(term) {
+  var terms = $("#searchbox").val().split(' ');
+  if (terms.indexOf(term) == -1) {
+    ID2.Podaci.search_term_add(term);
+  } else {
+    ID2.Podaci.search_term_remove(term);
+  }
 };
 
 ID2.Podaci.update_collections = function() {
@@ -394,6 +406,11 @@ ID2.Podaci.edit_users = function() {
             url: $(this).data('url'),
         }
     });
+};
+
+
+ID2.Podaci.tag_click = function(event) {
+  ID2.Podaci.search_term_toggle('#' + $(this).data('tag'));
 };
 
 
