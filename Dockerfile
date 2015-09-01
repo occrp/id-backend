@@ -41,4 +41,4 @@ RUN mkdir -p /var/log/id2/
 
 EXPOSE 8000
 #CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-CMD ["python", "docker.py"]
+CMD ["/usr/src/id2/docker.sh"]
