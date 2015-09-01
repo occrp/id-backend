@@ -26,15 +26,22 @@ class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = PodaciFile
         depth = 0
-        fields = ('id', 'name', 'title', 'date_added', 'created_by', 'filename', 'url', 'sha256', 'size', 'mimetype', 'description', 'tags', 'collections', 'thumbnail', 'public_read', 'staff_read')
+        fields = ('id', 'name', 'title', 'date_added', 'created_by',
+                  'filename', 'url', 'sha256', 'size', 'mimetype',
+                  'description', 'tags', 'collections', 'thumbnail',
+                  'public_read', 'staff_read')
 
 
 class CollectionSerializer(serializers.ModelSerializer):
     # FIXME: This needs to be unhidden before Sharing is implemented
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    #owner = ProfileSerializer()
-    #shared_with = ProfileSerializer() # many=True)
+    # owner = ProfileSerializer()
+
     class Meta:
         model = PodaciCollection
         depth = 0
         fields = ('id', 'name', 'description', 'files', 'owner', 'shared_with')
+        extra_kwargs = {
+            'files': {'allow_empty': True},
+            'shared_with': {'allow_empty': True}
+        }
