@@ -73,7 +73,7 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
                     other_terms |= Q(size__lt=size[1:])
                 else:
                     other_terms |= Q(size=size)
-            else:
+            elif len(term.strip()):
                 textterms.append(term)
 
         tag_terms = Q()

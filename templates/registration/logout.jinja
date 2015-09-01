@@ -1,8 +1,20 @@
 {% extends "base.jinja" %}
+{% block body_class %}splash has-full-page-header{% endblock %}
+
+{% block before_content %}
+    <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
+    <div class="page-header full-page-header">
+        <h2 class="primary-highlight">{% trans %}Signed out!{% endtrans %}</h2>
+    </div>
+{% endblock %}
 {% block content %}
 
-<h1>{% trans %}Signed out!{% endtrans %}</h1>
+<h2 style="text-align:center;">{% trans %}Thank you for using Investigative Dashboard. Come again soon!{% endtrans %}</h2>
 
-<p>{% trans %}Thank you for using Investigative Dashboard. Come again soon!{% endtrans %}</p>
+<p style="text-align:center;">
+    {% trans %}Please consider leaving feedback about Investigative Dashboard, so that we can improve it!{% endtrans %}
+</p>
+
+{% include "partials/_feedback_form.jinja" %}
 
 {% endblock %}

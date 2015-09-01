@@ -7462,7 +7462,7 @@ span.highlight {
   box-shadow: inset 0px -4px 9px #ccc;
 }
 .splash .btn {
-    box-shadow:  4px 4px 9px #666;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.14), 0px 4px 5px 0px rgba(0, 0, 0, 0.098), 0px 1px 10px 0px rgba(0, 0, 0, 0.082);
 }
 .splash-item {
   max-width:27%;
@@ -7473,7 +7473,7 @@ span.highlight {
   margin: 20px;
   margin-bottom: 40px;
   text-align: center;
-  box-shadow: 4px 4px 9px #666;
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.14), 0px 2px 2px 0px rgba(0, 0, 0, 0.098), 0px 1px 5px 0px rgba(0, 0, 0, 0.082);
 }
 .splash-item .btn {
   position: absolute;
@@ -7886,7 +7886,7 @@ ul.advisory_committee li {
 }
 
 /** Angular Material-ish classes
- * 
+ *
  * inspired by:
  * https://material.angularjs.org/latest/#/demo/material.components.whiteframe
  * https://github.com/angular/material/blob/v0.10.1/LICENSE
