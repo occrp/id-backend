@@ -292,6 +292,7 @@ input.searchbox:focus {
 	margin-left: 20px;
 	margin-right: auto;
 	max-width: 980px;
+	min-height: 300px;
 }
 
 
