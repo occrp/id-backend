@@ -143,7 +143,7 @@
     this.widgets.push(widget);
     this.base.append(widget.render());
     this.base.find('.btn').remove();
-    widget.base.append($("<button type='button' class='btn'><i class='icon-plus'></i></button>"));
+    widget.base.append($("<button type='button' class='btn'><i class='fa fa-plus'></i></button>"));
   };
 
   /**

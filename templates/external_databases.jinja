@@ -23,13 +23,13 @@
                         <div class="db-title">
                             <div class="pull-right">
                                 {% if db.paid %}
-                                    <i class="icon-dollar text-success" data-toggle='tooltip' title='{{ _("Paid Database") }}'></i>
+                                    <i class="fa fa-dollar text-success" data-toggle='tooltip' title='{{ _("Paid Database") }}'></i>
                                 {% endif %}
                                 {% if db.registration_required %}
-                                    <i class="icon-edit text-success" data-toggle='tooltip' title='{{ _("Registration Required") }}'></i>
+                                    <i class="fa fa-edit text-success" data-toggle='tooltip' title='{{ _("Registration Required") }}'></i>
                                 {% endif %}
                                 {% if db.government_db %}
-                                    <i class="icon-building text-success" data-toggle='tooltip' title='{{ _("Government Database") }}'></i>
+                                    <i class="fa fa-building text-success" data-toggle='tooltip' title='{{ _("Government Database") }}'></i>
                                 {% endif %}
                             </div>
                             <a href="{{ db.url }}" target="_blank">{{ db.agency }}</a>
@@ -41,8 +41,8 @@
                             {% endif %}
                         </ul>
                         <p class="preserve_whitespace">{{ db.notes }}</p>
-                        {% if db.blog_post %}<a href="{{ db.blog_post }}" target='_blank'><i class="icon-file-text" data-toggle='tooltip' title='{{ _("Documentation") }}'></i></a>{% endif %}
-                        {% if db.video_url %}<a href="{{ db.video_url }}" target='_blank'><i class="icon-youtube-play" data-toggle='tooltip' title='{{ _("Video Tutorial") }}'></i></a>{% endif %}
+                        {% if db.blog_post %}<a href="{{ db.blog_post }}" target='_blank'><i class="fa fa-file-text" data-toggle='tooltip' title='{{ _("Documentation") }}'></i></a>{% endif %}
+                        {% if db.video_url %}<a href="{{ db.video_url }}" target='_blank'><i class="fa fa-youtube-play" data-toggle='tooltip' title='{{ _("Video Tutorial") }}'></i></a>{% endif %}
                     </div>
                 </div>
             {% endfor %}
