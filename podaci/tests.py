@@ -1,16 +1,14 @@
 from django.test import TestCase
 from core.tests import UserTestCase
-from core.testclient import TestClient
-from settings.settings import *
-from django.core.urlresolvers import reverse
+from settings.settings import PODACI_FS_ROOT
 from podaci.models import PodaciFile, PodaciTag
 import StringIO
-import os, shutil
-import time
-import json
+import os
+import shutil
 
 
 class PodaciAPITest(TestCase):
+
     def setUp(self):
         if not os.path.isdir(PODACI_FS_ROOT):
             os.mkdir(PODACI_FS_ROOT)
@@ -122,6 +120,7 @@ class PodaciPermissionTest(UserTestCase):
 
 
 class PodaciFileTest(UserTestCase):
+
     def setUp(self):
         if not os.path.isdir(PODACI_FS_ROOT):
             os.mkdir(PODACI_FS_ROOT)
