@@ -16,7 +16,7 @@
         {% if user.is_staff or user.is_superuser %}
             <a href="#SharingModal" class="btn btn-small pull-right"
                data-modal-url="{{ url('share_files', entity_id=ticket.key.urlsafe()) }}">
-                <i class="icon-group"></i> {% trans %}Sharing{% endtrans %}
+                <i class="fa fa-group"></i> {% trans %}Sharing{% endtrans %}
             </a>
         {% endif %}
     </h3>
