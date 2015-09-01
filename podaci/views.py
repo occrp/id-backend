@@ -10,24 +10,6 @@ from rest_framework import status
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 
-class HasPodaciFileAccess(permissions.BasePermission):
-    
-    def has_permission(self, request, view):
-        # a read-only method?
-        if request.method in permissions.SAFE_METHODS:
-            return PodaciFile.objects.get(id=request.kwargs.get('pk', None)).has_permission(request.user)
-        
-        # otherwise...
-        return PodaciFile.objects.get(id=request.kwargs.get('pk', None)).has_write_permission(request.user)
-
-
-class HasPodaciCollectionAccess(permissions.BasePermission):
-    
-    def has_permission(self, request, view):
-        # simple enough
-        # only the owner has access to a collection
-        return ( PodaciCollection.objects.get(id=request.kwargs.get('pk', None)).owner == request.user )
-
 class FileQuerySetMixin(object):
     def get_base_terms(self):
         if self.request.user.is_superuser:
@@ -109,17 +91,17 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
 
         print search_terms
         return PodaciFile.objects.filter(search_terms)
-    
+
 
 class FileList(FileQuerySetMixin, generics.ListCreateAPIView):
     serializer_class = FileSerializer
     # we want authenticated users that actually have access to a given file
-    permission_classes = (permissions.IsAuthenticated, HasPodaciFileAccess,)
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class FileDetail(FileQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = FileSerializer
-    permission_classes = (permissions.IsAuthenticated, HasPodaciFileAccess,)
+    permission_classes = (permissions.IsAuthenticated, )
 
 
 class FileUploadView(generics.CreateAPIView):
@@ -145,7 +127,7 @@ class TagDetail(generics.RetrieveAPIView):
 
 class CollectionList(generics.ListCreateAPIView):
     serializer_class = CollectionSerializer
-    permission_classes = (permissions.IsAuthenticated, HasPodaciCollectionAccess,)
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
         return PodaciCollection.objects.filter(owner=self.request.user)
@@ -153,7 +135,7 @@ class CollectionList(generics.ListCreateAPIView):
 
 class CollectionDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CollectionSerializer
-    permission_classes = (permissions.IsAuthenticated, HasPodaciCollectionAccess,)
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
         return PodaciCollection.objects.filter(owner=self.request.user)

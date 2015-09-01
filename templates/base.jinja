@@ -30,30 +30,28 @@
         <div class="navbar-inner">
             <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+                <i class="fa fa-bar"></i>
             </a>
             {% if not exception %}
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <a href="/"><img style="max-height:40px; padding-top:7px;" src="/static/img/id-logo-2.png"/></a>
+                    <a href="/"><img style="max-height:40px; padding-top:7px; padding-right: 20px;" src="/static/img/id-logo-2.png"/></a>
                 </ul>
                 {% if request.path != '/' or user.is_authenticated() %}
                 <ul class="nav">
                     <li  class="{% if url('search') in request.path %}active{% endif %}">
-                        <a href="{{ url('search') }}"><i class="icon-search"></i> {% trans %}Search{% endtrans %}</a>
+                        <a href="{{ url('search') }}"><i class="fa fa-search"></i> {% trans %}Search{% endtrans %}</a>
                     </li>
                     <li class="{% if url('externaldb_list') in request.path %}active{% endif %}">
-                        <a href="{{ url('externaldb_list') }}"><i class="icon-list-alt"></i> {% trans %}External Databases{% endtrans %}</a>
+                        <a href="{{ url('externaldb_list') }}"><i class="fa fa-database"></i> {% trans %}External Databases{% endtrans %}</a>
                     </li>
                     {% if user.is_user %}
                     <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
-                        <a href="{{ url('ticket_list') }}"><i class="icon-comments-alt"></i> {% trans %}Expert Help{% endtrans %}</a>
+                        <a href="{{ url('ticket_list') }}"><i class="fa fa-comments-o"></i> {% trans %}Expert Help{% endtrans %}</a>
                     </li>
                         {% if user.is_staff or user.is_superuser %}
                         <li class="{% if url('podaci_info_home') in request.path %}active{% endif %}">
-                            <a href="{{ url('podaci_info_home') }}"><i class="icon-file"></i> {% trans %}Files{% endtrans %}</a>
+                            <a href="{{ url('podaci_info_home') }}"><i class="fa fa-files-o"></i> {% trans %}Files{% endtrans %}</a>
                         </li>
                         {% endif %}
 
@@ -63,6 +61,7 @@
                 <ul class="nav pull-right">
 
                 {% if user.is_authenticated() %}
+                    {#
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-globe"></i>
@@ -88,33 +87,34 @@
                             {% endfor %}
                         </ul>
                     </li>
+                    #}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="icon-user icon-white"></i> {{ user.email }}
+                            <i class="fa fa-user"></i> {{ user.email }}
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                             <li  class="{% if url('profile') in request.path %}active{% endif %}">
-                                <a href="{{ url('profile') }}"><i class="icon-user"></i> {% trans %}Profile{% endtrans %}</a>
+                                <a href="{{ url('profile') }}"><i class="fa fa-user"></i> {% trans %}Profile{% endtrans %}</a>
                             </li>
                             {% if not (user.is_admin or user.is_staff or user.is_volunteer or user.is_user) %}
-                            <li><a href="{{ url('request_access_create') }}"><i class="icon-asterisk"></i> {% trans %}Request Permissions{% endtrans %}</a></li>
+                            <li><a href="{{ url('request_access_create') }}"><i class="fa fa-asterisk"></i> {% trans %}Request Permissions{% endtrans %}</a></li>
                             {% endif %}
                             {% if user.is_staff or user.is_superuser %}
                             <li  class="{% if url('admin_panel') in request.path %}active{% endif %}">
-                                <a href="{{ url('admin_panel') }}">{% trans %}Admin{% endtrans %}</a>
+                                <a href="{{ url('admin_panel') }}"><i class="fa fa-gears"></i> {% trans %}Admin{% endtrans %}</a>
                             </li>
                             {% endif %}
-                            <li><a tabindex="-1" href="{{ url('logout') }}"><i class="icon-signin"></i> {% trans %}Sign out{% endtrans %}</a></li>
+                            <li><a tabindex="-1" href="{{ url('logout') }}"><i class="fa fa-sign-out"></i> {% trans %}Sign out{% endtrans %}</a></li>
                         </ul>
                     </li>
                 {% else %}
-                    <li><a href="{{ url('login') }}"><i class="icon-signin"></i> {% trans %}Sign In{% endtrans %}</a></li>
+                    <li><a href="{{ url('login') }}"><i class="fa fa-sign-in"></i> {% trans %}Sign In{% endtrans %}</a></li>
                 {% endif %}
                 {% block language_chooser %}
                     <li class="dropdown">
                         <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                            <i class="icon-globe"></i>
+                            <i class="fa fa-globe"></i>
                             {% if selected_locale %}{{ selected_locale.display_name|capitalize }}{% endif %}
                             <b class="caret"></b>
                         </a>
@@ -172,6 +172,7 @@
     <script type="text/javascript" src="{{ url('django.views.i18n.javascript_catalog') }}"></script>
     <script type="text/javascript" src="{{ static("js/i18n.js") }}"></script>
     <script type="text/javascript" src="{{ static("bower_components/jquery/dist/jquery.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/underscore/underscore-min.js") }}"></script>
     <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/modal.js") }}"></script>
     <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/tooltip.js") }}"></script>
     <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/dropdown.js") }}"></script>
