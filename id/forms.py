@@ -22,9 +22,9 @@ class CountryFilterForm(forms.Form):
 
 class CombinedSearchForm(forms.Form):
     query = forms.CharField(
-            label="", 
+            label="",
             widget=forms.TextInput(attrs={
-                'placeholder': _("Search terms"), 
+                'placeholder': _("Search terms"),
                 'class': 'span8'
             })
         )
@@ -47,15 +47,6 @@ class EntityAjaxSearchForm(forms.Form):
     #    # self.search_results.ajax_url = reverse('search_entities')
 
 
-# FIXME: This is stupid
-class DirectUploadForm(forms.Form):
-    key   = forms.HiddenInput()
-    redirect_to = forms.HiddenInput()
-    file1 = forms.FileField(label='')
-    file2 = forms.FileField(label='')
-    file3 = forms.FileField(label='')
-
-
 class UserFilterForm(forms.Form):
     user = forms.ChoiceField(label=_("Customer"))
 
@@ -72,14 +63,14 @@ class ProfileUpdateForm(forms.ModelForm):
 class ProfileBasicsForm(forms.ModelForm):
     class Meta:
         model = models.Profile
-        fields = ("first_name", "last_name", "abbr", "locale", 
+        fields = ("first_name", "last_name", "abbr", "locale",
                   "country", "network")
 
 class ProfileDetailsForm(forms.ModelForm):
     class Meta:
         model = models.Profile
-        fields = ("phone_number", "organization_membership", 
-                  "address", 
+        fields = ("phone_number", "organization_membership",
+                  "address",
                   "city", "province", "postal_code", "industry",
                   "media", "circulation", "title", "interests",
                   "expertise", "languages", "availability",
@@ -94,4 +85,3 @@ class ProfileAdminForm(forms.ModelForm):
 class ScraperRequestForm(forms.ModelForm):
     class Meta:
         model = models.DatabaseScrapeRequest
-    
