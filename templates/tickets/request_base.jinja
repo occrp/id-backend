@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="span3">
-        <div class="well sidebar-nav">
+        <div class="well sidebar-nav md-whiteframe-z2">
             {% if filter_terms is defined %}
             <form id="filter_form">
                 <input name="filter" value="{{filter_terms}}" placeholder="Filter" id="filter_tickets" type="search"/>
@@ -15,7 +15,7 @@
                 <li class="nav-header">{% trans %}My Requests{% endtrans %}</li>
 
                 <li class="{% if 'ticket_list' in ROUTE_NAME %}active{% endif %}">
-                    <a href="{{ url('ticket_list') }}"><i class="icon-folder-open-alt"></i> {% trans %}Open{% endtrans %}
+                    <a href="{{ url('ticket_list') }}"><i class="fa fa-folder-open-o"></i> {% trans %}Open{% endtrans %}
                     {% if ticket_figures is defined %}
                         ({{ ticket_figures.my_open }})
                     {% endif %}
@@ -23,7 +23,7 @@
                 </li>
 
                 <li class="{% if 'ticket_closed_list' in ROUTE_NAME %}active{% endif %}">
-                    <a href="{{ url('ticket_closed_list') }}"><i class="icon-folder-close-alt"></i> {% trans %}Closed{% endtrans %}
+                    <a href="{{ url('ticket_closed_list') }}"><i class="fa fa-folder-o"></i> {% trans %}Closed{% endtrans %}
                     {% if ticket_figures is defined %}
                         ({{ ticket_figures.my_closed }})
                     {% endif %}
@@ -34,7 +34,7 @@
                     <li class="nav-header">{% trans %}My Assignments{% endtrans %}</li>
 
                     <li class="{% if 'ticket_assigned_list' in ROUTE_NAME %}active{% endif %}">
-                        <a href="{{ url('ticket_assigned_list') }}"><i class="icon-folder-open-alt"></i> {% trans %}Open{% endtrans %}
+                        <a href="{{ url('ticket_assigned_list') }}"><i class="fa fa-folder-open-o"></i> {% trans %}Open{% endtrans %}
                         {% if ticket_figures is defined %}
                             ({{ ticket_figures.my_assigned }})
                         {% endif %}
@@ -42,7 +42,7 @@
                     </li>
 
                     <li class="{% if 'ticket_assigned_closed_list' in ROUTE_NAME %}active{% endif %}">
-                        <a href="{{ url('ticket_assigned_closed_list') }}"><i class="icon-folder-close-alt"></i> {% trans %}Closed{% endtrans %}
+                        <a href="{{ url('ticket_assigned_closed_list') }}"><i class="fa fa-folder-o"></i> {% trans %}Closed{% endtrans %}
                         {% if ticket_figures is defined %}
                             ({{ ticket_figures.my_assigned_closed }})
                         {% endif %}
@@ -52,7 +52,7 @@
                     <li class="nav-header">{% trans %}Public Requests{% endtrans %}</li>
 
                     <li class="{% if 'ticket_public_list' in ROUTE_NAME %}active{% endif %}">
-                        <a href="{{ url('ticket_public_list') }}"><i class="icon-folder-open-alt"></i> {% trans %}Open{% endtrans %}
+                        <a href="{{ url('ticket_public_list') }}"><i class="fa fa-folder-open-o"></i> {% trans %}Open{% endtrans %}
                         {% if ticket_figures is defined %}
                             ({{ ticket_figures.public }})
                         {% endif %}
@@ -60,7 +60,7 @@
                     </li>
 
                     <li class="{% if 'ticket_public_closed_list' in ROUTE_NAME %}active{% endif %}">
-                        <a href="{{ url('ticket_public_closed_list') }}"><i class="icon-folder-close-alt"></i> {% trans %}Closed{% endtrans %}
+                        <a href="{{ url('ticket_public_closed_list') }}"><i class="fa fa-folder-o"></i> {% trans %}Closed{% endtrans %}
                         {% if ticket_figures is defined %}
                             ({{ ticket_figures.public_closed }})
                         {% endif %}
@@ -72,25 +72,25 @@
                     <li class="nav-header">{% trans %}Manage{% endtrans %}</li>
 
                     <li class="{% if 'ticket_unassigned_list' in ROUTE_NAME %}active{% endif %}">
-                        <a href="{{ url('ticket_unassigned_list') }}"><i class="icon-circle-blank"></i> {% trans %}Unassigned Tickets{% endtrans %}
+                        <a href="{{ url('ticket_unassigned_list') }}"><i class="fa fa-circle-o"></i> {% trans %}Unassigned Tickets{% endtrans %}
                         {% if ticket_figures is defined %}({{ ticket_figures.unassigned }}){% endif %}
                         </a>
                     </li>
 
                     <li class="{% if 'ticket_deadline_list' in ROUTE_NAME %}active{% endif %}">
-                        <a href="{{ url('ticket_deadline_list') }}"><i class="icon-calendar"></i> {% trans %}Upcoming Deadlines{% endtrans %}
+                        <a href="{{ url('ticket_deadline_list') }}"><i class="fa fa-calendar"></i> {% trans %}Upcoming Deadlines{% endtrans %}
                         {% if ticket_figures is defined %}({{ ticket_figures.upcoming_deadline }}){% endif %}
                         </a>
                     </li>
 
                     <li class="{% if 'ticket_all_open_list' in ROUTE_NAME %}active{% endif %}">
-                        <a href="{{ url('ticket_all_open_list') }}"><i class="icon-folder-open-alt"></i> {% trans %}All Open Requests{% endtrans %}
+                        <a href="{{ url('ticket_all_open_list') }}"><i class="fa fa-folder-open-o"></i> {% trans %}All Open Requests{% endtrans %}
                         {% if ticket_figures is defined %}({{ ticket_figures.all_open }}){% endif %}
                         </a>
                     </li>
 
                     <li class="{% if 'ticket_all_closed_list' in ROUTE_NAME %}active{% endif %}">
-                        <a href="{{ url('ticket_all_closed_list') }}"><i class="icon-folder-close-alt"></i> {% trans %}All Closed Requests{% endtrans %}
+                        <a href="{{ url('ticket_all_closed_list') }}"><i class="fa fa-folder-o"></i> {% trans %}All Closed Requests{% endtrans %}
                         {% if ticket_figures is defined %}({{ ticket_figures.all_closed }}){% endif %}
                         </a>
                     </li>
@@ -112,17 +112,17 @@
                     <li class="nav-header">{% trans %}Billing{% endtrans %}</li>
 
                     <li class="{% if 'ticket_fees_users' in ROUTE_NAME %}active{% endif %}">
-                        <a href="{{ url('ticket_fees_users') }}"><i class="icon-user"></i> {% trans %}User Fees{% endtrans %}</a>
+                        <a href="{{ url('ticket_fees_users') }}"><i class="fa fa-user"></i> {% trans %}User Fees{% endtrans %}</a>
                     </li>
                     <li class="{% if 'ticket_fees_networks' in ROUTE_NAME %}active{% endif %}">
-                        <a href="{{ url('ticket_fees_networks') }}"><i class="icon-group"></i> {% trans %}Network Fees{% endtrans %}</a>
+                        <a href="{{ url('ticket_fees_networks') }}"><i class="fa fa-group"></i> {% trans %}Network Fees{% endtrans %}</a>
                     </li>
                     <li class="{% if 'ticket_fees_budgets' in ROUTE_NAME %}active{% endif %}">
-                        <a href="{{ url('ticket_fees_budgets') }}"><i class="icon-money"></i> {% trans %}Budget Fees{% endtrans %}</a>
+                        <a href="{{ url('ticket_fees_budgets') }}"><i class="fa fa-money"></i> {% trans %}Budget Fees{% endtrans %}</a>
                     </li>
 
                     <li class="{% if 'ticket_admin_outstanding_charges' in ROUTE_NAME %}active{% endif %}">
-                        <a href="{{ url('ticket_admin_outstanding_charges') }}"><i class="icon-ticket"></i> {% trans %}Outstanding Charges{% endtrans %}
+                        <a href="{{ url('ticket_admin_outstanding_charges') }}"><i class="fa fa-ticket"></i> {% trans %}Outstanding Charges{% endtrans %}
                         {% if ticket_figures is defined %}
                             ({{ ticket_figures.oustanding_charges }})
                         {% endif %}
