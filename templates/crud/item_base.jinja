@@ -7,12 +7,12 @@
         {% if action == 'edit' and not hide_delete_item %}
             <div class="pull-right">
                 <a href="{{ uri_for('%s_delete' % model_name, obj_id=instance.key.urlsafe()) }}" class="btn">
-                    <i class="icon-minus-sign icon-white"></i>
+                    <i class="fa fa-minus"></i>
                     {% trans %}Delete{% endtrans %}
                 </a>
             </div>
         {% endif %}
-        {% block actions %}{% endblock %} 
+        {% block actions %}{% endblock %}
         <h1>{% block crud_title %}{% endblock %}</h1>
 	{% block subhead %} {%endblock%}
     </div>
@@ -25,7 +25,7 @@
             <h2>
                 {% if is_staff or is_superuser %}
                     <a href="#sharing-modal" class="pull-right btn" data-modal-url="{{ uri_for('share_files', entity_id=instance.key.urlsafe() ) }}">
-                        <i class="icon-group"></i>
+                        <i class="fa fa-group"></i>
                         {% trans %}Sharing{% endtrans %}
                     </a>
                 {% endif %}
@@ -41,7 +41,7 @@
 
 {% endblock %}
 
-    
+
 {% block after_js %}
     {{ super() }}
     {% if rels_enabled %}
