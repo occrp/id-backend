@@ -13,7 +13,7 @@
         <input type="text" name="{{ field.html_name }}" id="{{ field.auto_id }}"
                {% if field.value() %}value="{{ field.value() }}"{% endif %}
                class="{{ get_widget_classes(field) }}" />
-        <span class="add-on"><i class="icon-calendar"></i></span>
+        <span class="add-on"><i class="fa fa-calendar"></i></span>
     </div>
 {% endmacro %}
 
@@ -21,7 +21,7 @@
     <div class="fileupload fileupload-new" data-provides="fileupload">
         <div class="input-append">
             <div class="uneditable-input span3">
-                <i class="icon-file fileupload-exists"></i>
+                <i class="fa fa-file fileupload-exists"></i>
                 <span class="fileupload-preview"></span>
             </div>
             <span class="btn btn-file">

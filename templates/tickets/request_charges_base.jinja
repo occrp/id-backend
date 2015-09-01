@@ -37,11 +37,11 @@
                         <td>
                             <a href="{{url('ticket_details', charge.ticket.id)}}#charge-list">
                                 {% if charge.ticket.flagged %}
-                                    <i class="icon-warning-sign"></i>
+                                    <i class="fa fa-warning"></i>
                                 {% elif charge.ticket.status in ["new", "in-progress"] %}
-                                    <i class="icon-folder-open"></i>
+                                    <i class="fa fa-folder-open"></i>
                                 {% elif charge.ticket.status in ["cancelled", "closed"] %}
-                                    <i class="icon-folder-close"></i>
+                                    <i class="fa fa-folder"></i>
                                 {% endif %}
                             {{ charge.item }}</a>
                         </td>
@@ -59,7 +59,7 @@
                                    data-modal-url="{{ url("request_charge_modify", pk=charge.id) }}">
                                 modify
                             </a>
-                        </td>                       
+                        </td>
                     </tr>
                 {% endfor %}
 
