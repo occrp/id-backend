@@ -8,6 +8,7 @@ from core.auth import perm
 from django.contrib.auth import views as auth_views
 from registration.views import RegistrationView
 from registration.views import ActivationView
+from id.forms import ProfileRegistrationForm
 
 js_info_dict = {
     'packages': ('id', 'ticket', 'search', 'podaci'),
@@ -56,7 +57,7 @@ urlpatterns = patterns('',
 
     url(r'^accounts/activate/complete/$',   TemplateView.as_view(template_name='registration/activation_complete.jinja'), name='registration_activation_complete'),
     url(r'^accounts/activate/(?P<activation_key>w+)/$', ActivationView.as_view(template_name='registration/activation_form.jinja'), name='registration_activate'),
-    url(r'^accounts/register/$',            RegistrationView.as_view(template_name='registration/registration_form.jinja'), name='registration_register'),
+    url(r'^accounts/register/$',            RegistrationView.as_view(template_name='registration/registration_form.jinja', form_class=ProfileRegistrationForm), name='registration_register'),
     url(r'^accounts/register/complete/$',   TemplateView.as_view(template_name='registration/registration_complete.jinja'), name='registration_complete'),
     url(r'^accounts/register/closed/$',     TemplateView.as_view(template_name='registration/registration_closed.jinja'), name='registration_disallowed'),
     url(r'^accounts/social/', include('social_auth.urls')),

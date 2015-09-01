@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from settings.settings import DEFAULTS
 import searchproviders
 from id import widgets, constdata, models
+from django.contrib.auth import get_user_model
 
 class CountryFilterForm(forms.Form):
     """
@@ -54,6 +55,52 @@ class UserFilterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(UserFilterForm, self).__init__(*args, **kwargs)
         self["user"].ajax_url = reverse('select2_all_users')
+
+class ProfileRegistrationForm(forms.Form):
+    """
+    Form for registering a new user account.
+    """
+    email = forms.EmailField(
+            widget=forms.TextInput(attrs=dict(attrs={ 'class': 'required' }, maxlength=254)),
+            label=_('E-mail Address'))
+    password1 = forms.CharField(
+            widget=forms.PasswordInput(attrs={ 'class': 'required' }, render_value=False),
+            label=_('Password'))
+    password2 = forms.CharField(
+            widget=forms.PasswordInput(attrs={ 'class': 'required' }, render_value=False),
+            label=_('Password confirmation'))
+    
+    def clean_email(self):
+        """
+        Validate that the email is valid and is not already
+        in use.
+        
+        """
+        try:
+            user = get_user_model().objects.get(email=self.cleaned_data['email'])
+        except get_user_model().DoesNotExist:
+            return self.cleaned_data['email']
+        raise forms.ValidationError(_(u'A user with this e-mail address has already registered.'))
+
+    def clean(self):
+        """
+        Verifiy that the values entered into the two password fields
+        match. Note that an error here will end up in
+        ``non_field_errors()`` because it doesn't apply to a single
+        field.
+        
+        """
+        if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
+            if self.cleaned_data['password1'] != self.cleaned_data['password2']:
+                raise forms.ValidationError(_(u'You must type the same password each time'))
+        return self.cleaned_data
+    
+    def save(self, profile_callback=None):
+        new_user = get_user_model().objects.create_user(
+            email=self.cleaned_data['email'],
+            password=self.cleaned_data['password1'],
+            profile_callback=profile_callback)
+        return new_user
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
