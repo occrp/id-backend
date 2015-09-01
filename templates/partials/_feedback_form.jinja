@@ -1,0 +1,9 @@
+<form action="/feedback/" method="POST">
+<div class="material-form md-whiteframe-z1" style="max-width:550px;">
+    {% csrf_token %}
+    <input style="display:block; width:95%;" name="name" type="text" placeholder="Your name"{% if user.is_authenticated() %}value="{{user.name}}"{% endif %}>
+    <input style="display:block; width:95%;" name="email" type="email" placeholder="you@example.com"{% if user.is_authenticated() %}readonly value="{{user.email}}"{% endif %}>
+    <textarea style="display:block; width:95%; min-height: 150px;" name="feedback" placeholder="feedback"></textarea>
+</div>
+<input type="submit" class="material-form-submit btn primary md-whiteframe-z2" value="{% trans %}Send{% endtrans %}"/>
+</form>
