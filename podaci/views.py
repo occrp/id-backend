@@ -10,6 +10,7 @@ from rest_framework import status
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 
+
 class FileQuerySetMixin(object):
     def get_base_terms(self):
         if self.request.user.is_superuser:
@@ -26,6 +27,7 @@ class FileQuerySetMixin(object):
     def get_queryset(self):
         terms = self.get_base_terms()
         return PodaciFile.objects.filter(terms)
+
 
 class Search(FileQuerySetMixin, generics.ListAPIView):
     serializer_class = FileSerializer
@@ -81,15 +83,15 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
         text_terms = Q()
         for term in textterms:
             text_terms &= (Q(name__contains=term) |
-                            Q(filename__contains=term) |
-                            Q(description__contains=term))
+                           Q(filename__contains=term) |
+                           Q(description__contains=term))
 
         search_terms = base_terms & text_terms & tag_terms & other_terms
 
         for col in collections:
             search_terms &= Q(collections__in=[col])
 
-        print search_terms
+        print "SEARCH TERMS", search_terms
         return PodaciFile.objects.filter(search_terms)
 
 
@@ -114,6 +116,7 @@ class FileUploadView(generics.CreateAPIView):
         print "Created: ", pfile
         serializer = FileSerializer(pfile)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 class TagList(generics.ListCreateAPIView):
     serializer_class = TagSerializer
@@ -172,6 +175,7 @@ class CollectionDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class NoteList(generics.ListCreateAPIView):
     pass
+
 
 class MetaDataList(generics.ListCreateAPIView):
     pass
