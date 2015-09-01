@@ -1,4 +1,5 @@
 from podaci.models import PodaciFile, PodaciTag, PodaciCollection
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from id.models import Profile
 
@@ -19,17 +20,43 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'icon', 'files')
 
 
+class TagField(serializers.RelatedField):
+
+    def to_representation(self, tag):
+        return tag.name
+
+    def to_internal_value(self, name):
+        try:
+            return PodaciTag.objects.get(name=name)
+        except ObjectDoesNotExist:
+            t = PodaciTag.objects.create(name=name)
+            t.save()
+            return t
+
+
 class FileSerializer(serializers.ModelSerializer):
-    thumbnail = serializers.CharField(read_only=True)
-    # created_by = ProfileSerializer()
+    title = serializers.CharField(allow_null=True, allow_blank=True)
+    tags = TagField(many=True, read_only=False, allow_empty=True,
+                    queryset=PodaciTag.objects.filter())
 
     class Meta:
         model = PodaciFile
         depth = 0
-        fields = ('id', 'name', 'title', 'date_added', 'created_by',
+        fields = ('id', 'title', 'date_added', 'created_by',
                   'filename', 'url', 'sha256', 'size', 'mimetype',
                   'description', 'tags', 'collections', 'thumbnail',
                   'public_read', 'staff_read')
+        read_only_fields = ('sha256', 'url', 'filename', 'created_by',
+                            'date_added', 'thumbnail')
+
+    def update(self, instance, data):
+        instance.title = data.get('title')
+        instance.description = data.get('description')
+        instance.tags.clear()
+        for tag in data.get('tags', []):
+            instance.tags.add(tag)
+        instance.save()
+        return instance
 
 
 class CollectionSerializer(serializers.ModelSerializer):

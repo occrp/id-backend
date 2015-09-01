@@ -5,27 +5,27 @@
     {% for tu in ticket_updates %}
         {% if tu.comment %}
             <div class="request-update">
-                <i class="icon-caret-right primary-highlight"></i>
+                <i class="fa fa-caret-right primary-highlight"></i>
                 <h5>
                 <strong>
                 {% if tu.update_type == "update" %}
-                    <i class="icon-pencil"></i>
+                    <i class="fa fa-pencil"></i>
                 {% elif tu.update_type == "close" %}
-                    <i class="icon-ok"></i>
+                    <i class="fa fa-ok"></i>
                 {% elif tu.update_type == "cancel" %}
-                    <i class="icon-minus-sign"></i>
+                    <i class="fa fa-minus"></i>
                 {% elif tu.update_type == "reopen" %}
-                    <i class="icon-unlock"></i>
+                    <i class="fa fa-unlock"></i>
                 {% elif tu.update_type == "open" %}
-                    <i class="icon-asterisk"></i>
+                    <i class="fa fa-asterisk"></i>
                 {% elif tu.update_type == "flag" %}
-                    <i class="icon-flag"></i>
+                    <i class="fa fa-flag"></i>
                 {% elif tu.update_type == "charge" %}
-                    <i class="icon-ticket"></i>
+                    <i class="fa fa-ticket"></i>
                 {% elif tu.update_type == "join" %}
-                    <i class="icon-user"></i>
+                    <i class="fa fa-user"></i>
                 {% elif tu.update_type == "leave" %}
-                    <i class="icon-remove"></i>
+                    <i class="fa fa-remove"></i>
                 {% endif %}
                 {{ tu.author.display_name }}
                 </strong>

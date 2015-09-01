@@ -8,7 +8,7 @@
 {% block inner_content %}
     <div class="page-header">
         <a href="{{ url('ticket_submit') }}" class="btn btn-primary pull-right">
-            <i class="icon-plus-sign icon-white"></i> {% trans %}New Request{% endtrans %}
+            <i class="fa fa-plus"></i> {% trans %}New Request{% endtrans %}
         </a>
         <h1>{% trans %}{{ page_name }}{% endtrans %}</h1>
     </div>
@@ -36,7 +36,7 @@
                     </span>
                 {% endfor %}
             {% else %}
-                
+
             {% endif %}
             <div class="pull-right">
                 {% if user.is_user or user.is_volunteer %}
