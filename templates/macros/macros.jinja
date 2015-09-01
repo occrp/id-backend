@@ -48,8 +48,8 @@
                 {% for ticket in tickets %}
                     <tr>
                         <td title="{{ticket.get_status()}}">
-                            <i class="icon-{{ticket.get_type_icon()}}"></i>
-                            <i class="icon-{{ticket.get_status_icon()}}"></i>
+                            <i class="fa fa-{{ticket.get_type_icon()}}"></i>
+                            <i class="fa fa-{{ticket.get_status_icon()}}"></i>
                         </td>
                         <td>
                             <a href="{{ url('ticket_details', ticket_id=ticket.id) }}">
@@ -66,7 +66,7 @@
                                 {% endfor %}
                             {% else %}
                                 {% trans %}No Responder{% endtrans %}
-                            {% endif %}    
+                            {% endif %}
                         {% endif %}
                         </td>
                         <td nowrap>{{ display_datetime(ticket.created.date()) }}</td>
@@ -74,11 +74,11 @@
 {#
                         <td>
                             <a class='btn btn-mini' href="{{ url(ticket.ticket_type ~ '_ticket_edit', pk=ticket.id) }}">
-                                <i class="icon-pencil"></i>
+                                <i class="fa fa-pencil"></i>
                             </a>
                         <a href="#AdminSettingsModal" class='btn btn-mini'
                            data-modal-url="{{ url('ticket_admin_settings', pk=ticket.id, redirect=route_name) }}">
-                            <i class="icon-cog"></i>
+                            <i class="fa fa-cog"></i>
                         </a>
 
                         </td>
@@ -136,7 +136,7 @@
 
 {% macro help_box() %}
     <div class="alert alert-info">
-        <div class="alert-icon"><i class="icon-question-sign"></i></div>
+        <div class="alert-icon"><i class="fa fa-question"></i></div>
         <div class="alert-content">{{ caller() }}</div>
     </div>
 {% endmacro %}

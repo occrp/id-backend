@@ -71,8 +71,7 @@ class PodaciTag(ZipSetMixin, models.Model):
     icon                = models.CharField(max_length=100)
 
     def __unicode__(self):
-        if not self.id: return "[Uninitialized tag object]"
-        return "[Tag %s] %s" % (self.id, self.name)
+        return self.name
 
     def __str__(self):
         return self.__unicode__()
@@ -96,7 +95,7 @@ class PodaciTag(ZipSetMixin, models.Model):
 
 
 class PodaciFile(models.Model):
-    name                = models.CharField(max_length=200)
+    filename            = models.CharField(max_length=256)
     date_added          = models.DateTimeField(auto_now_add=True)
     public_read         = models.BooleanField(default=False)
     staff_read          = models.BooleanField(default=False)
@@ -107,11 +106,10 @@ class PodaciFile(models.Model):
         related_name='%(class)s_files_perm_write')
 
     schema_version      = models.IntegerField(default=3)
-    title               = models.CharField(max_length=300)
+    title               = models.CharField(max_length=300, blank=True, null=True)
     created_by          = models.ForeignKey(AUTH_USER_MODEL,
                             related_name='created_files', blank=True, null=True)
     is_resident         = models.BooleanField(default=True)
-    filename            = models.CharField(max_length=256, blank=True)
     url                 = models.URLField(blank=True)
     sha256              = models.CharField(max_length=65)
     size                = models.IntegerField(default=0)
@@ -276,7 +274,7 @@ class PodaciFile(models.Model):
             filename = fh.name
         if not filename:
             filename = "Untitled file"
-        self.filename = filename
+        self.title = self.filename = filename
         self.sha256 = sha256sum(fh)
         self.mimetype = magic.Magic(mime=True).from_buffer(fh.read(100))
 
