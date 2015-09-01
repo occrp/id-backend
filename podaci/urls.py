@@ -17,6 +17,6 @@ urlpatterns = patterns('',
     url(r'^collection/$', views.CollectionList.as_view(), name='podaci_collection_list'),
     url(r'^collection/(?P<pk>[0-9]+)/$', views.CollectionDetail.as_view(), name='podaci_collection_detail'),
 
-    #url(r'^tag/selection/overview/$',      perm("staff", tags.Overview), name='podaci_tags_overview'),
+    # url(r'^tag/selection/overview/$',      perm("staff", tags.Overview), name='podaci_tags_overview'),
     # url(r'^tag/(?P<id>.+)/overview/$',     perm("staff", tags.Overview), name='podaci_tags_overview'),
 )

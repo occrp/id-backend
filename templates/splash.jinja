@@ -3,64 +3,73 @@
 {% block body_class %}splash has-full-page-header{% endblock %}
 
 {% block before_content %}
+    <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
     <div class="page-header full-page-header">
-        <div class="container">
         <h2>
-            {% trans -%}
-                <span class="primary-highlight">Investigative Dashboard</span> helps investigators expose illicit ties that cross borders.
-            {%- endtrans %}
+            <div class="primary-highlight">{% trans -%}Investigative Dashboard{%- endtrans %}</div>
+            <div>{% trans -%}Research. Understand. Expose.{%- endtrans %}</div>
+            <div style="margin-top: 1em;">
+                <a href="{{url('about_id')}}" class="btn btn-large">{% trans %}Learn more{% endtrans %}</a>
+                <a href="{{url('login')}}" class="btn btn-large">{% trans %}Sign in{% endtrans %}</a>
+                <a href="{{url('registration_register')}}" class="btn btn-large">{% trans %}Register{% endtrans %}</a>
+            </div>
         </h2>
-        </div>
     </div>
 {% endblock %}
 
 {% block content %}
-    <div class="span12" data-equal="p.detail">
-            <div class="span3 splash-item">
-                <img src="{{ static("img/id-dashboard-search.png") }}" />
-                <p class="desc">{% trans %}Search for a company or person of interest.{% endtrans %}</p>
-                <p class="detail">{% trans %}We have scraped national business records from Panama, Luxembourg, Switzerland and many other countries{% endtrans %}</p>
-                <div class="button-holder">
-                    <a href="{{ url('search') }}" class="btn btn-large btn-primary">{% trans %}Start Searching{% endtrans %}</a>
-                </div>
+<div class="row">
+    <div style="margin-left: auto; margin-right: auto; text-align: center;">
+        <div class="splash-item">
+            <p class="desc">{% trans %}Search for a company or person of interest.{% endtrans %}</p>
+            <div class="button-holder">
+                <a href="{{ url('search') }}" class="btn btn-large btn-primary"><i class="fa fa-search"></i> {% trans %}Start Searching{% endtrans %}</a>
             </div>
+        </div>
 
-            <div class="span3 splash-item">
-                <img src="{{ static("img/id-dashboard-databases.png") }}" />
-                <p class="desc">{% trans %}View recommended global databases.{% endtrans %}</p>
-                <p class="detail">{% trans %}We have assembled a directory of over 300 local databases that might help{% endtrans %}</p>
-                <div class="button-holder">
-                    <a href="{{ url('externaldb_list') }}" class="btn btn-large btn-primary">{% trans %}Visit Databases{% endtrans %}</a>
-                </div>
+        <div class="splash-item">
+            <p class="desc">{% trans %}View recommended global databases.{% endtrans %}</p>
+            <div class="button-holder">
+                <a href="{{ url('externaldb_list') }}" class="btn btn-large btn-primary"><i class="fa fa-database"></i> {% trans %}Visit Databases{% endtrans %}</a>
             </div>
+        </div>
 
-            <div class="span3 splash-item">
-                <img src="{{ static("img/id-dashboard-assistance.png") }}" />
-                <p class="desc">{% trans %}Ask our researchers to help you find information.{% endtrans %}</p>
-                <p class="detail">{% trans %}We understand investigations are sensitive and we take privacy very seriously. Requests are only seen by our full-time experts and, if you are willing, by vetted volunteers{% endtrans %}</p>
-                <div class="button-holder">
-                    <a href="{{ url('ticket_submit') }}" class="btn btn-large btn-primary">{% trans %}Ask an Expert{% endtrans %}</a>
-                </div>
+        <div class="splash-item">
+            <p class="desc">{% trans %}Ask our researchers to help you find information.{% endtrans %}</p>
+            <div class="button-holder">
+                <a href="{{ url('ticket_submit') }}" class="btn btn-large btn-primary"><i class="fa fa-ticket"></i> {% trans %}Ask an Expert{% endtrans %}</a>
             </div>
+        </div>
 
-            <div class="span3 splash-item">
-                <img src="{{ static("img/id-dashboard-triangle.png") }}" />
-                <p class="desc">{% trans %}Map out relationships, get the big picture.{% endtrans %}</p>
-                <p class="detail">{% trans %}Use Vis to map relationships between people, companies and other entities that crop up in your investigation.{% endtrans %}</p>
-                <div class="button-holder">
-                    <a href="https://vis.occrp.org" class="btn btn-large btn-primary">{% trans %}Use Vis{% endtrans %}</a>
-                </div>
+        <div class="splash-item">
+            <p class="desc">{% trans %}Map out relationships, get the big picture.{% endtrans %}</p>
+            <div class="button-holder">
+                <a href="https://vis.occrp.org" class="btn btn-large btn-primary"><i class="fa fa-bank"></i> {% trans %}Use Vis{% endtrans %}</a>
             </div>
+        </div>
 
-            {% if user.is_staff or user.is_superuser %}
-            <div class="span3 splash-item">
-                <img src="{{ static("img/id-dashboard-triangle.png") }}" />
-                <p class="desc">{% trans %}Manage your files, take control of investigations.{% endtrans %}</p>
-                <p class="detail">{% trans %}You've got 99 problems and all of them are files? Use our file manager to plod through the data.{% endtrans %}</p>
-                <div class="button-holder">
-                    <a href="{{ url('podaci_info_home') }}" class="btn btn-large btn-primary">{% trans %}Manage files{% endtrans %}</a>
-                </div>
+        <div class="splash-item">
+            <p class="desc">{% trans %}Search for images on social media.{% endtrans %}</p>
+            <div class="button-holder">
+                <a href="{{ url('search_images') }}" class="btn btn-large btn-primary"><i class="fa fa-search"></i> {% trans %}Start Searching{% endtrans %}</a>
             </div>
-            {% endif %}
+        </div>
+
+        <div class="splash-item">
+            <p class="desc">{% trans %}Keep track of all your important documents.{% endtrans %}</p>
+            <div class="button-holder">
+                <a href="{{ url('podaci_info_home') }}" class="btn btn-large btn-primary"><i class="fa fa-files-o"></i> {% trans %}Manage files{% endtrans %}</a>
+            </div>
+        </div>
+        {#
+        <div class="splash-item">
+            <p class="desc">{% trans %}Manage investigations, collaborate on stories.{% endtrans %}</p>
+            <div class="button-holder">
+                <a href="{{ url('podaci_info_home') }}" class="btn btn-large btn-primary"><i class="fa fa-newspaper-o"></i> {% trans %}Edit stories{% endtrans %}</a>
+            </div>
+        </div>
+        #}
     </div>
+</div>
+
 {% endblock %}
