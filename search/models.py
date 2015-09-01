@@ -6,7 +6,7 @@ from core.utils import json_dumps, json_loads
 SEARCH_TYPES = (
     ('document', 'Document search'),
     ('image', 'Image search'),
-    ('social', 'Social Network search'),
+#    ('social', 'Social Network search'),
 #    ('entity', 'Entity search')
 )
 
