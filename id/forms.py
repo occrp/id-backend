@@ -72,7 +72,7 @@ class ProfileUpdateForm(forms.ModelForm):
 class ProfileBasicsForm(forms.ModelForm):
     class Meta:
         model = models.Profile
-        fields = ("first_name", "last_name", "abbr", "locale", 
+        fields = ("first_name", "last_name", "locale", 
                   "country", "network")
 
 class ProfileDetailsForm(forms.ModelForm):
