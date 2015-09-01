@@ -78,7 +78,7 @@ class Profile(AbstractBaseUser, PermissionsMixin):
 
     first_name = models.CharField(max_length=64, verbose_name=_("First Name"))
     last_name = models.CharField(max_length=64, verbose_name=_("Last Name"))
-    abbr = models.CharField(max_length=8, blank=True, null=True, unique=True, verbose_name=_("Initials"))
+    #abbr = models.CharField(max_length=8, blank=True, null=True, unique=True, verbose_name=_("Initials"))
     admin_notes = models.TextField(blank=True, verbose_name=_("Admin Notes"))
     locale = models.CharField(blank=True, max_length=16, choices=LANGUAGES)
 
