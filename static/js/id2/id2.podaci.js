@@ -155,6 +155,7 @@ ID2.Podaci.render_file_to_resultset = function(file) {
     fo.append(tags);
     fo.append("<div class=\"podaci-description\">" + file.description.truncate(200) + "</div>")
     fo.attr("data-id", file.id);
+    fo.attr("data-file", JSON.stringify(file));
 
     if (file.public_read) {
         fo.append("<div class=\"podaci-file-public\">Public</div>");
@@ -385,9 +386,6 @@ ID2.Podaci.upload_click = function(e, target) {
     $("#podaci_upload_modal").modal();
 };
 
-ID2.Podaci.create_tag = function() {
-    $("#podaci_create_tag_modal").modal();
-};
 
 ID2.Podaci.edit_users = function() {
     $("#podaci_edit_users_modal").modal();
@@ -398,16 +396,76 @@ ID2.Podaci.edit_users = function() {
     });
 };
 
-ID2.Podaci.add_tags = function() {
-    $("#podaci_add_tags_modal").modal();
+
+ID2.Podaci.get_selected_tags = function() {
+    // console.log(ID2.Podaci);
+    var selected = null;
+    $(".podaci-file").each(function(index, el) {
+      var $el = $(el),
+          tags = [];
+      if (ID2.Podaci.selection.indexOf($el.data('id')) != -1) {
+        var file = $el.data('file');
+        $.each(file.tags, function(tidx, tag) {
+          tags.push(tag.name);
+        });
+      }
+      if (selected === null) {
+        selected = tags;
+      } else {
+        selected = _.intersection(selected, tags);
+      }
+    });
+    return selected;
 };
 
-ID2.Podaci.remove_tags = function() {
-    for (i in self.selection) {
-
-    }
-    $("#podaci_remove_tags_modal").modal();
+ID2.Podaci.edit_tags = function() {
+    $("#podaci_edit_tags_modal").modal();
+    $("#podaci_edit_tags_input").select2({
+      tags: true,
+      tokenSeparators: [',', ' ']
+    });
+    $("#podaci_edit_tags_input").val(ID2.Podaci.get_selected_tags());
 };
+
+
+ID2.Podaci.edit_tags_submit = function() {
+    var tags = $("#podaci_edit_tags_input").val(),
+        common = ID2.Podaci.get_selected_tags(),
+        added = _.without(tags, common),
+        removed = _.without(common, tags);
+    console.log('VALUES', tags, common, added, removed);
+
+    $(".podaci-file").each(function(index, el) {
+      var $el = $(el);
+      if (ID2.Podaci.selection.indexOf($el.data('id')) == -1) {
+        return;
+      }
+      var file = $el.data('file'),
+          tags = [];
+      $.each(added, function(i, t) {
+        tags.push({'name': t});
+      });
+      $.each(file.tags, function(i, t) {
+        if (removed.indexOf(t.name) == -1 &&
+            added.indexOf(t.name) == -1) {
+          tags.push(t);
+        }
+      });
+      file.tags = tags;
+      $.ajax({
+        type: 'PUT',
+        url: '/podaci/file/' + file.id + '/',
+        data: file,
+        dataType: 'json',
+        success: function(file_ret) {
+          console.log(file_ret);
+        }
+      });
+    });
+
+    $("#podaci_edit_tags_modal").modal('hide');
+};
+
 
 ID2.Podaci.create_collection_submit = function() {
     $.post('/podaci/collection/', $("#podaci_create_collection_form").serialize(),
@@ -605,6 +663,9 @@ ID2.Podaci.callbacks = {
     ".podaci_file_select_box change": ID2.Podaci.select_toggle_checkbox,
     ".podaci_selection_download_zip click": ID2.Podaci.download_zip,
     ".podaci_open_in_overview click": ID2.Podaci.open_in_overview,
+
+    ".podaci_edit_tags click": ID2.Podaci.edit_tags,
+    "#podaci_edit_tags_btn click": ID2.Podaci.edit_tags_submit,
 
     ".podaci-files-icons > .podaci-file click": ID2.Podaci.file_click,
     ".podaci-files-icons > .podaci-file dblclick": ID2.Podaci.file_doubleclick,
