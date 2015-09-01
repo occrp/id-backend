@@ -1,15 +1,26 @@
 {% extends "base.jinja" %}
+
+{% block body_class %}splash has-full-page-header{% endblock %}
+
+{% block before_content %}
+    <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
+    <div class="page-header full-page-header">
+        <h2 class="primary-highlight">{% trans %}Register{% endtrans %}</h2>
+    </div>
+{% endblock %}
+
 {% block content %}
 
-<h1>{% trans %}Register{% endtrans %}</h1>
-<div class="span12">
-<form action="/accounts/register/" method="POST">
-{%csrf_token%}
-<fieldset> 
-{{form.as_table()}}
-<label></label><input class="btn primary" type="submit" value="Save"/>
-</fieldset>
-</form>
+<div class="span12 registration-form material-form-container">
+    <form action="/accounts/register/" method="POST">
+    {%csrf_token%}
+        <fieldset> 
+            <div class="tab-pane material-form md-whiteframe-z1">
+                {{form.as_table()}}
+            </div>
+            <label></label><input class="material-form-submit btn primary md-whiteframe-z2" type="submit" value="Save"/>
+        </fieldset>
+    </form>
 </div>
 
 {% endblock %}
