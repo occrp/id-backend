@@ -12,7 +12,7 @@
                                 {% if is_superuser %}
                                     <div class="pull-right">
                                         <h4><a class="fade-content" href="{{ uri_for("%s_edit" % entity.key.kind().lower(), obj_id=entity.key.id()) }}">
-                                                <i class="icon-pencil"></i>
+                                                <i class="fa fa-pencil"></i>
                                         </a></h4>
                                     </div>
                                 {% endif %}
@@ -21,7 +21,7 @@
                                                 class="entity-view"
                                                 data-url="{{ uri_for('entity_view') }}"
                                                 data-key="{{ entity.key.urlsafe() }}">
-                                            <i class="icon-{{ icon_classes[kind] }}"></i> {{ entity }}</a></h4>
+                                            <i class="fa fa-{{ icon_classes[kind] }}"></i> {{ entity }}</a></h4>
                                     {% if entity.summary %}
                                     <table class="table table-bordered">
                                         <tr>
@@ -80,7 +80,7 @@
 			    Tags:
 			  <span class="tags_title">
 			    {% for tag in result.fields.tags %}
-			      <a href="#" data-tag="{{tag}}" class="tag_link">{{ tag }}</a> * 
+			      <a href="#" data-tag="{{tag}}" class="tag_link">{{ tag }}</a> *
 			    {% endfor %}
 			  </div>
                         </div>
