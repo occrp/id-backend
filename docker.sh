@@ -17,15 +17,16 @@ echo      '#####################################################################
 
 python manage.py loaddata 'id/fixtures/initial_data.json'
         
- 
+# get the IP address
+IP="$( ip -o -f inet a show dev eth0 | cut -d ' ' -f 7 | sed 's/\/.*//' )"
 echo -e '\n#####################################################################'
-echo      '# running django...'
+echo      "# running django on $IP..."
 echo      '#####################################################################'
 
 while true; do
     python manage.py runserver 0.0.0.0:8000
     sleep 5
     echo -e '\n#####################################################################'
-    echo      '# restarting django...'
+    echo      "# restarting django on $IP..."
     echo      '#####################################################################'
 done
