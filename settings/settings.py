@@ -111,15 +111,10 @@ AUTO_RENDER_SELECT2_STATICS = False
 #        new templates as .jinja with Django template engine
 DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja'
 
-JINJA_EXTS = (
-    'jinja2.ext.i18n',
-    'podaci.templatetags.mentions',
-    'core.templatetags.form_helpers'
-)
-
 from django_jinja.builtins import DEFAULT_EXTENSIONS
 
 JINJA2_EXTENSIONS = DEFAULT_EXTENSIONS + [
+    "jinja2.ext.i18n",
     "pipeline.templatetags.ext.PipelineExtension"
 ]
 
