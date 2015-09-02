@@ -1,9 +1,8 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
-from settings.settings import DEFAULTS
-import searchproviders
-from id import widgets, constdata, models
+
+from id import constdata, models
 from django.contrib.auth import get_user_model
 import re
 import math
