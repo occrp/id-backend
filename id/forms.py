@@ -72,12 +72,12 @@ class ProfileRegistrationForm(forms.Form):
     password2 = forms.CharField(
             widget=forms.PasswordInput(attrs={ 'class': 'required' }, render_value=False),
             label=_('Password confirmation'))
-    
+
     def clean_email(self):
         """
         Validate that the email is valid and is not already
         in use.
-        
+
         """
         try:
             user = get_user_model().objects.get(email=self.cleaned_data['email'])
@@ -119,13 +119,13 @@ class ProfileRegistrationForm(forms.Form):
         match. Note that an error here will end up in
         ``non_field_errors()`` because it doesn't apply to a single
         field.
-        
+
         """
         if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 raise forms.ValidationError(_(u'You must type the same password each time'))
         return self.cleaned_data
-    
+
     def save(self, profile_callback=None):
         new_user = get_user_model().objects.create_user(
             email=self.cleaned_data['email'],
@@ -142,7 +142,7 @@ class ProfileUpdateForm(forms.ModelForm):
 class ProfileBasicsForm(forms.ModelForm):
     class Meta:
         model = models.Profile
-        fields = ("first_name", "last_name", "locale", 
+        fields = ("first_name", "last_name", "locale",
                   "country", "network")
 
 
@@ -166,3 +166,8 @@ class ProfileAdminForm(forms.ModelForm):
 class ScraperRequestForm(forms.ModelForm):
     class Meta:
         model = models.DatabaseScrapeRequest
+
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = models.Feedback
