@@ -37,7 +37,7 @@
         <td>{{ticket.requester.country}}</td>
         <td>{{ticket.requester.organization_membership}}</td>
         <td>{{ticket.requester.network}}</td>
-        <td>{{ticket.summary}}</td>
+        <td><a href="{{url('ticket_details', ticket.id)}}">{{ticket.summary}}</a></td>
     </tr>
     {% endfor %}
 </table>
