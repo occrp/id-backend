@@ -4,41 +4,54 @@
 {% block before_content %}
     <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
     <div class="page-header full-page-header">
-        <h2 class="primary-highlight">{% trans %}Sign in to Investigative Dashboard{% endtrans %}</h2>
+        <h2 class="primary-highlight">{% trans %}Sign in to ID{% endtrans %}</h2>
     </div>
 {% endblock %}
-{% block content %}
-    <div class="span12">
-        <div class="page-header">
-            {% if next %}
-            <div class="alert alert-info">{% trans %}You must sign in to continue.{% endtrans %}</div>
-            {% endif %}
-        </div>
 
-        <div class="material-form-container">
-            <div class="material-form md-whiteframe-z1" style="width: 400px; height: 180px; margin: 20px auto;">
-                <form action="/accounts/login/" method="POST">
-                    {%csrf_token%}
-                    {% if next %}<input type="hidden" name="next" value="{{next}}"/>{% endif %}
-                    <fieldset>
+{% block content %}
+
+<style>
+
+.login-form .login-alternative::before {
+    content:"or";
+    position:relative;
+    top:-0.55em;
+    color:#eee;
+    font-size:150%;
+    text-shadow:-1px -1px 0px #ddd, 1px 1px 0px #fff;
+    background:#f7f9f8;
+    padding:0em 0.3em;
+}
+
+</style>
+
+    <div class="login-form span12 material-form-container">
+        <div class="material-form md-whiteframe-z1">
+            {% if next %}<p class="alert alert-info">{% trans %}You must sign in to continue.{% endtrans %}</p>{% endif %}
+            <form action="/accounts/login/" method="POST">
+                {%csrf_token%}
+                {% if next %}<input type="hidden" name="next" value="{{next}}"/>{% endif %}
+                <fieldset>
+                    <table>
                         {{form.as_table()}}
+                    </table>
+                    <div class="buttons-container">
                         <label></label>
                         <input class="btn btn-primary" type="submit" value="{% trans %}Sign in{% endtrans %}"/>
-
-                        <div style="float:right;">
-                            <a href="/accounts/register/" class="btn">{% trans %}Register{% endtrans %}</a>
-                            <a href="/accounts/password/reset/" class="btn">{% trans %}Lost password{% endtrans %}</a>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
-
-            <div class="material-form md-whiteframe-z1" style="width: 400px; height: 180px; margin: 20px auto; text-align: center;">
-                <p>{% trans %}If you registered with your Google account, you can use it to sign in. Most users should sign in using the standard method.{% endtrans %}</p>
-                <br/><br/>
+                        <a href="/accounts/password/reset/" class="btn">{% trans %}Lost password{% endtrans %}</a>
+                    </div>
+                    
+                </fieldset>
+            </form>
+            <div class="login-alternative">
+                <p class="info">{% trans %}If you registered with your Google account, you can use it to sign in. Most users should sign in using the standard method.{% endtrans %}</p>
                 <a href="{{ url("socialauth_begin", "google-oauth2") }}" class="btn">
                     <i class="fa fa-google-plus"></i> {% trans %}Sign in with Google{% endtrans %}
                 </a>
+            </div>
+            <div class="login-alternative">
+                <p class="info">{% trans %}Don't have an account yet? Pease consider registering.{% endtrans %}</p>
+                <a href="/accounts/register/" class="btn">{% trans %}Register{% endtrans %}</a>
             </div>
         </div>
     </div>
