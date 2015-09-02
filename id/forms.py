@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model
 import re
 import math
 
+
 class CountryFilterForm(forms.Form):
     """
     Filter form for countries.
@@ -22,32 +23,6 @@ class CountryFilterForm(forms.Form):
                 help_text="",
                 choices=constdata.DATABASE_COUNTRIES,
               )
-
-class CombinedSearchForm(forms.Form):
-    query = forms.CharField(
-            label="",
-            widget=forms.TextInput(attrs={
-                'placeholder': _("Search terms"),
-                'class': 'span8'
-            })
-        )
-    search_providers = forms.MultipleChoiceField(
-            label=_("Search Providers"),
-            choices=searchproviders.get_providers_names(),
-            initial=searchproviders.get_defaults(),
-            widget=forms.CheckboxSelectMultiple
-        )
-    offset = forms.IntegerField(initial=0, widget=forms.HiddenInput)
-    limit = forms.IntegerField(initial=DEFAULTS['search']['result_limit'], widget=forms.HiddenInput)
-
-
-class EntityAjaxSearchForm(forms.Form):
-    search_results = forms.MultipleChoiceField()
-
-    # FIXME: Make Ajax URL do something
-    #def __init__(self, *args, **kwargs):
-    #    super(EntityAjaxSearchForm, self).__init__(*args, **kwargs)
-    #    # self.search_results.ajax_url = reverse('search_entities')
 
 
 class UserFilterForm(forms.Form):
