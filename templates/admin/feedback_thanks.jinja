@@ -1,0 +1,16 @@
+{% extends "base.jinja" %}
+{% block body_class %}splash has-full-page-header{% endblock %}
+
+{% block before_content %}
+    <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
+    <div class="page-header full-page-header">
+        <h2 class="primary-highlight">{% trans %}Thank you for your feedback{% endtrans %}</h2>
+    </div>
+{% endblock %}
+{% block content %}
+
+<h3>{% trans %}Your feedback is immensely valuable to our work. We will read it through and take your suggestions into account.{% endtrans %}</h3>
+
+<p>{% trans %}If you have any further observations or suggestions to make, please don't hesitate to get in touch{% endtrans %}</p>
+
+{% endblock %}
