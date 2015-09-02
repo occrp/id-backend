@@ -136,19 +136,6 @@ class PodaciFile(models.Model):
         cl = PodaciFileChangelog(ref=self, user=user, description=message)
         cl.save()
 
-    def note_add(self, text, user):
-        """Add a log entry."""
-        cl = PodaciFileNote(ref=self, user=user, text=text)
-        cl.save()
-        self.log("Added note", user)
-
-    def note_list(self):
-        return PodaciFileNote.objects.filter(ref=self)
-
-    def note_delete(self, nid):
-        note = PodaciFileNote.objects.get(id=nid)
-        note.delete()
-
     def details_string(self):
         """
            Return a formatted details string that describes the object's
@@ -397,7 +384,6 @@ class PodaciFile(models.Model):
             return False
 
 class PodaciCollection(ZipSetMixin, models.Model):
-
     name                = models.CharField(max_length=300)
     owner               = models.ForeignKey(AUTH_USER_MODEL,
                             related_name='collections', default=1)
@@ -454,9 +440,3 @@ class PodaciFileChangelog(models.Model):
     user                = models.ForeignKey(AUTH_USER_MODEL)
     timestamp           = models.DateTimeField(auto_now_add=True)
     description         = models.CharField(max_length=200)
-
-class PodaciFileNote(models.Model):
-    user                = models.ForeignKey(AUTH_USER_MODEL)
-    timestamp           = models.DateTimeField(auto_now_add=True)
-    ref                 = models.ForeignKey(PodaciFile, related_name="notes")
-    text                = models.TextField()
