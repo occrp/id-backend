@@ -10,7 +10,7 @@ log = logging.getLogger(__name__)
 
 
 def reconcile_matches(corp):
-    url = 'http://opencorporates.com/reconcile?query=%s' % (
+    url = 'https://opencorporates.com/reconcile?query=%s' % (
         urllib.quote(corp))
     try:
         data = json.load(urllib2.urlopen(url))
@@ -21,7 +21,7 @@ def reconcile_matches(corp):
 
 
 def details_for_corp(corpid):
-    url = 'http://api.opencorporates.com/%s' % corpid
+    url = 'https://api.opencorporates.com/%s' % corpid
     try:
         data = json.load(urllib2.urlopen(url))
         if 'results' not in data or 'company' not in data['results']:
