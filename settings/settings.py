@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'registration',
+    'pipeline',
     'django_jinja',
     'rest_framework',
     'social_auth',
@@ -120,12 +121,43 @@ AUTO_RENDER_SELECT2_STATICS = False
 #        new templates as .jinja with Django template engine
 DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja'
 
-JINJA_EXTS = (
-    'jinja2.ext.i18n',
-    'podaci.templatetags.mentions',
-    'core.templatetags.form_helpers'
+from django_jinja.builtins import DEFAULT_EXTENSIONS
+
+JINJA2_EXTENSIONS = DEFAULT_EXTENSIONS + [
+    "jinja2.ext.i18n",
+    "pipeline.templatetags.ext.PipelineExtension"
+]
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.6/howto/static-files/
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATIC_ROOT = os.path.join(BASE_DIR, "static_collected")
+STATIC_URL = '/static/'
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
 )
 
+PIPELINE_CSS = {
+    'main': {
+        'source_filenames': (
+            'bower_components/font-awesome/css/font-awesome.min.css',
+            'bower_components/angular-material/angular-material.min.css',
+            'css/main.css',
+            'css/search.css',
+            'css/ol.css',
+            'css/tooltips.css',
+            'css/notifications.css',
+        ),
+        'output_filename': 'build/style.css'
+    },
+}
+
+# PIPELINE_ENABLED = True
 
 # WSGI_APPLICATION = 'id.wsgi.application'
 
@@ -180,14 +212,6 @@ REST_FRAMEWORK = {
 
 from django.conf.global_settings import DATE_INPUT_FORMATS
 DATE_INPUT_FORMATS += ('%d/%m/%y',)
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
-
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
-STATIC_URL = '/static/'
-
 
 # Investigative Dashboard Default Settings!
 from django.utils.translation import ugettext_lazy as _

@@ -50,26 +50,15 @@ ID2.Search.renderDocumentResult = function(item) {
     result.append('<h4><a href="' + item.data.result_url + '" target="_blank">' + item.data.title + '</a></h4>');
     result.append('<p>' + item.data.text + '</p>');
     var tags = $('<div class="search-tags"/>');
-    for (tag in item.data.metadata.fields.tags) {
-        tag = item.data.metadata.fields.tags[tag];
-        tags.append('<span class="search-tag">' + tag + '</span>');
+    if (item.data.metadata && item.data.metadata.fields && item.data.metadata.fields.tags) {
+      for (tag in item.data.metadata.fields.tags) {
+          tag = item.data.metadata.fields.tags[tag];
+          tags.append('<span class="search-tag">' + tag + '</span>');
+      }
     }
     result.append('<div class="search-origin">Source: <span class="provider ' + item.provider + '">'+ item.provider + '</span></div>');
     result.append(tags);
     return result;
-/*    <h4><a href="{{ result.fields.url }}" target="_blank">
-              <img src="{{ static_url }}img/icons/32px/{{ result.fields.url.rsplit('.')[-1]}}.png"/> {{ result.fields.title }}</a></h4>
-              <p>
-8             {% if 'highlight' in result %}
-              {{ result.highlight.text|join(' ... ')|safe }} </p>
-              {% endif %}
-              <div class="tags">
-                Tags:
-              <span class="tags_title">
-                {% for tag in result.fields.tags %}
-                  <a href="#" data-tag="{{tag}}" class="tag_link">{{ tag }}</a> * 
-                {% endfor %}
-              </div>*/
 };
 
 ID2.Search.renderDefaultResult = function(item) {
@@ -102,8 +91,8 @@ ID2.Search.startSearch = function() {
     $.getJSON(url, $("#search_form").serialize(), function(data) {
         if (data.status) {
             $("#searching_notice").show();
-            window.setTimeout(function() { 
-                ID2.Search.checkResults(data.searchid, callback); 
+            window.setTimeout(function() {
+                ID2.Search.checkResults(data.searchid, callback);
             }, data.checkin_after);
         }
     });

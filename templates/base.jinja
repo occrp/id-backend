@@ -14,13 +14,7 @@
     <meta name="viewport" content="width=device-width"/>
     <meta name="id_version" content="{{id_version()}}"/>
 
-
-    <link rel="stylesheet" href="{{ static("bower_components/font-awesome/css/font-awesome.min.css") }}"/>
-    <link rel="stylesheet" href="{{ static("css/main.css") }}"/>
-    <link rel="stylesheet" href="{{ static("css/search.css") }}" type="text/css">
-    <link rel="stylesheet" href="{{ static("css/ol.css") }}" type="text/css">
-    <link rel="stylesheet" href="{{ static("css/tooltips.css") }}" type="text/css">
-    <link rel="stylesheet" href="{{ static("css/notifications.css") }}" type="text/css">
+    {% stylesheet 'main' %}
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
