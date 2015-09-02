@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import TemplateView, View
 
-from id.forms import CombinedSearchForm
+from search.forms import CombinedSearchForm
 from settings.settings import DEFAULTS
 import logging
 import traceback
