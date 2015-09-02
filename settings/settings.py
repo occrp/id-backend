@@ -138,15 +138,21 @@ STATICFILES_FINDERS = (
 )
 
 PIPELINE_CSS = {
-    'test': {
+    'main': {
         'source_filenames': (
+            'bower_components/font-awesome/css/font-awesome.min.css',
+            'bower_components/angular-material/angular-material.min.css',
             'css/main.css',
+            'css/search.css',
+            'css/ol.css',
+            'css/tooltips.css',
+            'css/notifications.css',
         ),
-        'output_filename': 'test.css'
+        'output_filename': 'build/style.css'
     },
 }
 
-PIPELINE_ENABLED = True
+# PIPELINE_ENABLED = True
 
 # WSGI_APPLICATION = 'id.wsgi.application'
 
