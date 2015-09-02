@@ -26,10 +26,6 @@ DATABASE_ENGINE = 'django.db.backends.postgresql_psycopg2'
 DATABASE_HOST = 'postgres'
 DATABASE_PORT = '5432'
 
-NEO4J_HOST = 'neo4j'
-NEO4J_PORT = '7474'
-NEO4J_ENDPOINT = '/db/data'
-
 # our own precious User model
 # as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
 AUTH_USER_MODEL = 'id.Profile'
@@ -40,7 +36,7 @@ TIME_ZONE = 'UTC'
 LANGUAGE_CODE = 'en-us'
 DATE_FORMAT = 'd-F-Y'
 
-PODACI_SERVERS = [{"host": "elasticsearch", "port": "9200"}]
+PODACI_ES_SERVERS = ["elasticsearch:9200"]
 PODACI_ES_INDEX = 'podaci'
 PODACI_FS_ROOT = '/data'
 

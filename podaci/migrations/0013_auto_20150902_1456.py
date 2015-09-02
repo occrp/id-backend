@@ -29,4 +29,12 @@ class Migration(migrations.Migration):
         migrations.DeleteModel(
             name='PodaciFileTriples',
         ),
+        migrations.RemoveField(
+            model_name='podacifile',
+            name='is_indexed',
+        ),
+        migrations.RemoveField(
+            model_name='podacifile',
+            name='is_resident',
+        ),
     ]

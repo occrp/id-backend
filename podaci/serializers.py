@@ -55,7 +55,7 @@ class FileSerializer(serializers.ModelSerializer):
         instance.tags.clear()
         for tag in data.get('tags', []):
             instance.tags.add(tag)
-        instance.save()
+        instance.update()
         return instance
 
 
