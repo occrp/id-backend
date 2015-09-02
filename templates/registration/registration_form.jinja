@@ -14,10 +14,10 @@
 <div class="span12 registration-form material-form-container">
     <form action="/accounts/register/" method="POST">
     {%csrf_token%}
-        <fieldset> 
-            <div class="tab-pane material-form md-whiteframe-z1">
+        <fieldset>
+            <table class="tab-pane material-form md-whiteframe-z1">
                 {{form.as_table()}}
-            </div>
+            </table>
             <label></label><input class="material-form-submit btn primary md-whiteframe-z2" type="submit" value="Save"/>
         </fieldset>
     </form>

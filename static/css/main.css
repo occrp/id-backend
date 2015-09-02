@@ -7990,3 +7990,58 @@ ul.advisory_committee li {
 .profile-container .tab-content .tab-pane.active {
     display:inline-block;
 }
+
+/** Registration Form **/
+
+.registration-form fieldset {
+    display: block;
+    text-align:center;
+}
+
+.registration-form table {
+    display: inline-block;
+    text-align:left;
+}
+
+.registration-form th {
+    vertical-align: top;
+}
+
+.registration-form th label {
+    line-height:300%;
+}
+
+.registration-form th, .registration-form td {
+    padding:0em 0.5em;
+}
+
+.registration-form td {
+    display:flex;
+    flex-direction:column-reverse;
+}
+
+.registration-form td[colspan] {
+    display:table-cell
+}
+
+.registration-form td[colspan] .errorlist {
+    text-align:center;
+    padding:0em 0.5em 1em 0.5em;
+    display:block;
+}
+
+.registration-form td .errorlist {
+    flex:auto;
+    color:#F31D35;
+    padding-bottom:0.5em;
+    padding-left:0em;
+    margin-left:0em;
+}
+
+.registration-form td .errorlist li {
+    text-indent:0.2em;
+}
+
+.registration-form td input {
+    flex:1;
+}
