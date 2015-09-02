@@ -27,6 +27,7 @@ RUN pip install -r requirements.txt
 # these are volume-mounted now
 COPY . /usr/src/id2/
 RUN rm /usr/src/id2/settings/settings_local.py /usr/src/id2/settings/settings_local.pyc
+RUN cd /usr/src/id2/ && find ./ -iname '*.pyc' -exec rm -rf '{}' \;
 #COPY ./settings/settings_local.py-docker /usr/src/id2/settings/settings_local.py
 
 # bower setup
