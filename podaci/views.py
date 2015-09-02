@@ -1,14 +1,14 @@
-from podaci.models import PodaciFile, PodaciTag, PodaciCollection
-from podaci.serializers import FileSerializer, TagSerializer, CollectionSerializer
 from django.db.models import Q
-
-from rest_framework import mixins
 from rest_framework import generics
-from rest_framework import views
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
+
+from podaci.models import PodaciFile, PodaciTag, PodaciCollection
+from podaci.serializers import FileSerializer, TagSerializer
+from podaci.serializers import CollectionSerializer
+from podaci.templatetags import mentions  # noqa
 
 
 class FileQuerySetMixin(object):
@@ -82,7 +82,7 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
 
         text_terms = Q()
         for term in textterms:
-            text_terms &= (Q(name__contains=term) |
+            text_terms &= (Q(title__contains=term) |
                            Q(filename__contains=term) |
                            Q(description__contains=term))
 
@@ -91,7 +91,7 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
         for col in collections:
             search_terms &= Q(collections__in=[col])
 
-        print "SEARCH TERMS", search_terms
+        # print "SEARCH TERMS", search_terms
         return PodaciFile.objects.filter(search_terms)
 
 
@@ -171,10 +171,6 @@ class CollectionDetail(generics.RetrieveUpdateDestroyAPIView):
                 continue
 
         return super(CollectionDetail, self).patch(request, pk, **kwargs)
-
-
-class NoteList(generics.ListCreateAPIView):
-    pass
 
 
 class MetaDataList(generics.ListCreateAPIView):

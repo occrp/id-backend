@@ -1,6 +1,6 @@
 from django.db import models
-from settings.settings import AUTH_USER_MODEL # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
-from search.api import searchproviders, ImageSearchResult
+from settings.settings import AUTH_USER_MODEL
+from search.searchers import SEARCHERS
 from core.utils import json_dumps, json_loads
 
 SEARCH_TYPES = (
@@ -22,7 +22,12 @@ class SearchRequest(models.Model):
             provider = prov()
             provider.start(self)
 
-        return {"status": True, "searchid": self.id, "bots_started": len(searchproviders), "checkin_after": 500}
+        return {
+            "status": True,
+            "searchid": self.id,
+            "bots_started": len(SEARCHERS),
+            "checkin_after": 500
+        }
 
     def bots_total(self):
         return len(self.searchrunner_set.all())
@@ -57,17 +62,17 @@ class SearchRequest(models.Model):
         """Get a list of providers by name."""
         if not typeoverride:
             typeoverride = self.search_type
-        return [x.PROVIDER for x in searchproviders if x.TYPE == typeoverride]
+        return [x.PROVIDER for x in SEARCHERS if x.TYPE == typeoverride]
 
     def get_providers(self, limit_to=None):
         """Get the providers."""
         if not limit_to:
-            return [x for x in searchproviders if x.TYPE == self.search_type]
-        return [x for x in searchproviders if x.PROVIDER in limit_to and (x.TYPE == self.search_type)]
+            return [x for x in SEARCHERS if x.TYPE == self.search_type]
+        return [x for x in SEARCHERS if x.PROVIDER in limit_to and (x.TYPE == self.search_type)]
 
     def statistics(self):
         res = []
-        for t,name in SEARCH_TYPES:
+        for t, name in SEARCH_TYPES:
             res.append({
                 "type": name,
                 "count": SearchRequest.objects.filter(search_type=t).count(),
