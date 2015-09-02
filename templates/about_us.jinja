@@ -1,11 +1,18 @@
 {% extends "base.jinja" %}
 
+{% block body_class %}splash has-full-page-header{% endblock %}
+
+{% block before_content %}
+    <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
+    <div class="page-header full-page-header">
+        <h2>
+            <div class="primary-highlight">{% trans -%}OCCRP and ID development{%- endtrans %}</div>
+        </h2>
+    </div>
+{% endblock %}
+
 {% block content %}
     <div class="span12">
-        <div class="page-header">
-            <h1>{% trans %}About Us{% endtrans %}</h1>
-        </div>
-    
         <div>
             <p>{% trans %}Investigative Dashboard (ID) has been developed by the Organized Crime and Corruption Reporting Project (OCCRP), the world’s leading cross border investigative reporting organization. OCCRP designed Investigative Dashboard as a transnational collaborative effort to help journalists and civil society researchers expose organized crime and corruption around the world. It hosts three core tools: a crowd-sourced database of information and documents on persons of interest and their business connections, a worldwide list of online databases and business registries, and a research desk where journalists can go for help in sourcing hard to find information.{% endtrans %}</p>
 
@@ -20,10 +27,11 @@
             <h3>{% trans %}Staff{% endtrans %}</h3>
             <ul class="advisory_committee">
                 <li>Miranda Patrucić, {% trans %}Lead Researcher{% endtrans %}</li>
-                <li>Lejla Čamdzić, {% trans %}Researcher{% endtrans %}
-                </li>
-                <li>Smári McCarthy, {% trans %}Chief Technologist{% endtrans %}
-                </li>
+                <li>Lejla Čamdzić, {% trans %}Researcher{% endtrans %}</li>
+                <li>Smári McCarthy, {% trans %}Chief Technologist{% endtrans %}</li>
+                <li>Michał Wozńiak, {% trans %}Developer{% endtrans %}</li>
+                <li>Friedrich Lindenburg, {% trans %}Developer{% endtrans %}</li>
+                <li>James Robb, {% trans %}Developer{% endtrans %}</li>
 	    </ul>
 
             <h3>{% trans %}Supporters{% endtrans %}</h3>
