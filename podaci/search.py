@@ -11,7 +11,7 @@ FILE = "podaci_file"
 MAPPING = {
     FILE: {
         "properties": {
-            "id": {"type": "string", "index" : "not_analyzed"},
+            "id": {"type": "long", "index" : "not_analyzed"},
             "url": {"type": "string", "index" : "not_analyzed"},
             "filename": {"type": "string"},
             "title": {"type": "string"},
@@ -37,8 +37,8 @@ def connect():
 def ensure_index():
     """ Create the index and apply the mapping. """
     conn = connect()
-    log.info("Creating Podaci index and applying mappings...")
-    if conn is None:
+    log.info("Creating index and mappings...")
+    if conn is not None:
         conn.ensure_index(PODACI_ES_INDEX, mappings=MAPPING)
 
 def index_file(file):
