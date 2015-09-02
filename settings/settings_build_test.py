@@ -28,7 +28,7 @@ TIME_ZONE = 'UTC'
 LANGUAGE_CODE = 'en-us'
 DATE_FORMAT = 'd-F-Y'
 
-PODACI_SERVERS = [{"host": "localhost", "port": "9333"}]
+PODACI_ES_SERVERS = None
 PODACI_ES_INDEX = 'podaci_test'
 PODACI_FS_ROOT = 'data_test'
 
