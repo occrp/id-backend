@@ -690,6 +690,8 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         self.filter_terms = self.request.GET.get("filter", '')
+        self.start_date = self.request.GET.get("start_date", '')
+        self.end_date = self.request.GET.get("end_date", '')
 
         if 'page' in kwargs:
             self.page_number = int(kwargs.pop('page'))
@@ -709,6 +711,8 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
             'page_number': self.page_number,
             'ticket_figures': self.get_ticket_list_figures(),
             'filter_terms': self.filter_terms,
+            'start_date': self.start_date,
+            'end_date': self.end_date,
             'possible_assignees': get_user_model().objects.filter(Q(is_superuser=True) |
                                                                   Q(is_staff=True) |
                                                                   Q(is_volunteer=True))
@@ -754,6 +758,12 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
             ticket_set = ticket_set.filter(Q(requester__email__contains=self.filter_terms)
                                          | Q(requester__first_name__contains=self.filter_terms)
                                          | Q(requester__last_name__contains=self.filter_terms))
+        if self.start_date:
+            ticket_set = ticket_set.filter(created__gte=self.start_date)
+
+        if self.end_date:
+            ticket_set = ticket_set.filter(created__lte=self.end_date)
+
         self.paginator = Paginator(get_actual_tickets(ticket_set), self.page_size)
 
     def get_ticket_set(self, user):
@@ -852,7 +862,7 @@ class TicketListUnassigned(TicketList):
     url_name = 'ticket_unassigned_list'
 
     def get_ticket_set(self, user):
-        return Ticket.objects.annotate(
+        return Ticket.objects.exclude(status='closed').annotate(
             volunteer_count=Count('volunteers')).annotate(
             responder_count=Count('responders')).filter(
             Q(volunteer_count=0) & Q(responder_count=0)).order_by(
@@ -1018,13 +1028,18 @@ class TicketReport(CSVorJSONResponseMixin, TemplateView):
     CONTEXT_ITEMS_KEY = "tickets"
 
     def get_context_data(self):
-        startdate = self.request.GET.get('startdate', None)
-        enddate = self.request.GET.get('enddate', None)
+        start_date = self.request.GET.get('start_date', '')
+        end_date = self.request.GET.get('end_date', '')
 
         tickets = Ticket.objects.all()
-        if startdate:
-            tickets = tickets.filter(created__gt=startdate)
-        if enddate:
-            tickets = tickets.filter(created__lte=enddate)
+        if start_date:
+            tickets = tickets.filter(created__gte=start_date)
+        if end_date:
+            tickets = tickets.filter(created__lte=end_date)
 
-        return {'tickets': tickets, 'title': 'Ticket report'}
+        return {
+            'tickets': tickets,
+            'title': 'Ticket report',
+            'start_date': start_date,
+            'end_date': end_date
+        }

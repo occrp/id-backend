@@ -9,7 +9,7 @@ urlpatterns = patterns('',
     url(r'^old/$',           perm('any',  search.views.CombinedSearchHandler), name='search_old'),
     # url(r'^q/$',           perm('any',  search.views.HandleQuery), name='query'),
 
-    url(r'^results/$',       perm('user', search.views.SearchCheck), name='search_results'),
+    url(r'^results/$',       perm('any', search.views.SearchCheck), name='search_results'),
     url(r'^document/$',      perm('any',  search.views.DocumentSearchTemplate), name='search'),
     # url(r'^$',               perm('any',  search.views.DocumentSearchTemplate), name='search'),
     url(r'^document/query/$',perm('any', search.views.DocumentSearchQuery), name='search_documents_query'),
@@ -21,5 +21,3 @@ urlpatterns = patterns('',
     url(r'^social/$',        perm('user', TemplateView, template_name='search/search_social.jinja'), name='search_social'),
     url(r'^social/query/$',  perm('user', search.views.SearchSocialQuery), name='search_social_query'),
 )
-
-
