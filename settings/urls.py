@@ -26,6 +26,8 @@ urlpatterns = patterns('',
 
     url(r'^admin/storage/$',                perm('admin', admin.Storage), name='admin_storage'),
     url(r'^admin/statistics/$',             perm('admin', admin.Statistics), name='statistics'),
+    url(r'^feedback/$',                     perm('any', admin.Feedback), name='feedback'),
+    url(r'^feedback/thankyou/$',              perm('any', admin.FeedbackThanks), name='feedback_thanks'),
 
     url(r'^databases/$',                    perm('any', databases.ExternalDatabaseList), name='externaldb_list'),
     url(r'^databases/add/$',                perm('staff', databases.ExternalDatabaseAdd), name='externaldb_add'),

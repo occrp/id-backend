@@ -2,7 +2,7 @@ from django.views.generic import *
 from core.utils import version
 from id.models import *
 from ticket.models import *
-from id.forms import ScraperRequestForm
+from id.forms import ScraperRequestForm, FeedbackForm
 from ticket.forms import BudgetForm
 from search.models import SearchRequest
 
@@ -62,3 +62,18 @@ class Budgets(CreateView):
     def get_context_data(self, **kwargs):
         kwargs['object_list'] = Budget.objects.all()
         return super(CreateView, self).get_context_data(**kwargs)
+
+class Feedback(CreateView):
+    model = Feedback
+    form_class = FeedbackForm
+    template_name = "admin/feedback.jinja"
+    success_url = '/feedback/thankyou/'
+
+    def form_valid(self, form):
+        if self.request.user.is_authenticated():
+            form.instance.email = self.request.user.email
+
+        return super(Feedback, self).form_valid(form)
+
+class FeedbackThanks(TemplateView):
+    template_name = "admin/feedback_thanks.jinja"
