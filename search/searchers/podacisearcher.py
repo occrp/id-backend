@@ -19,14 +19,11 @@ class DocumentSearchPodaci(DocumentSearcher):
             'from': offset,
             'size': limit,
             'fields': [
-                'url', 'title', 'date_added',
+                'url', 'title', 'date_added', 'filename',
                 'allowed_users', 'allowed_groups'
             ],
             'highlight': {
                 'fields': {
-                    'url': {},
-                    'date_added': {},
-                    'title': {},
                     'text': {}
                 }
             },
@@ -47,11 +44,11 @@ class DocumentSearchPodaci(DocumentSearcher):
             if url is None or not len(url):
                 url = reverse('podaci_file_detail', kwargs={'pk': r['_id']})
 
-            i = DocumentSearchResult(self.PROVIDER,
-                                     url,
-                                     field('date_added'),
-                                     text,
-                                     field('title'),
-                                     metadata=r)
+            title = field('title')
+            if title is None or not len(title):
+                title = field('filename')
+
+            i = DocumentSearchResult(self.PROVIDER, url, field('date_added'),
+                                     text, title, metadata=r)
             resultset.append(i)
         return resultset
