@@ -46,6 +46,14 @@ class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
     tag = models.ForeignKey(PodaciTag, blank=True, null=True)
     # tag_id = models.CharField(max_length=60, blank=True)    # Refers to this Ticket's Podaci tag.
 
+    def get_csv_header(self):
+        return ["ticket_type", "summary", "requester_type",
+                "status"]
+
+    def as_sequence(self):
+        # FIXME
+        return [] # getattr(self, i) for i in self.get_csv_header()]
+
     def most_fields(self):
         '''Return an iterator of tuples (verbose name, display value)
         for all fields which can be shown to everybody on the ticket'''

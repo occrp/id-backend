@@ -66,7 +66,7 @@ class CSVResponder(object):
         writer = csv.writer(response)
 
         for item in context[ctxkey]:
-            writer.writerow(item)
+            writer.writerow(item.as_sequence())
 
         return response
 

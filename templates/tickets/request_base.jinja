@@ -5,11 +5,6 @@
 {% block content %}
     <div class="span3">
         <div class="well sidebar-nav md-whiteframe-z2">
-            {% if filter_terms is defined %}
-            <form id="filter_form">
-                <input name="filter" value="{{filter_terms}}" placeholder="Filter" id="filter_tickets" type="search"/>
-            </form>
-            {% endif %}
             <ul class="nav nav-list">
 
                 <li class="nav-header">{% trans %}My Requests{% endtrans %}</li>
