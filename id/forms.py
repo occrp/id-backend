@@ -89,10 +89,10 @@ class ProfileRegistrationForm(forms.Form):
         """
         Validate that the password is good enough
         we only have to do it for password1, as we're checking elsewhere if password1 and password2 match
-        
+
         """
         score = 0
-        
+
         # small letters
         if re.search('[a-z]+', self.cleaned_data['password1']):
             score += 26
@@ -105,11 +105,11 @@ class ProfileRegistrationForm(forms.Form):
         # anything else?
         if re.search('^[a-zA-Z0-9]+$', self.cleaned_data['password1']) == None:
             score += 46
-        
+
         # math!
         if math.log(score**len(self.cleaned_data['password1']), 2) < 50:
             raise forms.ValidationError(_(u'Please provide a longer password'))
-        
+
         # we're done here
         return self.cleaned_data['password1']
 
@@ -160,7 +160,7 @@ class ProfileDetailsForm(forms.ModelForm):
 class ProfileAdminForm(forms.ModelForm):
     class Meta:
         model = models.Profile
-        fields = ("findings_visible", "is_user", "is_staff", "is_volunteer", "is_superuser")
+        fields = ("findings_visible", "is_user", "is_staff", "is_volunteer", "is_superuser", "is_active")
 
 
 class ScraperRequestForm(forms.ModelForm):
