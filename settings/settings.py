@@ -32,7 +32,8 @@ except ImportError:
 # Some error checking for local_settings
 if not SECRET_KEY:
     raise Exception('You need to specify Django SECRET_KEY in the settings_local.py!')
-if not "CREDENTIALS_DIR" in vars():
+
+if "CREDENTIALS_DIR" not in vars():
     raise Exception('You need to specify a path to CREDENTIALS_DIR in settings_local.py')
 
 TEMPLATE_LOADERS = (
