@@ -1,3 +1,4 @@
+import logging
 from django.db.models import Q
 from rest_framework import generics
 from rest_framework import permissions
@@ -9,6 +10,8 @@ from podaci.models import PodaciFile, PodaciTag, PodaciCollection
 from podaci.serializers import FileSerializer, TagSerializer
 from podaci.serializers import CollectionSerializer
 from podaci.templatetags import mentions  # noqa
+
+log = logging.getLogger(__name__)
 
 
 class FileQuerySetMixin(object):
@@ -61,7 +64,8 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
                         owner=self.request.user, shared=True))
                 else:
                     collections.extend(PodaciCollection.objects.filter(
-                        owner=self.request.user, name=collection.replace("_", " ")))
+                        owner=self.request.user,
+                        name=collection.replace("_", " ")))
             elif term.startswith("mime:"):
                 mime = term.split("mime:")[1]
                 other_terms |= Q(mimetype=mime)
@@ -91,7 +95,7 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
         for col in collections:
             search_terms &= Q(collections__in=[col])
 
-        # print "SEARCH TERMS", search_terms
+        log.debug('Search terms: %s', search_terms)
         return PodaciFile.objects.filter(search_terms)
 
 
@@ -113,7 +117,7 @@ class FileUploadView(generics.CreateAPIView):
         file_obj = request.FILES['files[]']
         pfile = PodaciFile()
         pfile.create_from_filehandle(file_obj)
-        print "Created: ", pfile
+        log.debug('File created: %r', pfile)
         serializer = FileSerializer(pfile)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -146,9 +150,9 @@ class CollectionDetail(generics.RetrieveUpdateDestroyAPIView):
     def patch(self, request, pk, **kwargs):
         try:
             collection = PodaciCollection.objects.get(pk=pk,
-                            owner=self.request.user)
-        except:
-            print "ERRORRRRRR"
+                                                      owner=self.request.user)
+        except Exception as e:
+            log.exception(e)
 
         add_files = request.data.getlist("add_files[]", [])
         remove_files = request.data.getlist("remove_files[]", [])
@@ -157,8 +161,8 @@ class CollectionDetail(generics.RetrieveUpdateDestroyAPIView):
                 file = PodaciFile.objects.get(id=f)
                 if file.has_permission(self.request.user):
                     collection.file_add(file)
-            except Exception, e:
-                print "Error:", e
+            except Exception as e:
+                log.exception(e)
                 continue
 
         for f in remove_files:
@@ -166,8 +170,8 @@ class CollectionDetail(generics.RetrieveUpdateDestroyAPIView):
                 file = PodaciFile.objects.get(id=f)
                 if file.has_permission(self.request.user):
                     collection.file_remove(file)
-            except Exception, e:
-                print "Error:", e
+            except Exception as e:
+                log.exception(e)
                 continue
 
         return super(CollectionDetail, self).patch(request, pk, **kwargs)
