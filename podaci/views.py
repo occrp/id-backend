@@ -1,5 +1,7 @@
 from podaci.models import PodaciFile, PodaciTag, PodaciCollection
 from podaci.serializers import FileSerializer, TagSerializer, CollectionSerializer
+from podaci.templatetags import mentions  # noqa
+
 from django.db.models import Q
 
 from rest_framework import mixins
