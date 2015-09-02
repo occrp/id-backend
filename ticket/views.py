@@ -1028,13 +1028,18 @@ class TicketReport(CSVorJSONResponseMixin, TemplateView):
     CONTEXT_ITEMS_KEY = "tickets"
 
     def get_context_data(self):
-        startdate = self.request.GET.get('startdate', None)
-        enddate = self.request.GET.get('enddate', None)
+        start_date = self.request.GET.get('start_date', '')
+        end_date = self.request.GET.get('end_date', '')
 
         tickets = Ticket.objects.all()
-        if startdate:
-            tickets = tickets.filter(created__gt=startdate)
-        if enddate:
-            tickets = tickets.filter(created__lte=enddate)
+        if start_date:
+            tickets = tickets.filter(created__gte=start_date)
+        if end_date:
+            tickets = tickets.filter(created__lte=end_date)
 
-        return {'tickets': tickets, 'title': 'Ticket report'}
+        return {
+            'tickets': tickets,
+            'title': 'Ticket report',
+            'start_date': start_date,
+            'end_date': end_date
+        }
