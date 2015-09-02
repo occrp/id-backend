@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'registration',
+    'pipeline',
     'django_jinja',
     'rest_framework',
     'social_auth',
@@ -116,6 +117,36 @@ JINJA_EXTS = (
     'core.templatetags.form_helpers'
 )
 
+from django_jinja.builtins import DEFAULT_EXTENSIONS
+
+JINJA2_EXTENSIONS = DEFAULT_EXTENSIONS + [
+    "pipeline.templatetags.ext.PipelineExtension"
+]
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.6/howto/static-files/
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATIC_ROOT = os.path.join(BASE_DIR, "static_collected")
+STATIC_URL = '/static/'
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
+)
+
+PIPELINE_CSS = {
+    'test': {
+        'source_filenames': (
+            'css/main.css',
+        ),
+        'output_filename': 'test.css'
+    },
+}
+
+PIPELINE_ENABLED = True
 
 # WSGI_APPLICATION = 'id.wsgi.application'
 
@@ -170,14 +201,6 @@ REST_FRAMEWORK = {
 
 from django.conf.global_settings import DATE_INPUT_FORMATS
 DATE_INPUT_FORMATS += ('%d/%m/%y',)
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
-
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
-STATIC_URL = '/static/'
-
 
 # Investigative Dashboard Default Settings!
 from django.utils.translation import ugettext_lazy as _
