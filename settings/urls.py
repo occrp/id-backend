@@ -17,7 +17,7 @@ js_info_dict = {
 
 urlpatterns = patterns('',
     url(r'^$',                              perm('any', TemplateView, template_name="splash.jinja"), name="home"),
-    url(r'^about/id2/$',                    perm('any', TemplateView, template_name="about_us.jinja"), name='about_id'),
+    url(r'^about/id2/$',                    perm('any', TemplateView, template_name="about_id.jinja"), name='about_id'),
     url(r'^about/occrp/$',                  perm('any', TemplateView, template_name="about_us.jinja"), name='about_us'),
 
     url(r'^admin/$',                        perm('staff', admin.Panel), name='admin_panel'),
@@ -26,6 +26,8 @@ urlpatterns = patterns('',
 
     url(r'^admin/storage/$',                perm('admin', admin.Storage), name='admin_storage'),
     url(r'^admin/statistics/$',             perm('admin', admin.Statistics), name='statistics'),
+    url(r'^feedback/$',                     perm('any', admin.Feedback), name='feedback'),
+    url(r'^feedback/thankyou/$',              perm('any', admin.FeedbackThanks), name='feedback_thanks'),
 
     url(r'^databases/$',                    perm('any', databases.ExternalDatabaseList), name='externaldb_list'),
     url(r'^databases/add/$',                perm('staff', databases.ExternalDatabaseAdd), name='externaldb_add'),
