@@ -1,6 +1,0 @@
-{% extends "crud/item_base.jinja" %}
-{% block crud_title %}{% trans %}Edit Location{% endtrans %}{% endblock %}
-
-{% block post_form_content %}
-    {{ macro.render_table(rels, rel_fields, request, no_rels) }}
-{% endblock %}
