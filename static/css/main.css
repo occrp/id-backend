@@ -7979,7 +7979,12 @@ ul.advisory_committee li {
 }
 
 .profile-container .tab-content .tab-pane .control-group > .controls > * {
-    width:100% !important;
+    width:100%;
+}
+
+/* select2 fix */
+.profile-container .tab-content .tab-pane .control-group > .controls > .select2-hidden-accessible {
+    width:1px;
 }
 
 .profile-container .tab-content .tab-pane.active {
