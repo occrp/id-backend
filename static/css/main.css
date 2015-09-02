@@ -8055,3 +8055,58 @@ ul.advisory_committee li {
     display:inline-block;
     padding-bottom:4em;
 }
+
+/** Login Form **/
+
+.login-form {
+    text-align:center;
+}
+
+.login-form .material-form {
+    display:inline-block;
+    text-align:left;
+    max-width:30em;
+}
+
+.login-form td .errorlist {
+    flex:auto;
+    color:#F31D35;
+    padding-bottom:0.5em;
+    padding-left:0em;
+    margin-left:0em;
+}
+
+.login-form table {
+    width:100%;
+}
+
+.login-form table th, .login-form table td {
+    display:table-cell;
+}
+
+.login-form table td {
+    text-align:right;
+}
+
+.login-form table td * {
+    text-align:center;
+}
+
+.login-form table td input {
+    width:70%;
+    min-width:10em;
+}
+
+.login-form .login-alternative {
+    text-align:center;
+    margin-top:2.5em;
+    border-top: solid 1px #ddd;
+}
+
+.login-form .login-alternative .info {
+    display:block;
+}
+
+.login-form .buttons-container {
+    text-align:center;
+}
