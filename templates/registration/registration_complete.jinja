@@ -1,8 +1,22 @@
 {% extends "base.jinja" %}
 
+{% block body_class %}splash has-full-page-header{% endblock %}
+
+{% block before_content %}
+    <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
+    <div class="page-header full-page-header">
+        <h2 class="primary-highlight">{% trans %}Register{% endtrans %}</h2>
+    </div>
+{% endblock %}
+
 {% block content %}
 
-<h1>{% trans %}Registration successful{% endtrans %}</h1>
-<div><p>{% trans %}We just sent you a verification e-mail.{% endtrans %}</p></div>
+<div class="registration-complete material-form-container">
+    <div class="material-form md-whiteframe-z1">
+        <h3>{% trans %}Registration successful{% endtrans %}</h3>
+        <div><p>{% trans %}We just sent you a verification e-mail.{% endtrans %}</p></div>
+    </div>
+    <label></label><a href="{{ url('login') }}" class="material-form-submit btn primary md-whiteframe-z2">{% trans %}Sign in{% endtrans %}</a>
+</div>
 
 {% endblock %}

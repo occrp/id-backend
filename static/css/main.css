@@ -8045,3 +8045,13 @@ ul.advisory_committee li {
 .registration-form td input {
     flex:1;
 }
+
+/** Registration Complete **/
+.registration-complete {
+    text-align:center;
+}
+
+.registration-complete .material-form {
+    display:inline-block;
+    padding-bottom:4em;
+}
