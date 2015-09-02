@@ -11,6 +11,7 @@ from settings.settings import AUTH_USER_MODEL
 from settings.settings import PODACI_FS_ROOT
 
 from podaci.util import sha256sum
+from podaci.search import index_file
 
 # More depth means deeper nesting, which increases lookup speed but makes
 # backups exponentially harder
@@ -136,10 +137,6 @@ class PodaciFile(models.Model):
             self.notes.count())
         return s
 
-    def to_json(self):
-        """Get a JSON blob containing the ID and the object's metadata."""
-        return {"id": self.id}
-
     def add_user(self, user, write=False):
         """ Give a user permissions on the object. """
         if not user: return
@@ -223,7 +220,7 @@ class PodaciFile(models.Model):
         fields = ("id", "schema_version", "title", "created_by", "is_resident",
                   "filename", "url", "sha256", "size", "mimetype",
                   "description", "is_indexed", "is_entity_extracted",
-                  "name", "date_added", "public_read", "staff_read")
+                  "date_added", "public_read", "staff_read")
         out = dict([(x, getattr(self, x)) for x in fields])
         out["tags"] = [x.id for x in self.tags.all()]
         out["allowed_users_read"] = [x.id for x in self.allowed_users_read.all()]
@@ -277,15 +274,14 @@ class PodaciFile(models.Model):
         if user:
             self.add_user(user, write=True)
 
+        index_file(self)
         return self.id, self, True
 
     def create_from_path(self, filename, filename_override=None, user=None):
         """Given a file path, create a file."""
         if not os.path.isfile(filename):
             raise ValueError("File does not exist")
-        self.filename = os.path.split(filename)[-1]
-        if filename_override:
-            self.filename = filename_override
+        self.filename = filename_override or os.path.basename(filename)
         self.sha256 = sha256sum(filename)
         self.mimetype = magic.Magic(mime=True).from_file(filename)
 
@@ -295,22 +291,7 @@ class PodaciFile(models.Model):
 
         if user:
             self.add_user(user, write=True)
-
-        return self.id, self, True
-
-    def create_from_url(self, url, make_resident=False, user=None):
-        """Given a URL, create a file. Optionally, make the file resident."""
-        self.url = url
-        self.is_resident = False
-
-        self.save()
-
-        if user:
-            self.add_user(user, write=True)
-
-        if make_resident:
-            self._make_resident()
-
+        index_file(self)
         return self.id, self, True
 
     def exists_by_hash(self, sha):
