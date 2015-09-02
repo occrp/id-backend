@@ -1,16 +1,22 @@
 {% extends "base.jinja" %}
+{% block body_class %}splash has-full-page-header{% endblock %}
 
+{% block before_content %}
+    <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
+    <div class="page-header full-page-header">
+        <h2 class="primary-highlight">{% trans %}Sign in to Investigative Dashboard{% endtrans %}</h2>
+    </div>
+{% endblock %}
 {% block content %}
     <div class="span12">
         <div class="page-header">
-            <h1>{% trans %}Sign in to Investigative Dashboard{% endtrans %}</h1>
             {% if next %}
             <div class="alert alert-info">{% trans %}You must sign in to continue.{% endtrans %}</div>
             {% endif %}
         </div>
 
-        <div class="row">
-            <div class="span4 well">
+        <div class="material-form-container">
+            <div class="material-form md-whiteframe-z1" style="width: 400px; height: 180px; margin: 20px auto;">
                 <form action="/accounts/login/" method="POST">
                     {%csrf_token%}
                     {% if next %}<input type="hidden" name="next" value="{{next}}"/>{% endif %}
@@ -27,15 +33,13 @@
                 </form>
             </div>
 
-            <div class="span4 well">
+            <div class="material-form md-whiteframe-z1" style="width: 400px; height: 180px; margin: 20px auto; text-align: center;">
+                <p>{% trans %}If you registered with your Google account, you can use it to sign in. Most users should sign in using the standard method.{% endtrans %}</p>
+                <br/><br/>
                 <a href="{{ url("socialauth_begin", "google-oauth2") }}" class="btn">
-                    <i class="icon-google-plus"></i> {% trans %}Sign in with Google{% endtrans %}
+                    <i class="fa fa-google-plus"></i> {% trans %}Sign in with Google{% endtrans %}
                 </a>
             </div>
-
-            <div class="span4">
-            </div>
-
         </div>
     </div>
 {% endblock %}
