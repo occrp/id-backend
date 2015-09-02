@@ -8,7 +8,6 @@ from settings.settings import DEFAULTS
 import logging
 import traceback
 
-from datetime import datetime
 from search.models import SearchRequest
 from core.mixins import JSONResponseMixin
 from core.utils import json_dumps
@@ -19,11 +18,13 @@ class ImageSearchTemplate(TemplateView):
     def get_context_data(self):
         return { 'search_providers':SearchRequest().list_providers('image') }
 
+
 class DocumentSearchTemplate(TemplateView):
     template_name = "search/search_documents.jinja"
     def get_context_data(self):
         return { 'form': CombinedSearchForm(initial=self.request.GET),
                  'search_providers':SearchRequest().list_providers('document') }
+
 
 class SearchImageQuery(View, JSONResponseMixin):
     def get_context_data(self):
@@ -71,7 +72,9 @@ class SearchSocialQuery(View, JSONResponseMixin):
             "status": True
         }
 
+
 class DocumentSearchQuery(View, JSONResponseMixin):
+
     def get_context_data(self):
         query = {}
         query["q"] = self.request.GET.get("q", "")
@@ -87,7 +90,8 @@ class DocumentSearchQuery(View, JSONResponseMixin):
         chosen_providers = self.request.GET.getlist("search_providers[]", None)
 
         search = SearchRequest()
-        search.requester = self.request.user
+        if not self.request.user.is_anonymous():
+            search.requester = self.request.user
         search.search_type = 'document'
         search.query = json_dumps(query)
         search.save()
@@ -95,6 +99,7 @@ class DocumentSearchQuery(View, JSONResponseMixin):
 
 
 class SearchCheck(View, JSONResponseMixin):
+
     def get_context_data(self):
         searchid = self.request.GET.get("id", 0)
         if not searchid:
