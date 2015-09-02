@@ -1,0 +1,34 @@
+{% extends "base.jinja" %}
+
+{% block body_class %}splash has-full-page-header{% endblock %}
+
+{% block before_content %}
+    <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
+    <div class="page-header full-page-header">
+        <h2>
+            <div class="primary-highlight">{% trans -%}About Investigative Dashboard{%- endtrans %}</div>
+        </h2>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <h2>Purpose</h2>
+        <p>Investigative Dashboard (ID) is intended to help investigative journalists to do their work in a fast and effective way. It combines a number of software tools, including search engines, databases, a research support system and a file manager, to try to shorten the lead time from story inception to publication.</p>
+
+        <h2 style="margin-top: 0.9em;">Investigative Dashboard Development</h2>
+        <p>ID is developed by the Organized Crime and Corruption Reporting Project. It is designed to meet the needs of OCCRP reporters, but open for public use.</p>
+        <p><a href="{{url('about_us')}}">Read more...</a></p>
+
+        </p>
+
+        <h2 style="margin-top: 0.9em;">About OCCRP</h2>
+        <p>
+        The Organized Crime and Corruption Reporting Project (OCCRP) is a not-for-profit, joint program of a number of regional non-profit investigative centers and for profit independent media stretching from Eastern Europe to Central Asia.</p>
+        <p>
+        Our goal is to help the people of the region better understand how organized crime and corruption affect their lives. OCCRP seeks to provide in-depth investigative stories as well as the latest news pertaining to organized crime and corruption activities in the region. In addition to the stories, OCCRP is building an online resource center of documents related to organized crime including court records, laws, reports, studies, company records and other public documents that will be an invaluable resource center for journalists and the public alike.
+        </p>
+        <p><a href="https://www.occrp.org/en/about-us">Read more...</a></p>
+
+    </div>
+{% endblock %}

@@ -2,9 +2,12 @@ from django.views.generic import *
 from core.utils import version
 from id.models import *
 from ticket.models import *
-from id.forms import ScraperRequestForm
+from podaci.models import *
+from id.forms import ScraperRequestForm, FeedbackForm
 from ticket.forms import BudgetForm
 from search.models import SearchRequest
+from settings import settings
+from django.db.models import Sum
 
 class Panel(TemplateView):
     template_name = "admin/panel.jinja"
@@ -14,7 +17,13 @@ class Storage(TemplateView):
 
     def get_context_data(self):
         return {
-            "podaci": True,
+            "podaci_files": PodaciFile.objects.count(),
+            "podaci_tags": PodaciTag.objects.count(),
+            "podaci_collections": PodaciCollection.objects.count(),
+            "podaci_size": PodaciFile.objects.all().aggregate(Sum('size'))['size__sum'],
+            "podaci_data_root": settings.PODACI_FS_ROOT,
+            "podaci_data_sharding": "%d deep, %d long" % (HASH_DIRS_DEPTH, HASH_DIRS_LENGTH),
+            "podaci_index": "None"
         }
 
 class Statistics(TemplateView):
@@ -62,3 +71,18 @@ class Budgets(CreateView):
     def get_context_data(self, **kwargs):
         kwargs['object_list'] = Budget.objects.all()
         return super(CreateView, self).get_context_data(**kwargs)
+
+class Feedback(CreateView):
+    model = Feedback
+    form_class = FeedbackForm
+    template_name = "admin/feedback.jinja"
+    success_url = '/feedback/thankyou/'
+
+    def form_valid(self, form):
+        if self.request.user.is_authenticated():
+            form.instance.email = self.request.user.email
+
+        return super(Feedback, self).form_valid(form)
+
+class FeedbackThanks(TemplateView):
+    template_name = "admin/feedback_thanks.jinja"
