@@ -5,14 +5,12 @@ from core.utils import json_dumps, json_loads
 
 SEARCH_TYPES = (
     ('document', 'Document search'),
-    ('image', 'Image search'),
-#    ('social', 'Social Network search'),
-#    ('entity', 'Entity search')
+    ('image', 'Image search')
 )
 
 
 class SearchRequest(models.Model):
-    requester = models.ForeignKey(AUTH_USER_MODEL, blank=True)
+    requester = models.ForeignKey(AUTH_USER_MODEL, blank=True, null=True)
     search_type = models.CharField(max_length=30, choices=SEARCH_TYPES)
     created = models.DateTimeField(auto_now_add=True)
     query = models.TextField()

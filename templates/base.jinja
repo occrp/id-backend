@@ -193,7 +193,7 @@
             interpolate: /\{\{(.+?)\}\}/g
         };
 
-        current_user_id = {{ user.id }};
+        current_user_id = {{ user.id or 'null' }};
     </script>
 
     <script type="text/javascript" src="{{ static("js/widgets.js") }}"></script>
