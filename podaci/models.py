@@ -49,14 +49,13 @@ class ZipSetMixin(object):
         zstr = StringIO.StringIO()
         with zipfile.ZipFile(zstr, "w", zipfile.ZIP_DEFLATED) as zf:
             for f in files:
-                zf.write(f.resident_location(), f.filename)
+                zf.write(f.local_path, f.filename)
         zstr.seek(0)
         return zstr
 
 
 class PodaciTag(ZipSetMixin, models.Model):
     name                = models.CharField(max_length=100, unique=True)
-    icon                = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.name
@@ -97,7 +96,6 @@ class PodaciFile(models.Model):
     title               = models.CharField(max_length=300, blank=True, null=True)
     created_by          = models.ForeignKey(AUTH_USER_MODEL,
                             related_name='created_files', blank=True, null=True)
-    is_resident         = models.BooleanField(default=True)
     url                 = models.URLField(blank=True)
     sha256              = models.CharField(max_length=65)
     size                = models.IntegerField(default=0)
@@ -105,7 +103,6 @@ class PodaciFile(models.Model):
                             related_name='files')
     mimetype            = models.CharField(max_length=65)
     description         = models.TextField(blank=True)
-    is_indexed          = models.BooleanField(default=False)
     is_entity_extracted = models.BooleanField(default=False)
 
     def __getitem__(self, key):
@@ -123,19 +120,6 @@ class PodaciFile(models.Model):
         """Add a log entry."""
         cl = PodaciFileChangelog(ref=self, user=user, description=message)
         cl.save()
-
-    def details_string(self):
-        """
-           Return a formatted details string that describes the object's
-           permissions.
-        """
-        s = "%s%s %3dU %3dW %3dN" % (
-            ["-","P"][self.public_read],
-            ["-","S"][self.staff_read],
-            self.allowed_users_read.count(),
-            self.allowed_users_write.count(),
-            self.notes.count())
-        return s
 
     def add_user(self, user, write=False):
         """ Give a user permissions on the object. """
@@ -217,12 +201,12 @@ class PodaciFile(models.Model):
         return False
 
     def to_json(self):
-        fields = ("id", "schema_version", "title", "created_by", "is_resident",
+        fields = ("id", "schema_version", "title", "created_by",
                   "filename", "url", "sha256", "size", "mimetype",
-                  "description", "is_indexed", "is_entity_extracted",
+                  "description", "is_entity_extracted",
                   "date_added", "public_read", "staff_read")
         out = dict([(x, getattr(self, x)) for x in fields])
-        out["tags"] = [x.id for x in self.tags.all()]
+        out["tags"] = [x.name for x in self.tags.all()]
         out["allowed_users_read"] = [x.id for x in self.allowed_users_read.all()]
         out["allowed_users_write"] = [x.id for x in self.allowed_users_write.all()]
         return out
@@ -231,26 +215,25 @@ class PodaciFile(models.Model):
         """Get a file handle to the file itself."""
         if not self.has_permission(user):
             raise AuthenticationError("User %s has no access to file %s"
-                % (user, self.id))
-        if self.is_resident:
-            return open(self.resident_location())
-        else:
-            return urllib2.urlopen(self.url)
+                                      % (user, self.id))
+        return open(self.local_path)
 
-    def resident_location(self):
+    @property
+    def local_path(self):
         """Return the resident location of the file."""
-        if self.sha256 == "":
+        if self.sha256 is None or not len(self.sha256.strip()):
             raise Exception("File hash missing")
-        if self.filename == "":
+        if self.filename is None or not len(self.filename.strip()):
             raise Exception("Filename missing")
 
         hashfragment = self.sha256[:HASH_DIRS_DEPTH*HASH_DIRS_LENGTH]
         bytesets = [iter(hashfragment)]*HASH_DIRS_LENGTH
         dirnames = map(lambda *x: "".join(zip(*x)[0]), *bytesets)
         directory = os.path.join(PODACI_FS_ROOT, *dirnames)
+
         try:
             os.makedirs(directory)
-        except os.error:
+        except:
             pass
         return os.path.join(directory, self.filename)
 
@@ -265,16 +248,15 @@ class PodaciFile(models.Model):
         self.mimetype = magic.Magic(mime=True).from_buffer(fh.read(100))
 
         fh.seek(0)
-        f = open(self.resident_location(), "w+")
+        f = open(self.local_path, "w+")
         f.write(fh.read())
         f.close()
 
-        self.size = os.stat(self.resident_location()).st_size
         self.save()
         if user:
             self.add_user(user, write=True)
 
-        index_file(self)
+        self.update()
         return self.id, self, True
 
     def create_from_path(self, filename, filename_override=None, user=None):
@@ -285,14 +267,20 @@ class PodaciFile(models.Model):
         self.sha256 = sha256sum(filename)
         self.mimetype = magic.Magic(mime=True).from_file(filename)
 
-        shutil.copy(filename, self.resident_location())
-        self.size = os.stat(self.resident_location()).st_size
+        shutil.copy(filename, self.local_path)
         self.save()
 
         if user:
             self.add_user(user, write=True)
-        index_file(self)
+
+        self.update()
         return self.id, self, True
+
+    def update(self):
+        if os.path.isfile(self.local_path):
+            self.size = os.stat(self.local_path).st_size
+        index_file(self)
+        self.save()
 
     def exists_by_hash(self, sha):
         return PodaciFile.objects.filter(sha256=sha).count() > 0
@@ -300,18 +288,13 @@ class PodaciFile(models.Model):
     def exists_by_url(self, url):
         return PodaciFile.objects.filter(url=url).count() > 0
 
-    def _make_resident(self, buf=None):
-        """Makes a resident copy of an URL-based file entry."""
-        raise NotImplementedError()
-        self.is_resident = True
-
     def delete(self):
         """Delete a file. Make sure you're sure."""
         if not self.id:
             raise ValueError("No file specified")
         if self.filename:
             try:
-                os.unlink(self.resident_location())
+                os.unlink(self.local_path)
             except OSError:
                 pass
         return True
@@ -361,7 +344,7 @@ class PodaciFile(models.Model):
             params = ['convert',
                       '-density', '300',
                       '-resize', '%dx%d' % (width, height),
-                      self.resident_location(),
+                      self.local_path,
                       self.thumbnail_real_location(width, height)]
             subprocess.check_call(params)
             return self.thumbnail_uri(width, height)
