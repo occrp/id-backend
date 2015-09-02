@@ -2,9 +2,12 @@ from django.views.generic import *
 from core.utils import version
 from id.models import *
 from ticket.models import *
+from podaci.models import *
 from id.forms import ScraperRequestForm, FeedbackForm
 from ticket.forms import BudgetForm
 from search.models import SearchRequest
+from settings import settings
+from django.db.models import Sum
 
 class Panel(TemplateView):
     template_name = "admin/panel.jinja"
@@ -14,7 +17,13 @@ class Storage(TemplateView):
 
     def get_context_data(self):
         return {
-            "podaci": True,
+            "podaci_files": PodaciFile.objects.count(),
+            "podaci_tags": PodaciTag.objects.count(),
+            "podaci_collections": PodaciCollection.objects.count(),
+            "podaci_size": PodaciFile.objects.all().aggregate(Sum('size'))['size__sum'],
+            "podaci_data_root": settings.PODACI_FS_ROOT,
+            "podaci_data_sharding": "%d deep, %d long" % (HASH_DIRS_DEPTH, HASH_DIRS_LENGTH),
+            "podaci_index": "None"
         }
 
 class Statistics(TemplateView):
