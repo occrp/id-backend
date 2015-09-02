@@ -2,6 +2,7 @@ from django_jinja import library
 import jinja2
 from core.utils import version
 
+
 @library.global_function
 def get_verbose_or_field_name(field):
     # tries to get the verbose name of a model's field, and will
@@ -11,10 +12,12 @@ def get_verbose_or_field_name(field):
     except:
         return field.name
 
+
 @library.global_function
 def get_field_type(field):
     # returns the type of field ex. BooleanField, RadioField
     return field.field.widget.__class__.__name__
+
 
 @library.global_function
 def get_widget_classes(field):
@@ -24,9 +27,11 @@ def get_widget_classes(field):
     except:
         print field.field.widget.attrs
 
+
 @library.global_function
 def iso_dateformat(value):
     return
+
 
 @library.global_function
 def id_version():

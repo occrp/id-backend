@@ -48,7 +48,7 @@ class OverviewAPI:
         }
         par = {}
 
-        res = requests.post(url, auth=self._auth(), data=json_dumps(json), 
+        res = requests.post(url, auth=self._auth(), data=json_dumps(json),
                             params=par, headers=headers)
         result = json_loads(res.content)
         return result["documentSet"]["id"], result["apiToken"]["token"]
@@ -71,7 +71,7 @@ class OverviewAPI:
         if docsetid:
             par["documentSetId"] = docsetid
 
-        res = requests.post(url, auth=self._auth(token), data=json_dumps(json), 
+        res = requests.post(url, auth=self._auth(token), data=json_dumps(json),
                             params=par, headers=headers)
         return res.status_code
 
@@ -86,11 +86,10 @@ class OverviewAPI:
             "Content-Length": f["size"]
         }
         while not done:
-            res = requests.post(url, 
+            res = requests.post(url,
                 auth=self._auth(token),
                 params=par,
                 headers=headers,
                 data=f.get_filehandle())
             if res.status_code == requests.codes.created:
                 done = True
-

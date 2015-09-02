@@ -102,7 +102,7 @@ class SearchCheck(View, JSONResponseMixin):
         search = SearchRequest.objects.get(id=searchid)
         return {
             "status": True,
-            "done": search.is_done(), 
+            "done": search.is_done(),
             "bots_total": search.bots_done(),
             "bots_done": search.bots_done(),
             "results": search.get_results(),

@@ -1,17 +1,16 @@
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 
-import hashlib
-import os, os.path, shutil, sys
+import os
+import shutil
 import magic
 import zipfile
 import StringIO
-import logging
-from datetime import datetime
-from uuid import uuid4
 
-from settings.settings import AUTH_USER_MODEL # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
-from settings.settings import PODACI_SERVERS, PODACI_ES_INDEX, PODACI_FS_ROOT
+# as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
+from settings.settings import AUTH_USER_MODEL
+from settings.settings import PODACI_FS_ROOT
+
+from podaci.util import sha256sum
 
 # More depth means deeper nesting, which increases lookup speed but makes
 # backups exponentially harder
@@ -23,18 +22,20 @@ HASH_DIRS_DEPTH = 3
 HASH_DIRS_LENGTH = 2
 
 
-def random_id():
-    return str(uuid4())
-
 class AuthenticationError(Exception):
+
     def __str__(self):
         return "Access denied"
 
+
 class FileNotFound(Exception):
+
     def __str__(self):
         return "[File not found]"
 
+
 class ZipSetMixin(object):
+
     def get_zip(self):
         """Return a Zip file containing the files in this tag. Limited to 50MB archives."""
         # To prevent insane loads, we're going to limit this to 50MB archives for now.
@@ -50,20 +51,6 @@ class ZipSetMixin(object):
                 zf.write(f.resident_location(), f.filename)
         zstr.seek(0)
         return zstr
-
-def sha256sum(filename, blocksize=65536):
-    f = None
-    if type(filename) in [str, unicode]:
-        f = open(filename, "r+b")
-    else:
-        f = filename
-
-    hash = hashlib.sha256()
-    for block in iter(lambda: f.read(blocksize), ""):
-        hash.update(block)
-
-    f.seek(0)
-    return hash.hexdigest()
 
 
 class PodaciTag(ZipSetMixin, models.Model):
@@ -136,19 +123,6 @@ class PodaciFile(models.Model):
         cl = PodaciFileChangelog(ref=self, user=user, description=message)
         cl.save()
 
-    def note_add(self, text, user):
-        """Add a log entry."""
-        cl = PodaciFileNote(ref=self, user=user, text=text)
-        cl.save()
-        self.log("Added note", user)
-
-    def note_list(self):
-        return PodaciFileNote.objects.filter(ref=self)
-
-    def note_delete(self, nid):
-        note = PodaciFileNote.objects.get(id=nid)
-        note.delete()
-
     def details_string(self):
         """
            Return a formatted details string that describes the object's
@@ -167,7 +141,7 @@ class PodaciFile(models.Model):
         return {"id": self.id}
 
     def add_user(self, user, write=False):
-        """Give a user permissions on the object."""
+        """ Give a user permissions on the object. """
         if not user: return
         if user not in self.allowed_users_read.all():
             self.allowed_users_read.add(user.id)
@@ -177,8 +151,9 @@ class PodaciFile(models.Model):
                  % (user.email, user.id, write), user)
 
     def remove_user(self, user):
-        """Revoke user permissions."""
-        if not user: return
+        """ Revoke user permissions. """
+        if not user:
+            return
         try:
             self.allowed_users_read.remove(user)
             self.allowed_users_write.remove(user)
@@ -216,21 +191,32 @@ class PodaciFile(models.Model):
 
     def has_permission(self, user):
         """Check if a given user has read permission."""
-        if not user and not self.pk: return True
-        if not user: return False
-        if user.is_superuser: return True
-        if self.public_read: return True
-        if self.staff_read and user.is_staff: return True
-        if user in self.allowed_users_read.all(): return True
+        if not user and not self.pk:
+            return True
+        if not user:
+            return False
+        if user.is_superuser:
+            return True
+        if self.public_read:
+            return True
+        if self.staff_read and user.is_staff:
+            return True
+        if user in self.allowed_users_read.all():
+            return True
         return False
 
     def has_write_permission(self, user):
         """Check if a given user has write permission."""
-        if not user and not self.pk: return True
-        if not user: return False
-        if user.is_superuser: return True
-        if self.staff_read and user.is_staff: return True
-        if user in self.allowed_users_write.all(): return True
+        if not user and not self.pk:
+            return True
+        if not user:
+            return False
+        if user.is_superuser:
+            return True
+        if self.staff_read and user.is_staff:
+            return True
+        if user in self.allowed_users_write.all():
+            return True
         return False
 
     def to_json(self):
@@ -256,8 +242,11 @@ class PodaciFile(models.Model):
 
     def resident_location(self):
         """Return the resident location of the file."""
-        if self.sha256 == "": raise Exception("File hash missing")
-        if self.filename == "": raise Exception("Filename missing")
+        if self.sha256 == "":
+            raise Exception("File hash missing")
+        if self.filename == "":
+            raise Exception("Filename missing")
+
         hashfragment = self.sha256[:HASH_DIRS_DEPTH*HASH_DIRS_LENGTH]
         bytesets = [iter(hashfragment)]*HASH_DIRS_LENGTH
         dirnames = map(lambda *x: "".join(zip(*x)[0]), *bytesets)
@@ -292,7 +281,8 @@ class PodaciFile(models.Model):
 
     def create_from_path(self, filename, filename_override=None, user=None):
         """Given a file path, create a file."""
-        if not os.path.isfile(filename): raise ValueError("File does not exist")
+        if not os.path.isfile(filename):
+            raise ValueError("File does not exist")
         self.filename = os.path.split(filename)[-1]
         if filename_override:
             self.filename = filename_override
@@ -336,7 +326,8 @@ class PodaciFile(models.Model):
 
     def delete(self):
         """Delete a file. Make sure you're sure."""
-        if not self.id: raise ValueError("No file specified")
+        if not self.id:
+            raise ValueError("No file specified")
         if self.filename:
             try:
                 os.unlink(self.resident_location())
@@ -353,8 +344,8 @@ class PodaciFile(models.Model):
 
     @property
     def thumbnail(self):
-        if os.path.isfile(self.thumbnail_real_location(160,160)):
-            return self.thumbnail_uri(160,160)
+        if os.path.isfile(self.thumbnail_real_location(160, 160)):
+            return self.thumbnail_uri(160, 160)
         return "/static/img/podaci/file.png"
 
     def gen_thumbnail(self, width=680, height=460):
@@ -396,8 +387,8 @@ class PodaciFile(models.Model):
         except:
             return False
 
-class PodaciCollection(ZipSetMixin, models.Model):
 
+class PodaciCollection(ZipSetMixin, models.Model):
     name                = models.CharField(max_length=300)
     owner               = models.ForeignKey(AUTH_USER_MODEL,
                             related_name='collections', default=1)
@@ -443,20 +434,8 @@ class PodaciCollection(ZipSetMixin, models.Model):
         return self.files.count() > 0
 
 
-
-class PodaciFileTriples(models.Model):
-    key                 = models.CharField(max_length=200)
-    value               = models.TextField()
-    ref                 = models.ForeignKey(PodaciFile, related_name="metadata")
-
 class PodaciFileChangelog(models.Model):
     ref                 = models.ForeignKey(PodaciFile, related_name="logs")
     user                = models.ForeignKey(AUTH_USER_MODEL)
     timestamp           = models.DateTimeField(auto_now_add=True)
     description         = models.CharField(max_length=200)
-
-class PodaciFileNote(models.Model):
-    user                = models.ForeignKey(AUTH_USER_MODEL)
-    timestamp           = models.DateTimeField(auto_now_add=True)
-    ref                 = models.ForeignKey(PodaciFile, related_name="notes")
-    text                = models.TextField()
