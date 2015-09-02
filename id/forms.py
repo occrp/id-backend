@@ -5,6 +5,8 @@ from settings.settings import DEFAULTS
 import searchproviders
 from id import widgets, constdata, models
 from django.contrib.auth import get_user_model
+import re
+import math
 
 class CountryFilterForm(forms.Form):
     """
@@ -56,6 +58,7 @@ class UserFilterForm(forms.Form):
         super(UserFilterForm, self).__init__(*args, **kwargs)
         self["user"].ajax_url = reverse('select2_all_users')
 
+
 class ProfileRegistrationForm(forms.Form):
     """
     Form for registering a new user account.
@@ -82,9 +85,37 @@ class ProfileRegistrationForm(forms.Form):
             return self.cleaned_data['email']
         raise forms.ValidationError(_(u'A user with this e-mail address has already registered.'))
 
+    def clean_password1(self):
+        """
+        Validate that the password is good enough
+        we only have to do it for password1, as we're checking elsewhere if password1 and password2 match
+        
+        """
+        score = 0
+        
+        # small letters
+        if re.search('[a-z]+', self.cleaned_data['password1']):
+            score += 26
+        # capital letters
+        if re.search('[A-Z]+', self.cleaned_data['password1']):
+            score += 26
+        # digits
+        if re.search('[0-9]+', self.cleaned_data['password1']):
+            score += 10
+        # anything else?
+        if re.search('^[a-zA-Z0-9]+$', self.cleaned_data['password1']) == None:
+            score += 46
+        
+        # math!
+        if math.log(score**len(self.cleaned_data['password1']), 2) < 50:
+            raise forms.ValidationError(_(u'Please provide a longer password'))
+        
+        # we're done here
+        return self.cleaned_data['password1']
+
     def clean(self):
         """
-        Verifiy that the values entered into the two password fields
+        Verify that the values entered into the two password fields
         match. Note that an error here will end up in
         ``non_field_errors()`` because it doesn't apply to a single
         field.
@@ -98,20 +129,22 @@ class ProfileRegistrationForm(forms.Form):
     def save(self, profile_callback=None):
         new_user = get_user_model().objects.create_user(
             email=self.cleaned_data['email'],
-            password=self.cleaned_data['password1'],
-            profile_callback=profile_callback)
+            password=self.cleaned_data['password1'])
         return new_user
+
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         exclude = ('user',)
         model = models.Profile
 
+
 class ProfileBasicsForm(forms.ModelForm):
     class Meta:
         model = models.Profile
         fields = ("first_name", "last_name", "locale", 
                   "country", "network")
+
 
 class ProfileDetailsForm(forms.ModelForm):
     class Meta:
@@ -122,6 +155,7 @@ class ProfileDetailsForm(forms.ModelForm):
                   "media", "circulation", "title", "interests",
                   "expertise", "languages", "availability",
                   "databases", "conflicts")
+
 
 class ProfileAdminForm(forms.ModelForm):
     class Meta:
