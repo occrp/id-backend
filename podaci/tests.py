@@ -1,13 +1,19 @@
-from django.test import TestCase
-from core.tests import UserTestCase
-from settings.settings import PODACI_FS_ROOT
-from podaci.models import PodaciFile, PodaciTag
 import StringIO
 import os
 import shutil
 
+from django.test import TestCase
+from django.core.urlresolvers import reverse
+from django.contrib.auth import get_user_model
+from rest_framework import status
+from rest_framework.test import APITestCase
 
-class PodaciAPITest(TestCase):
+from core.tests import UserTestCase
+from settings.settings import PODACI_FS_ROOT
+from podaci.models import PodaciFile, PodaciTag
+
+
+class PodaciModelTest(TestCase):
 
     def setUp(self):
         if not os.path.isdir(PODACI_FS_ROOT):
@@ -137,18 +143,45 @@ class PodaciFileTest(UserTestCase):
         f.create_from_filehandle(fh, "test.txt")
         f.delete()
 
-    def test_get_file(self):
-        pass # f = File(self.fs)
 
-    def test_notes(self):
-        self.staff_user = self.user_helper('teststaff@occrp.org', is_staff=True)
-        f = PodaciFile()
-        f.create_from_path("requirements.txt")
-        f.note_add("This is a note", self.staff_user)
-        f.note_add("This is another note", self.staff_user)
+class PodaciAPITest(APITestCase):
+    fixtures = ['id/fixtures/initial_data.json']
 
-        self.assertEqual(f.note_list().count(), 2)
-        f.notes.all().delete()
+    def setUp(self):
+        super(PodaciAPITest, self).setUp()
+        if not os.path.isdir(PODACI_FS_ROOT):
+            os.mkdir(PODACI_FS_ROOT)
 
-        self.assertEqual(f.note_list().count(), 0)
-        f.delete()
+        user = get_user_model().objects
+        self.staff_user = user.get(email='staff@example.com')
+        self.admin_user = user.get(email='admin@example.com')
+        self.user_user = user.get(email='user@example.com')
+
+        self.file = PodaciFile()
+        self.file.create_from_path("requirements.txt", user=self.staff_user)
+        self.file.make_private(self.staff_user)
+        self.file.add_user(self.user_user)
+        self.file.save()
+
+    def tearDown(self):
+        super(PodaciAPITest, self).tearDown()
+        shutil.rmtree(PODACI_FS_ROOT)
+
+    def test_file_list(self):
+        url = reverse('podaci_file_list')
+        res = self.client.get(url)
+        self.assertEqual(res.status_code, 403)
+        self.client.force_authenticate(user=self.staff_user)
+        res = self.client.get(url)
+        # print url, res.content
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(len(res.data['results']), 1)
+
+    def test_read_file(self):
+        assert self.file.id is not None, self.file
+        url = reverse('podaci_file_detail', kwargs={'pk': self.file.id})
+        res = self.client.get(url)
+        self.assertEqual(res.status_code, 403)
+        self.client.force_authenticate(user=self.staff_user)
+        res = self.client.get(url)
+        self.assertEqual(res.status_code, 200)
