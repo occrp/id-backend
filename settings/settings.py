@@ -92,6 +92,16 @@ GOOGLE_OAUTH2_CLIENT_SECRET  = 'f6b3cUIp00sDoiRSLfyqAQkH'
 AUTH_USER_MODEL = 'id.Profile'
 SOCIAL_AUTH_USER_MODEL = 'id.Profile'
 
+# registration form class
+#from id.forms import ProfileRegistrationForm
+#REGISTRATION_FORM=ProfileRegistrationForm
+# is the registration alowed?
+REGISTRATION_OPEN=True
+# set to an URL that a user should be redirected to when registration is disallowed
+REGISTRATION_CLOSED_URL="/accounts/register/closed/"
+# set to an URL that a user should be redirected upon successful registration
+REGISTRATION_SUCCESS_URL="/accounts/register/complete/"
+
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 TEMPLATE_CONTEXT_PROCESSORS += (
     "django.core.context_processors.request",
