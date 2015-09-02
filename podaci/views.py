@@ -82,7 +82,7 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
 
         text_terms = Q()
         for term in textterms:
-            text_terms &= (Q(name__contains=term) |
+            text_terms &= (Q(title__contains=term) |
                            Q(filename__contains=term) |
                            Q(description__contains=term))
 
@@ -91,7 +91,7 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
         for col in collections:
             search_terms &= Q(collections__in=[col])
 
-        print "SEARCH TERMS", search_terms
+        # print "SEARCH TERMS", search_terms
         return PodaciFile.objects.filter(search_terms)
 
 
