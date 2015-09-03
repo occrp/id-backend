@@ -57,7 +57,8 @@ docs/_build/
 target/
 id/.models.py.kate-swp
 data/importers/UserProfile.dupes
-
+static/CACHE
+data/credentials
 
 data/importers/GeoNames/output/*.csv
 db.sqlite3
