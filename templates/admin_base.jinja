@@ -7,28 +7,28 @@
                 <li class="nav-header">{% trans %}Manage{% endtrans %}</li>
 		{% if user.is_superuser or user.is_staff %}
         		<li class="{% if 'externaldb_list' in ROUTE_NAME %}active{% endif %}">
-                    <a href="{{ url('externaldb_list') }}"><i class="icon-list-alt"></i> {% trans %}External Databases{% endtrans %}</a>
+                    <a href="{{ url('externaldb_list') }}"><i class="fa fa-list"></i> {% trans %}External Databases{% endtrans %}</a>
                 </li>
                 <li class="{% if 'admin_scrapers_request' in ROUTE_NAME %}active{% endif %}">
-                    <a href="{{ url('admin_scrapers_request') }}"><i class="icon-list-alt"></i> {% trans %}Scraper requests{% endtrans %}</a>
+                    <a href="{{ url('admin_scrapers_request') }}"><i class="fa fa-list"></i> {% trans %}Scraper requests{% endtrans %}</a>
                 </li>
                 <li class="{% if 'admin_budgets' in ROUTE_NAME %}active{% endif %}">
-                    <a href="{{ url('admin_budgets') }}"><i class="icon-money"></i> {% trans %}Budgets{% endtrans %}</a>
+                    <a href="{{ url('admin_budgets') }}"><i class="fa fa-money"></i> {% trans %}Budgets{% endtrans %}</a>
                 </li>
 		{% endif %}
 
 		{% if user.is_superuser %}
                 <li class="{% if 'admin_storage' in ROUTE_NAME %}active{% endif %}">
-                    <a href="{{ url('admin_storage') }}"><i class="icon-folder-open"></i> {% trans %}Storage and databases{% endtrans %}</a>
+                    <a href="{{ url('admin_storage') }}"><i class="fa fa-folder-open"></i> {% trans %}Storage and databases{% endtrans %}</a>
                 </li>
                 <li class="{% if 'accountrequest' in ROUTE_NAME %}active{% endif %}">
-                    <a href="{{ url('request_access_list') }}"><i class="icon-key"></i> {% trans %}Account Requests{% endtrans %}</a>
+                    <a href="{{ url('request_access_list') }}"><i class="fa fa-key"></i> {% trans %}Account Requests{% endtrans %}</a>
                 </li>
                 <li class="{% if 'userprofile' in ROUTE_NAME %}active{% endif %}">
-                    <a href="{{ url('userprofile_list') }}"><i class="icon-user"></i> {% trans %}User Profiles{% endtrans %}</a>
+                    <a href="{{ url('userprofile_list') }}"><i class="fa fa-user"></i> {% trans %}User Profiles{% endtrans %}</a>
                 </li>
                 <li class="{% if 'statistics' in ROUTE_NAME %}active{% endif %}">
-                    <a href="{{ url('statistics') }}"><i class="icon-signal"></i> {% trans %}Statistics{% endtrans %}</a>
+                    <a href="{{ url('statistics') }}"><i class="fa fa-signal"></i> {% trans %}Statistics{% endtrans %}</a>
                 </li>
 
 		{% endif %}
