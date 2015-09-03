@@ -70,3 +70,31 @@ DATABASE_COUNTRIES = (
     ('LAMERICA', _('Latin America')),
     ('-', '---'),
 ) + COUNTRIES[1:]
+
+
+NOTIFICATION_ACTIONS = (
+    (0, _("None")),
+    (1, _("Add")),
+    (2, _("Edit")),
+    (3, _("Delete")),
+    (4, _("Update")),
+    (5, _("Share")),
+    (1000000, _("Other")),
+)
+NA_NONE = 0
+NA_ADD = 1
+NA_EDIT = 2
+NA_DELETE = 3
+NA_UPDATE = 4
+NA_SHARE = 5
+NA_OTHER = 100
+
+NOTIFICATION_ICONS = (
+    (0, 'bell-o'),
+    (1, 'plus-square'),
+    (2, 'pencil-square'),
+    (3, 'minus-square'),
+    (4, 'edit'),
+    (5, 'share-alt-square'),
+    (1000000, 'bomb')
+)
