@@ -7281,7 +7281,7 @@ a > [class*=" icon-"] {
 .primary-highlight {
   color: #f31d35;
   font-size: 45px;
-  text-shadow: 1px 1px 7px #fff;
+  text-shadow: 1px 1px 5px #fff, -1px -1px 0px #CB182C;
 }
 /* if using primary highlight directly on an h2 */
 h2.primary-highlight {
