@@ -54,7 +54,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'registration',
-    'pipeline',
+    'compressor',
     'django_jinja',
     'rest_framework',
     'social_auth',
@@ -126,39 +126,27 @@ from django_jinja.builtins import DEFAULT_EXTENSIONS
 
 JINJA2_EXTENSIONS = DEFAULT_EXTENSIONS + [
     "jinja2.ext.i18n",
-    "pipeline.templatetags.ext.PipelineExtension"
+    "pipeline.templatetags.ext.PipelineExtension",
+    "compressor.contrib.jinja2ext.CompressorExtension",
 ]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
-STATIC_ROOT = os.path.join(BASE_DIR, "static_collected")
+# STATIC_ROOT = os.path.join(BASE_DIR, "static_gen")
 STATIC_URL = '/static/'
 
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+COMPRESS_ROOT = os.path.join(BASE_DIR, "static")
+
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'pipeline.finders.PipelineFinder',
+    'compressor.finders.CompressorFinder',
 )
 
-PIPELINE_CSS = {
-    'main': {
-        'source_filenames': (
-            'bower_components/font-awesome/css/font-awesome.min.css',
-            'bower_components/angular-material/angular-material.min.css',
-            'css/main.css',
-            'css/search.css',
-            'css/ol.css',
-            'css/tooltips.css',
-            'css/notifications.css',
-        ),
-        'output_filename': 'build/style.css'
-    },
-}
-
-# PIPELINE_ENABLED = True
+PIPELINE_ENABLED = True
+COMPRESS_ENABLED = True
 
 # WSGI_APPLICATION = 'id.wsgi.application'
 
