@@ -1,6 +1,6 @@
-import math
 import requests
 import logging
+from django.conf import settings
 
 from search.searchers.base import DocumentSearcher, ResultSet
 from search.searchers.base import DocumentSearchResult
@@ -14,13 +14,22 @@ class EntitySearchOpenCorporates(DocumentSearcher):
     PROVIDER = "OpenCorporates"
 
     def search(self, q, offset=0, limit=20, **kwargs):
+        if settings.OPENCORPORATES_API_TOKEN is None:
+            log.debug("No API token for OpenCorporates, failing.")
+            return ResultSet(total=0)
+
+        log.debug("Searching OpenCorporates for: %r", q)
         try:
             res = requests.get(SEARCH_URL, params={
                 'q': q,
+                'api_token': settings.OPENCORPORATES_API_TOKEN,
                 'per_page': limit,
-                'page': int(1 + math.ceil(offset / max(1, limit)))
+                'page': int(1 + offset / max(1, limit))
             })
-            results = res.json().get('results', {})
+            results = res.json()
+            if 'error' in results:
+                raise ValueError(results.get('error'))
+            results = results.get('results', {})
         except Exception as e:
             log.exception(e)
             return ResultSet(total=0)

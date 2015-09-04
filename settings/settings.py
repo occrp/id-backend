@@ -19,6 +19,9 @@ print "Starting ID version %s" % ID_VERSION
 # Allowed hosts:
 ALLOWED_HOSTS = []
 
+# https://api.opencorporates.com/documentation/API-Reference#api_accounts
+OPENCORPORATES_API_TOKEN = None
+
 # Import local settings or production settings
 try:
     if os.environ.get('BUILD_TEST'):
