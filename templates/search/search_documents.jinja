@@ -4,11 +4,18 @@
 
 {% block search_form %}
     <form id="search_form" class="search form-inline" data-type="document">
-        <div class="form-group well">
+        <div class="form-group">
             <input class="search-query" type="text" placeholder="{% trans %}Enter your terms...{% endtrans %}"
                    name="q" id="q"{% if form.query.data %} value="{{ form.query.data }}"{% endif %}/>
             <button class="btn btn-large btn-primary" id="search_submit"><i class="fa fa-search"></i> {% trans %}Search{% endtrans %}</button>
         </div>
-        <div id="searching_notice" class="hide" role="alert">Searching... <i class="fa fa-spinner fa-pulse"></i></div>
+        {% for provider in search_providers %}
+          {% if provider|lower == 'vkontakte' %}
+            {% set provider_icon = 'vk' %}
+          {% else %}
+            {% set provider_icon = provider|lower %}
+          {% endif %}
+          <input type="checkbox" checked="checked" name="providers" value="{{ provider }}"/><span>{{ provider }}</span></label>
+        {% endfor %}
     </form>
 {% endblock %}
