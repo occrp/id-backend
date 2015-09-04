@@ -56,7 +56,7 @@ ID2.Search.urls = {
     "document": "/search/document/query/",
 }
 
-ID2.Search.handleResults = function(data, resultcallback) {
+ID2.Search.handleResults = function(data, resultcallback, $count) {
   if (!data.status) {
     return;
   }
@@ -65,6 +65,7 @@ ID2.Search.handleResults = function(data, resultcallback) {
       var result = resultcallback(item);
       $("#search_results").append(result);
   }
+  $count.html(data.total);
 };
 
 ID2.Search.startSearch = function() {
@@ -81,9 +82,15 @@ ID2.Search.startSearch = function() {
 
     $.each($("#search_form").serializeArray(), function(i, obj) {
       if (obj.name == 'providers') {
+        var $el = $('.provider-' + obj.value),
+            $running = $el.find('.running'),
+            $count = $el.find('.count');
+        $running.show();
+        $count.empty();
         var providerquery = query + '&provider=' + obj.value;
         $.getJSON(url, providerquery, function(data) {
-          ID2.Search.handleResults(data, callback);
+          ID2.Search.handleResults(data, callback, $count);
+          $running.hide();
         });
       }
     });
