@@ -59,6 +59,7 @@ ID2.Search.urls = {
 
 ID2.Search.handleResults = function(data, resultcallback, $count) {
   if (!data.status) {
+    $count.html('FAIL');
     return;
   }
   for (idx in data.results) {
@@ -66,7 +67,7 @@ ID2.Search.handleResults = function(data, resultcallback, $count) {
       var result = resultcallback(item);
       $("#search_results").append(result);
   }
-  $count.html(data.total);
+  $count.html(data.total || '0');
 };
 
 ID2.Search.startSearch = function() {
