@@ -8103,6 +8103,16 @@ ul.advisory_committee li {
     border-top: solid 1px #ddd;
 }
 
+.login-form .login-alternative .before {
+    position:relative;
+    top:-0.55em;
+    color:#eee;
+    font-size:150%;
+    text-shadow:-1px -1px 0px #ddd, 1px 1px 0px #fff;
+    background:#f7f9f8;
+    padding:0em 0.3em;
+}
+
 .login-form .login-alternative .info {
     display:block;
 }
