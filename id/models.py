@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from core.mixins import *
+from core.utils import json_loads, json_dumps
 from id.constdata import *
 from ticket.constants import *
 from ticket.models import TicketCharge
@@ -321,7 +322,7 @@ class Notification(models.Model):
         return json_loads(self.url_params)
 
     def get_url(self):
-        return reverse_lazy(self.url_base, self.url_params)
+        return reverse_lazy(self.url_base, kwargs=self.get_urlparams())
 
     def get_icon(self):
         return dict(NOTIFICATION_ICONS).get(self.action, 100000)
