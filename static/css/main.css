@@ -145,6 +145,13 @@ a > [class*=" icon-"] {
   font-size: 45px;
   text-shadow: 1px 1px 5px #fff, -1px -1px 0px #CB182C;
 }
+
+.full-page-header .secondary-highlight {
+  text-shadow: 1px 1px 5px #fff;
+  margin-top:0px;
+  color:inherit;
+}
+
 /* if using primary highlight directly on an h2 */
 h2.primary-highlight {
 }
@@ -774,7 +781,7 @@ ul.advisory_committee li {
 }
 
 .material-form-container {
-    margin-top:-80px
+    margin-top:-60px
 }
 
 .material-form {
@@ -980,5 +987,21 @@ ul.advisory_committee li {
 }
 
 .login-form .buttons-container {
+    text-align:center;
+}
+
+/** Feedback Form **/
+.feedback-form input,
+.feedback-form textarea {
+    display:block;
+    width:auto;
+    box-sizing: border-box;
+    width:100%;
+    height:auto;
+    line-height:26px;
+    padding:0.3em 0.5em;
+}
+
+.feedback-form .info {
     text-align:center;
 }
