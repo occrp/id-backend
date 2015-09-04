@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 
-from podaci.search import search_files_raw
+from podaci.search import search_files_raw, authorize_filter
 from search.searchers.base import DocumentSearcher, ResultSet
 from search.searchers.base import DocumentSearchResult
 
@@ -20,21 +20,19 @@ class DocumentSearchPodaci(DocumentSearcher):
             'size': limit,
             'fields': [
                 'url', 'title', 'date_added', 'filename',
-                'allowed_users', 'allowed_groups'
+                'created_by', 'mimetype'
             ],
             'highlight': {
                 'fields': {
                     'text': {}
                 }
-            },
-            # "filter": {
-            #     "or": [
-            #         {'terms': {'allowed_groups': [allowed_groups]}},
-            #         {'terms': {'allowed_users': [allowed_users]}}
-            #     ]
-            # }
+            }
         }
+        user = self.request.requester if self.request else None
+        query['filter'] = authorize_filter(user)
+        print query
         results = search_files_raw(query)
+
         resultset = ResultSet(total=results['hits']['total'])
         for r in results['hits']['hits']:
             text = '<br/>'.join(r.get('highlight', {}).get('text', []))
