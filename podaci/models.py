@@ -10,6 +10,8 @@ import StringIO
 from settings.settings import AUTH_USER_MODEL
 from settings.settings import PODACI_FS_ROOT
 
+import id.constdata as constants
+
 from podaci.util import sha256sum
 from podaci.search import index_file
 
@@ -105,20 +107,30 @@ class PodaciFile(models.Model):
     description         = models.TextField(blank=True)
     is_entity_extracted = models.BooleanField(default=False)
 
-    def log(self, message, user):
-        """Add a log entry."""
-        cl = PodaciFileChangelog(ref=self, user=user, description=message)
-        cl.save()
+    def __unicode__(self):
+        return self.title or self.filename
 
-    def add_user(self, user, write=False):
+    def notify(self, message, user, action, urlname='podaci_file_detail',
+               params=None):
+        """ Create a notification about a thing. """
+        from id.models import Notification
+        n = Notification()
+        stream = 'id:podaci:file:%s' % self.id
+        n.create(user, stream, message, urlname=urlname,
+                 params=params if params is not None else {'pk': self.id},
+                 action=action)
+        n.save()
+
+    def add_user(self, user, write=False, notify=True):
         """ Give a user permissions on the object. """
         if not user: return
         if user not in self.allowed_users_read.all():
             self.allowed_users_read.add(user.id)
         if write and user not in self.allowed_users_write.all():
             self.allowed_users_write.add(user.id)
-        self.log("Added user '%s' [%d] (write=%s)"
-                 % (user.email, user.id, write), user)
+        if notify:
+            self.notify("Added user '%s' to file: %s" % (user, self),
+                        user, constants.NA_SHARE)
 
     def remove_user(self, user):
         """ Revoke user permissions. """
@@ -127,7 +139,8 @@ class PodaciFile(models.Model):
         try:
             self.allowed_users_read.remove(user)
             self.allowed_users_write.remove(user)
-            self.log("Removed user '%s' [%d]" % (user.email, user.id), user)
+            self.notify("Removed user '%s' from file: %s" % (user, self),
+                        user, constants.NA_SHARE)
         except ValueError:
             pass
 
@@ -136,28 +149,32 @@ class PodaciFile(models.Model):
         self.public_read = True
         self.save()
         if user:
-            self.log("Made file public.", user)
+            self.notify("Made file '%s' public." % self,
+                        user, constants.NA_EDIT)
 
     def make_private(self, user=None):
         """Disallow public reads."""
         self.public_read = False
         self.save()
         if user:
-            self.log("Made file private.", user)
+            self.notify("Made file '%s' private." % self,
+                        user, constants.NA_EDIT)
 
     def allow_staff(self, user=None):
         """Allow all staff members to access (read/write)"""
         self.staff_read = True
         self.save()
         if user:
-            self.log("Made file accessible to all staff.", user)
+            self.notify("Made file '%s' accessible to staff." % self,
+                        user, constants.NA_SHARE)
 
     def disallow_staff(self, user=None):
         """Disallow staff to access"""
         self.staff_read = False
         self.save()
         if user:
-            self.log("Made file inaccessible to staff.", user)
+            self.notify("Made file '%s' inaccessible to staff." % self,
+                        user, constants.NA_SHARE)
 
     def has_permission(self, user):
         """Check if a given user has read permission."""
@@ -247,7 +264,8 @@ class PodaciFile(models.Model):
 
         obj.save()
         if user:
-            obj.add_user(user, write=True)
+            obj.add_user(user, write=True, notify=False)
+            obj.notify("Created file '%s'." % obj, user, constants.NA_ADD)
 
         obj.update()
         return obj
@@ -381,10 +399,3 @@ class PodaciCollection(ZipSetMixin, models.Model):
     def has_files(self):
         """Return the number of files associated with this tag."""
         return self.files.count() > 0
-
-
-class PodaciFileChangelog(models.Model):
-    ref                 = models.ForeignKey(PodaciFile, related_name="logs")
-    user                = models.ForeignKey(AUTH_USER_MODEL)
-    timestamp           = models.DateTimeField(auto_now_add=True)
-    description         = models.CharField(max_length=200)

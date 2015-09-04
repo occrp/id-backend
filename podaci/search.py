@@ -24,7 +24,8 @@ MAPPING = {
             "staff_read": {"type": "boolean"},
             "public_read": {"type": "boolean"},
             "schema_version": {"type": "float"},
-            "allowed_users": {"type": "string"}
+            # allowed_users_read
+            "allowed_users": {"type": "integer"}
         }
     }
 }
@@ -44,8 +45,12 @@ def ensure_index(clear=False):
     conn = connect()
     log.info("Creating index and mappings...")
     if conn is not None:
-        conn.ensure_index(settings.PODACI_ES_INDEX, mappings=MAPPING,
-                          clear=clear)
+        try:
+            conn.ensure_index(settings.PODACI_ES_INDEX, mappings=MAPPING,
+                              clear=clear)
+        except pyes.exceptions.ElasticSearchException as ese:
+            log.error("Failed to ensure the index exists. Is ElasticSearch" +
+                      "running or do you need to regenerate the index?")
 
 
 def index_file(file):
