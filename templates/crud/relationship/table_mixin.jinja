@@ -3,13 +3,13 @@
 {% macro addrelationship_links(instance, right_type, rel_type, label) %}
 <div class="relationshiplinks">
 <a href="#location-modal" data-modal-url="{{ uri_for('inline_relationship') }}?left={{ instance.key.urlsafe() }}&right_type={{right_type}}">
-                    <i class="icon-pushpin"></i> {% trans %}Add New {% endtrans %}{{ label }}
+                    <i class="fa fa-map-pin"></i> {% trans %}Add New {% endtrans %}{{ label }}
     </a>
 
     &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;
 
                     <a href="#existing-modal" data-modal-url="{{ uri_for('relationship_add') }}?left={{ instance.key.urlsafe() }}&fragment=true">
-                    <i class="icon-pushpin"></i> {% trans %}Add Existing {% endtrans %}{{ label }}</a>
+                    <i class="fa fa-map-pin"></i> {% trans %}Add Existing {% endtrans %}{{ label }}</a>
 </div>
 {% endmacro %}
 
@@ -174,7 +174,7 @@
                     </td>
                     <td>
                         <a href="{{ uri_for('relationship_edit', obj_id=rel.key.urlsafe()) }}">
-                            <i class="icon-pencil"></i>
+                            <i class="fa fa-pencil"></i>
                             {% trans type=rel.type_display() %}is a {{ type }} of{% endtrans %}
                         </a>
                     </td>

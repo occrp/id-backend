@@ -55,9 +55,10 @@ class SearchRequest(models.Model):
         except Exception as e:
             log.exception(e)
             return {
-                "status": True,
+                "status": False,
                 "search": search.to_json(),
-                "message": unicode(e)
+                "message": unicode(e),
+                "type": repr(e)
             }
 
     @classmethod

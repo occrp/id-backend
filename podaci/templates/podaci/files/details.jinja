@@ -2,7 +2,7 @@
 
 {% block podaci_content %}
 <div class="span3 podaci-details">
-    <div class="text-center"><a href="{{url('podaci_files_download', id=file.id)}}" class="btn"><i class="icon-download"></i> Download</a></div>
+    <div class="text-center"><a href="{{url('podaci_files_download', id=file.id)}}" class="btn"><i class="fa fa-download"></i> Download</a></div>
     <table class="table-vertical">
         {% if file.is_resident %}
         {{file.get_thumbnail_as_img_tag()}}
@@ -26,7 +26,7 @@
         <tr><th>Users:</th><td>
             {% if file.has_write_permission(user) %}<a class="btn btn-small pull-right podaci_edit_users">Edit users</a>{% endif %}
             {% for user in file.allowed_users %}
-            <a href="{{url('profile', users[user].id)}}">{{users[user]}}{% if user in file.allowed_write_users %} <i class="icon-edit"></i>{% endif %}</a>
+            <a href="{{url('profile', users[user].id)}}">{{users[user]}}{% if user in file.allowed_write_users %} <i class="fa fa-edit"></i>{% endif %}</a>
             {%- if not loop.last %},{% endif %}
             {% else %}
             No users.
