@@ -1,8 +1,9 @@
-import urllib
-import urllib2
-import json
+import logging
+import requests
 import dateutil.parser
 from threading import Thread
+
+log = logging.getLogger(__name__)
 
 
 class ResultSet(list):
@@ -35,19 +36,15 @@ class DocumentSearchResult(dict):
         self["metadata"] = metadata
 
 
-class Searcher:
+class Searcher(object):
+
     def start(self, search):
         thread = Thread(target=self.run, args=(search,))
         thread.start()
 
     def json_api_request(self, meta, force_get=False):
-        print "Search:%s:%s:Hitting: %s?%s" % (self.TYPE, self.PROVIDER, self.URL, urllib.urlencode(meta))
-        params = urllib.urlencode(meta)
-        if force_get:
-            r = urllib2.urlopen(self.URL + "?" + params)
-        else:
-            r = urllib2.urlopen(self.URL, params)
-        return json.loads(r.read())
+        log.debug('Searcher %r hitting %r: %r', self.PROVIDER, self.URL, meta)
+        return requests.get(self.URL, params=meta).json()
 
     def prepare_query(self, q):
         # Default query preparation is idempotent
@@ -55,7 +52,7 @@ class Searcher:
 
     def run(self, search):
         runner = search.create_runner(self.PROVIDER)
-
+        import json
         query = self.prepare_query(json.loads(search.query))
         results = self.search(**query)
         for r in results:
