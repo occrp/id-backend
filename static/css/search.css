@@ -4,7 +4,7 @@
 
 .document-search-result {
     display:      block;
-    max-width:    700px;
+    max-width:    100%;
     margin:       6px;
     padding:      3px;
     text-align:   left;
@@ -14,15 +14,7 @@
     border-bottom: 1px solid #ddd;
 }
 
-/*
-.document-search-result:hover {
-    border:        1px solid #ddd;
-    background:    #eee;
-}
-*/
-
 .document-search-result h4 {
-
 }
 
 .document-search-result em {
@@ -63,10 +55,6 @@
     margin-bottom:0.3em;
     margin-top:0.6em
 }
-
-/*.image-search-caption:hover {
-  overflow: visible;
-}*/
 
 .image-search-link {
   display:block;
@@ -123,7 +111,7 @@
     min-width:299px;
 }
 
-.image-search-form > .image-search-inputs-container > table input, 
+.image-search-form > .image-search-inputs-container > table input,
 .image-search-form > .image-search-inputs-container > table button {
     width:100%;
 }
@@ -162,27 +150,13 @@
     margin-top:1em;
 }
 
-#searching_notice {
-    position: fixed;
-    padding-top:20%;
-    top: 0px;
-    left: 0px;
-    height: 100%;
-    width: 100%;
-    font-size: 150%;
-    text-align: center;
-    vertical-align: middle;
-    background-color: #eee;
-    opacity: 0.9;
-}
-
 .image-search-form > .image-search-inputs-container input:invalid {
   background:#ffeeee;
   border-color:#ddbbbb;
   color:#664444;
 }
 
-/** 
+/**
   * FIXME this needs to be moved to and merged with tooltips.css
   */
 .image-search-form > .image-search-inputs-container input[name=radius_root]::before {
@@ -194,7 +168,7 @@
   z-index:200;
 }
 
-/** 
+/**
   * FIXME this needs to be moved to and merged with tooltips.css
   */
 .image-search-form > .image-search-inputs-container input[name=radius_root]::after {
@@ -320,7 +294,7 @@
 }
 
 
-/** 
+/**
   * FIXME this needs to be moved to and merged with tooltips.css
   */
 .ol-map-id2-controls button::before {
@@ -332,7 +306,7 @@
   font-weight:normal;
 }
 
-/** 
+/**
   * FIXME this needs to be moved to and merged with tooltips.css
   */
 .ol-map-id2-controls button::after {
@@ -349,7 +323,7 @@
   -webkit-transition:background-color 0.3s ease-out, border-bottom-color 0.3s ease-out;
 }
 
-/** 
+/**
   * FIXME this needs to be moved to and merged with tooltips.css
   */
 .ol-map-id2-controls button:hover::after {
@@ -442,20 +416,10 @@ td.search-providers div input[value=YouTube] + span,
   background:#c3191e;
 }
 
-
 #search_form .well {
   display:flex;
   flex-direction:row;
   width:80%;
-  justify-content:center; 
+  justify-content:center;
   align-content: stretch;
-}
-
-.search-query {
-  padding: 5px;
-  margin-right: 1em;
-  display: flex;
-  flex-direction:row;
-  width:100%;
-  flex-wrap: nowrap;
 }
