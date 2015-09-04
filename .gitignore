@@ -55,6 +55,7 @@ docs/_build/
 
 # PyBuilder
 target/
+pyenv/
 id/.models.py.kate-swp
 data/importers/UserProfile.dupes
 static/CACHE
