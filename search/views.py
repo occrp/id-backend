@@ -33,9 +33,18 @@ class SearchImageQuery(View, JSONResponseMixin):
     def get_context_data(self):
         query = {}
         query["q"] = self.request.GET.get("q", "")
-        query["lat"] = float(self.request.GET.get("lat", 0.0))
-        query["lon"] = float(self.request.GET.get("lon", 0.0))
-        query["radius"] = int(self.request.GET.get("radius", 5000))
+        try:
+            query["lat"] = float(self.request.GET.get("lat"))
+        except (ValueError, TypeError):
+            query["lat"] = None
+        try:
+            query["lon"] = float(self.request.GET.get("lon"))
+        except (ValueError, TypeError):
+            query["lon"] = None
+        try:
+            query["radius"] = int(self.request.GET.get("radius"))
+        except (ValueError, TypeError):
+            query["radius"] = 5000
         query["startdate"] = self.request.GET.get("startdate", None)
         if query["startdate"]:
             query["startdate"] += "T" + self.request.GET.get("starttime", "00:00")

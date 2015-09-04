@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from core.utils import Credentials
+from search.searchers.base import ResultSet
 from search.searchers.base import ImageSearcher, ImageSearchResult
 
 
@@ -16,9 +17,6 @@ class ImageSearchInstagram(ImageSearcher):
 
     def search(self, q, lat, lon, radius=5000, startdate=None, enddate=None,
                offset=0, count=100):
-        # results
-        results = []
-
         # search metadata
         meta = {}
         meta["access_token"] = Credentials().get("instagram", "access_token")
@@ -34,6 +32,7 @@ class ImageSearchInstagram(ImageSearcher):
         meta["distance"] = radius
 
         data = self.json_api_request(meta, force_get=True)
+        results = ResultSet(total=len(data["data"]))
         for item in data["data"]:
             caption = ""
             if item.get("caption"):
