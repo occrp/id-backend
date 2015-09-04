@@ -1,6 +1,7 @@
 from apiclient.discovery import build
 
 from core.utils import Credentials
+from search.searchers.base import ResultSet
 from search.searchers.base import ImageSearcher, ImageSearchResult
 
 OAUTH_SCOPE = 'https://www.googleapis.com/auth/youtube.readonly'
@@ -15,7 +16,6 @@ class ImageSearchYouTube(ImageSearcher):
         http = Credentials().get_oauth2_http("google", scope=OAUTH_SCOPE)
 
         youtube = build("youtube", "v3", http=http)
-        results = []
         terms = {}
         terms["q"] = q
         if lat and lon:
@@ -34,7 +34,8 @@ class ImageSearchYouTube(ImageSearcher):
             maxResults=count,
             **terms
         ).execute()
-
+        total = response.get('pageInfo', {}).get('totalResults', 0)
+        results = ResultSet(total=total)
         for item in response.get("items", []):
             timestamp = item["snippet"]["publishedAt"]
             thumbnail = item["snippet"]["thumbnails"]["high"]["url"]

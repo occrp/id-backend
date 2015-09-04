@@ -6,7 +6,6 @@ from core.auth import perm
 import search.views
 
 urlpatterns = patterns('',
-    url(r'^results/$',       perm('any', search.views.SearchCheck), name='search_results'),
     url(r'^document/$',      perm('any', search.views.DocumentSearchTemplate), name='search'),
     url(r'^document/query/$',perm('any', search.views.DocumentSearchQuery), name='search_documents_query'),
 
