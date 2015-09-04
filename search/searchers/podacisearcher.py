@@ -30,7 +30,6 @@ class DocumentSearchPodaci(DocumentSearcher):
         }
         user = self.request.requester if self.request else None
         query['filter'] = authorize_filter(user)
-        print query
         results = search_files_raw(query)
 
         resultset = ResultSet(total=results['hits']['total'])
