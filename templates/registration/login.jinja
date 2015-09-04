@@ -10,21 +10,6 @@
 
 {% block content %}
 
-<style>
-
-.login-form .login-alternative::before {
-    content:"or";
-    position:relative;
-    top:-0.55em;
-    color:#eee;
-    font-size:150%;
-    text-shadow:-1px -1px 0px #ddd, 1px 1px 0px #fff;
-    background:#f7f9f8;
-    padding:0em 0.3em;
-}
-
-</style>
-
     <div class="login-form span12 material-form-container">
         <div class="material-form md-whiteframe-z1">
             {% if next %}<p class="alert alert-info">{% trans %}You must sign in to continue.{% endtrans %}</p>{% endif %}
@@ -43,13 +28,13 @@
                     
                 </fieldset>
             </form>
-            <div class="login-alternative">
+            <div class="login-alternative"><span class="before">{% trans %}or{% endtrans %}</span>
                 <p class="info">{% trans %}If you registered with your Google account, you can use it to sign in. Most users should sign in using the standard method.{% endtrans %}</p>
                 <a href="{{ url("socialauth_begin", "google-oauth2") }}" class="btn">
                     <i class="fa fa-google-plus"></i> {% trans %}Sign in with Google{% endtrans %}
                 </a>
             </div>
-            <div class="login-alternative">
+            <div class="login-alternative"><span class="before">{% trans %}or{% endtrans %}</span>
                 <p class="info">{% trans %}Don't have an account yet? Pease consider registering.{% endtrans %}</p>
                 <a href="/accounts/register/" class="btn">{% trans %}Register{% endtrans %}</a>
             </div>
