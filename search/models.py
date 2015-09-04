@@ -1,7 +1,10 @@
+import logging
 from django.db import models
 from settings.settings import AUTH_USER_MODEL
 from search.searchers import SEARCHERS
 from core.utils import json_dumps, json_loads
+
+log = logging.getLogger(__name__)
 
 SEARCH_TYPES = (
     ('document', 'Document search'),
@@ -16,7 +19,9 @@ class SearchRequest(models.Model):
     query = models.TextField()
 
     def initiate_search(self, limit_providers=None):
-        for prov in self.get_providers(limit_providers):
+        log.info("Tasking searchers: %r", limit_providers)
+        # for prov in self.get_providers(limit_providers):
+        for prov in self.get_providers():
             provider = prov()
             provider.start(self)
 
