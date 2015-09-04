@@ -1,12 +1,12 @@
 import logging
 import requests
 import dateutil.parser
-from threading import Thread
 
 log = logging.getLogger(__name__)
 
 
 class ResultSet(list):
+
     def __init__(self, total, results=[]):
         self.extend(results)
         self.total = total
@@ -38,10 +38,6 @@ class DocumentSearchResult(dict):
 
 class Searcher(object):
 
-    def start(self, search):
-        thread = Thread(target=self.run, args=(search,))
-        thread.start()
-
     def json_api_request(self, meta, force_get=False):
         log.debug('Searcher %r hitting %r: %r', self.PROVIDER, self.URL, meta)
         return requests.get(self.URL, params=meta).json()
@@ -51,16 +47,8 @@ class Searcher(object):
         return q
 
     def run(self, search):
-        runner = search.create_runner(self.PROVIDER)
-        import json
-        query = self.prepare_query(json.loads(search.query))
-        results = self.search(**query)
-        for r in results:
-            search.create_result(self.PROVIDER, r)
-
-        runner.done = True
-        runner.results = len(results)
-        runner.save()
+        query = self.prepare_query(search.query)
+        return self.search(**query)
 
 
 class SocialSearcher(Searcher):

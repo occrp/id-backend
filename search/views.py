@@ -6,7 +6,6 @@ import logging
 
 from search.models import SearchRequest
 from core.mixins import JSONResponseMixin
-from core.utils import json_dumps
 
 log = logging.getLogger(__name__)
 
@@ -16,7 +15,7 @@ class ImageSearchTemplate(TemplateView):
 
     def get_context_data(self):
         return {
-            'search_providers': SearchRequest().list_providers('image')
+            'search_providers': SearchRequest.by_type('image')
         }
 
 
@@ -26,7 +25,7 @@ class DocumentSearchTemplate(TemplateView):
     def get_context_data(self):
         return {
             'form': CombinedSearchForm(initial=self.request.GET),
-            'search_providers': SearchRequest().list_providers('document')
+            'search_providers': SearchRequest.by_type('document')
         }
 
 
@@ -46,17 +45,11 @@ class SearchImageQuery(View, JSONResponseMixin):
             query["enddate"] += "T" + self.request.GET.get("endtime", "23:59")
             print "Ending: " + query["enddate"]
         query["offset"] = self.request.GET.get("offset", 0)
-        query["count"] = self.request.GET.get("count", 100)
+        query["count"] = self.request.GET.get("count", 25)
 
-        chosen_providers = self.request.GET.getlist("search_providers[]", None)
-
-        search = SearchRequest()
-        if not self.request.user.is_anonymous():
-            search.requester = self.request.user
-        search.search_type = 'image'
-        search.query = json_dumps(query)
-        search.save()
-        return search.initiate_search(chosen_providers)
+        provider = self.request.GET.get("provider")
+        return SearchRequest.construct(query, provider, self.request.user,
+                                       'image')
 
 
 class SearchSocialQuery(View, JSONResponseMixin):
@@ -64,19 +57,9 @@ class SearchSocialQuery(View, JSONResponseMixin):
         query = {}
         query["q"] = self.request.GET.get("q", "")
 
-        chosen_providers = self.request.GET.getlist("providers[]", None)
-
-        search = SearchRequest()
-        if not self.request.user.is_anonymous():
-            search.requester = self.request.user
-        search.search_type = 'social'
-        search.query = json_dumps(query)
-        search.save()
-        return search.initiate_search(chosen_providers)
-
-        return {
-            "status": True
-        }
+        provider = self.request.GET.get("provider")
+        return SearchRequest.construct(query, provider, self.request.user,
+                                       'social')
 
 
 class DocumentSearchQuery(View, JSONResponseMixin):
@@ -93,29 +76,6 @@ class DocumentSearchQuery(View, JSONResponseMixin):
         query["offset"] = self.request.GET.get("offset", 0)
         query["count"] = self.request.GET.get("count", 100)
 
-        chosen_providers = self.request.GET.getlist("search_providers[]", None)
-
-        search = SearchRequest()
-        if not self.request.user.is_anonymous():
-            search.requester = self.request.user
-        search.search_type = 'document'
-        search.query = json_dumps(query)
-        search.save()
-        return search.initiate_search(chosen_providers)
-
-
-class SearchCheck(View, JSONResponseMixin):
-
-    def get_context_data(self):
-        searchid = self.request.GET.get("id", 0)
-        if not searchid:
-            return {"status": False, "error": "Must supply valid ID"}
-        search = SearchRequest.objects.get(id=searchid)
-        return {
-            "status": True,
-            "done": search.is_done(),
-            "bots_total": search.bots_done(),
-            "bots_done": search.bots_done(),
-            "results": search.get_results(),
-            "checkin_after": -1 if search.is_done() else 500,
-        }
+        provider = self.request.GET.get("provider")
+        return SearchRequest.construct(query, provider, self.request.user,
+                                       'document')
