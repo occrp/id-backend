@@ -14,8 +14,8 @@ echo -e '\n#####################################################################
 echo      '# migrate...'
 echo      '#####################################################################'
 
-# we want syncdb to run each time
-python manage.py migrate
+# we want migrate to run each time
+python manage.py migrate --noinput
     
 echo -e '\n#####################################################################'
 echo      '# loading fixtures...'
