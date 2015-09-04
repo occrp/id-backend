@@ -21,16 +21,21 @@ ID2.Search.renderDocumentResult = function(item) {
     var result = $('<div class="document-search-result"/>');
     console.log(item);
     result.append('<h4><a href="' + item.result_url + '" target="_blank">' + item.title + '</a></h4>');
-    result.append('<p>' + item.text + '</p>');
+    if (item.text) {
+        result.append('<p>' + item.text + '</p>');
+    }
+    result.append('<div class="search-origin">Source: <span class="provider ' + item.provider + '">'+ item.provider + '</span></div>');
+
     var tags = $('<div class="search-tags"/>');
     if (item.metadata && item.metadata.fields && item.metadata.fields.tags) {
       for (tag in item.metadata.fields.tags) {
           tag = item.metadata.fields.tags[tag];
           tags.append('<span class="search-tag">' + tag + '</span>');
       }
+      if (item.metadata.fields.tags.length) {
+          result.append(tags);
+      }
     }
-    result.append('<div class="search-origin">Source: <span class="provider ' + item.provider + '">'+ item.provider + '</span></div>');
-    result.append(tags);
     return result;
 };
 
