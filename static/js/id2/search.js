@@ -2,6 +2,7 @@ var ID2 = ID2 || {};
 ID2.Search = {};
 
 ID2.Search.init = function() {
+    $(".provider input[type=checkbox]").on("change", ID2.Search.startSearch);
     $("#search_submit").on("click", ID2.Search.startSearch);
     $("#search_form").on("submit", ID2.Search.startSearch);
 };
