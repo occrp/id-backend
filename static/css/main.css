@@ -2838,7 +2838,7 @@ input[type="button"].btn-block {
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   background-color: #00bac1;
-
+  white-space: nowrap;
 }
 .btn-primary:hover,
 .btn-primary:focus,
@@ -7477,9 +7477,9 @@ span.highlight {
 }
 .splash-item .btn {
   position: absolute;
-  width: 150px;
+  width: 170px;
   left: 50%;
-  margin-left: -90px;
+  margin-left: -100px;
   bottom: -16px;
   padding: 12px 16px;
 }

@@ -129,7 +129,6 @@ from django_jinja.builtins import DEFAULT_EXTENSIONS
 
 JINJA2_EXTENSIONS = DEFAULT_EXTENSIONS + [
     "jinja2.ext.i18n",
-    "pipeline.templatetags.ext.PipelineExtension",
     "compressor.contrib.jinja2ext.CompressorExtension",
 ]
 
