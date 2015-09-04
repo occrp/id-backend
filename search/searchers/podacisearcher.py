@@ -37,7 +37,7 @@ class DocumentSearchPodaci(DocumentSearcher):
         results = search_files_raw(query)
         resultset = ResultSet(total=results['hits']['total'])
         for r in results['hits']['hits']:
-            text = '<br/>'.join(r['highlight'].get('text', []))
+            text = '<br/>'.join(r.get('highlight', {}).get('text', []))
             field = lambda n: ''.join(r["fields"].get(n, []))
 
             url = field('url')

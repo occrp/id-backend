@@ -2,7 +2,7 @@
     <ul class="podaci-files podaci-files-icons"{% if tag %} data-tag="{{tag.id}}"{% endif %}>
     {% for file in result_files %}
         <li class="podaci-file" data-mime="{{file.mimetype}}" data-size="{{file.size}}" data-id="{{file.id}}" data-tags="{{file.tags.all()}}">
-            <a href="{{url('podaci_files_details', file.id)}}"><i class="icon-file podaci-icon-big"></i>{{file.filename}}</a>
+            <a href="{{url('podaci_files_details', file.id)}}"><i class="fa fa-file podaci-icon-big"></i>{{file.filename}}</a>
         </li>
     {% endfor %}
     </ul>
@@ -20,7 +20,7 @@
         {% for file in result_files %}
             <tr class="podaci-file" data-mime="{{file.mimetype}}" data-size="{{file.size}}" data-id="{{file.id}}" data-tags="{{file.tags.all()}}">
                 <td><input type="checkbox" class="podaci_file_select_box"/></td>
-                <td nowrap class="overflow-hidden"><a href="{{url('podaci_files_details', file.id)}}"><i class="icon-file"></i>{{file.filename}}</a></td>
+                <td nowrap class="overflow-hidden"><a href="{{url('podaci_files_details', file.id)}}"><i class="fa fa-file"></i>{{file.filename}}</a></td>
                 <td nowrap style="text-align: right;">{{file.size|filesizeformat}}</td>
                 <td nowrap>{{file.mimetype}}</td>
             </tr>
