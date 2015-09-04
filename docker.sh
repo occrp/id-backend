@@ -15,7 +15,13 @@ echo      '# migrate...'
 echo      '#####################################################################'
 
 # we want migrate to run each time
-python manage.py migrate --noinput
+while ! python manage.py migrate --noinput; do
+    sleep 5
+    echo -e '\n#####################################################################'
+    echo      "# retrying migrations..."
+    echo      '#####################################################################'
+done
+
     
 echo -e '\n#####################################################################'
 echo      '# loading fixtures...'
