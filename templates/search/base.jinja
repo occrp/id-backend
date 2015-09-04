@@ -16,7 +16,10 @@
 
 		{% block search_form %}{% endblock %}
 
-		<div class="search-results" id="search_results">
-		</div>
+		{% block search_results %}
+			<div class="search-results" id="search_results">
+			</div>
+		{% endblock %}
+
 	</div>
 {% endblock %}
