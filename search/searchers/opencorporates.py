@@ -20,6 +20,8 @@ class EntitySearchOpenCorporates(DocumentSearcher):
 
         log.debug("Searching OpenCorporates for: %r", q)
         try:
+            if q is None or not len(q.strip()):
+                raise ValueError('No query')
             res = requests.get(SEARCH_URL, params={
                 'q': q,
                 'api_token': settings.OPENCORPORATES_API_TOKEN,

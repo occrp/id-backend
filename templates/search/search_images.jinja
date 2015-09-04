@@ -2,7 +2,7 @@
 
 {% block search_title %}Media Search{% endblock %}
 {% block search_form %}
-    <div class="row well">
+    <div class="well">
         <form name="image_search_form" id="search_form" class="image-search-form" data-type="image">
         <div class="image-search-inputs-container">
             <table>
@@ -20,13 +20,14 @@
                 <tr><th>{% trans %}End:{% endtrans %}</th><td><input name="enddate" type="date"/><input name="endtime" type="time"/></td></tr>
                 <tr><th colspan="2">{% trans %}Services:{% endtrans %}</th></tr>
                 <tr><td colspan="2" class="instructions">{% trans %}Choose services to search at.{% endtrans %}</td></tr>
-                <tr><td colspan="2" class="search-providers"><div>{% for provider in search_providers %}
+                <tr><td colspan="2" class="search-providers"><div>
+                {% for provider in search_providers %}
                   {% if provider|lower == 'vkontakte' %}
                     {% set provider_icon = 'vk' %}
                   {% else %}
                     {% set provider_icon = provider|lower %}
                   {% endif %}
-                  <label class="provider"><input type="checkbox" checked="checked" name="search_providers[]" value="{{ provider }}"/><span><i class="fa fa-{{ provider_icon }}"></i>{{ provider }}</span></label>
+                  <label class="provider"><input type="checkbox" checked="checked" name="providers" value="{{ provider }}"/><span><i class="fa fa-{{ provider_icon }}"></i>{{ provider }}</span></label>
                 {% endfor %}</div></td></tr>
                 <tr><td colspan="2"><button class="btn btn-large btn-primary" id="search_submit"><i class="fa fa-search"></i> {% trans %}Search{% endtrans %}</button></td></tr>
             </table>

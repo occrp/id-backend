@@ -21,3 +21,4 @@ google-api-python-client
 rules
 django-social-auth
 psycopg2
+jsonfield

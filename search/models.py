@@ -1,8 +1,11 @@
 import logging
 from django.db import models
+from django.db.models import Sum
+from jsonfield import JSONField
+
 from settings.settings import AUTH_USER_MODEL
 from search.searchers import SEARCHERS
-from core.utils import json_dumps, json_loads
+from core.utils import json_default
 
 log = logging.getLogger(__name__)
 
@@ -14,101 +17,76 @@ SEARCH_TYPES = (
 
 class SearchRequest(models.Model):
     requester = models.ForeignKey(AUTH_USER_MODEL, blank=True, null=True)
+    provider = models.CharField(max_length=250, default='unknown')
+    total_results = models.IntegerField(default=0)
     search_type = models.CharField(max_length=30, choices=SEARCH_TYPES)
     created = models.DateTimeField(auto_now_add=True)
-    query = models.TextField()
+    query = JSONField(dump_kwargs={'default': json_default})
 
-    def initiate_search(self, limit_providers=None):
-        log.info("Tasking searchers: %r", limit_providers)
-        # for prov in self.get_providers(limit_providers):
-        for prov in self.get_providers():
-            provider = prov()
-            provider.start(self)
+    def to_json(self):
+        fields = ("id", "provider", "total_results", "search_type", "created",
+                  "query")
+        return dict([(x, getattr(self, x)) for x in fields])
 
-        return {
-            "status": True,
-            "searchid": self.id,
-            "bots_started": len(SEARCHERS),
-            "checkin_after": 500
-        }
+    @classmethod
+    def construct(cls, query, provider, user, search_type):
+        log.info("Tasking %r searchers: %r", provider, query)
+        search = cls()
+        try:
+            searcher = cls.get_searcher(provider)
+            if searcher is None or searcher.TYPE != search_type:
+                raise TypeError('Invalid search provider: %r' % provider)
+            search.query = query
+            search.provider = provider
+            search.search_type = search_type
+            if not user.is_anonymous():
+                search.requester = user
+            search.save()
 
-    def bots_total(self):
-        return len(self.searchrunner_set.all())
+            results = searcher().run(search)
+            search.total_results = results.total
+            search.save()
+            return {
+                "status": True,
+                "search": search.to_json(),
+                "total": results.total,
+                "results": [dict(r) for r in results]
+            }
+        except Exception as e:
+            log.exception(e)
+            return {
+                "status": True,
+                "search": search.to_json(),
+                "message": unicode(e)
+            }
 
-    def bots_done(self):
-        return len(self.searchrunner_set.filter(done=True))
+    @classmethod
+    def by_type(self, type_name):
+        """ Get a list of searchers by name. """
+        return [x.PROVIDER for x in SEARCHERS if x.TYPE == type_name]
 
-    def is_done(self):
-        return all([x.done for x in self.searchrunner_set.all()])
+    @classmethod
+    def get_searcher(cls, name):
+        """ Get a provider by name. """
+        for searcher in SEARCHERS:
+            if searcher.PROVIDER == name:
+                return searcher
 
-    def get_results(self):
-        return [
-            x.as_json() for x in self.searchresult_set.all()
-        ]
-
-    def create_runner(self, name):
-        runner = SearchRunner()
-        runner.request = self
-        runner.name = name
-        runner.save()
-        return runner
-
-    def create_result(self, provider, data):
-        res = SearchResult()
-        res.request = self
-        res.provider = provider
-        res.data = json_dumps(data)
-        res.save()
-        return res
-
-    def list_providers(self, typeoverride=None):
-        """Get a list of providers by name."""
-        if not typeoverride:
-            typeoverride = self.search_type
-        return [x.PROVIDER for x in SEARCHERS if x.TYPE == typeoverride]
-
-    def get_providers(self, limit_to=None):
-        """Get the providers."""
-        if not limit_to:
-            return [x for x in SEARCHERS if x.TYPE == self.search_type]
-        return [x for x in SEARCHERS if x.PROVIDER in limit_to and (x.TYPE == self.search_type)]
-
-    def statistics(self):
+    @classmethod
+    def statistics(cls):
         res = []
-        for t, name in SEARCH_TYPES:
+        for searcher in SEARCHERS:
+            qs = SearchRequest.objects.filter(provider=searcher.PROVIDER)
+            agg = qs.aggregate(Sum('total_results'))
             res.append({
-                "type": name,
-                "count": SearchRequest.objects.filter(search_type=t).count(),
-                "bots": SearchRunner.objects.filter(request__search_type=t).count(),
-                "results": SearchResult.objects.filter(request__search_type=t).count(),
+                "type": searcher.PROVIDER,
+                "count": qs.count(),
+                "results": agg['total_results__sum'] or 0
             })
+        agg = SearchRequest.objects.aggregate(Sum('total_results'))
         res.append({
             "type": "Total",
             "count": SearchRequest.objects.count(),
-            "bots": SearchRunner.objects.count(),
-            "results": SearchResult.objects.count()
+            "results": agg['total_results__sum'] or 0
         })
         return res
-
-
-class SearchRunner(models.Model):
-    request = models.ForeignKey(SearchRequest)
-    name = models.CharField(max_length=30)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    results = models.IntegerField(default=0)
-    done = models.BooleanField(default=False)
-
-
-class SearchResult(models.Model):
-    request = models.ForeignKey(SearchRequest)
-    provider = models.CharField(max_length=30)
-    found = models.DateTimeField(auto_now_add=True)
-    data = models.TextField()
-
-    def as_json(self):
-        return {
-            "provider": self.provider,
-            "found": self.found,
-            "data": json_loads(self.data)
-        }
