@@ -7609,6 +7609,7 @@ dd.disabled a {
   opacity: 1;
   filter: alpha(opacity=100);
 }
+
 /** Attach files **/
 .selected-files {
   margin-top: 10px;
