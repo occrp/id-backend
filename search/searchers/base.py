@@ -13,6 +13,7 @@ class ResultSet(list):
 
 
 class ImageSearchResult(dict):
+
     def __init__(self, provider, imageurl, resulturl, timestamp, caption,
                  linkurl=None, linktitle=None, metadata={}):
         self["provider"] = provider
@@ -26,6 +27,7 @@ class ImageSearchResult(dict):
 
 
 class DocumentSearchResult(dict):
+
     def __init__(self, provider, resulturl, timestamp, text,
                  title, metadata={}):
         self["provider"] = provider
@@ -38,6 +40,9 @@ class DocumentSearchResult(dict):
 
 class Searcher(object):
 
+    def __init__(self):
+        self.request = None
+
     def json_api_request(self, meta, force_get=False):
         log.debug('Searcher %r hitting %r: %r', self.PROVIDER, self.URL, meta)
         return requests.get(self.URL, params=meta).json()
@@ -46,8 +51,9 @@ class Searcher(object):
         # Default query preparation is idempotent
         return q
 
-    def run(self, search):
-        query = self.prepare_query(search.query)
+    def run(self, request):
+        self.request = request
+        query = self.prepare_query(request.query)
         return self.search(**query)
 
 

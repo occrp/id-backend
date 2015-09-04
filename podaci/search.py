@@ -12,15 +12,19 @@ MAPPING = {
         "properties": {
             "id": {"type": "long", "index": "not_analyzed"},
             "url": {"type": "string", "index": "not_analyzed"},
+            "sha256": {"type": "string", "index": "not_analyzed"},
+            "url": {"type": "string", "index": "not_analyzed"},
+            "mimetype": {"type": "string", "index": "not_analyzed"},
             "filename": {"type": "string"},
-            "title": {"type": "string"},
+            "title": {"type": "string", "index": "analyzed", "store": True},
             "text": {"type": u"string", "index": "analyzed"},
-            "extracted_entities": {"type": "string"},
             "date_added": {"type": "date"},
             "tags": {"type": "string"},
+            "size": {"type": "long"},
+            "staff_read": {"type": "boolean"},
+            "public_read": {"type": "boolean"},
             "schema_version": {"type": "float"},
-            "allowed_users": {"type": "string"},
-            "allowed_groups": {"type": "string"}
+            "allowed_users": {"type": "string"}
         }
     }
 }
@@ -35,12 +39,13 @@ def connect():
     return pyes.ES(settings.PODACI_ES_SERVERS)
 
 
-def ensure_index():
+def ensure_index(clear=False):
     """ Create the index and apply the mapping. """
     conn = connect()
     log.info("Creating index and mappings...")
     if conn is not None:
-        conn.ensure_index(settings.PODACI_ES_INDEX, mappings=MAPPING)
+        conn.ensure_index(settings.PODACI_ES_INDEX, mappings=MAPPING,
+                          clear=clear)
 
 
 def index_file(file):
@@ -60,3 +65,14 @@ def search_files_raw(query):
         return {}
     return conn.search_raw(query, indices=[settings.PODACI_ES_INDEX],
                            doc_types=[FILE])
+
+def authorize_filter(user):
+    """ Generate a filter against files which expresses the user's access
+    rights. """
+    simple = {'term': {'public_read': True}}
+    if user is None or user.is_anonymous():
+        return simple
+    preds = [simple, {'term': {'allowed_users_read': user.id}}]
+    if user.is_staff:
+        preds.append({'term': {'staff_read': True}})
+    return {"or": preds}
