@@ -4,11 +4,38 @@
 
 {% block search_form %}
     <form id="search_form" class="search form-inline" data-type="document">
-        <div class="form-group well">
-            <input class="search-query" type="text" placeholder="{% trans %}Enter your terms...{% endtrans %}"
-                   name="q" id="q"{% if form.query.data %} value="{{ form.query.data }}"{% endif %}/>
-            <button class="btn btn-large btn-primary" id="search_submit"><i class="fa fa-search"></i> {% trans %}Search{% endtrans %}</button>
+    <div class="row">
+        <div class="span8">
+            <div class="form-group">
+                <input class="span6" type="text" placeholder="{% trans %}Enter your terms...{% endtrans %}"
+                    name="q" id="q" {% if form.query.data %}value="{{ form.query.data }}"{% endif %}/>
+
+                <button class="btn btn-large btn-primary" id="search_submit">
+                    <i class="fa fa-search"></i> {% trans %}Search{% endtrans %}
+                </button>
+            </div>
+            <div class="search-results" id="search_results">
+            </div>
         </div>
-        <div id="searching_notice" class="hide" role="alert">Searching... <i class="fa fa-spinner fa-pulse"></i></div>
+        <div class="span4">
+            <ul class="provider-list">
+                <li class="title">Sources</li>
+                {% for provider in search_providers %}
+                  <li class="provider provider-{{ provider }}">
+                    <div class="status">
+                        <div class="running" style="display: none;">
+                            <i class="fa fa-spinner fa-spin"></i>
+                        </div>
+                        <div class="count"></div>
+                    </div>
+                    <input type="checkbox" checked="checked" name="providers" value="{{ provider }}"/>
+                    <span>{{ provider }}</span>
+                  </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
     </form>
 {% endblock %}
+
+{% block search_results %}{% endblock %}
