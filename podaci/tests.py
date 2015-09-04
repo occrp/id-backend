@@ -24,16 +24,14 @@ class PodaciModelTest(TestCase):
 
     def test_create_and_delete_file(self):
         ## Create a file!
-        f = PodaciFile()
-        f.create_from_path("requirements.txt")
+        f = PodaciFile().create_from_path("requirements.txt")
         self.assertEqual(f.filename, "requirements.txt")
         f.delete()
 
     def test_add_tag(self):
         ## Test adding a tag to a file
         ## Also tests if a tag has files
-        f = PodaciFile()
-        f.create_from_path("requirements.txt")
+        f = PodaciFile().create_from_path("requirements.txt")
         t = PodaciTag()
         t.name = "tech"
         t.save()
@@ -70,8 +68,7 @@ class PodaciPermissionTest(UserTestCase):
     def test_anonymous_access(self):
         ## Verify that an anonymous user can access a public file
         ## Verify that an anonymous user can't access a non-public file
-        f = PodaciFile()
-        f.create_from_path("requirements.txt")
+        f = PodaciFile().create_from_path("requirements.txt")
         f.make_public(self.staff_user)
         self.assertEqual(f.has_permission(self.anonymous_user), True)
         fh = f.get_filehandle(self.anonymous_user)
@@ -83,8 +80,7 @@ class PodaciPermissionTest(UserTestCase):
     def test_logged_in_access(self):
         ## Verify that a logged in user cannot access a non-public file
         ## they have no permission for
-        f = PodaciFile()
-        f.create_from_path("requirements.txt")
+        f = PodaciFile().create_from_path("requirements.txt")
         f.make_public(self.staff_user)
         self.assertEqual(f.has_permission(self.normal_user), True)
         self.assertEqual(f.has_write_permission(self.normal_user), False)
@@ -96,8 +92,7 @@ class PodaciPermissionTest(UserTestCase):
     def test_logged_in_with_direct_access(self):
         ## Verify that a logged in user can access a non-public file they
         ## have explicit access to
-        f = PodaciFile()
-        f.create_from_path("requirements.txt")
+        f = PodaciFile().create_from_path("requirements.txt")
         f.make_private(self.staff_user)
         f.add_user(self.normal_user)
         self.assertEqual(f.has_permission(self.normal_user), True)
@@ -110,8 +105,7 @@ class PodaciPermissionTest(UserTestCase):
 
     def text_staff_access(self):
         ## Verify that staff can access staff-allowed files.
-        f = PodaciFile()
-        f.create_from_path("requirements.txt")
+        f = PodaciFile().create_from_path("requirements.txt")
         f.allow_staff(self.staff_user)
         self.assertEqual(f.has_permission(self.staff_user), True)
         self.assertEqual(f.has_write_permission(self.staff_user), True)
@@ -136,11 +130,10 @@ class PodaciFileTest(UserTestCase):
         shutil.rmtree(PODACI_FS_ROOT)
 
     def test_create_file_from_filehandle(self):
-        f = PodaciFile()
         fh = StringIO.StringIO()
         fh.write("Test file")
         fh.seek(0)
-        f.create_from_filehandle(fh, "test.txt")
+        f = PodaciFile.create_from_filehandle(fh, "test.txt")
         f.delete()
 
 
@@ -158,8 +151,8 @@ class PodaciAPITest(APITestCase):
         self.user_user = user.get(email='user@example.com')
         self.other_user = user.get(email='user2@example.com')
 
-        self.file = PodaciFile()
-        self.file.create_from_path("requirements.txt", user=self.staff_user)
+        self.file = PodaciFile().create_from_path("requirements.txt",
+                                                  user=self.staff_user)
         self.file.make_private(self.staff_user)
         self.file.add_user(self.user_user)
         self.file.save()

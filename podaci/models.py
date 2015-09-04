@@ -105,17 +105,6 @@ class PodaciFile(models.Model):
     description         = models.TextField(blank=True)
     is_entity_extracted = models.BooleanField(default=False)
 
-    def __getitem__(self, key):
-        return getattr(self, key)
-
-    def __iter__(self):
-        for field_name in self._meta.get_all_field_names():
-            try:
-                value = getattr(self, field_name)
-            except:
-                value = None
-            yield (field_name, value)
-
     def log(self, message, user):
         """Add a log entry."""
         cl = PodaciFileChangelog(ref=self, user=user, description=message)
@@ -201,18 +190,19 @@ class PodaciFile(models.Model):
         return False
 
     def to_json(self):
-        fields = ("id", "schema_version", "title", "created_by",
-                  "filename", "url", "sha256", "size", "mimetype",
-                  "description", "is_entity_extracted",
-                  "date_added", "public_read", "staff_read")
+        fields = ("id", "schema_version", "title", "filename", "url", "sha256",
+                  "size", "mimetype", "description", "date_added",
+                  "public_read", "staff_read")
         out = dict([(x, getattr(self, x)) for x in fields])
         out["tags"] = [x.name for x in self.tags.all()]
+        if self.created_by is not None:
+            out["created_by"] = self.created_by.id
         out["allowed_users_read"] = [x.id for x in self.allowed_users_read.all()]
         out["allowed_users_write"] = [x.id for x in self.allowed_users_write.all()]
         return out
 
     def get_filehandle(self, user):
-        """Get a file handle to the file itself."""
+        """ Get a file handle to the file itself. """
         if not self.has_permission(user):
             raise AuthenticationError("User %s has no access to file %s"
                                       % (user, self.id))
@@ -237,44 +227,39 @@ class PodaciFile(models.Model):
             pass
         return os.path.join(directory, self.filename)
 
-    def create_from_filehandle(self, fh, filename=None, user=None):
+    @classmethod
+    def create_from_filehandle(cls, fh, filename=None, user=None):
         """Given a file handle, create a file."""
-        if not filename:
+        if filename is None and hasattr(fh, 'name'):
             filename = fh.name
-        if not filename:
+        if filename is None:
             filename = "Untitled file"
-        self.title = self.filename = filename
-        self.sha256 = sha256sum(fh)
-        self.mimetype = magic.Magic(mime=True).from_buffer(fh.read(100))
+        obj = cls()
+        obj.title = filename
+        obj.filename = filename
+        obj.sha256 = sha256sum(fh)
+        obj.created_by = user
+        obj.mimetype = magic.Magic(mime=True).from_buffer(fh.read(100))
 
         fh.seek(0)
-        f = open(self.local_path, "w+")
-        f.write(fh.read())
-        f.close()
+        with open(obj.local_path, 'w') as destfh:
+            shutil.copyfileobj(fh, destfh)
 
-        self.save()
+        obj.save()
         if user:
-            self.add_user(user, write=True)
+            obj.add_user(user, write=True)
 
-        self.update()
-        return self.id, self, True
+        obj.update()
+        return obj
 
-    def create_from_path(self, filename, filename_override=None, user=None):
+    @classmethod
+    def create_from_path(cls, filename, filename_override=None, user=None):
         """Given a file path, create a file."""
         if not os.path.isfile(filename):
             raise ValueError("File does not exist")
-        self.filename = filename_override or os.path.basename(filename)
-        self.sha256 = sha256sum(filename)
-        self.mimetype = magic.Magic(mime=True).from_file(filename)
-
-        shutil.copy(filename, self.local_path)
-        self.save()
-
-        if user:
-            self.add_user(user, write=True)
-
-        self.update()
-        return self.id, self, True
+        fn = filename_override or os.path.basename(filename)
+        with open(filename, 'r') as fh:
+            return cls.create_from_filehandle(fh, filename=fn, user=user)
 
     def update(self):
         if os.path.isfile(self.local_path):
@@ -296,7 +281,7 @@ class PodaciFile(models.Model):
             try:
                 os.unlink(self.local_path)
             except OSError:
-                pass
+                return False
         return True
 
     def tag_add(self, tag):
@@ -308,48 +293,48 @@ class PodaciFile(models.Model):
 
     @property
     def thumbnail(self):
-        if os.path.isfile(self.thumbnail_real_location(160, 160)):
-            return self.thumbnail_uri(160, 160)
+        # if os.path.isfile(self.thumbnail_real_location(160, 160)):
+        #     return self.thumbnail_uri(160, 160)
         return "/static/img/podaci/file.png"
-
-    def gen_thumbnail(self, width=680, height=460):
-        """Return a thumbnail of a file."""
-        # Todo: Perhaps this belongs elsewhere?
-        if self.mimetype:
-            basetype, subtype = self.mimetype.split("/")
-        else:
-            return False
-
-        if basetype == "image":
-            return self.thumbnail_imagemagick(width, height)
-        elif basetype == "application":
-            if subtype == "pdf":
-                return self.thumbnail_imagemagick(width, height)
-
-            return False
-        return False
-
-    def thumbnail_real_location(self, width, height):
-        return "/home/smari/Projects/OCCRP/id2/static/thumbnails/%s" % (self.thumbnail_filename(width, height))
-
-    def thumbnail_uri(self, width, height):
-        return "/static/thumbnails/%s" % (self.thumbnail_filename(width, height))
-
-    def thumbnail_filename(self, width, height):
-        return "%s_%dx%d.png" % (self.sha256, width, height)
-
-    def thumbnail_imagemagick(self, width, height):
-        try:
-            import subprocess
-            params = ['convert',
-                      '-density', '300',
-                      '-resize', '%dx%d' % (width, height),
-                      self.local_path,
-                      self.thumbnail_real_location(width, height)]
-            subprocess.check_call(params)
-            return self.thumbnail_uri(width, height)
-        except:
-            return False
+    #
+    # def gen_thumbnail(self, width=680, height=460):
+    #     """Return a thumbnail of a file."""
+    #     # Todo: Perhaps this belongs elsewhere?
+    #     if self.mimetype:
+    #         basetype, subtype = self.mimetype.split("/")
+    #     else:
+    #         return False
+    #
+    #     if basetype == "image":
+    #         return self.thumbnail_imagemagick(width, height)
+    #     elif basetype == "application":
+    #         if subtype == "pdf":
+    #             return self.thumbnail_imagemagick(width, height)
+    #
+    #         return False
+    #     return False
+    #
+    # def thumbnail_real_location(self, width, height):
+    #     return "/home/smari/Projects/OCCRP/id2/static/thumbnails/%s" % (self.thumbnail_filename(width, height))
+    #
+    # def thumbnail_uri(self, width, height):
+    #     return "/static/thumbnails/%s" % (self.thumbnail_filename(width, height))
+    #
+    # def thumbnail_filename(self, width, height):
+    #     return "%s_%dx%d.png" % (self.sha256, width, height)
+    #
+    # def thumbnail_imagemagick(self, width, height):
+    #     try:
+    #         import subprocess
+    #         params = ['convert',
+    #                   '-density', '300',
+    #                   '-resize', '%dx%d' % (width, height),
+    #                   self.local_path,
+    #                   self.thumbnail_real_location(width, height)]
+    #         subprocess.check_call(params)
+    #         return self.thumbnail_uri(width, height)
+    #     except:
+    #         return False
 
 
 class PodaciCollection(ZipSetMixin, models.Model):

@@ -115,8 +115,7 @@ class FileUploadView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         file_obj = request.FILES['files[]']
-        pfile = PodaciFile()
-        pfile.create_from_filehandle(file_obj)
+        pfile = PodaciFile().create_from_filehandle(file_obj, user=request.user)
         log.debug('File created: %r', pfile)
         serializer = FileSerializer(pfile)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
