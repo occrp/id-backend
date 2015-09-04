@@ -5,16 +5,12 @@
     <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
     <div class="page-header full-page-header">
         <h2 class="primary-highlight">{% trans %}Signed out!{% endtrans %}</h2>
+        <h4 class="secondary-highlight">{% trans %}Thank you for using Investigative Dashboard. Come again soon!{% endtrans %}</h4>
     </div>
 {% endblock %}
 {% block content %}
 
-<h2 style="text-align:center;">{% trans %}Thank you for using Investigative Dashboard. Come again soon!{% endtrans %}</h2>
-
-<p style="text-align:center;">
-    {% trans %}Please consider leaving feedback about Investigative Dashboard, so that we can improve it!{% endtrans %}
-</p>
-
-{% include "partials/_feedback_form.jinja" %}
+{% set feedback_text = 'Please consider leaving feedback about Investigative Dashboard, so that we can improve it!' %}
+{% include "partials/_feedback_form.jinja" with context %}
 
 {% endblock %}
