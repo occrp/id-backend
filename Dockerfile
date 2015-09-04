@@ -24,15 +24,17 @@ RUN pip install --upgrade pip
 COPY requirements.txt /usr/src/id2/
 RUN pip install -r requirements.txt
 
+# bower setup
+RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN npm install -g bower
+
 # these are volume-mounted now
 COPY . /usr/src/id2/
 RUN rm /usr/src/id2/settings/settings_local.py /usr/src/id2/settings/settings_local.pyc
 RUN cd /usr/src/id2/ && find ./ -iname '*.pyc' -exec rm -rf '{}' \;
 #COPY ./settings/settings_local.py-docker /usr/src/id2/settings/settings_local.py
 
-# bower setup
-RUN ln -s /usr/bin/nodejs /usr/bin/node
-RUN npm install -g bower
+# bower static resources setup
 RUN cd static/ && bower --allow-root install
 RUN npm uninstall bower
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get -y purge npm nodejs git && apt-get -y autoremove && rm /usr/bin/node
