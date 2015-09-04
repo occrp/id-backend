@@ -13,7 +13,7 @@
   <li>{% trans %}{{tickets_closed}} research requests completed, {{tickets_in_progress}} still in progress{% endtrans %}</li>
   <li>{% trans %}{{accounts_approved}} accounts ({{accounts_user}} requesters, {{accounts_volunteer}} volunteers, {{accounts_staff}} staff, {{accounts_admin}} admin){% endtrans %}</li>
   <li>{% trans %}{{accreq_total}} account requests ({{accreq_approved}} approved, {{accreq_rejected}} rejected, {{accreq_outstanding}} outstanding){% endtrans %}</li>
-</ul>	
+</ul>
 </div>
 
 <div>
@@ -23,7 +23,6 @@
 		<tr>
 			<th>Type</th>
 			<th>Searches</th>
-			<th>Bots run</th>
 			<th>Results found</th>
 		</tr>
 	</thead>
@@ -32,7 +31,6 @@
 		<tr>
 			<td>{{search.type}}</td>
 			<td>{{search.count}}</td>
-			<td>{{search.bots}}</td>
 			<td>{{search.results}}</td>
 		</tr>
 		{% endfor %}
@@ -67,6 +65,5 @@
 	</tbody>
 	</table>
 </div>
- 
-    
+
 {% endblock %}
