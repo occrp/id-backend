@@ -10,6 +10,7 @@ from registration.views import ActivationView
 
 from id.views import ProfileRegistrationView
 from id.forms import ProfileRegistrationForm
+from id.views import NotificationSeen, NotificationStream
 
 js_info_dict = {
     'packages': ('id', 'ticket', 'search', 'podaci'),
@@ -64,6 +65,8 @@ urlpatterns = patterns('',
     url(r'^accounts/register/complete/$',   TemplateView.as_view(template_name='registration/registration_complete.jinja'), name='registration_complete'),
     url(r'^accounts/register/closed/$',     TemplateView.as_view(template_name='registration/registration_closed.jinja'), name='registration_disallowed'),
     url(r'^accounts/social/', include('social_auth.urls')),
+
+    url(r'^notifications/seen/(?P<pk>([\d]+|all))/', perm('user', NotificationSeen), name='notification_seen'),
 
     url(r'^search/', include('search.urls')),
     url(r'^ticket/', include('ticket.urls')),
