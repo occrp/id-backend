@@ -7,11 +7,21 @@ ID2.init = function() {
 // Notifications subsystem
 ID2.Notifications = {};
 ID2.Notifications.init = function() {
-    $(".notification").on("click", function(e, it) {
-        $.post("/notifications/seen/", {"id": $(it).data("id")}, function(data) {
-
+    $("#notifications_allread").on("click", function(e) {
+        e.stopPropagation();
+        $.getJSON("/notifications/seen/all/", function(data) {
+            $(".notification").removeClass("unseen");
+            $("#notifications_count").text(data.unseen_count);
         });
-    })
+    });
+    $(".notification").on("click", function(e) {
+        var it = e.target;
+        e.stopPropagation();
+        $.getJSON("/notifications/seen/" + $(it).data("id") + "/", function(data) {
+            $(it).removeClass("unseen");
+            $("#notifications_count").text(data.unseen_count);
+        });
+    });
 }
 
 $(ID2.init);
