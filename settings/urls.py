@@ -8,8 +8,8 @@ from core.auth import perm
 from django.contrib.auth import views as auth_views
 from registration.views import ActivationView
 
-from id.views import ProfileRegistrationView
-from id.forms import ProfileRegistrationForm
+from id.views import ProfileRegistrationView, logout
+from id.forms import ProfileRegistrationForm, FeedbackForm
 
 js_info_dict = {
     'packages': ('id', 'ticket', 'search', 'podaci'),
@@ -36,8 +36,8 @@ urlpatterns = patterns('',
     url(r'^databases/delete/(?P<id>[0-9]+)/$',
                                             perm('admin', databases.ExternalDatabaseDelete), name='externaldb_delete'),
 
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'registration/login.jinja'}, name='login'),
-    url(r'^accounts/logout/', 'django.contrib.auth.views.logout', {'template_name': 'registration/logout.jinja'}, name='logout'),
+    url(r'^accounts/login/$',               'django.contrib.auth.views.login', {'template_name': 'registration/login.jinja'}, name='login'),
+    url(r'^accounts/logout/',               logout, {'template_name': 'registration/logout.jinja', 'fallback_redirect_url': '/accounts/login/'}, name='logout'),
     url(r'^accounts/users/$',               perm('admin', accounts.UserList), name='userprofile_list'),
     url(r'^accounts/request/$',             perm('any', accounts.AccessRequestCreate), name='request_access_create'),
     url(r'^accounts/request/list/$',        perm('admin', accounts.AccessRequestList), name='request_access_list'),
