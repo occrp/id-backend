@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
 
 from core.utils import json_dumps
-from core.models import Notification, NotificationSubscription
+from core.models import Notification, NotificationSubscription, notification_channel_format
 
 from id.constdata import *
 
@@ -179,8 +179,19 @@ class PrettyPaginatorMixin(object):
 
 class NotificationMixin(object):
     def get_notification_channel_subscribers(self, channel):
+        assert(notification_channel_format.match(channel))
+        channelr = "^%s$" % channel.replace(":*:", ":.*:")
         return set([ns.user for ns in NotificationSubscription.objects.filter(
-                    channel__startswith=channel)])
+                    channel__iregex=channelr)])
+
+    def get_admin_channel(self):
+        dets = {
+            "project":  "id",
+            "module": "admin",
+            "model": self.__class__.__name__,
+            "instance": self.id
+        }
+        return "%(project)s:%(module)s:%(model)s:%(instance)s" % dets
 
     def get_channel(self):
         dets = {

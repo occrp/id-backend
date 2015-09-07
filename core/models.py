@@ -1,10 +1,13 @@
 from django.db import models
 from settings.settings import AUTH_USER_MODEL
 from id.constdata import *
+import re
+
+notification_channel_format = re.compile("^(([\w\d]+|\*):)+(([\w\d]+|\*))$")
 
 class Notification(models.Model):
     user            = models.ForeignKey(AUTH_USER_MODEL)
-    name            = models.CharField(max_length=200)
+    channel         = models.CharField(max_length=200)
     action          = models.IntegerField(choices=NOTIFICATION_ACTIONS, default=0)
     timestamp       = models.DateTimeField(auto_now_add=True)
     is_seen         = models.BooleanField(default=False)
@@ -42,9 +45,10 @@ class NotificationSubscription(models.Model):
     class Meta:
         unique_together = (('user', 'channel'), )
 
-
 def notifications_subscribe(user, channel):
+    assert(notification_channel_format.match(channel))
     ns = NotificationSubscription(user=user, channel=channel)
     ns.save()
 
-# notify("id:podaci:collection:.{9,19}", "Hello")
+def notification_channels_list():
+    return [x.channel for x in Notification.objects.distinct("channel")]
