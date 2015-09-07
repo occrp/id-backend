@@ -10,6 +10,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -
     gcc \
     npm \
     git \
+    libz-dev libjpeg-dev libfreetype6-dev python-dev \
     --no-install-recommends && rm -rf /var/lib/apt/lists/*
     #postgresql-client libpq-dev \
     #sqlite3 \
