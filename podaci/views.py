@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 
+from ticket.models import Ticket
 from podaci.models import PodaciFile, PodaciTag, PodaciCollection
 from podaci.serializers import FileSerializer, TagSerializer
 from podaci.serializers import CollectionSerializer
@@ -163,7 +164,13 @@ class FileUploadView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         file_obj = request.FILES['files[]']
-        pfile = PodaciFile.create_from_filehandle(file_obj, user=request.user)
+        ticket = request.POST.get('tickets[]')
+        if ticket is not None:
+            ticket = Ticket.objects.get(pk=ticket)
+            if request.user not in ticket.actors():
+                raise HttpResponseBadRequest()
+        pfile = PodaciFile.create_from_filehandle(file_obj, user=request.user,
+                                                  ticket=ticket)
         log.debug('File created: %r', pfile)
         serializer = FileSerializer(pfile)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
