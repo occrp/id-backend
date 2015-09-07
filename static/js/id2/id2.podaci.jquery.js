@@ -401,6 +401,7 @@ ID2.Podaci.init_fileupload = function() {
         ID2.Podaci.add_file_to_results(data.result);
         progressbar.hide();
         $("#podaci_upload_modal").modal('hide');
+        $("#podaci_add_modal").modal('hide');
         files_form.show();
     }).on('fileuploadfail', function (e, data) {
         // FIXME: Test failure modes. Make this pretty.
@@ -418,7 +419,8 @@ ID2.Podaci.upload_click = function(e, target) {
 
 ID2.Podaci.ticket_add_file = function(event) {
   var ticketId = $(event.target).data('ticket');
-  $('.podaci_upload_progress').hide()
+  $('.podaci_upload_progress').hide();
+  $('.podaci_upload_tickets').val(ticketId);
   $("#podaci_add_modal").modal();
 };
 
