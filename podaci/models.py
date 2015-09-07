@@ -15,6 +15,8 @@ import id.constdata as constants
 from podaci.util import sha256sum
 from podaci.search import index_file
 
+from core.mixins import NotificationMixin
+
 # More depth means deeper nesting, which increases lookup speed but makes
 # backups exponentially harder
 # More length means more directories per nest level, which reduces lookup
@@ -64,7 +66,7 @@ class PodaciTag(models.Model):
         return self.files.count() > 0
 
 
-class PodaciFile(models.Model):
+class PodaciFile(NotificationMixin, models.Model):
     filename            = models.CharField(max_length=256)
     date_added          = models.DateTimeField(auto_now_add=True)
     public_read         = models.BooleanField(default=False)
