@@ -22,3 +22,5 @@ rules
 django-social-auth
 psycopg2
 jsonfield
+pillow
+django-simple-captcha
