@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from core.mixins import *
+from core.models import notification_channel_format
 from core.utils import json_loads, json_dumps
 from id.constdata import *
 from ticket.constants import *
@@ -69,7 +70,7 @@ class ProfileManager(BaseUserManager):
 # our own User model replacement
 # as per http://stackoverflow.com/questions/20415627/how-to-properly-extend-django-user-model
 #
-class Profile(AbstractBaseUser, PermissionsMixin):
+class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
 
     email = models.EmailField(_('E-mail Address'), max_length=254, unique=True, blank=False)
 
@@ -133,10 +134,6 @@ class Profile(AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
-
-    def notify(self, stream, text, url=None, params={}, action=NA_NONE):
-        n = Notification()
-        n.create(self, stream, text, url, params, action)
 
     def get_notifications(self, start=0, count=10):
         return self.notification_set.all()[start:count]
@@ -274,26 +271,28 @@ class Profile(AbstractBaseUser, PermissionsMixin):
         else:
             return timedelta(0)
 
+    def notifications_subscribe(self, channel):
+        assert(notification_channel_format.match(channel))
+        ns = NotificationSubscription(user=self, channel=channel)
+        ns.save()
+
     def to_json(self):
         return {"id": self.id, "email": self.email}
+
+    def save(self, *args, **kw):
+        if self.pk is not None:
+            print "pk isn't None"
+            orig = Profile.objects.get(pk=self.pk)
+            if orig.network != self.network:
+                print "Something changed"
+                self.notify("User %s changed network from %s to %s" % (self, orig.network, self.network), urlname="profile", params={"pk": self.pk}, action="usernetworkchanged")
+        super(Profile, self).save(*args, **kw)
 
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
         abstract = False
         swappable = 'AUTH_USER_MODEL'
-        #index_name = "userprofile_staff"
-        #index_name_all = "userprofile_all"
-        #search_fields = ['name', 'email', 'full_name']
-        #fields = (('email', 'display_name', 'admin_notes',
-        #          'requester_type', 'findings_visible'
-        #          'is_superuser', 'is_staff', 'is_volunteer', 'is_user'
-        #         ) +
-        #         AddressMixin.Meta.fields +
-        #         UserDetailsGenericMixin.Meta.fields +
-        #         UserDetailsVolunteerMixin.Meta.fields +
-        #         UserDetailsRequesterMixin.Meta.fields)
-        # editable_fields = ('first_name', 'last_name') + tuple(x for x in fields if x not in ('display_name',))
 
 
 ######## External databases ############
