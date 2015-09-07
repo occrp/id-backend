@@ -273,7 +273,9 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
 
     def notifications_subscribe(self, channel):
         assert(notification_channel_format.match(channel))
-        ns = NotificationSubscription(user=self, channel=channel)
+        ns = NotificationSubscription()
+        ns.user = self
+        ns.set_channel(channel)
         ns.save()
 
     def to_json(self):
