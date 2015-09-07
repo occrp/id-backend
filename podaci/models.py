@@ -11,10 +11,8 @@ from settings.settings import AUTH_USER_MODEL
 from settings.settings import PODACI_FS_ROOT
 
 import id.constdata as constants
-
 from podaci.util import sha256sum
 from podaci.search import index_file
-
 from core.mixins import NotificationMixin
 
 # More depth means deeper nesting, which increases lookup speed but makes
@@ -197,8 +195,11 @@ class PodaciFile(NotificationMixin, models.Model):
         out["tags"] = [x.name for x in self.tags.all()]
         if self.created_by is not None:
             out["created_by"] = self.created_by.id
-        out["allowed_users_read"] = [x.id for x in self.allowed_users_read.all()]
-        out["allowed_users_write"] = [x.id for x in self.allowed_users_write.all()]
+        out["allowed_users_read"] = \
+            [x.id for x in self.allowed_users_read.all()]
+        out["allowed_users_write"] = \
+            [x.id for x in self.allowed_users_write.all()]
+        out["tickets"] = [x.id for x in self.tickets.all()]
         return out
 
     def get_filehandle(self, user):
@@ -297,45 +298,6 @@ class PodaciFile(NotificationMixin, models.Model):
         # if os.path.isfile(self.thumbnail_real_location(160, 160)):
         #     return self.thumbnail_uri(160, 160)
         return "/static/img/podaci/file.png"
-    #
-    # def gen_thumbnail(self, width=680, height=460):
-    #     """Return a thumbnail of a file."""
-    #     # Todo: Perhaps this belongs elsewhere?
-    #     if self.mimetype:
-    #         basetype, subtype = self.mimetype.split("/")
-    #     else:
-    #         return False
-    #
-    #     if basetype == "image":
-    #         return self.thumbnail_imagemagick(width, height)
-    #     elif basetype == "application":
-    #         if subtype == "pdf":
-    #             return self.thumbnail_imagemagick(width, height)
-    #
-    #         return False
-    #     return False
-    #
-    # def thumbnail_real_location(self, width, height):
-    #     return "/home/smari/Projects/OCCRP/id2/static/thumbnails/%s" % (self.thumbnail_filename(width, height))
-    #
-    # def thumbnail_uri(self, width, height):
-    #     return "/static/thumbnails/%s" % (self.thumbnail_filename(width, height))
-    #
-    # def thumbnail_filename(self, width, height):
-    #     return "%s_%dx%d.png" % (self.sha256, width, height)
-    #
-    # def thumbnail_imagemagick(self, width, height):
-    #     try:
-    #         import subprocess
-    #         params = ['convert',
-    #                   '-density', '300',
-    #                   '-resize', '%dx%d' % (width, height),
-    #                   self.local_path,
-    #                   self.thumbnail_real_location(width, height)]
-    #         subprocess.check_call(params)
-    #         return self.thumbnail_uri(width, height)
-    #     except:
-    #         return False
 
 
 class PodaciCollection(NotificationMixin, models.Model):
