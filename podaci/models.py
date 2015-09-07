@@ -37,33 +37,14 @@ class FileNotFound(Exception):
         return "[File not found]"
 
 
-class ZipSetMixin(object):
-
-    def get_zip(self):
-        """Return a Zip file containing the files in this tag. Limited to 50MB archives."""
-        # To prevent insane loads, we're going to limit this to 50MB archives for now.
-        _50MB = 50 * 1024 * 1024
-        files = self.get_files()[1]
-        totalsize = sum([x.size for x in files])
-        if totalsize > _50MB:
-            return False
-
-        zstr = StringIO.StringIO()
-        with zipfile.ZipFile(zstr, "w", zipfile.ZIP_DEFLATED) as zf:
-            for f in files:
-                zf.write(f.local_path, f.filename)
-        zstr.seek(0)
-        return zstr
-
-
-class PodaciTag(ZipSetMixin, models.Model):
-    name                = models.CharField(max_length=100, unique=True)
+class PodaciTag(models.Model):
+    name = models.CharField(max_length=100, unique=True)
 
     def __unicode__(self):
         return self.name
 
     def __str__(self):
-        return self.__unicode__()
+        return unicode(self)
 
     def to_json(self):
         fields = ("id", "name", "icon")
@@ -355,7 +336,7 @@ class PodaciFile(models.Model):
     #         return False
 
 
-class PodaciCollection(ZipSetMixin, models.Model):
+class PodaciCollection(models.Model):
     name                = models.CharField(max_length=300)
     owner               = models.ForeignKey(AUTH_USER_MODEL,
                             related_name='collections', default=1)

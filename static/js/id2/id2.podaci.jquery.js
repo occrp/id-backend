@@ -584,14 +584,12 @@ ID2.Podaci.refresh_files = function() {
 };
 
 ID2.Podaci.download_zip = function() {
-    if (ID2.Podaci.selection.length == 0 && ID2.Podaci.tagid) {
-        src = "/podaci/tag/" + ID2.Podaci.tagid + "/zip/";
-    } else if (ID2.Podaci.selection.length == 0) {
+    if (ID2.Podaci.selection.length == 0) {
         // FIXME: Alerts are so passé.
         alert("Error: Cannot download the entire world.");
         return;
     } else {
-        src = "/podaci/tag/selection/zip/?files=" + ID2.Podaci.selection.join("&files=");
+        src = "/podaci/zip/?files=" + ID2.Podaci.selection.join("&files=");
     }
     window.location = src;
 };
