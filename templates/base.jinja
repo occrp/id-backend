@@ -17,9 +17,9 @@
     {% compress css %}
         <link type="text/css" href="{{ static("bower_components/font-awesome/css/font-awesome.min.css") }}" rel="stylesheet">
         <link type="text/css" href="{{ static("bower_components/angular-material/angular-material.min.css") }}" rel="stylesheet">
+        <link type="text/css" href="{{ static("bower_components/ol3-unofficial/ol.css") }}" rel="stylesheet">
         <link type="text/css" href="{{ static("css/main.css") }}" rel="stylesheet">
         <link type="text/css" href="{{ static("css/search.css") }}" rel="stylesheet">
-        <link type="text/css" href="{{ static("css/ol.css") }}" rel="stylesheet">
         <link type="text/css" href="{{ static("css/tooltips.css") }}" rel="stylesheet">
         <link type="text/css" href="{{ static("css/notifications.css") }}" rel="stylesheet">
     {% endcompress %}
@@ -67,23 +67,26 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-bell"></i>
                             {% if user.unseen_notifications_count() > 0 %}
-                            <span class="label label-warning notification-badge">{{user.unseen_notifications_count()}}</span>
+                            <span id="notifications_count" class="label label-warning notification-badge">{{user.unseen_notifications_count()}}</span>
                             {% endif %}
                         </a>
                         <ul class="dropdown-menu notifications" role="menu">
                             <li class="top">
-                                <a href="" onclick="">Mark All as Read</a>
+                                <a id="notifications_allread">Mark All as Read</a>
                             </li>
                             {% for notification in user.get_notifications() %}
-                                <li class="notification {% if not notification.is_seen %}unseen{% endif %}">
-                                    <i class="fa fa-{{notification.get_icon()}}"></i>
-                                    {% if notification.url_base %}
-                                        <a href="{{notification.get_url()}}">{{notification.text}}</a>
-                                    {% else %}
-                                        <a>{{notification.text}}</a>
-                                    {% endif %}
-                                    <div class="pull-right actions"><i class="fa fa-circle{% if notification.is_seen %}-o{% endif %}"></i></div>
-                                </li>
+                            <li data-id="{{notification.id}}" class="notification {% if not notification.is_seen %}unseen{% endif %}">
+                                <i class="fa fa-{{notification.get_icon()}}"></i>
+                                {% if notification.url_base %}
+                                    <a href="{{notification.get_url()}}">{{notification.text}}</a>
+                                {% else %}
+                                    <a>{{notification.text}}</a>
+                                {% endif %}
+                                <div class="pull-right actions">
+                                    <i class="fa fa-circle-o seen"></i>
+                                    <i class="fa fa-circle unseen"></i>
+                                </div>
+                            </li>
                             {% else %}
                                 <li><div style="padding: 4px; text-align: center;">No notifications</div></li>
                             {% endfor %}
@@ -208,16 +211,17 @@
         current_user_id = {{ user.id or 'null' }};
     </script>
 
+    <!--
     {% compress js %}
         <script type="text/javascript" src="{{ static("bower_components/angular/angular.min.js")}}"></script>
         <script type="text/javascript" src="{{ static("bower_components/angular-animate/angular-animate.min.js")}}"></script>
         <script type="text/javascript" src="{{ static("bower_components/angular-aria/angular-aria.min.js")}}"></script>
         <script type="text/javascript" src="{{ static("bower_components/angular-material/angular-material.min.js")}}"></script>
     {% endcompress %}
+    -->
 
     <script type="text/javascript" src="{{ static("js/widgets.js") }}"></script>
     <script type="text/javascript" src="{{ static("js/select2-field.js") }}"></script>
-    <script type="text/javascript" src="{{ static("js/relationship-type-field.js") }}"></script>
     <script type="text/javascript" src="{{ static("js/list-files.js") }}"></script>
     <script type="text/javascript" src="{{ static("js/slugify.js") }}"></script>
     <script type="text/javascript" src="{{ static("js/fragment-forms.js") }}"></script>
@@ -225,14 +229,14 @@
     <script type="text/javascript" src="{{ static("js/datetime.js") }}"></script>
     <script type="text/javascript" src="{{ static("js/external-dbs.js") }}"></script>
     <script type="text/javascript" src="{{ static("js/init.js") }}"></script>
-    <script type="text/javascript" src="{{ static("js/ol.js") }}"></script>
+    <script type="text/javascript" src="{{ static("js/id2/id2.js")}}"></script>
     <script type="text/javascript" src="{{ static("js/id2/search.js") }}"></script>
     <script type="text/javascript" src="{{ static("js/form-tools.js") }}"></script>
-    <script type="text/javascript" src="{{ static("js/id2/id2.podaci.jquery.js") }}"></script>
 
+    <!--
     <script type="text/javascript" src="{{ static("js/id2/id2.js")}}"></script>
     <script type="text/javascript" src="{{ static("js/id2/filters.js")}}"></script>
-    <script type="text/javascript" src="{{ static("js/id2/podaci.js")}}"></script>
+    -->
 {% endblock %}
 
 {% block after_js %}

@@ -9,20 +9,12 @@
         <div id="podaci_upload_dropzone">
         	<form id="podaci_upload_files_form" action="/podaci/file/create" method="POST" enctype="multipart/form-data">
         		{% csrf_token %}
-            <input id="podaci_tag_id" type="hidden" name="tag" value="{% if tag %}{{tag.id}}{% endif %}"/>
-	        	<input type="file" class="podaci_upload_files" name="files[]" multiple />
-	        	<div class="podaci_upload_progress progress">
-			        <div class="progress-bar progress-bar-success"></div>
-	    		</div>
-	        	<table id="podaci_upload_list" class="podaci-files">
-              <tr>
-                <th>File name</th>
-                <th>Summary</th>
-              </tr>
-	        	</table>
-	        </form>
+                <input type="file" class="podaci_upload_files" name="files[]" multiple />
+            </form>
+            <div class="podaci_upload_progress progress">
+                <div class="progress-bar progress-bar-success"></div>
+            </div>
         </div>
-		
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

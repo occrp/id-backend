@@ -15,6 +15,8 @@ import id.constdata as constants
 from podaci.util import sha256sum
 from podaci.search import index_file
 
+from core.mixins import NotificationMixin
+
 # More depth means deeper nesting, which increases lookup speed but makes
 # backups exponentially harder
 # More length means more directories per nest level, which reduces lookup
@@ -37,33 +39,14 @@ class FileNotFound(Exception):
         return "[File not found]"
 
 
-class ZipSetMixin(object):
-
-    def get_zip(self):
-        """Return a Zip file containing the files in this tag. Limited to 50MB archives."""
-        # To prevent insane loads, we're going to limit this to 50MB archives for now.
-        _50MB = 50 * 1024 * 1024
-        files = self.get_files()[1]
-        totalsize = sum([x.size for x in files])
-        if totalsize > _50MB:
-            return False
-
-        zstr = StringIO.StringIO()
-        with zipfile.ZipFile(zstr, "w", zipfile.ZIP_DEFLATED) as zf:
-            for f in files:
-                zf.write(f.local_path, f.filename)
-        zstr.seek(0)
-        return zstr
-
-
-class PodaciTag(ZipSetMixin, models.Model):
-    name                = models.CharField(max_length=100, unique=True)
+class PodaciTag(NotificationMixin, models.Model):
+    name = models.CharField(max_length=100, unique=True)
 
     def __unicode__(self):
         return self.name
 
     def __str__(self):
-        return self.__unicode__()
+        return unicode(self)
 
     def to_json(self):
         fields = ("id", "name", "icon")
@@ -83,7 +66,7 @@ class PodaciTag(ZipSetMixin, models.Model):
         return self.files.count() > 0
 
 
-class PodaciFile(models.Model):
+class PodaciFile(NotificationMixin, models.Model):
     filename            = models.CharField(max_length=256)
     date_added          = models.DateTimeField(auto_now_add=True)
     public_read         = models.BooleanField(default=False)
@@ -355,7 +338,7 @@ class PodaciFile(models.Model):
     #         return False
 
 
-class PodaciCollection(ZipSetMixin, models.Model):
+class PodaciCollection(NotificationMixin, models.Model):
     name                = models.CharField(max_length=300)
     owner               = models.ForeignKey(AUTH_USER_MODEL,
                             related_name='collections', default=1)

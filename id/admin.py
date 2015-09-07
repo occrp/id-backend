@@ -13,6 +13,13 @@ from django.http import HttpResponseRedirect
 class Panel(TemplateView):
     template_name = "admin/panel.jinja"
 
+    def get_context_data(self):
+        return {
+            "admin_stream": (Notification.objects
+                                .filter(stream__contains="admin")
+                                .order_by("-timestamp"))
+        }
+
 class Storage(TemplateView):
     template_name = "admin/storage.jinja"
 

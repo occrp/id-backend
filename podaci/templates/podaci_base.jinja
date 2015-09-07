@@ -1,45 +1,20 @@
 {% extends "base.jinja" %}
 
 {% block content %}
-
-<link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
-
-<!--
-<nav class="navbar navbar-podaci">
-    <div class="container-fluid navbar-inner">
-        <ul class="nav navbar-nav">
-            <li><a href="/podaci/"><i class="fa fa-file"></i></a></li>
-            <li><a class="podaci_upload">Upload</a></li>
-        </ul>
-        <ul class="nav navbar-nav pull-right">
-            <li><a id="podaci-list-mode-icons"><i class="fa fa-folder-open"></i></a></li>
-            <li><a id="podaci-list-mode-list"><i class="fa fa-list"></i></a></li>
-
-            <li class="dropdown"><a id="podaci_select_menu" href="#" class="dropdown-toggle" data-toggle="dropdown">Select <span class="caret"></span></a>
-                {% include "podaci/partials/_podaci_selection_tools.jinja" %}
-            </li>
-            <li class="dropdown"><a id="podaci_selection_menu" href="#" class="dropdown-toggle" data-toggle="dropdown">Selection <span class="caret"></span></a>
-                {% include "podaci/partials/_podaci_selection_actions.jinja" %}
-            </li>
-        </ul>
+    <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
+    <div class="row">
+    	{% block podaci_content %}{% endblock %}
     </div>
-</nav>
--->
-
-<div class="row">
-	{% block podaci_content %}{% endblock %}
-</div>
-
-{% include "podaci/partials/_podaci_upload_modal.jinja" %}
-{% include "podaci/partials/_podaci_edit_users.jinja" %}
-{% include "podaci/partials/_podaci_edit_tags.jinja" %}
-{% include "podaci/partials/_podaci_create_tag.jinja" %}
-
+    {% include "podaci/partials/_podaci_upload_modal.jinja" %}
+    {% include "podaci/partials/_podaci_edit_users.jinja" %}
+    {% include "podaci/partials/_podaci_edit_tags.jinja" %}
+    {% include "podaci/partials/_podaci_create_collection.jinja" %}
+    {% include "podaci/partials/_podaci_file_details.jinja" %}
 {% endblock %}
 
 {% block after_js %}
 	<script type="text/javascript" src="{{ static('bower_components/blueimp-file-upload/js/vendor/jquery.ui.widget.js')}}"></script>
 	<script type="text/javascript" src="{{ static('bower_components/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
 	<script type="text/javascript" src="{{ static('bower_components/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
-	<script type="text/javascript" src="{{ static('js/id2/id2.podaci.js') }}"></script>
+	<script type="text/javascript" src="{{ static('js/id2/id2.podaci.jquery.js') }}"></script>
 {% endblock %}
