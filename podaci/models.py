@@ -3,14 +3,11 @@ from django.db import models
 import os
 import shutil
 import magic
-import zipfile
-import StringIO
 
 # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from settings.settings import AUTH_USER_MODEL
 from settings.settings import PODACI_FS_ROOT
 
-import id.constdata as constants
 from podaci.util import sha256sum
 from podaci.search import index_file
 from core.mixins import NotificationMixin
@@ -94,13 +91,14 @@ class PodaciFile(NotificationMixin, models.Model):
     def notify(self, message, user, action, urlname='podaci_file_detail',
                params=None):
         """ Create a notification about a thing. """
-        from id.models import Notification
-        n = Notification()
-        stream = 'id:podaci:file:%s' % self.id
-        n.create(user, stream, message, urlname=urlname,
-                 params=params if params is not None else {'pk': self.id},
-                 action=action)
-        n.save()
+        pass
+        # from id.models import Notification
+        # n = Notification()
+        # stream = 'id:podaci:file:%s' % self.id
+        # n.create(user, stream, message, urlname=urlname,
+        #          params=params if params is not None else {'pk': self.id},
+        #          action=action)
+        # n.save()
 
     def add_user(self, user, write=False, notify=True):
         """ Give a user permissions on the object. """
@@ -111,7 +109,7 @@ class PodaciFile(NotificationMixin, models.Model):
             self.allowed_users_write.add(user.id)
         if notify:
             self.notify("Added user '%s' to file: %s" % (user, self),
-                        user, constants.NA_SHARE)
+                        user, "share")
 
     def remove_user(self, user):
         """ Revoke user permissions. """
@@ -121,7 +119,7 @@ class PodaciFile(NotificationMixin, models.Model):
             self.allowed_users_read.remove(user)
             self.allowed_users_write.remove(user)
             self.notify("Removed user '%s' from file: %s" % (user, self),
-                        user, constants.NA_SHARE)
+                        user, "share")
         except ValueError:
             pass
 
@@ -130,16 +128,14 @@ class PodaciFile(NotificationMixin, models.Model):
         self.public_read = True
         self.save()
         if user:
-            self.notify("Made file '%s' public." % self,
-                        user, constants.NA_EDIT)
+            self.notify("Made file '%s' public." % self, user, "edit")
 
     def make_private(self, user=None):
         """Disallow public reads."""
         self.public_read = False
         self.save()
         if user:
-            self.notify("Made file '%s' private." % self,
-                        user, constants.NA_EDIT)
+            self.notify("Made file '%s' private." % self, user, "edit")
 
     def allow_staff(self, user=None):
         """Allow all staff members to access (read/write)"""
@@ -147,7 +143,7 @@ class PodaciFile(NotificationMixin, models.Model):
         self.save()
         if user:
             self.notify("Made file '%s' accessible to staff." % self,
-                        user, constants.NA_SHARE)
+                        user, "share")
 
     def disallow_staff(self, user=None):
         """Disallow staff to access"""
@@ -155,7 +151,7 @@ class PodaciFile(NotificationMixin, models.Model):
         self.save()
         if user:
             self.notify("Made file '%s' inaccessible to staff." % self,
-                        user, constants.NA_SHARE)
+                        user, "share")
 
     def has_permission(self, user):
         """Check if a given user has read permission."""
@@ -229,7 +225,7 @@ class PodaciFile(NotificationMixin, models.Model):
         return os.path.join(directory, self.filename)
 
     @classmethod
-    def create_from_filehandle(cls, fh, filename=None, user=None):
+    def create_from_filehandle(cls, fh, filename=None, user=None, ticket=None):
         """Given a file handle, create a file."""
         if filename is None and hasattr(fh, 'name'):
             filename = fh.name
@@ -247,9 +243,12 @@ class PodaciFile(NotificationMixin, models.Model):
             shutil.copyfileobj(fh, destfh)
 
         obj.save()
+        if ticket is not None:
+            obj.tickets.add(ticket)
+
         if user:
             obj.add_user(user, write=True, notify=False)
-            obj.notify("Created file '%s'." % obj, user, constants.NA_ADD)
+            obj.notify("Created file '%s'." % obj, user, "add")
 
         obj.update()
         return obj
