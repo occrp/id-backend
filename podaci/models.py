@@ -39,7 +39,7 @@ class FileNotFound(Exception):
         return "[File not found]"
 
 
-class PodaciTag(models.Model):
+class PodaciTag(NotificationMixin, models.Model):
     name = models.CharField(max_length=100, unique=True)
 
     def __unicode__(self):
@@ -338,7 +338,7 @@ class PodaciFile(NotificationMixin, models.Model):
     #         return False
 
 
-class PodaciCollection(models.Model):
+class PodaciCollection(NotificationMixin, models.Model):
     name                = models.CharField(max_length=300)
     owner               = models.ForeignKey(AUTH_USER_MODEL,
                             related_name='collections', default=1)
