@@ -142,6 +142,10 @@ class ScraperRequestForm(forms.ModelForm):
         model = models.DatabaseScrapeRequest
 
 
+from captcha.fields import CaptchaField
+
 class FeedbackForm(forms.ModelForm):
+    if not get_user_model()().is_authenticated():
+        captcha = CaptchaField()
     class Meta:
         model = models.Feedback

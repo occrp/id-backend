@@ -61,7 +61,6 @@ INSTALLED_APPS = (
     'django_jinja',
     'rest_framework',
     'social_auth',
-
     'core',
     'id',
     'search',
@@ -70,7 +69,8 @@ INSTALLED_APPS = (
     'robots',
     'ticket',
     'projects',
-    'django_select2'
+    'django_select2',
+    'captcha'
 )
 
 MIDDLEWARE_CLASSES = (
