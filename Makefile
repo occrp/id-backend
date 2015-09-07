@@ -18,3 +18,11 @@ clean:
 	rm -rf pyenv
 	find ./ -iname '*.pyc' -exec rm -rf '{}' \;
 	rm -rf static/bower_components
+
+testdata:
+	./manage.py loaddata id/fixtures/* 
+	./manage.py loaddata data/fixtures/*
+	(cd data/importers/ID1_Import && python UserProfiles_to_DjangoUsers.py ../../exporters/raw/UserProfile.csv)
+	(cd data/importers/ID1_Import && python Tickets_to_ID2Tickets.py ../../exporters/raw/Ticket.csv)
+
+
