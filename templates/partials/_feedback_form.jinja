@@ -8,9 +8,7 @@
     <div class="material-form md-whiteframe-z1 feedback-form" style="max-width:550px;">
         {% if feedback_text %}<p class="info">{% trans %}{{feedback_text}}{% endtrans %}</p>{% endif %}
         {% csrf_token %}
-        <input name="name" type="text" placeholder="your name"{% if user.is_authenticated() %}value="{{user.name}}"{% endif %}>
-        <input name="email" type="email" placeholder="you@example.com"{% if user.is_authenticated() %}readonly value="{{user.email}}"{% endif %}>
-        <textarea name="message" placeholder="feedback"></textarea>
+        {{form.as_table()}}
     </div>
     <label></label><input type="submit" class="material-form-submit btn primary md-whiteframe-z2" value="{% trans %}Send{% endtrans %}"/>
 </form>

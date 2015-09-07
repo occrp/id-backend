@@ -8,6 +8,7 @@ from ticket.forms import BudgetForm
 from search.models import SearchRequest
 from settings import settings
 from django.db.models import Sum
+from django.http import HttpResponseRedirect
 
 class Panel(TemplateView):
     template_name = "admin/panel.jinja"
@@ -72,17 +73,71 @@ class Budgets(CreateView):
         kwargs['object_list'] = Budget.objects.all()
         return super(CreateView, self).get_context_data(**kwargs)
 
-class Feedback(CreateView):
+
+class FeedbackAuthMixin(object):
+    """
+    if that's not an authenticated user asking for a feedback-related URL
+    *and* there's no indication that we should accept feedback from them
+    just redirect to feedback URL
+    
+    cleared_for_feedback should happen only for users that have just logged-out
+    and will be cleared in FeedbackThanks
+    """
+    fallback_redirect_url = '/accounts/login/'
+
+    def verify_feedback_auth(self, request):
+        return (request.user.is_authenticated() or ('cleared_for_feedback' in request.session and request.session['cleared_for_feedback'] == True))
+
+    def get(self, request, *args, **kwargs):
+        if self.verify_feedback_auth(request):
+            return super(FeedbackAuthMixin, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(self.fallback_redirect_url)
+    
+    def post(self, request, *args, **kwargs):
+        if self.verify_feedback_auth(request):
+            return super(FeedbackAuthMixin, self).post(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(self.fallback_redirect_url)
+    
+
+class Feedback(FeedbackAuthMixin, CreateView):
     model = Feedback
     form_class = FeedbackForm
     template_name = "admin/feedback.jinja"
     success_url = '/feedback/thankyou/'
 
     def form_valid(self, form):
+        
         if self.request.user.is_authenticated():
             form.instance.email = self.request.user.email
 
         return super(Feedback, self).form_valid(form)
 
-class FeedbackThanks(TemplateView):
+
+class FeedbackThanks(FeedbackAuthMixin, TemplateView):
     template_name = "admin/feedback_thanks.jinja"
+
+    def get(self, request, *args, **kwargs):
+        # get the response
+        response = super(FeedbackThanks, self).get(request, *args, **kwargs)
+        
+        # remove the feedback clearance
+        if 'cleared_for_feedback' in request.session:
+            del request.session['cleared_for_feedback']
+            response.request = request
+        
+        # we're done
+        return response
+    
+    def post(self, request, *args, **kwargs):
+        # get the response
+        response = super(FeedbackThanks, self).post(request, *args, **kwargs)
+                
+        # remove the feedback clearance
+        if 'cleared_for_feedback' in request.session:
+            del request.session['cleared_for_feedback']
+            response.request = request
+        
+        # we're done
+        return response
