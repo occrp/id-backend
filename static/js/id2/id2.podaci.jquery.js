@@ -138,11 +138,12 @@ ID2.Podaci.render_file_to_resultset = function(file) {
     var mimeinfo = $("<a data-mimetype=\"" + file.mimetype + "\" class=\"podaci-filetype\">" + file.mimetype.split("/")[1].toUpperCase() + "</a>");
     mimeinfo.click(function() { ID2.Podaci.search_term_add("mime:" + file.mimetype); })
 
-    var filename = $("<a class=\"podaci-filename\">" + (file.name || file.filename) + "</a>");
-    filename.click = ID2.Podaci.file_doubleclick;
+    var filename = $("<a class=\"podaci-filename\">" + (file.title || file.filename) + "</a>");
+    filename.click(ID2.Podaci.file_doubleclick);
+    filename.attr("data-id", file.id);
 
     var selectbar = $("<div class=\"podaci-selectbar\">");
-    selectbar.click(ID2.Podaci.file_click);
+    selectbar.mousedown(ID2.Podaci.file_click);
 
     var thumbnail = $("<img src=\"" + file.thumbnail + "\" class=\"podaci-file-thumbnail\"/>");
     thumbnail.click(ID2.Podaci.file_click);
@@ -248,6 +249,7 @@ ID2.Podaci.add_collection = function(collection, targetli) {
     }
 }
 
+
 ID2.Podaci.collection_filter_click = function(e) {
     collectionid = $(e.target).data("collection");
     e.preventDefault();
@@ -285,15 +287,18 @@ ID2.Podaci.update_selection = function() {
     }
 };
 
+
 ID2.Podaci.select = function(selection) {
     ID2.Podaci.selection = _.union(ID2.Podaci.selection, selection);
     ID2.Podaci.update_selection();
 };
 
+
 ID2.Podaci.deselect = function(selection) {
     ID2.Podaci.selection = _.difference(ID2.Podaci.selection, selection);
     ID2.Podaci.update_selection();
 };
+
 
 ID2.Podaci.select_toggle = function(id) {
     if (ID2.Podaci.selection.indexOf(id) == -1) {
@@ -303,6 +308,7 @@ ID2.Podaci.select_toggle = function(id) {
     }
 };
 
+
 ID2.Podaci.select_invert = function() {
     ID2.Podaci.selection = _.difference(
         $.map($(".podaci-file"), function(e) { return $(e).data("id") }),
@@ -310,23 +316,29 @@ ID2.Podaci.select_invert = function() {
     ID2.Podaci.update_selection();
 };
 
+
 ID2.Podaci.select_all = function() {
     ID2.Podaci.selection = $.map($(".podaci-file"), function(e) { return $(e).data("id") });
     ID2.Podaci.update_selection();
 };
+
 
 ID2.Podaci.select_none = function() {
     ID2.Podaci.selection = [];
     ID2.Podaci.update_selection();
 };
 
+
 ID2.Podaci.select_toggle_checkbox = function(e) {
     id = $(e.target).parent().parent().data("id");
     ID2.Podaci.select_toggle(id);
 }
 
+
 ID2.Podaci.init_fileupload = function() {
-    var col = $('.resultbox');
+    var col = $('.resultbox'),
+        progressbar = $('.podaci_upload_progress'),
+        files_form = $('.podaci_upload_files_form');
     ID2.Podaci.results_cache = [];
 
     col.on("dragover", function(e) {
@@ -344,6 +356,8 @@ ID2.Podaci.init_fileupload = function() {
         col.removeClass("dropzone");
     });
 
+    progressbar.show();
+    files_form.hide();
     $('.podaci_upload_files').fileupload({
         url: '/podaci/file/create/',
         dataType: 'json',
@@ -382,20 +396,22 @@ ID2.Podaci.init_fileupload = function() {
         }
     }).on('fileuploadprogressall', function (e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
-        $('.podaci_upload_progress .progress-bar').css(
-            'width',
-            progress + '%'
-        );
+        progressbar.find('.progress-bar').css('width', progress + '%');
     }).on('fileuploaddone', function (e, data) {
-        console.log(data);
         ID2.Podaci.add_file_to_results(data.result);
+        progressbar.hide();
+        $("#podaci_upload_modal").modal('hide');
+        files_form.show();
     }).on('fileuploadfail', function (e, data) {
         // FIXME: Test failure modes. Make this pretty.
+        progressbar.hide();
+        files_form.show();
     });
 };
 
 ID2.Podaci.upload_click = function(e, target) {
-    $("#podaci_upload_modal").modal();
+  $('.podaci_upload_progress').hide()
+  $("#podaci_upload_modal").modal();
 };
 
 
@@ -552,7 +568,7 @@ ID2.Podaci.refresh_files = function() {
 
                         td = $("<td nowrap/>");
                         a = $("<a/>");
-                        a.attr("href", "/podaci/podaci/file/" + file.id + "/");
+                        a.attr("href", "/podaci/file/" + file.id + "/");
                         a.html('<i class="icon-file"></i>' + file.meta.filename);
                         td.append(a);
                         td.addClass("overflow-hidden");
@@ -584,14 +600,12 @@ ID2.Podaci.refresh_files = function() {
 };
 
 ID2.Podaci.download_zip = function() {
-    if (ID2.Podaci.selection.length == 0 && ID2.Podaci.tagid) {
-        src = "/podaci/tag/" + ID2.Podaci.tagid + "/zip/";
-    } else if (ID2.Podaci.selection.length == 0) {
+    if (ID2.Podaci.selection.length == 0) {
         // FIXME: Alerts are so passé.
         alert("Error: Cannot download the entire world.");
         return;
     } else {
-        src = "/podaci/tag/selection/zip/?files=" + ID2.Podaci.selection.join("&files=");
+        src = "/podaci/zip/?files=" + ID2.Podaci.selection.join("&files=");
     }
     window.location = src;
 };
@@ -615,7 +629,6 @@ ID2.Podaci.open_in_overview = function() {
 }
 
 ID2.Podaci.file_click = function(e) {
-    console.log("file click");
     id = $(e.target).parent().closest("div").data("id");
     e.preventDefault();
     e.stopPropagation();
@@ -627,50 +640,41 @@ ID2.Podaci.file_click = function(e) {
 };
 
 ID2.Podaci.file_doubleclick = function(e) {
-    console.log("filename click");
     e.preventDefault();
     e.stopPropagation();
-    console.log("Showing modal!");
-    $("#file-modal").modal("show");
-    // window.location = $(e.target).closest("a")[0].href;
+
+    var fileId = $(e.currentTarget).data('id');
+    $.getJSON('/podaci/file/' + fileId + '/', function(data) {
+      console.log("Showing modal!", data);
+      var $modal = $("#file-modal");
+      $modal.find('#file-modal-filename').text(data.title || data.filename);
+      $modal.find('#file-download-link').attr('href', '/podaci/file/' + fileId + '/download');
+      $modal.find('#file-title').val(data.title);
+      $modal.find('#file-name').val(data.filename);
+      $modal.find('#file-date').val(moment(data.date_added).format('LL'));
+      $modal.find('#file-tags').select2({
+        tags: true,
+        data: data.tags,
+        tokenSeparators: [',', ' ']
+      });
+      $modal.find('#file-tags').val(data.tags).trigger("change");
+      $modal.modal("show");
+
+      $modal.find('#file-save-link').click(function() {
+        data.title = $modal.find('#file-title').val();
+        data.tags = $modal.find('#file-tags').val();
+        $.ajax({
+          type: 'PUT',
+          url: '/podaci/file/' + fileId + '/',
+          data: JSON.stringify(data),
+          contentType: 'application/json',
+          dataType: 'json'
+        });
+        $modal.modal("hide");
+      });
+    });
 };
 
-
-ID2.Podaci.update_notes = function(meta) {
-    $("#file_notes").empty();
-    for (i in meta.notes) {
-        n = meta.notes[i];
-        $("#file_notes").append(n.html);
-    }
-}
-
-ID2.Podaci.file_add_note = function() {
-    fileid = $("#podaci_file_id").val();
-    $("#note_text").mentionsInput('val', function(text) {
-        $.post('/podaci/file/' + fileid + '/note/add/',
-            $("#note_add_form").serialize() + "&note_text_markedup=" + encodeURIComponent(text),
-            function(data) {
-                if (data.success) {
-                    $("#note_text").val("");
-                    $("#note_text").mentionsInput("reset");
-                }
-                ID2.Podaci.update_notes(data.meta);
-            }
-        );
-    });
-}
-
-ID2.Podaci.metadata_save = function() {
-    fileid = $("#podaci_file_id").val();
-    $.post('/podaci/file/' + fileid + '/metadata/update/',
-        $("#extra_metadata_form").serialize(),
-        function(data) {
-            if (data.success) {
-                $("#note_text").val("");
-            }
-            ID2.Podaci.update_notes(data.meta);
-        });
-}
 
 // FIXME: Normalize on _ or - .. using both is silly.
 ID2.Podaci.callbacks = {
@@ -695,9 +699,6 @@ ID2.Podaci.callbacks = {
 
     "#podaci-list-mode-icons click": ID2.Podaci.listmode_icons,
     "#podaci-list-mode-list click": ID2.Podaci.listmode_list,
-
-    "#podaci_note_save click": ID2.Podaci.file_add_note,
-    "#extra_metadata_save click": ID2.Podaci.metadata_save,
 
     ".collectionfilters a click": ID2.Podaci.collection_filter_click,
     "#searchbox keyup": ID2.Podaci.searchbox_keyup,
