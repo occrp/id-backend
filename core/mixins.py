@@ -181,30 +181,24 @@ class NotificationMixin(object):
     def get_notification_channel_subscribers(self, channel):
         assert(notification_channel_format.match(channel))
         channelr = "^%s$" % channel.replace(":*:", ":.*:")
+        print "regex is %s" % (channelr)
         return set([ns.user for ns in NotificationSubscription.objects.filter(
                     channel__iregex=channelr)])
 
-    def get_admin_channel(self):
+    def get_channel(self, action="none"):
         dets = {
             "project":  "id",
-            "module": "admin",
-            "model": self.__class__.__name__,
-            "instance": self.id
+            "module": self.__module__.split(".")[0].lower(),
+            "model": self.__class__.__name__.lower(),
+            "instance": self.id,
+            "action": action.lower()
         }
-        return "%(project)s:%(module)s:%(model)s:%(instance)s" % dets
+        return "%(project)s:%(module)s:%(model)s:%(instance)s:%(action)s" % dets
 
-    def get_channel(self):
-        dets = {
-            "project":  "id",
-            "module": self.__module__.split(".")[0],
-            "model": self.__class__.__name__,
-            "instance": self.id
-        }
-        return "%(project)s:%(module)s:%(model)s:%(instance)s" % dets
-
-    def notify(text, urlname=None, params={}, action=NA_NONE):
-        channel = self.get_channel()
+    def notify(self, text, urlname=None, params={}, action="none"):
+        channel = self.get_channel(action)
         subs = self.get_notification_channel_subscribers(channel)
+        print "Subscribers: ", subs
         for user in subs:
             m = Notification()
-            m.create(user, channel, action, text, urlname, params)
+            m.create(user, channel, text, urlname, params)
