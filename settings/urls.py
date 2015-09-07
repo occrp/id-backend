@@ -8,7 +8,7 @@ from core.auth import perm
 from django.contrib.auth import views as auth_views
 from registration.views import ActivationView
 
-from id.views import ProfileRegistrationView, logout
+from id.views import ProfileRegistrationView, logout, NotificationSeen, NotificationStream
 from id.forms import ProfileRegistrationForm, FeedbackForm
 
 js_info_dict = {
@@ -64,6 +64,8 @@ urlpatterns = patterns('',
     url(r'^accounts/register/complete/$',   TemplateView.as_view(template_name='registration/registration_complete.jinja'), name='registration_complete'),
     url(r'^accounts/register/closed/$',     TemplateView.as_view(template_name='registration/registration_closed.jinja'), name='registration_disallowed'),
     url(r'^accounts/social/', include('social_auth.urls')),
+
+    url(r'^notifications/seen/(?P<pk>([\d]+|all))/', perm('user', NotificationSeen), name='notification_seen'),
 
     url(r'^search/', include('search.urls')),
     url(r'^ticket/', include('ticket.urls')),

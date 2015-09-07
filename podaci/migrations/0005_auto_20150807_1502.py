@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
             ],
             options={
             },
-            bases=(podaci.models.ZipSetMixin, models.Model),
+            bases=(models.Model, ),
         ),
         migrations.RemoveField(
             model_name='podacitagchangelog',

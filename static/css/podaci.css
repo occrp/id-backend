@@ -67,7 +67,7 @@ li > a.FIXME {
 	border-bottom: 1px solid #ccc;
 	padding: 10px;
 	padding-top: 16px;
-	height: 100px;
+	height: 40px;
 	overflow: hidden;
 }
 
@@ -89,7 +89,7 @@ li > a.FIXME {
 .podaci-file .podaci-selectbar {
 	float: left;
 	min-width: 12px;
-	min-height: 100px;
+	min-height: 40px;
 	background: #ccc;
 	cursor: pointer;
 }
@@ -118,8 +118,8 @@ li > a.FIXME {
 
 .podaci-file .podaci-file-thumbnail {
 	float: left;
-	width: 100px;
-	height: 100px;
+	width: 45px;
+	height: 45px;
 	padding: 0px;
 	margin: 0px;
 	overflow: hidden;
@@ -196,7 +196,8 @@ li > a.FIXME {
 }
 
 .collections, .searchbox, .toolbox {
-	box-shadow: 5px 5px 20px;
+	/* box-shadow: 5px 5px 20px; */
+	box-shadow: 2px 2px 5px #bbb;
 }
 
 .collections {
@@ -265,13 +266,12 @@ div.podacitools {
 
 input.searchbox {
 	position: relative;
-	box-shadow: 5px 5px 20px;
+	box-shadow: 2px 2px 5px #bbb;
 	max-width: 500px;
 	min-width: 300px;
 	width: 100%;
 	font-size: 120%;
 	padding: 16px;
-	border-radius: 15px;
 	overflow: hidden;
 	border: none;
 }
@@ -284,7 +284,7 @@ div.toolbox {
 }
 
 input.searchbox:focus {
-	box-shadow: 5px 5px 20px;
+	box-shadow: 2px 2px 5px;
 }
 
 .resultbox {

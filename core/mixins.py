@@ -7,6 +7,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
 
 from core.utils import json_dumps
+from core.models import Notification, NotificationSubscription, notification_channel_format
+
+from id.constdata import *
 
 class DisplayMixin(object):
     """
@@ -172,3 +175,30 @@ class PrettyPaginatorMixin(object):
 
     def is_current_page(self, page_num, current_page_num):
         return True if page_num == current_page_num else False
+
+
+class NotificationMixin(object):
+    def get_notification_channel_subscribers(self, channel):
+        assert(notification_channel_format.match(channel))
+        channelr = "^%s$" % channel.replace(":*:", ":.*:")
+        print "regex is %s" % (channelr)
+        return set([ns.user for ns in NotificationSubscription.objects.filter(
+                    channel__iregex=channelr)])
+
+    def get_channel(self, action="none"):
+        dets = {
+            "project":  "id",
+            "module": self.__module__.split(".")[0].lower(),
+            "model": self.__class__.__name__.lower(),
+            "instance": self.id,
+            "action": action.lower()
+        }
+        return "%(project)s:%(module)s:%(model)s:%(instance)s:%(action)s" % dets
+
+    def notify(self, text, urlname=None, params={}, action="none"):
+        channel = self.get_channel(action)
+        subs = self.get_notification_channel_subscribers(channel)
+        print "Subscribers: ", subs
+        for user in subs:
+            m = Notification()
+            m.create(user, channel, text, urlname, params)
