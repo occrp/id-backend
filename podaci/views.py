@@ -1,10 +1,13 @@
 import logging
 from django.db.models import Q
+from django.http import FileResponse
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
+from rest_framework.exceptions import NotFound
 
 from podaci.models import PodaciFile, PodaciTag, PodaciCollection
 from podaci.serializers import FileSerializer, TagSerializer
@@ -110,6 +113,20 @@ class FileDetail(FileQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated, )
 
 
+class FileDownload(APIView):
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get(self, request, id=None, format=None):
+        try:
+            pfile = PodaciFile.objects.get(pk=id)
+            resp = FileResponse(pfile.get_filehandle(request.user))
+            resp['Content-Type'] = pfile.mimetype
+            resp['Content-Disposition'] = 'filename=' + pfile.filename
+            return resp
+        except PodaciFile.DoesNotExist:
+            raise NotFound()
+
+
 class FileUploadView(generics.CreateAPIView):
     parser_classes = (FileUploadParser,)
 
@@ -174,7 +191,3 @@ class CollectionDetail(generics.RetrieveUpdateDestroyAPIView):
                 continue
 
         return super(CollectionDetail, self).patch(request, pk, **kwargs)
-
-
-class MetaDataList(generics.ListCreateAPIView):
-    pass
