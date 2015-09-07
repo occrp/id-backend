@@ -356,8 +356,6 @@ ID2.Podaci.init_fileupload = function() {
         col.removeClass("dropzone");
     });
 
-    progressbar.show();
-    files_form.hide();
     $('.podaci_upload_files').fileupload({
         url: '/podaci/file/create/',
         dataType: 'json',
@@ -368,6 +366,8 @@ ID2.Podaci.init_fileupload = function() {
         disableImageResize: /Android(?!.*Chrome)|Opera/
             .test(window.navigator.userAgent),
     }).on('fileuploadadd', function (e, data) {
+        progressbar.show();
+        files_form.hide();
         data.context = $('#podaci_upload_list');
         $.each(data.files, function (index, file) {
             var node = $('<tr class="podaci-file podaci-file-pending"/>');
@@ -409,9 +409,17 @@ ID2.Podaci.init_fileupload = function() {
     });
 };
 
+
 ID2.Podaci.upload_click = function(e, target) {
   $('.podaci_upload_progress').hide()
   $("#podaci_upload_modal").modal();
+};
+
+
+ID2.Podaci.ticket_add_file = function(event) {
+  var ticketId = $(event.target).data('ticket');
+  $('.podaci_upload_progress').hide()
+  $("#podaci_add_modal").modal();
 };
 
 
@@ -675,7 +683,6 @@ ID2.Podaci.file_doubleclick = function(e) {
     });
 };
 
-
 // FIXME: Normalize on _ or - .. using both is silly.
 ID2.Podaci.callbacks = {
     "#podaci-upload click": ID2.Podaci.upload_click,
@@ -704,6 +711,7 @@ ID2.Podaci.callbacks = {
     "#searchbox keyup": ID2.Podaci.searchbox_keyup,
     "#collection-new click": function() { $("#podaci_create_collection_modal").modal(); },
 
+    "#ticket-file-add click": ID2.Podaci.ticket_add_file,
 };
 
 
