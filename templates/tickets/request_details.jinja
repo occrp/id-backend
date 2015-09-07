@@ -36,7 +36,7 @@
             {% if ticket.is_open() %}
 
             <div class="btn-group">
-                <a href="#DirectUploadForm" role="button" class="btn podaci_upload" data-toggle="modal" data-key="{{ ticket.id }}">
+                <a id="ticket-file-add" role="button" class="btn podaci_add" data-ticket="{{ ticket.id }}">
                     <i class="fa fa-file-o"></i> {% trans %}Attach Files{% endtrans %}
                 </a>
             </div>
@@ -248,13 +248,16 @@
 {% block js %}
     {{ super() }}
     <script type="text/javascript" src="{{ static('js/entity-view.js') }}"></script>
+    <script type="text/javascript" src="{{ static('bower_components/blueimp-file-upload/js/vendor/jquery.ui.widget.js')}}"></script>
+	<script type="text/javascript" src="{{ static('bower_components/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
+	<script type="text/javascript" src="{{ static('bower_components/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
     <script type="text/javascript" src="{{ static('js/id2/id2.podaci.jquery.js') }}"></script>
 {% endblock %}
 
 {% block after_js %}
     {{ super() }}
     <div class="modal hide" id="entity-viewer"></div>
-    {% include "podaci/partials/_podaci_upload_modal.jinja" %}
+    {% include "podaci/partials/_podaci_add_modal.jinja" %}
 
     {{ modal_macros.render_modal(open_form, url('ticket_open', pk=ticket.id), "ReqReopenForm", _("Re-Open Request"), _("Submit"), "", csrf_token) }}
 
