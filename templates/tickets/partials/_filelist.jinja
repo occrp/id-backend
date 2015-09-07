@@ -13,12 +13,6 @@
             </div>
         </div>
         {% trans %}Attached Files{% endtrans %}
-        {% if user.is_staff or user.is_superuser %}
-            <a href="#SharingModal" class="btn btn-small pull-right"
-               data-modal-url="{{ url('share_files', entity_id=ticket.key.urlsafe()) }}">
-                <i class="fa fa-group"></i> {% trans %}Sharing{% endtrans %}
-            </a>
-        {% endif %}
     </h3>
     {% include "podaci/partials/_podaci_file_list.jinja" %}
 </div>

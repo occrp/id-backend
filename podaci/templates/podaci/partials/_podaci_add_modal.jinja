@@ -10,6 +10,7 @@
         	<form id="podaci_upload_files_form" action="/podaci/file/create" method="POST" enctype="multipart/form-data">
         		{% csrf_token %}
                 <input type="file" class="podaci_upload_files" name="files[]" multiple />
+                <input type="hidden" class="podaci_upload_tickets" name="tickets[]" />
             </form>
             <div class="podaci_upload_progress progress">
                 <div class="progress-bar progress-bar-success"></div>
