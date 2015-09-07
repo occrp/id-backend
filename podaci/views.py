@@ -2,6 +2,7 @@ import os
 import logging
 import zipfile
 from StringIO import StringIO
+
 from django.db.models import Q
 from django.http import FileResponse, HttpResponseBadRequest
 from django.http import HttpResponseForbidden
@@ -138,6 +139,8 @@ class ZipDownload(APIView):
         zstr = StringIO()
         total_size = 0
         with zipfile.ZipFile(zstr, "w", zipfile.ZIP_DEFLATED) as zf:
+            # NOTE: this will not detect if files are for missing IDs,
+            # ie. if the result set is shorter than the list of file_ids.
             for pfile in PodaciFile.objects.filter(pk__in=file_ids):
                 if not os.path.isfile(pfile.local_path):
                     continue

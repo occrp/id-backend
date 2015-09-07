@@ -6,11 +6,40 @@
         <h4 class="modal-title">{% trans %}File:{% endtrans %} <span id="file-modal-filename"></span></h4>
       </div>
       <div class="modal-body">
-          ... STUFF STUFF
-          
+          <form class="form-horizontal">
+            <div class="control-group">
+              <label class="control-label" for="title">Title</label>
+              <div class="controls">
+                <input type="text" id="file-title" placeholder="Title">
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="title">File name</label>
+              <div class="controls">
+                <input type="text" id="file-name" placeholder="File name"
+                    disabled>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="title">Uploaded</label>
+              <div class="controls">
+                <input type="text" id="file-date" disabled>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="file-tags">Tags</label>
+              <div class="controls">
+                <select id="file-tags" multiple="true"></select>
+              </div>
+            </div>
+          </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn" data-dismiss="modal">Close</button>
+        <a class="btn" id="file-download-link">
+            <i class="fa fa-download"></i>
+            Download
+        </a>
+        <button type="button" class="btn" id="file-save-link">Save</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
