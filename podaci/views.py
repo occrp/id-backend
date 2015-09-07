@@ -1,13 +1,17 @@
+import os
 import logging
+import zipfile
+from StringIO import StringIO
 from django.db.models import Q
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponseBadRequest
+from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
-from rest_framework.exceptions import NotFound
 
 from podaci.models import PodaciFile, PodaciTag, PodaciCollection
 from podaci.serializers import FileSerializer, TagSerializer
@@ -117,14 +121,38 @@ class FileDownload(APIView):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get(self, request, id=None, format=None):
-        try:
-            pfile = PodaciFile.objects.get(pk=id)
-            resp = FileResponse(pfile.get_filehandle(request.user))
-            resp['Content-Type'] = pfile.mimetype
-            resp['Content-Disposition'] = 'filename=' + pfile.filename
-            return resp
-        except PodaciFile.DoesNotExist:
-            raise NotFound()
+        pfile = get_object_or_404(PodaciFile, pk=id)
+        resp = FileResponse(pfile.get_filehandle(request.user))
+        resp['Content-Type'] = pfile.mimetype
+        resp['Content-Disposition'] = 'filename=' + pfile.filename
+        return resp
+
+
+class ZipDownload(APIView):
+    SIZE_LIMIT = 50 * 1024 * 1024
+
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get(self, request, id=None, format=None):
+        file_ids = request.GET.getlist('files')
+        zstr = StringIO()
+        total_size = 0
+        with zipfile.ZipFile(zstr, "w", zipfile.ZIP_DEFLATED) as zf:
+            for pfile in PodaciFile.objects.filter(pk__in=file_ids):
+                if not os.path.isfile(pfile.local_path):
+                    continue
+                total_size += pfile.size
+                if total_size > self.SIZE_LIMIT:
+                    raise HttpResponseBadRequest()
+                if not pfile.has_permission(request.user):
+                    raise HttpResponseForbidden()
+                zf.write(pfile.local_path, pfile.filename)
+            zf.close()
+        zstr.seek(0)
+        resp = FileResponse(zstr)
+        resp['Content-Type'] = 'application/zip'
+        resp['Content-Disposition'] = 'filename=download.zip'
+        return resp
 
 
 class FileUploadView(generics.CreateAPIView):
@@ -132,7 +160,7 @@ class FileUploadView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         file_obj = request.FILES['files[]']
-        pfile = PodaciFile().create_from_filehandle(file_obj, user=request.user)
+        pfile = PodaciFile.create_from_filehandle(file_obj, user=request.user)
         log.debug('File created: %r', pfile)
         serializer = FileSerializer(pfile)
         return Response(serializer.data, status=status.HTTP_201_CREATED)

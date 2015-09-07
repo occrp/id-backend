@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^file/(?P<pk>[0-9]+)/$', views.FileDetail.as_view(), name='podaci_file_detail'),
     url(r'^file/create/$', views.FileUploadView.as_view(), name='podaci_file_create'),
     url(r'^file/(?P<id>.+)/download/$', views.FileDownload.as_view(), name='podaci_file_download'),
+    url(r'^zip/$', views.ZipDownload.as_view(), name='podaci_zip_download'),
 
     url(r'^tag/$', views.TagList.as_view(), name='podaci_tag_list'),
     url(r'^tag/(?P<pk>[0-9]+)/$', views.TagDetail.as_view(), name='podaci_tag_detail'),
