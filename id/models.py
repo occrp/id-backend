@@ -295,38 +295,6 @@ class Profile(AbstractBaseUser, PermissionsMixin):
         #         UserDetailsRequesterMixin.Meta.fields)
         # editable_fields = ('first_name', 'last_name') + tuple(x for x in fields if x not in ('display_name',))
 
-class Notification(models.Model):
-    user            = models.ForeignKey(AUTH_USER_MODEL)
-    stream          = models.CharField(max_length=200, default='id:wail')
-    action          = models.IntegerField(choices=NOTIFICATION_ACTIONS, default=0)
-    timestamp       = models.DateTimeField(auto_now_add=True)
-    is_seen         = models.BooleanField(default=False)
-    text            = models.CharField(max_length=50)
-    url_base        = models.CharField(max_length=50, blank=True, null=True)
-    url_params      = models.CharField(max_length=200, blank=True, null=True)
-
-    def seen(self):
-        self.is_seen = True
-        self.save()
-
-    def create(self, user, stream, text, urlname=None, params={}, action=NA_NONE):
-        self.user = user
-        self.stream = stream
-        self.action = action
-        self.text = text
-        self.url_base = urlname
-        self.url_params = json_dumps(params)
-        self.save()
-
-    def get_urlparams(self):
-        return json_loads(self.url_params)
-
-    def get_url(self):
-        return reverse_lazy(self.url_base, kwargs=self.get_urlparams())
-
-    def get_icon(self):
-        return dict(NOTIFICATION_ICONS).get(self.action, 100000)
-
 
 ######## External databases ############
 class ExternalDatabase(models.Model, DisplayMixin):
