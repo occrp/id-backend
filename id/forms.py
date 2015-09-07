@@ -6,6 +6,7 @@ from id import constdata, models
 from django.contrib.auth import get_user_model
 import re
 import math
+from captcha.fields import CaptchaField
 
 
 class CountryFilterForm(forms.Form):
@@ -46,6 +47,10 @@ class ProfileRegistrationForm(forms.Form):
     password2 = forms.CharField(
             widget=forms.PasswordInput(attrs={ 'class': 'required' }, render_value=False),
             label=_('Password confirmation'))
+    """
+    Captcha, because why not
+    """
+    captcha = CaptchaField()
 
     def clean_email(self):
         """
@@ -142,10 +147,6 @@ class ScraperRequestForm(forms.ModelForm):
         model = models.DatabaseScrapeRequest
 
 
-from captcha.fields import CaptchaField
-
 class FeedbackForm(forms.ModelForm):
-    if not get_user_model()().is_authenticated():
-        captcha = CaptchaField()
     class Meta:
         model = models.Feedback
