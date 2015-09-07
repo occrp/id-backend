@@ -5,7 +5,6 @@ from core.auth import perm
 from podaci import views
 
 urlpatterns = patterns('',
-    url(r'^ng/$', perm('staff', TemplateView, template_name="podaci/angular.jinja"), name="podaci_info_home"),
     url(r'^$', perm('staff', TemplateView, template_name="podaci/home.jinja"), name="podaci_info_home"),
     url(r'^search/$', views.Search.as_view(), name='podaci_search'),
     url(r'^file/$', views.FileList.as_view(), name='podaci_file_list'),
