@@ -139,7 +139,7 @@ ID2.Podaci.render_file_to_resultset = function(file) {
     mimeinfo.click(function() { ID2.Podaci.search_term_add("mime:" + file.mimetype); })
 
     var filename = $("<a class=\"podaci-filename\">" + (file.name || file.filename) + "</a>");
-    filename.click = ID2.Podaci.file_doubleclick;
+    filename.click(ID2.Podaci.file_doubleclick);
 
     var selectbar = $("<div class=\"podaci-selectbar\">");
     selectbar.click(ID2.Podaci.file_click);
@@ -632,7 +632,6 @@ ID2.Podaci.file_doubleclick = function(e) {
     e.stopPropagation();
     console.log("Showing modal!");
     $("#file-modal").modal("show");
-    // window.location = $(e.target).closest("a")[0].href;
 };
 
 
