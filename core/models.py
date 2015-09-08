@@ -33,6 +33,18 @@ class Notification(models.Model):
         self.url_params = json_dumps(params)
         self.save()
 
+        message = """
+    Dear %(user)s, you have received a notification from Investigative Dashboard. It reads:
+
+        %(message)s
+
+    Regards, ID
+        """ % {"user": self.user, "message": self.text}
+        self.user.email_user(self,
+            "Investigative Dashboard just sent you a notification",
+            message,
+            from_email="noreply@investigativedashboard.org")
+
     def get_urlparams(self):
         return json_loads(self.url_params)
 
@@ -53,7 +65,7 @@ class Notification(models.Model):
             setattr(self, c, v)
 
     def get_icon(self):
-        return NOTIFICATION_ICONS.get(self.action, 'other')
+        return NOTIFICATION_ICONS.get(self.action, 'bomb')
 
 
 class NotificationSubscription(models.Model):
