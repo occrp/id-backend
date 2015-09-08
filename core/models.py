@@ -26,7 +26,6 @@ class Notification(models.Model):
         self.save()
 
     def create(self, user, channel, text, urlname=None, params={}):
-        print "Creating a notification on channel '%s'" % channel
         self.apply_components(self.channel_components(channel))
         self.user = user
         self.text = text
