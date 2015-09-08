@@ -54,6 +54,7 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
         terms = q.split(" ")
         textterms = []
         tags = []
+        tickets = []
         other_terms = Q()
         collections = []
 
@@ -86,6 +87,8 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
                     other_terms |= Q(size__lt=size[1:])
                 else:
                     other_terms |= Q(size=size)
+            elif term.startswith("ticket:"):
+                tickets.append(term.split("ticket:")[1])
             elif len(term.strip()):
                 textterms.append(term)
 
@@ -93,13 +96,18 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
         for tag in tags:
             tag_terms &= Q(tags__name=tag)
 
+        ticket_terms = Q()
+        for ticket in tickets:
+            ticket_terms &= Q(tickets__id=ticket)
+
         text_terms = Q()
         for term in textterms:
             text_terms &= (Q(title__contains=term) |
                            Q(filename__contains=term) |
                            Q(description__contains=term))
 
-        search_terms = base_terms & text_terms & tag_terms & other_terms
+        search_terms = base_terms & text_terms & tag_terms
+        search_terms = search_terms & other_terms & ticket_terms
 
         for col in collections:
             search_terms &= Q(collections__in=[col])
@@ -164,7 +172,7 @@ class FileUploadView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         file_obj = request.FILES['files[]']
-        ticket = request.POST.get('tickets[]')
+        ticket = request.POST.get('tickets[]') or None
         if ticket is not None:
             ticket = Ticket.objects.get(pk=ticket)
             if request.user not in ticket.actors():
