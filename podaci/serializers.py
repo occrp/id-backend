@@ -4,12 +4,6 @@ from rest_framework import serializers
 from id.models import Profile
 
 
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = ('id', 'email')
-
-
 class TagSerializer(serializers.ModelSerializer):
     # we need files
     # but only those that the user has access to
@@ -34,10 +28,27 @@ class TagField(serializers.RelatedField):
             return t
 
 
+class ProfileField(serializers.RelatedField):
+
+    def to_representation(self, user):
+        return {'id': user.id, 'display_name': user.display_name}
+
+    def to_internal_value(self, data):
+        if isinstance(data, dict):
+            data = data.get('id')
+        return Profile.objects.get(pk=data)
+
+
 class FileSerializer(serializers.ModelSerializer):
     title = serializers.CharField(allow_null=True, allow_blank=True)
     tags = TagField(many=True, read_only=False, allow_empty=True,
                     queryset=PodaciTag.objects.filter())
+    allowed_users_read = ProfileField(many=True, read_only=False,
+                                      allow_empty=True,
+                                      queryset=Profile.objects.filter())
+    allowed_users_write = ProfileField(many=True, read_only=False,
+                                       allow_empty=True,
+                                       queryset=Profile.objects.filter())
 
     class Meta:
         model = PodaciFile
@@ -45,16 +56,25 @@ class FileSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'date_added', 'created_by',
                   'filename', 'url', 'sha256', 'size', 'mimetype',
                   'description', 'tags', 'collections', 'thumbnail',
-                  'public_read', 'staff_read')
+                  'public_read', 'staff_read', 'allowed_users_read',
+                  'allowed_users_write')
         read_only_fields = ('sha256', 'url', 'filename', 'created_by',
                             'date_added', 'thumbnail')
 
     def update(self, instance, data):
         instance.title = data.get('title')
+        instance.public_read = data.get('public_read')
+        instance.staff_read = data.get('staff_read')
         instance.description = data.get('description')
         instance.tags.clear()
         for tag in data.get('tags', []):
             instance.tags.add(tag)
+        instance.allowed_users_read.clear()
+        for user in data.get('allowed_users_read', []):
+            instance.allowed_users_read.add(user)
+        instance.allowed_users_write.clear()
+        for user in data.get('allowed_users_write', []):
+            instance.allowed_users_write.add(user)
         instance.update()
         return instance
 

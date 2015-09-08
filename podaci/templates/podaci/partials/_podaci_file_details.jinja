@@ -6,33 +6,69 @@
         <h4 class="modal-title">{% trans %}File:{% endtrans %} <span id="file-modal-filename"></span></h4>
       </div>
       <div class="modal-body">
+        <div class="row">
           <form class="form-horizontal">
-            <div class="control-group">
-              <label class="control-label" for="title">Title</label>
-              <div class="controls">
-                <input type="text" id="file-title" placeholder="Title">
+            <div class="span4">
+                <div class="control-group">
+                  <label class="control-label" for="title">Title</label>
+                  <div class="controls">
+                    <input type="text" id="file-title" placeholder="Title">
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="title">File name</label>
+                  <div class="controls">
+                    <input type="text" id="file-name" placeholder="File name"
+                        disabled>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="title">Uploaded</label>
+                  <div class="controls">
+                    <input type="text" id="file-date" disabled>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="file-tags">Tags</label>
+                  <div class="controls">
+                    <select id="file-tags" multiple="true"></select>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="control-group">
-              <label class="control-label" for="title">File name</label>
-              <div class="controls">
-                <input type="text" id="file-name" placeholder="File name"
-                    disabled>
-              </div>
-            </div>
-            <div class="control-group">
-              <label class="control-label" for="title">Uploaded</label>
-              <div class="controls">
-                <input type="text" id="file-date" disabled>
-              </div>
-            </div>
-            <div class="control-group">
-              <label class="control-label" for="file-tags">Tags</label>
-              <div class="controls">
-                <select id="file-tags" multiple="true"></select>
-              </div>
+              <div class="span4">
+                <div class="control-group">
+                  <label class="control-label" for="file-users-read">Readers</label>
+                  <div class="controls">
+                    <select id="file-users-read" multiple="true"></select>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="file-users-write">Writers</label>
+                  <div class="controls">
+                    <select id="file-users-write" multiple="true"></select>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="staff_read"></label>
+                  <div class="controls">
+                    <label class="checkbox">
+                      <input type="checkbox" id="file-staff-read">
+                      All staff can read
+                    </label>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="public_read"></label>
+                  <div class="controls">
+                    <label class="checkbox">
+                      <input type="checkbox" id="file-public-read">
+                      Public
+                    </label>
+                  </div>
+                </div>
             </div>
           </form>
+        </div>
       </div>
       <div class="modal-footer">
         <a class="btn" id="file-download-link">

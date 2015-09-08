@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 from django.views.generic import *
 from django.contrib.auth.decorators import login_required
 #from django.contrib.auth.models import User
@@ -8,6 +9,9 @@ from django.utils.translation import ugettext_lazy as _
 from registration.signals import user_registered
 from django.db.models import Q
 from django.db import IntegrityError
+
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 from core.mixins import MessageMixin
 
@@ -63,6 +67,7 @@ class ProfileUpdate(UpdateView):
                 ctx["form_admin"] = ProfileAdminForm(instance=obj)
         return ctx
 
+
 class UserList(ListView):
     model = get_user_model()
     paginate_by = 50
@@ -72,8 +77,8 @@ class UserList(ListView):
         filter_terms = self.request.REQUEST.get("filter_terms", "")
         if filter_terms:
             query = (Q(email__contains=filter_terms)
-                   | Q(first_name__contains=filter_terms)
-                   | Q(last_name__contains=filter_terms))
+                     | Q(first_name__contains=filter_terms)
+                     | Q(last_name__contains=filter_terms))
             return self.model.objects.filter(query)
 
         return self.model.objects.all()
@@ -82,6 +87,23 @@ class UserList(ListView):
         context = super(UserList, self).get_context_data(**kwargs)
         context["filter_terms"] = self.request.REQUEST.get("filter_terms", "")
         return context
+
+
+class UserSuggest(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        prefix = self.request.REQUEST.get("prefix", "")
+        res = {'prefix': prefix, 'results': []}
+        q = Q(email__istartswith=prefix) | Q(first_name__istartswith=prefix) | \
+            Q(last_name__istartswith=prefix)
+        for obj in get_user_model().objects.filter(q)[:10]:
+            res['results'].append({
+                'id': obj.id,
+                'display_name': obj.display_name
+            })
+        return JsonResponse(res)
+
 
 class AccessRequestCreate(TemplateView):
     template_name = 'accessrequest/create.jinja'
