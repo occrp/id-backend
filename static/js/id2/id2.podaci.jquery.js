@@ -66,8 +66,8 @@ ID2.Podaci.init = function() {
     ID2.Podaci.current_files = [];
     ID2.Podaci.selection = [];
     ID2.Podaci.update_selection();
-    ID2.Podaci.search("");
     ID2.Podaci.query = '';
+    ID2.Podaci.search("");
     ID2.Podaci.update_collections();
 
     ID2.Podaci.init_fileupload();
@@ -75,7 +75,13 @@ ID2.Podaci.init = function() {
 
 ID2.Podaci.search = function(q) {
     ID2.Podaci.results_clear();
-    $.getJSON("/podaci/search/", {"q": q}, function(data) {
+    var ticketId = $('#podaci-ticket-id').val(),
+        query = q + ' ';
+    if (ticketId && ticketId.length) {
+      query = query + 'ticket:' + ticketId;
+    }
+    console.log("Searching:", query, ticketId);
+    $.getJSON("/podaci/search/", {"q": query}, function(data) {
         ID2.Podaci.query = q;
         for (i in data.results) {
             file = data.results[i];
@@ -112,7 +118,7 @@ ID2.Podaci.get_file_list = function() {
 }
 
 ID2.Podaci.results_clear = function() {
-    $("#resultbox").empty();
+    $("#podaci-file-list").empty();
     ID2.Podaci.current_files = [];
 }
 
@@ -135,9 +141,6 @@ ID2.Podaci.render_file_to_resultset = function(file) {
         tags.append("<a data-tag=\"" + tag + "\">" + tag + "</a>");
     }
 
-    var mimeinfo = $("<a data-mimetype=\"" + file.mimetype + "\" class=\"podaci-filetype\">" + file.mimetype.split("/")[1].toUpperCase() + "</a>");
-    mimeinfo.click(function() { ID2.Podaci.search_term_add("mime:" + file.mimetype); })
-
     var filename = $("<a class=\"podaci-filename\">" + (file.title || file.filename) + "</a>");
     filename.click(ID2.Podaci.file_doubleclick);
     filename.attr("data-id", file.id);
@@ -153,7 +156,13 @@ ID2.Podaci.render_file_to_resultset = function(file) {
     fo.append(selectbar);
     fo.append(thumbnail);
     fo.append("<span class=\"podaci-filesize\">" + filesizeformat(file.size) + "</span>");
-    fo.append(mimeinfo);
+
+    if (file.mimetype) {
+      var mimeinfo = $("<a data-mimetype=\"" + file.mimetype + "\" class=\"podaci-filetype\">" + file.mimetype.split("/")[1].toUpperCase() + "</a>");
+      mimeinfo.click(function() { ID2.Podaci.search_term_add("mime:" + file.mimetype); });
+      fo.append(mimeinfo);
+    }
+
     fo.append(filename);
     fo.append(tags);
     fo.append("<div class=\"podaci-description\">" + file.description.truncate(200) + "</div>")
@@ -170,7 +179,7 @@ ID2.Podaci.render_file_to_resultset = function(file) {
     fo.attr("draggable", true);
     fo.on("dragstart", ID2.Podaci.selection_drag);
     fo.on("click", ".podaci-tags a", ID2.Podaci.tag_click);
-    $("#resultbox").append(fo);
+    $("#podaci-file-list").append(fo);
 }
 
 ID2.Podaci.selection_drag = function(e) {
@@ -336,10 +345,12 @@ ID2.Podaci.select_toggle_checkbox = function(e) {
 
 
 ID2.Podaci.init_fileupload = function() {
-    var col = $('.resultbox'),
+    var col = $('#podaci-file-list'),
         progressbar = $('.podaci_upload_progress'),
         files_form = $('.podaci_upload_files_form');
     ID2.Podaci.results_cache = [];
+
+    $('.podaci_upload_tickets').val($('#podaci-ticket-id').val());
 
     col.on("dragover", function(e) {
         e.preventDefault();
@@ -356,18 +367,18 @@ ID2.Podaci.init_fileupload = function() {
         col.removeClass("dropzone");
     });
 
-    progressbar.show();
-    files_form.hide();
     $('.podaci_upload_files').fileupload({
         url: '/podaci/file/create/',
         dataType: 'json',
         done: function (e, data) {
             setTimeout(ID2.Podaci.refresh_files, 300);
         },
-        dropzone: $(".resultbox"),
+        dropzone: $("#podaci-file-list"),
         disableImageResize: /Android(?!.*Chrome)|Opera/
             .test(window.navigator.userAgent),
     }).on('fileuploadadd', function (e, data) {
+        progressbar.show();
+        files_form.hide();
         data.context = $('#podaci_upload_list');
         $.each(data.files, function (index, file) {
             var node = $('<tr class="podaci-file podaci-file-pending"/>');
@@ -401,7 +412,13 @@ ID2.Podaci.init_fileupload = function() {
         ID2.Podaci.add_file_to_results(data.result);
         progressbar.hide();
         $("#podaci_upload_modal").modal('hide');
+        $("#podaci_add_modal").modal('hide');
         files_form.show();
+
+        // ticket pages with no files need to be reloaded to show file list:
+        if($("#podaci-file-list").length == 0) {
+          document.location.reload();
+        }
     }).on('fileuploadfail', function (e, data) {
         // FIXME: Test failure modes. Make this pretty.
         progressbar.hide();
@@ -409,9 +426,17 @@ ID2.Podaci.init_fileupload = function() {
     });
 };
 
+
 ID2.Podaci.upload_click = function(e, target) {
   $('.podaci_upload_progress').hide()
   $("#podaci_upload_modal").modal();
+};
+
+
+ID2.Podaci.ticket_add_file = function(event) {
+  // var ticketId = $(event.target).data('ticket');
+  $('.podaci_upload_progress').hide();
+  $("#podaci_add_modal").modal();
 };
 
 
@@ -658,11 +683,62 @@ ID2.Podaci.file_doubleclick = function(e) {
         tokenSeparators: [',', ' ']
       });
       $modal.find('#file-tags').val(data.tags).trigger("change");
+
+      // authz
+      $modal.find('#file-public-read').val(data.public_read);
+      $modal.find('#file-staff-read').val(data.staff_read);
+      var userConfig = {
+        ajax: {
+          url: "/accounts/suggest/",
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            return {prefix: params.term};
+          },
+          processResults: function (data, page) {
+            return {
+              results: data.results
+            };
+          },
+          cache: true,
+        },
+        templateResult: function(obj) {
+          return obj.display_name;
+        },
+        templateSelection: function(obj) {
+          return obj.display_name;
+        },
+        // data: data.allowed_users_read + data.allowed_users_write,
+        minimumInputLength: 1
+      };
+      $modal.find('#file-users-read').select2(userConfig);
+      var $readSelect = $modal.find('#file-users-read').select2();
+      for (var i in data.allowed_users_read) {
+        var user = data.allowed_users_read[i],
+            opt = new Option(user.display_name, user.id, true, true);;
+         $readSelect.append(opt);
+      }
+      $readSelect.trigger('change');
+
+      $modal.find('#file-users-write').select2(userConfig);
+      var $writeSelect = $modal.find('#file-users-write').select2();
+      for (var i in data.allowed_users_write) {
+        var user = data.allowed_users_write[i],
+            opt = new Option(user.display_name, user.id, true, true);;
+         $writeSelect.append(opt);
+      }
+      $writeSelect.trigger('change');
+
       $modal.modal("show");
 
       $modal.find('#file-save-link').click(function() {
         data.title = $modal.find('#file-title').val();
         data.tags = $modal.find('#file-tags').val();
+        data.public_read = $modal.find('#file-public-read').val() || false;
+        data.staff_read = $modal.find('#file-staff-read').val() || false;
+        data.allowed_users_read = $modal.find('#file-users-read').val() || [];
+        data.allowed_users_write = $modal.find('#file-users-write').val() || [];
+
         $.ajax({
           type: 'PUT',
           url: '/podaci/file/' + fileId + '/',
@@ -674,7 +750,6 @@ ID2.Podaci.file_doubleclick = function(e) {
       });
     });
 };
-
 
 // FIXME: Normalize on _ or - .. using both is silly.
 ID2.Podaci.callbacks = {
@@ -704,6 +779,7 @@ ID2.Podaci.callbacks = {
     "#searchbox keyup": ID2.Podaci.searchbox_keyup,
     "#collection-new click": function() { $("#podaci_create_collection_modal").modal(); },
 
+    "#ticket-file-add click": ID2.Podaci.ticket_add_file,
 };
 
 

@@ -2,6 +2,7 @@ import json
 import csv
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import models
+from django.db.models import Q
 from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
@@ -178,27 +179,43 @@ class PrettyPaginatorMixin(object):
 
 
 class NotificationMixin(object):
+    def channel_components(self, channel):
+        components = ("project", "module", "model", "instance", "action")
+        return dict(zip(components, channel.split(":")))
+
     def get_notification_channel_subscribers(self, channel):
         assert(notification_channel_format.match(channel))
-        channelr = "^%s$" % channel.replace(":*:", ":.*:")
-        print "regex is %s" % (channelr)
-        return set([ns.user for ns in NotificationSubscription.objects.filter(
-                    channel__iregex=channelr)])
+        components = self.channel_components(channel)
+
+        terms = ((Q(project=components["project"]) | Q(project=None))
+               & (Q(module=components["module"]) | Q(module=None))
+               & (Q(model=components["model"]) | Q(model=None))
+               & (Q(instance=components["instance"]) | Q(instance=None))
+               & (Q(action=components["action"]) | Q(action=None))
+               )
+
+        return set([ns.user for ns in NotificationSubscription.objects.filter(terms)])
 
     def get_channel(self, action="none"):
+        if hasattr(self, "id"):
+            key = self.id
+        else:
+            key = 0
+
         dets = {
             "project":  "id",
             "module": self.__module__.split(".")[0].lower(),
             "model": self.__class__.__name__.lower(),
-            "instance": self.id,
+            "instance": key,
             "action": action.lower()
         }
         return "%(project)s:%(module)s:%(model)s:%(instance)s:%(action)s" % dets
 
-    def notify(self, text, urlname=None, params={}, action="none"):
+    def notify(self, text, user=None, urlname=None, params={}, action="none"):
         channel = self.get_channel(action)
         subs = self.get_notification_channel_subscribers(channel)
-        print "Subscribers: ", subs
-        for user in subs:
+        for u in subs:
+            if u == user:
+                continue
             m = Notification()
-            m.create(user, channel, text, urlname, params)
+            m.create(u, channel, text, urlname, params)

@@ -6,23 +6,18 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
-from django.contrib import messages
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.db.models import Q
 import django.forms
-from django.forms.utils import ErrorList
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.template.loader import render_to_string
-from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
-from django.views.generic import TemplateView, UpdateView, FormView
-
-from django.db.models import Count, Sum
+from django.views.generic import TemplateView, UpdateView
 
 from core.mixins import JSONResponseMixin, CSVorJSONResponseMixin, PrettyPaginatorMixin
 from core.utils import *
@@ -33,7 +28,8 @@ from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, Tick
 from ticket import forms
 from ticket import constants
 
-from podaci.models import PodaciTag, PodaciFile
+# from podaci.models import PodaciTag, PodaciFile
+
 
 class AdminOustandingChargesList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
     template_name = 'tickets/admin/admin_charges_outstanding.jinja'
@@ -224,7 +220,7 @@ class TicketActionJoin(TicketActionBaseHandler):
         ticket = self.object
         adduser = None
         added = False
-        tag = ticket.get_tag()
+        # tag = ticket.get_tag()
 
         if self.request.user.is_staff or self.request.user.is_superuser:
             uid = self.request.POST.get("user", self.request.user.id)
@@ -251,7 +247,7 @@ class TicketActionJoin(TicketActionBaseHandler):
 
 def TicketActionAssign(request, pk):
     ticket = Ticket.objects.get(id=int(pk))
-    tag = ticket.get_tag()
+    # tag = ticket.get_tag()
     user = get_user_model().objects.get(id=request.POST.get('user'))
     success = False
 
@@ -292,7 +288,7 @@ def TicketActionAssign(request, pk):
 
 def TicketActionUnassign(request, pk):
     ticket = Ticket.objects.get(id=int(pk))
-    tag = ticket.get_tag()
+    # tag = ticket.get_tag()
     user = get_user_model().objects.get(id=request.POST.get('user'))
     success = False
 
@@ -355,7 +351,7 @@ class TicketActionLeave(TicketActionBaseHandler):
     def assign_user(self, form, is_ajax_call):
         ticket = self.object
 
-        tag = ticket.get_tag()
+        # tag = ticket.get_tag()
 
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
@@ -487,7 +483,7 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
         current_responders = self.convert_users_to_ids(ticket.responders.all())
         current_volunteers = self.convert_users_to_ids(ticket.volunteers.all())
 
-        tag = ticket.get_tag()
+        # tag = ticket.get_tag()
 
         if 'redirect' in self.request.POST:
             self.redirect = self.request.POST['redirect']
@@ -629,7 +625,7 @@ class TicketDetail(TemplateView):
 
         outstanding = sum([x.cost for x in TicketCharge.objects.filter(reconciled=False)])
 
-        tag = self.ticket.get_tag()
+        # tag = self.ticket.get_tag()
 
         can_join_leave = False
         if self.request.user != self.ticket.requester:
@@ -659,8 +655,9 @@ class TicketDetail(TemplateView):
             'close_form': forms.TicketCancelForm(),
             'open_form': forms.TicketCancelForm(),
             'flag_form': forms.RequestFlagForm(),
-            'tag': tag,
-            'result_files': tag.list_files(),
+            'files': self.ticket.files,
+            # 'tag': tag,
+            # 'result_files': tag.list_files(),
             'charge_form': forms.RequestChargeForm(),
             'ticket_detail_view': True,
             'can_join_leave': can_join_leave,
@@ -681,6 +678,7 @@ class TicketDetail(TemplateView):
         comment.author = request.user
         comment.save()
         return HttpResponseRedirect(reverse('ticket_details', kwargs={ "ticket_id":self.ticket.id}))
+
 
 class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
     template_name = "tickets/request_list.jinja"
@@ -963,7 +961,7 @@ class TicketRequest(TemplateView):
         ticket.save()
         messages.success(self.request, _('Ticket successfully created.'))
 
-        tag = ticket.get_tag()
+        # tag = ticket.get_tag()
 
         return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": ticket.id}))
 

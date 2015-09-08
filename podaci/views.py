@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 
+from ticket.models import Ticket
 from podaci.models import PodaciFile, PodaciTag, PodaciCollection
 from podaci.serializers import FileSerializer, TagSerializer
 from podaci.serializers import CollectionSerializer
@@ -53,6 +54,7 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
         terms = q.split(" ")
         textterms = []
         tags = []
+        tickets = []
         other_terms = Q()
         collections = []
 
@@ -85,12 +87,10 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
                     other_terms |= Q(size__lt=size[1:])
                 else:
                     other_terms |= Q(size=size)
+            elif term.startswith("ticket:"):
+                tickets.append(term.split("ticket:")[1])
             elif len(term.strip()):
                 textterms.append(term)
-
-        tag_terms = Q()
-        for tag in tags:
-            tag_terms &= Q(tags__name=tag)
 
         text_terms = Q()
         for term in textterms:
@@ -98,13 +98,19 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
                            Q(filename__contains=term) |
                            Q(description__contains=term))
 
-        search_terms = base_terms & text_terms & tag_terms & other_terms
+        search_terms = base_terms & text_terms & other_terms
+        qs = PodaciFile.objects.filter(search_terms)
+
+        for tag in tags:
+            qs = qs.filter(tags__name=tag)
+
+        for ticket in tickets:
+            qs = qs.filter(tickets__id=ticket)
 
         for col in collections:
-            search_terms &= Q(collections__in=[col])
+            qs = qs.filter(collections__name=col)
 
-        log.debug('Search terms: %s', search_terms)
-        return PodaciFile.objects.filter(search_terms)
+        return qs
 
 
 class FileList(FileQuerySetMixin, generics.ListCreateAPIView):
@@ -163,7 +169,13 @@ class FileUploadView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         file_obj = request.FILES['files[]']
-        pfile = PodaciFile.create_from_filehandle(file_obj, user=request.user)
+        ticket = request.POST.get('tickets[]') or None
+        if ticket is not None:
+            ticket = Ticket.objects.get(pk=ticket)
+            if request.user not in ticket.actors():
+                raise HttpResponseBadRequest()
+        pfile = PodaciFile.create_from_filehandle(file_obj, user=request.user,
+                                                  ticket=ticket)
         log.debug('File created: %r', pfile)
         serializer = FileSerializer(pfile)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
