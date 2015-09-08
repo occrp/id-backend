@@ -60,7 +60,7 @@ id2dataimports:
     - "../export-prod/:/data"
     - "../google_appengine/:/usr/src/google_appengine/"
     - "../investigative-dashboard/:/usr/src/id/"
-  command: /bin/date
+  command: /bin/bash
 
 # postgres
 postgres:
