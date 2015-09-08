@@ -141,9 +141,6 @@ ID2.Podaci.render_file_to_resultset = function(file) {
         tags.append("<a data-tag=\"" + tag + "\">" + tag + "</a>");
     }
 
-    var mimeinfo = $("<a data-mimetype=\"" + file.mimetype + "\" class=\"podaci-filetype\">" + file.mimetype.split("/")[1].toUpperCase() + "</a>");
-    mimeinfo.click(function() { ID2.Podaci.search_term_add("mime:" + file.mimetype); })
-
     var filename = $("<a class=\"podaci-filename\">" + (file.title || file.filename) + "</a>");
     filename.click(ID2.Podaci.file_doubleclick);
     filename.attr("data-id", file.id);
@@ -159,7 +156,13 @@ ID2.Podaci.render_file_to_resultset = function(file) {
     fo.append(selectbar);
     fo.append(thumbnail);
     fo.append("<span class=\"podaci-filesize\">" + filesizeformat(file.size) + "</span>");
-    fo.append(mimeinfo);
+
+    if (file.mimetype) {
+      var mimeinfo = $("<a data-mimetype=\"" + file.mimetype + "\" class=\"podaci-filetype\">" + file.mimetype.split("/")[1].toUpperCase() + "</a>");
+      mimeinfo.click(function() { ID2.Podaci.search_term_add("mime:" + file.mimetype); });
+      fo.append(mimeinfo);
+    }
+    
     fo.append(filename);
     fo.append(tags);
     fo.append("<div class=\"podaci-description\">" + file.description.truncate(200) + "</div>")
