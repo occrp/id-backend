@@ -808,26 +808,26 @@ ul.advisory_committee li {
     margin-top:-28px;
 }
 
-/** Your Profile **/
-.profile-container ul.nav {
+/** General Nav tabs (used in Profile, Search) **/
+
+.material-form-container ul.nav {
     text-align:center;
     margin-bottom:-8px;
     border-bottom:none;
+    margin-top:-2em;
 }
 
-.profile-container .nav-tabs > li {
+.material-form-container .nav-tabs > li {
     display:inline-block;
     float:none;
 }
 
-.profile-container .nav-tabs > li > a:focus {
+.material-form-container .nav-tabs > li > a:focus {
     color:#fff;
-}
-
-.profile-container .nav-tabs > li > a:focus {
     border:none;
 }
 
+/** Your Profile **/
 .profile-container .tab-content {
     text-align:center;
     overflow:visible;
