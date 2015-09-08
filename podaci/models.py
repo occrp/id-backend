@@ -88,18 +88,6 @@ class PodaciFile(NotificationMixin, models.Model):
     def __unicode__(self):
         return self.title or self.filename
 
-    def notify(self, message, user, action, urlname='podaci_file_detail',
-               params=None):
-        """ Create a notification about a thing. """
-        pass
-        # from id.models import Notification
-        # n = Notification()
-        # stream = 'id:podaci:file:%s' % self.id
-        # n.create(user, stream, message, urlname=urlname,
-        #          params=params if params is not None else {'pk': self.id},
-        #          action=action)
-        # n.save()
-
     def add_user(self, user, write=False, notify=True):
         """ Give a user permissions on the object. """
         if not user: return

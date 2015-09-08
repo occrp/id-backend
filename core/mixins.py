@@ -209,7 +209,6 @@ class NotificationMixin(object):
     def notify(self, text, urlname=None, params={}, action="none"):
         channel = self.get_channel(action)
         subs = self.get_notification_channel_subscribers(channel)
-        print "Subscribers: ", subs
         for user in subs:
             m = Notification()
             m.create(user, channel, text, urlname, params)
