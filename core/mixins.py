@@ -197,11 +197,16 @@ class NotificationMixin(object):
         return set([ns.user for ns in NotificationSubscription.objects.filter(terms)])
 
     def get_channel(self, action="none"):
+        if hasattr(self, "id"):
+            key = self.id
+        else:
+            key = 0
+
         dets = {
             "project":  "id",
             "module": self.__module__.split(".")[0].lower(),
             "model": self.__class__.__name__.lower(),
-            "instance": self.id,
+            "instance": key,
             "action": action.lower()
         }
         return "%(project)s:%(module)s:%(model)s:%(instance)s:%(action)s" % dets
