@@ -97,7 +97,7 @@ class PodaciFile(NotificationMixin, models.Model):
             self.allowed_users_write.add(user.id)
         if notify:
             self.notify("Added user '%s' to file: %s" % (user, self),
-                        user, "share")
+                        user, action="share")
 
     def remove_user(self, user):
         """ Revoke user permissions. """
@@ -107,7 +107,7 @@ class PodaciFile(NotificationMixin, models.Model):
             self.allowed_users_read.remove(user)
             self.allowed_users_write.remove(user)
             self.notify("Removed user '%s' from file: %s" % (user, self),
-                        user, "share")
+                        user, action="share")
         except ValueError:
             pass
 
@@ -116,14 +116,14 @@ class PodaciFile(NotificationMixin, models.Model):
         self.public_read = True
         self.save()
         if user:
-            self.notify("Made file '%s' public." % self, user, "edit")
+            self.notify("Made file '%s' public." % self, user, action="edit")
 
     def make_private(self, user=None):
         """Disallow public reads."""
         self.public_read = False
         self.save()
         if user:
-            self.notify("Made file '%s' private." % self, user, "edit")
+            self.notify("Made file '%s' private." % self, user, action="edit")
 
     def allow_staff(self, user=None):
         """Allow all staff members to access (read/write)"""
@@ -131,7 +131,7 @@ class PodaciFile(NotificationMixin, models.Model):
         self.save()
         if user:
             self.notify("Made file '%s' accessible to staff." % self,
-                        user, "share")
+                        user, action="share")
 
     def disallow_staff(self, user=None):
         """Disallow staff to access"""
@@ -139,7 +139,7 @@ class PodaciFile(NotificationMixin, models.Model):
         self.save()
         if user:
             self.notify("Made file '%s' inaccessible to staff." % self,
-                        user, "share")
+                        user, action="share")
 
     def has_permission(self, user):
         """Check if a given user has read permission."""
@@ -236,7 +236,7 @@ class PodaciFile(NotificationMixin, models.Model):
 
         if user:
             obj.add_user(user, write=True, notify=False)
-            obj.notify("Created file '%s'." % obj, user, "add")
+            obj.notify("Created file '%s'." % obj, user, action="add")
 
         obj.update()
         return obj

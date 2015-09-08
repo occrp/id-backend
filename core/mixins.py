@@ -206,9 +206,11 @@ class NotificationMixin(object):
         }
         return "%(project)s:%(module)s:%(model)s:%(instance)s:%(action)s" % dets
 
-    def notify(self, text, urlname=None, params={}, action="none"):
+    def notify(self, text, user=None, urlname=None, params={}, action="none"):
         channel = self.get_channel(action)
         subs = self.get_notification_channel_subscribers(channel)
-        for user in subs:
+        for u in subs:
+            if u == user:
+                continue
             m = Notification()
-            m.create(user, channel, text, urlname, params)
+            m.create(u, channel, text, urlname, params)
