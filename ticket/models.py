@@ -5,7 +5,7 @@ from settings.settings import AUTH_USER_MODEL # as per https://docs.djangoprojec
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from core.mixins import DisplayMixin
+from core.mixins import DisplayMixin, NotificationMixin
 from podaci.models import PodaciFile
 
 from constants import *
@@ -13,7 +13,7 @@ from utils import *
 import datetime
 
 ######## Data requests #################
-class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
+class Ticket(models.Model, DisplayMixin, NotificationMixin):
     """
     Common fields for all ticket types
 
@@ -112,8 +112,10 @@ class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
 
         if actor.is_volunteer:
             self.volunteers.add(actor)
+            self.notify("%s has joined ticket %s (%d) as a volunteer" % (actor, self.summary, self.id), actor, 'ticket_details', {'pk': self.pk}, 'join')
         else:
             self.responders.add(actor)
+            self.notify("%s has joined ticket %s (%d) as a reponder" % (actor, self.summary, self.id), actor, 'ticket_details', {'pk': self.pk}, 'join')
         return True
 
     def leave_user(self, actor):
@@ -126,6 +128,7 @@ class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
         """
         self.responders.remove(actor)
         self.volunteers.remove(actor)
+        self.notify("%s has left ticket %s (%d)" % (actor, self.summary, self.id), actor, 'ticket_details', {'pk': self.pk}, 'leave')
 
     def generate_update(self, comment, old=None, changed_properties=None):
         """
@@ -222,13 +225,6 @@ class PersonTicket(Ticket):
         max_length=150,
         blank=False,
         verbose_name=_('Where have you looked?'))
-    # biography = models.TextField(blank=False, verbose_name=_('Biography'))
-    #birthplace = models.CharField(max_length=128,
-    #    blank=False,
-    #    verbose_name=_('Place of Birth'))
-    #location = models.CharField(max_length=128,
-    #    blank=False,
-    #    verbose_name=_('Location'))
 
     @property
     def summary(self):
@@ -299,7 +295,7 @@ class OtherTicket(Ticket):
             if len(text) > 120: break
         return "%s" % text.strip()
 
-class TicketUpdate(models.Model):
+class TicketUpdate(models.Model, NotificationMixin):
     update_type = models.CharField(max_length=70, choices=TICKET_UPDATE_TYPES,
                                    default=TICKET_UPDATE_TYPES[0][0])
     author = models.ForeignKey(AUTH_USER_MODEL, blank=False)  # either requester, or responder
@@ -308,63 +304,9 @@ class TicketUpdate(models.Model):
     comment = models.TextField()
     is_removed = models.BooleanField(default=False)
 
-    # if you plan to use the extra_relation key for any ticket updates
-    # make sure the model that you're relating to implements a method with
-    # signature: def to_ticket_update(self, update): which returns a formatted
-    # and translated string to be output along with any ticket update comment
-    # text.
-    # extra_relation = models.ForeignKey()
-
-    def _post_put_hook(self, future):
-        """
-        After the TicketUpdate has been `put`, notify everyone of the update
-        """
-        # XXX: Temporarily disabled because of bugginess for Oct. 12/13 demo.
-        self.notify()
-
-    def get_notified(self, ticket):
-        """
-        Get a list of people who need to be notified of this TicketUpdate
-        """
-        recipient_types = config['ticket_notifications'][self.update_type]
-        recipients = []
-        for r in recipient_types:
-            if r == 'requester':
-                recipients.append(ticket.requester.get())
-            elif r == 'responders':
-                recipients = recipients + ticket.fetch_responders()
-            elif r == 'admin':
-                admin = UserProfile.query(UserProfile.is_superuser == True).fetch()
-                recipients = recipients + admin
-        return recipients
-
-    def notify(self):
-        """
-        Notify all required parties of an update
-
-        Uses the ticket key ID to populate the notification email address
-        template.
-        """
-        ticket = self.ticket.get()
-
-        actors = self.get_notified(ticket)
-        # ensure any actor triggering a ticket update belongs to the ticket.
-        if not self.author in actors:
-            self.ticket.get().join_user(self.author)
-
-        for user in actors:
-            with templocale(user.locale or 'en'):
-                subject = unicode(_("[Request %s] - %s") % (
-                    self.update_type_display(), ticket.summary))
-                email_notification(
-                    sender_suffix=ticket.key.id(),
-                    to=user.email,
-                    subject=subject,
-                    template='mail/ticket_update.jinja',
-                    context={
-                        'update': self,
-                        'url': ticket.permalink()
-                    })
+    def save(self):
+        super(TicketUpdate, self).save()
+        self.notify("%s updated ticket %s: %s" % (self.author, self.ticket.summary, self.update_type), self.author, 'ticket_details', {'pk': self.ticket.pk}, 'update')
 
     def update_type_display(self):
         return get_choice_display(self.update_type, TICKET_UPDATE_TYPES)
@@ -434,12 +376,6 @@ class TicketCharge(models.Model, DisplayMixin):
             'cost_original_currency': self.cost_original_currency or '',
             'original_currency': self.original_currency or ''}
         return text
-
-    def _pre_put_hook(self):
-        # fill in the reconciled date if it's missing.
-        if self.reconciled and not self.reconciled_date:
-            self.reconciled_date = datetime.datetime.now()
-
 
     @classmethod
     def customer_charges(cls, user_key, reconciled=None, pluck=None):
