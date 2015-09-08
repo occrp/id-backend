@@ -39,6 +39,7 @@ urlpatterns = patterns('',
     url(r'^accounts/login/$',               'django.contrib.auth.views.login', {'template_name': 'registration/login.jinja'}, name='login'),
     url(r'^accounts/logout/',               logout, {'template_name': 'registration/logout.jinja', 'fallback_redirect_url': '/accounts/login/'}, name='logout'),
     url(r'^accounts/users/$',               perm('admin', accounts.UserList), name='userprofile_list'),
+    url(r'^accounts/suggest/$',             perm('loggedin', accounts.UserSuggest), name='userprofile_suggest'),
     url(r'^accounts/request/$',             perm('any', accounts.AccessRequestCreate), name='request_access_create'),
     url(r'^accounts/request/list/$',        perm('admin', accounts.AccessRequestList), name='request_access_list'),
     url(r'^accounts/request/list/approved/$',perm('admin', accounts.AccessRequestListApproved), name='request_access_list_approved'),
@@ -79,7 +80,7 @@ urlpatterns = patterns('',
     url(r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
 
     url(r'^json/all_users/$', requests.Select2AllHandler.as_view(), name='select2_all_users'),
-    
+
     url(r'^captcha/', include('captcha.urls')),
 )
 

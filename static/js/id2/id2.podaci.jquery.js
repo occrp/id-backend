@@ -162,7 +162,7 @@ ID2.Podaci.render_file_to_resultset = function(file) {
       mimeinfo.click(function() { ID2.Podaci.search_term_add("mime:" + file.mimetype); });
       fo.append(mimeinfo);
     }
-    
+
     fo.append(filename);
     fo.append(tags);
     fo.append("<div class=\"podaci-description\">" + file.description.truncate(200) + "</div>")
@@ -683,11 +683,62 @@ ID2.Podaci.file_doubleclick = function(e) {
         tokenSeparators: [',', ' ']
       });
       $modal.find('#file-tags').val(data.tags).trigger("change");
+
+      // authz
+      $modal.find('#file-public-read').val(data.public_read);
+      $modal.find('#file-staff-read').val(data.staff_read);
+      var userConfig = {
+        ajax: {
+          url: "/accounts/suggest/",
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            return {prefix: params.term};
+          },
+          processResults: function (data, page) {
+            return {
+              results: data.results
+            };
+          },
+          cache: true,
+        },
+        templateResult: function(obj) {
+          return obj.display_name;
+        },
+        templateSelection: function(obj) {
+          return obj.display_name;
+        },
+        // data: data.allowed_users_read + data.allowed_users_write,
+        minimumInputLength: 1
+      };
+      $modal.find('#file-users-read').select2(userConfig);
+      var $readSelect = $modal.find('#file-users-read').select2();
+      for (var i in data.allowed_users_read) {
+        var user = data.allowed_users_read[i],
+            opt = new Option(user.display_name, user.id, true, true);;
+         $readSelect.append(opt);
+      }
+      $readSelect.trigger('change');
+
+      $modal.find('#file-users-write').select2(userConfig);
+      var $writeSelect = $modal.find('#file-users-write').select2();
+      for (var i in data.allowed_users_write) {
+        var user = data.allowed_users_write[i],
+            opt = new Option(user.display_name, user.id, true, true);;
+         $writeSelect.append(opt);
+      }
+      $writeSelect.trigger('change');
+
       $modal.modal("show");
 
       $modal.find('#file-save-link').click(function() {
         data.title = $modal.find('#file-title').val();
         data.tags = $modal.find('#file-tags').val();
+        data.public_read = $modal.find('#file-public-read').val() || false;
+        data.staff_read = $modal.find('#file-staff-read').val() || false;
+        data.allowed_users_read = $modal.find('#file-users-read').val() || [];
+        data.allowed_users_write = $modal.find('#file-users-write').val() || [];
+
         $.ajax({
           type: 'PUT',
           url: '/podaci/file/' + fileId + '/',

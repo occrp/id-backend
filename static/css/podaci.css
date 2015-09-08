@@ -6,6 +6,11 @@ li > a.FIXME {
 	display: none;
 }
 
+#file-modal {
+	width: 900px;
+	margin-left: -450px;
+}
+
 .navbar-podaci {
 	border-top:	1px solid;
 	border-radius: 15px;
