@@ -8,7 +8,7 @@
   <li role="presentation"{% if "denied" in request.path %} class="active"{% endif %}><a href="{{ url('request_access_list_denied') }}"><i class="fa fa-times"></i> {% trans %}Denied{% endtrans %}</a></li>
 </ul>
 
-  {% for reqtype in ["request", "volunteer"] %}
+  {% for reqtype in ["requester", "volunteer"] %}
     <h3>{{reqtype|capitalize}} waiting for approval</h3>
     <table class="table table-striped table-bordered crud-list">
       <thead>
