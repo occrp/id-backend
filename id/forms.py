@@ -150,3 +150,4 @@ class ScraperRequestForm(forms.ModelForm):
 class FeedbackForm(forms.ModelForm):
     class Meta:
         model = models.Feedback
+        

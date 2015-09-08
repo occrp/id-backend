@@ -114,12 +114,32 @@ class Feedback(FeedbackAuthMixin, CreateView):
     template_name = "admin/feedback.jinja"
     success_url = '/feedback/thankyou/'
 
-    def form_valid(self, form):
-        
+    # fill-in initial data for logged-in users
+    def get_initial(self):
         if self.request.user.is_authenticated():
-            form.instance.email = self.request.user.email
+            return { 
+                'email': self.request.user.email,
+                'name' : ' '.join([self.request.user.first_name, self.request.user.last_name])
+            }
+        else:
+            return {}
 
-        return super(Feedback, self).form_valid(form)
+
+    def get_form(self, form_class):
+        
+        # if we have an authenticated user, we have the user data
+        if self.request.user.is_authenticated():
+            # copy the data, as it's immutable in request
+            rdata = self.request.POST.copy()
+            # handle the e-mail
+            rdata['email'] = self.request.user.email
+            # handle the name if needed
+            if 'name' not in rdata or rdata['name'].strip() == '':
+                rdata['name']  = ' '.join([self.request.user.first_name, self.request.user.last_name])
+            # set it back
+            self.request.POST = rdata
+            
+        return super(Feedback, self).get_form(form_class)
 
 
 class FeedbackThanks(FeedbackAuthMixin, TemplateView):
