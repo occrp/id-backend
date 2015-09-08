@@ -7,6 +7,7 @@ from settings.settings import LANGUAGES
 from django.utils.translation import ugettext_lazy as _
 from registration.signals import user_registered
 from django.db.models import Q
+from django.db import IntegrityError
 
 from core.mixins import MessageMixin
 
@@ -86,21 +87,28 @@ class AccessRequestCreate(TemplateView):
     template_name = 'accessrequest/create.jinja'
 
     def get_context_data(self):
-        request_type = self.request.POST.get("access_type", None)
+        request_type = self.request.GET.get("access_type", None)
         if not request_type:
-            return {"requested": False}
+            return {
+                "requested_requester": AccountRequest.objects.filter(user=self.request.user, request_type="requester").count() >= 1,
+                "requested_volunteer": AccountRequest.objects.filter(user=self.request.user, request_type="volunteer").count() >= 1,
+                "is_requester": self.request.user.is_user,
+                "is_volunteer": self.request.user.is_volunteer,
+            }
 
-        u = self.request.user
-        if u.is_user and self.REQUEST_TYPE == 'requester':
-            return {"status": False, "msg": 'You have already been approved as an Information Requester.'}
-        if u.is_volunteer and self.REQUEST_TYPE == 'volunteer':
-            return {"status": False, "msg": 'You have already been approved as a Volunteer.'}
-        if AccountRequest.objects.filter(user=u, request_type=self.REQUEST_TYPE).count() > 0:
-            return {"status": False, "msg": 'You already have an access request pending. Please be patient.'}
+        try:
+            req = AccountRequest(request_type=request_type, user=self.request.user)
+            req.save()
+        except IntegrityError, e:
+            pass
 
-        req = AccountRequest(request_type=request_type, user=self.request.user)
-        req.save()
-        return {"status": True, "requested": request_type}
+        return {
+            "status": True,
+            "requested_requester": AccountRequest.objects.filter(user=self.request.user, request_type="requester").count() >= 1,
+            "requested_volunteer": AccountRequest.objects.filter(user=self.request.user, request_type="volunteer").count() >= 1,
+            "is_requester": self.request.user.is_user,
+            "is_volunteer": self.request.user.is_volunteer,
+        }
 
 
 class AccessRequestList(ListView):
@@ -126,6 +134,3 @@ class AccessRequestListApproved(AccessRequestList):
 class AccessRequestListDenied(AccessRequestList):
     def get_queryset(self):
         return AccountRequest.objects.filter(approved=False)
-
-
-
