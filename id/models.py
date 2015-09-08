@@ -289,8 +289,8 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
             orig = Profile.objects.get(pk=self.pk)
             if orig.network != self.network:
                 self.notify("User %s changed network from %s to %s" % (self, orig.network, self.network), urlname="profile", params={"pk": self.pk}, action="update")
-            if orig.is_admin != self.is_admin:
-                self.notify("User %s admin status changed to %s" % (self, self.is_admin), urlname="profile", params={"pk": self.pk}, action="update")
+            if orig.is_superuser != self.is_superuser:
+                self.notify("User %s admin status changed to %s" % (self, self.is_superuser), urlname="profile", params={"pk": self.pk}, action="update")
         super(Profile, self).save(*args, **kw)
 
     class Meta:
