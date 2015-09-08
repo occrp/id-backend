@@ -583,6 +583,8 @@ class TicketUpdateRemoveHandler(TicketActionBaseHandler):
         super(TicketUpdateRemoveHandler, self).__init__(*args, **kwargs)
 
 
+from id.forms import FeedbackForm
+
 class TicketDetail(TemplateView):
     template_name = "tickets/request_details.jinja"
     """
@@ -640,6 +642,12 @@ class TicketDetail(TemplateView):
             if self.request.user.is_superuser or self.request.user.is_staff:
                 can_join_leave = True
 
+        # feedback form with initial data
+        form = FeedbackForm(initial={
+                'email': self.request.user.email,
+                'name' : ' '.join([self.request.user.first_name, self.request.user.last_name])
+            })
+
         return {
             'ticket': self.ticket,
             'ticket_updates': ticket_updates,
@@ -655,7 +663,8 @@ class TicketDetail(TemplateView):
             'result_files': tag.list_files(),
             'charge_form': forms.RequestChargeForm(),
             'ticket_detail_view': True,
-            'can_join_leave': can_join_leave
+            'can_join_leave': can_join_leave,
+            'form': form
         }
 
     #FIXME: AJAXize!
