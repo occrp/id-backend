@@ -92,28 +92,25 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
             elif len(term.strip()):
                 textterms.append(term)
 
-        tag_terms = Q()
-        for tag in tags:
-            tag_terms &= Q(tags__name=tag)
-
-        ticket_terms = Q()
-        for ticket in tickets:
-            ticket_terms &= Q(tickets__id=ticket)
-
         text_terms = Q()
         for term in textterms:
             text_terms &= (Q(title__contains=term) |
                            Q(filename__contains=term) |
                            Q(description__contains=term))
 
-        search_terms = base_terms & text_terms & tag_terms
-        search_terms = search_terms & other_terms & ticket_terms
+        search_terms = base_terms & text_terms & other_terms
+        qs = PodaciFile.objects.filter(search_terms)
+
+        for tag in tags:
+            qs = qs.filter(tags__name=tag)
+
+        for ticket in tickets:
+            qs = qs.filter(tickets__id=ticket)
 
         for col in collections:
-            search_terms &= Q(collections__in=[col])
+            qs = qs.filter(collections__name=col)
 
-        log.debug('Search terms: %s', search_terms)
-        return PodaciFile.objects.filter(search_terms)
+        return qs
 
 
 class FileList(FileQuerySetMixin, generics.ListCreateAPIView):
