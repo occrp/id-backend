@@ -1,10 +1,9 @@
 from datetime import datetime
 
-from search.searchers.base import ResultSet
-from search.searchers.base import ImageSearcher, ImageSearchResult
+from search.searchers.base import ResultSet, MediaSearcher, MediaSearchResult
 
 
-class ImageSearchVK(ImageSearcher):
+class MediaSearchVK(MediaSearcher):
     # http://vk.com/dev.php?method=photos.search
     PROVIDER = "VKontakte"
     URL = "https://api.vk.com/method/photos.search"
@@ -36,7 +35,7 @@ class ImageSearchVK(ImageSearcher):
             timestamp = datetime.utcfromtimestamp(item["date"])
             large_photo = item.get("photo_604", item.get("photo_130", ""))
             large_photo = item.get("photo_807", large_photo)
-            i = ImageSearchResult(self.PROVIDER,
+            i = MediaSearchResult(self.PROVIDER,
                 item["photo_604"],
                 large_photo,
                 timestamp,

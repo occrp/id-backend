@@ -1,9 +1,9 @@
 {% extends "search/base.jinja" %}
 
-{% block search_title %}Document Search{% endblock %}
+{% block search_title %}{% trans %}Document Search{% endtrans %}{% endblock %}
 
 {% block search_form %}
-    <form id="search_form" class="search form-inline" data-type="document">
+    <form id="search_form" class="search form-inline material-form md-whiteframe-z1" data-type="document">
     <div class="row">
         <div class="span8">
             <div class="form-group">
