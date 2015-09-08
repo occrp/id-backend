@@ -60,5 +60,5 @@ ul.notifications li a {
 
 .notification_time {
     font-size: 80%;
-    float: right;
+    text-align: right;
 }
