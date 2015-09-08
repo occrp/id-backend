@@ -6,7 +6,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from core.mixins import DisplayMixin
-from podaci.models import PodaciTag
+from podaci.models import PodaciFile
 
 from constants import *
 from utils import *
@@ -43,8 +43,7 @@ class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
     sensitive = models.BooleanField(default=False, verbose_name=_('Sensitive?'))
     whysensitive = models.CharField(max_length=150, blank=True, verbose_name=_('Why is it sensitive?'))
 
-    tag = models.ForeignKey(PodaciTag, blank=True, null=True)
-    # tag_id = models.CharField(max_length=60, blank=True)    # Refers to this Ticket's Podaci tag.
+    files = models.ManyToManyField(PodaciFile, related_name="tickets")
 
     def get_csv_header(self):
         return ["ticket_type", "summary", "requester_type",
@@ -128,7 +127,6 @@ class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
         self.responders.remove(actor)
         self.volunteers.remove(actor)
 
-
     def generate_update(self, comment, old=None, changed_properties=None):
         """
         Create a TicketUpdate instance based on the ticket changes
@@ -162,7 +160,6 @@ class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
 
         if 'update_type' in kwargs:
             TicketUpdate(**kwargs).put()
-
 
     def ticket_type_display(self):
         return get_choice_display(self.ticket_type, TICKET_TYPES)
@@ -206,18 +203,6 @@ class Ticket(models.Model, DisplayMixin):  # polymodel.PolyModel
             charge.paid_status = paid_status
 
         ndb.put_multi(charges)
-
-    def get_tag(self):
-        if self.tag:
-            return self.tag
-        else:
-            tag_name = "Ticket %d" % self.id
-            tag = PodaciTag()
-            tag.name = tag_name
-            tag.save()
-            self.tag = tag
-            self.save()
-            return tag
 
 
 class PersonTicket(Ticket):

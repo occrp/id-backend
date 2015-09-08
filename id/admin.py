@@ -16,7 +16,6 @@ class Panel(TemplateView):
     def get_context_data(self):
         return {
             "admin_stream": (Notification.objects
-                                .filter(stream__contains="admin")
                                 .order_by("-timestamp"))
         }
 
@@ -86,7 +85,7 @@ class FeedbackAuthMixin(object):
     if that's not an authenticated user asking for a feedback-related URL
     *and* there's no indication that we should accept feedback from them
     just redirect to feedback URL
-    
+
     cleared_for_feedback should happen only for users that have just logged-out
     and will be cleared in FeedbackThanks
     """
@@ -100,13 +99,13 @@ class FeedbackAuthMixin(object):
             return super(FeedbackAuthMixin, self).get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(self.fallback_redirect_url)
-    
+
     def post(self, request, *args, **kwargs):
         if self.verify_feedback_auth(request):
             return super(FeedbackAuthMixin, self).post(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(self.fallback_redirect_url)
-    
+
 
 class Feedback(FeedbackAuthMixin, CreateView):
     model = Feedback
@@ -148,23 +147,23 @@ class FeedbackThanks(FeedbackAuthMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         # get the response
         response = super(FeedbackThanks, self).get(request, *args, **kwargs)
-        
+
         # remove the feedback clearance
         if 'cleared_for_feedback' in request.session:
             del request.session['cleared_for_feedback']
             response.request = request
-        
+
         # we're done
         return response
-    
+
     def post(self, request, *args, **kwargs):
         # get the response
         response = super(FeedbackThanks, self).post(request, *args, **kwargs)
-                
+
         # remove the feedback clearance
         if 'cleared_for_feedback' in request.session:
             del request.session['cleared_for_feedback']
             response.request = request
-        
+
         # we're done
         return response

@@ -3,18 +3,13 @@ from django.db import models
 import os
 import shutil
 import magic
-import zipfile
-import StringIO
 
 # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from settings.settings import AUTH_USER_MODEL
 from settings.settings import PODACI_FS_ROOT
 
-import id.constdata as constants
-
 from podaci.util import sha256sum
 from podaci.search import index_file
-
 from core.mixins import NotificationMixin
 
 # More depth means deeper nesting, which increases lookup speed but makes
@@ -93,17 +88,6 @@ class PodaciFile(NotificationMixin, models.Model):
     def __unicode__(self):
         return self.title or self.filename
 
-    def notify(self, message, user, action, urlname='podaci_file_detail',
-               params=None):
-        """ Create a notification about a thing. """
-        from id.models import Notification
-        n = Notification()
-        stream = 'id:podaci:file:%s' % self.id
-        n.create(user, stream, message, urlname=urlname,
-                 params=params if params is not None else {'pk': self.id},
-                 action=action)
-        n.save()
-
     def add_user(self, user, write=False, notify=True):
         """ Give a user permissions on the object. """
         if not user: return
@@ -113,7 +97,7 @@ class PodaciFile(NotificationMixin, models.Model):
             self.allowed_users_write.add(user.id)
         if notify:
             self.notify("Added user '%s' to file: %s" % (user, self),
-                        user, constants.NA_SHARE)
+                        user, action="share")
 
     def remove_user(self, user):
         """ Revoke user permissions. """
@@ -123,7 +107,7 @@ class PodaciFile(NotificationMixin, models.Model):
             self.allowed_users_read.remove(user)
             self.allowed_users_write.remove(user)
             self.notify("Removed user '%s' from file: %s" % (user, self),
-                        user, constants.NA_SHARE)
+                        user, action="share")
         except ValueError:
             pass
 
@@ -132,16 +116,14 @@ class PodaciFile(NotificationMixin, models.Model):
         self.public_read = True
         self.save()
         if user:
-            self.notify("Made file '%s' public." % self,
-                        user, constants.NA_EDIT)
+            self.notify("Made file '%s' public." % self, user, action="edit")
 
     def make_private(self, user=None):
         """Disallow public reads."""
         self.public_read = False
         self.save()
         if user:
-            self.notify("Made file '%s' private." % self,
-                        user, constants.NA_EDIT)
+            self.notify("Made file '%s' private." % self, user, action="edit")
 
     def allow_staff(self, user=None):
         """Allow all staff members to access (read/write)"""
@@ -149,7 +131,7 @@ class PodaciFile(NotificationMixin, models.Model):
         self.save()
         if user:
             self.notify("Made file '%s' accessible to staff." % self,
-                        user, constants.NA_SHARE)
+                        user, action="share")
 
     def disallow_staff(self, user=None):
         """Disallow staff to access"""
@@ -157,7 +139,7 @@ class PodaciFile(NotificationMixin, models.Model):
         self.save()
         if user:
             self.notify("Made file '%s' inaccessible to staff." % self,
-                        user, constants.NA_SHARE)
+                        user, action="share")
 
     def has_permission(self, user):
         """Check if a given user has read permission."""
@@ -197,8 +179,11 @@ class PodaciFile(NotificationMixin, models.Model):
         out["tags"] = [x.name for x in self.tags.all()]
         if self.created_by is not None:
             out["created_by"] = self.created_by.id
-        out["allowed_users_read"] = [x.id for x in self.allowed_users_read.all()]
-        out["allowed_users_write"] = [x.id for x in self.allowed_users_write.all()]
+        out["allowed_users_read"] = \
+            [x.id for x in self.allowed_users_read.all()]
+        out["allowed_users_write"] = \
+            [x.id for x in self.allowed_users_write.all()]
+        out["tickets"] = [x.id for x in self.tickets.all()]
         return out
 
     def get_filehandle(self, user):
@@ -228,7 +213,7 @@ class PodaciFile(NotificationMixin, models.Model):
         return os.path.join(directory, self.filename)
 
     @classmethod
-    def create_from_filehandle(cls, fh, filename=None, user=None):
+    def create_from_filehandle(cls, fh, filename=None, user=None, ticket=None):
         """Given a file handle, create a file."""
         if filename is None and hasattr(fh, 'name'):
             filename = fh.name
@@ -246,9 +231,12 @@ class PodaciFile(NotificationMixin, models.Model):
             shutil.copyfileobj(fh, destfh)
 
         obj.save()
+        if ticket is not None:
+            obj.tickets.add(ticket)
+
         if user:
             obj.add_user(user, write=True, notify=False)
-            obj.notify("Created file '%s'." % obj, user, constants.NA_ADD)
+            obj.notify("Created file '%s'." % obj, user, action="add")
 
         obj.update()
         return obj
@@ -297,45 +285,6 @@ class PodaciFile(NotificationMixin, models.Model):
         # if os.path.isfile(self.thumbnail_real_location(160, 160)):
         #     return self.thumbnail_uri(160, 160)
         return "/static/img/podaci/file.png"
-    #
-    # def gen_thumbnail(self, width=680, height=460):
-    #     """Return a thumbnail of a file."""
-    #     # Todo: Perhaps this belongs elsewhere?
-    #     if self.mimetype:
-    #         basetype, subtype = self.mimetype.split("/")
-    #     else:
-    #         return False
-    #
-    #     if basetype == "image":
-    #         return self.thumbnail_imagemagick(width, height)
-    #     elif basetype == "application":
-    #         if subtype == "pdf":
-    #             return self.thumbnail_imagemagick(width, height)
-    #
-    #         return False
-    #     return False
-    #
-    # def thumbnail_real_location(self, width, height):
-    #     return "/home/smari/Projects/OCCRP/id2/static/thumbnails/%s" % (self.thumbnail_filename(width, height))
-    #
-    # def thumbnail_uri(self, width, height):
-    #     return "/static/thumbnails/%s" % (self.thumbnail_filename(width, height))
-    #
-    # def thumbnail_filename(self, width, height):
-    #     return "%s_%dx%d.png" % (self.sha256, width, height)
-    #
-    # def thumbnail_imagemagick(self, width, height):
-    #     try:
-    #         import subprocess
-    #         params = ['convert',
-    #                   '-density', '300',
-    #                   '-resize', '%dx%d' % (width, height),
-    #                   self.local_path,
-    #                   self.thumbnail_real_location(width, height)]
-    #         subprocess.check_call(params)
-    #         return self.thumbnail_uri(width, height)
-    #     except:
-    #         return False
 
 
 class PodaciCollection(NotificationMixin, models.Model):

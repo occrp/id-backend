@@ -7,8 +7,14 @@
         <h4 class="modal-title">{% trans %}Edit tags{% endtrans %}</h4>
       </div>
       <div class="modal-body">
-        <select class="span5" id="podaci_edit_tags_input" multiple="true">
-        </select>
+        <form class="form-horizontal">
+          <div class="control-group">
+            <label class="control-label" for="title">Tags</label>
+            <div class="controls">
+              <select id="podaci_edit_tags_input" multiple="true"></select>
+            </div>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" id="podaci_edit_tags_btn">Save</button>

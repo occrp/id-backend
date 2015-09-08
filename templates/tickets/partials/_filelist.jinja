@@ -1,8 +1,8 @@
-{% if tag.has_files() %}
+{% if files.count() %}
 <div class="attached-files">
     <h3 class="primary-highlight">
          <div class="btn-group pull-right" role="group" aria-label="...">
-            {% include "podaci/partials/_podaci_tag_view_type_selection.jinja" %}
+           {% include "podaci/partials/_podaci_tag_view_type_selection.jinja" %}
            <div class="btn-group">
                 <button id="podaci_select_menu" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Select <span class="caret"></span></button>
                 {% include "podaci/partials/_podaci_selection_tools.jinja" %}
@@ -13,13 +13,14 @@
             </div>
         </div>
         {% trans %}Attached Files{% endtrans %}
-        {% if user.is_staff or user.is_superuser %}
-            <a href="#SharingModal" class="btn btn-small pull-right"
-               data-modal-url="{{ url('share_files', entity_id=ticket.key.urlsafe()) }}">
-                <i class="fa fa-group"></i> {% trans %}Sharing{% endtrans %}
-            </a>
-        {% endif %}
     </h3>
     {% include "podaci/partials/_podaci_file_list.jinja" %}
+
+
+    {% include "podaci/partials/_podaci_edit_tags.jinja" %}
+    {% include "podaci/partials/_podaci_file_details.jinja" %}
 </div>
 {% endif %}
+
+<input type="hidden" id="podaci-ticket-id" value="{{ticket.id}}">
+{% include "podaci/partials/_podaci_add_modal.jinja" %}
