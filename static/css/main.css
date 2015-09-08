@@ -143,7 +143,10 @@ a > [class*=" icon-"] {
 .primary-highlight {
   color: #f31d35;
   font-size: 45px;
-  text-shadow: 1px 1px 5px #fff, -1px -1px 0px #CB182C;
+}
+
+.page-header .primary-highlight {
+    text-shadow: 1px 1px 5px #fff, -1px -1px 0px #CB182C;
 }
 
 .full-page-header .secondary-highlight {
@@ -681,6 +684,7 @@ dd {
 .discussion {
   margin-bottom: 20px;
 }
+
 /** Form validation **/
 .validation-marker {
   display: inline-block;
@@ -1004,4 +1008,39 @@ ul.advisory_committee li {
 
 .feedback-form .info {
     text-align:center;
+}
+
+/** ticket feedback form **/
+
+.request-details .feedback-form-container > .material-form-container {
+    display:block;
+    margin-top:0em;
+    margin-bottom:0em;
+    opacity:0;
+    max-height:0px;
+    transition:max-height 1s, opacity 1s, margin-top 1s;
+}
+
+.request-details #feedback-form-control {
+    display:none;
+}
+
+.request-details #feedback-form-control:checked + .material-form-container {
+    margin-top:1em;
+    opacity:1;
+    max-height:1000px;
+    transition:max-height 1s, opacity 1s, margin-top 1s;
+}
+
+.request-details .md-whiteframe-z1 .md-whiteframe-z1 {
+    box-shadow:none;
+}
+
+.request-details .feedback-form-container label span {
+    color:#F31D35;
+}
+
+.request-details .feedback-form-container label:hover span {
+    color:#ba0a1e;
+    text-decoration:underline;
 }
