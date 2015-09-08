@@ -1,9 +1,18 @@
 {% extends "base.jinja" %}
 
+{% block body_class %}splash has-full-page-header{% endblock %}
+
+{% block before_content %}
+    <link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
+    <div class="page-header full-page-header">
+        <h2 class="primary-highlight">{% block search_title %}{% endblock %}</h2>
+    </div>
+{% endblock %}
+
 {% block sidenav %}{% endblock %}
 
 {% block content %}
-	<div class="span12">
+	<div class="span12 material-form-container">
 		<ul class="nav nav-tabs">
 			{% for type in search_types %}
 				<li role="presentation" {% if type.0 in request.path %}class="active"{% endif %}>
@@ -11,8 +20,6 @@
 				</li>
 			{% endfor %}
 		</ul>
-
-		<h2>{% block search_title %}{% endblock %}</h2>
 
 		{% block search_form %}{% endblock %}
 

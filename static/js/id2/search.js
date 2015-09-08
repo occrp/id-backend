@@ -7,7 +7,7 @@ ID2.Search.init = function() {
     $("#search_form").on("submit", ID2.Search.startSearch);
 };
 
-ID2.Search.renderImageResult = function(item) {
+ID2.Search.renderMediaResult = function(item) {
     var timestamp = new Date(item.timestamp*1000);
     result = $('<div class="image-search-result"/>');
     result.append('<a href="'+item.result_url+'"><img src="'+item.image_url+'"/></a>');
@@ -46,14 +46,14 @@ ID2.Search.renderDefaultResult = function(item) {
 };
 
 ID2.Search.resultcallbacks = {
-    "image": ID2.Search.renderImageResult,
+    "media": ID2.Search.renderMediaResult,
     "document": ID2.Search.renderDocumentResult,
     "default": ID2.Search.renderDefaultResult,
 }
 
 ID2.Search.urls = {
     // FIXME: Get this from elsewhere
-    "image": "/search/image/query/",
+    "media": "/search/media/query/",
     "document": "/search/document/query/",
 }
 
