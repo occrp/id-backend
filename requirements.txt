@@ -24,3 +24,4 @@ psycopg2
 jsonfield
 pillow
 django-simple-captcha
+textract
