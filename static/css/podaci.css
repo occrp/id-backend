@@ -287,14 +287,13 @@ input.searchbox:focus {
 	box-shadow: 2px 2px 5px;
 }
 
-.resultbox {
+#podaci-file-list {
 	margin-top: 70px;
 	margin-left: 20px;
 	margin-right: auto;
 	max-width: 980px;
-	min-height: 300px;
+	min-height: 100px;
 }
-
 
 .in {
 	display: block;
