@@ -39,7 +39,7 @@ class Center(models.Model):
 ######## User profiles #################
 
 # managing the profiles
-class ProfileManager(BaseUserManager):
+class ProfileManager(NotificationMixin, BaseUserManager):
     use_in_migrations = True
 
     def _create_user(self, email, password, is_staff, is_superuser, **extra_fields):
@@ -59,13 +59,16 @@ class ProfileManager(BaseUserManager):
 
     def create_user(self, email, password=None, is_superuser=False,
                     is_staff=False, **extra_fields):
-        return self._create_user(email, password, is_staff, is_superuser,
+        u = self._create_user(email, password, is_staff, is_superuser,
                                  **extra_fields)
+        self.notify("New user %s." % (u), urlname="profile", params={"pk": u.pk}, action="add")
+        return u
 
     def create_superuser(self, email, password, **extra_fields):
-        print(email)
-        return self._create_user(email, password, True, True,
+        u = self._create_user(email, password, True, True,
                                  **extra_fields)
+        self.notify("New superuser %s." % (u), urlname="profile", params={"pk": u.pk}, action="addsuperuser")
+        return u
 
 # our own User model replacement
 # as per http://stackoverflow.com/questions/20415627/how-to-properly-extend-django-user-model
@@ -273,7 +276,9 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
 
     def notifications_subscribe(self, channel):
         assert(notification_channel_format.match(channel))
-        ns = NotificationSubscription(user=self, channel=channel)
+        ns = NotificationSubscription()
+        ns.user = self
+        ns.set_channel(channel)
         ns.save()
 
     def to_json(self):
@@ -281,11 +286,11 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
 
     def save(self, *args, **kw):
         if self.pk is not None:
-            print "pk isn't None"
             orig = Profile.objects.get(pk=self.pk)
             if orig.network != self.network:
-                print "Something changed"
-                self.notify("User %s changed network from %s to %s" % (self, orig.network, self.network), urlname="profile", params={"pk": self.pk}, action="usernetworkchanged")
+                self.notify("User %s changed network from %s to %s" % (self, orig.network, self.network), urlname="profile", params={"pk": self.pk}, action="update")
+            if orig.is_superuser != self.is_superuser:
+                self.notify("User %s admin status changed to %s" % (self, self.is_superuser), urlname="profile", params={"pk": self.pk}, action="update")
         super(Profile, self).save(*args, **kw)
 
     class Meta:
@@ -442,5 +447,6 @@ class Feedback(models.Model):
             self.timestamp, self.message)
 
     #def save(self):
+    #    self.notify("Received feedback from %s." % (self.name), action="add")
     #    super(Feedback, self).save()
     #    # Send e-mail!

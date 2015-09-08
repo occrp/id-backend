@@ -63,35 +63,7 @@
                 <ul class="nav pull-right">
 
                 {% if user.is_authenticated() %}
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-bell"></i>
-                            {% if user.unseen_notifications_count() > 0 %}
-                            <span id="notifications_count" class="label label-warning notification-badge">{{user.unseen_notifications_count()}}</span>
-                            {% endif %}
-                        </a>
-                        <ul class="dropdown-menu notifications" role="menu">
-                            <li class="top">
-                                <a id="notifications_allread">Mark All as Read</a>
-                            </li>
-                            {% for notification in user.get_notifications() %}
-                            <li data-id="{{notification.id}}" class="notification {% if not notification.is_seen %}unseen{% endif %}">
-                                <i class="fa fa-{{notification.get_icon()}}"></i>
-                                {% if notification.url_base %}
-                                    <a href="{{notification.get_url()}}">{{notification.text}}</a>
-                                {% else %}
-                                    <a>{{notification.text}}</a>
-                                {% endif %}
-                                <div class="pull-right actions">
-                                    <i class="fa fa-circle-o seen"></i>
-                                    <i class="fa fa-circle unseen"></i>
-                                </div>
-                            </li>
-                            {% else %}
-                                <li><div style="padding: 4px; text-align: center;">No notifications</div></li>
-                            {% endfor %}
-                        </ul>
-                    </li>
+                    {% include "partials/_notifications.jinja" %}
 
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
