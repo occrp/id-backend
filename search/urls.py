@@ -9,8 +9,8 @@ urlpatterns = patterns('',
     url(r'^document/$',      perm('any', search.views.DocumentSearchTemplate), name='search'),
     url(r'^document/query/$',perm('any', search.views.DocumentSearchQuery), name='search_documents_query'),
 
-    url(r'^image/$',         perm('user', search.views.ImageSearchTemplate), name='search_images'),
-    url(r'^image/query/$',   perm('user', search.views.SearchImageQuery), name='search_images_query'),
+    url(r'^image/$',         perm('loggedin', search.views.ImageSearchTemplate), name='search_images'),
+    url(r'^image/query/$',   perm('loggedin', search.views.SearchImageQuery), name='search_images_query'),
 
     url(r'^social/$',        perm('user', TemplateView, template_name='search/search_social.jinja'), name='search_social'),
     url(r'^social/query/$',  perm('user', search.views.SearchSocialQuery), name='search_social_query'),
