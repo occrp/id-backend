@@ -1,13 +1,12 @@
 from apiclient.discovery import build
 
 from core.utils import Credentials
-from search.searchers.base import ResultSet
-from search.searchers.base import ImageSearcher, ImageSearchResult
+from search.searchers.base import ResultSet, MediaSearcher, MediaSearchResult
 
 OAUTH_SCOPE = 'https://www.googleapis.com/auth/youtube.readonly'
 
 
-class ImageSearchYouTube(ImageSearcher):
+class MediaSearchYouTube(MediaSearcher):
     PROVIDER = "YouTube"
     URL = "https://www.googleapis.com/youtube/v3/search"
 
@@ -41,7 +40,7 @@ class ImageSearchYouTube(ImageSearcher):
             thumbnail = item["snippet"]["thumbnails"]["high"]["url"]
             caption = item["snippet"]["title"]
             link = "http://youtu.be/%s" % item["id"]["videoId"]
-            i = ImageSearchResult(self.PROVIDER, thumbnail, link, timestamp,
+            i = MediaSearchResult(self.PROVIDER, thumbnail, link, timestamp,
                                   caption, item)
             results.append(i)
 

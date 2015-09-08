@@ -10,12 +10,12 @@ from core.mixins import JSONResponseMixin
 log = logging.getLogger(__name__)
 
 
-class ImageSearchTemplate(TemplateView):
-    template_name = "search/search_images.jinja"
+class MediaSearchTemplate(TemplateView):
+    template_name = "search/search_media.jinja"
 
     def get_context_data(self):
         return {
-            'search_providers': SearchRequest.by_type('image')
+            'search_providers': SearchRequest.by_type('media')
         }
 
 
@@ -29,7 +29,7 @@ class DocumentSearchTemplate(TemplateView):
         }
 
 
-class SearchImageQuery(View, JSONResponseMixin):
+class SearchMediaQuery(View, JSONResponseMixin):
     def get_context_data(self):
         query = {}
         query["q"] = self.request.GET.get("q", "")
@@ -58,7 +58,7 @@ class SearchImageQuery(View, JSONResponseMixin):
 
         provider = self.request.GET.get("provider")
         return SearchRequest.construct(query, provider, self.request.user,
-                                       'image')
+                                       'media')
 
 
 class SearchSocialQuery(View, JSONResponseMixin):

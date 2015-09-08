@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 
 SEARCH_TYPES = (
     ('document', 'Document search'),
-    ('image', 'Image search')
+    ('media', 'Media search')
 )
 
 

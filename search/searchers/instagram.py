@@ -1,11 +1,10 @@
 from datetime import datetime
 
 from core.utils import Credentials
-from search.searchers.base import ResultSet
-from search.searchers.base import ImageSearcher, ImageSearchResult
+from search.searchers.base import ResultSet, MediaSearcher, MediaSearchResult
 
 
-class ImageSearchInstagram(ImageSearcher):
+class MediaSearchInstagram(MediaSearcher):
     # https://instagram.com/developer/endpoints/media/
     # https://instagram.com/accounts/login/?next=%2Fdeveloper%2Fregister%2F
     # https://github.com/Instagram/python-instagram/blob/master/README.md
@@ -39,7 +38,7 @@ class ImageSearchInstagram(ImageSearcher):
                 caption = item.get("caption").get("text", "")
 
             ts = datetime.utcfromtimestamp(float(item["created_time"]))
-            i = ImageSearchResult(
+            i = MediaSearchResult(
                 provider=self.PROVIDER,
                 imageurl=item["images"]["low_resolution"]["url"],
                 resulturl=item["link"],

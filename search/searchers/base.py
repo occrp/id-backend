@@ -12,7 +12,7 @@ class ResultSet(list):
         self.total = total
 
 
-class ImageSearchResult(dict):
+class MediaSearchResult(dict):
 
     def __init__(self, provider, imageurl, resulturl, timestamp, caption,
                  linkurl=None, linktitle=None, metadata={}):
@@ -74,8 +74,8 @@ class DocumentSearcher(Searcher):
         return r
 
 
-class ImageSearcher(Searcher):
-    TYPE = "image"
+class MediaSearcher(Searcher):
+    TYPE = "media"
 
     def prepare_query(self, query):
         r = {}

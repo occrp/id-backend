@@ -1,13 +1,13 @@
 {% extends "search/base.jinja" %}
 
-{% block search_title %}Media Search{% endblock %}
+{% block search_title %}{% trans %}Media Search{% endtrans %}{% endblock %}
 {% block search_form %}
-    <div class="well">
-        <form name="image_search_form" id="search_form" class="image-search-form" data-type="image">
+    <div class="material-form md-whiteframe-z1">
+        <form name="image_search_form" id="search_form" class="image-search-form" data-type="media">
         <div class="image-search-inputs-container">
             <table>
                 <tr><th colspan="2">{% trans %}Search terms:{% endtrans %}</th></tr>
-                <tr><td colspan="2" class="instructions">{% trans %}Please provide search terms to search images by.{% endtrans %}</td></tr>
+                <tr><td colspan="2" class="instructions">{% trans %}Please provide search terms to search media by.{% endtrans %}</td></tr>
                 <tr><td colspan="2"><input class="input-large" name="q" placeholder="Search terms"/></td></tr>
                 <tr><th colspan="2">Area:</th></tr>
                 <tr><td colspan="2" class="instructions">{% trans %}Select area on the map or enter latitude and longitude, and adjust search radius.{% endtrans %}</td></tr>
@@ -277,7 +277,7 @@
         /* searching upon enter */
         $('.image-search-inputs-container input[name=q]').on('keypress', function(e){
           if (e.which == 13) {
-            ID2.Search.startImageSearch();
+            ID2.Search.startMediaSearch();
           }
         })
         /* close search results */
