@@ -15,5 +15,12 @@
         {% trans %}Attached Files{% endtrans %}
     </h3>
     {% include "podaci/partials/_podaci_file_list.jinja" %}
+
+
+    {% include "podaci/partials/_podaci_edit_tags.jinja" %}
+    {% include "podaci/partials/_podaci_file_details.jinja" %}
 </div>
 {% endif %}
+
+<input type="hidden" id="podaci-ticket-id" value="{{ticket.id}}">
+{% include "podaci/partials/_podaci_add_modal.jinja" %}

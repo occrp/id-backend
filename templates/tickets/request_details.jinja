@@ -257,8 +257,6 @@
 {% block after_js %}
     {{ super() }}
     <div class="modal hide" id="entity-viewer"></div>
-    {% include "podaci/partials/_podaci_add_modal.jinja" %}
-
     {{ modal_macros.render_modal(open_form, url('ticket_open', pk=ticket.id), "ReqReopenForm", _("Re-Open Request"), _("Submit"), "", csrf_token) }}
 
     {{ modal_macros.render_modal(close_form, url('ticket_close', pk=ticket.id), "ReqCloseForm", _("Close Request"), _("Submit"), "", csrf_token) }}

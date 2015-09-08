@@ -66,8 +66,8 @@ ID2.Podaci.init = function() {
     ID2.Podaci.current_files = [];
     ID2.Podaci.selection = [];
     ID2.Podaci.update_selection();
-    ID2.Podaci.search("");
     ID2.Podaci.query = '';
+    ID2.Podaci.search("");
     ID2.Podaci.update_collections();
 
     ID2.Podaci.init_fileupload();
@@ -75,7 +75,13 @@ ID2.Podaci.init = function() {
 
 ID2.Podaci.search = function(q) {
     ID2.Podaci.results_clear();
-    $.getJSON("/podaci/search/", {"q": q}, function(data) {
+    var ticketId = $('#podaci-ticket-id').val(),
+        query = q + ' ';
+    if (ticketId && ticketId.length) {
+      query = query + 'ticket:' + ticketId;
+    }
+    console.log("Searching:", query, ticketId);
+    $.getJSON("/podaci/search/", {"q": query}, function(data) {
         ID2.Podaci.query = q;
         for (i in data.results) {
             file = data.results[i];
@@ -112,7 +118,7 @@ ID2.Podaci.get_file_list = function() {
 }
 
 ID2.Podaci.results_clear = function() {
-    $("#resultbox").empty();
+    $("#podaci-file-list").empty();
     ID2.Podaci.current_files = [];
 }
 
@@ -170,7 +176,7 @@ ID2.Podaci.render_file_to_resultset = function(file) {
     fo.attr("draggable", true);
     fo.on("dragstart", ID2.Podaci.selection_drag);
     fo.on("click", ".podaci-tags a", ID2.Podaci.tag_click);
-    $("#resultbox").append(fo);
+    $("#podaci-file-list").append(fo);
 }
 
 ID2.Podaci.selection_drag = function(e) {
@@ -336,10 +342,12 @@ ID2.Podaci.select_toggle_checkbox = function(e) {
 
 
 ID2.Podaci.init_fileupload = function() {
-    var col = $('.resultbox'),
+    var col = $('#podaci-file-list'),
         progressbar = $('.podaci_upload_progress'),
         files_form = $('.podaci_upload_files_form');
     ID2.Podaci.results_cache = [];
+
+    $('.podaci_upload_tickets').val($('#podaci-ticket-id').val());
 
     col.on("dragover", function(e) {
         e.preventDefault();
@@ -362,7 +370,7 @@ ID2.Podaci.init_fileupload = function() {
         done: function (e, data) {
             setTimeout(ID2.Podaci.refresh_files, 300);
         },
-        dropzone: $(".resultbox"),
+        dropzone: $("#podaci-file-list"),
         disableImageResize: /Android(?!.*Chrome)|Opera/
             .test(window.navigator.userAgent),
     }).on('fileuploadadd', function (e, data) {
@@ -403,6 +411,11 @@ ID2.Podaci.init_fileupload = function() {
         $("#podaci_upload_modal").modal('hide');
         $("#podaci_add_modal").modal('hide');
         files_form.show();
+
+        // ticket pages with no files need to be reloaded to show file list:
+        if($("#podaci-file-list").length == 0) {
+          document.location.reload();
+        }
     }).on('fileuploadfail', function (e, data) {
         // FIXME: Test failure modes. Make this pretty.
         progressbar.hide();
@@ -418,9 +431,8 @@ ID2.Podaci.upload_click = function(e, target) {
 
 
 ID2.Podaci.ticket_add_file = function(event) {
-  var ticketId = $(event.target).data('ticket');
+  // var ticketId = $(event.target).data('ticket');
   $('.podaci_upload_progress').hide();
-  $('.podaci_upload_tickets').val(ticketId);
   $("#podaci_add_modal").modal();
 };
 
