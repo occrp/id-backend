@@ -6,6 +6,7 @@
     </a>
     <ul class="dropdown-menu notifications" role="menu">
         <li class="top">
+            <a href="{{url('notification_stream')}}">{% trans %}View Stream{% endtrans %}</a>
             <a id="notifications_allread">{% trans %}Mark All as Read{% endtrans %}</a>
         </li>
         {% for notification in user.get_notifications() %}

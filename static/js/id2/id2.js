@@ -22,26 +22,26 @@ ID2.Notifications.init = function() {
             $("#notifications_count").text(data.unseen_count);
         });
     });
+
+    if ($(".notification_stream").length) {
+        ID2.Notifications.streamer_init();
+    }
+}
+
+ID2.Notifications.streamer_init = function() {
+    ID2.Notifications.poll();
+    ID2.Notifications.streamer_timer = setInterval(ID2.Notifications.poll, 5000);
+}
+
+ID2.Notifications.poll = function() {
+    console.log("polling");
+    $.getJSON("/notifications/stream/", function(data) {
+        for (i in data) {
+            noti = data[i];
+            
+        }
+        $(".notification_stream").html("<pre>" + JSON.stringify(data) + "</pre>");
+    });
 }
 
 $(ID2.init);
-
-//
-// ID2.App = angular.module('ID2', ['ngMaterial']);
-//
-// ID2.App.config(function($mdThemingProvider) {
-//   var ID2DarkPalette = $mdThemingProvider.extendPalette('blue-grey', {
-//       '500': '#3A4953',
-//   });
-//   var ID2LightPalette = $mdThemingProvider.extendPalette('blue-grey', {});
-//   $mdThemingProvider.definePalette('ID2Dark', ID2DarkPalette);
-//   $mdThemingProvider.definePalette('ID2Light', ID2LightPalette);
-//   $mdThemingProvider.theme('default').primaryPalette('ID2Dark');
-//   $mdThemingProvider.theme('dark').primaryPalette('ID2Dark');
-//   $mdThemingProvider.theme('dark').dark();
-// });
-//
-// ID2.App.run(function($http) {
-//   $http.defaults.xsrfHeaderName = 'X-CSRFToken';
-//   $http.defaults.xsrfCookieName = 'csrftoken';
-// });
