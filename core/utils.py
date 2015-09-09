@@ -11,7 +11,10 @@ from oauth2client import file as oauth2file
 from uuid import UUID
 from django.db.models.query import QuerySet
 from django.db.models.sql.query import Query
+from unidecode import unidecode
 
+def text_normalize(s):
+    return unidecode(s.decode("utf-8"))
 
 def convert_group_to_select2field_choices(group):
     result = []
