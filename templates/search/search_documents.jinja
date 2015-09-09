@@ -13,7 +13,7 @@
                     <i class="fa fa-search"></i> {% trans %}Search{% endtrans %}
                 </button>
             </div>
-            <div class="search-providers section-container"><span class="before">{% trans %}search repositories{% endtrans %}</span>
+            <div class="search-providers not-section-container"><span class="before">{% trans %}Select repositories:{% endtrans %}</span>
                 <div>
                     {% for provider in search_providers %}
                         <label class="provider provider-{{ provider }}">

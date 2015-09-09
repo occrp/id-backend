@@ -16,7 +16,7 @@
 		<ul class="nav nav-tabs">
 			{% for type in search_types %}
 				<li role="presentation" {% if type.0 in request.path %}class="active"{% endif %}>
-					<a href="/search/{{type.0}}/"><i class="fa fa-{{type.0}}"></i> {{type.1}}</a>
+					<a class="md-whiteframe-z2" href="/search/{{type.0}}/"><i class="fa fa-{{type.0}}"></i> {{type.1}}</a>
 				</li>
 			{% endfor %}
 		</ul>

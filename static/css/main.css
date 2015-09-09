@@ -428,51 +428,6 @@ dd.disabled a {
   border-color: #647e8f transparent transparent transparent;
 }
 
-.search {
-  margin-top: 20px;
-}
-
-.search input {
-  line-height: 32px;
-  height: 32px;
-  font-size: 18px;
-  font-weight: 300;
-}
-
-.search ul.provider-list {
-    list-style-type: none;
-    margin-top: 0;
-}
-
-.search ul.provider-list li {
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    border-bottom: 1px solid #9eafbb;
-    min-height: 1.5em;
-}
-
-.search ul.provider-list li.title {
-    font-weight: bolder;
-    background-color: #3a4953;
-    color: white;
-    text-transform: uppercase;
-    padding-left: 1em;
-}
-
-.search ul.provider-list li input[type=checkbox] {
-    margin-left: 1em;
-    margin-right: 1em;
-    margin-top: -0.1em;
-}
-
-.search ul.provider-list li .status {
-    float: right;
-    color: #ba0a1e;
-    font-weight: bolder;
-    margin-right: 1em;
-    margin-top: 0.3em;
-}
-
 /** Attach files **/
 .selected-files {
   margin-top: 10px;
@@ -777,7 +732,7 @@ ul.advisory_committee li {
 }
 
 .material-form-container {
-    margin-top:-60px
+    margin-top:-68px;
 }
 
 .material-form {
@@ -804,9 +759,9 @@ ul.advisory_committee li {
 
 .material-form-container ul.nav {
     text-align:center;
-    margin-bottom:-8px;
+    margin-bottom:-12px;
     border-bottom:none;
-    margin-top:-2em;
+    margin-top:-3em;
 }
 
 .material-form-container .nav-tabs > li {
