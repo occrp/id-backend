@@ -111,7 +111,7 @@
     }, this));
 
     this.base.on('keyup change', this.keyUpHandler());
-    this.base.on('click', '.btn', this.addHandler());
+    this.base.on('click', '.act-add', this.addHandler());
 
   };
 
@@ -140,10 +140,12 @@
    * and moves the plus button to the new widget.
    */
   MultiWidgetContainer.prototype.add = function add(widget) {
-    this.widgets.push(widget);
-    this.base.append(widget.render());
-    this.base.find('.btn').remove();
-    widget.base.append($("<button type='button' class='btn'><i class='fa fa-plus'></i></button>"));
+    // console.log("Junk!", widget);
+    // this.widgets.push(widget);
+    var newwidgets = widget.render();
+    this.base.append(newwidgets);
+    this.base.find('.act-add').remove();
+    this.base.append($('<button type="button" class="btn act-add"><i class="fa fa-plus"></i></button>'));
   };
 
   /**
@@ -187,12 +189,16 @@
 
     var lname = $('<input type="text" class="lastname" placeholder="' + i18n.gettext('Last Name') + '" />');
     var other = $('<input type="text" class="othername" placeholder="' + i18n.gettext('First/Other Names') + '" />');
+    var minus = $('<button type="button" class="btn act-remove"><i class="fa fa-minus"></i></button>');
+    var base = this.base;
+    minus.on("click", function() { base.remove(); });
 
     lname.val(this.initial.lname);
     other.val(this.initial.other);
 
     this.base.append(lname);
     this.base.append(other);
+    this.base.append(minus);
 
     return this.base;
   };
