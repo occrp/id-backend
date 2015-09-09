@@ -1,7 +1,8 @@
 from registration.views import RegistrationView
 from settings.settings import REGISTRATION_OPEN, REGISTRATION_CLOSED_URL, REGISTRATION_SUCCESS_URL
 from django.contrib.auth.views import logout as django_logout
-from django.contrib.auth.views import REDIRECT_FIELD_NAME
+from django.contrib.auth.views import login as django_login
+from django.contrib.auth.views import REDIRECT_FIELD_NAME, AuthenticationForm
 
 from django.http import HttpResponseRedirect
 from id.forms import FeedbackForm
@@ -72,3 +73,18 @@ def logout(request, next_page=None,
 
     else:
         return HttpResponseRedirect(fallback_redirect_url)
+
+
+def login(request, template_name='registration/login.html',
+          redirect_field_name=REDIRECT_FIELD_NAME,
+          authentication_form=AuthenticationForm,
+          current_app=None, extra_context=None,
+          fallback_redirect_url='/'):
+    """
+    Overloading the login() function from django.contrib.auth.views
+    to redirect logged-in users somewhere else
+    """
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(fallback_redirect_url)
+    else:
+        return django_login(request, template_name, redirect_field_name, authentication_form, current_app, extra_context)
