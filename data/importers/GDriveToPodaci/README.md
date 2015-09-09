@@ -32,7 +32,7 @@ The `GDriveToPodaci.py` script handles this part. It uses (old) `investigative-d
  Files on GDrive are not automatically deleted under any circumstances.
 ```
 
-**Warning: there is a *lot* of data on Google Drive**. The script deletes each file after successful import to Podaci, so it should need the `/tmp` directory to be able to hold all those files, *unless `--keep` is passed*.
+**Warning: there is a *lot* of data on Google Drive**. The script deletes each downloaded file from disk after successful import to Podaci (files are **not** automagically deleted from Google Drive), so it should need the `/tmp` directory to be able to hold all those files, *unless `--keep` is passed*.
 
 However, Podaci keeps the files in the configured directory (see [`settings.py`](../../settings/settings.py), so make sure you have ample amount of free space there.
 
