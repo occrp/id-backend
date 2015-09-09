@@ -41,19 +41,6 @@
             name="{{ field.name }}" id="{{ field.name }}" rows="{{ field.rows }}">{{ field.value if field.value else '' }}</textarea>
 {% endmacro %}
 
-{% macro render_drivefield(field) %}
-    <button type="button" class="btn" data-toggle="drive-picker" data-spinner="after" data-type="form">
-        {% trans %}Attach Files{% endtrans %}
-    </button>
-    {{ field }}
-    <div class="selected-files" style="display: none;"></div>
-{% endmacro %}
-
-{% macro render_hiddendrivefield(field) %}
-    {{ field }}
-    <div class="selected-files" style="display: none;"></div>
-{% endmacro %}
-
 {% macro render_keyfield(field) %}
     <input type="hidden" name="{{ field.html_name }}" id="{{ field.auto_id }}-1" value="{{ field.value.urlsafe() }}" />
     <input type="text" disabled="disabled" name="{{ field.html_name }}" id="{{ field.auto_id }}-2" value="{% if field.value -%}
@@ -95,8 +82,8 @@
 {% endmacro %}
 
 {% macro render_helptext(field) %}
-    {% if field.description %}
-        <p class="help-block">{{ field.description|safe }}</p>
+    {% if field.help_text %}
+        <p class="help-block">{{ field.help_text|safe }}</p>
     {% endif %}
 {% endmacro %}
 
@@ -119,14 +106,8 @@
                     {{ render_datefield(field) }}
                 {% elif get_field_type(field) == 'FileField' %}
                     {{ render_filefield(field) }}
-                {% elif get_field_type(field) == 'HiddenDriveField' %}
-                    {{ render_hiddendrivefield(field) }}
-                {% elif get_field_type(field) == 'DriveField' %}
-                    {{ render_drivefield(field) }}
                 {% elif get_field_type(field) == 'KeyField' %}
                     {{ render_keyfield(field) }}
-                {# elif get_field_type(field) == 'Select2Field' %}
-                    {{ render_select2field(field) }} #}
                 {% elif get_field_type(field) == 'ClassedTextAreaField' %}
                     {{ render_classedtextareafield(field) }}
                 {% else %}
