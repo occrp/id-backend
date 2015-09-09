@@ -37,9 +37,9 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
     is_for_profit = models.BooleanField(default=False,
                                         verbose_name=_('For-Profit?'))
     is_public = models.BooleanField(default=False,
-                                    verbose_name=_('Public?'))
+                                    verbose_name=_('Public?'), help_text=_('Are you okay with the findings becoming public immediately?'))
     user_pays = models.BooleanField(default=True)
-    deadline = models.DateField(null=True, blank=True, verbose_name=_('Deadline'))
+    deadline = models.DateField(null=True, blank=True, verbose_name=_('Deadline'), help_text=_('How soon do you need this request fulfilled? We will try to meet your deadline, but please note that our researchers are quite busy -- give them as much time as you possibly can!'))
     sensitive = models.BooleanField(default=False, verbose_name=_('Sensitive?'))
     whysensitive = models.CharField(max_length=150, blank=True, verbose_name=_('Why is it sensitive?'))
 
