@@ -21,7 +21,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 sys.path.append(os.path.abspath("../../../"))
 from id.models import *
 from ticket.models import *
-from podaci.models import PodaciFile as File, PodaciTag as Tag
+from podaci.models import PodaciFile as File
 
 imported_files = {}
 
@@ -166,39 +166,17 @@ def podacify_file(ticket_id, f):
 
     ### TICKET
     # first, we need the ticket
-    ticket = Ticket.objects.get(id=ticket_id)
+    try:
+        ticket = Ticket.objects.get(pk=ticket_id)
+    except Ticket.DoesNotExist:
+        print '     +-- missing ticket: %s' % ticket_id
+        return
     print '     +-- ticket : %s' % ticket_id
     print '     +-- file   : %s' % f['localPath']
 
-    # user for this file
-    # fs.user = ticket.requester
-
-    ### TAG
-    tag = ticket.tag_id
-    if tag:
-        try:
-            # get the tag
-            tag = Tag.objects.get(id=tag)
-        except:
-            # create the tag
-            tag = Tag(name='Ticket %d' % ticket.id)
-            tag.save()
-            ticket.tag_id = tag.id
-            ticket.save()
-    else:
-        # create the tag
-        tag = Tag(name='Ticket %d' % ticket.id)
-        tag.save()
-        ticket.tag_id = tag.id
-        ticket.save()
-
-    # add the metatag
-    # tag.parent_add(metatag)
-
     ### FILE
     # create the file
-    pfile = File()
-    pfile.create_from_path(f['localPath'])
+    pfile = File.create_from_path(f['localPath'], ticket=ticket)
 
     # put the id into the imported_files list, to be pickled and saved to a file later
     # legacy Google ID of the file itself, needed for later downloading of files that were not in any ticket-related folder
@@ -206,9 +184,6 @@ def podacify_file(ticket_id, f):
       'folder'      : f['legacyGoogleFolderId'], # legacy Google Folder ID the file was in
       'md5Checksum' : f['md5Checksum']
     }
-
-    # add the tags
-    pfile.tag_add(tag)
 
     # set permissions, etc
     if ticket.is_public:
@@ -280,7 +255,7 @@ def handle_folder_id(service, ticket_id, folder_id):
 
 if __name__ == "__main__":
 
-    keep_downloads = False
+    keep_downloads = True
     try:
         # requried args
         script, idpath, drivefolderids_path = sys.argv[:3]
@@ -335,7 +310,7 @@ if __name__ == "__main__":
 
 
     # podaci tickets meta tag
-    metatag, created = Tag.objects.get_or_create(name='Tickets_Meta_Tag')
+    # metatag, created = Tag.objects.get_or_create(name='Tickets_Meta_Tag')
     # metatag.allow_staff()
 
     # create the damn gdrive service
