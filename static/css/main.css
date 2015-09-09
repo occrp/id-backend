@@ -962,13 +962,18 @@ ul.advisory_committee li {
     min-width:10em;
 }
 
-.login-form .login-alternative {
+.login-form .buttons-container {
+    text-align:center;
+}
+
+/** General UI: section delimeter/container **/
+.section-container {
     text-align:center;
     margin-top:2.5em;
     border-top: solid 1px #ddd;
 }
 
-.login-form .login-alternative .before {
+.section-container .before {
     position:relative;
     top:-0.55em;
     color:#eee;
@@ -978,12 +983,8 @@ ul.advisory_committee li {
     padding:0em 0.3em;
 }
 
-.login-form .login-alternative .info {
+.section-container .info {
     display:block;
-}
-
-.login-form .buttons-container {
-    text-align:center;
 }
 
 /** Feedback Form **/
