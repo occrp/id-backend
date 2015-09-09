@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import get_valid_filename
 
 import os
 import shutil
@@ -221,7 +222,7 @@ class PodaciFile(NotificationMixin, models.Model):
             filename = "Untitled file"
         obj = cls()
         obj.title = filename
-        obj.filename = filename
+        obj.filename = get_valid_filename(filename)
         obj.sha256 = sha256sum(fh)
         obj.created_by = user
         obj.mimetype = magic.Magic(mime=True).from_buffer(fh.read(100))
