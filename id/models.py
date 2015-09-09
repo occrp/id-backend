@@ -286,11 +286,15 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
 
     def save(self, *args, **kw):
         if self.pk is not None:
-            orig = Profile.objects.get(pk=self.pk)
-            if orig.network != self.network:
-                self.notify("User %s changed network from %s to %s" % (self, orig.network, self.network), urlname="profile", params={"pk": self.pk}, action="update")
-            if orig.is_superuser != self.is_superuser:
-                self.notify("User %s admin status changed to %s" % (self, self.is_superuser), urlname="profile", params={"pk": self.pk}, action="update")
+            try:
+                orig = Profile.objects.get(pk=self.pk)
+                if orig.network != self.network:
+                    self.notify("User %s changed network from %s to %s" % (self, orig.network, self.network), urlname="profile", params={"pk": self.pk}, action="update")
+                if orig.is_superuser != self.is_superuser:
+                    self.notify("User %s admin status changed to %s" % (self, self.is_superuser), urlname="profile", params={"pk": self.pk}, action="update")
+            except Profile.DoesNotExist:
+                pass
+                
         super(Profile, self).save(*args, **kw)
 
     class Meta:
