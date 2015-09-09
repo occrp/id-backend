@@ -12,13 +12,6 @@ import core.utils
 from ticket import constants
 from ticket import models
 
-class DirectUploadForm(forms.Form):
-    key = forms.HiddenInput()
-    redirect_to = forms.HiddenInput()
-    file1 = forms.FileField(label='')
-    file2 = forms.FileField(label='')
-    file3 = forms.FileField(label='')
-
 class TicketPaidForm(forms.Form):
     """
     Update a ticket with it's payment status (from within the ticket).
@@ -47,16 +40,6 @@ class RequestChargeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(RequestChargeForm, self).__init__(*args, **kwargs)
         self.fields['reconciled_date'].widget.attrs.update({'class': 'datepicker'})
-
-    #comment = forms.CharField(label=_("Comment to Requester"), widget=forms.Textarea)
-    #item = forms.CharField(label=_("Item"), required=True)
-    #cost = forms.DecimalField(label=_("Cost (USD)"), required=True)
-    # cost_original_currency = forms.DecimalField(
-    #    label=_("Cost (Original Currency)"))
-    #original_currency = forms.ChoiceField(
-    #    label=_("Original Currency Name"),
-    #    choices=constants.CURRENCIES,
-    #    initial="EUR")
 
 class TicketTypeForm(forms.Form):
     ticket_type = forms.ChoiceField(
@@ -99,21 +82,6 @@ class PersonTicketForm(TicketForm):
                   'business_activities', 'initial_information', 'background',
                   'deadline', 'sensitive', 'whysensitive')
 
-        # field_args = {
-        #     'aliases': {'description': _("Other names they are known by")},
-        #     'background': {
-        #         'placeholder': _('What do you know so far?'),
-        #         'css_class': 'span8',
-        #     },
-        #     'biography': {'css_class': 'span8'},
-        #     'business_activities': {'css_class': 'span8'},
-        #     'initial_information': {
-        #         'placeholder': _('Any information you already have.'),
-        #         'css_class': 'span8',
-        #     },
-        #     'location': {'description': _('Where are you researching?')},
-        # }
-        # ajax_validation_url = "/_validation/request/"
     Meta.field_args.update(TicketForm.Meta.field_args)
 
     def __init__(self, *args, **kwargs):
@@ -138,22 +106,7 @@ class CompanyTicketForm(TicketForm):
         model = models.CompanyTicket
         fields = ('name', 'country', 'background', 'sources',
                   'connections', 'deadline', 'sensitive', 'whysensitive')
-        # field_args = {
-        #     'country': {'choices': constants.COUNTRIES},
-        #     'background': {
-        #         'placeholder': _('What do you know so far?'),
-        #         'css_class': 'span8',
-        #     },
-        #     'story': {
-        #         'placeholder': _('What story are you working on?'),
-        #         'css_class': 'span8'
-        #     },
-        #     'sources': {
-        #         'placeholder': _('What sources do you have so far?'),
-        #         'css_class': 'span8',
-        #     },
-        # }
-        # ajax_validation_url = "/_validation/request/"
+
     Meta.field_args.update(TicketForm.Meta.field_args)
 
     def __init__(self, *args, **kwargs):
@@ -182,9 +135,6 @@ class OtherTicketForm(TicketForm):
         self.fields['question'].widget.attrs.update({'class': 'span8', 'rows': '6'})
         self.prefix = "other"
 
-
-# class MultiResponderChoices(Select2MultipleChoiceField):
-#     choices = get_user_model().objects.all().filter(Q(profile__is_superuser=1) | Q(profile__is_staff=1))
 
 class TicketAdminSettingsForm(forms.ModelForm):
     responders = Select2MultipleChoiceField(label=_("Staff Responders"), required=False)

@@ -761,10 +761,19 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
 
     def set_paginator_object(self):
         ticket_set = self.get_ticket_set(self.request.user)
+
         if self.filter_terms:
-            ticket_set = ticket_set.filter(Q(requester__email__contains=self.filter_terms)
-                                         | Q(requester__first_name__contains=self.filter_terms)
-                                         | Q(requester__last_name__contains=self.filter_terms))
+            ticket_set = ticket_set.filter(Q(requester__email__icontains=self.filter_terms)
+                                         | Q(requester__first_name__icontains=self.filter_terms)
+                                         | Q(requester__last_name__icontains=self.filter_terms)
+                                         | Q(personticket__name__icontains=self.filter_terms)
+                                         | Q(personticket__aliases__icontains=self.filter_terms)
+                                         | Q(personticket__background__icontains=self.filter_terms)
+                                         | Q(companyticket__name__icontains=self.filter_terms)
+                                         | Q(companyticket__connections__icontains=self.filter_terms)
+                                         | Q(companyticket__background__icontains=self.filter_terms)
+                                         | Q(otherticket__question__icontains=self.filter_terms)
+                                         )
         if self.start_date:
             ticket_set = ticket_set.filter(created__gte=self.start_date)
 
@@ -923,9 +932,6 @@ class TicketRequest(TemplateView):
             }
         return super(TicketRequest, self).dispatch(self.request)
 
-    #FIXME: Auth
-    #@role_in('user', 'staff', 'admin', 'volunteer',
-    #         fail_redirect=('request_unauthorized',))  # Reversed by role_in
     def get_context_data(self, ticket_id=None):
         ctx = {
             'ticket': None
@@ -933,8 +939,6 @@ class TicketRequest(TemplateView):
         ctx.update(self.forms)
         return ctx
 
-    #FIXME: Auth
-    #@role_in('user', 'staff', 'admin', 'volunteer')
     def post(self, ticket_id=None):
         if not self.forms["ticket_type_form"].is_valid():
             print self.forms["ticket_type_form"].errors.as_data()
@@ -943,13 +947,6 @@ class TicketRequest(TemplateView):
 
         ticket_type = self.forms["ticket_type_form"].cleaned_data["ticket_type"]
         form = self.forms[ticket_type+"_form"]
-
-        # print "ticket info"
-        # print " "
-        # print " "
-        # print ticket_type
-        # print form.errors.as_data()
-        # print "end form"
 
         if not form.is_valid():
             # self.add_message(_("Error: Form was not valid"))
@@ -960,8 +957,6 @@ class TicketRequest(TemplateView):
         ticket.requester = self.request.user
         ticket.save()
         messages.success(self.request, _('Ticket successfully created.'))
-
-        # tag = ticket.get_tag()
 
         return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": ticket.id}))
 
