@@ -6,11 +6,6 @@ from django.contrib.auth.views import REDIRECT_FIELD_NAME
 from django.http import HttpResponseRedirect
 from id.forms import FeedbackForm
 
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from django.http import JsonResponse
-
-from id.models import Notification
 
 class ProfileRegistrationView(RegistrationView):
     """
@@ -50,10 +45,10 @@ def logout(request, next_page=None,
     for our feedback form
     """
     if request.user.is_authenticated() or ('cleared_for_feedback' in request.session and request.session['cleared_for_feedback'] == True):
-        
+
         # get the feedback form
         form = FeedbackForm()
-        
+
         # add it to the template context
         if extra_context is not None:
             extra_context.update({
@@ -63,55 +58,17 @@ def logout(request, next_page=None,
             extra_context = {
                 'form': form
             }
-            
+
         # get the result
         result = django_logout(request, next_page, template_name, redirect_field_name, current_app, extra_context)
-        
+
         # make sure we can proceed with feedback if we need to
         # for instance, if the form is not complete
         request.session['cleared_for_feedback'] = True
         result.request = request
-        
+
         # return the whole thing
         return result
-    
+
     else:
         return HttpResponseRedirect(fallback_redirect_url)
-
-
-class NotificationSeen(APIView):
-    permission_classes = (IsAuthenticated, )
-
-    def get(self, request, *args, **kwargs):
-        nid = kwargs.get('pk')
-        if nid == "all":
-            nots = Notification.objects.filter(user=request.user)
-            for n in nots:
-                n.seen()
-            return JsonResponse({
-                "action": "seen",
-                "notifications": [n.id for n in nots],
-                "unseen_count": Notification.objects.filter(user=request.user, is_seen=False).count()
-            })
-        else:
-            try:
-                notification = Notification.objects.get(
-                    pk=nid,
-                    user=request.user
-                )
-            except Exception, e:
-                return JsonResponse({"error": e})
-
-            notification.seen()
-            return JsonResponse({
-                "action": "seen",
-                "notifications": [notification.id],
-                "unseen_count": Notification.objects.filter(user=request.user, is_seen=False).count()
-            })
-
-
-class NotificationStream(APIView):
-    # serializer_class = NotificationSerializer
-    permission_classes = (IsAuthenticated, )
-
-    pass
