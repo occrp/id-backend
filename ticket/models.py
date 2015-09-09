@@ -193,19 +193,6 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
 
         return datetime.timedelta(0)
 
-    def mark_charges_paid(self, paid_status):
-        # TODO: FIXME
-        """
-        Mark the ticket as paid, and all the charges associated with it.
-        """
-        charges = TicketCharge.query(
-            TicketCharge.reconciled == False, ancestor=self.key).fetch()
-
-        for charge in charges:
-            charge.reconciled = True
-            charge.paid_status = paid_status
-
-        ndb.put_multi(charges)
 
 
 class PersonTicket(Ticket):
