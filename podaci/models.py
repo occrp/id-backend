@@ -243,13 +243,15 @@ class PodaciFile(NotificationMixin, models.Model):
         return obj
 
     @classmethod
-    def create_from_path(cls, filename, filename_override=None, user=None):
+    def create_from_path(cls, filename, filename_override=None, user=None,
+                         ticket=None):
         """Given a file path, create a file."""
         if not os.path.isfile(filename):
             raise ValueError("File does not exist")
         fn = filename_override or os.path.basename(filename)
         with open(filename, 'r') as fh:
-            return cls.create_from_filehandle(fh, filename=fn, user=user)
+            return cls.create_from_filehandle(fh, filename=fn, user=user,
+                                              ticket=ticket)
 
     def update(self):
         if os.path.isfile(self.local_path):

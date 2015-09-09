@@ -21,7 +21,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 sys.path.append(os.path.abspath("../../../"))
 from id.models import *
 from ticket.models import *
-from podaci.models import PodaciFile as File, PodaciTag as Tag
+from podaci.models import PodaciFile as File
 
 imported_files = {}
 
@@ -157,74 +157,48 @@ def handle_gdrive_file(service, f):
     return True
 
 
-def podacify_file(ticket_id, f):
+def podacify_file(imported_files, f, ticket=None):
     print '+-- podacifying...'
-
-    # assuming:
-    # - fs is a global FileSystem instance
-    # - metatag is a global Tag instance, being the Tickets meta tag
-
-    ### TICKET
-    # first, we need the ticket
-    ticket = Ticket.objects.get(id=ticket_id)
-    print '     +-- ticket : %s' % ticket_id
-    print '     +-- file   : %s' % f['localPath']
-
-    # user for this file
-    # fs.user = ticket.requester
-
-    ### TAG
-    tag = ticket.tag_id
-    if tag:
-        try:
-            # get the tag
-            tag = Tag.objects.get(id=tag)
-        except:
-            # create the tag
-            tag = Tag(name='Ticket %d' % ticket.id)
-            tag.save()
-            ticket.tag_id = tag.id
-            ticket.save()
-    else:
-        # create the tag
-        tag = Tag(name='Ticket %d' % ticket.id)
-        tag.save()
-        ticket.tag_id = tag.id
-        ticket.save()
-
-    # add the metatag
-    # tag.parent_add(metatag)
-
     ### FILE
     # create the file
-    pfile = File()
-    pfile.create_from_path(f['localPath'])
+    pfile = File.create_from_path(f['localPath'], ticket=ticket)
 
     # put the id into the imported_files list, to be pickled and saved to a file later
     # legacy Google ID of the file itself, needed for later downloading of files that were not in any ticket-related folder
     imported_files[f['id']] =  {
-      'folder'      : f['legacyGoogleFolderId'], # legacy Google Folder ID the file was in
+      'folder'      : f.get('legacyGoogleFolderId'), # legacy Google Folder ID the file was in
       'md5Checksum' : f['md5Checksum']
     }
 
-    # add the tags
-    pfile.tag_add(tag)
+    if ticket is not None:
+        # set permissions, etc
+        if ticket.is_public:
+            pfile.make_public() # the tag and related files have to have the same visibility as the ticket
+        pfile.allow_staff()     # staff has to have r/w access to all imported tickets, and related files
 
-    # set permissions, etc
-    if ticket.is_public:
-        pfile.make_public() # the tag and related files have to have the same visibility as the ticket
-    pfile.allow_staff()     # staff has to have r/w access to all imported tickets, and related files
+        # add requester (ro)
+        pfile.add_user(ticket.requester, write=False)
 
-    # add requester (ro)
-    pfile.add_user(ticket.requester, write=False)
-
-    # add volunteers (rw)
-    for v in ticket.volunteers.all():
-        pfile.add_user(v, write=True)
+        # add volunteers (rw)
+        for v in ticket.volunteers.all():
+            pfile.add_user(v, write=True)
+    else:
+        pfile.allow_staff()
 
 
 def handle_folder_id(service, ticket_id, folder_id):
     file_ids_list = list_folder_contents(service, folder_id)
+
+    ### TICKET
+    # first, we need the ticket
+    try:
+        ticket = Ticket.objects.get(pk=ticket_id)
+    except Ticket.DoesNotExist:
+        print '     +-- missing ticket: %s' % ticket_id
+        return
+
+    print '     +-- ticket : %s' % ticket_id
+    print '     +-- file   : %s' % f['localPath']
 
     # get file metadata
     file_info_list = []
@@ -256,7 +230,6 @@ def handle_folder_id(service, ticket_id, folder_id):
     # let's download some files!
     print 'Retrieving files...'
     for f in file_info_list:
-
         print '+-- file: %s (md5: %s)' % (f['originalFilename'], f['md5Checksum'])
         # filename
         f['localPath'] = os.path.join(dfolder, f['originalFilename'])
@@ -266,7 +239,7 @@ def handle_folder_id(service, ticket_id, folder_id):
         handle_gdrive_file(service, f)
 
         # handle the podaci side of things
-        podacify_file(ticket_id, f)
+        podacify_file(imported_files, f, ticket=ticket)
 
         # remove the file?
         if not keep_downloads:
@@ -280,7 +253,7 @@ def handle_folder_id(service, ticket_id, folder_id):
 
 if __name__ == "__main__":
 
-    keep_downloads = False
+    keep_downloads = True
     try:
         # requried args
         script, idpath, drivefolderids_path = sys.argv[:3]
@@ -335,7 +308,7 @@ if __name__ == "__main__":
 
 
     # podaci tickets meta tag
-    metatag, created = Tag.objects.get_or_create(name='Tickets_Meta_Tag')
+    # metatag, created = Tag.objects.get_or_create(name='Tickets_Meta_Tag')
     # metatag.allow_staff()
 
     # create the damn gdrive service
@@ -353,7 +326,7 @@ if __name__ == "__main__":
             # remove id_gdrive_downloads folder
             os.rmdir('/tmp/id_gdrive_downloads/')
     except KeyboardInterrupt:
-        print 'KeyboardInterrupt caught, exitin gracefully'
+        print 'KeyboardInterrupt caught, exiting gracefully'
     #except Exception as e:
     #   print 'Exception caught: %s (%s); exiting gracefully' % (e, type(e))
 
