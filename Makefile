@@ -1,6 +1,7 @@
-PYTHON=pyenv/bin/python
-PIP=pyenv/bin/pip
-MANAGE=pyenv/bin/python manage.py
+PYTHON=`pwd`/pyenv/bin/python
+PIP=`pwd`/pyenv/bin/pip
+MANAGE=`pwd`/pyenv/bin/python manage.py
+
 
 web: $(PYTHON) static/bower_components
 	$(MANAGE) runserver
@@ -20,9 +21,9 @@ clean:
 	rm -rf static/bower_components
 
 testdata:
-	./manage.py loaddata id/fixtures/* 
-	./manage.py loaddata data/fixtures/*
-	(cd data/importers/ID1_Import && python UserProfiles_to_DjangoUsers.py ../../exporters/raw/UserProfile.csv)
-	(cd data/importers/ID1_Import && python Tickets_to_ID2Tickets.py ../../exporters/raw/Ticket.csv)
+	$(MANAGE) loaddata id/fixtures/* 
+	$(MANAGE) loaddata data/fixtures/*
+	(cd data/importers/ID1_Import && $(PYTHON) UserProfiles_to_DjangoUsers.py ../../exporters/raw/UserProfile.csv)
+	(cd data/importers/ID1_Import && $(PYTHON) Tickets_to_ID2Tickets.py ../../exporters/raw/Ticket.csv)
 
 
