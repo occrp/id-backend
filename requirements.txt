@@ -25,3 +25,4 @@ jsonfield
 pillow
 django-simple-captcha
 textract
+unidecode
