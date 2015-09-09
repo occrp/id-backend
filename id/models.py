@@ -176,8 +176,8 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     @property
     def display_name(self):
         if self.first_name or self.last_name:
-            return " ".join((self.first_name, self.last_name)).title()
-        return self.email or ''
+            return u" ".join((self.first_name, self.last_name)).title()
+        return self.email or u''
 
     @property
     def is_approved(self):
@@ -226,7 +226,10 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         return {'id': self.key.urlsafe(), 'text': self.display_name}
 
     def __unicode__(self):
-        return self.display_name.encode("utf-8")
+        return unicode(self.display_name)
+
+    def __str__(self):
+        return self.display_name
 
     @property
     def requester_type_verbose(self):
@@ -294,7 +297,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
                     self.notify("User %s admin status changed to %s" % (self, self.is_superuser), urlname="profile", params={"pk": self.pk}, action="update")
             except Profile.DoesNotExist:
                 pass
-                
+
         super(Profile, self).save(*args, **kw)
 
     class Meta:
