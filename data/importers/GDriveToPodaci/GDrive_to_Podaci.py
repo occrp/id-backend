@@ -22,6 +22,7 @@ sys.path.append(os.path.abspath("../../../"))
 from id.models import *
 from ticket.models import *
 from podaci.models import PodaciFile as File
+from podaci.util import unpacked_fhs
 
 imported_files = {}
 
@@ -158,10 +159,28 @@ def handle_gdrive_file(service, f):
 
 
 def podacify_file(imported_files, f, ticket=None):
-    print '+-- podacifying...'
+    print '+-- podacifying: %s' % f['localPath']
     ### FILE
     # create the file
-    pfile = File.create_from_path(f['localPath'], ticket=ticket)
+    for filename, fh in unpacked_fhs(f['localPath']):
+        print '     +-- sub-file: %s' % filename
+        pfile = File.create_from_filehandle(fh, filename=filename,
+                                            ticket=ticket)
+
+        if ticket is not None:
+            # set permissions, etc
+            if ticket.is_public:
+                pfile.make_public() # the tag and related files have to have the same visibility as the ticket
+            pfile.allow_staff()     # staff has to have r/w access to all imported tickets, and related files
+
+            # add requester (ro)
+            pfile.add_user(ticket.requester, write=False)
+
+            # add volunteers (rw)
+            for v in ticket.volunteers.all():
+                pfile.add_user(v, write=True)
+        else:
+            pfile.allow_staff()
 
     # put the id into the imported_files list, to be pickled and saved to a file later
     # legacy Google ID of the file itself, needed for later downloading of files that were not in any ticket-related folder
@@ -169,21 +188,6 @@ def podacify_file(imported_files, f, ticket=None):
       'folder'      : f.get('legacyGoogleFolderId'), # legacy Google Folder ID the file was in
       'md5Checksum' : f['md5Checksum']
     }
-
-    if ticket is not None:
-        # set permissions, etc
-        if ticket.is_public:
-            pfile.make_public() # the tag and related files have to have the same visibility as the ticket
-        pfile.allow_staff()     # staff has to have r/w access to all imported tickets, and related files
-
-        # add requester (ro)
-        pfile.add_user(ticket.requester, write=False)
-
-        # add volunteers (rw)
-        for v in ticket.volunteers.all():
-            pfile.add_user(v, write=True)
-    else:
-        pfile.allow_staff()
 
 
 def handle_folder_id(service, ticket_id, folder_id):
