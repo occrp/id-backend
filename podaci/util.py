@@ -31,7 +31,10 @@ def unpacked_fhs(filename):
         tempdir = tempfile.mkdtemp()
         with zipfile.ZipFile(filename, 'r') as zf:
             for name in zf.namelist():
+                if name.endswith(os.sep):
+                    continue
                 zfh = BufferedFile(zf.open(name, 'r'))
+                name = name.decode('utf-8', 'replace')
                 yield name, zfh
         shutil.rmtree(tempdir)
     else:
