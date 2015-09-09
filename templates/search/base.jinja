@@ -12,7 +12,7 @@
 {% block sidenav %}{% endblock %}
 
 {% block content %}
-	<div class="span12 material-form-container">
+	<div class="material-form-container">
 		<ul class="nav nav-tabs">
 			{% for type in search_types %}
 				<li role="presentation" {% if type.0 in request.path %}class="active"{% endif %}>

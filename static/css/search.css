@@ -363,25 +363,25 @@
   width: 100%;
 }
 
-td.search-providers div {
+.search-providers > div {
   display:flex;
   flex-direction:row;
   width:100%;
   justify-content:center;
 }
 
-td.search-providers input[type=checkbox] {
+.search-providers input[type=checkbox] {
   display:none;
 }
 
-td.search-providers label {
+.search-providers label {
   display:block;
   margin:0.1em;
 }
 
-td.search-providers label span {
+.search-providers label > span {
   display:block;
-  background:gray;
+  background:#333;
   color:white;
   opacity:0.5;
   transition:opacity 0.5s ease-in-out;
@@ -397,21 +397,21 @@ td.search-providers label span {
   margin-top:-0.2em;
 }
 
-td.search-providers div input:checked + span {
+.search-providers div input:checked + span {
   opacity:1.0
 }
 
-td.search-providers div input[value=VKontakte] + span,
+.search-providers div input[value=VKontakte] + span,
 .provider.VKontakte {
   background:#4d6f93;
 }
 
-td.search-providers div input[value=Instagram] + span,
+.search-providers div input[value=Instagram] + span,
 .provider.Instagram {
   background:#305f87;
 }
 
-td.search-providers div input[value=YouTube] + span,
+.search-providers div input[value=YouTube] + span,
 .provider.YouTube {
   background:#c3191e;
 }
@@ -422,4 +422,42 @@ td.search-providers div input[value=YouTube] + span,
   width:80%;
   justify-content:center;
   align-content: stretch;
+}
+
+.document-search .form-group {
+    display:flex;
+}
+.document-search .form-group input {
+    flex:9;
+}
+.document-search .form-group button {
+    flex:1;
+}
+
+.document-search .search-providers {
+    display:block;
+    width:100%;
+    text-align:center;
+}
+
+.document-search .search-providers .provider {
+    display:inline-block;
+}
+
+.document-search .search-providers .provider > span {
+    background:#3a4953;
+}
+
+.document-search .search-providers .status {
+    display:inline-block;
+    width:6em;
+}
+.document-search .search-providers .status > * {
+    padding-left:1em;
+}
+.document-search .search-providers .status > .running {
+    text-align:center;
+}
+.document-search .search-providers .status > .count {
+    text-align:right;
 }
