@@ -8,7 +8,8 @@ from core.auth import perm
 from django.contrib.auth import views as auth_views
 from registration.views import ActivationView
 
-from id.views import ProfileRegistrationView, logout, NotificationSeen, NotificationStream
+from core.views import NotificationSeen, NotificationStream
+from id.views import ProfileRegistrationView, logout
 from id.forms import ProfileRegistrationForm, FeedbackForm
 
 js_info_dict = {
@@ -67,6 +68,8 @@ urlpatterns = patterns('',
     url(r'^accounts/social/', include('social_auth.urls')),
 
     url(r'^notifications/seen/(?P<pk>([\d]+|all))/', perm('user', NotificationSeen), name='notification_seen'),
+    url(r'^notifications/stream/', perm('user', NotificationStream), name='notification_stream'),
+    url(r'^notifications/', perm('user', TemplateView, template_name='notifications.jinja'), name='notifications'),
 
     url(r'^search/', include('search.urls')),
     url(r'^ticket/', include('ticket.urls')),

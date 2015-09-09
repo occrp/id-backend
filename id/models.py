@@ -226,7 +226,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         return {'id': self.key.urlsafe(), 'text': self.display_name}
 
     def __unicode__(self):
-        return self.display_name
+        return self.display_name.encode("utf-8")
 
     @property
     def requester_type_verbose(self):

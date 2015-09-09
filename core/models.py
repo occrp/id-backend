@@ -52,9 +52,12 @@ class Notification(models.Model):
         return reverse_lazy(self.url_base, kwargs=self.get_urlparams())
 
     @property
+    def url(self):
+        return self.get_url()
+
+    @property
     def channel(self):
-        ":".join([self.project, self.module, self.model, self.instance, self.action])
-        # = models.CharField(max_length=200)
+        return ":".join([self.project, self.module, self.model, str(self.instance), self.action])
 
     def channel_components(self, channel):
         components = ("project", "module", "model", "instance", "action")
