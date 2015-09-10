@@ -1,8 +1,7 @@
 # docker compose config
 # http://docs.docker.com/compose/
 #
-# this is the production configuration
-# if you're looking for data import config, use dataimports.yml as your
+# this is the production, testing and dataimports configuration
 # compose file
 # 
 id2:
@@ -63,6 +62,7 @@ id2dataimports:
   command: /bin/bash
 
 # postgres
+# TODO FIXME before we go to production with this!
 postgres:
   image: postgres
   volumes:
