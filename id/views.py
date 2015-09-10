@@ -16,6 +16,7 @@ class ProfileRegistrationView(RegistrationView):
 
     disallowed_url = REGISTRATION_CLOSED_URL
     success_url = REGISTRATION_SUCCESS_URL
+    fallback_redirect_url='/'
 
 
     def registration_allowed(self, request):
@@ -32,6 +33,12 @@ class ProfileRegistrationView(RegistrationView):
 
         """
         return form.save()
+    
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return HttpResponseRedirect(self.fallback_redirect_url)
+        else:
+            return super(ProfileRegistrationView, self).dispatch(request, *args, **kwargs)
 
 
 def logout(request, next_page=None,
