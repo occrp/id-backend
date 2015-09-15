@@ -11,8 +11,6 @@ id2:
   links:
     - postgres
     - elasticsearch
-  volumes:
-    - "settings/settings_local.py-docker:/usr/src/id2/settings/settings_local.py"
 
 # development version
 id2dev:
@@ -23,7 +21,6 @@ id2dev:
     - postgres
     - elasticsearch
   volumes:
-    - "settings/settings_local.py-docker:/usr/src/id2/settings/settings_local.py"
     # explicitly bind-mounting each and every directory
     # because bower
     - "./tools:/usr/src/id2/tools"
@@ -55,7 +52,6 @@ id2dataimports:
     - elasticsearch
   volumes:
     - "./:/usr/src/id2/"
-    - "settings/settings_local.py-docker:/usr/src/id2/settings/settings_local.py"
     - "../export-prod/:/data"
     - "../google_appengine/:/usr/src/google_appengine/"
     - "../investigative-dashboard/:/usr/src/id/"

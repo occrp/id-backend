@@ -31,9 +31,7 @@ RUN npm install -g bower
 
 # these are volume-mounted now
 COPY . /usr/src/id2/
-RUN rm -f /usr/src/id2/settings/settings_local.py /usr/src/id2/settings/settings_local.pyc
 RUN cd /usr/src/id2/ && find ./ -iname '*.pyc' -exec rm -rf '{}' \;
-#COPY ./settings/settings_local.py-docker /usr/src/id2/settings/settings_local.py
 
 # bower static resources setup
 RUN cd static/ && bower --allow-root install
