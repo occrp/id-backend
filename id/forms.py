@@ -114,7 +114,7 @@ class ProfileRegistrationForm(forms.Form):
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
-        exclude = ('user',)
+        exclude = ('user', 'password', 'last_login', 'email', 'date_joined')
         model = models.Profile
 
 
@@ -150,4 +150,3 @@ class ScraperRequestForm(forms.ModelForm):
 class FeedbackForm(forms.ModelForm):
     class Meta:
         model = models.Feedback
-        
