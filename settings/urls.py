@@ -88,25 +88,7 @@ urlpatterns = patterns('',
 )
 
 handler400 = errors._400
+handler401 = errors._401
 handler403 = errors._403
 handler404 = errors._403
 handler500 = errors._500
-
-
-"""
-    url(r'/file/sharing/<entity_id:.+>/', h.SharingHandler, name='share_files'),
-    url(r'/file/oauth_success/', h.OAuthSuccess, name='oauth_success'),
-    url(r'/tasks/groups_sync/', t.GroupSyncTask, name='groups_sync_task'),
-    url(r'/entity/view/', h.ViewEntityHandler, name='entity_view'),
-    url(r'/admin/approve_account/<account_request_key:.+>/', h.AccountRequestActionHandler, name='account_request_approval'),
-    url(r'/admin/inline_relationship/', h.InlineRelationshipHandler, name='inline_relationship'),
-    url(r'/admin/relationship_types/', h.RelationshipTypesHandler, name='relationship_types'),
-    url(r'/import_external_dbs/', h.ImportExternalDBsHandler, name='import_external_dbs'),
-    url(r'/country_report/', h.CountryReportHandler, name='country_report'),
-    url(r'/fixitall/', h.TemporaryFixHandler, name='temporary_fix'),
-    url(r'/migrate_account_requests/', h.MigrateAccountRequestsHandler, name='migrate_account_requests'),
-    # url(rdrive_decorator.callback_path, drive_decorator.callback_handler()), h.RequestMailHandler.mapping(),
-    url(r'/_select2/responder/', h.Select2ResponderHandler, name='select2_responder'),
-    url(r'/admin/usergroups.csv', h.UserGroupsCsvHandler, name='usergroups_csv'),
-    url(r'/admin/test_search', h.TestSearchHandler, name='test_search')
-"""
