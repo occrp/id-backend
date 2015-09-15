@@ -23,24 +23,24 @@ id2dev:
   volumes:
     # explicitly bind-mounting each and every directory
     # because bower
-    - "./tools:/usr/src/id2/tools"
-    - "./core:/usr/src/id2/core"
-    - "./settings:/usr/src/id2/settings"
-    - "./locale:/usr/src/id2/locale"
-    - "./doc:/usr/src/id2/doc"
-    - "./projects:/usr/src/id2/projects"
-    - "./robots:/usr/src/id2/robots"
-    - "./data:/usr/src/id2/data"
-    - "./ticket:/usr/src/id2/ticket"
-    - "./templates:/usr/src/id2/templates"
-    - "./search:/usr/src/id2/search"
-    - "./id:/usr/src/id2/id"
-    - "./podaci:/usr/src/id2/podaci"
-    - "./static/js:/usr/src/id2/static/js"
-    - "./static/css:/usr/src/id2/static/css"
-    - "./static/html:/usr/src/id2/static/html"
-    - "./static/less:/usr/src/id2/static/less"
-    - "./static/img:/usr/src/id2/static/img"
+    - "./tools:/srv/tools/investigative-dashboard-2/tools"
+    - "./core:/srv/tools/investigative-dashboard-2/core"
+    - "./settings:/srv/tools/investigative-dashboard-2/settings"
+    - "./locale:/srv/tools/investigative-dashboard-2/locale"
+    - "./doc:/srv/tools/investigative-dashboard-2/doc"
+    - "./projects:/srv/tools/investigative-dashboard-2/projects"
+    - "./robots:/srv/tools/investigative-dashboard-2/robots"
+    - "./data:/srv/tools/investigative-dashboard-2/data"
+    - "./ticket:/srv/tools/investigative-dashboard-2/ticket"
+    - "./templates:/srv/tools/investigative-dashboard-2/templates"
+    - "./search:/srv/tools/investigative-dashboard-2/search"
+    - "./id:/srv/tools/investigative-dashboard-2/id"
+    - "./podaci:/srv/tools/investigative-dashboard-2/podaci"
+    - "./static/js:/srv/tools/investigative-dashboard-2/static/js"
+    - "./static/css:/srv/tools/investigative-dashboard-2/static/css"
+    - "./static/html:/srv/tools/investigative-dashboard-2/static/html"
+    - "./static/less:/srv/tools/investigative-dashboard-2/static/less"
+    - "./static/img:/srv/tools/investigative-dashboard-2/static/img"
     
 # dataimports version
 id2dataimports:
@@ -51,7 +51,7 @@ id2dataimports:
     - postgres
     - elasticsearch
   volumes:
-    - "./:/usr/src/id2/"
+    - "./:/srv/tools/investigative-dashboard-2/"
     - "../export-prod/:/data"
     - "../google_appengine/:/usr/src/google_appengine/"
     - "../investigative-dashboard/:/usr/src/id/"
