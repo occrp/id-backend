@@ -17,12 +17,12 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -
 
 #RUN export DEBIAN_FRONTEND=noninteractive && apt-get -y autoremove
     
-RUN mkdir -p /usr/src/id2
-WORKDIR /usr/src/id2
+RUN mkdir -p /srv/tools/investigative-dashboard-2
+WORKDIR /srv/tools/investigative-dashboard-2/
 
 # python setup
 RUN pip install --upgrade pip
-COPY requirements.txt /usr/src/id2/
+COPY requirements.txt /srv/tools/investigative-dashboard-2/
 RUN pip install -r requirements.txt
 
 # bower setup
@@ -30,8 +30,8 @@ RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN npm install -g bower
 
 # these are volume-mounted now
-COPY . /usr/src/id2/
-RUN cd /usr/src/id2/ && find ./ -iname '*.pyc' -exec rm -rf '{}' \;
+COPY . /srv/tools/investigative-dashboard-2/
+RUN cd /srv/tools/investigative-dashboard-2/ && find ./ -iname '*.pyc' -exec rm -rf '{}' \;
 
 # bower static resources setup
 RUN cd static/ && bower --allow-root install
@@ -41,6 +41,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get -y purge npm nodejs git && 
 # this can be volume-mounted
 RUN mkdir -p /var/log/id2/
 
+VOLUME ["/var/log/id2/", "/srv/tools/investigative-dashboard-2/static/"]
+
 EXPOSE 8000
 #CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-CMD ["/usr/src/id2/docker.sh"]
+CMD ["/srv/tools/investigative-dashboard-2/docker.sh"]
