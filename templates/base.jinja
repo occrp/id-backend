@@ -45,7 +45,7 @@
                 <ul class="nav">
                     <a href="/"><img style="max-height:40px; padding-top:7px; padding-right: 20px;" src="/static/img/id-logo-2.png"/></a>
                 </ul>
-                {% if request.path != '/' or user.is_authenticated() %}
+                {% if request.path != '/' or (user and user.is_authenticated()) %}
                 <ul class="nav">
                     <li  class="{% if url('search') in request.path %}active{% endif %}">
                         <a href="{{ url('search') }}"><i class="fa fa-search"></i> {% trans %}Search{% endtrans %}</a>
@@ -68,7 +68,7 @@
                 {% endif %}
                 <ul class="nav pull-right">
 
-                {% if user.is_authenticated() %}
+                {% if (user and user.is_authenticated()) %}
                     {% include "partials/_notifications.jinja" %}
 
                     <li class="dropdown">
