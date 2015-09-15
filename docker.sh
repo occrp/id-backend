@@ -22,9 +22,12 @@ while ! python manage.py migrate --noinput; do
     echo      '#####################################################################'
 done
 
-    
 echo -e '\n#####################################################################'
-echo      '# loading fixtures...'
+if echo -ne 'from django.conf import settings\nprint settings.DEBUG\n\n' | python manage.py shell 2>/dev/null | grep True > /dev/null; then
+    echo      '# DEBUG is True, loading fixtures...'
+else
+    echo      '# DEBUG is False, omitting fixtures...'
+fi
 echo      '#####################################################################'
 
 python manage.py loaddata 'id/fixtures/initial_data.json'
