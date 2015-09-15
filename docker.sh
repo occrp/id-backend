@@ -59,7 +59,7 @@ while true; do
     if [ $DEBUG -eq 0 ]; then
         python manage.py runserver 0.0.0.0:8000
     else
-        python manage.py runfcgi method=prefork host=0.0.0.0 port=8000
+        python manage.py runfcgi method=prefork host=0.0.0.0 port=8000 daemonize=false
     fi
     
     sleep 5
