@@ -202,7 +202,7 @@ def handle_folder_id(service, ticket_id, folder_id):
         return
 
     print '     +-- ticket : %s' % ticket_id
-    print '     +-- file   : %s' % f['localPath']
+    print '     +-- folder : %s' % folder_id
 
     # get file metadata
     file_info_list = []
