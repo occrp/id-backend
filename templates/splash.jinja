@@ -10,8 +10,10 @@
             <div>{% trans -%}Research. Understand. Expose.{%- endtrans %}</div>
             <div style="margin-top: 1em;">
                 <a href="{{url('about_id')}}" class="btn btn-large">{% trans %}Learn more{% endtrans %}</a>
+                {% if user and not user.is_authenticated() %}
                 <a href="{{url('login')}}" class="btn btn-large">{% trans %}Sign in{% endtrans %}</a>
                 <a href="{{url('registration_register')}}" class="btn btn-large">{% trans %}Register{% endtrans %}</a>
+                {% endif %}
             </div>
         </h2>
     </div>
