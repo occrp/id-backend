@@ -65,8 +65,6 @@ INSTALLED_APPS = (
     'id',
     'search',
     'podaci',
-    # 'osoba',
-    'robots',
     'ticket',
     'projects',
     'django_select2',
