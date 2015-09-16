@@ -109,10 +109,10 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
 
     # Requester fields
     industry = models.CharField(blank=True, max_length=32, choices=INDUSTRY_TYPES)
-    industry_other = models.CharField(blank=True, max_length=96)
+    industry_other = models.CharField(blank=True, max_length=256)
     media = models.CharField(blank=True, max_length=64, choices=MEDIA_TYPES)
     circulation = models.CharField(blank=True, max_length=64, choices=CIRCULATION_TYPES)
-    title = models.CharField(blank=True, max_length=96) # because 'Controleur des finances publiques / lutte contre la frise fiscale'...
+    title = models.CharField(blank=True, max_length=256) # because 'Controleur des finances publiques / lutte contre la frise fiscale'...
 
     # Volunteer fields
     interests = models.TextField(blank=True)
