@@ -4,6 +4,16 @@
 # this is the production, testing and dataimports configuration
 # compose file
 # 
+
+nginx:
+    image: nginx:1.7
+    volumes:
+        - "settings/nginx/:/etc/nginx/"
+    volumes_from:
+        - id2
+    links:
+        - id2
+
 id2:
   build: .
   expose:
