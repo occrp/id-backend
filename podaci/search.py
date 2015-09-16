@@ -1,7 +1,7 @@
 import logging
 import pyes
 
-from django.conf import settings
+from settings import settings
 from podaci.extract import get_file_text
 
 log = logging.getLogger(__name__)
@@ -49,7 +49,7 @@ def ensure_index(clear=False):
             conn.ensure_index(settings.PODACI_ES_INDEX, mappings=MAPPING,
                               clear=clear)
         except pyes.exceptions.ElasticSearchException as ese:
-            log.error("Failed to ensure the index exists. Is ElasticSearch" +
+            log.error("Failed to ensure the index exists. Is ElasticSearch " +
                       "running or do you need to regenerate the index?")
 
 
