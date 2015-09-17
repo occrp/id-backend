@@ -1,7 +1,7 @@
 import logging
 import pyes
 
-from settings import settings
+from django.conf import settings
 from podaci.extract import get_file_text
 
 log = logging.getLogger(__name__)
