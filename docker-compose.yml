@@ -21,6 +21,8 @@ id2:
   links:
     - postgres
     - elasticsearch
+  volumes:
+    - "podaci-data/:/data"
 
 # development version
 id2dev:
@@ -31,6 +33,7 @@ id2dev:
     - postgres
     - elasticsearch
   volumes:
+    - "podaci-data/:/data"
     # explicitly bind-mounting each and every directory
     # because bower
     - "./tools:/srv/tools/investigative-dashboard-2/tools"
@@ -62,7 +65,8 @@ id2dataimports:
     - elasticsearch
   volumes:
     - "./:/srv/tools/investigative-dashboard-2/"
-    - "../export-prod/:/data"
+    - "../export-prod/:/exported"
+    - "podaci-data/:/data"
     - "../google_appengine/:/usr/src/google_appengine/"
     - "../investigative-dashboard/:/usr/src/id/"
   command: /bin/bash
