@@ -46,6 +46,11 @@ function usage_and_help {
     echo "  - /usr/src/google_appengine"
     echo "  - /data"
     echo
+    echo "Paths can be set via command-line arguments, or via environment variables:"
+    echo " - \$ID_PATH"
+    echo " - \$GAE_PATH"
+    echo " - \$EXPORT_PATH"
+    echo
 }
 
 
