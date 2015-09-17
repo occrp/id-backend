@@ -6,7 +6,7 @@ FROM python:2.7.9
 # consult README.md for more information
 
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y \
-    mysql-client libmysqlclient-dev \
+    mysql-client libmysqlclient-dev unrar-free \
     gcc \
     npm \
     git \
