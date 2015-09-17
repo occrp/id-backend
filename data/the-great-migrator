@@ -7,6 +7,14 @@
 # and GDrive files to the new infrastructure
 #
 
+trap abort SIGINT
+function abort {
+    echo
+    echo "* * * ABORTED * * *"
+    echo 
+    exit 0
+}
+
 # display a general error message
 # $1 -- additional error msg to display
 function display_error {
@@ -42,9 +50,9 @@ function usage_and_help {
     echo "  $0 [/path/to/old_id [/path/to/google_appengine [/path/to/data/export_dir]]]"
     echo
     echo "By default, paths are compatible with docker-compose id2dataimports config:"
-    echo "  - /usr/src/id"
-    echo "  - /usr/src/google_appengine"
-    echo "  - /data"
+    echo "  - /usr/src/id               (old investigative-dashboard)"
+    echo "  - /usr/src/google_appengine (Google AppEngine API)"
+    echo "  - /exported                 (ID1 exported data and related temporary files)"
     echo
     echo "Paths can be set via command-line arguments, or via environment variables:"
     echo " - \$ID_PATH"
@@ -91,7 +99,7 @@ fi
 # required vars -- set to defaults if not set
 [ -z ${ID_PATH+x} ]     && ID_PATH="/usr/src/id"
 [ -z ${GAE_PATH+x} ]    && GAE_PATH="/usr/src/google_appengine"
-[ -z ${EXPORT_PATH+x} ] && EXPORT_PATH="/data"
+[ -z ${EXPORT_PATH+x} ] && EXPORT_PATH="/exported"
 
 # need it for later
 CWD="$( pwd )"
