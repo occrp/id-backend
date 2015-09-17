@@ -2,6 +2,7 @@ import os
 import io
 import shutil
 import zipfile
+import rarfile
 import tempfile
 from hashlib import sha256
 
@@ -27,6 +28,8 @@ def unpacked_fhs(filename):
     is a simple file, return just one tuple. """
     root, ext = os.path.splitext(filename)
     ext = ext.strip('.').strip().lower()
+    
+    # zip
     if ext == 'zip' and zipfile.is_zipfile(filename):
         tempdir = tempfile.mkdtemp()
         with zipfile.ZipFile(filename, 'r') as zf:
@@ -37,6 +40,20 @@ def unpacked_fhs(filename):
                 name = name.decode('utf-8', 'replace')
                 yield name, zfh
         shutil.rmtree(tempdir)
+    
+    # rar
+    elif ext == 'rar' and rarfile.is_rarfile(filename):
+        tempdir = tempfile.mkdtemp()
+        with rarfile.RarFile(filename, 'r') as rf:
+            for name in rf.namelist():
+                if name.endswith(os.sep):
+                    continue
+                rfh = BufferedFile(rf.open(name, 'r'))
+                name = name.decode('utf-8', 'replace')
+                yield name, rfh
+        shutil.rmtree(tempdir)
+    
+    # everything else
     else:
         with open(filename, 'r') as fh:
             yield filename, fh
