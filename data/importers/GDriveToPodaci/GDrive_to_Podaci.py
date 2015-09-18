@@ -161,7 +161,7 @@ def handle_gdrive_file(service, f):
 def podacify_file(imported_files, f, ticket=None):
     print '+-- podacifying: %s' % f['localPath']
     ### FILE
-    # create the file
+    # create the file, extracting ZIP/RAR archives if needed
     for filename, fh in unpacked_fhs(f['localPath']):
         print '     +-- sub-file: %s' % filename
         pfile = File.create_from_filehandle(fh, filename=filename,
