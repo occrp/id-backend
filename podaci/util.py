@@ -24,7 +24,7 @@ def sha256sum(filename, blocksize=65536):
 
 def unpacked_fhs(filename):
     """ Given a file name, check if is in a well-known packaging format (e.g.
-    ZIP files) and return an iterator of file handles and file names. If it
+    ZIP or RAR files) and return an iterator of file handles and file names. If it
     is a simple file, return just one tuple. """
     root, ext = os.path.splitext(filename)
     ext = ext.strip('.').strip().lower()
@@ -37,6 +37,7 @@ def unpacked_fhs(filename):
                 if name.endswith(os.sep):
                     continue
                 zfh = BufferedFile(zf.open(name, 'r'))
+                name = name.split('/')[-1]
                 name = name.decode('utf-8', 'replace')
                 yield name, zfh
         shutil.rmtree(tempdir)
@@ -49,6 +50,7 @@ def unpacked_fhs(filename):
                 if name.endswith(os.sep):
                     continue
                 rfh = BufferedFile(rf.open(name, 'r'))
+                name = name.split('/')[-1]
                 name = name.decode('utf-8', 'replace')
                 yield name, rfh
         shutil.rmtree(tempdir)
