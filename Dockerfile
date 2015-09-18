@@ -7,7 +7,7 @@ FROM python:2.7.9
 
 RUN echo 'deb http://httpredir.debian.org/debian jessie non-free' > /etc/apt/sources.list.d/debian-non-free.list \
     && export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get -y upgrade && apt-get -y dist-upgrade && apt-get install -y \
-    mysql-client libmysqlclient-dev unrar-nonfree \
+    mysql-client libmysqlclient-dev unrar \
     gcc \
     npm \
     git \
