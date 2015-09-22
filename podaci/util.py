@@ -39,7 +39,10 @@ def unpacked_fhs(filename):
         with extractors[ext][0](filename, 'r') as archive:
             for name in archive.namelist():
                 filename = os.path.basename(name).decode('utf-8', 'replace')
+                info = archive.getinfo(name)
                 if not filename:
+                    continue
+                if hasattr(info, 'isdir') and info.isdir():
                     continue
                 source = archive.open(name)
                 tmpfilename = os.path.join(tempdir, filename)
