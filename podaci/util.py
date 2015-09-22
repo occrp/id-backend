@@ -43,13 +43,13 @@ def unpacked_fhs(filename):
                     continue
                 source = archive.open(name)
                 tmpfilename = os.path.join(tempdir, filename)
-                target = file(, "wb")
+                target = file(tmpfilename, "wb")
                 with source, target:
                     shutil.copyfileobj(source, target)
                 yield filename, open(tmpfilename, "rb")
                 os.remove(tmpfilename)
         shutil.rmtree(tempdir)
-    
+
     # everything else
     else:
         with open(filename, 'r') as fh:
