@@ -28,33 +28,31 @@ def unpacked_fhs(filename):
     is a simple file, return just one tuple. """
     root, ext = os.path.splitext(filename)
     ext = ext.strip('.').strip().lower()
-    
-    # zip
-    if ext == 'zip' and zipfile.is_zipfile(filename):
+
+    extractors = {
+        "zip": (zipfile.ZipFile, zipfile.is_zipfile),
+        "rar": (rarfile.RarFile, rarfile.is_rarfile),
+    }
+
+    if ext in extractors and extractors[ext][1](filename):
         tempdir = tempfile.mkdtemp()
-        with zipfile.ZipFile(filename, 'r') as zf:
-            for name in zf.namelist():
-                if name.endswith(os.sep):
+        with extractors[ext][0](filename, 'r') as archive:
+            for name in archive.namelist():
+                filename = os.path.basename(name).decode('utf-8', 'replace')
+                info = archive.getinfo(name)
+                if not filename:
                     continue
-                zfh = BufferedFile(zf.open(name, 'r'))
-                name = name.split('/')[-1]
-                name = name.decode('utf-8', 'replace')
-                yield name, zfh
-        shutil.rmtree(tempdir)
-    
-    # rar
-    elif ext == 'rar' and rarfile.is_rarfile(filename):
-        tempdir = tempfile.mkdtemp()
-        with rarfile.RarFile(filename, 'r') as rf:
-            for name in rf.namelist():
-                if name.endswith(os.sep):
+                if hasattr(info, 'isdir') and info.isdir():
                     continue
-                rfh = BufferedFile(rf.open(name, 'r'))
-                name = name.split('/')[-1]
-                name = name.decode('utf-8', 'replace')
-                yield name, rfh
+                source = archive.open(name)
+                tmpfilename = os.path.join(tempdir, filename)
+                target = file(tmpfilename, "wb")
+                with source, target:
+                    shutil.copyfileobj(source, target)
+                yield filename, open(tmpfilename, "rb")
+                os.remove(tmpfilename)
         shutil.rmtree(tempdir)
-    
+
     # everything else
     else:
         with open(filename, 'r') as fh:

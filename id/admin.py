@@ -116,16 +116,14 @@ class Feedback(FeedbackAuthMixin, CreateView):
     # fill-in initial data for logged-in users
     def get_initial(self):
         if self.request.user.is_authenticated():
-            return { 
+            return {
                 'email': self.request.user.email,
                 'name' : ' '.join([self.request.user.first_name, self.request.user.last_name])
             }
         else:
             return {}
 
-
     def get_form(self, form_class):
-        
         # if we have an authenticated user, we have the user data
         if self.request.user.is_authenticated():
             # copy the data, as it's immutable in request
@@ -137,33 +135,25 @@ class Feedback(FeedbackAuthMixin, CreateView):
                 rdata['name']  = ' '.join([self.request.user.first_name, self.request.user.last_name])
             # set it back
             self.request.POST = rdata
-            
         return super(Feedback, self).get_form(form_class)
 
 
 class FeedbackThanks(FeedbackAuthMixin, TemplateView):
     template_name = "admin/feedback_thanks.jinja"
 
-    def get(self, request, *args, **kwargs):
-        # get the response
-        response = super(FeedbackThanks, self).get(request, *args, **kwargs)
-
+    def remove_clearance(self, request, response):
         # remove the feedback clearance
         if 'cleared_for_feedback' in request.session:
             del request.session['cleared_for_feedback']
             response.request = request
-
-        # we're done
         return response
+
+    def get(self, request, *args, **kwargs):
+        # get the response
+        response = super(FeedbackThanks, self).get(request, *args, **kwargs)
+        return self.remove_clearance(request, response)
 
     def post(self, request, *args, **kwargs):
         # get the response
         response = super(FeedbackThanks, self).post(request, *args, **kwargs)
-
-        # remove the feedback clearance
-        if 'cleared_for_feedback' in request.session:
-            del request.session['cleared_for_feedback']
-            response.request = request
-
-        # we're done
-        return response
+        return self.remove_clearance(request, response)
