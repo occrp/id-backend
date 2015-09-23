@@ -23,6 +23,9 @@ from id.models import *
 from ticket.models import *
 # from podaci import File, Tag, FileSystem
 
+from GDrive_to_Podaci import handle_gdrive_file, podacify_file
+from pprint import pprint
+
 imported_files = {}
 
 
@@ -84,15 +87,17 @@ def retrieve_all_files(service, dfolder):
             # make sure we won't lose them in case of a fsckup
             dump_pickled_filelist(files['items'], i)
             for f in files['items']:
-                from GDrive_to_Podaci import handle_gdrive_file, podacify_file
-                from pprint import pprint
                 if 'google-apps.folder' in f['mimeType']:
                     continue
-
+                
+                if not 'originalFilename' in f:
+                    f['originalFilename'] = f['title'].replace(os.sep, '_')
+                    
                 if f['id'] in imported_files:
                     print '+-- file: %s already imported' % f['originalFilename']
                     continue
-
+                
+                # what if the id is different but the md5 and filename is the same?
                 f['localPath'] = os.path.join(dfolder, f['originalFilename'])
                 print '+-- file: %s (md5: %s)' % (f['originalFilename'], f['md5Checksum'])
 
