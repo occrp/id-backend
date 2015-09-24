@@ -62,6 +62,15 @@ def dump_pickled_filelist(files, i):
         print 'Dumping %d files metadata to %s has failed!..' % (len(files), gdrive_filelist_file)
 
 
+def dump_pickled_failed_files(fails, i):
+    try:
+        with open('%s.%d' % (gdrive_failed_files_file, i), 'wb') as gflfile:
+            pickle.dump(fails, gflfile)
+        print "Dumped %d failed files metadata to %s." % (len(fails), gdrive_failed_files_file)
+    except:
+        print 'Dumping %d failed files metadata to %s has failed!..' % (len(fails), gdrive_failed_files_file)
+
+
 def retrieve_all_files(service, dfolder):
     """Retrieve a list of File resources.
 
@@ -73,6 +82,7 @@ def retrieve_all_files(service, dfolder):
     print 'Retrieving file list for the GDrive root folder...'
     result = []
     i = 0
+    failed_files = []
     page_token = None
     while True:
         try:
@@ -86,12 +96,14 @@ def retrieve_all_files(service, dfolder):
             print '+-- %d files metadata retrieved (%d in total)...' % (len(files['items']), len(result))
             # make sure we won't lose them in case of a fsckup
             dump_pickled_filelist(files['items'], i)
+            dump_pickled_failed_files(failed_files, i)
             for f in files['items']:
                 if 'google-apps.folder' in f['mimeType']:
                     continue
                 
-                if not 'originalFilename' in f:
-                    f['originalFilename'] = f['title'].replace(os.sep, '_')
+                if not 'originalFilename' in f or not 'md5Checksum' in f:
+                    failed_files.append(f)
+                    continue
                     
                 if f['id'] in imported_files:
                     print '+-- file: %s already imported' % f['originalFilename']
@@ -133,6 +145,14 @@ if __name__ == "__main__":
             imported_files_file
           )
         ), 'GDrive.filelist')
+          
+    # pickle and save the failed files
+    gdrive_failed_files_file = os.path.join(
+        os.path.dirname(
+          os.path.abspath(
+            imported_files_file
+          )
+        ), 'GDrive.failedfiles')
 
     # the "d" is silent
     print "Setting up django..."
