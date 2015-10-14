@@ -106,7 +106,7 @@ def retrieve_all_files(service, dfolder):
                     continue
                     
                 if f['id'] in imported_files:
-                    print '+-- file: %s already imported' % f['originalFilename']
+                    print '+-- file: %s (%s) already imported' % (f['originalFilename'], f['id'])
                     continue
                 
                 # what if the id is different but the md5 and filename is the same?

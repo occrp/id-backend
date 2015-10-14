@@ -11,6 +11,7 @@ trap abort SIGINT
 function abort {
     echo
     echo "* * * ABORTED * * *"
+    echo "hit any key to quit"
     echo 
     exit 0
 }
@@ -105,38 +106,50 @@ fi
 CWD="$( pwd )"
 DATAWD="$( readlink -f "$( dirname  "$0" )" )"
 
-#
-# BigTable export
-#
-echo
-echo "+-- BigTable export script"
-cd "$DATAWD/exporters/"
+# do we need export and import of user and ticket data?
+if  [ -s "$EXPORT_PATH/UserProfile.csv" ] && \
+    [ -s "$EXPORT_PATH/Ticket.csv" ] && \
+    [ -s "$EXPORT_PATH/TicketUpdate.csv" ] && \
+    [ -s "$EXPORT_PATH/TicketCharge.csv" ]; then
 
-./bigtable-export.sh --prod "$ID_PATH" "$GAE_PATH" "$EXPORT_PATH/" || display_error_and_quit "Error exporting data from Google AppEngine"
+echo "+-- not running BigTable export script, nor importers for UserProfiles, Tickets, TicketUpdates, and TicketCharges: CSV files exist"
 
-#
-# UserProfile and Ticket data import
-#
+else
 
-echo
-echo "+-- importing..."
-cd "$DATAWD/importers/ID1_Import"
+    #
+    # BigTable export
+    #
+    echo
+    echo "+-- BigTable export script"
+    cd "$DATAWD/exporters/"
 
-echo
-echo "    +-- UserProfiles..."
-python UserProfiles_to_DjangoUsers.py "$EXPORT_PATH/UserProfile.csv" || display_error_and_quit "Error importing UserProfiles to ID2"
+    ./bigtable-export.sh --prod "$ID_PATH" "$GAE_PATH" "$EXPORT_PATH/" || display_error_and_quit "Error exporting data from Google AppEngine"
 
-echo
-echo "    +-- Tickets..."
-python Tickets_to_ID2Tickets.py "$EXPORT_PATH/Ticket.csv" || display_error_and_quit "Error importing Tickets to ID2"
- 
-echo
-echo "    +-- TicketUpdates..."
-python TicketUpdates_to_ID2TicketUpdates.py "$EXPORT_PATH/TicketUpdate.csv" || display_error_and_quit "Error importing TicketUpdates to ID2"
- 
-echo
-echo "    +-- TicketCharges..."
-python TicketCharges_to_ID2TicketCharges.py "$EXPORT_PATH/TicketCharge.csv" || display_error_and_quit "Error importing TicketCharges to ID2"
+    #
+    # UserProfile and Ticket data import
+    #
+
+    echo
+    echo "+-- importing..."
+    cd "$DATAWD/importers/ID1_Import"
+
+    echo
+    echo "    +-- UserProfiles..."
+    python UserProfiles_to_DjangoUsers.py "$EXPORT_PATH/UserProfile.csv" || display_error_and_quit "Error importing UserProfiles to ID2"
+
+    echo
+    echo "    +-- Tickets..."
+    python Tickets_to_ID2Tickets.py "$EXPORT_PATH/Ticket.csv" || display_error_and_quit "Error importing Tickets to ID2"
+    
+    echo
+    echo "    +-- TicketUpdates..."
+    python TicketUpdates_to_ID2TicketUpdates.py "$EXPORT_PATH/TicketUpdate.csv" || display_error_and_quit "Error importing TicketUpdates to ID2"
+    
+    echo
+    echo "    +-- TicketCharges..."
+    python TicketCharges_to_ID2TicketCharges.py "$EXPORT_PATH/TicketCharge.csv" || display_error_and_quit "Error importing TicketCharges to ID2"
+
+fi
 
 #
 # Ticket-related files
@@ -160,9 +173,16 @@ python GDrive_to_Podaci.py "$ID_PATH" "$EXPORT_PATH/Ticket.drivefolderids" || di
 # rest of GoogleDrive files
 #
 
+# should we?
 echo
-echo "+-- importing the rest of files..."
-python Rest_of_GDrive_to_Podaci.py "$ID_PATH" "$EXPORT_PATH/GDrive.importedfiles"  || display_error_and_quit "Error importing the rest of GoogleDrive files to ID2"
+echo "Should the rest of GDrive files be imported now? (y/n)"
+read IMPORT_REST
+if [ "$IMPORT_REST" == 'y' ] || [ "$IMPORT_REST" == 'Y' ]; then
+
+    echo "+-- importing the rest of files..."
+    python Rest_of_GDrive_to_Podaci.py "$ID_PATH" "$EXPORT_PATH/GDrive.importedfiles"  || display_error_and_quit "Error importing the rest of GoogleDrive files to ID2"
+
+fi
 
 #
 # we're done!
