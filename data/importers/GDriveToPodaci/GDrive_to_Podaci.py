@@ -163,6 +163,7 @@ def podacify_file(imported_files, f, ticket=None):
     ### FILE
     # create the file, extracting ZIP/RAR archives if needed
     for filename, fh in unpacked_fhs(f['localPath']):
+        filename = os.path.basename(filename)
         print '     +-- sub-file: %s' % filename
         pfile = File.create_from_filehandle(fh, filename=filename,
                                             ticket=ticket)
