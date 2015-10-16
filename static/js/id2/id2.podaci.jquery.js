@@ -1,3 +1,7 @@
+/*
+ * general utility stuff
+ */
+
 // using jQuery
 function getCookie(name) {
     var cookieValue = null;
@@ -40,6 +44,10 @@ function filesizeformat(fileSizeInBytes) {
 };
 
 
+/*
+ * general ID2 podaci stuff
+ */
+
 var ID2 = ID2 || {};
 ID2.Podaci = {};
 
@@ -72,6 +80,11 @@ ID2.Podaci.init = function() {
 
     ID2.Podaci.init_fileupload();
 };
+
+
+/*
+ * search
+ */
 
 ID2.Podaci.search = function(q) {
     ID2.Podaci.results_clear();
@@ -182,26 +195,6 @@ ID2.Podaci.render_file_to_resultset = function(file) {
     $("#podaci-file-list").append(fo);
 }
 
-ID2.Podaci.selection_drag = function(e) {
-    // ...
-};
-
-ID2.Podaci.selection_drop = function(e) {
-    e.preventDefault();
-    $(e.target).removeClass("drop-on-me");
-    var targetli = $(e.target).closest("li");
-    var id = $(e.target).data("collectionid")
-    $.ajax("/podaci/collection/" + id + "/", {
-        type: "PATCH",
-        data: {"add_files": ID2.Podaci.selection}
-    }).done(function(data) {
-        ID2.Podaci.add_collection(data, targetli);
-        console.log(data);
-    }).fail(function(data) {
-        console.log(data);
-    });
-};
-
 ID2.Podaci.search_term_add = function(term) {
     var v = $("#searchbox").val();
     v += " " + term;
@@ -224,6 +217,11 @@ ID2.Podaci.search_term_toggle = function(term) {
     ID2.Podaci.search_term_remove(term);
   }
 };
+
+
+/*
+ * collections support
+ */
 
 ID2.Podaci.update_collections = function() {
     $.getJSON("/podaci/collection/", function(data) {
@@ -297,8 +295,31 @@ ID2.Podaci.update_selection = function() {
 };
 
 
+
+
+ID2.Podaci.create_collection_submit = function() {
+    $.post('/podaci/collection/', $("#podaci_create_collection_form").serialize(),
+            function(data) {
+        $("#podaci_create_collection_modal").modal("hide");
+        ID2.Podaci.add_collection(data);
+    }).fail(function(data) {
+        console.log("ERROR: ", data);
+        if (data.responseJSON.non_field_errors[0] == "The fields name, owner must make a unique set.") {
+            $("#podaci_create_collection_error").html("You already have a collection with this name.");
+            $("#podaci_create_collection_error").show();
+        }
+
+    });
+};
+
+
+/*
+ * selecting and deselecting
+ */
+
 ID2.Podaci.select = function(selection) {
     ID2.Podaci.selection = _.union(ID2.Podaci.selection, selection);
+    console.log(selection)
     ID2.Podaci.update_selection();
 };
 
@@ -344,8 +365,39 @@ ID2.Podaci.select_toggle_checkbox = function(e) {
 }
 
 
+/*
+ * drag and drop dead
+ */
+
+ID2.Podaci.selection_drag = function(e) {
+    // ...
+    ID2.Podaci.select([parseInt($(e.currentTarget).attr('data-id'))])
+};
+
+ID2.Podaci.selection_drop = function(e) {
+    e.preventDefault();
+    $(e.target).removeClass("drop-on-me");
+    var targetli = $(e.target).closest("li");
+    var id = $(e.target).data("collectionid")
+    $.ajax("/podaci/collection/" + id + "/", {
+        type: "PATCH",
+        data: {"add_files": ID2.Podaci.selection}
+    }).done(function(data) {
+        ID2.Podaci.add_collection(data, targetli);
+        console.log(data);
+        ID2.Podaci.select_none()
+    }).fail(function(data) {
+        console.log(data);
+    });
+};
+
+
+/*
+ * file upload
+ */
+
 ID2.Podaci.init_fileupload = function() {
-    var col = $('#podaci-file-list'),
+    var col = $('#podaci-file-list-container'),
         progressbar = $('.podaci_upload_progress'),
         files_form = $('.podaci_upload_files_form');
     ID2.Podaci.results_cache = [];
@@ -355,14 +407,16 @@ ID2.Podaci.init_fileupload = function() {
     col.on("dragover", function(e) {
         e.preventDefault();
         col.addClass("dropzone");
-        col.empty();
+        //col.children('#podaci-file-list').empty();
     });
+    
     col.on("dragleave", function(e) {
         e.preventDefault();
         col.removeClass("dropzone");
         ID2.Podaci.render_resultset();
     });
-    col.on("drop", function(e) {
+    
+    col.children('.dropzone-to-be').on("drop", function(e) {
         ID2.Podaci.results_clear();
         col.removeClass("dropzone");
     });
@@ -373,9 +427,10 @@ ID2.Podaci.init_fileupload = function() {
         done: function (e, data) {
             setTimeout(ID2.Podaci.refresh_files, 300);
         },
-        dropzone: $("#podaci-file-list"),
+        dropzone: $("#podaci-file-list-container > .dropzone-to-be"),
         disableImageResize: /Android(?!.*Chrome)|Opera/
             .test(window.navigator.userAgent),
+                                         
     }).on('fileuploadadd', function (e, data) {
         progressbar.show();
         files_form.hide();
@@ -385,6 +440,7 @@ ID2.Podaci.init_fileupload = function() {
             var linkcolumn = node.append('<td/>')
             linkcolumn.append('<a>'+file.name+'</a>');
         });
+        
     }).on('fileuploadprocessalways', function (e, data) {
         console.log("fileuploadprocessalways");
         var index = data.index,
@@ -405,9 +461,11 @@ ID2.Podaci.init_fileupload = function() {
                 .text('Upload')
                 .prop('disabled', !!data.files.error);
         }
+        
     }).on('fileuploadprogressall', function (e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
         progressbar.find('.progress-bar').css('width', progress + '%');
+        
     }).on('fileuploaddone', function (e, data) {
         ID2.Podaci.add_file_to_results(data.result);
         progressbar.hide();
@@ -419,6 +477,7 @@ ID2.Podaci.init_fileupload = function() {
         if($("#podaci-file-list").length == 0) {
           document.location.reload();
         }
+        
     }).on('fileuploadfail', function (e, data) {
         // FIXME: Test failure modes. Make this pretty.
         progressbar.hide();
@@ -449,6 +508,10 @@ ID2.Podaci.edit_users = function() {
     });
 };
 
+
+/*
+ * tags
+ */
 
 ID2.Podaci.tag_click = function(event) {
   ID2.Podaci.search_term_toggle('#' + $(this).data('tag'));
@@ -528,22 +591,6 @@ ID2.Podaci.edit_tags_submit = function() {
       }
     });
     $("#podaci_edit_tags_modal").modal('hide');
-};
-
-
-ID2.Podaci.create_collection_submit = function() {
-    $.post('/podaci/collection/', $("#podaci_create_collection_form").serialize(),
-            function(data) {
-        $("#podaci_create_collection_modal").modal("hide");
-        ID2.Podaci.add_collection(data);
-    }).fail(function(data) {
-        console.log("ERROR: ", data);
-        if (data.responseJSON.non_field_errors[0] == "The fields name, owner must make a unique set.") {
-            $("#podaci_create_collection_error").html("You already have a collection with this name.");
-            $("#podaci_create_collection_error").show();
-        }
-
-    });
 };
 
 
@@ -655,6 +702,7 @@ ID2.Podaci.open_in_overview = function() {
 
 ID2.Podaci.file_click = function(e) {
     id = $(e.target).parent().closest("div").data("id");
+    console.log('clicked: ' + id)
     e.preventDefault();
     e.stopPropagation();
     if (ID2.Podaci.selection.indexOf(id) == -1) {
