@@ -27,6 +27,8 @@ id2:
 # development version
 id2dev:
   build: .
+  ports:
+    - "8000:8000"
   expose:
     - "8000"
   links:
