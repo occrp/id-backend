@@ -20,7 +20,7 @@
 
       props = {format: 'yyyy-mm-dd', autoclose: true}
       if($el.hasClass('deadline')) {
-        props['startDate'] = '+2d'
+        props['startDate'] = '+3d'
       }
       if($el.hasClass('dob')) {
         props['endDate'] = '+0d'
