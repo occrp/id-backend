@@ -10,26 +10,26 @@
           <form class="form-horizontal">
             <div class="span4">
                 <div class="control-group">
-                  <label class="control-label" for="title">Title</label>
+                  <label class="control-label" for="title">{% trans %}Title{% endtrans %}</label>
                   <div class="controls">
                     <input type="text" id="file-title" placeholder="Title">
                   </div>
                 </div>
                 <div class="control-group">
-                  <label class="control-label" for="title">File name</label>
+                  <label class="control-label" for="title">{% trans %}File name{% endtrans %}</label>
                   <div class="controls">
                     <input type="text" id="file-name" placeholder="File name"
                         disabled>
                   </div>
                 </div>
                 <div class="control-group">
-                  <label class="control-label" for="title">Uploaded</label>
+                  <label class="control-label" for="title">{% trans %}Uploaded{% endtrans %}</label>
                   <div class="controls">
                     <input type="text" id="file-date" disabled>
                   </div>
                 </div>
                 <div class="control-group">
-                  <label class="control-label" for="file-tags">Tags</label>
+                  <label class="control-label" for="file-tags">{% trans %}Tags{% endtrans %}</label>
                   <div class="controls">
                     <select id="file-tags" multiple="true"></select>
                   </div>
@@ -37,13 +37,13 @@
               </div>
               <div class="span4">
                 <div class="control-group">
-                  <label class="control-label" for="file-users-read">Readers</label>
+                  <label class="control-label" for="file-users-read">{% trans %}Readers{% endtrans %}</label>
                   <div class="controls">
                     <select id="file-users-read" multiple="true"></select>
                   </div>
                 </div>
                 <div class="control-group">
-                  <label class="control-label" for="file-users-write">Writers</label>
+                  <label class="control-label" for="file-users-write">{% trans %}Writers{% endtrans %}</label>
                   <div class="controls">
                     <select id="file-users-write" multiple="true"></select>
                   </div>
@@ -53,7 +53,7 @@
                   <div class="controls">
                     <label class="checkbox">
                       <input type="checkbox" id="file-staff-read">
-                      All staff can read
+                      {% trans %}All staff can read{% endtrans %}
                     </label>
                   </div>
                 </div>
@@ -62,7 +62,7 @@
                   <div class="controls">
                     <label class="checkbox">
                       <input type="checkbox" id="file-public-read">
-                      Public
+                      {% trans %}Public{% endtrans %}
                     </label>
                   </div>
                 </div>
@@ -73,9 +73,9 @@
       <div class="modal-footer">
         <a class="btn" id="file-download-link">
             <i class="fa fa-download"></i>
-            Download
+            {% trans %}Download{% endtrans %}
         </a>
-        <button type="button" class="btn" id="file-save-link">Save</button>
+        <button type="button" class="btn" id="file-save-link">{% trans %}Save{% endtrans %}</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

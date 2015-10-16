@@ -23,23 +23,23 @@
 <div class="row">
     <div style="margin-left: auto; margin-right: auto; text-align: center;">
         <div class="splash-item">
-            <p class="desc">{% trans %}Search for a company or person of interest.{% endtrans %}</p>
+            <p class="desc">{% trans %}Search in documents or social media.{% endtrans %}</p>
             <div class="button-holder">
                 <a href="{{ url('search') }}" class="btn btn-large btn-primary"><i class="fa fa-search"></i> {% trans %}Start Searching{% endtrans %}</a>
             </div>
         </div>
 
         <div class="splash-item">
-            <p class="desc">{% trans %}View recommended global databases.{% endtrans %}</p>
-            <div class="button-holder">
-                <a href="{{ url('externaldb_list') }}" class="btn btn-large btn-primary"><i class="fa fa-database"></i> {% trans %}Visit Databases{% endtrans %}</a>
-            </div>
-        </div>
-
-        <div class="splash-item">
             <p class="desc">{% trans %}Ask our researchers to help you find information.{% endtrans %}</p>
             <div class="button-holder">
-                <a href="{{ url('ticket_submit') }}" class="btn btn-large btn-primary"><i class="fa fa-ticket"></i> {% trans %}Ask an Expert{% endtrans %}</a>
+                <a href="{{ url('ticket_submit') }}" class="btn btn-large btn-primary"><i class="fa fa-ticket"></i> {% if user.is_authenticated() %}{% trans %}My Requests{% endtrans %}{% else %}{% trans %}Ask an Expert{% endtrans %}{% endif %}</a>
+            </div>
+        </div>
+        
+        <div class="splash-item">
+            <p class="desc">{% trans %}Keep track of all your important documents.{% endtrans %}</p>
+            <div class="button-holder">
+                <a href="{{ url('podaci_info_home') }}" class="btn btn-large btn-primary"><i class="fa fa-files-o"></i> {% trans %}Manage files{% endtrans %}</a>
             </div>
         </div>
 
@@ -51,16 +51,9 @@
         </div>
 
         <div class="splash-item">
-            <p class="desc">{% trans %}Search for media on social media.{% endtrans %}</p>
+            <p class="desc">{% trans %}View recommended global databases.{% endtrans %}</p>
             <div class="button-holder">
-                <a href="{{ url('search_media') }}" class="btn btn-large btn-primary"><i class="fa fa-search"></i> {% trans %}Start Searching{% endtrans %}</a>
-            </div>
-        </div>
-
-        <div class="splash-item">
-            <p class="desc">{% trans %}Keep track of all your important documents.{% endtrans %}</p>
-            <div class="button-holder">
-                <a href="{{ url('podaci_info_home') }}" class="btn btn-large btn-primary"><i class="fa fa-files-o"></i> {% trans %}Manage files{% endtrans %}</a>
+                <a href="{{ url('externaldb_list') }}" class="btn btn-large btn-primary"><i class="fa fa-database"></i> {% trans %}Visit Databases{% endtrans %}</a>
             </div>
         </div>
         {#
