@@ -55,7 +55,7 @@
                     </li>
                     {% if user.is_authenticated() %}
                     <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
-                        <a href="{{ url('ticket_list') }}"><i class="fa fa-comments-o"></i> {% trans %}Research Requests{% endtrans %}</a>
+                        <a href="{{ url('ticket_list') }}"><i class="fa fa-comments-o"></i> {% trans %}My Requests{% endtrans %}</a>
                     </li>
                         {% if user.is_staff or user.is_superuser %}
                         <li class="{% if url('podaci_info_home') in request.path %}active{% endif %}">
