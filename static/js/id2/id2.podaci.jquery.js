@@ -372,10 +372,12 @@ ID2.Podaci.select_toggle_checkbox = function(e) {
 ID2.Podaci.selection_drag = function(e) {
     // ...
     ID2.Podaci.select([parseInt($(e.currentTarget).attr('data-id'))])
+    ID2.Podaci.internal_drag = true; // TODO: make sure this flag gets cleared always when needed!
 };
 
 ID2.Podaci.selection_drop = function(e) {
     e.preventDefault();
+    ID2.Podaci.internal_drag = false;
     $(e.target).removeClass("drop-on-me");
     var targetli = $(e.target).closest("li");
     var id = $(e.target).data("collectionid")
@@ -406,14 +408,16 @@ ID2.Podaci.init_fileupload = function() {
 
     col.on("dragover", function(e) {
         e.preventDefault();
-        col.addClass("dropzone");
+        if (!ID2.Podaci.internal_drag) {
+            col.addClass("dropzone");
+        }
         //col.children('#podaci-file-list').empty();
     });
     
     col.on("dragleave", function(e) {
         e.preventDefault();
         col.removeClass("dropzone");
-        ID2.Podaci.render_resultset();
+        //ID2.Podaci.render_resultset();
     });
     
     col.children('.dropzone-to-be').on("drop", function(e) {
