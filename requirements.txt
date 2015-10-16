@@ -14,7 +14,7 @@ requests
 neo4django
 flup
 mysql
-django_select2
+django_select2<5
 djangorestframework>=3.2.2
 oauth2client
 google-api-python-client
