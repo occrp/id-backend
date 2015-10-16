@@ -108,7 +108,7 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
             qs = qs.filter(tickets__id=ticket)
 
         for col in collections:
-            qs = qs.filter(collections__name=col)
+            qs = qs.filter(collections__name=col.name)
 
         return qs
 
@@ -207,11 +207,8 @@ class CollectionDetail(generics.RetrieveUpdateDestroyAPIView):
         return PodaciCollection.objects.filter(owner=self.request.user)
 
     def patch(self, request, pk, **kwargs):
-        try:
-            collection = PodaciCollection.objects.get(pk=pk,
-                                                      owner=self.request.user)
-        except Exception as e:
-            log.exception(e)
+        collection = PodaciCollection.objects.get(pk=pk,
+                                                  owner=self.request.user)
 
         add_files = request.data.getlist("add_files[]", [])
         remove_files = request.data.getlist("remove_files[]", [])
