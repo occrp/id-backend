@@ -36,11 +36,22 @@ li > a.FIXME {
 
 .dropzone-to-be {
     display: none;
-    margin-left:20px;
-    min-height: 40px;
+    position:fixed;
+    width:auto;
+    background:red;
+}
+
+.dropzone-to-be > p {
+    opacity:0;
+    transition:opacity 1s ease-out;
+    display:block;
+    position:absolute;
+    left:4em;
+    top:2em;
+    width:20em;
+    margin:auto;
     text-align:center;
-    padding:26px 0px 10px 0px;
-    width:100%;
+    padding:5em 2em;
     box-shadow: 0px 0px 1px 1px #eee;
     border-radius: 0.5em;
     border:none;
@@ -52,6 +63,22 @@ li > a.FIXME {
 
 #podaci-file-list-container.dropzone > .dropzone-to-be {
     display: block;
+    z-index:2000;
+}
+
+#podaci-file-list-container.dropzone > .dropzone-to-be > p {
+    opacity:1;
+    transition:opacity 1s ease-out;
+}
+
+#podaci-file-list-container #podaci-file-list {
+    opacity:1;
+    transition:opacity 1s ease-out;
+}
+
+#podaci-file-list-container.dropzone #podaci-file-list {
+    opacity:0.5;
+    transition:opacity 1s ease-out;
 }
 
 .podaci-files {
@@ -286,6 +313,7 @@ div.podacitools {
 	margin-top: 0px;
 	flex: 1;
 	flex-direction: row;
+    z-index:1000;
 }
 
 input.searchbox {
