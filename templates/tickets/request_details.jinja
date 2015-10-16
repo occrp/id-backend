@@ -73,6 +73,8 @@
                             <i class="fa fa-pencil"></i> {% trans %}Edit Request{% endtrans %}
                         </a>
                     </li>
+                    {% endif %}
+                    {% if user == ticket.requester %}
                     <li>
                         <a href="#ReqCancelForm" data-toggle="modal" role="button">
                             <i class="fa fa-minus"></i> {% trans %}Cancel Request{% endtrans %}
@@ -234,7 +236,7 @@
             {% endif %}
         </dl>
     </div>
-    
+
     <div class="span9 request-details">
         {% include "tickets/partials/_ticketdetails.jinja" %}
         {% include "tickets/partials/_filelist.jinja" %}
