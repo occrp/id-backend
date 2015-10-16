@@ -7,13 +7,13 @@
       </div>
       <div class="modal-body">
         <form id="podaci_create_collection_form">
-          <label for="collection_name">Name:</label><input name="name" id="podaci_create_collection_name"/>
+          <label for="collection_name">{% trans %}Name:{% endtrans %}</label><input name="name" id="podaci_create_collection_name"/>
           <div id="podaci_create_collection_error" class="alert alert-danger" style="display:none;"></div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn" data-dismiss="modal">Close</button>
-        <button type="button" id="podaci_create_collection_btn" class="btn btn-default">Add</button>
+        <button type="button" class="btn" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+        <button type="button" id="podaci_create_collection_btn" class="btn btn-default">{% trans %}Add{% endtrans %}</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

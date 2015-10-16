@@ -5,20 +5,20 @@
     <div class="span3">
         <div class="span3 collections">
             <div class="top-actions">
-                <a id="podaci-upload"><i class="fa fa-upload"></i> Add files</a>
-                <a id="collection-new"><i class="fa fa-plus"></i> New collection</a>
+                <a id="podaci-upload"><i class="fa fa-upload"></i> {% trans %}Add files{% endtrans %}</a>
+                <a id="collection-new"><i class="fa fa-plus"></i> {% trans %}New collection{% endtrans %}</a>
             </div>
             <div class="tagcloud">
 
             </div>
             <div class="collectionfilters">
             <ul>
-                <li><a data-collection="mine"><i class="fa fa-chevron-right"></i> My collections</a>
+                <li><a data-collection="mine"><i class="fa fa-chevron-right"></i> {% trans %}My collections{% endtrans %}</a>
                     <ul id="mycollections">
 
                     </ul>
                 </li>
-                <li><a data-collection="shared"><i class="fa fa-chevron-right"></i> Shared with me</a>
+                <li><a data-collection="shared"><i class="fa fa-chevron-right"></i> {% trans %}Shared with me{% endtrans %}</a>
                     <ul id="sharedcollections">
                     </ul>
                 </li>
@@ -31,10 +31,10 @@
         <div class="row podacitools">
             <input id="searchbox" class="searchbox" type="search" placeholder="Search in files"/>
             <div class="toolbox nav nav-horizontal">
-                <li class="dropdown"><a class="btn" href="#" data-toggle="dropdown">Select</a>
+                <li class="dropdown"><a class="btn" href="#" data-toggle="dropdown">{% trans %}Select{% endtrans %}</a>
                 {% include "podaci/partials/_podaci_selection_tools.jinja" %}
                 </li>
-                <li class="dropdown"><a class="btn" href="#" id="podaci_selection_menu" data-toggle="dropdown">Selection</a>
+                <li class="dropdown"><a class="btn" href="#" id="podaci_selection_menu" data-toggle="dropdown">{% trans %}Selection{% endtrans %}</a>
                 {% include "podaci/partials/_podaci_selection_actions.jinja" %}
                 </li>
             </div>
