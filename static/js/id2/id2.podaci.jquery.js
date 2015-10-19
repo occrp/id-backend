@@ -261,6 +261,7 @@ ID2.Podaci.collection_filter_click = function(e) {
     collectionid = $(e.target).data("collection");
     e.preventDefault();
     e.stopPropagation();
+    ID2.Podaci.select_none()
     if ($(e.target).hasClass("selected")) {
         $(e.target).removeClass("selected");
         ID2.Podaci.search_term_remove("in:" + collectionid);
