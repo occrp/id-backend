@@ -22,6 +22,10 @@ ALLOWED_HOSTS = []
 # https://api.opencorporates.com/documentation/API-Reference#api_accounts
 OPENCORPORATES_API_TOKEN = None
 
+# google settings, potentially overridden in settings_local
+GOOGLE_OAUTH2_CLIENT_ID      = '206887598454-nigepmham8557t4uq72dqhgh159p3b1t.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET  = 'f6b3cUIp00sDoiRSLfyqAQkH'
+
 # Import local settings or production settings
 try:
     if os.environ.get('BUILD_TEST'):
@@ -87,8 +91,6 @@ AUTHENTICATION_BACKENDS = (
     'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
-GOOGLE_OAUTH2_CLIENT_ID      = '206887598454-nigepmham8557t4uq72dqhgh159p3b1t.apps.googleusercontent.com'
-GOOGLE_OAUTH2_CLIENT_SECRET  = 'f6b3cUIp00sDoiRSLfyqAQkH'
 
 # our own precious User model
 # as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
