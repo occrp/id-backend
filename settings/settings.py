@@ -75,6 +75,20 @@ INSTALLED_APPS = (
     'captcha'
 )
 
+DEFAULT_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.mail.mail_validation',
+    'social.pipeline.social_auth.associate_by_email',
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details'
+)
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -96,7 +110,7 @@ AUTHENTICATION_BACKENDS = (
 # as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
 AUTH_USER_MODEL = 'id.Profile'
 SOCIAL_AUTH_USER_MODEL = 'id.Profile'
-SOCIAL_AUTH_SESSION_EXPIRATION = False
+SOCIAL_AUTH_SESSION_EXPIRATION = False # TODO: This shouldn't be done
 
 # registration form class
 #from id.forms import ProfileRegistrationForm
