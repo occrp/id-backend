@@ -298,7 +298,11 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
             except Profile.DoesNotExist:
                 pass
 
-        super(Profile, self).save(*args, **kw)
+        else:
+            if Profile.objects.get(email=self.email):
+                raise Exception("Cannot create duplicate user!")
+
+        return super(Profile, self).save(*args, **kw)
 
     class Meta:
         verbose_name = _('user')
