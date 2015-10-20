@@ -26,6 +26,16 @@ OPENCORPORATES_API_TOKEN = None
 GOOGLE_OAUTH2_CLIENT_ID      = '206887598454-nigepmham8557t4uq72dqhgh159p3b1t.apps.googleusercontent.com'
 GOOGLE_OAUTH2_CLIENT_SECRET  = 'f6b3cUIp00sDoiRSLfyqAQkH'
 
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+TEMPLATE_CONTEXT_PROCESSORS += (
+    "django.core.context_processors.request",
+    "django.contrib.messages.context_processors.messages",
+    "django.core.context_processors.csrf",
+    "id.context_processors.locale",
+    "id.context_processors.routename",
+    "search.context_processors.search_types",
+)
+
 # Import local settings or production settings
 try:
     if os.environ.get('BUILD_TEST'):
@@ -121,16 +131,6 @@ REGISTRATION_OPEN=True
 REGISTRATION_CLOSED_URL="/accounts/register/closed/"
 # set to an URL that a user should be redirected upon successful registration
 REGISTRATION_SUCCESS_URL="/accounts/register/complete/"
-
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
-TEMPLATE_CONTEXT_PROCESSORS += (
-    "django.core.context_processors.request",
-    "django.contrib.messages.context_processors.messages",
-    "django.core.context_processors.csrf",
-    "id.context_processors.locale",
-    "id.context_processors.routename",
-    "search.context_processors.search_types",
-)
 
 ROOT_URLCONF = 'settings.urls'
 
