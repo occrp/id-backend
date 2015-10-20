@@ -104,7 +104,15 @@ if DEBUG:
         # credentials for {testing,staging}.occrp.org
         GOOGLE_OAUTH2_CLIENT_ID      = '206887598454-df3pp9ldb8367vu544hkmjvlpsl9gg46.apps.googleusercontent.com'
         GOOGLE_OAUTH2_CLIENT_SECRET  = 'y2hZUFTrCj-IgIrPf3jpTE2d'
+        
+        from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
         TEMPLATE_CONTEXT_PROCESSORS += (
+            "django.core.context_processors.request",
+            "django.contrib.messages.context_processors.messages",
+            "django.core.context_processors.csrf",
+            "id.context_processors.locale",
+            "id.context_processors.routename",
+            "search.context_processors.search_types",
             "context_processors.debug",
         )
 
