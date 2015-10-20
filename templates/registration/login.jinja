@@ -30,12 +30,12 @@
             </form>
             <div class="section-container"><span class="before">{% trans %}or{% endtrans %}</span>
             {% if DEBUG %}
-                <p class="info">{% trans %}Google login is temporarily disabled. We are working hard to enable it as soon as possible. Thank you for your understanding{% endtrans %}</p>
-            {% else %}
                 <p class="info">{% trans %}If you registered with your Google account, you can use it to sign in. Most users should sign in using the standard method.{% endtrans %}</p>
                 <a href="{{ url("socialauth_begin", "google-oauth2") }}" class="btn">
                     <i class="fa fa-google-plus"></i> {% trans %}Sign in with Google{% endtrans %}
                 </a>
+            {% else %}
+                <p class="info">{% trans %}Google login is temporarily disabled. We are working hard to enable it as soon as possible. Thank you for your understanding.{% endtrans %}</p>
             {% endif %}    
             </div>
             <div class="section-container"><span class="before">{% trans %}or{% endtrans %}</span>
