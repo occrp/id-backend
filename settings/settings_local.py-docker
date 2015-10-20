@@ -98,3 +98,11 @@ LOGGING = {
         },
     }
 }
+
+# debug credentials for {testing,staging}.occrp.org
+if DEBUG:
+        GOOGLE_OAUTH2_CLIENT_ID      = '206887598454-df3pp9ldb8367vu544hkmjvlpsl9gg46.apps.googleusercontent.com'
+        GOOGLE_OAUTH2_CLIENT_SECRET  = 'y2hZUFTrCj-IgIrPf3jpTE2d'
+
+# HTTPS if needed
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTOCOL", "https")
