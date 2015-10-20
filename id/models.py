@@ -299,7 +299,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
                 pass
 
         else:
-            if Profile.objects.get(email=self.email):
+            if len(Profile.objects.filter(email=self.email)) > 0:
                 raise Exception("Cannot create duplicate user!")
 
         return super(Profile, self).save(*args, **kw)
