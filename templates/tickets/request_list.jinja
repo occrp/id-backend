@@ -88,6 +88,8 @@
     </div>
     {% endfor %}
 
+    {% include "partials/_paginator.jinja" %}
+
     <div class="pull-right">
         <a class="btn btn-small" href="?format=csv"><i class="fa fa-file-excel-o"></i> {% trans %}Download as CSV{% endtrans %}</a>
         <a class="btn btn-small" href="?format=json"><i class="fa fa-file-o"></i> {% trans %}Download as JSON{% endtrans %}</a>
