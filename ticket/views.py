@@ -699,22 +699,22 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
         self.filter_terms = self.request.GET.get("filter", '')
         self.start_date = self.request.GET.get("start_date", '')
         self.end_date = self.request.GET.get("end_date", '')
+        self.page_number = int(self.request.GET.get("page", 1))
 
-        if 'page' in kwargs:
-            self.page_number = int(kwargs.pop('page'))
-            if self.page_number is None:
-                self.page_number = 1
-
+        paged_tickets = self.get_paged_tickets(self.page_number)
+        paginator = self.create_pretty_pagination_object(self.paginator,
+                                                         self.page_number,
+                                                         self.page_buttons,
+                                                         self.page_buttons_padding,
+                                                         self.url_name,
+                                                         self.url_args),
         context = {
             'page_name': self.page_name,
             'ticket_list_name': self.ticket_list_name,
-            'tickets': self.get_paged_tickets(self.page_number),
-            'paginator_object': self.create_pretty_pagination_object(self.paginator,
-                                                                     self.page_number,
-                                                                     self.page_buttons,
-                                                                     self.page_buttons_padding,
-                                                                     self.url_name,
-                                                                     self.url_args),
+            'tickets': paged_tickets,
+            'page_obj': paged_tickets,
+            'paginator': self.paginator,
+            'paginator_object': paginator,
             'page_number': self.page_number,
             'ticket_figures': self.get_ticket_list_figures(),
             'filter_terms': self.filter_terms,
