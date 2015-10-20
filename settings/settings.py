@@ -34,6 +34,8 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     "id.context_processors.locale",
     "id.context_processors.routename",
     "search.context_processors.search_types",
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 )
 
 # Import local settings or production settings
@@ -74,7 +76,7 @@ INSTALLED_APPS = (
     'compressor',
     'django_jinja',
     'rest_framework',
-    'social_auth',
+    'social.apps.django_app.default',
     'core',
     'id',
     'search',
@@ -111,7 +113,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.google.GoogleOAuth2Backend',
+    'social.backends.google.GoogleOAuth2',
     'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
@@ -119,8 +121,8 @@ AUTHENTICATION_BACKENDS = (
 # our own precious User model
 # as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
 AUTH_USER_MODEL = 'id.Profile'
-SOCIAL_AUTH_USER_MODEL = 'id.Profile'
-SOCIAL_AUTH_SESSION_EXPIRATION = False # TODO: This shouldn't be done
+# SOCIAL_AUTH_USER_MODEL = 'id.Profile'
+# SOCIAL_AUTH_SESSION_EXPIRATION = False # TODO: This shouldn't be done
 
 # registration form class
 #from id.forms import ProfileRegistrationForm

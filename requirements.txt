@@ -10,7 +10,7 @@ django-jinja
 django-compressor
 django-registration-redux
 pyes
-requests>=2.8.1
+requests>=2.8.0
 neo4django
 flup
 mysql
@@ -19,7 +19,7 @@ djangorestframework>=3.2.2
 oauth2client
 google-api-python-client
 rules
-python-social-auth
+python-social-auth>=0.2.13
 psycopg2
 jsonfield
 pillow
