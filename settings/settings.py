@@ -96,6 +96,7 @@ AUTHENTICATION_BACKENDS = (
 # as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
 AUTH_USER_MODEL = 'id.Profile'
 SOCIAL_AUTH_USER_MODEL = 'id.Profile'
+SOCIAL_AUTH_SESSION_EXPIRATION = False
 
 # registration form class
 #from id.forms import ProfileRegistrationForm
