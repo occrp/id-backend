@@ -29,7 +29,7 @@
                 </fieldset>
             </form>
             <div class="section-container"><span class="before">{% trans %}or{% endtrans %}</span>
-            {% if DEBUG %}
+            {% if DEBUG and False %}
                 <p class="info">{% trans %}If you registered with your Google account, you can use it to sign in. Most users should sign in using the standard method.{% endtrans %}</p>
                 <a href="{{ url("social:begin", "google-oauth2") }}" class="btn">
                     <i class="fa fa-google-plus"></i> {% trans %}Sign in with Google{% endtrans %}
