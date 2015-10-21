@@ -25,6 +25,9 @@ OPENCORPORATES_API_TOKEN = None
 # google settings, potentially overridden in settings_local
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '206887598454-nigepmham8557t4uq72dqhgh159p3b1t.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'f6b3cUIp00sDoiRSLfyqAQkH'
+SOCIAL_AUTH_USER_MODEL = 'id.Profile'
+SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+USER_FIELDS = ['email']
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 TEMPLATE_CONTEXT_PROCESSORS += (
@@ -87,13 +90,12 @@ INSTALLED_APPS = (
     'captcha'
 )
 
-DEFAULT_AUTH_PIPELINE = (
+SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_details',
     'social.pipeline.social_auth.social_uid',
     'social.pipeline.social_auth.auth_allowed',
     'social.pipeline.social_auth.social_user',
     'social.pipeline.user.get_username',
-    'social.pipeline.mail.mail_validation',
     'social.pipeline.social_auth.associate_by_email',
     'social.pipeline.user.create_user',
     'social.pipeline.social_auth.associate_user',
@@ -109,14 +111,19 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
     'podaci.middleware.PodaciExceptionMiddleware',
 )
 
 AUTHENTICATION_BACKENDS = (
-    'social.backends.google.GoogleOAuth2',
     'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'social.backends.google.GoogleOAuth2',
 )
+
+if DEBUG:
+    SOCIAL_AUTH_RAISE_EXCEPTIONS = True
+    RAISE_EXCEPTIONS = True
 
 # our own precious User model
 # as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
