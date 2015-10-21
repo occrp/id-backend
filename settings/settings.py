@@ -23,8 +23,8 @@ ALLOWED_HOSTS = []
 OPENCORPORATES_API_TOKEN = None
 
 # google settings, potentially overridden in settings_local
-GOOGLE_OAUTH2_CLIENT_ID      = '206887598454-nigepmham8557t4uq72dqhgh159p3b1t.apps.googleusercontent.com'
-GOOGLE_OAUTH2_CLIENT_SECRET  = 'f6b3cUIp00sDoiRSLfyqAQkH'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '206887598454-nigepmham8557t4uq72dqhgh159p3b1t.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'f6b3cUIp00sDoiRSLfyqAQkH'
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 TEMPLATE_CONTEXT_PROCESSORS += (
