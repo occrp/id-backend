@@ -65,7 +65,7 @@ urlpatterns = patterns('',
     url(r'^accounts/register/$',            ProfileRegistrationView.as_view(template_name='registration/registration_form.jinja', form_class=ProfileRegistrationForm), name='registration_register'),
     url(r'^accounts/register/complete/$',   TemplateView.as_view(template_name='registration/registration_complete.jinja'), name='registration_complete'),
     url(r'^accounts/register/closed/$',     TemplateView.as_view(template_name='registration/registration_closed.jinja'), name='registration_disallowed'),
-    url(r'^accounts/social/', include('social_auth.urls')),
+    url(r'^accounts/social/', include('social.apps.django_app.urls', namespace='social')),
 
     url(r'^notifications/seen/(?P<pk>([\d]+|all))/', perm('user', NotificationSeen), name='notification_seen'),
     url(r'^notifications/stream/', perm('user', NotificationStream), name='notification_stream'),
