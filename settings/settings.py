@@ -171,7 +171,7 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-COMPRESS_ENABLED = True
+COMPRESS_ENABLED = False
 
 # WSGI_APPLICATION = 'id.wsgi.application'
 
