@@ -18,6 +18,7 @@ print "Starting ID version %s" % ID_VERSION
 
 # Allowed hosts:
 ALLOWED_HOSTS = []
+# EMERGENCY = False
 
 # https://api.opencorporates.com/documentation/API-Reference#api_accounts
 OPENCORPORATES_API_TOKEN = None
@@ -39,6 +40,7 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     "search.context_processors.search_types",
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
+    'context_processors.debug'
 )
 
 # Import local settings or production settings
