@@ -20,6 +20,10 @@
 {% endblock %}
 
 {% block content %}
+    {% if EMERGENCY %}
+	<div class="alert alert-danger">{{EMERGENCY}}</div>
+    {% endif %}
+
 <div class="row">
     <div style="margin-left: auto; margin-right: auto; text-align: center;">
         <div class="splash-item">
