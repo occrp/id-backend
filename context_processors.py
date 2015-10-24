@@ -10,5 +10,6 @@ from django.conf import settings # import the settings file
 def debug(request):
     # return the value you want as a dictionnary. you may add multiple values in there.
     return {
-        'DEBUG': settings.DEBUG
+        'DEBUG': settings.DEBUG,
+        'EMERGENCY': settings.EMERGENCY
     }
