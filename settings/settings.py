@@ -1,34 +1,23 @@
 # -*- coding: utf-8 -*-
 """
-Django settings for id project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.6/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.6/ref/settings/
+Django settings for Investigative Dashboard
 """
 import os
 here = lambda x: os.path.realpath(os.path.join(os.path.realpath(os.path.dirname(__file__)), x))
 BASE_DIR = here('../')
 
-try: ID_VERSION = open(".git_current_version").read()
-except: ID_VERSION = "?.?.? Unknown: ID Version could not be read: .git_current_version not available"
-print "Starting ID version %s" % ID_VERSION
+ID_VERSION = "2.0.2"
+ID_ENVIRONMENT = os.environ.get('ID_ENVIRONMENT', 'debug')
+print "Starting ID version %s (%s)" % (ID_VERSION, ID_ENVIRONMENT)
 
-# Allowed hosts:
 ALLOWED_HOSTS = []
-# EMERGENCY = False
+EMERGENCY = False
 
-# https://api.opencorporates.com/documentation/API-Reference#api_accounts
-OPENCORPORATES_API_TOKEN = None
-
-# google settings, potentially overridden in settings_local
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '206887598454-nigepmham8557t4uq72dqhgh159p3b1t.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'f6b3cUIp00sDoiRSLfyqAQkH'
-SOCIAL_AUTH_USER_MODEL = 'id.Profile'
-SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
-USER_FIELDS = ['email']
+##################
+#
+#   Template loaders and such
+#
+##################
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 TEMPLATE_CONTEXT_PROCESSORS += (
@@ -43,32 +32,47 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     'context_processors.debug'
 )
 
-# Import local settings or production settings
+TEMPLATE_LOADERS = (
+    'django_jinja.loaders.FileSystemLoader',
+    'django_jinja.loaders.AppLoader',
+)
+
+TEMPLATE_DIRS = ('templates',)
+
+##################
+#
+#   Import local settings or production settings
+#
+##################
 try:
-    if os.environ.get('BUILD_TEST'):
+    if ID_ENVIRONMENT == 'testing' or os.environ.get('BUILD_TEST'):
         from settings_build_test import *
+    elif ID_ENVIRONMENT == 'production':
+        from settings_production import *
     else:
         from settings_local import *
-
 except ImportError:
     raise Exception('You need to set up settings_local.py (see settings_local.py-example')
 
-# Some error checking for local_settings
+
+##################
+#
+#   Some error checking for local_settings
+#
+##################
+
 if not SECRET_KEY:
     raise Exception('You need to specify Django SECRET_KEY in the settings_local.py!')
 
 if "CREDENTIALS_DIR" not in vars():
     raise Exception('You need to specify a path to CREDENTIALS_DIR in settings_local.py')
 
-TEMPLATE_LOADERS = (
-    'django_jinja.loaders.FileSystemLoader',
-    'django_jinja.loaders.AppLoader',
-)
 
-
-TEMPLATE_DIRS = ('templates',)
-
-# Application definition
+##################
+#
+#   Apps
+#
+##################
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -92,6 +96,12 @@ INSTALLED_APPS = (
     'captcha'
 )
 
+##################
+#
+#   Authentication
+#
+##################
+
 SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_details',
     'social.pipeline.social_auth.social_uid',
@@ -105,17 +115,12 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.user.user_details'
 )
 
-MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
-    'podaci.middleware.PodaciExceptionMiddleware',
-)
+# google settings, potentially overridden in settings_local
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '206887598454-nigepmham8557t4uq72dqhgh159p3b1t.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'f6b3cUIp00sDoiRSLfyqAQkH'
+SOCIAL_AUTH_USER_MODEL = 'id.Profile'
+SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+USER_FIELDS = ['email']
 
 AUTHENTICATION_BACKENDS = (
     'rules.permissions.ObjectPermissionBackend',
@@ -130,7 +135,6 @@ if DEBUG:
 # our own precious User model
 # as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
 AUTH_USER_MODEL = 'id.Profile'
-# SOCIAL_AUTH_USER_MODEL = 'id.Profile'
 # SOCIAL_AUTH_SESSION_EXPIRATION = False # TODO: This shouldn't be done
 
 # registration form class
@@ -143,12 +147,38 @@ REGISTRATION_CLOSED_URL="/accounts/register/closed/"
 # set to an URL that a user should be redirected upon successful registration
 REGISTRATION_SUCCESS_URL="/accounts/register/complete/"
 
+
+##################
+#
+#   API Keys (other than auth)
+#
+##################
+
+# https://api.opencorporates.com/documentation/API-Reference#api_accounts
+OPENCORPORATES_API_TOKEN = None
+
+
+##################
+#
+#   Middleware
+#
+##################
+
+MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
+    'podaci.middleware.PodaciExceptionMiddleware',
+)
+
+
 ROOT_URLCONF = 'settings.urls'
-
 AUTO_RENDER_SELECT2_STATICS = False
-
-# FIXME: Move existing templates to .jinja, start writing
-#        new templates as .jinja with Django template engine
 DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja'
 
 from django_jinja.builtins import DEFAULT_EXTENSIONS
@@ -158,8 +188,12 @@ JINJA2_EXTENSIONS = DEFAULT_EXTENSIONS + [
     "compressor.contrib.jinja2ext.CompressorExtension",
 ]
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
+##################
+#
+#   Static files (CSS, JavaScript, Images, compression)
+#   https://docs.djangoproject.com/en/1.6/howto/static-files/
+#
+##################
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 # STATIC_ROOT = os.path.join(BASE_DIR, "static_gen")
@@ -175,11 +209,14 @@ STATICFILES_FINDERS = (
 
 COMPRESS_ENABLED = False
 
-# WSGI_APPLICATION = 'id.wsgi.application'
 
+##################
+#
+#   Database defaults
+#   https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+#
+##################
 
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 DATABASES = {
     'default': {
         'ENGINE': DATABASE_ENGINE,
@@ -192,8 +229,12 @@ DATABASES = {
 }
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
+##################
+#
+#   Internationalization
+#   https://docs.djangoproject.com/en/1.6/topics/i18n/
+#
+##################
 
 USE_I18N = True
 USE_L10N = True
@@ -220,14 +261,19 @@ LANGUAGES = (
     ('uk', u'Українська'),
 )
 
+from django.utils.translation import ugettext_lazy as _
+
+from django.conf.global_settings import DATE_INPUT_FORMATS
+DATE_INPUT_FORMATS += ('%d/%m/%y',)
+
+##################
+#
+#   REST Framework
+#
+##################
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES':
         ('rest_framework.permissions.IsAuthenticated',),
     'PAGE_SIZE': 30
 }
-
-from django.conf.global_settings import DATE_INPUT_FORMATS
-DATE_INPUT_FORMATS += ('%d/%m/%y',)
-
-# Investigative Dashboard Default Settings!
-from django.utils.translation import ugettext_lazy as _
