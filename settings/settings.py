@@ -49,10 +49,10 @@ try:
         from settings_build_test import *
     elif ID_ENVIRONMENT == 'production':
         from settings_production import *
-    else:
+    elif ID_ENVIRONMENT == 'debug':
         from settings_local import *
 except ImportError:
-    raise Exception('You need to set up settings_local.py (see settings_local.py-example')
+    raise Exception('You need to set up settings_local.py (see settings_local.py-example) or set $ID_ENVIRONMENT to "testing" or "production"')
 
 
 ##################
