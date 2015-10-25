@@ -22,7 +22,7 @@
             {% csrf_token %}
 
             <div class="control-group" style="{% if not ticket_type_form is defined %}display: none;{% endif %}">
-                {{ticket_type_form.as_p()}}
+                {% if ticket_type_form is defined %}{{ticket_type_form.as_p()}}{% endif %}
             </div>
 
             {% if person_ownership_form is defined %}
