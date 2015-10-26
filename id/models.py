@@ -4,12 +4,13 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 from core.mixins import *
 from core.models import notification_channel_format
 from core.utils import json_loads, json_dumps
-from id.constdata import *
+from id.constdata import REQUESTER_TYPES, REQUEST_TYPES
 from ticket.constants import *
 from ticket.models import TicketCharge
 from settings.settings import LANGUAGES, AUTH_USER_MODEL
 from django.utils import timezone
 from datetime import datetime, timedelta
+
 
 class Network(models.Model):
     short_name = models.CharField(max_length=50)
@@ -26,6 +27,7 @@ class Network(models.Model):
             return "%s - %s" % (self.short_name, self.long_name)
         return self.short_name
 
+
 class Center(models.Model):
     short_name = models.CharField(max_length=50)
     long_name = models.CharField(max_length=100, blank=True)
@@ -36,8 +38,8 @@ class Center(models.Model):
             return "%s - %s" % (self.short_name, self.long_name)
         return self.short_name
 
-######## User profiles #################
 
+######## User profiles #################
 # managing the profiles
 class ProfileManager(NotificationMixin, BaseUserManager):
     use_in_migrations = True
@@ -70,9 +72,9 @@ class ProfileManager(NotificationMixin, BaseUserManager):
         self.notify("New superuser %s." % (u), urlname="profile", params={"pk": u.pk}, action="addsuperuser")
         return u
 
+
 # our own User model replacement
 # as per http://stackoverflow.com/questions/20415627/how-to-properly-extend-django-user-model
-#
 class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
 
     email = models.EmailField(_('E-mail Address'), max_length=254, unique=True, blank=False)
@@ -311,35 +313,6 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         swappable = 'AUTH_USER_MODEL'
 
 
-######## External databases ############
-class ExternalDatabase(models.Model, DisplayMixin):
-    agency = models.CharField(max_length=500, blank=False, verbose_name=_('Agency / Name'))
-    # agency_lower = models.ComputedProperty(lambda self: self.agency.lower())
-    db_type = models.CharField(max_length=20, choices=DATABASE_TYPES,
-                               verbose_name=_('Type of Database'))
-    country = models.CharField(max_length=20, choices=DATABASE_COUNTRIES,
-                               verbose_name=_('Country'))
-    paid = models.BooleanField(default=False, verbose_name=_('Paid Database'))
-    registration_required = models.BooleanField(default=False, verbose_name=_('Registration Required'))
-    government_db = models.BooleanField(default=False, verbose_name=_('Government Database'))
-    url = models.URLField(max_length=2000   , blank=False, verbose_name=_('URL'))
-    notes = models.TextField(verbose_name=_('Notes'))
-    blog_post = models.URLField(verbose_name=_('Blog Post'))
-    video_url = models.URLField(verbose_name=_('YouTube Video Url'))
-
-    def continent(self):
-        return self._find_in_grouping(CONTINENTS)
-
-    def region(self):
-        return self._find_in_grouping(REGIONS)
-
-    def _find_in_grouping(self, grouping):
-        matches = [(k,v) for (k,v) in grouping.items() if self.country in v]
-        if matches:
-            return matches[0]
-        else: # no continent found. This will happen for pseudo-countries
-            return ('', set())
-
 ######## Account management ############
 class AccountRequest(models.Model, DisplayMixin):
     request_type = models.CharField(blank=False, max_length=64, choices=REQUEST_TYPES)
@@ -435,6 +408,7 @@ class AccountRequest(models.Model, DisplayMixin):
     def email_notification(self, to, subject, template, context):
         pass
 
+
 class DatabaseScrapeRequest(models.Model):
     url = models.URLField(blank=False, verbose_name=_("URL"))
     name = models.CharField(max_length=200, verbose_name=_("Name"))
@@ -446,6 +420,7 @@ class DatabaseScrapeRequest(models.Model):
 
     #def minusone(self, user):
     #    self.plusone.remove(user)
+
 
 class Feedback(models.Model):
     name = models.CharField(blank=False, max_length=100)

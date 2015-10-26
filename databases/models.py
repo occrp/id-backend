@@ -1,6 +1,11 @@
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
-######## External databases ############
+from core.mixins import DisplayMixin
+from core.countries import CONTINENTS, REGIONS
+from databases.fixtures import DATABASE_COUNTRIES, DATABASE_TYPES
+
+
 class ExternalDatabase(models.Model, DisplayMixin):
     agency = models.CharField(max_length=500, blank=False, verbose_name=_('Agency / Name'))
     # agency_lower = models.ComputedProperty(lambda self: self.agency.lower())
@@ -23,7 +28,7 @@ class ExternalDatabase(models.Model, DisplayMixin):
         return self._find_in_grouping(REGIONS)
 
     def _find_in_grouping(self, grouping):
-        matches = [(k,v) for (k,v) in grouping.items() if self.country in v]
+        matches = [(k, v) for (k, v) in grouping.items() if self.country in v]
         if matches:
             return matches[0]
         else: # no continent found. This will happen for pseudo-countries

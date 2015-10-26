@@ -60,6 +60,7 @@ class Statistics(TemplateView):
             "unaffiliated_users_count": Profile.objects.filter(network=None).count()
         }
 
+
 class DatabaseScrapeRequestCreate(CreateView):
     form_class = ScraperRequestForm
     template_name = "admin/database_scrape_request.jinja"
