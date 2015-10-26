@@ -91,6 +91,7 @@ INSTALLED_APPS = (
     'search',
     'podaci',
     'ticket',
+    'databases',
 #    'projects',
     'django_select2',
     'captcha'

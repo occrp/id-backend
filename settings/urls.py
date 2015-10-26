@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 
-from id import databases, requests, accounts
+from id import requests, accounts
 from id import validation, admin, tasks, errors
 from core.auth import perm
 
@@ -29,13 +29,6 @@ urlpatterns = patterns('',
     url(r'^admin/statistics/$',             perm('admin', admin.Statistics), name='statistics'),
     url(r'^feedback/$',                     perm('any', admin.Feedback), name='feedback'),
     url(r'^feedback/thankyou/$',            perm('any', admin.FeedbackThanks), name='feedback_thanks'),
-
-    url(r'^databases/$',                    perm('any', databases.ExternalDatabaseList), name='externaldb_list'),
-    url(r'^databases/add/$',                perm('staff', databases.ExternalDatabaseAdd), name='externaldb_add'),
-    url(r'^databases/edit/(?P<id>[0-9]+)/$',perm('staff', databases.ExternalDatabaseEdit), name='externaldb_edit'),
-    url(r'^databases/view/(?P<id>[0-9]+)/$',perm('any', databases.ExternalDatabaseDetail), name='externaldb_detail'),
-    url(r'^databases/delete/(?P<id>[0-9]+)/$',
-                                            perm('admin', databases.ExternalDatabaseDelete), name='externaldb_delete'),
 
     url(r'^accounts/login/$',               login, {'template_name': 'registration/login.jinja'}, name='login'),
     url(r'^accounts/logout/',               logout, {'template_name': 'registration/logout.jinja', 'fallback_redirect_url': '/accounts/login/'}, name='logout'),
@@ -74,6 +67,7 @@ urlpatterns = patterns('',
     url(r'^search/', include('search.urls')),
     url(r'^ticket/', include('ticket.urls')),
     url(r'^podaci/', include('podaci.urls')),
+    url(r'^databases/', include('databases.urls')),
     # url(r'^projects/', perm('staff', TemplateView, template_name='projects.jinja'), name='projects'),
     # url(r'^api/', include('projects.urls')),
 

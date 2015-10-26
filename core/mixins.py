@@ -1,16 +1,13 @@
-import json
 import csv
-from django.core.urlresolvers import reverse, reverse_lazy
-from django.db import models
+from django.core.urlresolvers import reverse_lazy
 from django.db.models import Q
 from django.http import HttpResponse
-from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
 
 from core.utils import json_dumps
-from core.models import Notification, NotificationSubscription, notification_channel_format
+from core.models import Notification, NotificationSubscription
+from core.models import notification_channel_format
 
-from id.constdata import *
 
 class DisplayMixin(object):
     """
@@ -28,6 +25,7 @@ class DisplayMixin(object):
             value = ', '.join(value)
 
         return value
+
 
 class JSONResponseMixin(object):
     def get(self, request):
@@ -74,6 +72,7 @@ class CSVResponder(object):
 
         return response
 
+
 class JSONResponder(object):
     def render_json(self, context):
         if hasattr(self, "CONTEXT_TITLE_KEY"):
@@ -88,6 +87,7 @@ class JSONResponder(object):
 
         return response
 
+
 class CSVorJSONResponseMixin(CSVResponder, JSONResponder):
     def render_to_response(self, context, **response_kwargs):
         if 'csv' in self.request.GET.get('format', ''):
@@ -99,6 +99,7 @@ class CSVorJSONResponseMixin(CSVResponder, JSONResponder):
         else:
             return super(CSVorJSONResponseMixin, self).render_to_response(context, **response_kwargs)
 
+
 class MessageMixin(object):
     def add_message(self, message, level='success'):
         # if isinstance(message, LazyProxy):
@@ -107,6 +108,7 @@ class MessageMixin(object):
         if not hasattr(self, "messages"):
             self.messages = []
         self.messages.append((message, level))
+
 
 class PrettyPaginatorMixin(object):
 

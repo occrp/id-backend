@@ -2,27 +2,11 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
-from id import constdata, models
+from id import models
 from django.contrib.auth import get_user_model
 import re
 import math
 from captcha.fields import CaptchaField
-
-
-class CountryFilterForm(forms.Form):
-    """
-    Filter form for countries.
-
-    Expects 'records' kwarg which should be a collection of external databases
-    from which to extract the country options from.
-
-    We use '---' as a divider
-    """
-    country = forms.ChoiceField(
-                label="", #_("Country"),
-                help_text="",
-                choices=constdata.DATABASE_COUNTRIES,
-              )
 
 
 class UserFilterForm(forms.Form):
