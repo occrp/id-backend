@@ -34,20 +34,6 @@
         </div>
 
         <div class="splash-item">
-            <p class="desc">{% trans %}Ask our researchers to help you find information.{% endtrans %}</p>
-            <div class="button-holder">
-                <a href="{{ url('ticket_submit') }}" class="btn btn-large btn-primary"><i class="fa fa-ticket"></i> {% if user.is_authenticated() %}{% trans %}My Requests{% endtrans %}{% else %}{% trans %}Ask an Expert{% endtrans %}{% endif %}</a>
-            </div>
-        </div>
-        
-        <div class="splash-item">
-            <p class="desc">{% trans %}Keep track of all your important documents.{% endtrans %}</p>
-            <div class="button-holder">
-                <a href="{{ url('podaci_info_home') }}" class="btn btn-large btn-primary"><i class="fa fa-files-o"></i> {% trans %}Manage files{% endtrans %}</a>
-            </div>
-        </div>
-
-        <div class="splash-item">
             <p class="desc">{% trans %}Map out relationships, get the big picture.{% endtrans %}</p>
             <div class="button-holder">
                 <a href="https://vis.occrp.org" class="btn btn-large btn-primary"><i class="fa fa-bank"></i> {% trans %}Use Vis{% endtrans %}</a>
@@ -60,6 +46,21 @@
                 <a href="{{ url('externaldb_list') }}" class="btn btn-large btn-primary"><i class="fa fa-database"></i> {% trans %}Visit Databases{% endtrans %}</a>
             </div>
         </div>
+
+        <div class="splash-item">
+            <p class="desc">{% trans %}Ask our researchers to help you find information.{% endtrans %}</p>
+            <div class="button-holder">
+                <a href="{{ url('ticket_submit') }}" class="btn btn-large btn-primary"><i class="fa fa-ticket"></i> {% if user.is_authenticated() %}{% trans %}My Requests{% endtrans %}{% else %}{% trans %}Ask an Expert{% endtrans %}{% endif %}</a>
+            </div>
+        </div>
+
+        <div class="splash-item">
+            <p class="desc">{% trans %}Keep track of all your important documents.{% endtrans %}</p>
+            <div class="button-holder">
+                <a href="{{ url('podaci_info_home') }}" class="btn btn-large btn-primary"><i class="fa fa-files-o"></i> {% trans %}Manage files{% endtrans %}</a>
+            </div>
+        </div>
+
         {#
         <div class="splash-item">
             <p class="desc">{% trans %}Manage investigations, collaborate on stories.{% endtrans %}</p>
