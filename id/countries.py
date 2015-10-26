@@ -10,7 +10,7 @@ import pycountry
 skipped_codes = (
     'XXX', 'XTS', 'XBA', 'XBB', 'XBC', 'XBD', 'XFO', 'XAF', 'XPF',
     'XFU', 'XOF', 'XPD', 'XAU', 'XAG', 'XDR', 'SDR', 'XPT', 'USN',
-    'USS', 
+    'USS',
     #omit some non-useful currency codes
     )
 CURRENCIES = [(x.letter, '%s - %s' % (x.letter, x.name))
