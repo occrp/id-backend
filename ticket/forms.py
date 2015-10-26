@@ -8,6 +8,7 @@ from django_select2 import *
 
 import core.widgets
 import core.utils
+from core.countries import CURRENCIES
 
 from ticket import constants
 from ticket import models
@@ -34,7 +35,7 @@ class RequestChargeForm(forms.ModelForm):
         model = models.TicketCharge
         exclude = ['ticket', 'user', 'created']
         widgets = {
-            'original_currency': forms.Select(choices=constants.CURRENCIES),
+            'original_currency': forms.Select(choices=CURRENCIES),
         }
 
     def __init__(self, *args, **kwargs):
