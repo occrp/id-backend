@@ -8,3 +8,6 @@ logger.setLevel(logging.INFO)
 
 logger = logging.getLogger('urllib3.connectionpool')
 logger.setLevel(logging.WARN)
+
+logger = logging.getLogger('pycountry.db')
+logger.setLevel(logging.WARN)
