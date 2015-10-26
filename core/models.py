@@ -3,6 +3,7 @@ from settings.settings import AUTH_USER_MODEL
 import re
 from core.utils import json_dumps, json_loads
 from django.core.urlresolvers import reverse_lazy
+from id.constdata import NOTIFICATION_ICONS
 
 notification_channel_format = re.compile("^(([\w\d]+|\*):){4}(([\w\d]+|\*))$")
 
