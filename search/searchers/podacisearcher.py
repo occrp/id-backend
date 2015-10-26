@@ -6,7 +6,7 @@ from search.searchers.base import DocumentSearchResult
 
 
 class DocumentSearchPodaci(DocumentSearcher):
-    PROVIDER = "Podaci"
+    PROVIDER = "ID Files"
 
     def search(self, q, offset=0, limit=100, **kwargs):
         query = {
