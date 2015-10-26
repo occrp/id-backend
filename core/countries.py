@@ -1,18 +1,12 @@
-from django.utils.translation import ugettext_lazy as _
-import logging
-# pycountry generates many spurious error messages due to duplicate info
-# in the underlying database
-# see https://bitbucket.org/gocept/pycountry/pull-request/2/added-support-for-former-countries/diff
-requests_log = logging.getLogger("pycountry.db")
-requests_log.setLevel(logging.WARNING)
 import pycountry
 
+# omit some non-useful currency codes
 skipped_codes = (
     'XXX', 'XTS', 'XBA', 'XBB', 'XBC', 'XBD', 'XFO', 'XAF', 'XPF',
     'XFU', 'XOF', 'XPD', 'XAU', 'XAG', 'XDR', 'SDR', 'XPT', 'USN',
     'USS',
-    #omit some non-useful currency codes
     )
+
 CURRENCIES = [(x.letter, '%s - %s' % (x.letter, x.name))
               for x in pycountry.currencies
               if x.letter not in skipped_codes]

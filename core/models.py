@@ -1,11 +1,11 @@
 from django.db import models
 from settings.settings import AUTH_USER_MODEL
-from id.constdata import *
 import re
 from core.utils import json_dumps, json_loads
 from django.core.urlresolvers import reverse_lazy
 
 notification_channel_format = re.compile("^(([\w\d]+|\*):){4}(([\w\d]+|\*))$")
+
 
 class Notification(models.Model):
     user            = models.ForeignKey(AUTH_USER_MODEL)
