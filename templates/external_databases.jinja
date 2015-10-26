@@ -36,9 +36,7 @@
                         </div>
                         <ul>
                             <li>{{ macros.display_field(db, 'db_type') }}</li>
-                            {% if db.country != request.GET['country'] %}
-                                <li><strong>{{ macros.display_field(db, 'country') }}</strong></li>
-                            {% endif %}
+                            <li><strong>{{countries[db.country]}}</strong></li>
                         </ul>
                         <p class="preserve_whitespace">{{ db.notes }}</p>
                         {% if db.blog_post %}<a href="{{ db.blog_post }}" target='_blank'><i class="fa fa-file-text" data-toggle='tooltip' title='{{ _("Documentation") }}'></i></a>{% endif %}
