@@ -6,6 +6,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from core.mixins import DisplayMixin, NotificationMixin
+from core.countries import COUNTRIES
 from podaci.models import PodaciFile
 
 from constants import *
@@ -264,6 +265,7 @@ class CompanyTicket(Ticket):
             output.append((self._properties[i]._verbose_name, self.get_display_value(i)))
         return output
 
+
 class OtherTicket(Ticket):
     """ Any other request """
     ticket_type = 'other'
@@ -282,6 +284,7 @@ class OtherTicket(Ticket):
             if len(text) > 120: break
         return "%s" % text.strip()
 
+
 class TicketUpdate(models.Model, NotificationMixin):
     update_type = models.CharField(max_length=70, choices=TICKET_UPDATE_TYPES,
                                    default=TICKET_UPDATE_TYPES[0][0])
@@ -298,6 +301,7 @@ class TicketUpdate(models.Model, NotificationMixin):
     def update_type_display(self):
         return get_choice_display(self.update_type, TICKET_UPDATE_TYPES)
 
+
 class DecimalProperty(models.IntegerField):
     def _validate(self, value):
         if not isinstance(value, Decimal):
@@ -311,6 +315,7 @@ class DecimalProperty(models.IntegerField):
         # int -> decimal
         return Decimal(value) / 100
 
+
 class Budget(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
@@ -323,6 +328,7 @@ class Budget(models.Model):
 
     def __unicode__(self):
         return self.name
+
 
 class TicketCharge(models.Model, DisplayMixin):
     """

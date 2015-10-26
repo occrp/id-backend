@@ -3,13 +3,13 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from core.mixins import *
 from core.models import notification_channel_format
-from core.utils import json_loads, json_dumps
+from core.countries import COUNTRIES
 from id.constdata import REQUESTER_TYPES, REQUEST_TYPES
 from ticket.constants import *
 from ticket.models import TicketCharge
 from settings.settings import LANGUAGES, AUTH_USER_MODEL
 from django.utils import timezone
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 
 class Network(models.Model):
