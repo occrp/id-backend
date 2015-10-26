@@ -6,7 +6,7 @@ from search.searchers.base import DocumentSearchResult
 
 log = logging.getLogger(__name__)
 
-# What would life be without hard-coded server IPs?
+# FIXME: What would life be without hard-coded server IPs?
 DATATRACKER_HOST = '54.227.243.186:9200'
 DATATRACKER_INDEX = 'id_prod'
 
