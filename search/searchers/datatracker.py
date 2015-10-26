@@ -40,12 +40,12 @@ class DocumentSearchDataTracker(DocumentSearcher):
 
         resultset = ResultSet(total=results['hits']['total'])
         for r in results['hits']['hits']:
-            text = '<br/>'.join(r.get('highlight', {}).get('text', []))
-            field = lambda n: ''.join(r["fields"].get(n, []))
-
-            url = field('url')
-            title = field('title')
-            i = DocumentSearchResult(self.PROVIDER, url, field('date_added'),
-                                     text, title, metadata=r)
+            text = r.get('highlight', {}).get('text', [])
+            text = '<br/>'.join(text)
+            field = lambda n: r["fields"].get(n, '')
+            i = DocumentSearchResult(self.PROVIDER, field('url'),
+                                     field('date_added'),
+                                     text, field('title'),
+                                     metadata=r)
             resultset.append(i)
         return resultset
