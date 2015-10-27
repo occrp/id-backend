@@ -1,4 +1,4 @@
-{% if files.count() %}
+
 <div class="attached-files">
     <h3 class="primary-highlight">
          <div class="btn-group pull-right" role="group" aria-label="...">
@@ -23,7 +23,7 @@
     {% include "podaci/partials/_podaci_edit_tags.jinja" %}
     {% include "podaci/partials/_podaci_file_details.jinja" %}
 </div>
-{% endif %}
+
 
 <input type="hidden" id="podaci-ticket-id" value="{{ticket.id}}">
 {% include "podaci/partials/_podaci_add_modal.jinja" %}
