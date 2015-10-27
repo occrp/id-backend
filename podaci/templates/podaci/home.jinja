@@ -35,7 +35,9 @@
                 {% include "podaci/partials/_podaci_selection_tools.jinja" %}
                 </li>
                 <li class="dropdown"><a class="btn" href="#" id="podaci_selection_menu" data-toggle="dropdown">{% trans %}Selection{% endtrans %}</a>
-                {% include "podaci/partials/_podaci_selection_actions.jinja" %}
+                    <ul class="dropdown-menu" role="menu">
+                    {% include "podaci/partials/_podaci_selection_actions.jinja" %}
+                    </ul>
                 </li>
             </div>
         </div>
