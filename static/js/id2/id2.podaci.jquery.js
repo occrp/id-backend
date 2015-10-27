@@ -620,7 +620,7 @@ ID2.Podaci.refresh_files = function() {
         $.getJSON(url, {"format": "json"}, function(data) {
             console.log("Got data: ", data);
             if (!data || data.error) {
-                // FIXME: Handle error.
+                Alert.show(data.error, 'error', $('#alerts'), $('body'));
             } else {
                 if ($(el).hasClass("podaci-files-list")) {
                     el = $(el).find("tbody");
@@ -678,8 +678,7 @@ ID2.Podaci.refresh_files = function() {
 
 ID2.Podaci.download_zip = function() {
     if (ID2.Podaci.selection.length == 0) {
-        // FIXME: Alerts are so passé.
-        alert("Error: Cannot download the entire world.");
+        Alert.show("Error: Cannot download the entire world.", 'error', $('#alerts'), $('body'));
         return;
     } else {
         src = "/podaci/zip/?files=" + ID2.Podaci.selection.join("&files=");
