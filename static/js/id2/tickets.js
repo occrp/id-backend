@@ -199,7 +199,7 @@ ID2.Tickets.remove_files = function(ticket) {
         type: 'POST',
         data: {'remove_ids': remove_ids},
         success: function(data) {
-            ID2.Podaci.trigger_search();
+            ID2.Podaci.search('');
             ID2.Podaci.select_none();
         },
         error: function(data) {
