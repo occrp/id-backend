@@ -13,7 +13,7 @@ class ExternalDatabaseList(ListView):
     def get_queryset(self):
         country = self.request.GET.get('country')
         q = ExternalDatabase.objects.all()
-        if len(country.strip()):
+        if country and len(country.strip()):
             expanded = EXPAND_REGIONS.get(country, [])
             q = q.filter(country__in=[country] + list(expanded))
         return q.order_by("agency")
