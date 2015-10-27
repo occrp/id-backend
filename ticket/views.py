@@ -28,7 +28,7 @@ from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, Tick
 from ticket import forms
 from ticket import constants
 
-# from podaci.models import PodaciTag, PodaciFile
+from podaci.models import PodaciFile
 
 
 class AdminOustandingChargesList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
@@ -321,6 +321,28 @@ def TicketActionUnassign(request, pk):
         return JsonResponse({'message': error_message,
                              'status': 'error'},
                             status=403)
+
+
+def TicketActionRemoveFiles(request, pk):
+    print "Trying to load ticket %s -- " % (pk,)
+    ticket = Ticket.objects.get(id=int(pk))
+    success = False
+    fids = request.POST.get("remove_ids", "").split(",")
+    if request.user in ticket.responders.all() or request.user in ticket.volunteers.all():
+        if "all" in fids:
+            ticket.files.clear()
+        else:
+            for i in fids:
+                p = PodaciFile.objects.get(id=int(i))
+                ticket.files.remove(p)
+
+        return JsonResponse({'message': 'Removed files',
+                            'status': 'success'})
+    else:
+        return JsonResponse({'message': 'You do not have permission to remove files from this ticket',
+                             'status': 'error'},
+                                    status=403)
+
 
 
 class TicketActionLeave(TicketActionBaseHandler):
