@@ -414,13 +414,13 @@ ID2.Podaci.init_fileupload = function() {
         }
         //col.children('#podaci-file-list').empty();
     });
-    
+
     col.on("dragleave", function(e) {
         e.preventDefault();
         col.removeClass("dropzone");
         //ID2.Podaci.render_resultset();
     });
-    
+
     col.children('.dropzone-to-be').on("drop", function(e) {
         ID2.Podaci.results_clear();
         col.removeClass("dropzone");
@@ -435,7 +435,7 @@ ID2.Podaci.init_fileupload = function() {
         dropzone: $("#podaci-file-list-container > .dropzone-to-be"),
         disableImageResize: /Android(?!.*Chrome)|Opera/
             .test(window.navigator.userAgent),
-                                         
+
     }).on('fileuploadadd', function (e, data) {
         progressbar.show();
         files_form.hide();
@@ -445,7 +445,7 @@ ID2.Podaci.init_fileupload = function() {
             var linkcolumn = node.append('<td/>')
             linkcolumn.append('<a>'+file.name+'</a>');
         });
-        
+
     }).on('fileuploadprocessalways', function (e, data) {
         console.log("fileuploadprocessalways");
         var index = data.index,
@@ -466,11 +466,11 @@ ID2.Podaci.init_fileupload = function() {
                 .text('Upload')
                 .prop('disabled', !!data.files.error);
         }
-        
+
     }).on('fileuploadprogressall', function (e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
         progressbar.find('.progress-bar').css('width', progress + '%');
-        
+
     }).on('fileuploaddone', function (e, data) {
         ID2.Podaci.add_file_to_results(data.result);
         progressbar.hide();
@@ -479,10 +479,10 @@ ID2.Podaci.init_fileupload = function() {
         files_form.show();
 
         // ticket pages with no files need to be reloaded to show file list:
-        if($("#podaci-file-list").length == 0) {
-          document.location.reload();
-        }
-        
+        //if($("#podaci-file-list").length == 0) {
+        //  document.location.reload();
+        //}
+
     }).on('fileuploadfail', function (e, data) {
         // FIXME: Test failure modes. Make this pretty.
         progressbar.hide();
