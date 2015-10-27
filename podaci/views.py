@@ -6,6 +6,7 @@ from StringIO import StringIO
 from django.db.models import Q
 from django.http import FileResponse, HttpResponseBadRequest
 from django.http import HttpResponseForbidden
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework import permissions
@@ -173,7 +174,7 @@ class FileUploadView(generics.CreateAPIView):
         if ticket is not None:
             ticket = Ticket.objects.get(pk=ticket)
             if request.user not in ticket.actors():
-                raise HttpResponseBadRequest()
+                raise PermissionDenied()
         pfile = PodaciFile.create_from_filehandle(file_obj, user=request.user,
                                                   ticket=ticket)
         log.debug('File created: %r', pfile)
