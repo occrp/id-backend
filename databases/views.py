@@ -2,8 +2,7 @@ from django.db.models import Count
 from django.views.generic import ListView
 
 from core.countries import COUNTRIES
-from databases.fixtures import DATABASE_TYPES
-from databases.models import ExternalDatabase
+from databases.models import ExternalDatabase, DATABASE_TYPES, EXPAND_REGIONS
 from databases.forms import CountryFilterForm
 
 
@@ -13,12 +12,11 @@ class ExternalDatabaseList(ListView):
 
     def get_queryset(self):
         country = self.request.GET.get('country')
-        if country:
-            query = ExternalDatabase.objects.filter(country=country)
-        else:
-            query = ExternalDatabase.objects.all()
-
-        return query.order_by("agency")
+        q = ExternalDatabase.objects.all()
+        if len(country.strip()):
+            expanded = EXPAND_REGIONS.get(country, [])
+            q = q.filter(country__in=[country] + list(expanded))
+        return q.order_by("agency")
 
     def get_context_data(self, **kwargs):
         context = super(ExternalDatabaseList, self).get_context_data(**kwargs)
