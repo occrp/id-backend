@@ -38,6 +38,12 @@ ID2.Tickets.buttonHandlers = function() {
         event.preventDefault();
         ID2.Tickets.unassign_user($(this).data('key'), $(this).data('user'), $(this).parent());
     });
+
+    $(".ticket_remove_files").on("click", function(event) {
+        event.preventDefault();
+        ID2.Tickets.remove_files($(this).data('key'));
+    });
+
 }
 
 ID2.Tickets.filterCurrent = function() {
@@ -173,6 +179,28 @@ ID2.Tickets.leave_user = function(ticket, user, display_name, working_element) {
                     $(this).parent().remove();
                 }
             });
+        },
+        error: function(data) {
+            Alert.show(data.responseJSON.message, 'error', $('#alerts'), $('body'));
+        }
+    });
+}
+
+ID2.Tickets.remove_files = function(ticket) {
+    var remove_ids = "";
+    if (ID2.Podaci.selection.length == 0) {
+        remove_ids = "all";
+    } else {
+        remove_ids = ID2.Podaci.selection.join(",");
+    }
+
+    $.ajax({
+        url: '/ticket/' + ticket + '/remove_files/',
+        type: 'POST',
+        data: {'remove_ids': remove_ids},
+        success: function(data) {
+            ID2.Podaci.trigger_search();
+            ID2.Podaci.select_none();
         },
         error: function(data) {
             Alert.show(data.responseJSON.message, 'error', $('#alerts'), $('body'));
