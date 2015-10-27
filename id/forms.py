@@ -129,8 +129,10 @@ class ProfileAdminForm(forms.ModelForm):
 class ScraperRequestForm(forms.ModelForm):
     class Meta:
         model = models.DatabaseScrapeRequest
+        exclude = tuple()
 
 
 class FeedbackForm(forms.ModelForm):
     class Meta:
         model = models.Feedback
+        exclude = ("timestamp", )

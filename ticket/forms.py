@@ -202,3 +202,4 @@ class CommentForm(forms.ModelForm):
 class BudgetForm(forms.ModelForm):
     class Meta:
         model = models.Budget
+        fields = ('name', 'description')
