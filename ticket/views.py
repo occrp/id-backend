@@ -188,6 +188,7 @@ class TicketActionBaseHandler(TicketUpdateMixin, UpdateView):
         return reverse_lazy('ticket_details', kwargs={'ticket_id': ticket.id})
 
 class TicketActionCancel(TicketActionBaseHandler):
+    form_class = forms.TicketEmptyForm
 
     def perform_invalid_action(self, form):
         messages.error(self.request, _('A reason must be supplied to cancel the ticket.'))
@@ -195,7 +196,7 @@ class TicketActionCancel(TicketActionBaseHandler):
     def perform_valid_action(self, form):
         ticket = self.object
         ticket.status = constants.get_choice('Cancelled', constants.TICKET_STATUS)
-        self.perform_ticket_update(ticket, 'Cancelled', form.cleaned_data['reason'])
+        self.perform_ticket_update(ticket, 'Cancelled', '')
         return super(TicketActionCancel, self).perform_valid_action(form)
 
 class TicketActionClose(TicketActionBaseHandler):
@@ -673,7 +674,7 @@ class TicketDetail(TemplateView):
             'charges': charges,
             'charges_outstanding': outstanding,
             'ticket_update_form': self.form,
-            'cancel_form': forms.TicketCancelForm(),
+            'cancel_form': forms.TicketEmptyForm(),
             'mark_paid_form': forms.TicketPaidForm(),
             'close_form': forms.TicketEmptyForm(),
             'open_form': forms.TicketCancelForm(),
