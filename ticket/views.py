@@ -199,14 +199,15 @@ class TicketActionCancel(TicketActionBaseHandler):
         return super(TicketActionCancel, self).perform_valid_action(form)
 
 class TicketActionClose(TicketActionBaseHandler):
+    form_class = forms.TicketEmptyForm
 
     def perform_invalid_action(self, form):
-        messages.error(self.request, _('A reason must be supplied to close the ticket.'))
+        messages.error(self.request, _('An error came up processing your close request.'))
 
     def perform_valid_action(self, form):
         ticket = self.object
         ticket.status = constants.get_choice('Closed', constants.TICKET_STATUS)
-        self.perform_ticket_update(ticket, 'Closed', form.cleaned_data['reason'])
+        self.perform_ticket_update(ticket, 'Closed', '')
         return super(TicketActionClose, self).perform_valid_action(form)
 
 
@@ -674,7 +675,7 @@ class TicketDetail(TemplateView):
             'ticket_update_form': self.form,
             'cancel_form': forms.TicketCancelForm(),
             'mark_paid_form': forms.TicketPaidForm(),
-            'close_form': forms.TicketCancelForm(),
+            'close_form': forms.TicketEmptyForm(),
             'open_form': forms.TicketCancelForm(),
             'flag_form': forms.RequestFlagForm(),
             'files': self.ticket.files,

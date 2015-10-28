@@ -268,9 +268,9 @@
 {% block after_js %}
     {{ super() }}
     <div class="modal hide" id="entity-viewer"></div>
-    {{ modal_macros.render_modal(open_form, url('ticket_open', pk=ticket.id), "ReqReopenForm", _("Re-Open Request"), _("Submit"), "", csrf_token) }}
+    {{ modal_macros.render_modal(open_form, url('ticket_open', pk=ticket.id), "ReqReopenForm", _("Re-Open Request"), _("Open Request"), "", csrf_token) }}
 
-    {{ modal_macros.render_modal(close_form, url('ticket_close', pk=ticket.id), "ReqCloseForm", _("Close Request"), _("Submit"), "", csrf_token) }}
+    {{ modal_macros.render_modal(close_form, url('ticket_close', pk=ticket.id), "ReqCloseForm", _("Close Request"), _("Close request"), csrf=csrf_token, extra_text=_("Are you sure you want to close this request?"), cancel_text=_("Leave request open")) }}
 
     {{ modal_macros.render_modal(cancel_form, url('ticket_cancel', pk=ticket.id), "ReqCancelForm", _("Cancel Request"), _("Submit"), "", csrf_token) }}
 
