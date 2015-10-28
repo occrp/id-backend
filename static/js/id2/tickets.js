@@ -79,13 +79,6 @@ ID2.Tickets.updateAssigneeSelect = function(working_element, user, visible) {
 
 }
 
-// ID2.Tickets.assign_user = function(ticket, user, callback) {
-//     $.post('/ticket/' + ticket + '/join/', {'user': user}, function(data) {
-//         if (callback) {
-//             callback(data);
-//         }
-//     });
-// }
 
 ID2.Tickets.assign_user = function(ticket, user, display_name, working_element) {
     $.ajax({
