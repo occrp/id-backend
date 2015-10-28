@@ -263,21 +263,39 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     def tickets_assigned_total(self):
         return self.tickets_assigned_open() + self.tickets_assigned_closed()
 
-    def tickets_average_resolution_time(self):
-        if (self.tickets_assigned_total() == 0):
-            return timedelta(days=0)
-
+    def tickets_get_set(self, _max=None):
         res = self.tickets_responded.filter(status__in=['closed'])
         vol = self.tickets_volunteered.filter(status__in=['closed'])
         tot = list(res)
         tot.extend(list(vol))
+        if _max:
+            tot.sort(key=lambda x: x.created)
+            tot.reverse()
+            tot = tot[:30]
         tot = set(tot)
+        return tot
+
+    def tickets_average_resolution_time_calculate(self, tot):
         if len(tot) > 0:
             times = [x.resolution_time() for x in tot]
             average_timedelta = sum(times, timedelta(0)) / len(times)
             return average_timedelta
         else:
             return timedelta(0)
+
+    def tickets_average_resolution_time_last_30(self):
+        if (self.tickets_assigned_total() == 0):
+            return timedelta(days=0)
+
+        tot = self.tickets_get_set(30)
+        return self.tickets_average_resolution_time_calculate(tot)
+
+    def tickets_average_resolution_time(self):
+        if (self.tickets_assigned_total() == 0):
+            return timedelta(days=0)
+
+        tot = self.tickets_get_set()
+        return self.tickets_average_resolution_time_calculate(tot)
 
     def notifications_subscribe(self, channel):
         assert(notification_channel_format.match(channel))
