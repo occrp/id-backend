@@ -4,6 +4,7 @@
 
 <form action="{{ form_action }}" class="form-horizontal" method="POST"{% if enctype != "" and enctype is defined %} enctype="{{enctype}}"{% endif %}>
 	<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf }}">
+	{{ extra_text }}
     {% for field in form %}
         {{ form_macros.render_field(field) }}
     {% endfor %}
