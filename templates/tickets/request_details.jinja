@@ -272,7 +272,7 @@
 
     {{ modal_macros.render_modal(close_form, url('ticket_close', pk=ticket.id), "ReqCloseForm", _("Close Request"), _("Close request"), csrf=csrf_token, extra_text=_("Are you sure you want to close this request?"), cancel_text=_("Leave request open")) }}
 
-    {{ modal_macros.render_modal(cancel_form, url('ticket_cancel', pk=ticket.id), "ReqCancelForm", _("Cancel Request"), _("Submit"), "", csrf_token) }}
+    {{ modal_macros.render_modal(cancel_form, url('ticket_cancel', pk=ticket.id), "ReqCancelForm", _("Cancel Request"), _("Cancel request"), "", csrf=csrf_token, extra_text=_("Are you sure you want to cancel this request?"), cancel_text=_("Leave request open")) }}
 
     {{ modal_macros.render_modal(mark_paid_form, url('request_mark_paid', pk=ticket.id), "MarkPaidForm", _("Mark Paid"), _("Save"), "", csrf_token) }}
 
