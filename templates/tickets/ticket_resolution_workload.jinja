@@ -12,7 +12,8 @@
         <th>Open Tickets</th>
         <th>Closed Tickets</th>
         <th>Total Tickets</th>
-        <th>Average Resolution Time</th>
+        <th>Average Resolution Time (all time)</th>
+        <th>Average Resolution Time (last 30 tickets)</th>
     </tr>
 </thead>
 <tbody>
@@ -28,6 +29,7 @@
         <td>{{researcher.tickets_assigned_closed()}}</td>
         <td>{{researcher.tickets_assigned_total()}}</td>
         <td>{{researcher.tickets_average_resolution_time()}}</td>
+        <td>{{researcher.tickets_average_resolution_time_last_30()}}</td>
     </tr>
 {% endfor %}
 </tbody>
