@@ -5,10 +5,13 @@
 # compose file
 # 
 
+######################################################################
+# production setup
+######################################################################
 nginx:
     image: nginx:1.7
     volumes:
-        - "settings/nginx/:/etc/nginx/"
+        - "./settings/nginx/:/etc/nginx/"
     volumes_from:
         - id2
     links:
@@ -22,9 +25,11 @@ id2:
     - postgres
     - elasticsearch
   volumes:
-    - "podaci-data/:/data"
+    - "./podaci-data/:/data"
 
-# development version
+######################################################################
+# development setup
+######################################################################
 id2dev:
   build: .
   ports:
@@ -35,7 +40,7 @@ id2dev:
     - postgres
     - elasticsearch
   volumes:
-    - "podaci-data/:/data"
+    - "./podaci-data/:/data"
     # explicitly bind-mounting each and every directory
     # because bower
     - "./tools:/srv/tools/investigative-dashboard-2/tools"
@@ -57,7 +62,9 @@ id2dev:
     - "./static/less:/srv/tools/investigative-dashboard-2/static/less"
     - "./static/img:/srv/tools/investigative-dashboard-2/static/img"
     
+######################################################################
 # dataimports version
+######################################################################
 id2dataimports:
   build: .
   expose:
@@ -68,17 +75,22 @@ id2dataimports:
   volumes:
     - "./:/srv/tools/investigative-dashboard-2/"
     - "../export-prod/:/exported"
-    - "podaci-data/:/data"
+    - "./podaci-data/:/data"
     - "../google_appengine/:/usr/src/google_appengine/"
     - "../investigative-dashboard/:/usr/src/id/"
   command: /bin/bash
+  
+  
+######################################################################
+# utilities
+######################################################################
 
 # postgres
 # TODO FIXME before we go to production with this!
 postgres:
   image: postgres:9.4
   volumes:
-    - 'db/:/var/lib/postgresql/data'
+    - './db/:/var/lib/postgresql/data'
   environment:
     POSTGRES_USER:     id2
     POSTGRES_PASSWORD: id2
@@ -86,4 +98,4 @@ postgres:
 
 # elasticsearch    
 elasticsearch:
-  image: elasticsearch
+  image: elasticsearch:1.7
