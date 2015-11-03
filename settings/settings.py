@@ -95,7 +95,6 @@ INSTALLED_APPS = (
     'django_select2',
     'captcha',
     'oauth2_provider',
-    'corsheaders',
 )
 
 ##################
@@ -174,11 +173,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
     'podaci.middleware.PodaciExceptionMiddleware',
 )
-
 
 ROOT_URLCONF = 'settings.urls'
 AUTO_RENDER_SELECT2_STATICS = False
@@ -276,7 +273,11 @@ DATE_INPUT_FORMATS += ('%d/%m/%y',)
 ##################
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES':
-        ('rest_framework.permissions.IsAuthenticated',),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+    )
     'PAGE_SIZE': 30
 }
