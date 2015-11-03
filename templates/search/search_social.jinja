@@ -1,13 +1,13 @@
 {% extends "search/base.jinja" %}
 
-{% block search_title %}Social Network Search{% endblock %}
+{% block search_title %}{% -trans %}Social Network Search{% -endtrans %}{% endblock %}
 {% block search_form %}
     <div class="row well">
         <form name="social-search-form" id="social-search-form">
         <div class="social-search-inputs-container">
             <table>
-                <tr><th>Users:</th><td><input class="users_input" name="q"></td></tr>
-                <tr><th>Networks:</th><td><select multiple="true" name="providers[]">
+                <tr><th>{% trans %}Users:{% endtrans %}</th><td><input class="users_input" name="q"></td></tr>
+                <tr><th>{% trans %}Networks:{% endtrans %}</th><td><select multiple="true" name="providers[]">
                 	<option value="Instagram" selected>Instagram</option>
                 </select></td></tr>
             </table>

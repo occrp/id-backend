@@ -27,18 +27,18 @@
 
             {% if person_ownership_form is defined %}
                 <div id="person_ownership_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
-                    <h2>Basic Information</h2>
+                    <h2>{% trans %}Basic Information{% endtrans %}</h2>
                     {{ form_macros.render_field(person_ownership_form['name']) }}
                     {{ form_macros.render_field(person_ownership_form['surname']) }}
                     {{ form_macros.render_field(person_ownership_form['aliases']) }}
                     {{ form_macros.render_field(person_ownership_form['dob']) }}
 
-                    <h2>Details</h2>
+                    <h2>{% trans %}Details{% endtrans %}</h2>
                     {{ form_macros.render_field(person_ownership_form['family']) }}
                     {{ form_macros.render_field(person_ownership_form['business_activities']) }}
                     {{ form_macros.render_field(person_ownership_form['background']) }}
 
-                    <h2>Request details</h2>
+                    <h2>{% trans %}Request details{% endtrans %}</h2>
                     {{ form_macros.render_field(person_ownership_form['initial_information']) }}
                     {{ form_macros.render_field(person_ownership_form['sensitive']) }}
                     {{ form_macros.render_field(person_ownership_form['whysensitive']) }}
@@ -47,12 +47,12 @@
             {% endif %}
             {% if company_ownership_form is defined %}
                 <div id="company_ownership_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
-                    <h2>Basic Information</h2>
+                    <h2>{% trans %}Basic Information{% endtrans %}</h2>
                     {{ form_macros.render_field(company_ownership_form['name']) }}
                     {{ form_macros.render_field(company_ownership_form['country']) }}
                     {{ form_macros.render_field(company_ownership_form['background']) }}
 
-                    <h2>Request details</h2>
+                    <h2>{% trans %}Request details{% endtrans %}</h2>
                     {{ form_macros.render_field(company_ownership_form['sources']) }}
                     {{ form_macros.render_field(company_ownership_form['sensitive']) }}
                     {{ form_macros.render_field(company_ownership_form['whysensitive']) }}
@@ -61,7 +61,7 @@
             {% endif %}
             {% if other_form is defined %}
                 <div id="other_form" class="ticket-form" style="{% if ticket_type_form is defined %}display: none;{% endif %}">
-                    <h2>Request details</h2>
+                    <h2>{% trans %}Request details{% endtrans %}</h2>
                     {{ form_macros.render_form_fragment(other_form) }}
                 </div>
 
