@@ -45,7 +45,7 @@
 
         <div style="line-height: 1.2em; margin-bottom: 0.5em;">
             <span style="display:inline-block; width:6.5em;">{% trans %}Requested by{% endtrans %}</span>
-            <a href="{{url('profile', ticket.requester.id)}}">{% trans %}{{ticket.requester}}</a> on <b>{{ticket.created|date('Y-m-d')}}</b>, complete by <b>{{ticket.deadline|date('Y-m-d')}}{% endtrans %}</b>.
+            <a href="{{url('profile', ticket.requester.id)}}">{{ticket.requester}}</a> {% trans %}on{% endtrans %} <b>{{ticket.created|date('Y-m-d')}}</b>, {% trans %}complete by{% endtrans %} <b>{{ticket.deadline|date('Y-m-d')}}</b>.
         </div>
 
         <div>
@@ -62,23 +62,23 @@
             {% endif %}
             <div class="pull-right">
                 {% if user.is_user or user.is_volunteer %}
-                    <a style="{% if user in ticket.actors() %}display: none;{% endif %}" class="btn btn-small join_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-plus"></i>{% trans %} Join{% endtrans %}</a>
+                    <a style="{% if user in ticket.actors() %}display: none;{% endif %}" class="btn btn-small join_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-plus"></i>{% trans %}Join{% endtrans %}</a>
 
-                    <a style="{% if user not in ticket.actors() %}display: none;{% endif %}" class="btn btn-small leave_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-times"></i>{% trans %} Leave{% endtrans %}</a>
+                    <a style="{% if user not in ticket.actors() %}display: none;{% endif %}" class="btn btn-small leave_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-times"></i>{% trans %}Leave{% endtrans %}</a>
                 {% endif %}
                 {% if user.is_staff %}
-                    <a class="btn btn-small" data-jq-dropdown="#jq-dropdown-{{ ticket.id }}"><i class="fa fa-plus"></i> Assign</a>
+                    <a class="btn btn-small" data-jq-dropdown="#jq-dropdown-{{ ticket.id }}"><i class="fa fa-plus"></i>{% trans %}Assign{% endtrans %}</a>
                     <div id="jq-dropdown-{{ ticket.id }}" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-right">
                         <div class="jq-dropdown-panel">
                             <select class="not_select2" data-key="{{ticket.id}}">
-                                    <option value="0">--- select a user</option>
+                                    <option value="0">--- {% trans %}select a user{% endtrans %}</option>
                                 {% for possible_assignee in possible_assignees %}
                                     <option value="{{ possible_assignee.id }}" {% if possible_assignee in ticket.actors(false) %}
                                         style="display: none;"
                                     {% endif %}>{{ possible_assignee.display_name }}</option>
                                 {% endfor %}
                             </select>
-                            <a class="add_assignee_btn btn btn-small" ><i class="fa fa-plus"></i>{% trans %} Add{% endtrans %}</a>
+                            <a class="add_assignee_btn btn btn-small" ><i class="fa fa-plus"></i>{% trans %}Add{% endtrans %}</a>
                         </div>
                     </div>
                 {% endif %}
