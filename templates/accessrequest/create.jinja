@@ -1,7 +1,7 @@
 {% extends "base.jinja" %}
 {% block body_class %}splash has-full-page-header{% endblock %}
 {% block before_content %}
-    <div class="page-header full-page-header"><h2 class="primary-highlight">Request permissions</h2>
+    <div class="page-header full-page-header"><h2 class="primary-highlight">{% trans %}Request permissions{% endtrans %}</h2>
         {% block error_content %}{% endblock %}
     </div>
 {% endblock %}

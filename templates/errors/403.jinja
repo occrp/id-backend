@@ -15,14 +15,14 @@
 {% block error_details %}
     {% if not user.is_authenticated() %}
         <div style="text-align: center; margin-bottom: 20px;">
-            <a href="{{url('login')}}" class="btn btn-primary button-x-large"><i class="fa fa-sign-in"></i> Sign in</a>
-            <a href="{{url('registration_register')}}" class="btn button-x-large"><i class="fa fa-pencil-square-o"></i> Register</a>
+            <a href="{{url('login')}}" class="btn btn-primary button-x-large"><i class="fa fa-sign-in"></i> {% trans %}Sign in{% endtrans %}</a>
+            <a href="{{url('registration_register')}}" class="btn button-x-large"><i class="fa fa-pencil-square-o"></i> {% trans %}Register{% endtrans %}</a>
         </div>
 
         <p style="text-align: center; font-size: 120%;">{% trans %}This part of Investigative Dashboard is only for registered users. In order to use it, register and log in to the system.{% endtrans %}</p>
     {% else %}
         <div style="text-align: center; margin-bottom: 20px;">
-            <a href="{{url('request_access_create')}}" class="btn btn-primary button-x-large"><i class="fa fa-star"></i> Request permissions</a>
+            <a href="{{url('request_access_create')}}" class="btn btn-primary button-x-large"><i class="fa fa-star"></i> {% trans %}Request permissions{% endtrans %}</a>
         </div>
 
         <p style="text-align: center; font-size: 120%;">{% trans %}Elevated privileges are required for access to this part of Investigative Dashboard.{% endtrans %}</p>

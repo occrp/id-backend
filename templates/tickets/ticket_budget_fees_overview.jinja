@@ -2,15 +2,15 @@
 
 {% block inner_content %}
 
-<h2>Fees charged to budgets</h2>
+<h2>{% trans %}Fees charged to budgets{% endtrans %}</h2>
 
 <table class="table">
 <thead>
-    <tr><th>Budget</th><th>Total costs</th><th>Details</th></tr>
+    <tr><th>{% trans %}Budget{% endtrans %}</th><th>{% trans %}Total costs{% endtrans %}</th><th>{% trans %}Details{% endtrans %}</th></tr>
 </thead>
 <tbody>
 {% for budget in budgets %}
-    <tr><td>{{budget}}</td><td>{{budget.get_payment_total()}}</td><td>Details</td></tr>
+    <tr><td>{{budget}}</td><td>{{budget.get_payment_total()}}</td><td>{% trans %}Details{% endtrans %}</td></tr>
 {% endfor %}
 </tbody>
 </table>

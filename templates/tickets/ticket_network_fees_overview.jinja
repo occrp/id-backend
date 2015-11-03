@@ -2,15 +2,15 @@
 
 {% block inner_content %}
 
-<h2>Network fees</h2>
+<h2>{% trans %}Network fees{% endtrans %}</h2>
 
 <table class="table">
 <thead>
-    <tr><th>Network</th><th>Total costs</th><th>Details</th></tr>
+    <tr><th>{% trans %}Network{% endtrans %}</th><th>{% trans %}Total costs{% endtrans %}</th><th>{% trans %}Details{% endtrans %}</th></tr>
 </thead>
 <tbody>
 {% for network in networks %}
-    <tr><td>{{network}}</td><td>{{network.get_payment_total()}}</td><td>Details</td></tr>
+    <tr><td>{{network}}</td><td>{{network.get_payment_total()}}</td><td>{% trans %}Details{% endtrans %}</td></tr>
 {% endfor %}
 </tbody>
 </table>
