@@ -27,3 +27,5 @@ django-simple-captcha
 textract
 unidecode
 rarfile
+django-oauth-toolkit
+django-cors-headers

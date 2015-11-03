@@ -21,6 +21,9 @@ urlpatterns = patterns('',
     url(r'^about/id2/$',                    perm('any', TemplateView, template_name="about_id.jinja"), name='about_id'),
     url(r'^about/occrp/$',                  perm('any', TemplateView, template_name="about_us.jinja"), name='about_us'),
 
+    url(r'^o/',                             include('oauth2_provider.urls', namespace='oauth2_provider')),
+    # url(r'^admin/db$',                      include('admin.site.urls')),
+
     url(r'^admin/$',                        perm('staff', admin.Panel), name='admin_panel'),
     url(r'^admin/scrapers/request/$',       perm('staff', admin.DatabaseScrapeRequestCreate), name='admin_scrapers_request'),
     url(r'^admin/budgets/$',                perm('staff', admin.Budgets), name='admin_budgets'),
