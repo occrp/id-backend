@@ -29,7 +29,7 @@
                 <span class="add-on"><i class="fa fa-calendar"></i></span>
             </div>
             <div class="input-append">
-                <button type="submit" class="btn">{%trans%}Filter{%endtrans%}</button>
+                <button type="submit" class="btn">{% trans %}Filter{% endtrans %}</button>
             </div>
         </div>
     </form>
@@ -44,12 +44,12 @@
         <h4><a href="{{url('ticket_details', ticket.id)}}">{{ticket.summary}}</a></h4>
 
         <div style="line-height: 1.2em; margin-bottom: 0.5em;">
-            <span style="display:inline-block; width:6.5em;">Requested by</span>
-            <a href="{{url('profile', ticket.requester.id)}}">{{ticket.requester}}</a> on <b>{{ticket.created|date('Y-m-d')}}</b>, complete by <b>{{ticket.deadline|date('Y-m-d')}}</b>.
+            <span style="display:inline-block; width:6.5em;">{% trans %}Requested by{% endtrans %}</span>
+            <a href="{{url('profile', ticket.requester.id)}}">{% trans %}{{ticket.requester}}</a> on <b>{{ticket.created|date('Y-m-d')}}</b>, complete by <b>{{ticket.deadline|date('Y-m-d')}}{% endtrans %}</b>.
         </div>
 
         <div>
-            <span style="display:inline-block; width:6.5em;">Assigned to</span>
+            <span style="display:inline-block; width:6.5em;">{% trans %}Assigned to{% endtrans %}</span>
             {% if ticket.actors(false)|length > 0 %}
                 {% for actor in ticket.actors(false) %}
                     <span class="assignee" style="background: #eee; padding: 2px; border: 1px solid #ccc;">
@@ -62,9 +62,9 @@
             {% endif %}
             <div class="pull-right">
                 {% if user.is_user or user.is_volunteer %}
-                    <a style="{% if user in ticket.actors() %}display: none;{% endif %}" class="btn btn-small join_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-plus"></i> Join</a>
+                    <a style="{% if user in ticket.actors() %}display: none;{% endif %}" class="btn btn-small join_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-plus"></i>{% trans %} Join{% endtrans %}</a>
 
-                    <a style="{% if user not in ticket.actors() %}display: none;{% endif %}" class="btn btn-small leave_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-times"></i> Leave</a>
+                    <a style="{% if user not in ticket.actors() %}display: none;{% endif %}" class="btn btn-small leave_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-times"></i>{% trans %} Leave{% endtrans %}</a>
                 {% endif %}
                 {% if user.is_staff %}
                     <a class="btn btn-small" data-jq-dropdown="#jq-dropdown-{{ ticket.id }}"><i class="fa fa-plus"></i> Assign</a>
@@ -78,7 +78,7 @@
                                     {% endif %}>{{ possible_assignee.display_name }}</option>
                                 {% endfor %}
                             </select>
-                            <a class="add_assignee_btn btn btn-small" ><i class="fa fa-plus"></i> Add</a>
+                            <a class="add_assignee_btn btn btn-small" ><i class="fa fa-plus"></i>{% trans %} Add{% endtrans %}</a>
                         </div>
                     </div>
                 {% endif %}
