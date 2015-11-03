@@ -20,5 +20,5 @@ class SearchAPITest(APITestCase):
 
     def test_trigger_document_search(self):
         url = reverse('search_documents_query')
-        res = self.client.get(url, {'q': 'foo', 'provider': 'Podaci'})
+        res = self.client.get(url, {'q': 'foo', 'provider': 'ID Files'})
         self.assertEqual(res.status_code, 200)
