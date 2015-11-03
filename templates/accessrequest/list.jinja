@@ -9,7 +9,7 @@
 </ul>
 
   {% for reqtype in ["requester", "volunteer"] %}
-    <h3>{{reqtype|capitalize}} waiting for approval</h3>
+    <h3>{{reqtype|capitalize}}{% trans %} waiting for approval{% endtrans %}</h3>
     <table class="table table-striped table-bordered crud-list">
       <thead>
         <tr>

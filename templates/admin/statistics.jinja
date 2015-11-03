@@ -2,14 +2,14 @@
 
 {% block admin_content %}
     <div class='page-header'>
-        <h1>{% block crud_title %}Statistics{% endblock %}</h1>
-       	<p>Investigative Dashboard version {{version}}.</p>
+        <h1>{% trans %}{% block crud_title %}Statistics{% endblock %}{% endtrans %}</h1>
+       	<p>{% trans %}Investigative Dashboard version {{version}}.{% endtrans %}</p>
 
     </div>
 <div>
 <h2>Basic Statistics</h2>
 <ul class="statistics_boards">
-  <li>{% trans %}{{tickets_opened}} research requests ({{tickets_people}} about people, {{tickets_company}} about companies, {{tickets_other}} about other topics{% endtrans %}</li>
+  <li>{% trans %}{{tickets_opened}} research requests ({{tickets_people}} about people, {{tickets_company}} about companies, {{tickets_other}} about other topics){% endtrans %}</li>
   <li>{% trans %}{{tickets_closed}} research requests completed, {{tickets_in_progress}} still in progress{% endtrans %}</li>
   <li>{% trans %}{{accounts_approved}} accounts ({{accounts_user}} requesters, {{accounts_volunteer}} volunteers, {{accounts_staff}} staff, {{accounts_admin}} admin){% endtrans %}</li>
   <li>{% trans %}{{accreq_total}} account requests ({{accreq_approved}} approved, {{accreq_rejected}} rejected, {{accreq_outstanding}} outstanding){% endtrans %}</li>
@@ -21,9 +21,9 @@
 	<table class="table table-border">
 	<thead>
 		<tr>
-			<th>Type</th>
-			<th>Searches</th>
-			<th>Results found</th>
+			<th>{% trans %}Type{% endtrans %}</th>
+			<th>{% trans %}Searches{% endtrans %}</th>
+			<th>{% trans %}Results found{% endtrans %}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -39,14 +39,14 @@
 </div>
 
 <div>
-	<h2>Networks</h2>
+	<h2>{% trans %}Networks{% endtrans %}</h2>
 
 	<table class="table table-border">
 	<thead>
 		<tr>
-			<th>Name</th>
-			<th>Members</th>
-			<th>Total costs incurred</th>
+			<th>{% trans %}Name{% endtrans %}</th>
+			<th>{% trans %}Members{% endtrans %}</th>
+			<th>{% trans %}Total costs incurred{% endtrans %}</th>
 		</tr>
 	</thead>
 	<tbody>

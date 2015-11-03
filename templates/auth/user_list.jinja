@@ -30,10 +30,10 @@
             <td><a href="{{ url('profile', pk=obj.id) }}">{{obj.email}}</a></td>
             <td>{{obj.first_name}} {{obj.last_name}}</td>
             <td>
-                {% if obj.is_superuser %}Administrator {% endif %}
-                {% if obj.is_staff %}Staffer {% endif %}
-                {% if obj.is_volunteer %}Volunteer {% endif %}
-                {% if obj.is_user %}Requester {% endif %}
+                {% if obj.is_superuser %}{% trans %}Administrator {% endtrans %}{% endif %}
+                {% if obj.is_staff %}{% trans %}Staffer {% endtrans %}{% endif %}
+                {% if obj.is_volunteer %}{% trans %}Volunteer {% endtrans %}{% endif %}
+                {% if obj.is_user %}{% trans %}Requester {% endtrans %}{% endif %}
             </td>
         </tr>
         {% endfor %}
