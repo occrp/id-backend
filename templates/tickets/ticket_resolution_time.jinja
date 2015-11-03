@@ -2,14 +2,14 @@
 
 {% block inner_content %}
 
-<h2>Ticket Resolution</h2>
+<h2>{% trans %}Ticket Resolution{% endtrans %}</h2>
 
 <div style="height: auto; border-top: 2px solid #f00; border-bottom: 2px solid #f00; padding-top: 6px; padding-bottom: 6px; text-align:center;">
-    <h3>Average Request Resolution Time</h3>
+    <h3>{% trans %}Average Request Resolution Time{% endtrans %}</h3>
 
     <h1>{{averagetime}}</h1>
 
-    (calculated from {{count}} most recently closed tickets)
+    {% trans %}(calculated from {{count}} most recently closed tickets){% endtrans %}
 </div>
 
 ...

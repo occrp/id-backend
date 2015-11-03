@@ -1,18 +1,18 @@
 {% extends "admin_base.jinja" %}
 {% block admin_content %}
 
-<h2>Podaci status</h2>
+<h2>{% trans %}Podaci status{% endtrans %}</h2>
 <table class="table table-border">
-<tr><th>Files</th><td>{{podaci_files}}</td></tr>
-<tr><th>Tags</th><td>{{podaci_tags}}</td></tr>
-<tr><th>Collections</th><td>{{podaci_collections}}</td></tr>
-<tr><th>Total size</th><td>{{podaci_size|filesizeformat}}</td></tr>
-<tr><th>Root</th><td>{{podaci_data_root}}</td></tr>
-<tr><th>Data sharding</th><td>{{podaci_data_sharding}}</td></tr>
-<tr><th>Main index</th><td>{{podaci_index}}</td></tr>
+<tr><th>{% trans %}Files{% endtrans %}</th><td>{{podaci_files}}</td></tr>
+<tr><th>{% trans %}Tags{% endtrans %}</th><td>{{podaci_tags}}</td></tr>
+<tr><th>{% trans %}Collections{% endtrans %}</th><td>{{podaci_collections}}</td></tr>
+<tr><th>{% trans %}Total size{% endtrans %}</th><td>{{podaci_size|filesizeformat}}</td></tr>
+<tr><th>{% trans %}Root{% endtrans %}</th><td>{{podaci_data_root}}</td></tr>
+<tr><th>{% trans %}Data sharding{% endtrans %}</th><td>{{podaci_data_sharding}}</td></tr>
+<tr><th>{% trans %}Main index{% endtrans %}</th><td>{{podaci_index}}</td></tr>
 </table>
 
-<h2>Osoba status</h2>
+<h2>{% trans %}Osoba status{% endtrans %}</h2>
 N/A
 
 {% endblock %}
