@@ -92,9 +92,10 @@ INSTALLED_APPS = (
     'podaci',
     'ticket',
     'databases',
-#    'projects',
     'django_select2',
-    'captcha'
+    'captcha',
+    'oauth2_provider',
+    'corsheaders',
 )
 
 ##################
@@ -173,6 +174,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
     'podaci.middleware.PodaciExceptionMiddleware',
 )
