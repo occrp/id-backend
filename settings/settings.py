@@ -6,7 +6,7 @@ import os
 here = lambda x: os.path.realpath(os.path.join(os.path.realpath(os.path.dirname(__file__)), x))
 BASE_DIR = here('../')
 
-ID_VERSION = "2.0.5"
+ID_VERSION = "2.1.0"
 ID_ENVIRONMENT = os.environ.get('ID_ENVIRONMENT', 'debug')
 print "Starting ID version %s (%s)" % (ID_VERSION, ID_ENVIRONMENT)
 
