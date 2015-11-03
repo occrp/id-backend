@@ -86,7 +86,7 @@ class NotificationSubscription(models.Model):
 
     @property
     def channel(self):
-        return ":".join([self.project, self.module, self.model, self.instance, self.action])
+        return ":".join([unicode(x) if x else '*' for x in [self.project, self.module, self.model, self.instance, self.action]])
         # = models.CharField(max_length=200)
 
     def channel_components(self, channel):
