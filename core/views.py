@@ -44,6 +44,43 @@ class NotificationStream(generics.ListAPIView):
     def get_queryset(self):
         return Notification.objects.filter(user=self.request.user).order_by("-timestamp")
 
+class NotificationSubscriptions(APIView):
+    # TODO: Needs security
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        return JsonResponse({
+            'notification_subscriptions': [x.channel for x in request.user.notificationsubscription_set.all()]
+        })
+
+    def put(self, request, *args, **kwargs):
+        stream = request.data.get('stream')
+        try:
+            request.user.notifications_subscribe(stream)
+            return JsonResponse({'result': 'subscribed'})
+        except AssertionError, e:
+            return JsonResponse({'error': 'invalid stream format'})
+        except TypeError, e:
+            return JsonResponse({
+                'error': 'you must supply a stream',
+                'params': request.data,
+            })
+
+    def delete(self, request, *args, **kwargs):
+        stream = request.data.get('stream')
+        try:
+            cnt = request.user.notifications_unsubscribe(stream)
+            if cnt == 0:
+                return JsonResponse({'result': 'none', 'found': 0})
+            else:
+                return JsonResponse({'result': 'unsubscribed', 'found': cnt})
+        except AssertionError, e:
+            return JsonResponse({'error': 'invalid stream format'})
+        except TypeError, e:
+            return JsonResponse({
+                'error': 'you must supply a stream',
+                'params': request.data,
+            })
 
 class Profile(APIView):
     permission_classes = (IsAuthenticated, )
@@ -65,5 +102,5 @@ class Profile(APIView):
             'locale': request.user.locale,
             'country': request.user.country,
             'notifications_unseen': Notification.objects.filter(user=request.user, is_seen=False).count(),
-            'notification_subscriptions': [x.channel for x in  NotificationSubscription.objects.filter(user=request.user)]
+            'notification_subscriptions': [x.channel for x in request.user.notificationsubscription_set.all()]
         })
