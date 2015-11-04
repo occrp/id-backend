@@ -101,6 +101,11 @@ class Notify(NotificationMixin, APIView):
                 'expected': request.auth.application.name
             }, status_code=409)
 
+        text = request.data.get('text', None)
+        if not text:
+            return JsonResponse({'error': 'no text provided'}, status_code=400)
+        url = request.data.get('url', None)
+
         self.notify_channel(channel=channel, text=text, user=request.user, url=url)
 
 

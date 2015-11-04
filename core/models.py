@@ -31,6 +31,7 @@ class Notification(models.Model):
     text            = models.CharField(max_length=50)
     url_base        = models.CharField(max_length=50, blank=True, null=True)
     url_params      = models.CharField(max_length=200, blank=True, null=True)
+    url             = models.URLField(blank=True, null=True)
 
     project         = models.CharField(max_length=10, null=True)
     module          = models.CharField(max_length=20, null=True)
@@ -66,11 +67,11 @@ class Notification(models.Model):
         return json_loads(self.url_params)
 
     def get_url(self):
-        return reverse_lazy(self.url_base, kwargs=self.get_urlparams())
-
-    @property
-    def url(self):
-        return self.get_url()
+        if self.url_base:
+            return reverse_lazy(self.url_base, kwargs=self.get_urlparams())
+        elif self.url:
+            return self.url
+        return None
 
     @property
     def channel(self):
