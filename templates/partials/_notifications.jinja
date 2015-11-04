@@ -13,7 +13,7 @@
         <li data-id="{{notification.id}}" class="notification {% if not notification.is_seen %}unseen{% endif %}">
             <i class="fa fa-{{notification.get_icon()}}"></i>
             <div class="notification_text">
-            {% if notification.url_base %}
+            {% if notification.get_url() is not None %}
                 <a href="{{notification.get_url()}}">{{notification.text}}</a>
             {% else %}
                 <a>{{notification.text}}</a>
