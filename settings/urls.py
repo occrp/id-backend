@@ -8,7 +8,7 @@ from core.auth import perm
 from django.contrib.auth import views as auth_views
 from registration.views import ActivationView
 
-from core.views import NotificationSeen, NotificationStream, Profile
+from core.views import NotificationSeen, NotificationStream, NotificationSubscriptions, Profile
 from id.views import ProfileRegistrationView, login, logout
 from id.forms import ProfileRegistrationForm, FeedbackForm
 
@@ -24,7 +24,10 @@ urlpatterns = patterns('',
     url(r'^o/',                             include('oauth2_provider.urls', namespace='oauth2_provider')),
     # url(r'^admin/db$',                      include('admin.site.urls')),
 
-    url(r'^api/2/accounts/profile/$',       Profile.as_view(), name='profile'),
+    url(r'^api/2/accounts/profile/$',       Profile.as_view(), name='api_2_profile'),
+    url(r'^api/2/notifications/$',          NotificationSubscriptions.as_view(), name='api_2_notifications'),
+    url(r'^api/2/notifications/seen/$',     NotificationSeen.as_view(), name='api_2_notifications_seen'),
+    url(r'^api/2/notifications/stream/$',   NotificationStream.as_view(), name='api_2_notifications_stream'),
 
     url(r'^admin/$',                        perm('staff', admin.Panel), name='admin_panel'),
     url(r'^admin/scrapers/request/$',       perm('staff', admin.DatabaseScrapeRequestCreate), name='admin_scrapers_request'),
