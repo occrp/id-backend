@@ -7,6 +7,22 @@ from id.constdata import NOTIFICATION_ICONS
 
 notification_channel_format = re.compile("^(([\w\d]+|\*):){4}(([\w\d]+|\*))$")
 
+def channel_components(channel):
+    components = ("project", "module", "model", "instance", "action")
+    return dict(zip(components, [None if x == '*' else x for x in channel.split(":")]))
+
+def all_known_channels():
+    # FIXME: Ugly monster of a function.
+    results = []
+    for project in Notification.objects.values('project').distinct():
+        for module in Notification.objects.filter(project=project['project']).values('module').distinct():
+            for model in Notification.objects.filter(project=project['project'], module=module['module']).order_by().values('model').distinct():
+                for action in Notification.objects.filter(
+                            project=project['project'],
+                            module=module['module'],
+                            model=model['model']).order_by().values('action').distinct():
+                    results.append("%s:%s:%s:*:%s" % (project['project'], module['module'], model['model'], action['action']))
+    return results
 
 class Notification(models.Model):
     user            = models.ForeignKey(AUTH_USER_MODEL)
@@ -27,7 +43,7 @@ class Notification(models.Model):
         self.save()
 
     def create(self, user, channel, text, urlname=None, params={}):
-        self.apply_components(self.channel_components(channel))
+        self.apply_components(channel_components(channel))
         self.user = user
         self.text = text
         self.url_base = urlname
@@ -60,10 +76,6 @@ class Notification(models.Model):
     def channel(self):
         return ":".join([self.project, self.module, self.model, str(self.instance), self.action])
 
-    def channel_components(self, channel):
-        components = ("project", "module", "model", "instance", "action")
-        return dict(zip(components, channel.split(":")))
-
     def apply_components(self, comp):
         for c, v in comp.iteritems():
             setattr(self, c, v)
@@ -89,10 +101,6 @@ class NotificationSubscription(models.Model):
         return ":".join([unicode(x) if x else '*' for x in [self.project, self.module, self.model, self.instance, self.action]])
         # = models.CharField(max_length=200)
 
-    def channel_components(self, channel):
-        components = ("project", "module", "model", "instance", "action")
-        return dict(zip(components, channel.split(":")))
-
     def apply_components(self, comp):
         for c, v in comp.iteritems():
             if v == "*":
@@ -101,4 +109,4 @@ class NotificationSubscription(models.Model):
                 setattr(self, c, v)
 
     def set_channel(self, channel):
-        self.apply_components(self.channel_components(channel))
+        self.apply_components(channel_components(channel))

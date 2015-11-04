@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from core.mixins import *
-from core.models import notification_channel_format
+from core.models import notification_channel_format, channel_components
 from core.countries import COUNTRIES
 from id.constdata import REQUESTER_TYPES, REQUEST_TYPES
 from ticket.constants import *
@@ -303,6 +303,14 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         ns.user = self
         ns.set_channel(channel)
         ns.save()
+        return True
+
+    def notifications_unsubscribe(self, channel):
+        components = channel_components(channel)
+        subscriptions = NotificationSubscription.objects.filter(**components)
+        count = subscriptions.count()
+        subscriptions.delete()
+        return count
 
     def to_json(self):
         return {"id": self.id, "email": self.email}
