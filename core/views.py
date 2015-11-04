@@ -1,5 +1,7 @@
 from core.models import Notification, NotificationSubscription
+from core.models import channel_components, notification_channel_format
 from core.serializers import NotificationSerializer
+from core.mixins import NotificationMixin
 
 from rest_framework import generics
 from rest_framework.views import APIView
@@ -49,38 +51,58 @@ class NotificationSubscriptions(APIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request, *args, **kwargs):
+        print request.auth
         return JsonResponse({
             'notification_subscriptions': [x.channel for x in request.user.notificationsubscription_set.all()]
         })
 
     def put(self, request, *args, **kwargs):
-        stream = request.data.get('stream')
+        channel = request.data.get('channel')
         try:
-            request.user.notifications_subscribe(stream)
+            request.user.notifications_subscribe(channel)
             return JsonResponse({'result': 'subscribed'})
         except AssertionError, e:
-            return JsonResponse({'error': 'invalid stream format'})
+            return JsonResponse({'error': 'invalid channel format'}, status_code=418)
         except TypeError, e:
             return JsonResponse({
-                'error': 'you must supply a stream',
+                'error': 'you must supply a channel',
                 'params': request.data,
-            })
+            }, status_code=418)
 
     def delete(self, request, *args, **kwargs):
-        stream = request.data.get('stream')
+        channel = request.data.get('channel')
         try:
-            cnt = request.user.notifications_unsubscribe(stream)
+            cnt = request.user.notifications_unsubscribe(channel)
             if cnt == 0:
                 return JsonResponse({'result': 'none', 'found': 0})
             else:
                 return JsonResponse({'result': 'unsubscribed', 'found': cnt})
         except AssertionError, e:
-            return JsonResponse({'error': 'invalid stream format'})
+            return JsonResponse({'error': 'invalid channel format'}, status_code=418)
         except TypeError, e:
             return JsonResponse({
-                'error': 'you must supply a stream',
+                'error': 'you must supply a channel',
                 'params': request.data,
-            })
+            }, status_code=418)
+
+class Notify(NotificationMixin, APIView):
+    def post(self, request, *args, **kwargs):
+        if not request.auth:
+            return JsonResponse({"error": "no valid oauth token"}, status_code=403)
+        channel = request.data.get('channel')
+        if not notification_channel_format.match(channel):
+            return JsonResponse({'error': 'invalid channel format'}, status_code=418)
+
+        components = channel_components(channel)
+        if components['app'] != request.auth.application.name:
+            return JsonResponse({
+                'error': 'invalid application name',
+                'got': components['app'],
+                'expected': request.auth.application.name
+            }, status_code=409)
+
+        self.notify_channel(channel=channel, text=text, user=request.user, url=url)
+
 
 class Profile(APIView):
     permission_classes = (IsAuthenticated, )
