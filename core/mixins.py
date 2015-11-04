@@ -6,7 +6,7 @@ from django.utils.text import slugify
 
 from core.utils import json_dumps
 from core.models import Notification, NotificationSubscription
-from core.models import notification_channel_format
+from core.models import notification_channel_format, channel_components
 
 
 class DisplayMixin(object):
@@ -181,13 +181,9 @@ class PrettyPaginatorMixin(object):
 
 
 class NotificationMixin(object):
-    def channel_components(self, channel):
-        components = ("project", "module", "model", "instance", "action")
-        return dict(zip(components, channel.split(":")))
-
     def get_notification_channel_subscribers(self, channel):
         assert(notification_channel_format.match(channel))
-        components = self.channel_components(channel)
+        components = channel_components(channel)
 
         terms = ((Q(project=components["project"]) | Q(project=None))
                & (Q(module=components["module"]) | Q(module=None))
@@ -213,11 +209,17 @@ class NotificationMixin(object):
         }
         return "%(project)s:%(module)s:%(model)s:%(instance)s:%(action)s" % dets
 
-    def notify(self, text, user=None, urlname=None, params={}, action="none"):
+    def notify(self, text, user=None, urlname=None, params={}, action="none", url=None):
         channel = self.get_channel(action)
+        self._do_notify(channel, text, user, urlname, params, url)
+
+    def notify_channel(self, channel, text, user=None, urlname=None, params={}, url=None):
+        self._do_notify(channel, text, user, urlname, params)
+
+    def _do_notify(self, channel, text, user=None, urlname=None, params={}, url=None):
         subs = self.get_notification_channel_subscribers(channel)
         for u in subs:
             if u == user:
                 continue
             m = Notification()
-            m.create(u, channel, text, urlname, params)
+            m.create(u, channel, text, urlname, params, url)
