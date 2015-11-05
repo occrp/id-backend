@@ -8,6 +8,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 
+import random
+
 class NotificationSeen(APIView):
     permission_classes = (IsAuthenticated, )
 
@@ -62,12 +64,12 @@ class NotificationSubscriptions(APIView):
             request.user.notifications_subscribe(channel)
             return JsonResponse({'result': 'subscribed'})
         except AssertionError, e:
-            return JsonResponse({'error': 'invalid channel format'}, status_code=418)
+            return JsonResponse({'error': 'invalid channel format'}, status_code=400)
         except TypeError, e:
             return JsonResponse({
                 'error': 'you must supply a channel',
                 'params': request.data,
-            }, status_code=418)
+            }, status_code=400)
 
     def delete(self, request, *args, **kwargs):
         channel = request.data.get('channel')
@@ -78,7 +80,7 @@ class NotificationSubscriptions(APIView):
             else:
                 return JsonResponse({'result': 'unsubscribed', 'found': cnt})
         except AssertionError, e:
-            return JsonResponse({'error': 'invalid channel format'}, status_code=418)
+            return JsonResponse({'error': 'invalid channel format'}, status_code=400)
         except TypeError, e:
             return JsonResponse({
                 'error': 'you must supply a channel',
@@ -91,7 +93,7 @@ class Notify(NotificationMixin, APIView):
             return JsonResponse({"error": "no valid oauth token"}, status_code=403)
         channel = request.data.get('channel')
         if not notification_channel_format.match(channel):
-            return JsonResponse({'error': 'invalid channel format'}, status_code=418)
+            return JsonResponse({'error': 'invalid channel format'}, status_code=400)
 
         components = channel_components(channel)
         if components['app'] != request.auth.application.name:
@@ -117,7 +119,6 @@ class Profile(APIView):
         if request.user.is_user: groups.append({'id': 'ticket_requesters', 'name': 'Ticket Requesters'})
         if request.user.is_volunteer: groups.append({'id': 'ticket_requesters', 'name': 'Ticket Volunteers'})
         if request.user.is_staff: groups.append({'id': 'occrp_staff', 'name': 'OCCRP staff'})
-        if request.user.is_superuser: groups.append({'id': 'superusers', 'name': 'Superusers'})
         if request.user.network:
             groups.append({'id': 'group:%d' % request.user.network.id, 'name':  request.user.network.long_name})
 
@@ -125,6 +126,8 @@ class Profile(APIView):
             'id': request.user.id,
             'email': request.user.email,
             'display_name': request.user.display_name,
+            'is_admin': request.user.is_superuser,
+            'is_teapot': random.choice([True, False])
             'groups': groups,
             'locale': request.user.locale,
             'country': request.user.country,
