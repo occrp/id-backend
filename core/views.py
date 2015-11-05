@@ -127,7 +127,7 @@ class Profile(APIView):
             'email': request.user.email,
             'display_name': request.user.display_name,
             'is_admin': request.user.is_superuser,
-            'is_teapot': random.choice([True, False])
+            'is_teapot': random.choice([True, False]),
             'groups': groups,
             'locale': request.user.locale,
             'country': request.user.country,
