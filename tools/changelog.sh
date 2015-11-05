@@ -11,11 +11,12 @@ Hello!
 
   This is to inform you that version $CURVER of Investigative Dashboard has been tagged for release.
 
-  You don't have to take any action, but be aware that the following changes will be made live within
-  the next hour.
+  You don't have to take any action, but be aware that the following changes will be made live within the next hour.
 
   Kind regards,
     OCCRP's tech team
 
+
+Summary of changes:
 EOF
 git log --oneline --decorate $PREVVER..$CURVER;
