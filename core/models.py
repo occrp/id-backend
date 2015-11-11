@@ -97,6 +97,9 @@ class NotificationSubscription(models.Model):
     class Meta:
         unique_together = (('user', 'project', 'module', 'model', 'instance', 'action'), )
 
+    def __unicode__(self):
+        return self.channel
+
     @property
     def channel(self):
         return ":".join([unicode(x) if x else '*' for x in [self.project, self.module, self.model, self.instance, self.action]])
