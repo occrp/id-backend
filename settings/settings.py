@@ -113,7 +113,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.user.create_user',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
-    'social.pipeline.user.user_details'
+    'social.pipeline.user.user_details',
+    'core.auth.activate_user'
 )
 
 # google settings, potentially overridden in settings_local
