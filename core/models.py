@@ -43,12 +43,13 @@ class Notification(models.Model):
         self.is_seen = True
         self.save()
 
-    def create(self, user, channel, text, urlname=None, params={}):
+    def create(self, user, channel, text, urlname=None, params={}, url=None):
         self.apply_components(channel_components(channel))
         self.user = user
         self.text = text
         self.url_base = urlname
         self.url_params = json_dumps(params)
+        self.url = url
         self.save()
 
         message = """
