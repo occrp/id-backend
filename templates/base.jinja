@@ -105,7 +105,7 @@
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                             {% for locale in LANGUAGES %}
                             <li{% if (user.is_authenticated() and user.locale == locale.0) or request.session.locale == locale.0 %} class="active"{% endif %}>
-                                <a href="{{url('account_set_language', locale.0)}}">
+                                <a href="{{url('account_set_language', locale.0)}}?go=/">
                                     {{ locale.1 }}
                                 </a>
                             </li>
