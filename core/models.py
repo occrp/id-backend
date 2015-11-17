@@ -28,7 +28,7 @@ class Notification(models.Model):
     user            = models.ForeignKey(AUTH_USER_MODEL)
     timestamp       = models.DateTimeField(auto_now_add=True)
     is_seen         = models.BooleanField(default=False)
-    text            = models.CharField(max_length=50)
+    text            = models.CharField(max_length=200)
     url_base        = models.CharField(max_length=50, blank=True, null=True)
     url_params      = models.CharField(max_length=200, blank=True, null=True)
     url             = models.URLField(blank=True, null=True)
