@@ -59,10 +59,7 @@ class Notification(models.Model):
 
     Regards, ID
         """ % {"user": self.user, "message": self.text}
-        self.user.email_user(self,
-            "Investigative Dashboard just sent you a notification",
-            message,
-            from_email="noreply@investigativedashboard.org")
+        self.user.email_user("Investigative Dashboard just sent you a notification", message)
 
     def get_urlparams(self):
         return json_loads(self.url_params)
