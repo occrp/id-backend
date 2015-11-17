@@ -34,8 +34,8 @@ class DocumentSearchDataTracker(DocumentSearcher):
         try:
             client = pyes.ES(DATATRACKER_HOST)
             results = client.search_raw(query, indices=[DATATRACKER_INDEX])
-        except pyes.exceptions.ElasticSearchException as ese:
-            log.error("Failure in DataTracker search: %r", ese)
+        except Exception as ex:
+            log.info("Failure in DataTracker search: %r", ex)
             return ResultSet(total=0)
 
         resultset = ResultSet(total=results['hits']['total'])

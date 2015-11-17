@@ -31,6 +31,8 @@ class MediaSearchInstagram(MediaSearcher):
         meta["distance"] = radius
 
         data = self.json_api_request(meta, force_get=True)
+        if 'data' not in data:
+            return ResultSet(total=0)
         results = ResultSet(total=len(data["data"]))
         for item in data["data"]:
             caption = ""
