@@ -28,7 +28,12 @@ class ProfileSetLanguage(TemplateView):
             if request.user.is_authenticated():
                 request.user.locale = lang
                 request.user.save()
-        return HttpResponseRedirect(request.META["HTTP_REFERER"])
+        go = request.GET.get("go", None)
+        if not go and "HTTP_REFERER" in request.META:
+            go = request.META["HTTP_REFERER"]
+        if not go:
+            go = "/"
+        return HttpResponseRedirect(go)
 
 
 class ProfileUpdate(UpdateView):
