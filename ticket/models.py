@@ -113,10 +113,10 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
 
         if actor.is_volunteer:
             self.volunteers.add(actor)
-            self.notify(u"%s has joined ticket %s (%d) as a volunteer" % (actor, self.summary, self.id), actor, 'ticket_details', {'pk': self.pk}, 'join')
+            self.notify(u"%s has joined ticket %s (%d) as a volunteer" % (actor, self.summary, self.id), actor, 'ticket_details', {'ticket_id': self.pk}, 'join')
         else:
             self.responders.add(actor)
-            self.notify(u"%s has joined ticket %s (%d) as a reponder" % (actor, self.summary, self.id), actor, 'ticket_details', {'pk': self.pk}, 'join')
+            self.notify(u"%s has joined ticket %s (%d) as a reponder" % (actor, self.summary, self.id), actor, 'ticket_details', {'ticket_id': self.pk}, 'join')
         return True
 
     def leave_user(self, actor):
@@ -129,7 +129,7 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
         """
         self.responders.remove(actor)
         self.volunteers.remove(actor)
-        self.notify(u"%s has left ticket %s (%d)" % (actor, self.summary, self.id), actor, 'ticket_details', {'pk': self.pk}, 'leave')
+        self.notify(u"%s has left ticket %s (%d)" % (actor, self.summary, self.id), actor, 'ticket_details', {'ticket_id': self.pk}, 'leave')
 
     def generate_update(self, comment, old=None, changed_properties=None):
         """
@@ -296,7 +296,7 @@ class TicketUpdate(models.Model, NotificationMixin):
 
     def save(self):
         super(TicketUpdate, self).save()
-        self.notify(u"%s updated ticket %s: %s" % (self.author, self.ticket.summary, self.update_type), self.author, 'ticket_details', {'pk': self.ticket.pk}, 'update')
+        self.notify(u"%s updated ticket %s: %s" % (self.author, self.ticket.summary, self.update_type), self.author, 'ticket_details', {'ticket_id': self.ticket.pk}, 'update')
 
     def update_type_display(self):
         return get_choice_display(self.update_type, TICKET_UPDATE_TYPES)
