@@ -4,7 +4,8 @@ from django.utils.text import get_valid_filename
 import os
 import shutil
 import magic
-
+import logging
+logger = logging.getLogger(__name__)
 # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from settings.settings import AUTH_USER_MODEL
 from settings.settings import PODACI_FS_ROOT
@@ -220,6 +221,7 @@ class PodaciFile(NotificationMixin, models.Model):
             filename = fh.name
         if filename is None:
             filename = "Untitled file"
+        logger.debug("Creating new file '%s'" % filename)
         obj = cls()
         obj.title = filename
         obj.filename = get_valid_filename(filename)
@@ -240,6 +242,7 @@ class PodaciFile(NotificationMixin, models.Model):
             obj.notify("Created file '%s'." % obj, user, action="add")
 
         obj.update()
+        logger.debug("Created file '%s'" % obj)
         return obj
 
     @classmethod
