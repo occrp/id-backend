@@ -1,9 +1,12 @@
 from django.db import models
 from settings.settings import AUTH_USER_MODEL
 import re
+import logging
 from core.utils import json_dumps, json_loads
 from django.core.urlresolvers import reverse_lazy
 from id.constdata import NOTIFICATION_ICONS
+
+logger = logging.getLogger(__name__)
 
 notification_channel_format = re.compile("^(([\w\d]+|\*):){4}(([\w\d]+|\*))$")
 
@@ -66,7 +69,11 @@ class Notification(models.Model):
 
     def get_url(self):
         if self.url_base:
-            return reverse_lazy(self.url_base, kwargs=self.get_urlparams())
+            try:
+                return reverse_lazy(self.url_base, kwargs=self.get_urlparams())
+            except Exception, e:
+                logger.debug("Failed to convert url name '%s' with kwargs %s.", self.url_base, self.url_params)
+                return None
         elif self.url:
             return self.url
         return None
