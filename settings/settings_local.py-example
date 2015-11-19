@@ -92,7 +92,7 @@ LOGGING = {
         '': {  # root logger defined by empty string
             'handlers': ['console', 'file'],
             'level': 'DEBUG',
-            'propogate': True
+            'propagate': True
         },
     }
 }

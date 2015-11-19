@@ -9,6 +9,7 @@ from django.contrib.auth import get_user_model # as per https://docs.djangoproje
 from django.db.models import Count, Sum
 from django.db.models import Q
 import django.forms
+from django.http import Http404
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -21,7 +22,7 @@ from django.views.generic import TemplateView, UpdateView
 
 from core.mixins import JSONResponseMixin, CSVorJSONResponseMixin, PrettyPaginatorMixin
 from core.utils import *
-from id.models import Network
+from id.models import Network, Profile
 from ticket.utils import *
 from ticket.mixins import *
 from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, TicketUpdate, TicketCharge, Budget
@@ -29,7 +30,8 @@ from ticket import forms
 from ticket import constants
 
 from podaci.models import PodaciFile
-
+import logging
+logger = logging.getLogger(__name__)
 
 class AdminOustandingChargesList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
     template_name = 'tickets/admin/admin_charges_outstanding.jinja'
@@ -720,6 +722,7 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
     CONTEXT_TITLE_KEY = "page_name"
 
     def get_context_data(self, **kwargs):
+        self.kwargs = kwargs
         self.filter_terms = self.request.GET.get("filter", '')
         self.start_date = self.request.GET.get("start_date", '')
         self.end_date = self.request.GET.get("end_date", '')
@@ -785,7 +788,6 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
 
     def set_paginator_object(self):
         ticket_set = self.get_ticket_set(self.request.user)
-
         if self.filter_terms:
             ticket_set = ticket_set.filter(Q(requester__email__icontains=self.filter_terms)
                                          | Q(requester__first_name__icontains=self.filter_terms)
@@ -921,6 +923,20 @@ class TicketListUpcomingDeadline(TicketList):
             Q(deadline__isnull=False) & Q(deadline__lte=filter_date)).filter(
             ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
             "-created")
+
+
+class TicketListUser(TicketList):
+    url_name = 'ticket_user_list'
+
+    def get_ticket_set(self, user):
+        uid = self.kwargs.get("user_id")
+        try:
+            u = Profile.objects.get(id=uid)
+        except:
+            raise Http404
+        self.page_name = "%s's tickets" % (u)
+        self.ticket_list_name = "All tickets created by %s" % (u)
+        return Ticket.objects.filter(requester=u).order_by("-created")
 
 
 class TicketRequest(TemplateView):
