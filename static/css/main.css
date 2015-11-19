@@ -1,18 +1,45 @@
+* {
+    font-family: 'Open Sans', sans-serif;
+
+}
 
 h3 {
   font-weight: 300;
 }
+#wrap {
+    padding-top: 60px;
+    padding-bottom: -60px;
+}
 .navbar {
-  border-top: 4px solid #331715;
+    z-index: 1000;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+  position: fixed;
+  border-top: 4px solid #982022;
+  border-bottom: 1px solid #ddd;
+  background: #fff;
+}
+.navbar-inner {
+    background: #fff;
+    border-bottom: none;
 }
 .navbar .nav > li > a {
-  border-right: 1px solid #383f49;
-  border-left: 1px solid #383f49;
   margin-left: -1px;
+  text-shadow: none;
+  color: #777;
+  font-size: 16px;
+}
+.navbar .nav > li > a:hover,
+.navbar .nav > li > a:focus,
+.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
+    background-color: #fff;
+    color: #333;
 }
 .navbar .nav > .active > a,
 .navbar .nav > .active > a:hover {
-  border-left: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: #eee;
+    color: #333;
 }
 .navbar .divider-vertical {
   background-color: inherit;
@@ -25,7 +52,6 @@ h3 {
 }
 .navbar .navbar-search .search-query {
   margin-bottom: 3px;
-  border: 1px solid #1b2126;
 }
 @media (max-width:979px) {
   .navbar .nav-collapse {
@@ -71,7 +97,7 @@ h3 {
   color: #ffffff;
 }
 .btn .caret {
-  border-top-color: #ffffff;
+  border-top-color: #777;
 }
 .btn:not(.btn-mini):not(.btn-small):not(.btn-large) {
   padding: 8px 16px;
@@ -133,12 +159,12 @@ a > [class*=" icon-"] {
 }
 /** Typography **/
 .primary-highlight {
-  color: #f31d35;
+  color: #982022;
   font-size: 45px;
 }
 
 .page-header .primary-highlight {
-    text-shadow: 1px 1px 5px #fff, -1px -1px 0px #CB182C;
+    text-shadow: 1px 1px 5px #fff, -1px -1px 0px #982022;
 }
 
 .full-page-header .secondary-highlight {
@@ -852,7 +878,7 @@ ul.advisory_committee li {
 
 .registration-form td .errorlist {
     flex:auto;
-    color:#F31D35;
+    color:#982022;
     padding-bottom:0.5em;
     padding-left:0em;
     margin-left:0em;
@@ -890,7 +916,7 @@ ul.advisory_committee li {
 
 .login-form td .errorlist {
     flex:auto;
-    color:#F31D35;
+    color:#982022;
     padding-bottom:0.5em;
     padding-left:0em;
     margin-left:0em;
@@ -985,7 +1011,7 @@ ul.advisory_committee li {
 }
 
 .request-details .feedback-form-container label span {
-    color:#F31D35;
+    color:#982022;
 }
 
 .request-details .feedback-form-container label:hover span {
