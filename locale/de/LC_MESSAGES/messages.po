@@ -8,2575 +8,478 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-12-09 10:47+0100\n"
+"POT-Creation-Date: 2015-11-19 12:26+0100\n"
 "PO-Revision-Date: 2014-01-22 13:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: ar <LL@li.org>\n"
-"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 "
-"&& n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5)\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 && "
+"n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5)\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: app/fields.py:74
-msgid "Key is invalid or does not exist."
-msgstr "Schlüssel ist ungültig oder existiert nicht."
+#: data/importers/GDriveToPodaci/GDrive_to_Podaci.py:61
+#: data/importers/GDriveToPodaci/Rest_of_GDrive_to_Podaci.py:51
+msgid "Your Google Drive private key must be in \"PEM\" format."
+msgstr "Ihr privater Google Drive-Schlüssel muss das Format \"PEM\" aufweisen."
 
-#: app/forms.py:59 app/models.py:348 app/models.py:482
-msgid "Comments"
-msgstr "Kommentare"
-
-#: app/forms.py:60 app/templates/crud/item_base.jinja:32
-msgid "Files"
-msgstr "Dateien"
-
-#: app/forms.py:141 app/models.py:474 app/models.py:478
-msgid "Entity One"
-msgstr "Entität 1"
-
-#: app/forms.py:142 app/models.py:475 app/models.py:479
-msgid "Entity Two"
-msgstr "Entität 2"
-
-#: app/forms.py:145
-msgid "Entity Two is a"
-msgstr "Entität 2 ist ein(e)"
-
-#: app/forms.py:156
-msgid "The entity below is a"
-msgstr "Die Entität unten ist ein(e)"
-
-#: app/forms.py:164
-msgid "Customer"
-msgstr "Kunde"
-
-#: app/forms.py:178 app/forms.py:226 app/models.py:581 app/models.py:1122
-#: app/templates/tickets/request_details.jinja:251
-msgid "Country"
-msgstr "Land"
-
-#: app/forms.py:183
-msgid "Person"
-msgstr "Person"
-
-#: app/forms.py:184 app/templates/company.jinja:5
-msgid "Company"
-msgstr "Unternehmen"
-
-#: app/forms.py:185 app/templates/crud/fragment.jinja:5
-#: app/templates/crud/company/edit.jinja:12
-#: app/templates/crud/relationship/inline_entity.jinja:5
-#: app/templates/crud/relationship/table_mixin.jinja:163
-msgid "Relationship"
-msgstr "Beziehung"
-
-#: app/forms.py:186 app/models.py:912 app/models.py:1258
-#: app/templates/crud/relationship/table_mixin.jinja:24
-#: app/templates/tickets/request_details.jinja:155
-msgid "Location"
-msgstr "Standort"
-
-#: app/forms.py:188 app/models.py:613
-msgid "Full Name"
-msgstr "Vollständiger Name"
-
-#: app/forms.py:191 app/models.py:343
-msgid "Identifier"
-msgstr "Kennung"
-
-#: app/forms.py:202
-msgid "Illegal Identifier. Only lowercase letters and _ are allowed."
-msgstr ""
-"Unzulässige Kennung. Nur Kleinbuchstaben und der Unterstrich (_) sind "
-"zulässig."
-
-#: app/forms.py:209
-msgid "Field with this identifier already exists."
-msgstr "Ein Feld mit dieser Kennung ist bereits vorhanden."
-
-#: app/forms.py:224 app/models.py:1128
-msgid "URL"
-msgstr "URL"
-
-#: app/forms.py:240 app/forms.py:262 app/forms.py:293
-msgid "Email"
-msgstr "E-Mail-Adresse"
-
-#: app/forms.py:242 app/models.py:1233
-msgid "Media Type"
-msgstr "Medientyp"
-
-#: app/forms.py:245 app/models.py:1235
-msgid "Circulation (approximate per month)"
-msgstr "Auflage (ungefähr pro Monat)"
-
-#: app/forms.py:266 app/models.py:518 app/templates/tickets/request_base.jinja:8
-#: app/templates/tickets/request_details.jinja:32
-msgid "Status"
-msgstr "Status"
-
-#: app/forms.py:268 app/forms.py:275 app/forms.py:535
-msgid "All"
-msgstr "Alle"
-
-#: app/forms.py:269 app/models.py:1149
-msgid "Approved"
-msgstr "Genehmigt"
-
-#: app/forms.py:270
-msgid "Not Approved"
-msgstr "Nicht genehmigt"
-
-#: app/forms.py:273
-msgid "Type of Request"
-msgstr "Anforderungstyp"
-
-#: app/forms.py:276 app/templates/tickets/request_charges_base.jinja:20
-#: app/templates/tickets/request_details.jinja:164
-msgid "Requester"
-msgstr "Anforderer"
-
-#: app/forms.py:277 app/templates/request_account_home.jinja:24
-msgid "Volunteer"
-msgstr "Freiwilliger"
-
-#: app/forms.py:302
-msgid "Approve (Adds user to groups)"
-msgstr "Genehmigen (fügt Nutzer zu Gruppen hinzu)"
-
-#: app/forms.py:303
-msgid "Reject (Removes user from groups)"
-msgstr "Ablehnen (entfernt Nutzer aus Gruppen)"
-
-#: app/forms.py:308
-msgid "Action"
-msgstr "Aktion"
-
-#: app/forms.py:315
-msgid "Research Goal"
-msgstr "Rechercheziel"
-
-#: app/forms.py:324
+#: data/importers/GDriveToPodaci/GDrive_to_Podaci.py:63
+#: data/importers/GDriveToPodaci/Rest_of_GDrive_to_Podaci.py:53
 msgid ""
-"This is highly sensitive, do not let volunteer research librarians see "
-"this request."
+"Error refreshing Google Drive access token. Check your settings and try "
+"again."
 msgstr ""
-"Diese Informationen sind hochsensibel. Geben Sie freiwillig "
-"recherchierenden Bibliothekaren keinen Einblick in diese Anforderung."
+"Fehler beim Aktualisieren des Google Drive-Zugriffs-Tokens. Bitte überprüfen "
+"Sie Ihre Einstellungen und versuchen Sie es erneut."
 
-#: app/forms.py:339 app/forms.py:362
-msgid "What do you know so far?"
-msgstr "Was wissen Sie bislang?"
-
-#: app/forms.py:345
-msgid "Any information you already have."
-msgstr "Alle Informationen, die Ihnen bereits vorliegen"
-
-#: app/forms.py:348
-msgid "Where are you researching?"
-msgstr "In welchem Bereich recherchieren Sie gerade?"
-
-#: app/forms.py:366
-msgid "What story are you working on?"
-msgstr "An welcher Geschichte arbeiten Sie gerade?"
-
-#: app/forms.py:370
-msgid "What sources do you have so far?"
-msgstr "Welche Quellen liegen Ihnen bislang vor?"
-
-#: app/forms.py:391
-msgid "Reason"
-msgstr "Grund"
-
-#: app/forms.py:397 app/forms.py:406
-#: app/templates/tickets/request_details.jinja:358
-msgid "Comment"
-msgstr "Kommentar"
-
-#: app/forms.py:410
-msgid "Paid Status"
-msgstr "Status \"Bezahlt\""
-
-#: app/forms.py:411
-msgid "Marking as paid will reconcile any open charges with the request."
-msgstr ""
-"Bei einer Markierung als \"Bezahlt\" werden alle ausstehenden Gebühren in"
-" Bezug auf die Anforderung beglichen."
-
-#: app/forms.py:421
-msgid "Comment to Requester"
-msgstr "Kommentar an Anforderer"
-
-#: app/forms.py:423 app/templates/tickets/request_charges_base.jinja:21
-msgid "Item"
-msgstr "Element"
-
-#: app/forms.py:425 app/forms.py:506
-msgid "Cost (USD)"
-msgstr "Kosten (USD)"
-
-#: app/forms.py:427 app/forms.py:508
-msgid "Cost (Original Currency)"
-msgstr "Kosten (ursprüngliche Währung)"
-
-#: app/forms.py:435
-msgid ""
-"Add a comment, visible to the person making this request and the "
-"researcher answering it."
-msgstr ""
-"Fügen Sie einen Kommentar hinzu, der sowohl für den Anforderer als auch "
-"für den Rechercheur sichtbar ist, der die Anforderung beantwortet."
-
-#: app/forms.py:453
-msgid "Assign OCCRP Staff member(s) as the ticket responder"
-msgstr "OCCRP-Mitarbeiter als Antwortenden einem Ticket zuweisen"
-
-#: app/forms.py:454 app/templates/tickets/request_details.jinja:174
-msgid "Staff Responders"
-msgstr "Antwortende Mitarbeiter"
-
-#: app/forms.py:457
-msgid "Assign Volunteer Researcher(s)"
-msgstr "Freiwillige(n) Rechercheur(e) zuweisen"
-
-#: app/forms.py:458 app/templates/tickets/request_details.jinja:186
-msgid "Volunteer Responders"
-msgstr "Freiwillige Antwortende"
-
-#: app/forms.py:460 app/models.py:618 app/models.py:705
-msgid "Requester Type"
-msgstr "Anforderertyp"
-
-#: app/forms.py:463 app/models.py:94
-msgid "Flagged"
-msgstr "Gemeldet"
-
-#: app/forms.py:464
-msgid "Once user issues are dealt with, un-flag the ticket"
-msgstr "Meldung des Tickets aufheben, sobald Nutzerprobleme behoben wurden"
-
-#: app/forms.py:466 app/models.py:620 app/models.py:717
-#: app/templates/tickets/request_details.jinja:202
-msgid "Findings Public"
-msgstr "Öffentliche Ergebnisse"
-
-#: app/forms.py:467
-msgid "Whether the findings of the ticket should be publicly visible."
-msgstr ""
-"Legt fest, ob die Ergebnisse in Bezug auf das Ticket öffentlich sichtbar "
-"sein sollen."
-
-#: app/forms.py:469 app/models.py:622 app/models.py:719
-msgid "For-Profit?"
-msgstr "Gewinnorientiert?"
-
-#: app/forms.py:471 app/models.py:721
-msgid "Public?"
-msgstr "Öffentlich?"
-
-#: app/forms.py:472
-msgid ""
-"If a ticket is marked as public, volunteers are able toview and "
-"collaborate on the ticket. Making a ticket private will not remove "
-"volunteers as researchers."
-msgstr ""
-"Wenn ein Ticket als \"Öffentlich\" markiert ist, können sich Freiwillige "
-"das Ticket ansehen und gemeinsam daran arbeiten. Durch das Markieren "
-"eines Tickets als \"Privat\" werden Freiwillige als Rechercheur nicht "
-"entfernt."
-
-#: app/forms.py:523 app/forms.py:548
-msgid "Entities"
-msgstr "Entitäten"
-
-#: app/forms.py:534
-msgid "Result type"
-msgstr "Ergebnistyp"
-
-#: app/forms.py:536 app/templates/admin_base.jinja:9
-#: app/templates/crud/company/list.jinja:2
-msgid "Companies"
-msgstr "Unternehmen"
-
-#: app/forms.py:537 app/templates/admin_base.jinja:12
-#: app/templates/crud/person/list.jinja:2
-msgid "People"
-msgstr "Personen"
-
-#: app/forms.py:538 app/templates/admin_base.jinja:15
-#: app/templates/crud/location/list.jinja:2
-msgid "Locations"
-msgstr "Standorte"
-
-#: app/forms.py:545
-msgid "Search Providers"
-msgstr "Suchanbieter"
-
-#: app/forms.py:547
-msgid "Everything"
-msgstr "Alles"
-
-#: app/forms.py:549
-msgid "Documents"
-msgstr "Dokumente"
-
-#: app/forms.py:550
-msgid "Companies from OpenCorporates"
-msgstr "Unternehmen aus OpenCorporates"
-
-#: app/forms.py:594
-msgid "Share With"
-msgstr "Teilen mit"
-
-#: app/forms.py:596
-msgid "Everyone (public)"
-msgstr "Alle (öffentlich)"
-
-#: app/forms.py:597
-msgid "Users"
-msgstr "Nutzer"
-
-#: app/forms.py:598 app/templates/about_us.jinja:20
-msgid "Staff"
-msgstr "Mitarbeiter"
-
-#: app/forms.py:605
-msgid "Named Users"
-msgstr "Benannte Nutzer"
-
-#: app/forms.py:608
-msgid "Individual users who should have access as well."
-msgstr "Einzelne Nutzer, die ebenfalls Zugriff haben sollen"
-
-#: app/models.py:54
-msgid "Limited liability"
-msgstr "Beschränkte Haftung"
-
-#: app/models.py:55
-msgid "Partnership"
-msgstr "Partnerschaft"
-
-#: app/models.py:56
-msgid "Stock company"
-msgstr "Aktiengesellschaft"
-
-#: app/models.py:57
-msgid "Foundation"
-msgstr "Stiftung"
-
-#: app/models.py:58 app/templates/tickets/request_details.jinja:215
-msgid "Non-profit"
-msgstr "Gemeinnützig"
-
-#: app/models.py:59 app/models.py:147
-msgid "Other"
-msgstr "Sonstiges"
-
-#: app/models.py:64
-msgid "Active"
-msgstr "Aktiv"
-
-#: app/models.py:65
-msgid "Inactive"
-msgstr "Inaktiv"
-
-#: app/models.py:69
-msgid "-----------"
-msgstr "-----------"
-
-#: app/models.py:70
-msgid "Male"
-msgstr "Männlich"
-
-#: app/models.py:71
-msgid "Female"
-msgstr "Weiblich"
-
-#: app/models.py:75
-msgid "Subsidized"
-msgstr "Subventioniert"
-
-#: app/models.py:76
-msgid "Covering Cost"
-msgstr "Kostendeckend"
-
-#: app/models.py:77
-msgid "Covering Cost +"
-msgstr "Mehr als kostendeckend"
-
-#: app/models.py:81
-msgid "Identify what a person owns"
-msgstr "Eigentum einer Person identifizieren"
-
-#: app/models.py:82
-msgid "Determine company ownership"
-msgstr "Eigentum von Unternehmen bestimmen"
-
-#: app/models.py:83
-msgid "Any other question"
-msgstr "Beliebige andere Frage"
-
-#: app/models.py:87
-msgid "Updated"
-msgstr "Aktualisiert"
-
-#: app/models.py:88 app/handlers/ticketing.py:389
-msgid "Charge Added"
-msgstr "Gebühr hinzugefügt"
-
-#: app/models.py:89 app/handlers/ticketing.py:360
-msgid "Reconciled Charges"
-msgstr "Ausgeglichene Gebühren"
-
-#: app/models.py:90 app/models.py:102
-msgid "Closed"
-msgstr "Geschlossen"
-
-#: app/models.py:91 app/models.py:103 app/models.py:112
-msgid "Cancelled"
-msgstr "Zurückgenommen"
-
-#: app/models.py:92
-msgid "Re-Opened"
-msgstr "Erneut geöffnet"
-
-#: app/models.py:93
-msgid "Opened"
-msgstr "Geöffnet"
-
-#: app/models.py:95
-msgid "Documents Attached"
-msgstr "Angehängte Dokumente"
-
-#: app/models.py:96
-msgid "Entities Attached"
-msgstr "Angehängte Entitäten"
-
-#: app/models.py:100
-msgid "New"
-msgstr "Neu"
-
-#: app/models.py:101
-msgid "In Progress"
-msgstr "In Bearbeitung"
-
-#: app/models.py:110
-msgid "Paid"
-msgstr "Bezahlt"
-
-#: app/models.py:111
-msgid "Paid by OCCRP"
-msgstr "Von OCCRP bezahlt"
-
-#: app/models.py:117
-msgid "Parent"
-msgstr "Elternteil"
-
-#: app/models.py:118
-msgid "Spouse"
-msgstr "Ehepartner"
-
-#: app/models.py:119
-msgid "Other Relative"
-msgstr "Anderer Verwandter"
-
-#: app/models.py:120
-msgid "Friend or Acquaintance"
-msgstr "Freund oder Bekannter"
-
-#: app/models.py:121
-msgid "Employer"
-msgstr "Arbeitgeber"
-
-#: app/models.py:122
-msgid "Business Partner"
-msgstr "Geschäftspartner"
-
-#: app/models.py:123
-msgid "Proxy"
-msgstr "Stellvertreter"
-
-#: app/models.py:126 app/templates/tickets/request_details.jinja:252
-msgid "Birthplace"
-msgstr "Geburtsort"
-
-#: app/models.py:127 app/models.py:143
-msgid "Registered Address"
-msgstr "Eingetragene Adresse"
-
-#: app/models.py:128
-msgid "Home Address"
-msgstr "Privatadresse"
-
-#: app/models.py:131
-msgid "Director"
-msgstr "Direktor"
-
-#: app/models.py:132
-msgid "Secretary"
-msgstr "Geschäftsführer"
-
-#: app/models.py:133
-msgid "Authorized Person"
-msgstr "Autorisierte Person"
-
-#: app/models.py:134
-msgid "Representative"
-msgstr "Vertreter"
-
-#: app/models.py:135
-msgid "Shareholder"
-msgstr "Aktionär"
-
-#: app/models.py:136
-msgid "Employee"
-msgstr "Mitarbeiter"
-
-#: app/models.py:139
-msgid "Subsidiary"
-msgstr "Tochterunternehmen"
-
-#: app/models.py:140
-msgid "Trading Partner"
-msgstr "Handelspartner"
-
-#: app/models.py:144
-msgid "Place of Business"
-msgstr "Geschäftssitz"
-
-#: app/models.py:160
-msgid "Media: non-profit"
-msgstr "Medien: gemeinnützig"
-
-#: app/models.py:161
-msgid "Media: for-profit"
-msgstr "Medien: gewinnorientiert"
-
-#: app/models.py:162
-msgid "Media: freelance"
-msgstr "Medien: freiberuflich"
-
-#: app/models.py:163
-msgid "Business: due diligence/investigation"
-msgstr "Unternehmen: Due Diligence/Recherche"
-
-#: app/models.py:164
-msgid "Business: legal"
-msgstr "Unternehmen: Rechtswesen"
-
-#: app/models.py:165
-msgid "Business: general"
-msgstr "Unternehmen: allgemein"
-
-#: app/models.py:166
-msgid "Government"
-msgstr "Staatliche Einrichtungen"
-
-#: app/models.py:167
-msgid "Civil society/non-profit"
-msgstr "Bürgerliche Gesellschaft/gemeinnützig"
-
-#: app/models.py:168
-msgid "Individual"
-msgstr "Einzelperson"
-
-#: app/models.py:169
-msgid "Other (please specify)"
-msgstr "Sonstiges (bitte angeben)"
-
-#: app/models.py:174 app/templates/tickets/request_details.jinja:231
-msgid "None"
-msgstr "Leer"
-
-#: app/models.py:175
-msgid "OCCRP"
-msgstr "OCCRP"
-
-#: app/models.py:176
-msgid "ARIJ"
-msgstr "ARIJ"
-
-#: app/models.py:177
-msgid "ANCIR"
-msgstr "ANCIR"
-
-#: app/models.py:178
-msgid "Connectas in the Americas"
-msgstr "Connectas in Amerika"
-
-#: app/models.py:183
-msgid "Website"
-msgstr "Website"
-
-#: app/models.py:184
-msgid "Print"
-msgstr "Printmedien"
-
-#: app/models.py:185
-msgid "Broadcast TV"
-msgstr "Fernsehübertragung"
-
-#: app/models.py:186
-msgid "Broadcast Radio"
-msgstr "Radioübertragung"
-
-#: app/models.py:187
-msgid "Other or don't know"
-msgstr "Sonstige/Weiß nicht"
-
-#: app/models.py:192
-msgid "Less than 10,000"
-msgstr "Unter 10.000"
-
-#: app/models.py:193
-msgid "10,000 to 25,000"
-msgstr "10.000 bis 25.000"
-
-#: app/models.py:194
-msgid "25,000 to 50,000"
-msgstr "25.000 bis 50.000"
-
-#: app/models.py:195
-msgid "50,000 to 100,000"
-msgstr "50.000 bis 100.000"
-
-#: app/models.py:196
-msgid "100,000 to 250,000"
-msgstr "100.000 bis 250.000"
-
-#: app/models.py:197
-msgid "250,000 to 500,000"
-msgstr "250.000 bis 500.000"
-
-#: app/models.py:198
-msgid "More than 500,000"
-msgstr "Über 500.000"
-
-#: app/models.py:203
+#: databases/models.py:8
 msgid "Business Registry"
 msgstr "Unternehmensregister"
 
-#: app/models.py:204
+#: databases/models.py:9
 msgid "Regional procurement registry"
 msgstr "Regionale Beschaffungsbehörde"
 
-#: app/models.py:205
+#: databases/models.py:10
 msgid "Regulatory Agency"
 msgstr "Aufsichtsbehörde"
 
-#: app/models.py:206
+#: databases/models.py:11
 msgid "Commercial Register"
 msgstr "Handelsregister"
 
-#: app/models.py:207
+#: databases/models.py:12
 msgid "Court Registry"
 msgstr "Gerichtskanzlei"
 
-#: app/models.py:208
+#: databases/models.py:13
 msgid "Gazette"
 msgstr "Amtsblatt"
 
-#: app/models.py:209
+#: databases/models.py:14
 msgid "Land Registry"
 msgstr "Grundbuchamt"
 
-#: app/models.py:214
+#: databases/models.py:15
+msgid "Intellectual Property"
+msgstr ""
+
+#: databases/models.py:16
+msgid "Copyright"
+msgstr ""
+
+#: databases/models.py:17
+msgid "Land Tribunal"
+msgstr ""
+
+#: databases/models.py:18
+msgid "Maritime"
+msgstr ""
+
+#: databases/models.py:22
 msgid "All Databases"
 msgstr "Alle Datenbanken"
 
-#: app/models.py:215
+#: databases/models.py:23
 msgid "Global Databases"
 msgstr "Weltweite Datenbanken"
 
-#: app/models.py:341
-msgid "Label"
-msgstr "Label"
+#: databases/models.py:25
+msgid "Africa"
+msgstr ""
 
-#: app/models.py:344
-msgid "Kind"
-msgstr "Art"
+#: databases/models.py:26
+msgid "Asia"
+msgstr ""
 
-#: app/models.py:476 app/templates/tickets/request_base.jinja:7
-msgid "Type"
-msgstr "Typ"
+#: databases/models.py:27
+msgid "Europe"
+msgstr ""
 
-#: app/models.py:480 app/templates/crud/relationship/table_mixin.jinja:25
-#: app/templates/crud/relationship/table_mixin.jinja:56
-#: app/templates/crud/relationship/table_mixin.jinja:87
-msgid "Start Date"
-msgstr "Startdatum"
+#: databases/models.py:28
+msgid "Latin America"
+msgstr ""
 
-#: app/models.py:481 app/templates/crud/relationship/table_mixin.jinja:26
-#: app/templates/crud/relationship/table_mixin.jinja:57
-#: app/templates/crud/relationship/table_mixin.jinja:88
-msgid "End Date"
-msgstr "Enddatum"
+#: databases/models.py:42
+msgid "Agency / Name"
+msgstr "Agentur/Name"
 
-#: app/models.py:510 app/models.py:576 app/models.py:611 app/models.py:895
-#: app/templates/crud/relationship/table_mixin.jinja:55
-#: app/templates/crud/relationship/table_mixin.jinja:86
-#: app/templates/tickets/request_details.jinja:241
-#: app/templates/tickets/request_details.jinja:278
-msgid "Name"
-msgstr "Name"
+#: databases/models.py:44
+msgid "Type of Database"
+msgstr "Datenbanktyp"
 
-#: app/models.py:511 app/models.py:542
-msgid "Name Variations"
-msgstr "Namensvarianten"
+#: databases/models.py:46 templates/tickets/partials/_ticketdetails.jinja:15
+msgid "Country"
+msgstr "Land"
 
-#: app/models.py:514
-msgid "Jurisdiction Registered"
-msgstr "Registrierter Gerichtsstand"
+#: databases/models.py:47 templates/external_databases.jinja:26
+msgid "Paid Database"
+msgstr "Datenbank \"Bezahlt\""
 
-#: app/models.py:516
-msgid "Form of Company"
-msgstr "Unternehmensform"
+#: databases/models.py:49 templates/external_databases.jinja:29
+msgid "Registration Required"
+msgstr "Registrierung erforderlich"
 
-#: app/models.py:519
-msgid "Date Registered"
-msgstr "Datum der Eintragung"
+#: databases/models.py:51 templates/external_databases.jinja:32
+msgid "Government Database"
+msgstr "Behördliche Datenbank"
 
-#: app/models.py:520
-msgid "Date Dissolved"
-msgstr "Datum der Auflösung"
+#: databases/models.py:52 id/models.py:440
+msgid "URL"
+msgstr "URL"
 
-#: app/models.py:539 app/models.py:1139
+#: databases/models.py:53
+msgid "Notes"
+msgstr "Anmerkungen"
+
+#: databases/models.py:54
+msgid "Blog Post"
+msgstr "Blogpost"
+
+#: databases/models.py:55
+msgid "YouTube Video Url"
+msgstr "YouTube-Video-URL"
+
+#: id/constdata.py:37 ticket/constants.py:57
+msgid "Subsidized"
+msgstr "Subventioniert"
+
+#: id/constdata.py:38 ticket/constants.py:58
+msgid "Covering Cost"
+msgstr "Kostendeckend"
+
+#: id/constdata.py:39 ticket/constants.py:59
+msgid "Covering Cost +"
+msgstr "Mehr als kostendeckend"
+
+#: id/constdata.py:43 templates/partials/_request_access.jinja:14
+msgid "Information Requester"
+msgstr "Informationsanforderer"
+
+#: id/constdata.py:44 templates/partials/_request_access.jinja:29
+msgid "Volunteer"
+msgstr "Freiwilliger"
+
+#: id/constdata.py:48 ticket/constants.py:171
+msgid "None"
+msgstr "Leer"
+
+#: id/constdata.py:49
+#: podaci/templates/podaci/partials/_podaci_create_collection.jinja:16
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: id/constdata.py:50
+msgid "Edit"
+msgstr ""
+
+#: id/constdata.py:51
+#: podaci/templates/podaci/partials/_podaci_selection_actions.jinja:6
+msgid "Delete"
+msgstr "Löschen"
+
+#: id/constdata.py:52
+#, fuzzy
+msgid "Update"
+msgstr "Aktualisiert"
+
+#: id/constdata.py:53
+#, fuzzy
+msgid "Share"
+msgstr "Teilen mit"
+
+#: id/constdata.py:54 ticket/constants.py:41 ticket/constants.py:144
+msgid "Other"
+msgstr "Sonstiges"
+
+#: id/forms.py:13
+msgid "Customer"
+msgstr "Kunde"
+
+#: id/forms.py:27 id/models.py:81
+#, fuzzy
+msgid "E-mail Address"
+msgstr "E-Mail-Adresse"
+
+#: id/forms.py:30
+msgid "Password"
+msgstr ""
+
+#: id/forms.py:33
+msgid "Password confirmation"
+msgstr ""
+
+#: id/forms.py:49
+msgid "A user with this e-mail address has already registered."
+msgstr ""
+
+#: id/forms.py:74
+msgid "Please provide a longer password"
+msgstr ""
+
+#: id/forms.py:89
+msgid "You must type the same password each time"
+msgstr ""
+
+#: id/models.py:87 templates/accessrequest/list.jinja:16
 msgid "First Name"
 msgstr "Vorname"
 
-#: app/models.py:540
-msgid "Middle Name"
-msgstr "Zweiter Vorname"
-
-#: app/models.py:541 app/models.py:1140
-#: app/templates/tickets/request_details.jinja:254
-#: app/templates/tickets/request_details.jinja:255
-#: app/templates/tickets/request_details.jinja:256 static/js/widgets.js:188
-#: static/js/widgets.js:230
+#: id/models.py:88 static/js/widgets.js:190 static/js/widgets.js:236
+#: templates/accessrequest/list.jinja:17
+#: templates/tickets/partials/_ticketdetails.jinja:18
+#: templates/tickets/partials/_ticketdetails.jinja:19
+#: templates/tickets/partials/_ticketdetails.jinja:20
 msgid "Last Name"
 msgstr "Nachname"
 
-#: app/models.py:544 app/models.py:903
-#: app/templates/tickets/request_details.jinja:253
-msgid "Date of Birth"
-msgstr "Geburtsdatum"
-
-#: app/models.py:545
-msgid "Date of Death"
-msgstr "Sterbedatum"
-
-#: app/models.py:546
-msgid "Sex"
-msgstr "Geschlecht"
-
-#: app/models.py:547
-msgid "Nationalities"
-msgstr "Nationalitäten"
-
-#: app/models.py:549
-msgid "ID Numbers"
-msgstr "Ausweisnummern"
-
-#: app/models.py:577 app/models.py:1227
-msgid "Address"
-msgstr "Adresse"
-
-#: app/models.py:578
-msgid "City"
-msgstr "Ort"
-
-#: app/models.py:579
-msgid "State/Province/Region"
-msgstr "Bundesland/Kanton/Region"
-
-#: app/models.py:580
-msgid "ZIP/Postal Code"
-msgstr "Postleitzahl"
-
-#: app/models.py:614
+#: id/models.py:89
 msgid "Admin Notes"
 msgstr "Administrative Hinweise"
 
-#: app/models.py:680
+#: id/models.py:93 ticket/models.py:28
+msgid "Requester Type"
+msgstr "Anforderertyp"
+
+#: id/models.py:95 ticket/models.py:37
+msgid "Findings Public"
+msgstr "Öffentliche Ergebnisse"
+
+#: id/models.py:101
+#, fuzzy
+msgid "Date Joined"
+msgstr "Datum der Auflösung"
+
+#: id/models.py:240
 msgid "Subsidized (OCCRP pays for everything)"
 msgstr "Subventioniert (OCCRP übernimmt alle Kosten)"
 
-#: app/models.py:682
+#: id/models.py:242
 msgid ""
 "Covering cost (OCCRP pays for labor, requester pays costs of buying "
 "documents)"
 msgstr ""
-"Kostendeckend (OCCRP zahlt für Arbeitsstunden, Anforderer übernimmt "
-"Kosten für den Erwerb von Dokumenten)"
+"Kostendeckend (OCCRP zahlt für Arbeitsstunden, Anforderer übernimmt Kosten "
+"für den Erwerb von Dokumenten)"
 
-#: app/models.py:685
+#: id/models.py:245
 msgid "Covering cost+ (requester pays for documents, and also for our work)"
 msgstr ""
 "Mehr als kostendeckend (Anforderer zahlt für Dokumente sowie für unsere "
 "Arbeitsstunden)"
 
-#: app/models.py:731 app/templates/tickets/request_base.jinja:9
-#: app/templates/tickets/request_details.jinja:146
-msgid "Deadline"
-msgstr "Fälligkeitsdatum"
-
-#: app/models.py:732
-msgid "Sensitive?"
-msgstr "Sensibel?"
-
-#: app/models.py:896 app/templates/tickets/request_details.jinja:256
-msgid "Aliases"
-msgstr "Alias"
-
-#: app/models.py:897 app/models.py:928
-#: app/templates/tickets/request_details.jinja:242
-msgid "Background"
-msgstr "Hintergrund"
-
-#: app/models.py:898 app/templates/tickets/request_details.jinja:243
-msgid "Biography"
-msgstr "Biografie"
-
-#: app/models.py:899 app/templates/tickets/request_details.jinja:254
-msgid "Family"
-msgstr "Familie"
-
-#: app/models.py:902 app/templates/tickets/request_details.jinja:244
-msgid "Business Activities"
-msgstr "Geschäftsaktivitäten"
-
-#: app/models.py:906
-msgid "Place of Birth"
-msgstr "Geburtsort"
-
-#: app/models.py:909
-msgid "Where have you looked?"
-msgstr "Wo haben Sie nachgesehen?"
-
-#: app/models.py:924
-msgid "Company Name"
-msgstr "Name des Unternehmens"
-
-#: app/models.py:927
-msgid "Country Registered"
-msgstr "Eintragungsland"
-
-#: app/models.py:929 app/templates/search/search_base.jinja:29
-#: app/templates/tickets/request_details.jinja:246
-msgid "Sources"
-msgstr "Quellen"
-
-#: app/models.py:930
-msgid "Your Story"
-msgstr "Ihre Geschichte"
-
-#: app/models.py:932 app/templates/tickets/request_details.jinja:255
-msgid "Connected People"
-msgstr "Verbundene Personen"
-
-#: app/models.py:943
-msgid "What do you want to know?"
-msgstr "Was möchten Sie wissen?"
-
-#: app/models.py:996
-#, python-format
-msgid "[Request %s] - %s"
-msgstr "[Anforderung %s] – %s"
-
-#: app/models.py:1061
-#, python-format
-msgid ""
-"Item: %(item)s\n"
-"Cost: $%(cost)s\n"
-"Converted: %(cost_converted)s"
+#: id/models.py:337
+msgid "user"
 msgstr ""
-"Element: %(item)s\n"
-"Kosten: %(cost)s $\n"
-"Umgerechnet: %(cost_converted)s"
 
-#: app/models.py:1117
-msgid "Agency / Name"
-msgstr "Agentur/Name"
+#: id/models.py:338
+#, fuzzy
+msgid "users"
+msgstr "Nutzer"
 
-#: app/models.py:1120
-msgid "Type of Database"
-msgstr "Datenbanktyp"
+#: id/models.py:347 templates/accessrequest/list.jinja:7
+msgid "Approved"
+msgstr "Genehmigt"
 
-#: app/models.py:1123 app/templates/external_databases.jinja:26
-msgid "Paid Database"
-msgstr "Datenbank \"Bezahlt\""
+#: id/models.py:349
+#, fuzzy
+msgid "Date Created"
+msgstr "Erstellt"
 
-#: app/models.py:1125 app/templates/external_databases.jinja:29
-msgid "Registration Required"
-msgstr "Registrierung erforderlich"
-
-#: app/models.py:1127 app/templates/external_databases.jinja:32
-msgid "Government Database"
-msgstr "Behördliche Datenbank"
-
-#: app/models.py:1129
-msgid "Notes"
-msgstr "Anmerkungen"
-
-#: app/models.py:1130
-msgid "Blog Post"
-msgstr "Blogpost"
-
-#: app/models.py:1131
-msgid "YouTube Video Url"
-msgstr "YouTube-Video-URL"
-
-#: app/models.py:1141
-msgid "Email Address"
-msgstr "E-Mail-Adresse"
-
-#: app/models.py:1143
-msgid "Phone Number"
-msgstr "Telefonnummer"
-
-#: app/models.py:1146
-msgid "Organization Membership"
-msgstr "Mitgliedschaft in Organisation"
-
-#: app/models.py:1148
-msgid "Anything else you would like to tell us"
-msgstr "Möchten Sie uns noch etwas mitteilen?"
-
-#: app/models.py:1168 app/templates/tickets/request_details.jinja:203
-#: app/templates/tickets/request_details.jinja:206
+#: id/models.py:369
 msgid "Yes"
 msgstr "Ja"
 
-#: app/models.py:1169 app/templates/tickets/request_details.jinja:203
-#: app/templates/tickets/request_details.jinja:206
+#: id/models.py:370
 msgid "No"
 msgstr "Nein"
 
-#: app/models.py:1198 app/templates/mail/account_request/received.jinja:4
+#: id/models.py:406 templates/mail/account_request/received.jinja:4
 msgid "Your Account Request was received"
 msgstr "Ihr Kontoantrag ist eingegangen."
 
-#: app/models.py:1204 app/templates/mail/account_request/received_admin.jinja:4
+#: id/models.py:414 templates/mail/account_request/received_admin.jinja:4
 msgid "An Account Request was received"
 msgstr "Ein Kontoantrag ist eingegangen."
 
-#: app/models.py:1212
+#: id/models.py:422
 msgid "An update to your Account Request"
 msgstr "Aktualisierung Ihres Kontoantrags"
 
-#: app/models.py:1230
-msgid "Industry"
-msgstr "Branche"
-
-#: app/models.py:1231
-msgid "Other Industry"
-msgstr "Weitere Branche"
-
-#: app/models.py:1239
-msgid "Name of Employer"
-msgstr "Name des Arbeitgebers"
-
-#: app/models.py:1241
-msgid "Position / Job Title"
-msgstr "Position/Berufsbezeichnung"
-
-#: app/models.py:1255
-msgid "Interests"
-msgstr "Interessen"
-
-#: app/models.py:1256
-msgid "Expertise"
-msgstr "Erfahrung"
-
-#: app/models.py:1257
-msgid "Languages"
-msgstr "Sprachen"
-
-#: app/models.py:1260
-msgid "Availability"
-msgstr "Verfügbarkeit"
-
-#: app/models.py:1261
-msgid "Own Databases"
-msgstr "Eigene Datenbanken"
-
-#: app/models.py:1263
-msgid "Restrictions / Conflicts of Interest"
-msgstr "Beschränkungen/Interessenkonflikte"
-
-#: app/utils.py:43 app/templates/base.jinja:12
-#: app/templates/oauth_success.jinja:6 app/templates/mail/mail_base.jinja:12
-#: app/templates/mail/mail_base.jinja:37 app/templates/mail/mail_base.jinja:38
-msgid "Investigative Dashboard"
-msgstr "Investigative Dashboard"
-
-#: app/validators.py:13
-msgid "This field is required."
-msgstr "Pflichtfeld"
-
-#: app/appengine_modelforms/fields.py:91 app/appengine_modelforms/fields.py:173
-#: app/appengine_modelforms/fields.py:175
-msgid "Not a valid choice"
-msgstr "Keine gültige Auswahl"
-
-#: app/appengine_modelforms/fields.py:194
-msgid "Not a valid list"
-msgstr "Keine gültige Liste"
-
-#: app/appengine_modelforms/fields.py:213
-msgid "Not a valid integer list"
-msgstr "Keine gültige Ganzzahlliste"
-
-#: app/google_apis/drive.py:29
-msgid "Error connecting to Google Drive."
-msgstr "Fehler beim Verbinden mit Google Drive"
-
-#: app/google_apis/drive.py:93
-msgid "Error refreshing Google Drive access token."
-msgstr "Fehler beim Aktualisieren des Google Drive-Zugriffs-Tokens"
-
-#: app/google_apis/drive.py:113
-msgid "Your Google Drive private key must be in \"PEM\" format."
-msgstr "Ihr privater Google Drive-Schlüssel muss das Format \"PEM\" aufweisen."
-
-#: app/google_apis/drive.py:116
-msgid ""
-"Error refreshing Google Drive access token. Check your settings and try "
-"again."
-msgstr ""
-"Fehler beim Aktualisieren des Google Drive-Zugriffs-Tokens. Bitte "
-"überprüfen Sie Ihre Einstellungen und versuchen Sie es erneut."
-
-#: app/google_apis/groups.py:21
-msgid "Error connecting to Google Groups."
-msgstr "Fehler beim Verbinden mit Google Groups"
-
-#: app/google_apis/groups.py:64
-msgid "Your private key must be in \"PEM\" format."
-msgstr "Ihr privater Schlüssel muss das Format \"PEM\" aufweisen."
-
-#: app/google_apis/groups.py:66
-msgid "Error refreshing the access token. Check your settings and try again."
-msgstr ""
-"Fehler beim Aktualisieren des Zugriffs-Tokens. Bitte überprüfen Sie Ihre "
-"Einstellungen und versuchen Sie es erneut."
-
-#: app/handlers/crud.py:78 app/templates/crud/relationship/table_mixin.jinja:194
-msgid "No entries found."
-msgstr "Keine Einträge gefunden"
-
-#: app/handlers/crud.py:223
-#, python-format
-msgid "%(entity)s successfully saved.entity"
-msgstr "%(entity)s gespeichert"
-
-#: app/handlers/crud.py:235
-#, python-format
-msgid "%(entity)s successfully deleted.entity"
-msgstr "%(entity)s gelöscht"
-
-#: app/handlers/crud.py:253
-#, python-format
-msgid "%(entity)s could not deleted because of %(rel_count)d relationsentity"
-msgstr "%(entity)s konnte wegen %(rel_count)d Beziehungen nicht gelöscht werden."
-
-#: app/handlers/crud.py:284
-msgid "No relationships found. You can create them via other entities."
-msgstr ""
-"Keine Beziehungen gefunden. Sie können sie über andere Entitäten "
-"erstellen."
-
-#: app/handlers/crud.py:388
-#, python-format
-msgid "Relationship with new %(entity_type)s successfully saved.entity_type"
-msgstr "Beziehung mit neuem %(entity_type)s gespeichert"
-
-#: app/handlers/crud.py:424
-msgid "No companies found."
-msgstr "Keine Unternehmen gefunden"
-
-#: app/handlers/crud.py:439
-msgid "No people found."
-msgstr "Keine Personen gefunden"
-
-#: app/handlers/crud.py:455
-msgid "No locations found."
-msgstr "Keine Standorte gefunden"
-
-#: app/handlers/crud.py:469
-msgid "No extra fields found."
-msgstr "Keine zusätzlichen Felder gefunden"
-
-#: app/handlers/crud.py:480 app/templates/external_databases.jinja:53
-msgid "No external databases found."
-msgstr "Keine externen Datenbanken gefunden"
-
-#: app/handlers/crud.py:516
-msgid "No account requests found."
-msgstr "Keine Kontoanträge gefunden"
-
-#: app/handlers/crud.py:559
-msgid "No Users found."
-msgstr "Keine Nutzer gefunden"
-
-#: app/handlers/crud.py:632
-msgid "Request submitted. Our staff will evaluate and respond to your request."
-msgstr ""
-"Anforderung eingereicht. Unsere Mitarbeiter werden Ihre Anforderung "
-"auswerten und beantworten."
-
-#: app/handlers/crud.py:663
-msgid "The user has been notified of the change to their request status."
-msgstr ""
-"Der Nutzer wurde über die Änderung seines Anforderungsstatus "
-"benachrichtigt."
-
-#: app/handlers/drive.py:57 static/js/drive-picker.js:94
-msgid "File(s) successfully attached."
-msgstr "Datei(en) angehängt"
-
-#: app/handlers/drive.py:115
-msgid "Sharing rules applied."
-msgstr "Regeln für das Teilen angewandt"
-
-#: app/handlers/ticketing.py:50
-msgid ""
-"Your request for an account is pending. Once approved, you can access Ask"
-" an Expert"
-msgstr ""
-"Die Bearbeitung Ihres Kontoantrags steht noch aus. Nach der Genehmigung "
-"können Sie auf \"Experten fragen\" zugreifen."
-
-#: app/handlers/ticketing.py:114 app/handlers/ticketing.py:725
-msgid "Ticket successfully saved."
-msgstr "Ticket gespeichert"
-
-#: app/handlers/ticketing.py:116
-msgid "Ticket successfully created."
-msgstr "Ticket erstellt"
-
-#: app/handlers/ticketing.py:194
-msgid "The specified object could not be found."
-msgstr "Das angegebene Objekt wurde nicht gefunden."
-
-#: app/handlers/ticketing.py:195
-msgid "The specified object is not attached to this ticket."
-msgstr "Das angegebene Objekt ist nicht an dieses Ticket angehängt."
-
-#: app/handlers/ticketing.py:197
-msgid "The specified object was successfully removed."
-msgstr "Das angegebene Objekt wurde entfernt."
-
-#: app/handlers/ticketing.py:274
-#, python-format
-msgid "Could not add duplicate(s): %(duplicates)sduplicates, "
-msgstr "Duplikat(e) konnte(n) nicht hinzugefügt werden: %(duplicates)s "
-
-#: app/handlers/ticketing.py:296
-msgid "Request has been marked as closed & answered."
-msgstr "Anforderung wurde als geschlossen und beantwortet markiert."
-
-#: app/handlers/ticketing.py:311
-msgid "Request has been cancelled."
-msgstr "Anforderung wurde zurückgenommen."
-
-#: app/handlers/ticketing.py:321
-#, python-format
-msgid "Ticket %s has been deleted"
-msgstr "Ticket %s wurde gelöscht."
-
-#: app/handlers/ticketing.py:337
-msgid ""
-"An Administrator has been notified notified and will update the issue "
-"shortly."
-msgstr ""
-"Ein Administrator wurde benachrichtigt und wird dieses Problem in Kürze "
-"bearbeiten."
-
-#: app/handlers/ticketing.py:365
-msgid "Request payment status has been updated."
-msgstr "Zahlungsstatus für Anforderung wurde aktualisiert."
-
-#: app/handlers/ticketing.py:395
-msgid "The new charge was added to the request."
-msgstr "Die neue Gebühr wurde zur Anforderung hinzugefügt."
-
-#: app/handlers/ticketing.py:409
-msgid "Request has been re-opened."
-msgstr "Anforderung wurde erneut geöffnet."
-
-#: app/handlers/ticketing.py:432
-msgid "You have joined the ticket."
-msgstr "Das Ticket wurde mit Ihnen geteilt."
-
-#: app/handlers/ticketing.py:433
-msgid "You are already on the ticket."
-msgstr "Das Ticket wurde bereits mit Ihnen geteilt."
-
-#: app/handlers/ticketing.py:446
-msgid "You are no longer part of this ticket."
-msgstr "Das Ticket wird nicht mehr mit Ihnen geteilt."
-
-#: app/handlers/ticketing.py:567
-msgid "Charge successfully reconciled."
-msgstr "Gebühr beglichen"
-
-#: app/handlers/validation.py:30 app/handlers/validation.py:60
-msgid "This may be a duplicate"
-msgstr "Dies ist möglicherweise ein Duplikat."
-
-#: app/handlers/validation.py:32 app/handlers/validation.py:48
-#: app/handlers/validation.py:62
-msgid "No duplicates detected"
-msgstr "Keine Duplikate gefunden"
-
-#: app/handlers/validation.py:46
-msgid "First and last name match another person"
-msgstr "Vor- und Nachname stimmen mit einer anderen Person überein."
-
-#: app/handlers/validation.py:93
-msgid ""
-"Your request may not be answered, as you have not provided much "
-"background. Please add more context."
-msgstr ""
-"Ihre Anforderung wird möglicherweise nicht bearbeitet, weil Sie nicht "
-"viele Hintergrundinformationen bereitgestellt haben. Bitte geben Sie mehr"
-" Kontext an."
-
-#: app/handlers/validation.py:96
-msgid "Your request is of an appropriate length."
-msgstr "Ihre Anforderung hat eine angemessene Länge."
-
-#: app/templates/401.jinja:4
-msgid "Permission Denied"
-msgstr "Berechtigung abgelehnt"
-
-#: app/templates/401.jinja:8
-msgid ""
-"You do not have permission to access this feature or content. If you "
-"believe this is an error, please contact an administrator."
-msgstr ""
-"Sie sind nicht berechtigt, auf diese Funktion oder Inhalte zuzugreifen. "
-"Falls Sie der Meinung sind, dass hier ein Fehler vorliegt, wenden Sie "
-"sich bitte an einen Administrator."
-
-#: app/templates/404.jinja:4
-msgid "Page Not Found"
-msgstr "Seite nicht gefunden"
-
-#: app/templates/404.jinja:8
-msgid ""
-"We're sorry, this page is not available. This error has been recorded "
-"will be investigated."
-msgstr ""
-"Diese Seite ist nicht verfügbar. Dieser Fehler wurde erfasst und wird "
-"untersucht."
-
-#: app/templates/500.jinja:4
-msgid "Application Error"
-msgstr "Anwendungsfehler"
-
-#: app/templates/500.jinja:8
-msgid ""
-"There was an error in the application. This error has been recorded and "
-"should be addressed soon."
-msgstr ""
-"In der Anwendung ist ein Fehler aufgetreten. Dieser Fehler wurde erfasst "
-"und sollte bald behoben sein."
-
-#: app/templates/about_us.jinja:6
-msgid "About Us"
-msgstr "Über uns"
-
-#: app/templates/about_us.jinja:10
-msgid ""
-"Investigative Dashboard (ID) has been developed by the Organized Crime "
-"and Corruption Reporting Project (OCCRP), the world’s leading cross "
-"border investigative reporting organization. OCCRP designed Investigative"
-" Dashboard as a transnational collaborative effort to help journalists "
-"and civil society researchers expose organized crime and corruption "
-"around the world. It hosts three core tools: a crowd-sourced database of "
-"information and documents on persons of interest and their business "
-"connections, a worldwide list of online databases and business "
-"registries, and a research desk where journalists can go for help in "
-"sourcing hard to find information."
-msgstr ""
-"Das Investigative Dashboard (ID) wurde vom Organized Crime and Corruption"
-" Reporting Project (OCCRP) entwickelt, der weltweit führenden "
-"Organisation für grenzüberschreitende investigative Berichterstattung. "
-"OCCRP schuf das Investigative Dashboard als länderübergreifendes "
-"Kooperationsinstrument, um Journalisten und zivilgesellschaftliche "
-"Rechercheure bei der Aufdeckung von organisiertem Verbrechen und "
-"Korruption auf der ganzen Welt zu unterstützen. Es vereint drei zentrale "
-"Tools in sich: eine Crowd-Sourcing-Datenbank mit Informationen und "
-"Dokumenten zu Personen von Interesse und deren geschäftlichen "
-"Verbindungen, eine weltweite Liste von Onlinedatenbanken und "
-"Unternehmensregistern sowie ein Research Desk, über das Journalisten "
-"Hilfe bei der Beschaffung von schwer auffindbaren Informationen erhalten "
-"können."
-
-#: app/templates/about_us.jinja:12
-msgid ""
-"With help from dozens of reporters and civic hackers, ID researchers have"
-" created the crowd-sourced database where connections of people and "
-"business can be mapped internationally. Through collecting public records"
-" worldwide in numerous languages and by scraping the business registries "
-"and official gazettes of countries such as Panama, British Virgin "
-"Islands, and Luxembourg among others we have made data searchable and "
-"hence truly transparent and useful. These resources are offered to the "
-"public as a searchable self-serve repository of data and documents."
-msgstr ""
-"Mit Unterstützung von Dutzenden von Reportern und zivilgesellschaftlichen"
-" Hackern haben ID-Rechercheure die Crowd-Sourcing-Datenbank erstellt, in "
-"der Verbindungen zwischen Personen und Unternehmen international "
-"zugeordnet werden können. Durch die weltweite Sammlung öffentlicher "
-"Aufzeichnungen in zahlreichen Sprachen und das Zusammentragen der "
-"Unternehmensregister und offiziellen Amtsblätter von Ländern wie Panama, "
-"den Britischen Jungferninseln und Luxemburg haben wir die Daten suchbar "
-"und damit wirklich transparent und nützlich gemacht. Diese Ressourcen "
-"werden der Öffentlichkeit als durchsuchbares Self-Service-Repository mit "
-"Daten und Dokumenten angeboten."
-
-#: app/templates/about_us.jinja:14
-msgid ""
-"The Investigative Dashboard also links to more than 400 online databases "
-"in 120 jurisdictions where you can search for information on persons and "
-"businesses of interest."
-msgstr ""
-"Das Investigative Dashboard verknüpft zudem über 400 Onlinedatenbanken an"
-" 120 Gerichtsständen, in denen Sie nach Informationen zu Personen und "
-"Unternehmen von Interesse suchen können."
-
-#: app/templates/about_us.jinja:16
-msgid ""
-"Above and beyond the databases available on the Dashboard, the research "
-"desk provides access to a global network of expert researchers. "
-"Journalists and researchers working on organized crime and corruption "
-"topics who seek information and documents beyond their own borders and "
-"resources are invited to request the expertise of a network of "
-"information professionals. These professionals can access external "
-"databases and official filings for evidence of corporate ownership and "
-"property holdings that cross borders. For some journalists, these "
-"services are provided pro bono."
-msgstr ""
-"Über die im Dashboard verfügbaren Datenbanken hinaus bietet das Research "
-"Desk Zugriff auf ein globales Netzwerk aus Rechercheexperten. "
-"Journalisten und Rechercheure, die an Themen rund um das organisierte "
-"Verbrechen und Korruption arbeiten und dabei über ihre eigenen Grenzen "
-"und Ressourcen hinweg nach Informationen und Dokumenten suchen, sind "
-"eingeladen, in einem Netzwerk von Informationsexperten anzufragen und "
-"sich deren Erfahrung zunutze zu machen. Diese Experten können auf externe"
-" Datenbanken und offizielle Unterlagen zugreifen, um Belege für "
-"Unternehmenseigentum und grenzüberschreitende Vermögenswerte zu finden. "
-"Einigen Journalisten werden diese Dienste kostenlos bereitgestellt."
-
-#: app/templates/about_us.jinja:18
-msgid ""
-"Journalists have used the Investigative Dashboard to work on stories that"
-" have won more than a dozen international awards, led to indictments, "
-"arrests and seizures, forced the resignation of heads of state, and "
-"exposed the activities of organized crime."
-msgstr ""
-"Journalisten haben das Investigative Dashboard schon für die Arbeit an "
-"Geschichten genutzt, die mit über einem Dutzend internationaler Preise "
-"ausgezeichnet wurden oder zu Anklagen, Verhaftungen und Beschlagnahmungen"
-" geführt, den Rücktritt von Staatsoberhäuptern erzwungen und Aktivitäten "
-"des organisierten Verbrechens offengelegt haben."
-
-#: app/templates/about_us.jinja:36
-msgid "Supporters"
-msgstr "Unterstützer"
-
-#: app/templates/about_us.jinja:37
-msgid ""
-"The Investigative Dashboard has been developed in collaboration with <a "
-"href=\"http://www.google.com/ideas/\">Google Ideas</a>. Core support for "
-"the project is generously provided by the Open Society Foundations with "
-"additional assistance from USAID."
-msgstr ""
-"Das Investigative Dashboard wurde in Zusammenarbeit mit <a "
-"href=\"http://www.google.com/ideas/\">Google Ideas</a> entwickelt. "
-"Wesentliche Unterstützung für das Projekt wird großzügigerweise von den "
-"Open Society Foundations unter zusätzlicher Mitwirkung von USAID "
-"bereitgestellt."
-
-#: app/templates/about_us.jinja:39
-msgid "Partners"
-msgstr "Partner"
-
-#: app/templates/about_us.jinja:40
-msgid ""
-"The Research Desk is managed by OCCRP in co-operation with four partner "
-"Centers - African Network of Centers for Investigative Reporting (ANCIR),"
-" the Arab Reporters for Investigative Journalism (ARIJ), the "
-"International Center for Journalists, and Connectas in the Americas."
-msgstr ""
-"Das Research Desk wird von OCCRP in Kooperation mit den vier "
-"Partnerzentren African Network of Centers for Investigative Reporting "
-"(ANCIR), Arab Reporters for Investigative Journalism (ARIJ), "
-"International Center for Journalists und Connectas in Amerika verwaltet."
-
-#: app/templates/about_us.jinja:42
-msgid "ID History"
-msgstr "Geschichte von ID"
-
-#: app/templates/about_us.jinja:43
-msgid ""
-"The Investigative Dashboard was developed by Paul Cristian Radu (OCCRP) "
-"and Justin Arenstein (ANCIR) while they both were in residence at "
-"Stanford University as Knight Fellows. The John S. Knight Fellowships for"
-" Professional Journalists made the dashboard possible by providing access"
-" to the know-how of fellow journalists and of experts at Stanford "
-"University and in Silicon Valley."
-msgstr ""
-"Das Investigative Dashboard wurde von Paul Cristian Radu (OCCRP) und "
-"Justin Arenstein (ANCIR) während ihres Aufenthalts als Knight Fellows an "
-"der Stanford University entwickelt. Möglich wurde das Dashboard durch die"
-" als John S. Knight Fellowships for Professional Journalists bekannten "
-"Stipendien, da diese Zugang zum Know-how von anderen Journalisten und "
-"Experten an der Stanford University und im Silicon Valley bieten."
-
-#: app/templates/about_us.jinja:45
-msgid ""
-"This first iteration of the ID website, launched in 2010, shared detailed"
-" methodologies, resources, and links for journalists to track money, "
-"shareholders, and company ownership across international borders. It also"
-" offered video tutorials and other tools to help journalists navigate "
-"rapidly evolving data-sources."
-msgstr ""
-"Auf der ersten Version der ID-Website, die im Jahr 2010 gestartet wurde, "
-"wurden detaillierte Methoden, Ressourcen und Links für Journalisten "
-"bereitgestellt, damit diese Gelder, Aktionäre und das Eigentum von "
-"Unternehmen über internationale Grenzen hinweg verfolgen konnten. Zudem "
-"waren auf der Website Videoanleitungen und andere Tools zur Unterstützung"
-" von Journalisten bei der Navigation durch sich schnell "
-"weiterentwickelnde Datenquellen verfügbar."
-
-#: app/templates/about_us.jinja:47
-msgid "Advisory Committee"
-msgstr "Beratungsausschuss"
-
-#: app/templates/about_us.jinja:105
-msgid "Acknowledgements"
-msgstr "Danksagung"
-
-#: app/templates/about_us.jinja:107
-msgid ""
-"The Investigative Dashboard is a collaborative project and valuable "
-"information was added by many investigative journalists around the world."
-" Individual members of the Global Investigative Journalism Network in "
-"particular contributed much of the information, explaining how to access "
-"company records in their home countries.\n"
-"\t    "
-msgstr ""
-"Das Investigative Dashboard ist ein Gemeinschaftsprojekt, zu dem viele "
-"investigative Journalisten auf der ganzen Welt wertvolle Informationen "
-"beigesteuert haben. Vor allem einzelne Mitglieder des Global "
-"Investigative Journalism Network haben einen Großteil der Informationen "
-"beigetragen und erläutert, wie in ihrem Heimatland auf die "
-"Unternehmensdaten zugegriffen wird.\n"
-"\t    "
-
-#: app/templates/about_us.jinja:110
-msgid ""
-"Valuable information was added by many investigative journalists around "
-"the world."
-msgstr ""
-"Viele investigative Journalisten auf der ganzen Welt haben wertvolle "
-"Informationen beigesteuert."
-
-#: app/templates/admin_base.jinja:7 app/templates/tickets/request_base.jinja:75
-msgid "Manage"
-msgstr "Verwalten"
-
-#: app/templates/admin_base.jinja:18 app/templates/crud/relationship/list.jinja:2
-msgid "Relationships"
-msgstr "Beziehungen"
-
-#: app/templates/admin_base.jinja:22 app/templates/crud/expandofield/list.jinja:2
-msgid "Extra Fields"
-msgstr "Zusätzliche Felder"
-
-#: app/templates/admin_base.jinja:25
-msgid "External Databases"
-msgstr "Externe Datenbanken"
-
-#: app/templates/admin_base.jinja:28
-#: app/templates/crud/accountrequest/list.jinja:2
-msgid "Account Requests"
-msgstr "Kontoanträge"
-
-#: app/templates/admin_base.jinja:31 app/templates/crud/profile/list.jinja:2
-msgid "User Profiles"
-msgstr "Nutzerprofile"
-
-#: app/templates/admin_base.jinja:34
-msgid "Statistics"
-msgstr "Statistiken"
-
-#: app/templates/base.jinja:38 app/templates/search/search_base.jinja:6
-#: app/templates/search/search_base.jinja:21
-#: app/templates/search/search_documents.jinja:6
-#: app/templates/search/search_documents.jinja:13
-#: app/templates/search/search_entities.jinja:7
-#: app/templates/search/search_entities.jinja:15
-msgid "Search"
-msgstr "Suchen"
-
-#: app/templates/base.jinja:41 app/templates/external_databases.jinja:12
-msgid "Business Registries"
-msgstr "Unternehmensregister"
-
-#: app/templates/base.jinja:45
-msgid "Expert Help"
-msgstr "Hilfe von Experten"
-
-#: app/templates/base.jinja:61
-msgid "Admin"
-msgstr "Admin"
-
-#: app/templates/base.jinja:64
-msgid "Log out"
-msgstr "Abmelden"
-
-#: app/templates/base.jinja:68 app/templates/request_account.jinja:6
-msgid "Request Account"
-msgstr "Konto beantragen"
-
-#: app/templates/base.jinja:69
-msgid "Log In"
-msgstr "Anmelden"
-
-#: app/templates/base.jinja:124
-msgid "&copy; 2013 - OCCRP. All rights reserved."
-msgstr "&copy; 2013 – OCCRP. Alle Rechte vorbehalten."
-
-#: app/templates/base.jinja:124
-msgid "About this site"
-msgstr "Über diese Website"
-
-#: app/templates/company.jinja:8 app/templates/request_account.jinja:13
-#: app/templates/accountrequest/volunteer_account.jinja:13
-#: app/templates/crud/accountrequest/edit.jinja:20
-#: app/templates/tickets/manage.jinja:27 app/templates/tickets/request.jinja:34
-#: app/templates/tickets/request_details.jinja:379
-#: app/templates/tickets/request_details.jinja:380
-msgid "Submit"
-msgstr "Senden"
-
-#: app/templates/drive_success.jinja:1
-msgid "Successfully connected to Google Drive."
-msgstr "Verbindung zu Google Drive hergestellt"
-
-#: app/templates/drive_success.jinja:3
-msgid "Current user name:"
-msgstr "Aktueller Nutzername:"
-
-#: app/templates/drive_success.jinja:4
-msgid "Root folder ID:"
-msgstr "Root-Ordner-Kennung:"
-
-#: app/templates/drive_success.jinja:5
-msgid "Total quota (bytes):"
-msgstr "Gesamtquote (Bytes):"
-
-#: app/templates/drive_success.jinja:6
-msgid "Used quota (bytes):"
-msgstr "Verwendete Quote (Bytes):"
-
-#: app/templates/drive_success.jinja:7
-msgid "Permission ID:"
-msgstr "Berechtigungskennung:"
-
-#: app/templates/external_databases.jinja:14
-msgid ""
-"Here you will find links to more than 450 online databases across 120 "
-"jurisdictions where you can get information on the shareholders, "
-"directors and the financial reports of companies worldwide. They are "
-"organized by country. Many are free of charge and for some you must "
-"register. Databases marked with a \"$\" require a fee.  Not all are "
-"available in English, see the notes column for further details.\t"
-msgstr ""
-"Hier finden Sie Links zu über 450 Onlinedatenbanken an "
-"120 Gerichtsständen, in denen Sie Informationen zu Aktionären, "
-"Geschäftsführern und den Finanzberichten von Unternehmen auf der ganzen "
-"Welt erhalten können. Sie sind nach Ländern sortiert. Viele sind "
-"kostenlos, für einige müssen Sie sich jedoch registrieren. Bei "
-"Datenbanken, die mit einem \"$\" gekennzeichnet sind, wird eine Gebühr "
-"fällig. Nicht alle sind in allen Sprachen verfügbar. Weitere Details "
-"finden Sie in der Spalte mit den Hinweisen.\t"
-
-#: app/templates/external_databases.jinja:44
-msgid "Documentation"
-msgstr "Dokumentation"
-
-#: app/templates/external_databases.jinja:45
-msgid "Video Tutorial"
-msgstr "Videoanleitung"
-
-#: app/templates/external_databases.jinja:58
-msgid "Didn't find what you were looking for?"
-msgstr "Sie haben die gewünschten Informationen nicht gefunden?"
-
-#: app/templates/external_databases.jinja:60
-msgid "Request manual help from our researchers."
-msgstr "Fordern Sie manuelle Hilfe von unseren Rechercheuren an."
-
-#: app/templates/oauth_success.jinja:14
-msgid ""
-"Google Drive successfully authorized. Please close this dialog and attach"
-" your files again."
-msgstr ""
-"Google Drive autorisiert. Bitte schließen Sie dieses Dialogfeld und "
-"hängen Sie Ihre Dateien erneut an."
-
-#: app/templates/pre_login.jinja:6 app/templates/pre_login.jinja:21
-msgid "Sign in with Google"
-msgstr "Über Google anmelden"
-
-#: app/templates/pre_login.jinja:10
-msgid ""
-"In order to log in or request an account on Investigative Dashboard you "
-"must have a Google account. We use your Google account to verify your "
-"identity and obtain a valid email address from you."
-msgstr ""
-"Für die Anmeldung in einem Konto oder die Beantragung eines Kontos im "
-"Investigative Dashboard benötigen Sie ein Google-Konto. Wir überprüfen "
-"anhand Ihres Google-Kontos Ihre Identität und rufen eine gültige E-Mail-"
-"Adresse von Ihnen ab."
-
-#: app/templates/pre_login.jinja:15
-msgid ""
-"If you do not have a Google account, you can sign up for one on the next "
-"page by clicking \"Sign Up\" in the top right corner."
-msgstr ""
-"Falls Sie kein Google-Konto haben, können Sie sich auf der nächsten Seite"
-" dafür registrieren. Klicken Sie dazu oben rechts auf \"Anmelden\"."
-
-#: app/templates/request_account.jinja:9
-msgid ""
-"In order to make information requests through Investigative Dashboard, "
-"you must have an account. Please enter your information below and one of "
-"our staff will evaluate and respond to your request."
-msgstr ""
-"Damit Sie über das Investigative Dashboard Informationsanforderungen "
-"einreichen können, benötigen Sie ein Konto. Bitte geben Sie unten Ihre "
-"Daten ein. Einer unserer Mitarbeiter wird Ihren Antrag auswerten und "
-"darauf antworten."
-
-#: app/templates/request_account_home.jinja:5
-msgid "Which type of account would you like to apply for?"
-msgstr "Welchen Kontotyp möchten Sie beantragen?"
-
-#: app/templates/request_account_home.jinja:15
-msgid "Information Requester"
-msgstr "Informationsanforderer"
-
-#: app/templates/request_account_home.jinja:16
-msgid ""
-"Take advantage of our database of knowledge to find out more information "
-"about companies, individuals, or the relationships between them."
-msgstr ""
-"Nutzen Sie unsere Wissensdatenbank, um weitere Informationen über "
-"Unternehmen, Einzelpersonen oder die Beziehungen zwischen ihnen zu "
-"finden."
-
-#: app/templates/request_account_home.jinja:18
-msgid "Be a Requester"
-msgstr "Anforderer werden"
-
-#: app/templates/request_account_home.jinja:25
-msgid ""
-"We have available public requests that need volunteers. Use your wealth "
-"of information to help others find answers."
-msgstr ""
-"Uns liegen öffentliche Anforderungen vor, für die Freiwillige benötigt "
-"werden. Nutzen Sie die Ihnen vorliegende Fülle von Informationen, um "
-"anderen bei der Suche nach Antworten zu helfen."
-
-#: app/templates/request_account_home.jinja:27
-msgid "Be a Volunteer"
-msgstr "Freiwilliger werden"
-
-#: app/templates/splash.jinja:9
-msgid ""
-"<span class=\"primary-highlight\">Investigative Dashboard</span> helps "
-"investigators expose illicit ties that cross borders."
-msgstr ""
-"Das <span class=\"primary-highlight\">Investigative Dashboard</span> "
-"hilft Ermittlern bei der Offenlegung grenzüberschreitender illegaler "
-"Verbindungen."
-
-#: app/templates/splash.jinja:22
-msgid "Search for a company or person of interest."
-msgstr "Suchen Sie nach einem Unternehmen oder einer Person von Interesse."
-
-#: app/templates/splash.jinja:23
-msgid ""
-"We have scraped national business records from Panama, Luxembourg, "
-"Switzerland and many other countries"
-msgstr ""
-"Wir haben nationale Geschäftsunterlagen aus Panama, Luxemburg, der "
-"Schweiz und vielen anderen Ländern zusammengetragen."
-
-#: app/templates/splash.jinja:25
-msgid "Start Searching"
-msgstr "Suche starten"
-
-#: app/templates/splash.jinja:31
-msgid "If you need more data, visit recommended databases"
-msgstr "Falls Sie weitere Daten benötigen, rufen Sie empfohlene Datenbanken auf."
-
-#: app/templates/splash.jinja:32
-msgid "We have assembled a directory of over 300 local databases that might help"
-msgstr ""
-"Wir haben ein Verzeichnis von über 300 lokalen Datenbanken "
-"zusammengestellt, die hilfreich sein könnten."
-
-#: app/templates/splash.jinja:34
-msgid "Visit Databases"
-msgstr "Datenbanken aufrufen"
-
-#: app/templates/splash.jinja:40
-msgid "If you need help, request expert assistance."
-msgstr "Falls Sie Hilfe benötigen, fordern Sie Unterstützung von Experten an."
-
-#: app/templates/splash.jinja:41
-msgid ""
-"We understand investigations are sensitive and we take privacy very "
-"seriously. Requests are only seen by our full-time experts and, if you "
-"are willing, by vetted volunteers"
-msgstr ""
-"Wir wissen, dass die Recherchen sensibler Natur sind, und nehmen den "
-"Datenschutz sehr ernst. Anforderungen werden nur von unseren "
-"professionellen Vollzeitmitarbeitern und, sofern Sie dies wünschen, von "
-"geprüften Freiwilligen gesichtet."
-
-#: app/templates/splash.jinja:43
-msgid "Ask an Expert"
-msgstr "Experten fragen"
-
-#: app/templates/accountrequest/volunteer_account.jinja:6
-msgid "Become a Volunteer!"
-msgstr "Werden Sie Freiwilliger!"
-
-#: app/templates/accountrequest/volunteer_account.jinja:9
-msgid ""
-"If you'd like to volunteer to track down requests, you need to have an "
-"account. Please enter your information below and one of our staff will "
-"review, and respond to your request."
-msgstr ""
-"Falls Sie als Freiwilliger Anforderungen auf den Grund gehen möchten, "
-"benötigen Sie ein Konto. Bitte geben Sie unten Ihre Daten ein. Einer "
-"unserer Mitarbeiter wird Ihren Antrag prüfen und darauf antworten."
-
-#: app/templates/crud/delete.jinja:4
-msgid "Confirm Deletion"
-msgstr "Löschen bestätigen"
-
-#: app/templates/crud/delete.jinja:6
-msgid "Cannot delete this entity."
-msgstr "Diese Entität kann nicht gelöscht werden."
-
-#: app/templates/crud/delete_base.jinja:9
-#, python-format
-msgid ""
-"Are you sure you want to delete %(object_name)s? You will not be able to "
-"undo this action."
-msgstr ""
-"Möchten Sie %(object_name)s wirklich löschen? Dieser Vorgang kann nicht "
-"rückgängig gemacht werden."
-
-#: app/templates/crud/delete_base.jinja:14
-msgid "Yes, I am sure."
-msgstr "Ja, ich bin sicher."
-
-#: app/templates/crud/delete_base.jinja:18
-#, python-format
-msgid "%(object_name)s is attached to the following relationships:"
-msgstr "%(object_name)s ist an die folgenden Beziehungen angehängt:"
-
-#: app/templates/crud/delete_base.jinja:22
-msgid "relationship"
-msgstr "Beziehung"
-
-#: app/templates/crud/entity_details.jinja:52
-msgid "Close"
-msgstr "Schließen"
-
-#: app/templates/crud/item_base.jinja:11
-msgid "Delete"
-msgstr "Löschen"
-
-#: app/templates/crud/item_base.jinja:20 app/templates/crud/item_base.jinja:48
-#: app/templates/crud/item_base.jinja:49 app/templates/crud/item_base.jinja:50
-#: app/templates/crud/item_base.jinja:51 app/templates/crud/item_base.jinja:54
-#: app/templates/tickets/request_details.jinja:381
-#: app/templates/tickets/request_details.jinja:384
-#: app/templates/tickets/request_details.jinja:385
-msgid "Save"
-msgstr "Speichern"
-
-#: app/templates/crud/item_base.jinja:29
-#: app/templates/tickets/request_details.jinja:266
-msgid "Sharing"
-msgstr "Teilen"
-
-#: app/templates/crud/item_base.jinja:48 app/templates/crud/item_base.jinja:49
-#: app/templates/crud/item_base.jinja:50 app/templates/crud/item_base.jinja:51
-msgid "Create Relationship"
-msgstr "Beziehung erstellen"
-
-#: app/templates/crud/item_base.jinja:54
-#: app/templates/tickets/request_details.jinja:384
-msgid "Share Attached Files"
-msgstr "Angehängte Dateien teilen"
-
-#: app/templates/crud/list_base.jinja:7
-#: app/templates/tickets/request_details.jinja:382
-#: app/templates/tickets/request_details.jinja:383
-msgid "Add"
-msgstr "Hinzufügen"
-
-#: app/templates/crud/list_base.jinja:24
-#: app/templates/tickets/request_admin_base.jinja:20
-#: app/templates/tickets/request_admin_base.jinja:23
-#: app/templates/tickets/request_charges_base.jinja:74
-#: app/templates/tickets/request_charges_base.jinja:77
-msgid "Prev"
-msgstr "Zurück"
-
-#: app/templates/crud/list_base.jinja:33
-#: app/templates/tickets/request_admin_base.jinja:29
-#: app/templates/tickets/request_admin_base.jinja:32
-#: app/templates/tickets/request_charges_base.jinja:83
-#: app/templates/tickets/request_charges_base.jinja:86
-msgid "Next"
-msgstr "Weiter"
-
-#: app/templates/crud/accountrequest/add.jinja:2
-msgid "New Account Request"
-msgstr "Neuer Kontoantrag"
-
-#: app/templates/crud/accountrequest/edit.jinja:4
-msgid "Edit Volunteer Request"
-msgstr "Anforderung eines Freiwilligen bearbeiten"
-
-#: app/templates/crud/accountrequest/edit.jinja:6
-msgid "Edit Account Request"
-msgstr "Kontoantrag bearbeiten"
-
-#: app/templates/crud/accountrequest/edit.jinja:13
-#: app/templates/crud/accountrequest/edit.jinja:20
-msgid "Set Permissions"
-msgstr "Berechtigungen festlegen"
-
-#: app/templates/crud/company/add.jinja:2
-#: app/templates/crud/relationship/inline_entity.jinja:9
-msgid "New Company"
-msgstr "Neues Unternehmen"
-
-#: app/templates/crud/company/edit.jinja:2
-msgid "Edit Company"
-msgstr "Unternehmen bearbeiten"
-
-#: app/templates/crud/company/edit.jinja:5
-msgid "Registered Offices"
-msgstr "Eingetragene Unternehmenssitze"
-
-#: app/templates/crud/company/edit.jinja:11
-#: app/templates/crud/company/edit.jinja:13
-#: app/templates/crud/relationship/table_mixin.jinja:162
-#: app/templates/crud/relationship/table_mixin.jinja:164
-msgid "Entity"
-msgstr "Entität"
-
-#: app/templates/crud/expandofield/add.jinja:2
-msgid "New Extra Field"
-msgstr "Neues zusätzliches Feld"
-
-#: app/templates/crud/expandofield/edit.jinja:2
-msgid "Edit Extra Field"
-msgstr "Zusätzliches Feld bearbeiten"
-
-#: app/templates/crud/externaldb/add.jinja:2
-msgid "New Database"
-msgstr "Neue Datenbank"
-
-#: app/templates/crud/externaldb/edit.jinja:2
-msgid "Edit External Database"
-msgstr "Externe Datenbank bearbeiten"
-
-#: app/templates/crud/externaldb/list.jinja:2
-msgid "Databases"
-msgstr "Datenbanken"
-
-#: app/templates/crud/location/add.jinja:2
-#: app/templates/crud/relationship/inline_entity.jinja:11
-msgid "New Location"
-msgstr "Neuer Standort"
-
-#: app/templates/crud/location/edit.jinja:2
-msgid "Edit Location"
-msgstr "Standort bearbeiten"
-
-#: app/templates/crud/person/add.jinja:2
-#: app/templates/crud/relationship/inline_entity.jinja:10
-msgid "New Person"
-msgstr "Neue Person"
-
-#: app/templates/crud/person/edit.jinja:2
-msgid "Edit Person"
-msgstr "Person bearbeiten"
-
-#: app/templates/crud/profile/edit.jinja:2
-msgid "Edit User Profile"
-msgstr "Nutzerprofil bearbeiten"
-
-#: app/templates/crud/profile/edit.jinja:7
-msgid "Account Request for this profile"
-msgstr "Kontoantrag für dieses Profil"
-
-#: app/templates/crud/profile/edit.jinja:18
-msgid "Account Request for this profile: "
-msgstr "Kontoantrag für dieses Profil: "
-
-#: app/templates/crud/relationship/add.jinja:2
-msgid "New Relationship"
-msgstr "Neue Beziehung"
-
-#: app/templates/crud/relationship/edit.jinja:2
-#: app/templates/crud/relationship/item.jinja:2
-msgid "Edit Relationship"
-msgstr "Beziehung bearbeiten"
-
-#: app/templates/crud/relationship/table_mixin.jinja:6
-msgid "Add New "
-msgstr "Neue hinzufügen "
-
-#: app/templates/crud/relationship/table_mixin.jinja:12
-msgid "Add Existing "
-msgstr "Vorhandene hinzufügen "
-
-#: app/templates/crud/relationship/table_mixin.jinja:49
-msgid "Directors"
-msgstr "Geschäftsführer"
-
-#: app/templates/crud/relationship/table_mixin.jinja:80
-msgid "Shareholders"
-msgstr "Aktionäre"
-
-#: app/templates/crud/relationship/table_mixin.jinja:125
-msgid "Create"
-msgstr "Erstellen"
-
-#: app/templates/crud/relationship/table_mixin.jinja:131
-msgid "With New Company"
-msgstr "Mit neuem Unternehmen"
-
-#: app/templates/crud/relationship/table_mixin.jinja:136
-msgid "With New Person"
-msgstr "Mit neuer Person"
-
-#: app/templates/crud/relationship/table_mixin.jinja:141
-msgid "With New Location"
-msgstr "Mit neuem Standort"
-
-#: app/templates/crud/relationship/table_mixin.jinja:146
-msgid "With Existing Entity"
-msgstr "Mit vorhandener Entität"
-
-#: app/templates/crud/relationship/table_mixin.jinja:154
-msgid "All Relationships"
-msgstr "Alle Beziehungen"
-
-#: app/templates/crud/relationship/table_mixin.jinja:178
-#, python-format
-msgid "is a %(type)s of"
-msgstr "ist ein(e) %(type)s von"
-
-#: app/templates/macros/forms.jinja:28
-msgid "Select File"
-msgstr "Datei auswählen"
-
-#: app/templates/macros/forms.jinja:29
-msgid "Change"
-msgstr "Ändern"
-
-#: app/templates/macros/forms.jinja:32
-msgid "Remove"
-msgstr "Entfernen"
-
-#: app/templates/macros/forms.jinja:46
-#: app/templates/tickets/request_details.jinja:42
-msgid "Attach Files"
-msgstr "Dateien anhängen"
-
-#: app/templates/mail/mail_base.jinja:36
-msgid "This message is automatically generated by "
-msgstr "Diese Nachricht wird automatisch erstellt von "
-
-#: app/templates/mail/mail_base.jinja:36
-msgid "OCCRP Investigative Dashboard"
-msgstr "OCCRP Investigative Dashboard"
-
-#: app/templates/mail/mail_base.jinja:37
-msgid "If you think it was sent incorrectly, please contact an "
-msgstr ""
-"Falls Sie glauben, dass bei dieser Nachricht ein Irrtum vorliegt, wenden "
-"Sie sich bitte an einen "
-
-#: app/templates/mail/mail_base.jinja:37
-msgid "administrator"
-msgstr "Administrator"
-
-#: app/templates/mail/mail_base.jinja:38
-msgid "For more information on "
-msgstr "Weitere Informationen zu "
-
-#: app/templates/mail/mail_base.jinja:39
-msgid "visit"
-msgstr "erhalten Sie hier:"
-
-#: app/templates/mail/mail_simple.jinja:16
-msgid "The Research Desk"
-msgstr "Research Desk"
-
-#: app/templates/mail/mail_simple.jinja:16
-msgid "at the Investigative Dashboard"
-msgstr "bei Investigative Dashboard"
-
-#: app/templates/mail/ticket_update.jinja:8
-msgid "your request. "
-msgstr "Ihre Anforderung "
-
-#: app/templates/mail/ticket_update.jinja:31
-msgid "View on Site"
-msgstr "Auf Website ansehen"
-
-#: app/templates/mail/ticket_update.jinja:32
-msgid "Add Comment"
-msgstr "Fügen Sie einen Kommentar hinzu"
-
-#: app/templates/mail/ticket_update.jinja:33
-msgid "or reply to this email directly."
-msgstr "oder antworten Sie direkt auf diese E-Mail."
-
-#: app/templates/mail/account_request/approved.jinja:4
-msgid "Your Account Request was approved"
-msgstr "Ihr Kontoantrag wurde genehmigt."
-
-#: app/templates/mail/account_request/approved.jinja:8
-#: app/templates/mail/account_request/received.jinja:8
-#: app/templates/mail/account_request/rejected.jinja:8
-#: app/templates/mail/user_profile/requester_type_update.jinja:8
-#, python-format
-msgid "Dear %(name)s,"
-msgstr "Hallo %(name)s,"
-
-#: app/templates/mail/account_request/approved.jinja:9
-msgid ""
-"Your ID registration is complete! Just login in with your Gmail account "
-"that you used to register to get started."
-msgstr ""
-"Ihre Registrierung bei ID ist abgeschlossen. Um zu beginnen, melden Sie "
-"sich einfach mit dem Gmail-Konto an, mit dem Sie sich registriert haben."
-
-#: app/templates/mail/account_request/approved.jinja:10
-#, python-format
-msgid "Please be advised your account type is: %(account_type)s"
-msgstr "So lautet Ihr Kontotyp: %(account_type)s."
-
-#: app/templates/mail/account_request/approved.jinja:11
-msgid "Click here to submit a research request."
-msgstr "Klicken Sie hier, um eine Rechercheanforderung einzureichen."
-
-#: app/templates/mail/account_request/approved.jinja:12
-#: app/templates/mail/user_profile/requester_type_update.jinja:10
-msgid ""
-"If you do not think this is the correct account type for you, please "
-"contact the research desk:"
-msgstr ""
-"Falls dies Ihrer Meinung nach nicht der richtige Kontotyp für Sie ist, "
-"wenden Sie sich bitte an das Research Desk:"
-
-#: app/templates/mail/account_request/approved.jinja:13
-msgid "Good luck with your investigation."
-msgstr "Viel Erfolg bei Ihrer Recherche."
-
-#: app/templates/mail/account_request/received.jinja:9
-msgid ""
-"Thank you for registering with the Investigative Dashboard. We are "
-"reviewing your information and as soon as your registration is complete "
-"you can sign into the Research Desk with the Google account that you used"
-" to register. In the meantime, get started now by searching the ID crowd-"
-"sourced and external databases. We will be in touch shortly."
-msgstr ""
-"Vielen Dank für Ihre Registrierung bei Investigative Dashboard. Wir "
-"prüfen gerade Ihre Angaben. Sobald Ihre Registrierung abgeschlossen ist, "
-"können Sie sich mit dem Google-Konto, mit dem Sie sich registriert haben,"
-" im Research Desk anmelden. In der Zwischenzeit können Sie mit der Suche "
-"in den Crowd-Sourcing-Datenbanken von ID und den externen Datenbanken "
-"beginnen. Sie werden in Kürze wieder von uns hören."
-
-#: app/templates/mail/account_request/received_admin.jinja:8
-msgid "A new account request has been submitted! Below are the details:"
-msgstr ""
-"Ein neuer Kontoantrag wurde eingereicht. Im Folgenden finden Sie die "
-"Details:"
-
-#: app/templates/mail/account_request/received_admin.jinja:15
-msgid "Click here to review and approve or reject."
-msgstr "Zum Prüfen und Genehmigen oder Ablehnen klicken Sie hier."
-
-#: app/templates/mail/account_request/rejected.jinja:4
+#: id/models.py:430 templates/mail/account_request/rejected.jinja:4
 msgid "Your Account Request was rejected"
 msgstr "Ihr Kontoantrag wurde abgelehnt."
 
-#: app/templates/mail/account_request/rejected.jinja:9
-msgid ""
-"I am sorry but we could not register you at this time. The head of the "
-"research desk will contact you with further details."
-msgstr ""
-"Wir können Sie momentan nicht registrieren. Die Research Desk-Leitung "
-"wird sich mit weiteren Details mit Ihnen in Verbindung setzen."
-
-#: app/templates/mail/account_request/rejected.jinja:10
-#: app/templates/mail/user_profile/requester_type_update.jinja:11
-msgid "Thank you,"
-msgstr "Mit freundlichen Grüßen"
-
-#: app/templates/mail/user_profile/requester_type_update.jinja:4
-msgid "Your Account Type has changed"
-msgstr "Ihr Kontotyp wurde geändert."
-
-#: app/templates/mail/user_profile/requester_type_update.jinja:9
-#, python-format
-msgid ""
-"Please be advised your account status has changed. Your new account type "
-"is: %(account_type)s"
-msgstr ""
-"Der Status Ihres Kontos hat sich geändert. So lautet Ihr neuer Kontotyp: "
-"%(account_type)s."
-
-#: app/templates/modals/form_basic.jinja:3
-msgid "Not Allowed"
-msgstr "Nicht zulässig"
-
-#: app/templates/search/search_base.jinja:7
-msgid "Results "
-msgstr "Ergebnisse "
-
-#: app/templates/search/search_base.jinja:16
-msgid "Search terms"
-msgstr "Suchbegriffe"
-
-#: app/templates/search/search_base.jinja:31
-msgid "Navigate Results "
-msgstr "In Ergebnissen navigieren "
-
-#: app/templates/search/search_base.jinja:32
-msgid "< Previous"
-msgstr "< Zurück"
-
-#: app/templates/search/search_base.jinja:33
-msgid "Next >"
-msgstr "Weiter >"
-
-#: app/templates/search/search_base.jinja:41
-#, python-format
-msgid ""
-"Didn't find what you were looking for? Try one of our <a "
-"href=\"%(url)s\">business registries</a>."
-msgstr ""
-"Sie haben die gewünschten Informationen nicht gefunden? Versuchen Sie es "
-"in einem unserer <a href=\"%(url)s\">Unternehmensregister</a>."
-
-#: app/templates/search/search_combined.jinja:16
-#: app/templates/search/search_documents.jinja:38
-#: app/templates/search/search_entities.jinja:71
-msgid "No search results."
-msgstr "Keine Suchergebnisse."
-
-#: app/templates/search/search_combined.jinja:20
-msgid "To search, type your query into the search box above."
-msgstr "Zum Suchen geben Sie Ihre Anfrage oben in das Suchfeld ein."
-
-#: app/templates/search/search_documents.jinja:8
-#: app/templates/search/search_entities.jinja:9
-msgid "Enter your terms..."
-msgstr "Begriffe eingeben…"
-
-#: app/templates/search/search_entities.jinja:22
-#, python-format
-msgid "%(num_results)s result found."
-msgid_plural "%(num_results)s results found."
-msgstr[0] "%(num_results)s Ergebnisse gefunden"
-msgstr[1] "%(num_results)s Ergebnis gefunden"
-msgstr[2] "%(num_results)s Ergebnisse gefunden"
-msgstr[3] "%(num_results)s Ergebnisse gefunden"
-msgstr[4] "%(num_results)s Ergebnisse gefunden"
-msgstr[5] "%(num_results)s Ergebnisse gefunden"
-
-#: app/templates/tickets/manage.jinja:5
-msgid "Manage Information Request"
-msgstr "Informationsanforderung verwalten"
-
-#: app/templates/tickets/public_list.jinja:5
-#: app/templates/tickets/request_base.jinja:67
-msgid "Public Requests"
-msgstr "Öffentliche Anforderungen"
-
-#: app/templates/tickets/public_list.jinja:12
-#: app/templates/tickets/responds_list.jinja:12
-msgid "No requests found."
-msgstr "Keine Anforderungen gefunden"
-
-#: app/templates/tickets/request.jinja:5
-#: app/templates/tickets/request_details.jinja:162
-msgid "Request Information"
-msgstr "Informationen anfordern"
-
-#: app/templates/tickets/request.jinja:10
-msgid ""
-"Your request will be routed to our professional researchers and "
-"volunteers, who will try to help."
-msgstr ""
-"Ihre Anforderung wird an unsere professionellen Rechercheure und "
-"Freiwilligen weitergeleitet, die versuchen werden, Ihnen behilflich zu "
-"sein."
-
-#: app/templates/tickets/request_admin_base.jinja:42
-msgid "No tickets found."
-msgstr "Keine Tickets gefunden"
-
-#: app/templates/tickets/request_base.jinja:6
-msgid "Summary"
-msgstr "Zusammenfassung"
-
-#: app/templates/tickets/request_base.jinja:10
-#: app/templates/tickets/request_charges_base.jinja:26
-#: app/templates/tickets/request_details.jinja:279
-msgid "Actions"
-msgstr "Aktionen"
-
-#: app/templates/tickets/request_base.jinja:25
-msgid " Unassigned "
-msgstr " Nicht zugewiesen "
-
-#: app/templates/tickets/request_base.jinja:34
-msgid "No Responder"
-msgstr "Kein Antwortender"
-
-#: app/templates/tickets/request_base.jinja:38
-msgid "Completed "
-msgstr "Abgeschlossen "
-
-#: app/templates/tickets/request_base.jinja:40
-msgid "Cancelled "
-msgstr "Zurückgenommen "
-
-#: app/templates/tickets/request_base.jinja:62
-msgid "Requests"
-msgstr "Anforderungen"
-
-#: app/templates/tickets/request_base.jinja:64
-#: app/templates/tickets/request_list.jinja:9
-msgid "My Requests"
-msgstr "Meine Anforderungen"
-
-#: app/templates/tickets/request_base.jinja:71
-#: app/templates/tickets/responds_list.jinja:5
-msgid "Assigned Requests"
-msgstr "Zugewiesene Anforderungen"
-
-#: app/templates/tickets/request_base.jinja:77
-#: app/templates/tickets/admin/admin_unassigned.jinja:4
-msgid "Unassigned Tickets"
-msgstr "Nicht zugewiesene Tickets"
-
-#: app/templates/tickets/request_base.jinja:80
-msgid "Upcoming Deadlines"
-msgstr "Anstehende Fälligkeitstermine"
-
-#: app/templates/tickets/request_base.jinja:83
-msgid "Flagged Tickets"
-msgstr "Gemeldete Tickets"
-
-#: app/templates/tickets/request_base.jinja:86
-msgid "Closed Tickets"
-msgstr "Geschlossene Tickets"
-
-#: app/templates/tickets/request_base.jinja:88
-msgid "Billing"
-msgstr "Abrechnung"
-
-#: app/templates/tickets/request_base.jinja:90
-msgid "Customer Report"
-msgstr "Kundenbericht"
-
-#: app/templates/tickets/request_base.jinja:93
-#: app/templates/tickets/admin/admin_charges_outstanding.jinja:3
-msgid "Outstanding Charges"
-msgstr "Ausstehende Gebühren"
-
-#: app/templates/tickets/request_charges_base.jinja:22
-msgid "Cost"
-msgstr "Kosten"
-
-#: app/templates/tickets/request_charges_base.jinja:23
-msgid "Converted"
-msgstr "Umgerechnet"
-
-#: app/templates/tickets/request_charges_base.jinja:24
-msgid "Reconciled"
-msgstr "Beglichen"
-
-#: app/templates/tickets/request_charges_base.jinja:25
-msgid "Created"
-msgstr "Erstellt"
-
-#: app/templates/tickets/request_charges_base.jinja:96
-msgid "No charges found."
-msgstr "Keine Gebühren gefunden"
-
-#: app/templates/tickets/request_charges_base.jinja:103
-msgid "Reconcile Charge"
-msgstr "Gebühr begleichen"
-
-#: app/templates/tickets/request_charges_base.jinja:103
-msgid "Reconcile"
-msgstr "Begleichen"
-
-#: app/templates/tickets/request_details.jinja:21
-msgid "Created on "
-msgstr "Erstellt am "
-
-#: app/templates/tickets/request_details.jinja:45
-#: app/templates/tickets/request_details.jinja:382
-msgid "Attach Entities"
-msgstr "Entitäten anhängen"
-
-#: app/templates/tickets/request_details.jinja:52
-msgid "Watch"
-msgstr "Ansehen"
-
-#: app/templates/tickets/request_details.jinja:57
-msgid "Leave"
-msgstr "Verlassen"
-
-#: app/templates/tickets/request_details.jinja:64
-#: app/templates/tickets/request_details.jinja:380
-msgid "Close Request"
-msgstr "Anforderung schließen"
-
-#: app/templates/tickets/request_details.jinja:71
-#: app/templates/tickets/request_details.jinja:377
-msgid "Cancel Request"
-msgstr "Anforderung zurücknehmen"
-
-#: app/templates/tickets/request_details.jinja:78
-#: app/templates/tickets/request_details.jinja:383
-msgid "Add Charge"
-msgstr "Gebühr hinzufügen"
-
-#: app/templates/tickets/request_details.jinja:85
-msgid "Delete Request"
-msgstr "Anforderung löschen"
-
-#: app/templates/tickets/request_details.jinja:93
-msgid "Mark Bill Paid"
-msgstr "Rechnung als bezahlt markieren"
-
-#: app/templates/tickets/request_details.jinja:100
-msgid "Edit Information"
-msgstr "Informationen bearbeiten"
-
-#: app/templates/tickets/request_details.jinja:106
-#: app/templates/tickets/request_details.jinja:385
-msgid "Request Settings"
-msgstr "Anforderungseinstellungen"
-
-#: app/templates/tickets/request_details.jinja:114
-#: app/templates/tickets/request_details.jinja:378
-msgid "Alert Administrator"
-msgstr "Administrator benachrichtigen"
-
-#: app/templates/tickets/request_details.jinja:125
-msgid "Re-Open"
-msgstr "Erneut öffnen"
-
-#: app/templates/tickets/request_details.jinja:168
-#: app/templates/tickets/request_details.jinja:170
-msgid "No Requester"
-msgstr "Kein Anforderer"
-
-#: app/templates/tickets/request_details.jinja:181
-msgid "No Responders"
-msgstr "Keine Antwortenden"
-
-#: app/templates/tickets/request_details.jinja:194
-msgid "Request Type"
-msgstr "Anforderungstyp"
-
-#: app/templates/tickets/request_details.jinja:198
-msgid "Status Updated"
-msgstr "Status aktualisiert"
-
-#: app/templates/tickets/request_details.jinja:205
-msgid "Sensitive"
-msgstr "Sensibel"
-
-#: app/templates/tickets/request_details.jinja:209
-#: app/templates/tickets/request_details.jinja:211
-msgid "Billing Information"
-msgstr "Zahlungsinformationen"
-
-#: app/templates/tickets/request_details.jinja:215
-msgid "For-profit"
-msgstr "Gewinnorientiert"
-
-#: app/templates/tickets/request_details.jinja:217
-msgid "Charges"
-msgstr "Gebühren"
-
-#: app/templates/tickets/request_details.jinja:229
-msgid "Outstanding Amount:"
-msgstr "Ausstehender Betrag:"
-
-#: app/templates/tickets/request_details.jinja:237
-msgid "Request Details"
-msgstr "Details anfordern"
-
-#: app/templates/tickets/request_details.jinja:245
-msgid "Initial Information"
-msgstr "Ursprüngliche Informationen"
-
-#: app/templates/tickets/request_details.jinja:247
-msgid "Story"
-msgstr "Geschichte"
-
-#: app/templates/tickets/request_details.jinja:248
-msgid "Question"
+#: id/models.py:441 templates/tickets/partials/_ticketdetails.jinja:5
+msgid "Name"
+msgstr "Name"
+
+#: id/models.py:442
+#, fuzzy
+msgid "Description"
 msgstr "Frage"
 
-#: app/templates/tickets/request_details.jinja:254
-#: app/templates/tickets/request_details.jinja:255
-#: app/templates/tickets/request_details.jinja:256 static/js/widgets.js:189
-#: static/js/widgets.js:231
-msgid "Other Names"
-msgstr "Weitere Namen"
+#: id/requests.py:59 ticket/constants.py:72
+msgid "Reconciled Charges"
+msgstr "Ausgeglichene Gebühren"
 
-#: app/templates/tickets/request_details.jinja:254
-msgid "Relation"
-msgstr "Beziehung"
+#: id/requests.py:64
+msgid "Request payment status has been updated."
+msgstr "Zahlungsstatus für Anforderung wurde aktualisiert."
 
-#: app/templates/tickets/request_details.jinja:262
-msgid "Attached Files"
+#: id/requests.py:143
+msgid "Charge successfully reconciled."
+msgstr "Gebühr beglichen"
+
+#: podaci/templates/podaci/error.jinja:4
+msgid "Oops!"
+msgstr ""
+
+#: podaci/templates/podaci/error.jinja:5
+msgid ""
+"We hit a snag: the database server isn't responding correctly. Try again in "
+"a moment or two."
+msgstr ""
+
+#: podaci/templates/podaci/home.jinja:8
+#, fuzzy
+msgid "Add files"
 msgstr "Angehängte Dateien"
 
-#: app/templates/tickets/request_details.jinja:274
-msgid "Attached Entities"
-msgstr "Angehängte Entitäten"
+#: podaci/templates/podaci/home.jinja:9
+#: podaci/templates/podaci/partials/_podaci_create_collection.jinja:6
+#, fuzzy
+msgid "New collection"
+msgstr "Neuer Standort"
 
-#: app/templates/tickets/request_details.jinja:303
-msgid "Activity"
-msgstr "Aktivität"
+#: podaci/templates/podaci/home.jinja:16
+#, fuzzy
+msgid "My collections"
+msgstr "Standorte"
 
-#: app/templates/tickets/request_details.jinja:337
-msgid "No comment provided."
-msgstr "Kein Kommentar angegeben"
+#: podaci/templates/podaci/home.jinja:21
+#, fuzzy
+msgid "Shared with me"
+msgstr "Teilen mit"
 
-#: app/templates/tickets/request_details.jinja:346
-msgid "No updates yet."
-msgstr "Noch keine Aktualisierungen"
+#: podaci/templates/podaci/home.jinja:34
+#, fuzzy
+msgid "Select"
+msgstr "Datei auswählen"
 
-#: app/templates/tickets/request_details.jinja:350
-msgid "Leave a Comment"
-msgstr "Kommentar schreiben"
+#: podaci/templates/podaci/home.jinja:37
+#, fuzzy
+msgid "Selection"
+msgstr "Beziehung"
 
-#: app/templates/tickets/request_details.jinja:378
-msgid "Flag Request"
-msgstr "Anforderung melden"
+#: podaci/templates/podaci/partials/_podaci_create_collection.jinja:10
+#, fuzzy
+msgid "Name:"
+msgstr "Name"
 
-#: app/templates/tickets/request_details.jinja:379
-msgid "Re-Open Request"
-msgstr "Anforderung erneut öffnen"
+#: podaci/templates/podaci/partials/_podaci_create_collection.jinja:15
+msgid "Close"
+msgstr "Schließen"
 
-#: app/templates/tickets/request_details.jinja:381
-msgid "Mark Paid"
-msgstr "Als bezahlt markieren"
+#: podaci/templates/podaci/partials/_podaci_edit_tags.jinja:7
+#: podaci/templates/podaci/partials/_podaci_selection_actions.jinja:1
+#, fuzzy
+msgid "Edit tags"
+msgstr "Person bearbeiten"
 
-#: app/templates/tickets/request_list.jinja:7
-msgid "New Request"
-msgstr "Neue Anforderung"
-
-#: app/templates/tickets/request_list.jinja:13
-msgid "Open Requests"
-msgstr "Offene Anforderungen"
-
-#: app/templates/tickets/request_list.jinja:18
-msgid "No open requests found."
-msgstr "Keine offenen Anforderungen gefunden"
-
-#: app/templates/tickets/request_list.jinja:22
-msgid "Closed Requests"
-msgstr "Geschlossene Anforderungen"
-
-#: app/templates/tickets/admin/admin_charges_customer.jinja:6
-msgid "Filter"
-msgstr "Filter"
-
-#: app/templates/tickets/admin/admin_charges_customer.jinja:12
-msgid "Customer Charges"
-msgstr "Kundengebühren"
-
-#: app/templates/tickets/admin/admin_charges_customer.jinja:13
-msgid "View all logged charges against an individual customer."
-msgstr "Sehen Sie sich alle gespeicherten Gebühren eines einzelnen Kunden an."
-
-#: app/templates/tickets/admin/admin_charges_outstanding.jinja:4
-msgid "View all outstanding charges for all tickets and requesters. "
+#: podaci/templates/podaci/partials/_podaci_edit_tags.jinja:12
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:32
+#: templates/admin/storage.jinja:7
+msgid "Tags"
 msgstr ""
-"Sehen Sie sich alle ausstehenden Gebühren für alle Tickets und Anforderer"
-" an. "
 
-#: app/templates/tickets/admin/admin_deadline.jinja:3
-msgid "Tickets with Deadlines"
-msgstr "Tickets mit Fälligkeitsdatum"
+#: podaci/templates/podaci/partials/_podaci_edit_tags.jinja:20
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:78
+#: templates/tickets/request_base.jinja:141
+#: templates/tickets/request_charges_base.jinja:84
+msgid "Save"
+msgstr "Speichern"
 
-#: app/templates/tickets/admin/admin_deadline.jinja:4
-msgid "View open tickets ordered by upcoming deadlines. "
-msgstr "Offene Tickets nach anstehenden Fälligkeitsterminen sortiert anzeigen "
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:6
+#, fuzzy
+msgid "File:"
+msgstr "Dateien"
 
-#: app/templates/tickets/admin/admin_flagged.jinja:3
-msgid "User Flagged Tickets"
-msgstr "Von Nutzern gemeldete Tickets"
-
-#: app/templates/tickets/admin/admin_flagged.jinja:4
-msgid ""
-"View tickets which users or staff have deemed requiring administrative "
-"intervention. "
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:13
+msgid "Title"
 msgstr ""
-"Tickets anzeigen, bei denen nach Einschätzung von Nutzern oder "
-"Mitarbeitern ein Administratoreingriff erforderlich ist "
 
-#: app/templates/tickets/admin/admin_history.jinja:3
-msgid "Tickets History"
-msgstr "Ticketverlauf"
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:19
+msgid "File name"
+msgstr ""
 
-#: app/templates/tickets/admin/admin_history.jinja:4
-msgid "A simple list of closed, resolved or cancelled tickets. "
-msgstr "Einfache Liste geschlossener, gelöster oder zurückgenommener Tickets "
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:26
+msgid "Uploaded"
+msgstr ""
 
-#: app/templates/tickets/admin/admin_unassigned.jinja:5
-msgid "View new tickets that need responders assigned to them."
-msgstr "Neue Tickets ansehen, denen Antwortende zugewiesen werden müssen"
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:40
+#, fuzzy
+msgid "Readers"
+msgstr "Keine Antwortenden"
 
-#: static/js/drive-picker.js:97
-msgid "Error attaching file(s)."
-msgstr "Fehler beim Anhängen von Datei(en)"
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:46
+msgid "Writers"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:56
+msgid "All staff can read"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:65
+#, fuzzy
+msgid "Public"
+msgstr "Öffentlich?"
+
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:76
+msgid "Download"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_file_list.jinja:3
+msgid "You can drop files here to upload them to ID."
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_selection_actions.jinja:2
+msgid "Open in Overview"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_selection_actions.jinja:3
+#, fuzzy
+msgid "Edit users"
+msgstr "Person bearbeiten"
+
+#: podaci/templates/podaci/partials/_podaci_selection_actions.jinja:4
+msgid "Make public"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_selection_actions.jinja:5
+msgid "Download as Zip"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_selection_tools.jinja:2
+#, fuzzy
+msgid "Select all"
+msgstr "Datei auswählen"
+
+#: podaci/templates/podaci/partials/_podaci_selection_tools.jinja:3
+#, fuzzy
+msgid "Select none"
+msgstr "Datei auswählen"
+
+#: podaci/templates/podaci/partials/_podaci_selection_tools.jinja:4
+#, fuzzy
+msgid "Invert selection"
+msgstr "Löschen bestätigen"
+
+#: search/forms.py:11
+msgid "Search terms"
+msgstr "Suchbegriffe"
 
 #: static/js/i18n.js:47 static/js/i18n.js:55
 msgid "x04"
@@ -2600,7 +503,7 @@ msgstr "Fehler beim Entfernen der angehängten Datei"
 msgid "No files attached."
 msgstr "Keine Dateien angehängt"
 
-#: static/js/list-files.js:61
+#: static/js/list-files.js:71
 msgid "Error displaying attached files."
 msgstr "Fehler beim Anzeigen der angehängten Dateien"
 
@@ -2608,3 +511,2857 @@ msgstr "Fehler beim Anzeigen der angehängten Dateien"
 msgid "There was a problem with validation."
 msgstr "Bei der Überprüfung ist ein Problem aufgetreten."
 
+#: static/js/widgets.js:191 static/js/widgets.js:237
+#, fuzzy
+msgid "First/Other Names"
+msgstr "Weitere Namen"
+
+#: templates/about_id.jinja:9
+#, fuzzy
+msgid "About Investigative Dashboard"
+msgstr "Investigative Dashboard"
+
+#: templates/about_id.jinja:16
+msgid "Purpose"
+msgstr ""
+
+#: templates/about_id.jinja:17
+msgid ""
+"Investigative Dashboard (ID) is intended to help investigative journalists "
+"to do their work in a fast and effective way. It combines a number of "
+"software tools, including search engines, databases, a research support "
+"system and a file manager, to try to shorten the lead time from story "
+"inception to publication."
+msgstr ""
+
+#: templates/about_id.jinja:19
+#, fuzzy
+msgid "Investigative Dashboard Development"
+msgstr "Investigative Dashboard"
+
+#: templates/about_id.jinja:20
+msgid ""
+"ID is developed by the Organized Crime and Corruption Reporting Project. It "
+"is designed to meet the needs of OCCRP reporters, but open for public use."
+msgstr ""
+
+#: templates/about_id.jinja:21 templates/about_id.jinja:31
+msgid "Read more..."
+msgstr ""
+
+#: templates/about_id.jinja:25
+#, fuzzy
+msgid "About OCCRP"
+msgstr "Über uns"
+
+#: templates/about_id.jinja:27
+msgid ""
+"The Organized Crime and Corruption Reporting Project (OCCRP) is a not-for-"
+"profit, joint program of a number of regional non-profit investigative "
+"centers and for profit independent media stretching from Eastern Europe to "
+"Central Asia."
+msgstr ""
+
+#: templates/about_id.jinja:29
+msgid ""
+"Our goal is to help the people of the region better understand how organized "
+"crime and corruption affect their lives. OCCRP seeks to provide in-depth "
+"investigative stories as well as the latest news pertaining to organized "
+"crime and corruption activities in the region. In addition to the stories, "
+"OCCRP is building an online resource center of documents related to "
+"organized crime including court records, laws, reports, studies, company "
+"records and other public documents that will be an invaluable resource "
+"center for journalists and the public alike."
+msgstr ""
+
+#: templates/about_us.jinja:9
+msgid "OCCRP and ID development"
+msgstr ""
+
+#: templates/about_us.jinja:17
+msgid ""
+"Investigative Dashboard (ID) has been developed by the Organized Crime and "
+"Corruption Reporting Project (OCCRP), the world’s leading cross border "
+"investigative reporting organization. OCCRP designed Investigative Dashboard "
+"as a transnational collaborative effort to help journalists and civil "
+"society researchers expose organized crime and corruption around the world. "
+"It hosts three core tools: a crowd-sourced database of information and "
+"documents on persons of interest and their business connections, a worldwide "
+"list of online databases and business registries, and a research desk where "
+"journalists can go for help in sourcing hard to find information."
+msgstr ""
+"Das Investigative Dashboard (ID) wurde vom Organized Crime and Corruption "
+"Reporting Project (OCCRP) entwickelt, der weltweit führenden Organisation "
+"für grenzüberschreitende investigative Berichterstattung. OCCRP schuf das "
+"Investigative Dashboard als länderübergreifendes Kooperationsinstrument, um "
+"Journalisten und zivilgesellschaftliche Rechercheure bei der Aufdeckung von "
+"organisiertem Verbrechen und Korruption auf der ganzen Welt zu unterstützen. "
+"Es vereint drei zentrale Tools in sich: eine Crowd-Sourcing-Datenbank mit "
+"Informationen und Dokumenten zu Personen von Interesse und deren "
+"geschäftlichen Verbindungen, eine weltweite Liste von Onlinedatenbanken und "
+"Unternehmensregistern sowie ein Research Desk, über das Journalisten Hilfe "
+"bei der Beschaffung von schwer auffindbaren Informationen erhalten können."
+
+#: templates/about_us.jinja:19
+msgid ""
+"With help from dozens of reporters and civic hackers, ID researchers have "
+"created the crowd-sourced database where connections of people and business "
+"can be mapped internationally. Through collecting public records worldwide "
+"in numerous languages and by scraping the business registries and official "
+"gazettes of countries such as Panama, British Virgin Islands, and Luxembourg "
+"among others we have made data searchable and hence truly transparent and "
+"useful. These resources are offered to the public as a searchable self-serve "
+"repository of data and documents."
+msgstr ""
+"Mit Unterstützung von Dutzenden von Reportern und zivilgesellschaftlichen "
+"Hackern haben ID-Rechercheure die Crowd-Sourcing-Datenbank erstellt, in der "
+"Verbindungen zwischen Personen und Unternehmen international zugeordnet "
+"werden können. Durch die weltweite Sammlung öffentlicher Aufzeichnungen in "
+"zahlreichen Sprachen und das Zusammentragen der Unternehmensregister und "
+"offiziellen Amtsblätter von Ländern wie Panama, den Britischen "
+"Jungferninseln und Luxemburg haben wir die Daten suchbar und damit wirklich "
+"transparent und nützlich gemacht. Diese Ressourcen werden der Öffentlichkeit "
+"als durchsuchbares Self-Service-Repository mit Daten und Dokumenten "
+"angeboten."
+
+#: templates/about_us.jinja:21
+msgid ""
+"The Investigative Dashboard also links to more than 400 online databases in "
+"120 jurisdictions where you can search for information on persons and "
+"businesses of interest."
+msgstr ""
+"Das Investigative Dashboard verknüpft zudem über 400 Onlinedatenbanken an "
+"120 Gerichtsständen, in denen Sie nach Informationen zu Personen und "
+"Unternehmen von Interesse suchen können."
+
+#: templates/about_us.jinja:23
+msgid ""
+"Above and beyond the databases available on the Dashboard, the research desk "
+"provides access to a global network of expert researchers. Journalists and "
+"researchers working on organized crime and corruption topics who seek "
+"information and documents beyond their own borders and resources are invited "
+"to request the expertise of a network of information professionals. These "
+"professionals can access external databases and official filings for "
+"evidence of corporate ownership and property holdings that cross borders. "
+"For some journalists, these services are provided pro bono."
+msgstr ""
+"Über die im Dashboard verfügbaren Datenbanken hinaus bietet das Research "
+"Desk Zugriff auf ein globales Netzwerk aus Rechercheexperten. Journalisten "
+"und Rechercheure, die an Themen rund um das organisierte Verbrechen und "
+"Korruption arbeiten und dabei über ihre eigenen Grenzen und Ressourcen "
+"hinweg nach Informationen und Dokumenten suchen, sind eingeladen, in einem "
+"Netzwerk von Informationsexperten anzufragen und sich deren Erfahrung "
+"zunutze zu machen. Diese Experten können auf externe Datenbanken und "
+"offizielle Unterlagen zugreifen, um Belege für Unternehmenseigentum und "
+"grenzüberschreitende Vermögenswerte zu finden. Einigen Journalisten werden "
+"diese Dienste kostenlos bereitgestellt."
+
+#: templates/about_us.jinja:25
+msgid ""
+"Journalists have used the Investigative Dashboard to work on stories that "
+"have won more than a dozen international awards, led to indictments, arrests "
+"and seizures, forced the resignation of heads of state, and exposed the "
+"activities of organized crime."
+msgstr ""
+"Journalisten haben das Investigative Dashboard schon für die Arbeit an "
+"Geschichten genutzt, die mit über einem Dutzend internationaler Preise "
+"ausgezeichnet wurden oder zu Anklagen, Verhaftungen und Beschlagnahmungen "
+"geführt, den Rücktritt von Staatsoberhäuptern erzwungen und Aktivitäten des "
+"organisierten Verbrechens offengelegt haben."
+
+#: templates/about_us.jinja:27
+msgid "Staff"
+msgstr "Mitarbeiter"
+
+#: templates/about_us.jinja:29
+#, fuzzy
+msgid "Lead Researcher"
+msgstr "Research Desk"
+
+#: templates/about_us.jinja:30
+#: templates/tickets/ticket_resolution_workload.jinja:11
+#, fuzzy
+msgid "Researcher"
+msgstr "Rechercheziel"
+
+#: templates/about_us.jinja:31
+msgid "Chief Technologist"
+msgstr ""
+
+#: templates/about_us.jinja:32 templates/about_us.jinja:33
+#: templates/about_us.jinja:34
+msgid "Developer"
+msgstr ""
+
+#: templates/about_us.jinja:37
+msgid "Supporters"
+msgstr "Unterstützer"
+
+#: templates/about_us.jinja:38
+msgid ""
+"The Investigative Dashboard has been developed in collaboration with <a href="
+"\"http://www.google.com/ideas/\">Google Ideas</a>. Core support for the "
+"project is generously provided by the Open Society Foundations with "
+"additional assistance from USAID."
+msgstr ""
+"Das Investigative Dashboard wurde in Zusammenarbeit mit <a href=\"http://www."
+"google.com/ideas/\">Google Ideas</a> entwickelt. Wesentliche Unterstützung "
+"für das Projekt wird großzügigerweise von den Open Society Foundations unter "
+"zusätzlicher Mitwirkung von USAID bereitgestellt."
+
+#: templates/about_us.jinja:40
+msgid "Partners"
+msgstr "Partner"
+
+#: templates/about_us.jinja:41
+msgid ""
+"The Research Desk is managed by OCCRP in co-operation with four partner "
+"Centers - African Network of Centers for Investigative Reporting (ANCIR), "
+"the Arab Reporters for Investigative Journalism (ARIJ), the International "
+"Center for Journalists, and Connectas in the Americas."
+msgstr ""
+"Das Research Desk wird von OCCRP in Kooperation mit den vier Partnerzentren "
+"African Network of Centers for Investigative Reporting (ANCIR), Arab "
+"Reporters for Investigative Journalism (ARIJ), International Center for "
+"Journalists und Connectas in Amerika verwaltet."
+
+#: templates/about_us.jinja:43
+msgid "ID History"
+msgstr "Geschichte von ID"
+
+#: templates/about_us.jinja:44
+msgid ""
+"The Investigative Dashboard was developed by Paul Cristian Radu (OCCRP) and "
+"Justin Arenstein (ANCIR) while they both were in residence at Stanford "
+"University as Knight Fellows. The John S. Knight Fellowships for "
+"Professional Journalists made the dashboard possible by providing access to "
+"the know-how of fellow journalists and of experts at Stanford University and "
+"in Silicon Valley."
+msgstr ""
+"Das Investigative Dashboard wurde von Paul Cristian Radu (OCCRP) und Justin "
+"Arenstein (ANCIR) während ihres Aufenthalts als Knight Fellows an der "
+"Stanford University entwickelt. Möglich wurde das Dashboard durch die als "
+"John S. Knight Fellowships for Professional Journalists bekannten "
+"Stipendien, da diese Zugang zum Know-how von anderen Journalisten und "
+"Experten an der Stanford University und im Silicon Valley bieten."
+
+#: templates/about_us.jinja:46
+msgid "Advisory Committee"
+msgstr "Beratungsausschuss"
+
+#: templates/about_us.jinja:50
+msgid ""
+"News Researcher<br/>\n"
+"                    The New York Times"
+msgstr ""
+
+#: templates/about_us.jinja:54
+msgid ""
+"Database Editor<br/>\n"
+"                    Sveriges (Swedish) Television "
+msgstr ""
+
+#: templates/about_us.jinja:57
+msgid ""
+"Research Director<br/>\n"
+"                    The Associated Press "
+msgstr ""
+
+#: templates/about_us.jinja:61
+msgid ""
+"Training Director<br/>\n"
+"                    Investigative Reporters and Editors (IRE)"
+msgstr ""
+
+#: templates/about_us.jinja:65
+msgid ""
+"Distinguished Lecturer and Interim Chief Librarian<br/>\n"
+"                    CUNY Graduate School of Journalism "
+msgstr ""
+
+#: templates/about_us.jinja:69
+msgid ""
+"Communications Strategist<br/>\n"
+"                    King Country Library System, Seattle Washington "
+msgstr ""
+
+#: templates/about_us.jinja:73
+msgid ""
+"Lecturer in Library and Information Science<br/>\n"
+"                    Rutgers School of Communication and Information "
+msgstr ""
+
+#: templates/about_us.jinja:77
+msgid ""
+" Professor and Executive Editor<br/>\n"
+"                    Investigative Reporting Workshop, The American "
+"University School of Communication<br/>\n"
+"                    Founder, The Center for Public Integrity (CPI) "
+msgstr ""
+
+#: templates/about_us.jinja:82
+msgid ""
+"Assistant News Editor, Research & Data<br/>\n"
+"                    The Wall Street Journal"
+msgstr ""
+
+#: templates/about_us.jinja:86
+msgid ""
+"Director<br/>\n"
+"                    SJMC Minnesota Journalism Center, University of "
+"Minnesota "
+msgstr ""
+
+#: templates/about_us.jinja:90
+msgid ""
+" Librarian, Writer, Editor, Compiler<br/>\n"
+"                    LJ's INFODocket "
+msgstr ""
+
+#: templates/about_us.jinja:94
+msgid ""
+"Director of Research<br/>\n"
+"                    The Washington Post "
+msgstr ""
+
+#: templates/about_us.jinja:98
+msgid ""
+"Database Correspondent,<br/>\n"
+"                    Research Editor, The International Consortium of\n"
+"                    Investigative Journalists "
+msgstr ""
+
+#: templates/about_us.jinja:104
+msgid "Acknowledgements"
+msgstr "Danksagung"
+
+#: templates/about_us.jinja:106
+#, fuzzy
+msgid ""
+"The Investigative Dashboard is a collaborative project and valuable "
+"information was added by many investigative journalists around the world. "
+"Individual members of the Global Investigative Journalism Network in "
+"particular contributed much of the information, explaining how to access "
+"company records in their home countries."
+msgstr ""
+"Das Investigative Dashboard ist ein Gemeinschaftsprojekt, zu dem viele "
+"investigative Journalisten auf der ganzen Welt wertvolle Informationen "
+"beigesteuert haben. Vor allem einzelne Mitglieder des Global Investigative "
+"Journalism Network haben einen Großteil der Informationen beigetragen und "
+"erläutert, wie in ihrem Heimatland auf die Unternehmensdaten zugegriffen "
+"wird.\n"
+"\t    "
+
+#: templates/about_us.jinja:108
+msgid ""
+"Valuable information was added by many investigative journalists around the "
+"world."
+msgstr ""
+"Viele investigative Journalisten auf der ganzen Welt haben wertvolle "
+"Informationen beigesteuert."
+
+#: templates/admin_base.jinja:7 templates/tickets/request_base.jinja:67
+msgid "Manage"
+msgstr "Verwalten"
+
+#: templates/admin_base.jinja:10
+msgid "External Databases"
+msgstr "Externe Datenbanken"
+
+#: templates/admin_base.jinja:13
+#, fuzzy
+msgid "Scraper requests"
+msgstr "Offene Anforderungen"
+
+#: templates/admin_base.jinja:16
+msgid "Budgets"
+msgstr ""
+
+#: templates/admin_base.jinja:22
+#, fuzzy
+msgid "Storage and databases"
+msgstr "Externe Datenbanken"
+
+#: templates/admin_base.jinja:25
+#, fuzzy
+msgid "Access Requests"
+msgstr "Kontoanträge"
+
+#: templates/admin_base.jinja:28 templates/auth/user_list.jinja:13
+msgid "User Profiles"
+msgstr "Nutzerprofile"
+
+#: templates/admin_base.jinja:31
+msgid "Statistics"
+msgstr "Statistiken"
+
+#: templates/external_databases.jinja:12
+msgid "Business Registries"
+msgstr "Unternehmensregister"
+
+#: templates/external_databases.jinja:14
+#, fuzzy, python-format
+msgid ""
+"Here you will find links to %(count)s online databases across "
+"%(jurisdictions)s jurisdictions where you can get information on the "
+"shareholders, directors and the financial reports of companies worldwide. "
+"They are organized by country. Many are free of charge and for some you must "
+"register. Databases marked with a \"$\" require a fee.  Not all are "
+"available in English, see the notes column for further details.\t"
+msgstr ""
+"Hier finden Sie Links zu über 450 Onlinedatenbanken an 120 Gerichtsständen, "
+"in denen Sie Informationen zu Aktionären, Geschäftsführern und den "
+"Finanzberichten von Unternehmen auf der ganzen Welt erhalten können. Sie "
+"sind nach Ländern sortiert. Viele sind kostenlos, für einige müssen Sie sich "
+"jedoch registrieren. Bei Datenbanken, die mit einem \"$\" gekennzeichnet "
+"sind, wird eine Gebühr fällig. Nicht alle sind in allen Sprachen verfügbar. "
+"Weitere Details finden Sie in der Spalte mit den Hinweisen.\t"
+
+#: templates/external_databases.jinja:42
+msgid "Documentation"
+msgstr "Dokumentation"
+
+#: templates/external_databases.jinja:43
+msgid "Video Tutorial"
+msgstr "Videoanleitung"
+
+#: templates/external_databases.jinja:51
+msgid "No external databases found."
+msgstr "Keine externen Datenbanken gefunden"
+
+#: templates/external_databases.jinja:56
+msgid "Didn't find what you were looking for?"
+msgstr "Sie haben die gewünschten Informationen nicht gefunden?"
+
+#: templates/external_databases.jinja:58
+msgid "Request manual help from our researchers."
+msgstr "Fordern Sie manuelle Hilfe von unseren Rechercheuren an."
+
+#: templates/notifications.jinja:5
+#, fuzzy
+msgid "Notifications"
+msgstr "Standorte"
+
+#: templates/splash.jinja:9 templates/mail/mail_base.jinja:12
+#: templates/mail/mail_base.jinja:37 templates/mail/mail_base.jinja:38
+msgid "Investigative Dashboard"
+msgstr "Investigative Dashboard"
+
+#: templates/splash.jinja:10
+msgid "Research. Understand. Expose."
+msgstr ""
+
+#: templates/splash.jinja:12
+msgid "Learn more"
+msgstr ""
+
+#: templates/splash.jinja:14 templates/errors/403.jinja:18
+#: templates/registration/activate.jinja:7
+#: templates/registration/registration_complete.jinja:19
+msgid "Sign in"
+msgstr ""
+
+#: templates/splash.jinja:15 templates/errors/403.jinja:19
+#: templates/registration/registration_complete.jinja:8
+#, fuzzy
+msgid "Register"
+msgstr "Anforderer"
+
+#: templates/splash.jinja:30
+msgid "Search in documents or social media."
+msgstr ""
+
+#: templates/splash.jinja:32
+msgid "Start Searching"
+msgstr "Suche starten"
+
+#: templates/splash.jinja:37
+msgid "Map out relationships, get the big picture."
+msgstr ""
+
+#: templates/splash.jinja:39
+msgid "Use Vis"
+msgstr ""
+
+#: templates/splash.jinja:44
+msgid "View recommended global databases."
+msgstr ""
+
+#: templates/splash.jinja:46
+msgid "Visit Databases"
+msgstr "Datenbanken aufrufen"
+
+#: templates/splash.jinja:51
+msgid "Ask our researchers to help you find information."
+msgstr ""
+
+#: templates/splash.jinja:53 templates/tickets/request_base.jinja:10
+msgid "My Requests"
+msgstr "Meine Anforderungen"
+
+#: templates/splash.jinja:53
+msgid "Ask an Expert"
+msgstr "Experten fragen"
+
+#: templates/splash.jinja:58
+msgid "Keep track of all your important documents."
+msgstr ""
+
+#: templates/splash.jinja:60
+#, fuzzy
+msgid "Manage files"
+msgstr "Verwalten"
+
+#: templates/accessrequest/confirm_access_requested.jinja:7
+#, fuzzy
+msgid "Access Requested"
+msgstr "Kontoanträge"
+
+#: templates/accessrequest/confirm_access_requested.jinja:8
+#, fuzzy
+msgid "Thank you!"
+msgstr "Mit freundlichen Grüßen"
+
+#: templates/accessrequest/confirm_access_requested.jinja:9
+msgid ""
+"We've registered your request for access, and our staff will review it as "
+"soon as possible."
+msgstr ""
+
+#: templates/accessrequest/confirm_access_requested.jinja:10
+msgid "We will e-mail you when your request has been processed."
+msgstr ""
+
+#: templates/accessrequest/confirm_access_requested.jinja:12
+msgid "Error"
+msgstr ""
+
+#: templates/accessrequest/create.jinja:4 templates/errors/403.jinja:25
+#, fuzzy
+msgid "Request permissions"
+msgstr "Berechtigungen festlegen"
+
+#: templates/accessrequest/list.jinja:6 ticket/constants.py:86
+msgid "New"
+msgstr "Neu"
+
+#: templates/accessrequest/list.jinja:8
+msgid "Denied"
+msgstr ""
+
+#: templates/accessrequest/list.jinja:12
+msgid " waiting for approval"
+msgstr ""
+
+#: templates/accessrequest/list.jinja:18
+#, fuzzy
+msgid "Mail address"
+msgstr "E-Mail-Adresse"
+
+#: templates/accessrequest/list.jinja:19
+#, fuzzy
+msgid "Creation date"
+msgstr "Erstellt am "
+
+#: templates/accessrequest/list.jinja:20 templates/accessrequest/list.jinja:32
+#, fuzzy
+msgid "Approve"
+msgstr "Genehmigt"
+
+#: templates/accessrequest/list.jinja:35
+msgid "Deny"
+msgstr ""
+
+#: templates/accessrequest/list.jinja:40
+#, fuzzy
+msgid "No requests"
+msgstr "Kein Anforderer"
+
+#: templates/accessrequest/volunteer_account.jinja:6
+msgid "Become a Volunteer!"
+msgstr "Werden Sie Freiwilliger!"
+
+#: templates/accessrequest/volunteer_account.jinja:9
+msgid ""
+"If you'd like to volunteer to track down requests, you need to have an "
+"account. Please enter your information below and one of our staff will "
+"review, and respond to your request."
+msgstr ""
+"Falls Sie als Freiwilliger Anforderungen auf den Grund gehen möchten, "
+"benötigen Sie ein Konto. Bitte geben Sie unten Ihre Daten ein. Einer unserer "
+"Mitarbeiter wird Ihren Antrag prüfen und darauf antworten."
+
+#: templates/accessrequest/volunteer_account.jinja:13
+msgid "Submit"
+msgstr "Senden"
+
+#: templates/admin/feedback.jinja:7
+msgid "Feedback"
+msgstr ""
+
+#: templates/admin/feedback_thanks.jinja:7
+msgid "Thank you for your feedback"
+msgstr ""
+
+#: templates/admin/feedback_thanks.jinja:12
+msgid ""
+"Your feedback is immensely valuable to our work. We will read it through and "
+"take your suggestions into account."
+msgstr ""
+
+#: templates/admin/feedback_thanks.jinja:14
+msgid ""
+"If you have any further observations or suggestions to make, please don't "
+"hesitate to get in touch"
+msgstr ""
+
+#: templates/admin/panel.jinja:4
+#, fuzzy
+msgid "Administration stream"
+msgstr "Administrator"
+
+#: templates/admin/panel.jinja:13
+msgid "No notifications worthy of your attention, administrator."
+msgstr ""
+
+#: templates/admin/storage.jinja:4
+#, fuzzy
+msgid "Podaci status"
+msgstr "Status \"Bezahlt\""
+
+#: templates/admin/storage.jinja:6
+msgid "Files"
+msgstr "Dateien"
+
+#: templates/admin/storage.jinja:8
+#, fuzzy
+msgid "Collections"
+msgstr "Standorte"
+
+#: templates/admin/storage.jinja:9
+msgid "Total size"
+msgstr ""
+
+#: templates/admin/storage.jinja:10
+msgid "Root"
+msgstr ""
+
+#: templates/admin/storage.jinja:11
+msgid "Data sharding"
+msgstr ""
+
+#: templates/admin/storage.jinja:12
+msgid "Main index"
+msgstr ""
+
+#: templates/admin/storage.jinja:15
+#, fuzzy
+msgid "Osoba status"
+msgstr "Status \"Bezahlt\""
+
+#: templates/auth/user_list.jinja:8
+#, fuzzy
+msgid "Filter users..."
+msgstr "Begriffe eingeben…"
+
+#: templates/auth/user_list.jinja:33
+#, fuzzy
+msgid "Administrator "
+msgstr "Administrator"
+
+#: templates/auth/user_list.jinja:34
+#, fuzzy
+msgid "Staffer "
+msgstr "Mitarbeiter"
+
+#: templates/auth/user_list.jinja:35
+#, fuzzy
+msgid "Volunteer "
+msgstr "Freiwilliger"
+
+#: templates/auth/user_list.jinja:36
+#, fuzzy
+msgid "Requester "
+msgstr "Anforderer"
+
+#: templates/auth/user_list.jinja:46
+msgid "No users were found matching your search criteria."
+msgstr ""
+
+#: templates/errors/400.jinja:4
+#, fuzzy
+msgid "Bad Request"
+msgstr "Anforderer werden"
+
+#: templates/errors/400.jinja:8
+#, fuzzy
+msgid ""
+"This request does not seem to be correct. If you believe this is an error on "
+"our side, please contact an administrator."
+msgstr ""
+"Sie sind nicht berechtigt, auf diese Funktion oder Inhalte zuzugreifen. "
+"Falls Sie der Meinung sind, dass hier ein Fehler vorliegt, wenden Sie sich "
+"bitte an einen Administrator."
+
+#: templates/errors/401.jinja:4 templates/errors/403.jinja:4
+msgid "Permission Denied"
+msgstr "Berechtigung abgelehnt"
+
+#: templates/errors/401.jinja:8
+msgid ""
+"You do not have permission to access this feature or content. If you believe "
+"this is an error, please contact an administrator."
+msgstr ""
+"Sie sind nicht berechtigt, auf diese Funktion oder Inhalte zuzugreifen. "
+"Falls Sie der Meinung sind, dass hier ein Fehler vorliegt, wenden Sie sich "
+"bitte an einen Administrator."
+
+#: templates/errors/403.jinja:9
+msgid "You must log in to use this feature."
+msgstr ""
+
+#: templates/errors/403.jinja:11
+msgid ""
+"Sorry, but you don't have access to this part of Investigative Dashboard."
+msgstr ""
+
+#: templates/errors/403.jinja:22
+msgid ""
+"This part of Investigative Dashboard is only for registered users. In order "
+"to use it, register and log in to the system."
+msgstr ""
+
+#: templates/errors/403.jinja:28
+msgid ""
+"Elevated privileges are required for access to this part of Investigative "
+"Dashboard."
+msgstr ""
+
+#: templates/errors/403.jinja:29
+msgid ""
+"You can apply for extra access rights, and they will be reviewed on a case-"
+"by-case basis."
+msgstr ""
+
+#: templates/errors/404.jinja:4
+msgid "Page Not Found"
+msgstr "Seite nicht gefunden"
+
+#: templates/errors/404.jinja:8
+msgid ""
+"We're sorry, this page is not available. This error has been recorded will "
+"be investigated."
+msgstr ""
+"Diese Seite ist nicht verfügbar. Dieser Fehler wurde erfasst und wird "
+"untersucht."
+
+#: templates/errors/500.jinja:4
+msgid "Application Error"
+msgstr "Anwendungsfehler"
+
+#: templates/errors/500.jinja:8
+msgid ""
+"There was an error in the application. This error has been recorded and "
+"should be addressed soon."
+msgstr ""
+"In der Anwendung ist ein Fehler aufgetreten. Dieser Fehler wurde erfasst und "
+"sollte bald behoben sein."
+
+#: templates/macros/forms.jinja:28
+msgid "Select File"
+msgstr "Datei auswählen"
+
+#: templates/macros/forms.jinja:29
+msgid "Change"
+msgstr "Ändern"
+
+#: templates/macros/forms.jinja:32
+msgid "Remove"
+msgstr "Entfernen"
+
+#: templates/macros/modals.jinja:45
+#, fuzzy
+msgid "To search, type your query into the search box"
+msgstr "Zum Suchen geben Sie Ihre Anfrage oben in das Suchfeld ein."
+
+#: templates/mail/mail_base.jinja:36
+msgid "This message is automatically generated by "
+msgstr "Diese Nachricht wird automatisch erstellt von "
+
+#: templates/mail/mail_base.jinja:36
+msgid "OCCRP Investigative Dashboard"
+msgstr "OCCRP Investigative Dashboard"
+
+#: templates/mail/mail_base.jinja:37
+msgid "If you think it was sent incorrectly, please contact an "
+msgstr ""
+"Falls Sie glauben, dass bei dieser Nachricht ein Irrtum vorliegt, wenden Sie "
+"sich bitte an einen "
+
+#: templates/mail/mail_base.jinja:37
+msgid "administrator"
+msgstr "Administrator"
+
+#: templates/mail/mail_base.jinja:38
+msgid "For more information on "
+msgstr "Weitere Informationen zu "
+
+#: templates/mail/mail_base.jinja:39
+msgid "visit"
+msgstr "erhalten Sie hier:"
+
+#: templates/mail/mail_simple.jinja:16
+msgid "The Research Desk"
+msgstr "Research Desk"
+
+#: templates/mail/mail_simple.jinja:16
+msgid "at the Investigative Dashboard"
+msgstr "bei Investigative Dashboard"
+
+#: templates/mail/ticket_update.jinja:8
+msgid "your request. "
+msgstr "Ihre Anforderung "
+
+#: templates/mail/ticket_update.jinja:40
+msgid "View on Site"
+msgstr "Auf Website ansehen"
+
+#: templates/mail/ticket_update.jinja:41
+msgid "Add Comment"
+msgstr "Fügen Sie einen Kommentar hinzu"
+
+#: templates/mail/ticket_update.jinja:42
+msgid "or reply to this email directly."
+msgstr "oder antworten Sie direkt auf diese E-Mail."
+
+#: templates/mail/account_request/approved.jinja:4
+msgid "Your Account Request was approved"
+msgstr "Ihr Kontoantrag wurde genehmigt."
+
+#: templates/mail/account_request/approved.jinja:8
+#: templates/mail/account_request/received.jinja:8
+#: templates/mail/account_request/rejected.jinja:8
+#, python-format
+msgid "Dear %(name)s,"
+msgstr "Hallo %(name)s,"
+
+#: templates/mail/account_request/approved.jinja:9
+#, fuzzy
+msgid ""
+"Your ID registration is complete! Just login in with the Gmail account that "
+"you used to register to get started."
+msgstr ""
+"Ihre Registrierung bei ID ist abgeschlossen. Um zu beginnen, melden Sie sich "
+"einfach mit dem Gmail-Konto an, mit dem Sie sich registriert haben."
+
+#: templates/mail/account_request/approved.jinja:10
+msgid "Click here to submit a research request."
+msgstr "Klicken Sie hier, um eine Rechercheanforderung einzureichen."
+
+#: templates/mail/account_request/approved.jinja:12
+msgid "You registered with the Google account "
+msgstr ""
+
+#: templates/mail/account_request/approved.jinja:14
+msgid "Good luck with your investigation."
+msgstr "Viel Erfolg bei Ihrer Recherche."
+
+#: templates/mail/account_request/received.jinja:9
+msgid ""
+"Thank you for registering with the Investigative Dashboard. We are reviewing "
+"your information and as soon as your registration is complete you can sign "
+"into the Research Desk with the Google account that you used to register. In "
+"the meantime, get started now by searching the ID crowd-sourced and external "
+"databases. We will be in touch shortly."
+msgstr ""
+"Vielen Dank für Ihre Registrierung bei Investigative Dashboard. Wir prüfen "
+"gerade Ihre Angaben. Sobald Ihre Registrierung abgeschlossen ist, können Sie "
+"sich mit dem Google-Konto, mit dem Sie sich registriert haben, im Research "
+"Desk anmelden. In der Zwischenzeit können Sie mit der Suche in den Crowd-"
+"Sourcing-Datenbanken von ID und den externen Datenbanken beginnen. Sie "
+"werden in Kürze wieder von uns hören."
+
+#: templates/mail/account_request/received_admin.jinja:8
+msgid "A new account request has been submitted! Below are the details:"
+msgstr ""
+"Ein neuer Kontoantrag wurde eingereicht. Im Folgenden finden Sie die Details:"
+
+#: templates/mail/account_request/received_admin.jinja:15
+msgid "Click here to review and approve or reject."
+msgstr "Zum Prüfen und Genehmigen oder Ablehnen klicken Sie hier."
+
+#: templates/mail/account_request/rejected.jinja:9
+#, fuzzy
+msgid "I am sorry but we could not register you at this time."
+msgstr ""
+"Wir können Sie momentan nicht registrieren. Die Research Desk-Leitung wird "
+"sich mit weiteren Details mit Ihnen in Verbindung setzen."
+
+#: templates/mail/account_request/rejected.jinja:10
+msgid "Thank you,"
+msgstr "Mit freundlichen Grüßen"
+
+#: templates/modals/form_basic.jinja:3
+msgid "Not Allowed"
+msgstr "Nicht zulässig"
+
+#: templates/partials/_notifications.jinja:9
+#, fuzzy
+msgid "View Stream"
+msgstr "Auf Website ansehen"
+
+#: templates/partials/_notifications.jinja:10
+#, fuzzy
+msgid "Mark All as Read"
+msgstr "Rechnung als bezahlt markieren"
+
+#: templates/partials/_notifications.jinja:22
+msgid "ago"
+msgstr ""
+
+#: templates/partials/_notifications.jinja:25
+#, fuzzy
+msgid "No notifications"
+msgstr "Neuer Standort"
+
+#: templates/partials/_request_access.jinja:2
+#, fuzzy
+msgid "Which type of access would you like to apply for?"
+msgstr "Welchen Kontotyp möchten Sie beantragen?"
+
+#: templates/partials/_request_access.jinja:6
+msgid ""
+"You currently do not have access to some parts of Investigative Dashboard, "
+"because your account has not been verified. In order to get access, please "
+"tell us whether you want to be an information requester, or a volunteer "
+"researcher."
+msgstr ""
+
+#: templates/partials/_request_access.jinja:16
+#, fuzzy
+msgid "You are already an information requester!"
+msgstr "Informationsanforderung verwalten"
+
+#: templates/partials/_request_access.jinja:18
+msgid ""
+"You have requested permission to make information requests. Your application "
+"will be reviewed soon, and you will be notified."
+msgstr ""
+
+#: templates/partials/_request_access.jinja:20
+msgid ""
+"Take advantage of our database of knowledge to find out more information "
+"about companies, individuals, or the relationships between them."
+msgstr ""
+"Nutzen Sie unsere Wissensdatenbank, um weitere Informationen über "
+"Unternehmen, Einzelpersonen oder die Beziehungen zwischen ihnen zu finden."
+
+#: templates/partials/_request_access.jinja:22
+msgid "Be a Requester"
+msgstr "Anforderer werden"
+
+#: templates/partials/_request_access.jinja:31
+#, fuzzy
+msgid "You are already a volunteer!"
+msgstr "Das Ticket wurde bereits mit Ihnen geteilt."
+
+#: templates/partials/_request_access.jinja:33
+msgid ""
+"You have requested permission to be a volunteer. Your application will be "
+"reviewed soon, and you will be notified."
+msgstr ""
+
+#: templates/partials/_request_access.jinja:35
+msgid ""
+"We have available public requests that need volunteers. Use your wealth of "
+"information to help others find answers."
+msgstr ""
+"Uns liegen öffentliche Anforderungen vor, für die Freiwillige benötigt "
+"werden. Nutzen Sie die Ihnen vorliegende Fülle von Informationen, um anderen "
+"bei der Suche nach Antworten zu helfen."
+
+#: templates/partials/_request_access.jinja:37
+msgid "Be a Volunteer"
+msgstr "Freiwilliger werden"
+
+#: templates/registration/activate.jinja:4
+#, fuzzy
+msgid "Welcome to Investigative Dashboard"
+msgstr "bei Investigative Dashboard"
+
+#: templates/registration/activate.jinja:5
+msgid "You are now successfully registered. Now you can sign in."
+msgstr ""
+
+#: templates/registration/activation_complete.jinja:5
+msgid "Verification successful!"
+msgstr ""
+
+#: templates/registration/activation_complete.jinja:6
+msgid "Congratulations, you're fully registered."
+msgstr ""
+
+#: templates/registration/activation_complete.jinja:6
+msgid "Now sign in!"
+msgstr ""
+
+#: templates/registration/logout.jinja:7
+msgid "Signed out!"
+msgstr ""
+
+#: templates/registration/logout.jinja:8
+msgid "Thank you for using Investigative Dashboard. Come again soon!"
+msgstr ""
+
+#: templates/registration/password_reset_done.jinja:4
+msgid "Password reset"
+msgstr ""
+
+#: templates/registration/password_reset_done.jinja:5
+msgid "Email with password reset instructions has been sent."
+msgstr ""
+
+#: templates/registration/registration_complete.jinja:16
+#, fuzzy
+msgid "Registration successful"
+msgstr "Registrierung erforderlich"
+
+#: templates/registration/registration_complete.jinja:17
+msgid "We just sent you a verification e-mail."
+msgstr ""
+
+#: templates/search/search_documents.jinja:3
+#, fuzzy
+msgid "Document Search"
+msgstr "Angehängte Dokumente"
+
+#: templates/search/search_documents.jinja:9
+msgid "Enter your terms..."
+msgstr "Begriffe eingeben…"
+
+#: templates/search/search_documents.jinja:13
+#: templates/search/search_media.jinja:32
+msgid "Search"
+msgstr "Suchen"
+
+#: templates/search/search_documents.jinja:16
+msgid "Select repositories:"
+msgstr ""
+
+#: templates/search/search_media.jinja:3
+#, fuzzy
+msgid "Media Search"
+msgstr "Suchen"
+
+#: templates/search/search_media.jinja:9
+#, fuzzy
+msgid "Search terms:"
+msgstr "Suchbegriffe"
+
+#: templates/search/search_media.jinja:10
+msgid "Please provide search terms to search media by."
+msgstr ""
+
+#: templates/search/search_media.jinja:13
+msgid ""
+"Select area on the map or enter latitude and longitude, and adjust search "
+"radius."
+msgstr ""
+
+#: templates/search/search_media.jinja:14
+msgid "Latitude:"
+msgstr ""
+
+#: templates/search/search_media.jinja:15
+msgid "Longitude:"
+msgstr ""
+
+#: templates/search/search_media.jinja:16
+msgid "Radius:"
+msgstr ""
+
+#: templates/search/search_media.jinja:16
+msgid "Radius (in meters)"
+msgstr ""
+
+#: templates/search/search_media.jinja:17
+msgid "Dates and times:"
+msgstr ""
+
+#: templates/search/search_media.jinja:18
+msgid "Optionally, adjust date/time thresholds."
+msgstr ""
+
+#: templates/search/search_media.jinja:19
+#, fuzzy
+msgid "Start:"
+msgstr "Startdatum"
+
+#: templates/search/search_media.jinja:20
+msgid "End:"
+msgstr ""
+
+#: templates/search/search_media.jinja:21
+msgid "Services:"
+msgstr ""
+
+#: templates/search/search_media.jinja:22
+msgid "Choose services to search at."
+msgstr ""
+
+#: templates/search/search_media.jinja:38
+#, fuzzy
+msgid "Searching..."
+msgstr "Suche starten"
+
+#: templates/tickets/request_admin_base.jinja:20
+#: templates/tickets/request_admin_base.jinja:23
+msgid "Prev"
+msgstr "Zurück"
+
+#: templates/tickets/request_admin_base.jinja:29
+#: templates/tickets/request_admin_base.jinja:32
+msgid "Next"
+msgstr "Weiter"
+
+#: templates/tickets/request_admin_base.jinja:42
+msgid "No tickets found."
+msgstr "Keine Tickets gefunden"
+
+#: templates/tickets/request_base.jinja:13
+#: templates/tickets/request_base.jinja:32
+#: templates/tickets/request_base.jinja:50
+#, fuzzy
+msgid "Open"
+msgstr "Geöffnet"
+
+#: templates/tickets/request_base.jinja:21
+#: templates/tickets/request_base.jinja:40
+#: templates/tickets/request_base.jinja:58 ticket/constants.py:73
+#: ticket/constants.py:88
+msgid "Closed"
+msgstr "Geschlossen"
+
+#: templates/tickets/request_base.jinja:29
+msgid "My Assignments"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:47
+msgid "Public Requests"
+msgstr "Öffentliche Anforderungen"
+
+#: templates/tickets/request_base.jinja:70
+#: templates/tickets/admin/admin_unassigned.jinja:4
+msgid "Unassigned Tickets"
+msgstr "Nicht zugewiesene Tickets"
+
+#: templates/tickets/request_base.jinja:76
+msgid "Upcoming Deadlines"
+msgstr "Anstehende Fälligkeitstermine"
+
+#: templates/tickets/request_base.jinja:82
+#, fuzzy
+msgid "All Open Requests"
+msgstr "Offene Anforderungen"
+
+#: templates/tickets/request_base.jinja:88
+#, fuzzy
+msgid "All Closed Requests"
+msgstr "Geschlossene Anforderungen"
+
+#: templates/tickets/request_base.jinja:93
+#, fuzzy
+msgid "Utilities"
+msgstr "Nationalitäten"
+
+#: templates/tickets/request_base.jinja:96
+#: templates/tickets/ticket_resolution_workload.jinja:5
+#, fuzzy
+msgid "Researcher Workload"
+msgstr "Rechercheziel"
+
+#: templates/tickets/request_base.jinja:100
+#, fuzzy
+msgid "Resolution Time"
+msgstr "Beziehung"
+
+#: templates/tickets/request_base.jinja:104
+#, fuzzy
+msgid "Request report"
+msgstr "Anforderer"
+
+#: templates/tickets/request_base.jinja:107
+msgid "Billing"
+msgstr "Abrechnung"
+
+#: templates/tickets/request_base.jinja:110
+#, fuzzy
+msgid "User Fees"
+msgstr "Nutzer"
+
+#: templates/tickets/request_base.jinja:113
+msgid "Network Fees"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:116
+msgid "Budget Fees"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:120
+#: templates/tickets/admin/admin_charges_outstanding.jinja:3
+msgid "Outstanding Charges"
+msgstr "Ausstehende Gebühren"
+
+#: templates/tickets/request_base.jinja:141
+msgid "Request Settings"
+msgstr "Anforderungseinstellungen"
+
+#: templates/tickets/request_charges_base.jinja:21
+msgid "Requester"
+msgstr "Anforderer"
+
+#: templates/tickets/request_charges_base.jinja:22
+msgid "Item"
+msgstr "Element"
+
+#: templates/tickets/request_charges_base.jinja:23
+msgid "Cost"
+msgstr "Kosten"
+
+#: templates/tickets/request_charges_base.jinja:24
+#, fuzzy
+msgid "Cost (original currency)"
+msgstr "Kosten (ursprüngliche Währung)"
+
+#: templates/tickets/request_charges_base.jinja:25
+msgid "Reconciled"
+msgstr "Beglichen"
+
+#: templates/tickets/request_charges_base.jinja:26
+msgid "Created"
+msgstr "Erstellt"
+
+#: templates/tickets/request_charges_base.jinja:27
+msgid "Actions"
+msgstr "Aktionen"
+
+#: templates/tickets/request_charges_base.jinja:77
+msgid "No charges found."
+msgstr "Keine Gebühren gefunden"
+
+#: templates/tickets/request_charges_base.jinja:84
+#, fuzzy
+msgid "Modify Charge"
+msgstr "Gebühr hinzufügen"
+
+#: templates/tickets/ticket_budget_fees_overview.jinja:5
+msgid "Fees charged to budgets"
+msgstr ""
+
+#: templates/tickets/ticket_budget_fees_overview.jinja:9
+msgid "Budget"
+msgstr ""
+
+#: templates/tickets/ticket_budget_fees_overview.jinja:9
+#: templates/tickets/ticket_network_fees_overview.jinja:9
+#: templates/tickets/ticket_user_fees_overview.jinja:9
+msgid "Total costs"
+msgstr ""
+
+#: templates/tickets/ticket_budget_fees_overview.jinja:9
+#: templates/tickets/ticket_budget_fees_overview.jinja:13
+#: templates/tickets/ticket_network_fees_overview.jinja:9
+#: templates/tickets/ticket_network_fees_overview.jinja:13
+#: templates/tickets/ticket_user_fees_overview.jinja:9
+#: templates/tickets/ticket_user_fees_overview.jinja:13
+#, fuzzy
+msgid "Details"
+msgstr "Details anfordern"
+
+#: templates/tickets/ticket_budget_fees_overview.jinja:19
+#: templates/tickets/ticket_network_fees_overview.jinja:19
+#: templates/tickets/ticket_user_fees_overview.jinja:19
+msgid "Download as CSV"
+msgstr ""
+
+#: templates/tickets/ticket_budget_fees_overview.jinja:20
+#: templates/tickets/ticket_network_fees_overview.jinja:20
+#: templates/tickets/ticket_user_fees_overview.jinja:20
+msgid "Download as JSON"
+msgstr ""
+
+#: templates/tickets/ticket_network_fees_overview.jinja:5
+msgid "Network fees"
+msgstr ""
+
+#: templates/tickets/ticket_network_fees_overview.jinja:9
+msgid "Network"
+msgstr ""
+
+#: templates/tickets/ticket_resolution_time.jinja:5
+#, fuzzy
+msgid "Ticket Resolution"
+msgstr "Ticketverlauf"
+
+#: templates/tickets/ticket_resolution_time.jinja:8
+msgid "Average Request Resolution Time"
+msgstr ""
+
+#: templates/tickets/ticket_resolution_time.jinja:12
+#, python-format
+msgid "(calculated from %(count)s most recently closed tickets)"
+msgstr ""
+
+#: templates/tickets/ticket_resolution_workload.jinja:10
+msgid "Type"
+msgstr "Typ"
+
+#: templates/tickets/ticket_resolution_workload.jinja:12
+#, fuzzy
+msgid "Open Tickets"
+msgstr "Geschlossene Tickets"
+
+#: templates/tickets/ticket_resolution_workload.jinja:13
+msgid "Closed Tickets"
+msgstr "Geschlossene Tickets"
+
+#: templates/tickets/ticket_resolution_workload.jinja:14
+#, fuzzy
+msgid "Total Tickets"
+msgstr "Geschlossene Tickets"
+
+#: templates/tickets/ticket_resolution_workload.jinja:15
+msgid "Average Resolution Time (all time)"
+msgstr ""
+
+#: templates/tickets/ticket_resolution_workload.jinja:16
+msgid "Average Resolution Time (last 30 tickets)"
+msgstr ""
+
+#: templates/tickets/ticket_user_fees_overview.jinja:5
+#, fuzzy
+msgid "User fees"
+msgstr "Nutzerprofile"
+
+#: templates/tickets/ticket_user_fees_overview.jinja:9
+#, fuzzy
+msgid "User"
+msgstr "Nutzer"
+
+#: templates/tickets/admin/admin_charges_customer.jinja:6
+msgid "Filter"
+msgstr "Filter"
+
+#: templates/tickets/admin/admin_charges_customer.jinja:12
+msgid "Customer Charges"
+msgstr "Kundengebühren"
+
+#: templates/tickets/admin/admin_charges_customer.jinja:13
+msgid "View all logged charges against an individual customer."
+msgstr "Sehen Sie sich alle gespeicherten Gebühren eines einzelnen Kunden an."
+
+#: templates/tickets/admin/admin_charges_outstanding.jinja:4
+msgid "View all outstanding charges for all tickets and requesters. "
+msgstr ""
+"Sehen Sie sich alle ausstehenden Gebühren für alle Tickets und Anforderer "
+"an. "
+
+#: templates/tickets/admin/admin_history.jinja:3
+msgid "Tickets History"
+msgstr "Ticketverlauf"
+
+#: templates/tickets/admin/admin_history.jinja:4
+msgid "A simple list of closed, resolved or cancelled tickets. "
+msgstr "Einfache Liste geschlossener, gelöster oder zurückgenommener Tickets "
+
+#: templates/tickets/admin/admin_unassigned.jinja:5
+msgid "View new tickets that need responders assigned to them."
+msgstr "Neue Tickets ansehen, denen Antwortende zugewiesen werden müssen"
+
+#: templates/tickets/partials/_activity.jinja:1
+msgid "Activity"
+msgstr "Aktivität"
+
+#: templates/tickets/partials/_activity.jinja:47
+#, fuzzy
+msgid "delete comment"
+msgstr "Fügen Sie einen Kommentar hinzu"
+
+#: templates/tickets/partials/_activity.jinja:58
+msgid "No updates yet."
+msgstr "Noch keine Aktualisierungen"
+
+#: templates/tickets/partials/_filelist.jinja:7
+#, fuzzy
+msgid "Select "
+msgstr "Datei auswählen"
+
+#: templates/tickets/partials/_filelist.jinja:11
+#, fuzzy
+msgid "No files "
+msgstr "Keine Dateien angehängt"
+
+#: templates/tickets/partials/_filelist.jinja:13
+msgid "Remove from ticket"
+msgstr ""
+
+#: templates/tickets/partials/_filelist.jinja:18
+msgid "Attached Files"
+msgstr "Angehängte Dateien"
+
+#: templates/tickets/partials/_ticketdetails.jinja:1
+msgid "Request Details"
+msgstr "Details anfordern"
+
+#: templates/tickets/partials/_ticketdetails.jinja:6
+msgid "Background"
+msgstr "Hintergrund"
+
+#: templates/tickets/partials/_ticketdetails.jinja:7
+msgid "Biography"
+msgstr "Biografie"
+
+#: templates/tickets/partials/_ticketdetails.jinja:8 ticket/models.py:211
+msgid "Business Activities"
+msgstr "Geschäftsaktivitäten"
+
+#: templates/tickets/partials/_ticketdetails.jinja:9
+msgid "Initial Information"
+msgstr "Ursprüngliche Informationen"
+
+#: templates/tickets/partials/_ticketdetails.jinja:10
+msgid "Sources"
+msgstr "Quellen"
+
+#: templates/tickets/partials/_ticketdetails.jinja:11
+msgid "Story"
+msgstr "Geschichte"
+
+#: templates/tickets/partials/_ticketdetails.jinja:12
+msgid "Question"
+msgstr "Frage"
+
+#: templates/tickets/partials/_ticketdetails.jinja:16 ticket/constants.py:120
+msgid "Birthplace"
+msgstr "Geburtsort"
+
+#: templates/tickets/partials/_ticketdetails.jinja:17 ticket/models.py:205
+msgid "Date of Birth"
+msgstr "Geburtsdatum"
+
+#: templates/tickets/partials/_ticketdetails.jinja:18
+msgid "Family"
+msgstr "Familie"
+
+#: templates/tickets/partials/_ticketdetails.jinja:18
+#: templates/tickets/partials/_ticketdetails.jinja:19
+#: templates/tickets/partials/_ticketdetails.jinja:20
+#, fuzzy
+msgid "First Names"
+msgstr "Vorname"
+
+#: templates/tickets/partials/_ticketdetails.jinja:18
+msgid "Relation"
+msgstr "Beziehung"
+
+#: templates/tickets/partials/_ticketdetails.jinja:19 ticket/models.py:247
+msgid "Connected People"
+msgstr "Verbundene Personen"
+
+#: templates/tickets/partials/_ticketdetails.jinja:20 ticket/models.py:204
+msgid "Aliases"
+msgstr "Alias"
+
+#: ticket/constants.py:36
+msgid "Limited liability"
+msgstr "Beschränkte Haftung"
+
+#: ticket/constants.py:37
+msgid "Partnership"
+msgstr "Partnerschaft"
+
+#: ticket/constants.py:38
+msgid "Stock company"
+msgstr "Aktiengesellschaft"
+
+#: ticket/constants.py:39
+msgid "Foundation"
+msgstr "Stiftung"
+
+#: ticket/constants.py:40
+msgid "Non-profit"
+msgstr "Gemeinnützig"
+
+#: ticket/constants.py:46
+msgid "Active"
+msgstr "Aktiv"
+
+#: ticket/constants.py:47
+msgid "Inactive"
+msgstr "Inaktiv"
+
+#: ticket/constants.py:51
+msgid "-----------"
+msgstr "-----------"
+
+#: ticket/constants.py:52
+msgid "Male"
+msgstr "Männlich"
+
+#: ticket/constants.py:53
+msgid "Female"
+msgstr "Weiblich"
+
+#: ticket/constants.py:63
+msgid "Identify what a person owns"
+msgstr "Eigentum einer Person identifizieren"
+
+#: ticket/constants.py:64
+msgid "Determine company ownership"
+msgstr "Eigentum von Unternehmen bestimmen"
+
+#: ticket/constants.py:65
+msgid "Any other question"
+msgstr "Beliebige andere Frage"
+
+#: ticket/constants.py:69
+msgid "Updated"
+msgstr "Aktualisiert"
+
+#: ticket/constants.py:70
+msgid "Charge Added"
+msgstr "Gebühr hinzugefügt"
+
+#: ticket/constants.py:71
+#, fuzzy
+msgid "Charge Modified"
+msgstr "Gebühr hinzugefügt"
+
+#: ticket/constants.py:74 ticket/constants.py:89
+msgid "Cancelled"
+msgstr "Zurückgenommen"
+
+#: ticket/constants.py:75
+msgid "Re-Opened"
+msgstr "Erneut geöffnet"
+
+#: ticket/constants.py:76
+msgid "Opened"
+msgstr "Geöffnet"
+
+#: ticket/constants.py:77
+msgid "Flagged"
+msgstr "Gemeldet"
+
+#: ticket/constants.py:78
+msgid "Documents Attached"
+msgstr "Angehängte Dokumente"
+
+#: ticket/constants.py:79
+msgid "Entities Attached"
+msgstr "Angehängte Entitäten"
+
+#: ticket/constants.py:80
+#, fuzzy
+msgid "Comment Added"
+msgstr "Kommentar"
+
+#: ticket/constants.py:81
+#, fuzzy
+msgid "Responder Joined"
+msgstr "Kein Antwortender"
+
+#: ticket/constants.py:82
+#, fuzzy
+msgid "Responder Left"
+msgstr "Kein Antwortender"
+
+#: ticket/constants.py:87
+msgid "In Progress"
+msgstr "In Bearbeitung"
+
+#: ticket/constants.py:103
+msgid "Unpaid"
+msgstr ""
+
+#: ticket/constants.py:104
+msgid "Paid"
+msgstr "Bezahlt"
+
+#: ticket/constants.py:105
+msgid "Paid by OCCRP"
+msgstr "Von OCCRP bezahlt"
+
+#: ticket/constants.py:106
+msgid "Invoiced"
+msgstr ""
+
+#: ticket/constants.py:111
+msgid "Parent"
+msgstr "Elternteil"
+
+#: ticket/constants.py:112
+msgid "Spouse"
+msgstr "Ehepartner"
+
+#: ticket/constants.py:113
+msgid "Other Relative"
+msgstr "Anderer Verwandter"
+
+#: ticket/constants.py:114
+msgid "Friend or Acquaintance"
+msgstr "Freund oder Bekannter"
+
+#: ticket/constants.py:115
+msgid "Employer"
+msgstr "Arbeitgeber"
+
+#: ticket/constants.py:116
+msgid "Business Partner"
+msgstr "Geschäftspartner"
+
+#: ticket/constants.py:117
+msgid "Proxy"
+msgstr "Stellvertreter"
+
+#: ticket/constants.py:121 ticket/constants.py:140
+msgid "Registered Address"
+msgstr "Eingetragene Adresse"
+
+#: ticket/constants.py:122
+msgid "Home Address"
+msgstr "Privatadresse"
+
+#: ticket/constants.py:125 ticket/constants.py:135
+msgid "Director"
+msgstr "Direktor"
+
+#: ticket/constants.py:126 ticket/constants.py:136
+msgid "Secretary"
+msgstr "Geschäftsführer"
+
+#: ticket/constants.py:127
+msgid "Authorized Person"
+msgstr "Autorisierte Person"
+
+#: ticket/constants.py:128
+msgid "Representative"
+msgstr "Vertreter"
+
+#: ticket/constants.py:129 ticket/constants.py:137
+msgid "Shareholder"
+msgstr "Aktionär"
+
+#: ticket/constants.py:130
+msgid "Employee"
+msgstr "Mitarbeiter"
+
+#: ticket/constants.py:133
+msgid "Subsidiary"
+msgstr "Tochterunternehmen"
+
+#: ticket/constants.py:134
+msgid "Trading Partner"
+msgstr "Handelspartner"
+
+#: ticket/constants.py:141
+msgid "Place of Business"
+msgstr "Geschäftssitz"
+
+#: ticket/constants.py:157
+msgid "Media: non-profit"
+msgstr "Medien: gemeinnützig"
+
+#: ticket/constants.py:158
+msgid "Media: for-profit"
+msgstr "Medien: gewinnorientiert"
+
+#: ticket/constants.py:159
+msgid "Media: freelance"
+msgstr "Medien: freiberuflich"
+
+#: ticket/constants.py:160
+msgid "Business: due diligence/investigation"
+msgstr "Unternehmen: Due Diligence/Recherche"
+
+#: ticket/constants.py:161
+msgid "Business: legal"
+msgstr "Unternehmen: Rechtswesen"
+
+#: ticket/constants.py:162
+msgid "Business: general"
+msgstr "Unternehmen: allgemein"
+
+#: ticket/constants.py:163
+msgid "Government"
+msgstr "Staatliche Einrichtungen"
+
+#: ticket/constants.py:164
+msgid "Civil society/non-profit"
+msgstr "Bürgerliche Gesellschaft/gemeinnützig"
+
+#: ticket/constants.py:165
+msgid "Individual"
+msgstr "Einzelperson"
+
+#: ticket/constants.py:166
+msgid "Other (please specify)"
+msgstr "Sonstiges (bitte angeben)"
+
+#: ticket/constants.py:172
+msgid "OCCRP"
+msgstr "OCCRP"
+
+#: ticket/constants.py:173
+msgid "ARIJ"
+msgstr "ARIJ"
+
+#: ticket/constants.py:174
+msgid "ANCIR"
+msgstr "ANCIR"
+
+#: ticket/constants.py:175
+msgid "Connectas in the Americas"
+msgstr "Connectas in Amerika"
+
+#: ticket/constants.py:180
+msgid "Website"
+msgstr "Website"
+
+#: ticket/constants.py:181
+msgid "Print"
+msgstr "Printmedien"
+
+#: ticket/constants.py:182
+msgid "Broadcast TV"
+msgstr "Fernsehübertragung"
+
+#: ticket/constants.py:183
+msgid "Broadcast Radio"
+msgstr "Radioübertragung"
+
+#: ticket/constants.py:184
+msgid "Other or don't know"
+msgstr "Sonstige/Weiß nicht"
+
+#: ticket/constants.py:189
+msgid "Less than 10,000"
+msgstr "Unter 10.000"
+
+#: ticket/constants.py:190
+msgid "10,000 to 25,000"
+msgstr "10.000 bis 25.000"
+
+#: ticket/constants.py:191
+msgid "25,000 to 50,000"
+msgstr "25.000 bis 50.000"
+
+#: ticket/constants.py:192
+msgid "50,000 to 100,000"
+msgstr "50.000 bis 100.000"
+
+#: ticket/constants.py:193
+msgid "100,000 to 250,000"
+msgstr "100.000 bis 250.000"
+
+#: ticket/constants.py:194
+msgid "250,000 to 500,000"
+msgstr "250.000 bis 500.000"
+
+#: ticket/constants.py:195
+msgid "More than 500,000"
+msgstr "Über 500.000"
+
+#: ticket/forms.py:21 ticket/forms.py:180
+msgid "Comment"
+msgstr "Kommentar"
+
+#: ticket/forms.py:24
+msgid "Paid Status"
+msgstr "Status \"Bezahlt\""
+
+#: ticket/forms.py:25
+msgid "Marking as paid will reconcile any open charges with the request."
+msgstr ""
+"Bei einer Markierung als \"Bezahlt\" werden alle ausstehenden Gebühren in "
+"Bezug auf die Anforderung beglichen."
+
+#: ticket/forms.py:47
+msgid "Research Goal"
+msgstr "Rechercheziel"
+
+#: ticket/forms.py:64
+msgid ""
+"This is highly sensitive, do not let volunteer research librarians see this "
+"request."
+msgstr ""
+"Diese Informationen sind hochsensibel. Geben Sie freiwillig recherchierenden "
+"Bibliothekaren keinen Einblick in diese Anforderung."
+
+#: ticket/forms.py:92 ticket/forms.py:116
+msgid "What do you know so far?"
+msgstr "Was wissen Sie bislang?"
+
+#: ticket/forms.py:95
+msgid "Any information you already have."
+msgstr "Alle Informationen, die Ihnen bereits vorliegen"
+
+#: ticket/forms.py:118
+msgid "What sources do you have so far?"
+msgstr "Welche Quellen liegen Ihnen bislang vor?"
+
+#: ticket/forms.py:141
+msgid "Staff Responders"
+msgstr "Antwortende Mitarbeiter"
+
+#: ticket/forms.py:142
+msgid "Volunteer Responders"
+msgstr "Freiwillige Antwortende"
+
+#: ticket/forms.py:163
+msgid "Reason"
+msgstr "Grund"
+
+#: ticket/forms.py:194
+msgid ""
+"Add a comment, visible to the person making this request and the researcher "
+"answering it."
+msgstr ""
+"Fügen Sie einen Kommentar hinzu, der sowohl für den Anforderer als auch für "
+"den Rechercheur sichtbar ist, der die Anforderung beantwortet."
+
+#: ticket/mixins.py:22
+#, fuzzy
+msgid "Ticket successfully updated."
+msgstr "Ticket erstellt"
+
+#: ticket/mixins.py:34
+msgid "Ticket successfully saved."
+msgstr "Ticket gespeichert"
+
+#: ticket/mixins.py:75 ticket/views.py:983
+msgid "Ticket successfully created."
+msgstr "Ticket erstellt"
+
+#: ticket/models.py:39
+msgid "For-Profit?"
+msgstr "Gewinnorientiert?"
+
+#: ticket/models.py:41
+msgid "Public?"
+msgstr "Öffentlich?"
+
+#: ticket/models.py:41
+msgid "Are you okay with the findings becoming public immediately?"
+msgstr ""
+
+#: ticket/models.py:43
+msgid "Deadline"
+msgstr "Fälligkeitsdatum"
+
+#: ticket/models.py:43
+msgid ""
+"How soon do you need this request fulfilled? We will try to meet your "
+"deadline, but please note that our researchers are quite busy -- give them "
+"as much time as you possibly can!"
+msgstr ""
+
+#: ticket/models.py:44
+msgid "Sensitive?"
+msgstr "Sensibel?"
+
+#: ticket/models.py:45
+#, fuzzy
+msgid "Why is it sensitive?"
+msgstr "Sensibel?"
+
+#: ticket/models.py:61
+msgid "Summary"
+msgstr "Zusammenfassung"
+
+#: ticket/models.py:62
+#, fuzzy
+msgid "Requested by"
+msgstr "Anforderertyp"
+
+#: ticket/models.py:82
+msgid "Unknown"
+msgstr ""
+
+#: ticket/models.py:202
+#, fuzzy
+msgid "First/other names"
+msgstr "Vorname"
+
+#: ticket/models.py:203
+#, fuzzy
+msgid "Last names"
+msgstr "Nachname"
+
+#: ticket/models.py:204
+msgid "Other names they are known by"
+msgstr ""
+
+#: ticket/models.py:206 ticket/models.py:244
+#, fuzzy
+msgid "Your story"
+msgstr "Ihre Geschichte"
+
+#: ticket/models.py:207
+msgid "Family and associates"
+msgstr ""
+
+#: ticket/models.py:215 ticket/models.py:245
+msgid "Where have you looked?"
+msgstr "Wo haben Sie nachgesehen?"
+
+#: ticket/models.py:240
+msgid "Company Name"
+msgstr "Name des Unternehmens"
+
+#: ticket/models.py:243
+msgid "Country Registered"
+msgstr "Eintragungsland"
+
+#: ticket/models.py:273
+msgid "What do you want to know?"
+msgstr "Was möchten Sie wissen?"
+
+#: ticket/models.py:363
+#, fuzzy, python-format
+msgid ""
+"Item: %(item)s\n"
+"Cost (USD): $%(cost)s\n"
+msgstr ""
+"Element: %(item)s\n"
+"Kosten: %(cost)s $\n"
+"Umgerechnet: %(cost_converted)s"
+
+#: ticket/views.py:194
+#, fuzzy
+msgid "A reason must be supplied to cancel the ticket."
+msgstr "Einfache Liste geschlossener, gelöster oder zurückgenommener Tickets "
+
+#: ticket/views.py:206
+msgid "An error came up processing your close request."
+msgstr ""
+
+#: ticket/views.py:219 ticket/views.py:282
+msgid "There was an error adding you to the ticket."
+msgstr ""
+
+#: ticket/views.py:242
+#, fuzzy
+msgid "You have successfully been added to the ticket."
+msgstr "Das Ticket wurde bereits mit Ihnen geteilt."
+
+#: ticket/views.py:243 ticket/views.py:268 ticket/views.py:522
+#: ticket/views.py:528
+#, fuzzy
+msgid " has joined the ticket"
+msgstr "Das Ticket wurde mit Ihnen geteilt."
+
+#: ticket/views.py:273
+#, fuzzy
+msgid "You have successfully been added to the ticket"
+msgstr "Das Ticket wurde bereits mit Ihnen geteilt."
+
+#: ticket/views.py:275
+#, fuzzy
+msgid " has been added to the ticket."
+msgstr "Das Ticket wurde bereits mit Ihnen geteilt."
+
+#: ticket/views.py:284
+msgid "There was an error adding the user to the ticket."
+msgstr ""
+
+#: ticket/views.py:311
+#, fuzzy
+msgid "You have successfully been removed from the ticket"
+msgstr "Das Ticket wurde bereits mit Ihnen geteilt."
+
+#: ticket/views.py:313
+#, fuzzy
+msgid " has been removed from the ticket."
+msgstr "Das Ticket wurde bereits mit Ihnen geteilt."
+
+#: ticket/views.py:319 ticket/views.py:370
+msgid "There was an error removing you from the ticket."
+msgstr ""
+
+#: ticket/views.py:321
+msgid "There was an error removing the user from the ticket."
+msgstr ""
+
+#: ticket/views.py:359 ticket/views.py:383 ticket/views.py:387
+#: ticket/views.py:392 ticket/views.py:396
+#, fuzzy
+msgid "You have successfully been removed from the ticket."
+msgstr "Das Ticket wurde bereits mit Ihnen geteilt."
+
+#: ticket/views.py:362
+msgid "There was an error removing you from the ticket"
+msgstr ""
+
+#: ticket/views.py:384 ticket/views.py:393 ticket/views.py:534
+#: ticket/views.py:540
+#, fuzzy
+msgid " has left the ticket"
+msgstr "Das Ticket wurde mit Ihnen geteilt."
+
+#: ticket/views.py:404
+msgid "A reason must be supplied to (re)open the ticket."
+msgstr ""
+
+#: ticket/views.py:423
+msgid "Error adding charge."
+msgstr ""
+
+#: ticket/views.py:474
+#, fuzzy
+msgid "Charge successfully updated."
+msgstr "Gebühr beglichen"
+
+#: ticket/views.py:479
+#, fuzzy
+msgid "Error updating charge."
+msgstr "Fehler beim Anhängen von Datei(en)"
+
+#: ticket/views.py:499
+msgid "There was an error updating the ticket."
+msgstr ""
+
+#: ticket/views.py:594
+#, fuzzy
+msgid "There was an error deleting the comment."
+msgstr "Bei der Überprüfung ist ein Problem aufgetreten."
+
+#: ticket/views.py:597
+#, fuzzy
+msgid "The comment was successfully deleted."
+msgstr "Das angegebene Objekt wurde entfernt."
+
+#~ msgid "Key is invalid or does not exist."
+#~ msgstr "Schlüssel ist ungültig oder existiert nicht."
+
+#~ msgid "Comments"
+#~ msgstr "Kommentare"
+
+#~ msgid "Entity One"
+#~ msgstr "Entität 1"
+
+#~ msgid "Entity Two"
+#~ msgstr "Entität 2"
+
+#~ msgid "Entity Two is a"
+#~ msgstr "Entität 2 ist ein(e)"
+
+#~ msgid "The entity below is a"
+#~ msgstr "Die Entität unten ist ein(e)"
+
+#~ msgid "Person"
+#~ msgstr "Person"
+
+#~ msgid "Company"
+#~ msgstr "Unternehmen"
+
+#~ msgid "Relationship"
+#~ msgstr "Beziehung"
+
+#~ msgid "Location"
+#~ msgstr "Standort"
+
+#~ msgid "Full Name"
+#~ msgstr "Vollständiger Name"
+
+#~ msgid "Identifier"
+#~ msgstr "Kennung"
+
+#~ msgid "Illegal Identifier. Only lowercase letters and _ are allowed."
+#~ msgstr ""
+#~ "Unzulässige Kennung. Nur Kleinbuchstaben und der Unterstrich (_) sind "
+#~ "zulässig."
+
+#~ msgid "Field with this identifier already exists."
+#~ msgstr "Ein Feld mit dieser Kennung ist bereits vorhanden."
+
+#~ msgid "Email"
+#~ msgstr "E-Mail-Adresse"
+
+#~ msgid "Media Type"
+#~ msgstr "Medientyp"
+
+#~ msgid "Circulation (approximate per month)"
+#~ msgstr "Auflage (ungefähr pro Monat)"
+
+#~ msgid "Status"
+#~ msgstr "Status"
+
+#~ msgid "All"
+#~ msgstr "Alle"
+
+#~ msgid "Not Approved"
+#~ msgstr "Nicht genehmigt"
+
+#~ msgid "Type of Request"
+#~ msgstr "Anforderungstyp"
+
+#~ msgid "Approve (Adds user to groups)"
+#~ msgstr "Genehmigen (fügt Nutzer zu Gruppen hinzu)"
+
+#~ msgid "Reject (Removes user from groups)"
+#~ msgstr "Ablehnen (entfernt Nutzer aus Gruppen)"
+
+#~ msgid "Action"
+#~ msgstr "Aktion"
+
+#~ msgid "Where are you researching?"
+#~ msgstr "In welchem Bereich recherchieren Sie gerade?"
+
+#~ msgid "What story are you working on?"
+#~ msgstr "An welcher Geschichte arbeiten Sie gerade?"
+
+#~ msgid "Comment to Requester"
+#~ msgstr "Kommentar an Anforderer"
+
+#~ msgid "Cost (USD)"
+#~ msgstr "Kosten (USD)"
+
+#~ msgid "Assign OCCRP Staff member(s) as the ticket responder"
+#~ msgstr "OCCRP-Mitarbeiter als Antwortenden einem Ticket zuweisen"
+
+#~ msgid "Assign Volunteer Researcher(s)"
+#~ msgstr "Freiwillige(n) Rechercheur(e) zuweisen"
+
+#~ msgid "Once user issues are dealt with, un-flag the ticket"
+#~ msgstr "Meldung des Tickets aufheben, sobald Nutzerprobleme behoben wurden"
+
+#~ msgid "Whether the findings of the ticket should be publicly visible."
+#~ msgstr ""
+#~ "Legt fest, ob die Ergebnisse in Bezug auf das Ticket öffentlich sichtbar "
+#~ "sein sollen."
+
+#~ msgid ""
+#~ "If a ticket is marked as public, volunteers are able toview and "
+#~ "collaborate on the ticket. Making a ticket private will not remove "
+#~ "volunteers as researchers."
+#~ msgstr ""
+#~ "Wenn ein Ticket als \"Öffentlich\" markiert ist, können sich Freiwillige "
+#~ "das Ticket ansehen und gemeinsam daran arbeiten. Durch das Markieren "
+#~ "eines Tickets als \"Privat\" werden Freiwillige als Rechercheur nicht "
+#~ "entfernt."
+
+#~ msgid "Entities"
+#~ msgstr "Entitäten"
+
+#~ msgid "Result type"
+#~ msgstr "Ergebnistyp"
+
+#~ msgid "Companies"
+#~ msgstr "Unternehmen"
+
+#~ msgid "People"
+#~ msgstr "Personen"
+
+#~ msgid "Search Providers"
+#~ msgstr "Suchanbieter"
+
+#~ msgid "Everything"
+#~ msgstr "Alles"
+
+#~ msgid "Documents"
+#~ msgstr "Dokumente"
+
+#~ msgid "Companies from OpenCorporates"
+#~ msgstr "Unternehmen aus OpenCorporates"
+
+#~ msgid "Everyone (public)"
+#~ msgstr "Alle (öffentlich)"
+
+#~ msgid "Named Users"
+#~ msgstr "Benannte Nutzer"
+
+#~ msgid "Individual users who should have access as well."
+#~ msgstr "Einzelne Nutzer, die ebenfalls Zugriff haben sollen"
+
+#~ msgid "Label"
+#~ msgstr "Label"
+
+#~ msgid "Kind"
+#~ msgstr "Art"
+
+#~ msgid "End Date"
+#~ msgstr "Enddatum"
+
+#~ msgid "Name Variations"
+#~ msgstr "Namensvarianten"
+
+#~ msgid "Jurisdiction Registered"
+#~ msgstr "Registrierter Gerichtsstand"
+
+#~ msgid "Form of Company"
+#~ msgstr "Unternehmensform"
+
+#~ msgid "Date Registered"
+#~ msgstr "Datum der Eintragung"
+
+#~ msgid "Middle Name"
+#~ msgstr "Zweiter Vorname"
+
+#~ msgid "Date of Death"
+#~ msgstr "Sterbedatum"
+
+#~ msgid "Sex"
+#~ msgstr "Geschlecht"
+
+#~ msgid "ID Numbers"
+#~ msgstr "Ausweisnummern"
+
+#~ msgid "Address"
+#~ msgstr "Adresse"
+
+#~ msgid "City"
+#~ msgstr "Ort"
+
+#~ msgid "State/Province/Region"
+#~ msgstr "Bundesland/Kanton/Region"
+
+#~ msgid "ZIP/Postal Code"
+#~ msgstr "Postleitzahl"
+
+#~ msgid "Place of Birth"
+#~ msgstr "Geburtsort"
+
+#~ msgid "[Request %s] - %s"
+#~ msgstr "[Anforderung %s] – %s"
+
+#~ msgid "Phone Number"
+#~ msgstr "Telefonnummer"
+
+#~ msgid "Organization Membership"
+#~ msgstr "Mitgliedschaft in Organisation"
+
+#~ msgid "Anything else you would like to tell us"
+#~ msgstr "Möchten Sie uns noch etwas mitteilen?"
+
+#~ msgid "Industry"
+#~ msgstr "Branche"
+
+#~ msgid "Other Industry"
+#~ msgstr "Weitere Branche"
+
+#~ msgid "Name of Employer"
+#~ msgstr "Name des Arbeitgebers"
+
+#~ msgid "Position / Job Title"
+#~ msgstr "Position/Berufsbezeichnung"
+
+#~ msgid "Interests"
+#~ msgstr "Interessen"
+
+#~ msgid "Expertise"
+#~ msgstr "Erfahrung"
+
+#~ msgid "Languages"
+#~ msgstr "Sprachen"
+
+#~ msgid "Availability"
+#~ msgstr "Verfügbarkeit"
+
+#~ msgid "Own Databases"
+#~ msgstr "Eigene Datenbanken"
+
+#~ msgid "Restrictions / Conflicts of Interest"
+#~ msgstr "Beschränkungen/Interessenkonflikte"
+
+#~ msgid "This field is required."
+#~ msgstr "Pflichtfeld"
+
+#~ msgid "Not a valid choice"
+#~ msgstr "Keine gültige Auswahl"
+
+#~ msgid "Not a valid list"
+#~ msgstr "Keine gültige Liste"
+
+#~ msgid "Not a valid integer list"
+#~ msgstr "Keine gültige Ganzzahlliste"
+
+#~ msgid "Error connecting to Google Drive."
+#~ msgstr "Fehler beim Verbinden mit Google Drive"
+
+#~ msgid "Error refreshing Google Drive access token."
+#~ msgstr "Fehler beim Aktualisieren des Google Drive-Zugriffs-Tokens"
+
+#~ msgid "Error connecting to Google Groups."
+#~ msgstr "Fehler beim Verbinden mit Google Groups"
+
+#~ msgid "Your private key must be in \"PEM\" format."
+#~ msgstr "Ihr privater Schlüssel muss das Format \"PEM\" aufweisen."
+
+#~ msgid ""
+#~ "Error refreshing the access token. Check your settings and try again."
+#~ msgstr ""
+#~ "Fehler beim Aktualisieren des Zugriffs-Tokens. Bitte überprüfen Sie Ihre "
+#~ "Einstellungen und versuchen Sie es erneut."
+
+#~ msgid "No entries found."
+#~ msgstr "Keine Einträge gefunden"
+
+#~ msgid "%(entity)s successfully saved.entity"
+#~ msgstr "%(entity)s gespeichert"
+
+#~ msgid "%(entity)s successfully deleted.entity"
+#~ msgstr "%(entity)s gelöscht"
+
+#~ msgid ""
+#~ "%(entity)s could not deleted because of %(rel_count)d relationsentity"
+#~ msgstr ""
+#~ "%(entity)s konnte wegen %(rel_count)d Beziehungen nicht gelöscht werden."
+
+#~ msgid "No relationships found. You can create them via other entities."
+#~ msgstr ""
+#~ "Keine Beziehungen gefunden. Sie können sie über andere Entitäten "
+#~ "erstellen."
+
+#~ msgid "Relationship with new %(entity_type)s successfully saved.entity_type"
+#~ msgstr "Beziehung mit neuem %(entity_type)s gespeichert"
+
+#~ msgid "No companies found."
+#~ msgstr "Keine Unternehmen gefunden"
+
+#~ msgid "No people found."
+#~ msgstr "Keine Personen gefunden"
+
+#~ msgid "No locations found."
+#~ msgstr "Keine Standorte gefunden"
+
+#~ msgid "No extra fields found."
+#~ msgstr "Keine zusätzlichen Felder gefunden"
+
+#~ msgid "No account requests found."
+#~ msgstr "Keine Kontoanträge gefunden"
+
+#~ msgid "No Users found."
+#~ msgstr "Keine Nutzer gefunden"
+
+#~ msgid ""
+#~ "Request submitted. Our staff will evaluate and respond to your request."
+#~ msgstr ""
+#~ "Anforderung eingereicht. Unsere Mitarbeiter werden Ihre Anforderung "
+#~ "auswerten und beantworten."
+
+#~ msgid "The user has been notified of the change to their request status."
+#~ msgstr ""
+#~ "Der Nutzer wurde über die Änderung seines Anforderungsstatus "
+#~ "benachrichtigt."
+
+#~ msgid "File(s) successfully attached."
+#~ msgstr "Datei(en) angehängt"
+
+#~ msgid "Sharing rules applied."
+#~ msgstr "Regeln für das Teilen angewandt"
+
+#~ msgid ""
+#~ "Your request for an account is pending. Once approved, you can access Ask "
+#~ "an Expert"
+#~ msgstr ""
+#~ "Die Bearbeitung Ihres Kontoantrags steht noch aus. Nach der Genehmigung "
+#~ "können Sie auf \"Experten fragen\" zugreifen."
+
+#~ msgid "The specified object could not be found."
+#~ msgstr "Das angegebene Objekt wurde nicht gefunden."
+
+#~ msgid "The specified object is not attached to this ticket."
+#~ msgstr "Das angegebene Objekt ist nicht an dieses Ticket angehängt."
+
+#~ msgid "Could not add duplicate(s): %(duplicates)sduplicates, "
+#~ msgstr "Duplikat(e) konnte(n) nicht hinzugefügt werden: %(duplicates)s "
+
+#~ msgid "Request has been marked as closed & answered."
+#~ msgstr "Anforderung wurde als geschlossen und beantwortet markiert."
+
+#~ msgid "Request has been cancelled."
+#~ msgstr "Anforderung wurde zurückgenommen."
+
+#~ msgid "Ticket %s has been deleted"
+#~ msgstr "Ticket %s wurde gelöscht."
+
+#~ msgid ""
+#~ "An Administrator has been notified notified and will update the issue "
+#~ "shortly."
+#~ msgstr ""
+#~ "Ein Administrator wurde benachrichtigt und wird dieses Problem in Kürze "
+#~ "bearbeiten."
+
+#~ msgid "The new charge was added to the request."
+#~ msgstr "Die neue Gebühr wurde zur Anforderung hinzugefügt."
+
+#~ msgid "Request has been re-opened."
+#~ msgstr "Anforderung wurde erneut geöffnet."
+
+#~ msgid "You are no longer part of this ticket."
+#~ msgstr "Das Ticket wird nicht mehr mit Ihnen geteilt."
+
+#~ msgid "This may be a duplicate"
+#~ msgstr "Dies ist möglicherweise ein Duplikat."
+
+#~ msgid "No duplicates detected"
+#~ msgstr "Keine Duplikate gefunden"
+
+#~ msgid "First and last name match another person"
+#~ msgstr "Vor- und Nachname stimmen mit einer anderen Person überein."
+
+#~ msgid ""
+#~ "Your request may not be answered, as you have not provided much "
+#~ "background. Please add more context."
+#~ msgstr ""
+#~ "Ihre Anforderung wird möglicherweise nicht bearbeitet, weil Sie nicht "
+#~ "viele Hintergrundinformationen bereitgestellt haben. Bitte geben Sie mehr "
+#~ "Kontext an."
+
+#~ msgid "Your request is of an appropriate length."
+#~ msgstr "Ihre Anforderung hat eine angemessene Länge."
+
+#~ msgid ""
+#~ "This first iteration of the ID website, launched in 2010, shared detailed "
+#~ "methodologies, resources, and links for journalists to track money, "
+#~ "shareholders, and company ownership across international borders. It also "
+#~ "offered video tutorials and other tools to help journalists navigate "
+#~ "rapidly evolving data-sources."
+#~ msgstr ""
+#~ "Auf der ersten Version der ID-Website, die im Jahr 2010 gestartet wurde, "
+#~ "wurden detaillierte Methoden, Ressourcen und Links für Journalisten "
+#~ "bereitgestellt, damit diese Gelder, Aktionäre und das Eigentum von "
+#~ "Unternehmen über internationale Grenzen hinweg verfolgen konnten. Zudem "
+#~ "waren auf der Website Videoanleitungen und andere Tools zur Unterstützung "
+#~ "von Journalisten bei der Navigation durch sich schnell weiterentwickelnde "
+#~ "Datenquellen verfügbar."
+
+#~ msgid "Relationships"
+#~ msgstr "Beziehungen"
+
+#~ msgid "Extra Fields"
+#~ msgstr "Zusätzliche Felder"
+
+#~ msgid "Expert Help"
+#~ msgstr "Hilfe von Experten"
+
+#~ msgid "Admin"
+#~ msgstr "Admin"
+
+#~ msgid "Log out"
+#~ msgstr "Abmelden"
+
+#~ msgid "Request Account"
+#~ msgstr "Konto beantragen"
+
+#~ msgid "Log In"
+#~ msgstr "Anmelden"
+
+#~ msgid "&copy; 2013 - OCCRP. All rights reserved."
+#~ msgstr "&copy; 2013 – OCCRP. Alle Rechte vorbehalten."
+
+#~ msgid "About this site"
+#~ msgstr "Über diese Website"
+
+#~ msgid "Successfully connected to Google Drive."
+#~ msgstr "Verbindung zu Google Drive hergestellt"
+
+#~ msgid "Current user name:"
+#~ msgstr "Aktueller Nutzername:"
+
+#~ msgid "Root folder ID:"
+#~ msgstr "Root-Ordner-Kennung:"
+
+#~ msgid "Total quota (bytes):"
+#~ msgstr "Gesamtquote (Bytes):"
+
+#~ msgid "Used quota (bytes):"
+#~ msgstr "Verwendete Quote (Bytes):"
+
+#~ msgid "Permission ID:"
+#~ msgstr "Berechtigungskennung:"
+
+#~ msgid ""
+#~ "Google Drive successfully authorized. Please close this dialog and attach "
+#~ "your files again."
+#~ msgstr ""
+#~ "Google Drive autorisiert. Bitte schließen Sie dieses Dialogfeld und "
+#~ "hängen Sie Ihre Dateien erneut an."
+
+#~ msgid "Sign in with Google"
+#~ msgstr "Über Google anmelden"
+
+#~ msgid ""
+#~ "In order to log in or request an account on Investigative Dashboard you "
+#~ "must have a Google account. We use your Google account to verify your "
+#~ "identity and obtain a valid email address from you."
+#~ msgstr ""
+#~ "Für die Anmeldung in einem Konto oder die Beantragung eines Kontos im "
+#~ "Investigative Dashboard benötigen Sie ein Google-Konto. Wir überprüfen "
+#~ "anhand Ihres Google-Kontos Ihre Identität und rufen eine gültige E-Mail-"
+#~ "Adresse von Ihnen ab."
+
+#~ msgid ""
+#~ "If you do not have a Google account, you can sign up for one on the next "
+#~ "page by clicking \"Sign Up\" in the top right corner."
+#~ msgstr ""
+#~ "Falls Sie kein Google-Konto haben, können Sie sich auf der nächsten Seite "
+#~ "dafür registrieren. Klicken Sie dazu oben rechts auf \"Anmelden\"."
+
+#~ msgid ""
+#~ "In order to make information requests through Investigative Dashboard, "
+#~ "you must have an account. Please enter your information below and one of "
+#~ "our staff will evaluate and respond to your request."
+#~ msgstr ""
+#~ "Damit Sie über das Investigative Dashboard Informationsanforderungen "
+#~ "einreichen können, benötigen Sie ein Konto. Bitte geben Sie unten Ihre "
+#~ "Daten ein. Einer unserer Mitarbeiter wird Ihren Antrag auswerten und "
+#~ "darauf antworten."
+
+#~ msgid ""
+#~ "<span class=\"primary-highlight\">Investigative Dashboard</span> helps "
+#~ "investigators expose illicit ties that cross borders."
+#~ msgstr ""
+#~ "Das <span class=\"primary-highlight\">Investigative Dashboard</span> "
+#~ "hilft Ermittlern bei der Offenlegung grenzüberschreitender illegaler "
+#~ "Verbindungen."
+
+#~ msgid "Search for a company or person of interest."
+#~ msgstr "Suchen Sie nach einem Unternehmen oder einer Person von Interesse."
+
+#~ msgid ""
+#~ "We have scraped national business records from Panama, Luxembourg, "
+#~ "Switzerland and many other countries"
+#~ msgstr ""
+#~ "Wir haben nationale Geschäftsunterlagen aus Panama, Luxemburg, der "
+#~ "Schweiz und vielen anderen Ländern zusammengetragen."
+
+#~ msgid "If you need more data, visit recommended databases"
+#~ msgstr ""
+#~ "Falls Sie weitere Daten benötigen, rufen Sie empfohlene Datenbanken auf."
+
+#~ msgid ""
+#~ "We have assembled a directory of over 300 local databases that might help"
+#~ msgstr ""
+#~ "Wir haben ein Verzeichnis von über 300 lokalen Datenbanken "
+#~ "zusammengestellt, die hilfreich sein könnten."
+
+#~ msgid "If you need help, request expert assistance."
+#~ msgstr ""
+#~ "Falls Sie Hilfe benötigen, fordern Sie Unterstützung von Experten an."
+
+#~ msgid ""
+#~ "We understand investigations are sensitive and we take privacy very "
+#~ "seriously. Requests are only seen by our full-time experts and, if you "
+#~ "are willing, by vetted volunteers"
+#~ msgstr ""
+#~ "Wir wissen, dass die Recherchen sensibler Natur sind, und nehmen den "
+#~ "Datenschutz sehr ernst. Anforderungen werden nur von unseren "
+#~ "professionellen Vollzeitmitarbeitern und, sofern Sie dies wünschen, von "
+#~ "geprüften Freiwilligen gesichtet."
+
+#~ msgid "Cannot delete this entity."
+#~ msgstr "Diese Entität kann nicht gelöscht werden."
+
+#~ msgid ""
+#~ "Are you sure you want to delete %(object_name)s? You will not be able to "
+#~ "undo this action."
+#~ msgstr ""
+#~ "Möchten Sie %(object_name)s wirklich löschen? Dieser Vorgang kann nicht "
+#~ "rückgängig gemacht werden."
+
+#~ msgid "Yes, I am sure."
+#~ msgstr "Ja, ich bin sicher."
+
+#~ msgid "%(object_name)s is attached to the following relationships:"
+#~ msgstr "%(object_name)s ist an die folgenden Beziehungen angehängt:"
+
+#~ msgid "relationship"
+#~ msgstr "Beziehung"
+
+#~ msgid "Sharing"
+#~ msgstr "Teilen"
+
+#~ msgid "Create Relationship"
+#~ msgstr "Beziehung erstellen"
+
+#~ msgid "Share Attached Files"
+#~ msgstr "Angehängte Dateien teilen"
+
+#~ msgid "New Account Request"
+#~ msgstr "Neuer Kontoantrag"
+
+#~ msgid "Edit Volunteer Request"
+#~ msgstr "Anforderung eines Freiwilligen bearbeiten"
+
+#~ msgid "Edit Account Request"
+#~ msgstr "Kontoantrag bearbeiten"
+
+#~ msgid "New Company"
+#~ msgstr "Neues Unternehmen"
+
+#~ msgid "Edit Company"
+#~ msgstr "Unternehmen bearbeiten"
+
+#~ msgid "Registered Offices"
+#~ msgstr "Eingetragene Unternehmenssitze"
+
+#~ msgid "Entity"
+#~ msgstr "Entität"
+
+#~ msgid "New Extra Field"
+#~ msgstr "Neues zusätzliches Feld"
+
+#~ msgid "Edit Extra Field"
+#~ msgstr "Zusätzliches Feld bearbeiten"
+
+#~ msgid "New Database"
+#~ msgstr "Neue Datenbank"
+
+#~ msgid "Edit External Database"
+#~ msgstr "Externe Datenbank bearbeiten"
+
+#~ msgid "Databases"
+#~ msgstr "Datenbanken"
+
+#~ msgid "Edit Location"
+#~ msgstr "Standort bearbeiten"
+
+#~ msgid "New Person"
+#~ msgstr "Neue Person"
+
+#~ msgid "Edit User Profile"
+#~ msgstr "Nutzerprofil bearbeiten"
+
+#~ msgid "Account Request for this profile"
+#~ msgstr "Kontoantrag für dieses Profil"
+
+#~ msgid "Account Request for this profile: "
+#~ msgstr "Kontoantrag für dieses Profil: "
+
+#~ msgid "New Relationship"
+#~ msgstr "Neue Beziehung"
+
+#~ msgid "Edit Relationship"
+#~ msgstr "Beziehung bearbeiten"
+
+#~ msgid "Add New "
+#~ msgstr "Neue hinzufügen "
+
+#~ msgid "Add Existing "
+#~ msgstr "Vorhandene hinzufügen "
+
+#~ msgid "Directors"
+#~ msgstr "Geschäftsführer"
+
+#~ msgid "Shareholders"
+#~ msgstr "Aktionäre"
+
+#~ msgid "Create"
+#~ msgstr "Erstellen"
+
+#~ msgid "With New Company"
+#~ msgstr "Mit neuem Unternehmen"
+
+#~ msgid "With New Person"
+#~ msgstr "Mit neuer Person"
+
+#~ msgid "With New Location"
+#~ msgstr "Mit neuem Standort"
+
+#~ msgid "With Existing Entity"
+#~ msgstr "Mit vorhandener Entität"
+
+#~ msgid "All Relationships"
+#~ msgstr "Alle Beziehungen"
+
+#~ msgid "is a %(type)s of"
+#~ msgstr "ist ein(e) %(type)s von"
+
+#~ msgid "Attach Files"
+#~ msgstr "Dateien anhängen"
+
+#~ msgid "Please be advised your account type is: %(account_type)s"
+#~ msgstr "So lautet Ihr Kontotyp: %(account_type)s."
+
+#~ msgid ""
+#~ "If you do not think this is the correct account type for you, please "
+#~ "contact the research desk:"
+#~ msgstr ""
+#~ "Falls dies Ihrer Meinung nach nicht der richtige Kontotyp für Sie ist, "
+#~ "wenden Sie sich bitte an das Research Desk:"
+
+#~ msgid "Your Account Type has changed"
+#~ msgstr "Ihr Kontotyp wurde geändert."
+
+#~ msgid ""
+#~ "Please be advised your account status has changed. Your new account type "
+#~ "is: %(account_type)s"
+#~ msgstr ""
+#~ "Der Status Ihres Kontos hat sich geändert. So lautet Ihr neuer Kontotyp: "
+#~ "%(account_type)s."
+
+#~ msgid "Results "
+#~ msgstr "Ergebnisse "
+
+#~ msgid "Navigate Results "
+#~ msgstr "In Ergebnissen navigieren "
+
+#~ msgid "< Previous"
+#~ msgstr "< Zurück"
+
+#~ msgid "Next >"
+#~ msgstr "Weiter >"
+
+#~ msgid ""
+#~ "Didn't find what you were looking for? Try one of our <a href=\"%(url)s"
+#~ "\">business registries</a>."
+#~ msgstr ""
+#~ "Sie haben die gewünschten Informationen nicht gefunden? Versuchen Sie es "
+#~ "in einem unserer <a href=\"%(url)s\">Unternehmensregister</a>."
+
+#~ msgid "No search results."
+#~ msgstr "Keine Suchergebnisse."
+
+#~ msgid "%(num_results)s result found."
+#~ msgid_plural "%(num_results)s results found."
+#~ msgstr[0] "%(num_results)s Ergebnisse gefunden"
+#~ msgstr[1] "%(num_results)s Ergebnis gefunden"
+#~ msgstr[2] "%(num_results)s Ergebnisse gefunden"
+#~ msgstr[3] "%(num_results)s Ergebnisse gefunden"
+#~ msgstr[4] "%(num_results)s Ergebnisse gefunden"
+#~ msgstr[5] "%(num_results)s Ergebnisse gefunden"
+
+#~ msgid "No requests found."
+#~ msgstr "Keine Anforderungen gefunden"
+
+#~ msgid "Request Information"
+#~ msgstr "Informationen anfordern"
+
+#~ msgid ""
+#~ "Your request will be routed to our professional researchers and "
+#~ "volunteers, who will try to help."
+#~ msgstr ""
+#~ "Ihre Anforderung wird an unsere professionellen Rechercheure und "
+#~ "Freiwilligen weitergeleitet, die versuchen werden, Ihnen behilflich zu "
+#~ "sein."
+
+#~ msgid " Unassigned "
+#~ msgstr " Nicht zugewiesen "
+
+#~ msgid "Completed "
+#~ msgstr "Abgeschlossen "
+
+#~ msgid "Cancelled "
+#~ msgstr "Zurückgenommen "
+
+#~ msgid "Requests"
+#~ msgstr "Anforderungen"
+
+#~ msgid "Assigned Requests"
+#~ msgstr "Zugewiesene Anforderungen"
+
+#~ msgid "Flagged Tickets"
+#~ msgstr "Gemeldete Tickets"
+
+#~ msgid "Customer Report"
+#~ msgstr "Kundenbericht"
+
+#~ msgid "Converted"
+#~ msgstr "Umgerechnet"
+
+#~ msgid "Reconcile Charge"
+#~ msgstr "Gebühr begleichen"
+
+#~ msgid "Reconcile"
+#~ msgstr "Begleichen"
+
+#~ msgid "Attach Entities"
+#~ msgstr "Entitäten anhängen"
+
+#~ msgid "Watch"
+#~ msgstr "Ansehen"
+
+#~ msgid "Leave"
+#~ msgstr "Verlassen"
+
+#~ msgid "Close Request"
+#~ msgstr "Anforderung schließen"
+
+#~ msgid "Cancel Request"
+#~ msgstr "Anforderung zurücknehmen"
+
+#~ msgid "Delete Request"
+#~ msgstr "Anforderung löschen"
+
+#~ msgid "Edit Information"
+#~ msgstr "Informationen bearbeiten"
+
+#~ msgid "Alert Administrator"
+#~ msgstr "Administrator benachrichtigen"
+
+#~ msgid "Re-Open"
+#~ msgstr "Erneut öffnen"
+
+#~ msgid "Request Type"
+#~ msgstr "Anforderungstyp"
+
+#~ msgid "Status Updated"
+#~ msgstr "Status aktualisiert"
+
+#~ msgid "Sensitive"
+#~ msgstr "Sensibel"
+
+#~ msgid "Billing Information"
+#~ msgstr "Zahlungsinformationen"
+
+#~ msgid "For-profit"
+#~ msgstr "Gewinnorientiert"
+
+#~ msgid "Charges"
+#~ msgstr "Gebühren"
+
+#~ msgid "Outstanding Amount:"
+#~ msgstr "Ausstehender Betrag:"
+
+#~ msgid "Attached Entities"
+#~ msgstr "Angehängte Entitäten"
+
+#~ msgid "No comment provided."
+#~ msgstr "Kein Kommentar angegeben"
+
+#~ msgid "Leave a Comment"
+#~ msgstr "Kommentar schreiben"
+
+#~ msgid "Flag Request"
+#~ msgstr "Anforderung melden"
+
+#~ msgid "Re-Open Request"
+#~ msgstr "Anforderung erneut öffnen"
+
+#~ msgid "Mark Paid"
+#~ msgstr "Als bezahlt markieren"
+
+#~ msgid "New Request"
+#~ msgstr "Neue Anforderung"
+
+#~ msgid "No open requests found."
+#~ msgstr "Keine offenen Anforderungen gefunden"
+
+#~ msgid "Tickets with Deadlines"
+#~ msgstr "Tickets mit Fälligkeitsdatum"
+
+#~ msgid "View open tickets ordered by upcoming deadlines. "
+#~ msgstr ""
+#~ "Offene Tickets nach anstehenden Fälligkeitsterminen sortiert anzeigen "
+
+#~ msgid "User Flagged Tickets"
+#~ msgstr "Von Nutzern gemeldete Tickets"
+
+#~ msgid ""
+#~ "View tickets which users or staff have deemed requiring administrative "
+#~ "intervention. "
+#~ msgstr ""
+#~ "Tickets anzeigen, bei denen nach Einschätzung von Nutzern oder "
+#~ "Mitarbeitern ein Administratoreingriff erforderlich ist "
