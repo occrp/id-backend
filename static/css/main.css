@@ -1018,3 +1018,62 @@ ul.advisory_committee li {
     color:#ba0a1e;
     text-decoration:underline;
 }
+
+.navbar .btn-navbar {
+    background: #fff;
+    color: #000;
+    box-shadow: none;
+}
+
+@media (min-width:767px) {
+    .collapse {
+        height: auto;
+    }
+}
+
+@media (max-width:767px) {
+    .navbar-inner {
+        padding-right: 0px;
+    }
+    .navbar .nav {
+        float: none;
+    }
+    .navbar .nav li:first {
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+    }
+    .navbar .nav li {
+        width: 100%;
+        display: block;
+        border-bottom: 1px solid #eee;
+    }
+    .navbar .nav li a {
+        display: block;
+    }
+    .navbar .nav li i {
+        padding-left: 10px;
+        padding-right: 15px;
+    }
+    .navbar, .navbar-static-top {
+        width: 100%;
+        margin-right: -20px;
+    }
+    .navbar-collapse {
+        width: 100%;
+    }
+    .full-page-header {
+      margin-left: -20px;
+      margin-right: -20px;
+    }
+
+    .splash-item {
+        max-width:100%;
+        min-width:20%;
+        display: inline-block;
+        background: #eee;
+        position: relative;
+        margin: 20px;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+}
