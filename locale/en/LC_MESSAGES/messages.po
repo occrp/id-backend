@@ -8,2318 +8,448 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-31 17:00-0300\n"
+"POT-Creation-Date: 2015-11-19 12:26+0100\n"
 "PO-Revision-Date: 2013-08-05 15:16+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: app/countries.py:4 app/models.py:38
-msgid "-----------"
-msgstr ""
-
-#: app/countries.py:5
-msgid "Afghanistan"
-msgstr ""
-
-#: app/countries.py:6
-msgid "Åland Islands"
-msgstr ""
-
-#: app/countries.py:7
-msgid "Albania"
-msgstr ""
-
-#: app/countries.py:8
-msgid "Algeria"
-msgstr ""
-
-#: app/countries.py:9
-msgid "American Samoa"
-msgstr ""
-
-#: app/countries.py:10
-msgid "Andorra"
-msgstr ""
-
-#: app/countries.py:11
-msgid "Angola"
-msgstr ""
-
-#: app/countries.py:12
-msgid "Anguilla"
-msgstr ""
-
-#: app/countries.py:13
-msgid "Antarctica"
-msgstr ""
-
-#: app/countries.py:14
-msgid "Antigua and Barbuda"
-msgstr ""
-
-#: app/countries.py:15
-msgid "Argentina"
-msgstr ""
-
-#: app/countries.py:16
-msgid "Armenia"
-msgstr ""
-
-#: app/countries.py:17
-msgid "Aruba"
-msgstr ""
-
-#: app/countries.py:18
-msgid "Australia"
-msgstr ""
-
-#: app/countries.py:19
-msgid "Austria"
-msgstr ""
-
-#: app/countries.py:20
-msgid "Azerbaijan"
-msgstr ""
-
-#: app/countries.py:21
-msgid "Bahamas"
-msgstr ""
-
-#: app/countries.py:22
-msgid "Bahrain"
-msgstr ""
-
-#: app/countries.py:23
-msgid "Bangladesh"
-msgstr ""
-
-#: app/countries.py:24
-msgid "Barbados"
-msgstr ""
-
-#: app/countries.py:25
-msgid "Belarus"
-msgstr ""
-
-#: app/countries.py:26
-msgid "Belgium"
-msgstr ""
-
-#: app/countries.py:27
-msgid "Belize"
-msgstr ""
-
-#: app/countries.py:28
-msgid "Benin"
-msgstr ""
-
-#: app/countries.py:29
-msgid "Bermuda"
-msgstr ""
-
-#: app/countries.py:30
-msgid "Bhutan"
-msgstr ""
-
-#: app/countries.py:31
-msgid "Bolivia, Plurinational State of"
-msgstr ""
-
-#: app/countries.py:32
-msgid "Bonaire, Sint Eustatius and Saba"
-msgstr ""
-
-#: app/countries.py:33
-msgid "Bosnia and Herzegovina"
-msgstr ""
-
-#: app/countries.py:34
-msgid "Botswana"
-msgstr ""
-
-#: app/countries.py:35
-msgid "Bouvet Island"
-msgstr ""
-
-#: app/countries.py:36
-msgid "Brazil"
-msgstr ""
-
-#: app/countries.py:37
-msgid "British Indian Ocean Territory"
-msgstr ""
-
-#: app/countries.py:38
-msgid "Brunei Darussalam"
-msgstr ""
-
-#: app/countries.py:39
-msgid "Bulgaria"
-msgstr ""
-
-#: app/countries.py:40
-msgid "Burkina Faso"
-msgstr ""
-
-#: app/countries.py:41
-msgid "Burundi"
-msgstr ""
-
-#: app/countries.py:42
-msgid "Cambodia"
-msgstr ""
-
-#: app/countries.py:43
-msgid "Cameroon"
-msgstr ""
-
-#: app/countries.py:44
-msgid "Canada"
-msgstr ""
-
-#: app/countries.py:45
-msgid "Cape Verde"
-msgstr ""
-
-#: app/countries.py:46
-msgid "Cayman Islands"
-msgstr ""
-
-#: app/countries.py:47
-msgid "Central African Republic"
-msgstr ""
-
-#: app/countries.py:48
-msgid "Chad"
-msgstr ""
-
-#: app/countries.py:49
-msgid "Chile"
-msgstr ""
-
-#: app/countries.py:50
-msgid "China"
-msgstr ""
-
-#: app/countries.py:51
-msgid "Christmas Island"
-msgstr ""
-
-#: app/countries.py:52
-msgid "Cocos (Keeling) Islands"
-msgstr ""
-
-#: app/countries.py:53
-msgid "Colombia"
-msgstr ""
-
-#: app/countries.py:54
-msgid "Comoros"
-msgstr ""
-
-#: app/countries.py:55
-msgid "Congo"
-msgstr ""
-
-#: app/countries.py:56
-msgid "Congo, The Democratic Republic of the"
-msgstr ""
-
-#: app/countries.py:57
-msgid "Cook Islands"
-msgstr ""
-
-#: app/countries.py:58
-msgid "Costa Rica"
-msgstr ""
-
-#: app/countries.py:59
-msgid "Côte D'ivoire"
-msgstr ""
-
-#: app/countries.py:60
-msgid "Croatia"
-msgstr ""
-
-#: app/countries.py:61
-msgid "Cuba"
-msgstr ""
-
-#: app/countries.py:62
-msgid "Curaçao"
-msgstr ""
-
-#: app/countries.py:63
-msgid "Cyprus"
-msgstr ""
-
-#: app/countries.py:64
-msgid "Czech Republic"
-msgstr ""
-
-#: app/countries.py:65
-msgid "Denmark"
-msgstr ""
-
-#: app/countries.py:66
-msgid "Djibouti"
-msgstr ""
-
-#: app/countries.py:67
-msgid "Dominica"
-msgstr ""
-
-#: app/countries.py:68
-msgid "Dominican Republic"
-msgstr ""
-
-#: app/countries.py:69
-msgid "Ecuador"
-msgstr ""
-
-#: app/countries.py:70
-msgid "Egypt"
-msgstr ""
-
-#: app/countries.py:71
-msgid "El Salvador"
-msgstr ""
-
-#: app/countries.py:72
-msgid "Equatorial Guinea"
-msgstr ""
-
-#: app/countries.py:73
-msgid "Eritrea"
-msgstr ""
-
-#: app/countries.py:74
-msgid "Estonia"
-msgstr ""
-
-#: app/countries.py:75
-msgid "Ethiopia"
-msgstr ""
-
-#: app/countries.py:76
-msgid "Falkland Islands (Malvinas)"
-msgstr ""
-
-#: app/countries.py:77
-msgid "Faroe Islands"
-msgstr ""
-
-#: app/countries.py:78
-msgid "Fiji"
-msgstr ""
-
-#: app/countries.py:79
-msgid "Finland"
-msgstr ""
-
-#: app/countries.py:80
-msgid "France"
-msgstr ""
-
-#: app/countries.py:81
-msgid "French Guiana"
-msgstr ""
-
-#: app/countries.py:82
-msgid "French Polynesia"
-msgstr ""
-
-#: app/countries.py:83
-msgid "French Southern Territories"
-msgstr ""
-
-#: app/countries.py:84
-msgid "Gabon"
-msgstr ""
-
-#: app/countries.py:85
-msgid "Gambia"
-msgstr ""
-
-#: app/countries.py:86
-msgid "Georgia"
-msgstr ""
-
-#: app/countries.py:87
-msgid "Germany"
-msgstr ""
-
-#: app/countries.py:88
-msgid "Ghana"
-msgstr ""
-
-#: app/countries.py:89
-msgid "Gibraltar"
-msgstr ""
-
-#: app/countries.py:90
-msgid "Greece"
-msgstr ""
-
-#: app/countries.py:91
-msgid "Greenland"
-msgstr ""
-
-#: app/countries.py:92
-msgid "Grenada"
-msgstr ""
-
-#: app/countries.py:93
-msgid "Guadeloupe"
-msgstr ""
-
-#: app/countries.py:94
-msgid "Guam"
-msgstr ""
-
-#: app/countries.py:95
-msgid "Guatemala"
-msgstr ""
-
-#: app/countries.py:96
-msgid "Guernsey"
-msgstr ""
-
-#: app/countries.py:97
-msgid "Guinea"
-msgstr ""
-
-#: app/countries.py:98
-msgid "Guinea-bissau"
-msgstr ""
-
-#: app/countries.py:99
-msgid "Guyana"
-msgstr ""
-
-#: app/countries.py:100
-msgid "Haiti"
-msgstr ""
-
-#: app/countries.py:101
-msgid "Heard Island and McDonald Islands"
-msgstr ""
-
-#: app/countries.py:102
-msgid "Holy See (Vatican City State)"
-msgstr ""
-
-#: app/countries.py:103
-msgid "Honduras"
-msgstr ""
-
-#: app/countries.py:104
-msgid "Hong Kong"
-msgstr ""
-
-#: app/countries.py:105
-msgid "Hungary"
-msgstr ""
-
-#: app/countries.py:106
-msgid "Iceland"
-msgstr ""
-
-#: app/countries.py:107
-msgid "India"
-msgstr ""
-
-#: app/countries.py:108
-msgid "Indonesia"
-msgstr ""
-
-#: app/countries.py:109
-msgid "Iran, Islamic Republic of"
-msgstr ""
-
-#: app/countries.py:110
-msgid "Iraq"
-msgstr ""
-
-#: app/countries.py:111
-msgid "Ireland"
-msgstr ""
-
-#: app/countries.py:112
-msgid "Isle of Man"
-msgstr ""
-
-#: app/countries.py:113
-msgid "Israel"
-msgstr ""
-
-#: app/countries.py:114
-msgid "Italy"
-msgstr ""
-
-#: app/countries.py:115
-msgid "Jamaica"
-msgstr ""
-
-#: app/countries.py:116
-msgid "Japan"
-msgstr ""
-
-#: app/countries.py:117
-msgid "Jersey"
-msgstr ""
-
-#: app/countries.py:118
-msgid "Jordan"
-msgstr ""
-
-#: app/countries.py:119
-msgid "Kazakhstan"
-msgstr ""
-
-#: app/countries.py:120
-msgid "Kenya"
-msgstr ""
-
-#: app/countries.py:121
-msgid "Kiribati"
-msgstr ""
-
-#: app/countries.py:122
-msgid "Korea, Democratic People's Republic of"
-msgstr ""
-
-#: app/countries.py:123
-msgid "Korea, Republic of"
-msgstr ""
-
-#: app/countries.py:124
-msgid "Kuwait"
-msgstr ""
-
-#: app/countries.py:125
-msgid "Kyrgyzstan"
-msgstr ""
-
-#: app/countries.py:126
-msgid "Lao People's Democratic Republic"
-msgstr ""
-
-#: app/countries.py:127
-msgid "Latvia"
-msgstr ""
-
-#: app/countries.py:128
-msgid "Lebanon"
-msgstr ""
-
-#: app/countries.py:129
-msgid "Lesotho"
-msgstr ""
-
-#: app/countries.py:130
-msgid "Liberia"
-msgstr ""
-
-#: app/countries.py:131
-msgid "Libya"
-msgstr ""
-
-#: app/countries.py:132
-msgid "Liechtenstein"
-msgstr ""
-
-#: app/countries.py:133
-msgid "Lithuania"
-msgstr ""
-
-#: app/countries.py:134
-msgid "Luxembourg"
-msgstr ""
-
-#: app/countries.py:135
-msgid "Macao"
-msgstr ""
-
-#: app/countries.py:136
-msgid "Macedonia, The Former Yugoslav Republic of"
-msgstr ""
-
-#: app/countries.py:137
-msgid "Madagascar"
-msgstr ""
-
-#: app/countries.py:138
-msgid "Malawi"
-msgstr ""
-
-#: app/countries.py:139
-msgid "Malaysia"
-msgstr ""
-
-#: app/countries.py:140
-msgid "Maldives"
-msgstr ""
-
-#: app/countries.py:141
-msgid "Mali"
-msgstr ""
-
-#: app/countries.py:142
-msgid "Malta"
-msgstr ""
-
-#: app/countries.py:143
-msgid "Marshall Islands"
-msgstr ""
-
-#: app/countries.py:144
-msgid "Martinique"
-msgstr ""
-
-#: app/countries.py:145
-msgid "Mauritania"
-msgstr ""
-
-#: app/countries.py:146
-msgid "Mauritius"
-msgstr ""
-
-#: app/countries.py:147
-msgid "Mayotte"
-msgstr ""
-
-#: app/countries.py:148
-msgid "Mexico"
-msgstr ""
-
-#: app/countries.py:149
-msgid "Micronesia, Federated States of"
-msgstr ""
-
-#: app/countries.py:150
-msgid "Moldova, Republic of"
-msgstr ""
-
-#: app/countries.py:151
-msgid "Monaco"
-msgstr ""
-
-#: app/countries.py:152
-msgid "Mongolia"
-msgstr ""
-
-#: app/countries.py:153
-msgid "Montenegro"
-msgstr ""
-
-#: app/countries.py:154
-msgid "Montserrat"
-msgstr ""
-
-#: app/countries.py:155
-msgid "Morocco"
-msgstr ""
-
-#: app/countries.py:156
-msgid "Mozambique"
-msgstr ""
-
-#: app/countries.py:157
-msgid "Myanmar"
-msgstr ""
-
-#: app/countries.py:158
-msgid "Namibia"
-msgstr ""
-
-#: app/countries.py:159
-msgid "Nauru"
-msgstr ""
-
-#: app/countries.py:160
-msgid "Nepal"
-msgstr ""
-
-#: app/countries.py:161
-msgid "Netherlands"
-msgstr ""
-
-#: app/countries.py:162
-msgid "New Caledonia"
-msgstr ""
-
-#: app/countries.py:163
-msgid "New Zealand"
-msgstr ""
-
-#: app/countries.py:164
-msgid "Nicaragua"
-msgstr ""
-
-#: app/countries.py:165
-msgid "Niger"
-msgstr ""
-
-#: app/countries.py:166
-msgid "Nigeria"
-msgstr ""
-
-#: app/countries.py:167
-msgid "Niue"
-msgstr ""
-
-#: app/countries.py:168
-msgid "Norfolk Island"
-msgstr ""
-
-#: app/countries.py:169
-msgid "Northern Mariana Islands"
-msgstr ""
-
-#: app/countries.py:170
-msgid "Norway"
-msgstr ""
-
-#: app/countries.py:171
-msgid "Oman"
-msgstr ""
-
-#: app/countries.py:172
-msgid "Pakistan"
-msgstr ""
-
-#: app/countries.py:173
-msgid "Palau"
-msgstr ""
-
-#: app/countries.py:174
-msgid "Palestinian Territory, Occupied"
-msgstr ""
-
-#: app/countries.py:175
-msgid "Panama"
-msgstr ""
-
-#: app/countries.py:176
-msgid "Papua New Guinea"
-msgstr ""
-
-#: app/countries.py:177
-msgid "Paraguay"
-msgstr ""
-
-#: app/countries.py:178
-msgid "Peru"
-msgstr ""
-
-#: app/countries.py:179
-msgid "Philippines"
-msgstr ""
-
-#: app/countries.py:180
-msgid "Pitcairn"
-msgstr ""
-
-#: app/countries.py:181
-msgid "Poland"
-msgstr ""
-
-#: app/countries.py:182
-msgid "Portugal"
-msgstr ""
-
-#: app/countries.py:183
-msgid "Puerto Rico"
-msgstr ""
-
-#: app/countries.py:184
-msgid "Qatar"
-msgstr ""
-
-#: app/countries.py:185
-msgid "Réunion"
-msgstr ""
-
-#: app/countries.py:186
-msgid "Romania"
-msgstr ""
-
-#: app/countries.py:187
-msgid "Russian Federation"
-msgstr ""
-
-#: app/countries.py:188
-msgid "Rwanda"
-msgstr ""
-
-#: app/countries.py:189
-msgid "Saint Barthélemy"
-msgstr ""
-
-#: app/countries.py:190
-msgid "Saint Helena, Ascension and Tristan Da Cunha"
-msgstr ""
-
-#: app/countries.py:191
-msgid "Saint Kitts and Nevis"
-msgstr ""
-
-#: app/countries.py:192
-msgid "Saint Lucia"
-msgstr ""
-
-#: app/countries.py:193
-msgid "Saint Martin (French Part)"
-msgstr ""
-
-#: app/countries.py:194
-msgid "Saint Pierre and Miquelon"
-msgstr ""
-
-#: app/countries.py:195
-msgid "Saint Vincent and the Grenadines"
-msgstr ""
-
-#: app/countries.py:196
-msgid "Samoa"
-msgstr ""
-
-#: app/countries.py:197
-msgid "San Marino"
-msgstr ""
-
-#: app/countries.py:198
-msgid "Sao Tome and Principe"
-msgstr ""
-
-#: app/countries.py:199
-msgid "Saudi Arabia"
-msgstr ""
-
-#: app/countries.py:200
-msgid "Senegal"
-msgstr ""
-
-#: app/countries.py:201
-msgid "Serbia"
-msgstr ""
-
-#: app/countries.py:202
-msgid "Seychelles"
-msgstr ""
-
-#: app/countries.py:203
-msgid "Sierra Leone"
-msgstr ""
-
-#: app/countries.py:204
-msgid "Singapore"
-msgstr ""
-
-#: app/countries.py:205
-msgid "Sint Maarten (Dutch Part)"
-msgstr ""
-
-#: app/countries.py:206
-msgid "Slovakia"
-msgstr ""
-
-#: app/countries.py:207
-msgid "Slovenia"
-msgstr ""
-
-#: app/countries.py:208
-msgid "Solomon Islands"
-msgstr ""
-
-#: app/countries.py:209
-msgid "Somalia"
-msgstr ""
-
-#: app/countries.py:210
-msgid "South Africa"
-msgstr ""
-
-#: app/countries.py:211
-msgid "South Georgia and the South Sandwich Islands"
-msgstr ""
-
-#: app/countries.py:212
-msgid "South Sudan"
-msgstr ""
-
-#: app/countries.py:213
-msgid "Spain"
-msgstr ""
-
-#: app/countries.py:214
-msgid "Sri Lanka"
-msgstr ""
-
-#: app/countries.py:215
-msgid "Sudan"
-msgstr ""
-
-#: app/countries.py:216
-msgid "Suriname"
-msgstr ""
-
-#: app/countries.py:217
-msgid "Svalbard and Jan Mayen"
-msgstr ""
-
-#: app/countries.py:218
-msgid "Swaziland"
-msgstr ""
-
-#: app/countries.py:219
-msgid "Sweden"
-msgstr ""
-
-#: app/countries.py:220
-msgid "Switzerland"
-msgstr ""
-
-#: app/countries.py:221
-msgid "Syrian Arab Republic"
-msgstr ""
-
-#: app/countries.py:222
-msgid "Taiwan, Province of China"
-msgstr ""
-
-#: app/countries.py:223
-msgid "Tajikistan"
-msgstr ""
-
-#: app/countries.py:224
-msgid "Tanzania, United Republic of"
-msgstr ""
-
-#: app/countries.py:225
-msgid "Thailand"
-msgstr ""
-
-#: app/countries.py:226
-msgid "Timor-leste"
-msgstr ""
-
-#: app/countries.py:227
-msgid "Togo"
-msgstr ""
-
-#: app/countries.py:228
-msgid "Tokelau"
-msgstr ""
-
-#: app/countries.py:229
-msgid "Tonga"
-msgstr ""
-
-#: app/countries.py:230
-msgid "Trinidad and Tobago"
-msgstr ""
-
-#: app/countries.py:231
-msgid "Tunisia"
-msgstr ""
-
-#: app/countries.py:232
-msgid "Turkey"
-msgstr ""
-
-#: app/countries.py:233
-msgid "Turkmenistan"
-msgstr ""
-
-#: app/countries.py:234
-msgid "Turks and Caicos Islands"
-msgstr ""
-
-#: app/countries.py:235
-msgid "Tuvalu"
-msgstr ""
-
-#: app/countries.py:236
-msgid "Uganda"
-msgstr ""
-
-#: app/countries.py:237
-msgid "Ukraine"
-msgstr ""
-
-#: app/countries.py:238
-msgid "United Arab Emirates"
-msgstr ""
-
-#: app/countries.py:239
-msgid "United Kingdom"
-msgstr ""
-
-#: app/countries.py:240
-msgid "United States"
-msgstr ""
-
-#: app/countries.py:241
-msgid "United States Minor Outlying Islands"
-msgstr ""
-
-#: app/countries.py:242
-msgid "Uruguay"
-msgstr ""
-
-#: app/countries.py:243
-msgid "Uzbekistan"
-msgstr ""
-
-#: app/countries.py:244
-msgid "Vanuatu"
-msgstr ""
-
-#: app/countries.py:245
-msgid "Venezuela, Bolivarian Republic of"
-msgstr ""
-
-#: app/countries.py:246
-msgid "Viet Nam"
-msgstr ""
-
-#: app/countries.py:247
-msgid "Virgin Islands, British"
-msgstr ""
-
-#: app/countries.py:248
-msgid "Virgin Islands, U.S."
-msgstr ""
-
-#: app/countries.py:249
-msgid "Wallis and Futuna"
-msgstr ""
-
-#: app/countries.py:250
-msgid "Western Sahara"
-msgstr ""
-
-#: app/countries.py:251
-msgid "Yemen"
-msgstr ""
-
-#: app/countries.py:252
-msgid "Zambia"
-msgstr ""
-
-#: app/countries.py:253
-msgid "Zimbabwe"
-msgstr ""
-
-#: app/fields.py:75
-msgid "Key is invalid or does not exist."
-msgstr ""
-
-#: app/forms.py:52 app/models.py:275
-msgid "Comments"
-msgstr ""
-
-#: app/forms.py:53 app/templates/crud/item_base.jinja:21
-msgid "Files"
-msgstr ""
-
-#: app/forms.py:120 app/models.py:268 app/models.py:270
-msgid "Entity One"
-msgstr ""
-
-#: app/forms.py:121 app/models.py:269 app/models.py:271
-msgid "Entity Two"
-msgstr ""
-
-#: app/forms.py:144
-msgid "Full Name"
-msgstr ""
-
-#: app/forms.py:146 app/models.py:194
-msgid "Identifier"
-msgstr ""
-
-#: app/forms.py:156
-msgid "Illegal Identifier. Only lowercase letters and _ are allowed."
-msgstr ""
-
-#: app/forms.py:163
-msgid "Field with this identifier already exists."
-msgstr ""
-
-#: app/forms.py:197 app/templates/tickets/request_admin_base.jinja:16
-#: app/templates/tickets/request_list.jinja:15
-#: app/templates/tickets/request_list.jinja:47
-#: app/templates/tickets/responds_list.jinja:12
-#: app/templates/tickets/responds_list.jinja:44
-msgid "Summary"
-msgstr ""
-
-#: app/forms.py:202
-msgid "Research Goal"
-msgstr ""
-
-#: app/forms.py:206
-msgid "Background"
-msgstr ""
-
-#: app/forms.py:209
-msgid "Any information you already have"
-msgstr ""
-
-#: app/forms.py:213 app/templates/tickets/request_details.jinja:120
-msgid "Sources"
-msgstr ""
-
-#: app/forms.py:215
-msgid "Where you have already looked for information"
-msgstr ""
-
-#: app/forms.py:218 app/forms.py:308 app/templates/search_base.jinja:10
-msgid "Entities"
-msgstr ""
-
-#: app/forms.py:221
-msgid "Attach existing known entities to the request."
-msgstr ""
-
-#: app/forms.py:225 app/templates/tickets/request_details.jinja:92
-msgid "Location"
-msgstr ""
-
-#: app/forms.py:226
-msgid "Where are you researching?"
-msgstr ""
-
-#: app/forms.py:229 app/templates/tickets/request_admin_base.jinja:19
-#: app/templates/tickets/request_details.jinja:96
-#: app/templates/tickets/request_list.jinja:18
-#: app/templates/tickets/request_list.jinja:50
-#: app/templates/tickets/responds_list.jinja:15
-#: app/templates/tickets/responds_list.jinja:47
-msgid "Deadline"
-msgstr ""
-
-#: app/forms.py:231
-msgid "Sensitive?"
-msgstr ""
-
-#: app/forms.py:232
-msgid ""
-"This is highly sensitive, do not let volunteer research librarians see "
-"this request."
-msgstr ""
-
-#: app/forms.py:245
-msgid "Reason"
-msgstr ""
-
-#: app/forms.py:250 app/templates/tickets/request_details.jinja:167
-msgid "Comment"
-msgstr ""
-
-#: app/forms.py:259
-msgid "Paid Status"
-msgstr ""
-
-#: app/forms.py:268
-msgid "Add Comment"
-msgstr ""
-
-#: app/forms.py:284
-msgid "Manually force the status of the ticket"
-msgstr ""
-
-#: app/forms.py:286 app/models.py:305
-#: app/templates/tickets/request_details.jinja:75
-msgid "Status"
-msgstr ""
-
-#: app/forms.py:288
-msgid "Assign an OCCRP Staff member as the ticket responder"
-msgstr ""
-
-#: app/forms.py:289 app/templates/tickets/request_admin_base.jinja:18
-#: app/templates/tickets/request_details.jinja:83
-#: app/templates/tickets/request_list.jinja:17
-#: app/templates/tickets/request_list.jinja:49
-msgid "Responder"
-msgstr ""
-
-#: app/forms.py:291
-msgid "Once user issues are dealt with, un-flag the ticket"
-msgstr ""
-
-#: app/forms.py:292 app/models.py:53
-msgid "Flagged"
-msgstr ""
-
-#: app/forms.py:318
-msgid "Result type"
-msgstr ""
-
-#: app/forms.py:319
-msgid "All"
-msgstr ""
-
-#: app/forms.py:320 app/templates/admin_base.jinja:9
-#: app/templates/crud/company/list.jinja:2
-msgid "Companies"
-msgstr ""
-
-#: app/forms.py:321 app/templates/admin_base.jinja:12
-#: app/templates/crud/person/list.jinja:2
-msgid "People"
-msgstr ""
-
-#: app/forms.py:322 app/templates/admin_base.jinja:15
-#: app/templates/crud/location/list.jinja:2
-msgid "Locations"
-msgstr ""
-
-#: app/models.py:23
-msgid "Limited liability"
-msgstr ""
-
-#: app/models.py:24
-msgid "Partnership"
-msgstr ""
-
-#: app/models.py:25
-msgid "Stock company"
-msgstr ""
-
-#: app/models.py:26
-msgid "Foundation"
-msgstr ""
-
-#: app/models.py:27
-msgid "Non-profit"
-msgstr ""
-
-#: app/models.py:28 app/models.py:109
-msgid "Other"
-msgstr ""
-
-#: app/models.py:33
-msgid "Active"
-msgstr ""
-
-#: app/models.py:34
-msgid "Inactive"
-msgstr ""
-
-#: app/models.py:39
-msgid "Male"
-msgstr ""
-
-#: app/models.py:40
-msgid "Female"
-msgstr ""
-
-#: app/models.py:44
-msgid "Identify what a person owns"
-msgstr ""
-
-#: app/models.py:45
-msgid "Determine company ownership"
-msgstr ""
-
-#: app/models.py:49 app/handlers/ticketing.py:290
-msgid "Updated"
-msgstr ""
-
-#: app/models.py:50
-msgid "Closed"
-msgstr ""
-
-#: app/models.py:51 app/models.py:59 app/models.py:68
-msgid "Cancelled"
-msgstr ""
-
-#: app/models.py:52
-msgid "Re-Opened"
-msgstr ""
-
-#: app/models.py:56
-msgid "New"
-msgstr ""
-
-#: app/models.py:57
-msgid "In Progress"
-msgstr ""
-
-#: app/models.py:58
-msgid "Closed-answered"
-msgstr ""
-
-#: app/models.py:60
-msgid "Finished"
-msgstr ""
-
-#: app/models.py:66
-msgid "Paid"
-msgstr ""
-
-#: app/models.py:67
-msgid "Paid by OCCRP"
-msgstr ""
-
-#: app/models.py:74
-msgid "Parent"
-msgstr ""
-
-#: app/models.py:75
-msgid "Spouse"
-msgstr ""
-
-#: app/models.py:76
-msgid "Other Relative"
-msgstr ""
-
-#: app/models.py:77
-msgid "Friend or Acquaintance"
-msgstr ""
-
-#: app/models.py:78
-msgid "Employer"
-msgstr ""
-
-#: app/models.py:79
-msgid "Business Partner"
-msgstr ""
-
-#: app/models.py:80
-msgid "Proxy"
-msgstr ""
-
-#: app/models.py:84
-msgid "Director"
-msgstr ""
-
-#: app/models.py:85
-msgid "Secretary"
-msgstr ""
-
-#: app/models.py:86
-msgid "Authorized Person"
-msgstr ""
-
-#: app/models.py:87
-msgid "Representative"
-msgstr ""
-
-#: app/models.py:88
-msgid "Shareholder"
-msgstr ""
-
-#: app/models.py:89
-msgid "Employee"
-msgstr ""
-
-#: app/models.py:93
-msgid "Born In"
-msgstr ""
-
-#: app/models.py:94 app/models.py:104
-msgid "Registered Address"
-msgstr ""
-
-#: app/models.py:95
-msgid "Home Address"
-msgstr ""
-
-#: app/models.py:99
-msgid "Subsidiary"
-msgstr ""
-
-#: app/models.py:100
-msgid "Trading Partner"
-msgstr ""
-
-#: app/models.py:105
-msgid "Place of Business"
-msgstr ""
-
-#: app/models.py:125
-msgid "Media: non-profit"
-msgstr ""
-
-#: app/models.py:126
-msgid "Media: for-profit"
-msgstr ""
-
-#: app/models.py:127
-msgid "Media: freelance"
-msgstr ""
-
-#: app/models.py:128
-msgid "Business: due diligence/investigation"
-msgstr ""
-
-#: app/models.py:129
-msgid "Business: legal"
-msgstr ""
-
-#: app/models.py:130
-msgid "Business: general"
-msgstr ""
-
-#: app/models.py:131
-msgid "Government"
-msgstr ""
-
-#: app/models.py:132
-msgid "Civil society/non-profit"
-msgstr ""
-
-#: app/models.py:133
-msgid "Individual"
-msgstr ""
-
-#: app/models.py:134
-msgid "Other (please explain in comments)"
-msgstr ""
-
-#: app/models.py:139
-msgid "Website"
-msgstr ""
-
-#: app/models.py:140
-msgid "Print"
-msgstr ""
-
-#: app/models.py:141
-msgid "Broadcast TV"
-msgstr ""
-
-#: app/models.py:142
-msgid "Broadcast Radio"
-msgstr ""
-
-#: app/models.py:143
-msgid "Other or don't know"
-msgstr ""
-
-#: app/models.py:148
-msgid "Less than 10,000"
-msgstr ""
-
-#: app/models.py:149
-msgid "10,000 to 25,000"
-msgstr ""
-
-#: app/models.py:150
-msgid "25,000 to 50,000"
-msgstr ""
-
-#: app/models.py:151
-msgid "50,000 to 100,000"
-msgstr ""
-
-#: app/models.py:152
-msgid "100,000 to 250,000"
-msgstr ""
-
-#: app/models.py:153
-msgid "250,000 to 500,000"
-msgstr ""
-
-#: app/models.py:154
-msgid "More than 500,000"
-msgstr ""
-
-#: app/models.py:193
-msgid "Label"
-msgstr ""
-
-#: app/models.py:195
-msgid "Kind"
-msgstr ""
-
-#: app/models.py:272 app/templates/tickets/request_admin_base.jinja:17
-#: app/templates/tickets/request_list.jinja:16
-#: app/templates/tickets/request_list.jinja:48
-#: app/templates/tickets/responds_list.jinja:13
-#: app/templates/tickets/responds_list.jinja:45
-msgid "Type"
-msgstr ""
-
-#: app/models.py:297 app/models.py:360 app/models.py:538
-msgid "Name"
-msgstr ""
-
-#: app/models.py:298 app/models.py:328
-msgid "Name Variations"
-msgstr ""
-
-#: app/models.py:301
-msgid "Jurisdiction Registered"
-msgstr ""
-
-#: app/models.py:303
-msgid "Form of Company"
-msgstr ""
-
-#: app/models.py:306
-msgid "Date Registered"
-msgstr ""
-
-#: app/models.py:307
-msgid "Date Dissolved"
-msgstr ""
-
-#: app/models.py:325 app/models.py:553
-msgid "First Name"
-msgstr ""
-
-#: app/models.py:326
-msgid "Middle Name"
-msgstr ""
-
-#: app/models.py:327 app/models.py:554
-msgid "Last Name"
-msgstr ""
-
-#: app/models.py:330
-msgid "Date of Birth"
-msgstr ""
-
-#: app/models.py:331
-msgid "Date of Death"
-msgstr ""
-
-#: app/models.py:332
-msgid "Sex"
-msgstr ""
-
-#: app/models.py:333
-msgid "Nationalities"
-msgstr ""
-
-#: app/models.py:335
-msgid "ID Numbers"
-msgstr ""
-
-#: app/models.py:361 app/models.py:557
-msgid "Address"
-msgstr ""
-
-#: app/models.py:362
-msgid "City"
-msgstr ""
-
-#: app/models.py:363
-msgid "State/Province/Region"
-msgstr ""
-
-#: app/models.py:364
-msgid "ZIP/Postal Code"
-msgstr ""
-
-#: app/models.py:365 app/models.py:540 app/templates/external_databases.jinja:17
-msgid "Country"
-msgstr ""
-
-#: app/models.py:539
-msgid "Continent"
-msgstr ""
-
-#: app/models.py:541
-msgid "Lat"
-msgstr ""
-
-#: app/models.py:542
-msgid "Long"
-msgstr ""
-
-#: app/models.py:543
-msgid "Accessibility"
-msgstr ""
-
-#: app/models.py:544 app/templates/external_databases.jinja:18
-msgid "Type of Database"
-msgstr ""
-
-#: app/models.py:545 app/templates/external_databases.jinja:19
-msgid "Type of Data Provided"
-msgstr ""
-
-#: app/models.py:546 app/templates/external_databases.jinja:16
-msgid "Agency"
-msgstr ""
-
-#: app/models.py:547
-msgid "Database"
-msgstr ""
-
-#: app/models.py:548
-msgid "URL"
-msgstr ""
-
-#: app/models.py:549
-msgid "Notes"
-msgstr ""
-
-#: app/models.py:555
-msgid "Email Address"
-msgstr ""
-
-#: app/models.py:556
-msgid "Phone Number"
-msgstr ""
-
-#: app/models.py:559
-msgid "Industry"
-msgstr ""
-
-#: app/models.py:561
-msgid "Media Type"
-msgstr ""
-
-#: app/models.py:563
-msgid "Circulation (approximate per month)"
-msgstr ""
-
-#: app/models.py:566
-msgid "Anything else you would like to tell us"
-msgstr ""
-
-#: app/validators.py:13
-msgid "This field is required."
-msgstr ""
-
-#: app/appengine_modelforms/fields.py:91 app/appengine_modelforms/fields.py:173
-#: app/appengine_modelforms/fields.py:175
-msgid "Not a valid choice"
-msgstr ""
-
-#: app/appengine_modelforms/fields.py:194
-msgid "Not a valid list"
-msgstr ""
-
-#: app/appengine_modelforms/fields.py:213
-msgid "Not a valid integer list"
-msgstr ""
-
-#: app/google_apis/drive.py:21
-msgid "Error connecting to Google Drive."
-msgstr ""
-
-#: app/google_apis/drive.py:95
+#: data/importers/GDriveToPodaci/GDrive_to_Podaci.py:61
+#: data/importers/GDriveToPodaci/Rest_of_GDrive_to_Podaci.py:51
 msgid "Your Google Drive private key must be in \"PEM\" format."
 msgstr ""
 
-#: app/google_apis/drive.py:98
+#: data/importers/GDriveToPodaci/GDrive_to_Podaci.py:63
+#: data/importers/GDriveToPodaci/Rest_of_GDrive_to_Podaci.py:53
 msgid ""
 "Error refreshing Google Drive access token. Check your settings and try "
 "again."
 msgstr ""
 
-#: app/handlers/crud.py:66
-msgid "No entries found."
+#: databases/models.py:8
+msgid "Business Registry"
 msgstr ""
 
-#: app/handlers/crud.py:190
-#, python-format
-msgid "%(entity)s successfully saved.entity"
+#: databases/models.py:9
+msgid "Regional procurement registry"
 msgstr ""
 
-#: app/handlers/crud.py:202
-#, python-format
-msgid "%(entity)s successfully deleted.entity"
+#: databases/models.py:10
+msgid "Regulatory Agency"
 msgstr ""
 
-#: app/handlers/crud.py:214
-msgid "No relationships found."
+#: databases/models.py:11
+msgid "Commercial Register"
 msgstr ""
 
-#: app/handlers/crud.py:223
-#, python-format
-msgid "%(entity)s could not deleted because of %(rel_count)d relationsentity"
+#: databases/models.py:12
+msgid "Court Registry"
 msgstr ""
 
-#: app/handlers/crud.py:262
-msgid "No relationships found. You can create them via other entities."
+#: databases/models.py:13
+msgid "Gazette"
 msgstr ""
 
-#: app/handlers/crud.py:290
-msgid "No companies found."
+#: databases/models.py:14
+msgid "Land Registry"
 msgstr ""
 
-#: app/handlers/crud.py:303
-msgid "No people found."
+#: databases/models.py:15
+msgid "Intellectual Property"
 msgstr ""
 
-#: app/handlers/crud.py:316
-msgid "No locations found."
+#: databases/models.py:16
+msgid "Copyright"
 msgstr ""
 
-#: app/handlers/crud.py:329
-msgid "No extra fields found."
+#: databases/models.py:17
+msgid "Land Tribunal"
 msgstr ""
 
-#: app/handlers/crud.py:342 app/templates/external_databases.jinja:37
-msgid "No external databases found."
+#: databases/models.py:18
+msgid "Maritime"
 msgstr ""
 
-#: app/handlers/crud.py:365
-msgid "No account requests found."
+#: databases/models.py:22
+msgid "All Databases"
 msgstr ""
 
-#: app/handlers/crud.py:385
-msgid "Request submitted. Our staff will evaluate and respond to your request."
+#: databases/models.py:23
+msgid "Global Databases"
 msgstr ""
 
-#: app/handlers/drive.py:55 static/js/drive-picker.js:67
-msgid "File(s) successfully attached."
+#: databases/models.py:25
+msgid "Africa"
 msgstr ""
 
-#: app/handlers/ticketing.py:121
-msgid "The specified object could not be found"
+#: databases/models.py:26
+msgid "Asia"
 msgstr ""
 
-#: app/handlers/ticketing.py:122
-msgid "The specified object is not attached to this ticket."
+#: databases/models.py:27
+msgid "Europe"
 msgstr ""
 
-#: app/handlers/ticketing.py:124
-msgid "The specified object was successfully removed."
+#: databases/models.py:28
+msgid "Latin America"
 msgstr ""
 
-#: app/handlers/ticketing.py:199
-#, python-format
-msgid "Could not add duplicate(s): %(duplicates)sduplicates, "
+#: databases/models.py:42
+msgid "Agency / Name"
 msgstr ""
 
-#: app/handlers/ticketing.py:225
-msgid "Request has been marked as Closed & Answered"
+#: databases/models.py:44
+msgid "Type of Database"
 msgstr ""
 
-#: app/handlers/ticketing.py:247
-msgid "Request has been cancelled."
+#: databases/models.py:46 templates/tickets/partials/_ticketdetails.jinja:15
+msgid "Country"
 msgstr ""
 
-#: app/handlers/ticketing.py:271
-msgid ""
-"An Administrator has been notified notified, and will update the issue "
-"shortly."
+#: databases/models.py:47 templates/external_databases.jinja:26
+msgid "Paid Database"
 msgstr ""
 
-#: app/handlers/ticketing.py:295
-msgid "Request payment status has been updated"
+#: databases/models.py:49 templates/external_databases.jinja:29
+msgid "Registration Required"
 msgstr ""
 
-#: app/handlers/ticketing.py:315
-msgid "Request has been Re-opened"
+#: databases/models.py:51 templates/external_databases.jinja:32
+msgid "Government Database"
 msgstr ""
 
-#: app/handlers/ticketing.py:483
-msgid "Ticket Saved"
+#: databases/models.py:52 id/models.py:440
+msgid "URL"
 msgstr ""
 
-#: app/templates/401.jinja:4
-msgid "Permission Denied"
+#: databases/models.py:53
+msgid "Notes"
 msgstr ""
 
-#: app/templates/401.jinja:8
-msgid ""
-"You do not have permission to access this feature or content. If you "
-"believe this is an error, please contact an administrator."
+#: databases/models.py:54
+msgid "Blog Post"
 msgstr ""
 
-#: app/templates/404.jinja:4
-msgid "Page Not Found"
+#: databases/models.py:55
+msgid "YouTube Video Url"
 msgstr ""
 
-#: app/templates/404.jinja:8
-msgid ""
-"We're sorry, this page is not available. This error has been recorded "
-"will be investigated."
+#: id/constdata.py:37 ticket/constants.py:57
+msgid "Subsidized"
 msgstr ""
 
-#: app/templates/500.jinja:4
-msgid "Application Error"
+#: id/constdata.py:38 ticket/constants.py:58
+msgid "Covering Cost"
 msgstr ""
 
-#: app/templates/500.jinja:8
-msgid ""
-"There was an error in the application. This error has been recorded and "
-"should be addressed soon."
+#: id/constdata.py:39 ticket/constants.py:59
+msgid "Covering Cost +"
 msgstr ""
 
-#: app/templates/admin_base.jinja:7 app/templates/tickets/request_base.jinja:17
-msgid "Manage"
+#: id/constdata.py:43 templates/partials/_request_access.jinja:14
+msgid "Information Requester"
 msgstr ""
 
-#: app/templates/admin_base.jinja:18 app/templates/crud/item_base.jinja:43
-#: app/templates/crud/relationship/list.jinja:2
-msgid "Relationships"
+#: id/constdata.py:44 templates/partials/_request_access.jinja:29
+msgid "Volunteer"
 msgstr ""
 
-#: app/templates/admin_base.jinja:21 app/templates/crud/expandofield/list.jinja:2
-msgid "Extra Fields"
+#: id/constdata.py:48 ticket/constants.py:171
+msgid "None"
 msgstr ""
 
-#: app/templates/admin_base.jinja:24 app/templates/external_databases.jinja:6
-#: app/templates/external_databses.jinja:6
-msgid "External Databases"
-msgstr ""
-
-#: app/templates/admin_base.jinja:27
-#: app/templates/crud/accountrequest/list.jinja:2
-msgid "Account Requests"
-msgstr ""
-
-#: app/templates/base.jinja:12 app/templates/base.jinja:30
-msgid "Investigative Dashboard"
-msgstr ""
-
-#: app/templates/base.jinja:35 app/templates/search_base.jinja:6
-#: app/templates/search_documents.jinja:11 app/templates/search_entities.jinja:13
-msgid "Search"
-msgstr ""
-
-#: app/templates/base.jinja:39 app/templates/tickets/request_base.jinja:7
-msgid "Requests"
-msgstr ""
-
-#: app/templates/base.jinja:43
-msgid "Admin"
-msgstr ""
-
-#: app/templates/base.jinja:56
-msgid "Log out"
-msgstr ""
-
-#: app/templates/base.jinja:60 app/templates/request_account.jinja:6
-msgid "Request Account"
-msgstr ""
-
-#: app/templates/base.jinja:61
-msgid "Log In"
-msgstr ""
-
-#: app/templates/base.jinja:90
-msgid "Choose Language"
-msgstr ""
-
-#: app/templates/base.jinja:104
-msgid "&copy; OCCRP 2013"
-msgstr ""
-
-#: app/templates/company.jinja:5
-msgid "Company"
-msgstr ""
-
-#: app/templates/company.jinja:8 app/templates/request_account.jinja:16
-#: app/templates/tickets/request.jinja:15
-#: app/templates/tickets/request_details.jinja:188
-#: app/templates/tickets/request_details.jinja:189
-msgid "Submit"
-msgstr ""
-
-#: app/templates/drive_success.jinja:1
-msgid "Successfully connected to Google Drive."
-msgstr ""
-
-#: app/templates/drive_success.jinja:3
-msgid "Current user name:"
-msgstr ""
-
-#: app/templates/drive_success.jinja:4
-msgid "Root folder ID:"
-msgstr ""
-
-#: app/templates/drive_success.jinja:5
-msgid "Total quota (bytes):"
-msgstr ""
-
-#: app/templates/drive_success.jinja:6
-msgid "Used quota (bytes):"
-msgstr ""
-
-#: app/templates/drive_success.jinja:7
-msgid "Permission ID:"
-msgstr ""
-
-#: app/templates/external_databases.jinja:8
-#: app/templates/external_databses.jinja:8
-msgid "These databases might have the records you're looking for."
-msgstr ""
-
-#: app/templates/external_databases.jinja:9
-#: app/templates/external_databses.jinja:9
-msgid "Didn't find what you were looking for? "
-msgstr ""
-
-#: app/templates/external_databases.jinja:9
-msgid "Request manual help from our researchers."
-msgstr ""
-
-#: app/templates/external_databases.jinja:20
-msgid "Note"
-msgstr ""
-
-#: app/templates/external_databses.jinja:9
-msgid "Request manual help from our researchers"
-msgstr ""
-
-#: app/templates/request_account.jinja:9
-msgid ""
-"\n"
-"                In order to make information requests through "
-"Investigative\n"
-"                Dashboard, you must have an account. Please enter your\n"
-"                information below and one of our staff will evaluate and "
-"respond\n"
-"                to your request.\n"
-"            "
-msgstr ""
-
-#: app/templates/search_base.jinja:13
-msgid "Documents"
-msgstr ""
-
-#: app/templates/search_documents.jinja:7 app/templates/search_entities.jinja:8
-msgid "Search terms"
-msgstr ""
-
-#: app/templates/search_documents.jinja:30 app/templates/search_entities.jinja:67
-msgid "No search results."
-msgstr ""
-
-#: app/templates/search_entities.jinja:18
-#, python-format
-msgid ""
-"\n"
-"                %(num_results)s result found.\n"
-"            "
-msgid_plural ""
-"\n"
-"                %(num_results)s results found.\n"
-"            "
-msgstr[0] ""
-msgstr[1] ""
-
-#: app/templates/splash.jinja:6
-msgid ""
-"Investigative Dashboard helps investigators expose illicit ties that "
-"cross borders."
-msgstr ""
-
-#: app/templates/splash.jinja:15
-msgid "Search for a company or person of interest."
-msgstr ""
-
-#: app/templates/splash.jinja:20
-msgid ""
-"We have scraped the national registries of Panama, Cyprus and ten other "
-"countries."
-msgstr ""
-
-#: app/templates/splash.jinja:28
-msgid "If you need more data, visit recommended databases."
-msgstr ""
-
-#: app/templates/splash.jinja:33
-msgid "We have assembled a directory of over 300 local databases that might help."
-msgstr ""
-
-#: app/templates/splash.jinja:53
-msgid "If you still need help, sign in and request expert assistance."
-msgstr ""
-
-#: app/templates/splash.jinja:58
-msgid ""
-"We understand investigations are sensitive and we take privacy very "
-"seriously. Requests are only seen by our full-time experts and, if you "
-"are willing, by vetted volunteers."
-msgstr ""
-
-#: app/templates/crud/delete.jinja:4
-msgid "Confirm Deletion"
-msgstr ""
-
-#: app/templates/crud/delete.jinja:6
-msgid "Cannot delete this entity."
-msgstr ""
-
-#: app/templates/crud/delete_base.jinja:9
-#, python-format
-msgid ""
-"\n"
-"                Are you sure you want to delete %(object_name)s?\n"
-"                You will not be able to undo this action.\n"
-"            "
-msgstr ""
-
-#: app/templates/crud/delete_base.jinja:15
-msgid "Yes, I am sure."
-msgstr ""
-
-#: app/templates/crud/delete_base.jinja:19
-#, python-format
-msgid ""
-"\n"
-"                %(object_name)s is attached to the\n"
-"                following relationships:\n"
-"            "
-msgstr ""
-
-#: app/templates/crud/delete_base.jinja:24
-msgid "relationship"
-msgstr ""
-
-#: app/templates/crud/entity_details.jinja:17
-msgid "Close"
-msgstr ""
-
-#: app/templates/crud/item_base.jinja:9
-msgid "Delete"
-msgstr ""
-
-#: app/templates/crud/item_base.jinja:17
-#: app/templates/tickets/request_details.jinja:190
-msgid "Save"
-msgstr ""
-
-#: app/templates/crud/item_base.jinja:25
-msgid "File"
-msgstr ""
-
-#: app/templates/crud/item_base.jinja:26
-#: app/templates/tickets/request_details.jinja:94
-msgid "Created"
-msgstr ""
-
-#: app/templates/crud/item_base.jinja:27
-msgid "Last Modified"
-msgstr ""
-
-#: app/templates/crud/item_base.jinja:28
-msgid "Last Modified By"
-msgstr ""
-
-#: app/templates/crud/item_base.jinja:29
-#: app/templates/tickets/request_admin_base.jinja:20
-msgid "Actions"
-msgstr ""
-
-#: app/templates/crud/item_base.jinja:40
-msgid "Create"
-msgstr ""
-
-#: app/templates/crud/list_base.jinja:7
-#: app/templates/tickets/request_details.jinja:191
+#: id/constdata.py:49
+#: podaci/templates/podaci/partials/_podaci_create_collection.jinja:16
 msgid "Add"
 msgstr ""
 
-#: app/templates/crud/list_base.jinja:24
-#: app/templates/tickets/request_admin_base.jinja:56
-#: app/templates/tickets/request_admin_base.jinja:59
-msgid "Prev"
+#: id/constdata.py:50
+msgid "Edit"
 msgstr ""
 
-#: app/templates/crud/list_base.jinja:33
-#: app/templates/tickets/request_admin_base.jinja:65
-#: app/templates/tickets/request_admin_base.jinja:68
-msgid "Next"
+#: id/constdata.py:51
+#: podaci/templates/podaci/partials/_podaci_selection_actions.jinja:6
+msgid "Delete"
 msgstr ""
 
-#: app/templates/crud/accountrequest/add.jinja:2
-msgid "New Account Request"
+#: id/constdata.py:52
+msgid "Update"
 msgstr ""
 
-#: app/templates/crud/accountrequest/edit.jinja:2
-msgid "Edit Account Request"
+#: id/constdata.py:53
+msgid "Share"
 msgstr ""
 
-#: app/templates/crud/company/add.jinja:2
-msgid "New Company"
+#: id/constdata.py:54 ticket/constants.py:41 ticket/constants.py:144
+msgid "Other"
 msgstr ""
 
-#: app/templates/crud/company/edit.jinja:2
-msgid "Edit Company"
+#: id/forms.py:13
+msgid "Customer"
 msgstr ""
 
-#: app/templates/crud/expandofield/add.jinja:2
-msgid "New Extra Field"
+#: id/forms.py:27 id/models.py:81
+msgid "E-mail Address"
 msgstr ""
 
-#: app/templates/crud/expandofield/edit.jinja:2
-msgid "Edit Extra Field"
+#: id/forms.py:30
+msgid "Password"
 msgstr ""
 
-#: app/templates/crud/externaldb/add.jinja:2
-msgid "New Database"
+#: id/forms.py:33
+msgid "Password confirmation"
 msgstr ""
 
-#: app/templates/crud/externaldb/edit.jinja:2
-msgid "Edit External Database"
+#: id/forms.py:49
+msgid "A user with this e-mail address has already registered."
 msgstr ""
 
-#: app/templates/crud/externaldb/list.jinja:2
-msgid "Databases"
+#: id/forms.py:74
+msgid "Please provide a longer password"
 msgstr ""
 
-#: app/templates/crud/location/add.jinja:2
-msgid "New Location"
+#: id/forms.py:89
+msgid "You must type the same password each time"
 msgstr ""
 
-#: app/templates/crud/location/edit.jinja:2
-msgid "Edit Location"
+#: id/models.py:87 templates/accessrequest/list.jinja:16
+msgid "First Name"
 msgstr ""
 
-#: app/templates/crud/person/add.jinja:2
-msgid "New Person"
+#: id/models.py:88 static/js/widgets.js:190 static/js/widgets.js:236
+#: templates/accessrequest/list.jinja:17
+#: templates/tickets/partials/_ticketdetails.jinja:18
+#: templates/tickets/partials/_ticketdetails.jinja:19
+#: templates/tickets/partials/_ticketdetails.jinja:20
+msgid "Last Name"
 msgstr ""
 
-#: app/templates/crud/person/edit.jinja:2
-msgid "Edit Person"
+#: id/models.py:89
+msgid "Admin Notes"
 msgstr ""
 
-#: app/templates/crud/relationship/add.jinja:2
-msgid "New Relationship"
+#: id/models.py:93 ticket/models.py:28
+msgid "Requester Type"
 msgstr ""
 
-#: app/templates/crud/relationship/edit.jinja:2
-#: app/templates/crud/relationship/item.jinja:2
-msgid "Edit Relationship"
+#: id/models.py:95 ticket/models.py:37
+msgid "Findings Public"
 msgstr ""
 
-#: app/templates/macros/forms.jinja:28
-msgid "Select file"
+#: id/models.py:101
+msgid "Date Joined"
 msgstr ""
 
-#: app/templates/macros/forms.jinja:29
-msgid "Change"
+#: id/models.py:240
+msgid "Subsidized (OCCRP pays for everything)"
 msgstr ""
 
-#: app/templates/macros/forms.jinja:32
-msgid "Remove"
-msgstr ""
-
-#: app/templates/macros/forms.jinja:46
-msgid "Attach files"
-msgstr ""
-
-#: app/templates/macros/macros.jinja:6
-msgid "Key"
-msgstr ""
-
-#: app/templates/tickets/request.jinja:5
-msgid "Request Information"
-msgstr ""
-
-#: app/templates/tickets/request.jinja:9
+#: id/models.py:242
 msgid ""
-"\n"
-"            Your request will be routed to our professional researchers "
-"and volunteers, who\n"
-"            will try to help.\n"
-"        "
+"Covering cost (OCCRP pays for labor, requester pays costs of buying "
+"documents)"
 msgstr ""
 
-#: app/templates/tickets/request_admin_base.jinja:36
-#: app/templates/tickets/request_details.jinja:87
-#: app/templates/tickets/request_list.jinja:29
-#: app/templates/tickets/request_list.jinja:61
-msgid "No Responder"
+#: id/models.py:245
+msgid "Covering cost+ (requester pays for documents, and also for our work)"
 msgstr ""
 
-#: app/templates/tickets/request_admin_base.jinja:78
-msgid "No tickets found."
+#: id/models.py:337
+msgid "user"
 msgstr ""
 
-#: app/templates/tickets/request_base.jinja:9
-#: app/templates/tickets/request_list.jinja:8
-msgid "My Requests"
+#: id/models.py:338
+msgid "users"
 msgstr ""
 
-#: app/templates/tickets/request_base.jinja:13
-#: app/templates/tickets/responds_list.jinja:5
-msgid "Assigned Requests"
+#: id/models.py:347 templates/accessrequest/list.jinja:7
+msgid "Approved"
 msgstr ""
 
-#: app/templates/tickets/request_base.jinja:19
-#: app/templates/tickets/admin/admin_unassigned.jinja:4
-msgid "Unassigned Tickets"
+#: id/models.py:349
+msgid "Date Created"
 msgstr ""
 
-#: app/templates/tickets/request_base.jinja:22
-msgid "Upcoming Deadlines"
+#: id/models.py:369
+msgid "Yes"
 msgstr ""
 
-#: app/templates/tickets/request_base.jinja:25
-msgid "Flagged Tickets"
+#: id/models.py:370
+msgid "No"
 msgstr ""
 
-#: app/templates/tickets/request_base.jinja:28
-msgid "Closed Tickets"
+#: id/models.py:406 templates/mail/account_request/received.jinja:4
+msgid "Your Account Request was received"
 msgstr ""
 
-#: app/templates/tickets/request_details.jinja:12
-msgid "Attach Document"
+#: id/models.py:414 templates/mail/account_request/received_admin.jinja:4
+msgid "An Account Request was received"
 msgstr ""
 
-#: app/templates/tickets/request_details.jinja:15
-msgid "Attach Entity"
+#: id/models.py:422
+msgid "An update to your Account Request"
 msgstr ""
 
-#: app/templates/tickets/request_details.jinja:19
-msgid "Edit Details"
+#: id/models.py:430 templates/mail/account_request/rejected.jinja:4
+msgid "Your Account Request was rejected"
 msgstr ""
 
-#: app/templates/tickets/request_details.jinja:25
-#: app/templates/tickets/request_details.jinja:189
-msgid "Close Request"
+#: id/models.py:441 templates/tickets/partials/_ticketdetails.jinja:5
+msgid "Name"
 msgstr ""
 
-#: app/templates/tickets/request_details.jinja:32
-#: app/templates/tickets/request_details.jinja:186
-msgid "Cancel Request"
+#: id/models.py:442
+msgid "Description"
 msgstr ""
 
-#: app/templates/tickets/request_details.jinja:39
-msgid "Mark Bill Paid"
+#: id/requests.py:59 ticket/constants.py:72
+msgid "Reconciled Charges"
 msgstr ""
 
-#: app/templates/tickets/request_details.jinja:46
-#: app/templates/tickets/request_details.jinja:187
-msgid "Alert Administrator"
+#: id/requests.py:64
+msgid "Request payment status has been updated."
 msgstr ""
 
-#: app/templates/tickets/request_details.jinja:55
-msgid "Re-Open"
+#: id/requests.py:143
+msgid "Charge successfully reconciled."
 msgstr ""
 
-#: app/templates/tickets/request_details.jinja:77
-#: app/templates/tickets/responds_list.jinja:14
-#: app/templates/tickets/responds_list.jinja:46
-msgid "Requester"
+#: podaci/templates/podaci/error.jinja:4
+msgid "Oops!"
 msgstr ""
 
-#: app/templates/tickets/request_details.jinja:90
-msgid "Request Type"
-msgstr ""
-
-#: app/templates/tickets/request_details.jinja:100
-msgid "Attached Entities"
-msgstr ""
-
-#: app/templates/tickets/request_details.jinja:110
-msgid "Attached Files"
-msgstr ""
-
-#: app/templates/tickets/request_details.jinja:116
-msgid "Background Information"
-msgstr ""
-
-#: app/templates/tickets/request_details.jinja:149
-msgid "No Comment"
-msgstr ""
-
-#: app/templates/tickets/request_details.jinja:156
-msgid "No updates yet."
-msgstr ""
-
-#: app/templates/tickets/request_details.jinja:187
-msgid "Flag Request"
-msgstr ""
-
-#: app/templates/tickets/request_details.jinja:188
-msgid "Re-Open Request"
-msgstr ""
-
-#: app/templates/tickets/request_details.jinja:190
-msgid "Mark Paid"
-msgstr ""
-
-#: app/templates/tickets/request_details.jinja:191
-msgid "Add Entities"
-msgstr ""
-
-#: app/templates/tickets/request_list.jinja:6
-msgid " New Request"
-msgstr ""
-
-#: app/templates/tickets/request_list.jinja:39
-msgid "No open requests found."
-msgstr ""
-
-#: app/templates/tickets/responds_list.jinja:26
-#: app/templates/tickets/responds_list.jinja:58
-msgid "No Requester"
-msgstr ""
-
-#: app/templates/tickets/responds_list.jinja:36
-msgid "No requests found."
-msgstr ""
-
-#: app/templates/tickets/admin/admin_deadline.jinja:3
-msgid "Tickets with Deadlines"
-msgstr ""
-
-#: app/templates/tickets/admin/admin_deadline.jinja:4
-msgid "View open tickets ordered by upcoming deadlines. "
-msgstr ""
-
-#: app/templates/tickets/admin/admin_edit.jinja:5
-msgid "Administer Ticket Details"
-msgstr ""
-
-#: app/templates/tickets/admin/admin_edit.jinja:9
+#: podaci/templates/podaci/error.jinja:5
 msgid ""
-"In the top half of the form, you can perform administrative\n"
-"        tasks, such as unflagging tickets, assigning responders, and "
-"forcing status changes.\n"
-"        In the bottom half, you can make changes to the core values of "
-"the ticket, including\n"
-"        information that the end user has submitted. Changes to this form"
-" are not reflected\n"
-"        in the Activity Log."
+"We hit a snag: the database server isn't responding correctly. Try again in "
+"a moment or two."
 msgstr ""
 
-#: app/templates/tickets/admin/admin_edit.jinja:16
-msgid "Apply Changes"
+#: podaci/templates/podaci/home.jinja:8
+msgid "Add files"
 msgstr ""
 
-#: app/templates/tickets/admin/admin_flagged.jinja:3
-msgid "User Flagged Tickets"
+#: podaci/templates/podaci/home.jinja:9
+#: podaci/templates/podaci/partials/_podaci_create_collection.jinja:6
+msgid "New collection"
 msgstr ""
 
-#: app/templates/tickets/admin/admin_flagged.jinja:4
-msgid ""
-"View tickets which users or staff have deemed requiring administrative "
-"intervention. "
+#: podaci/templates/podaci/home.jinja:16
+msgid "My collections"
 msgstr ""
 
-#: app/templates/tickets/admin/admin_history.jinja:3
-msgid "Tickets History"
+#: podaci/templates/podaci/home.jinja:21
+msgid "Shared with me"
 msgstr ""
 
-#: app/templates/tickets/admin/admin_history.jinja:4
-msgid "A simple list of closed, resolved or cancelled tickets. "
+#: podaci/templates/podaci/home.jinja:34
+msgid "Select"
 msgstr ""
 
-#: app/templates/tickets/admin/admin_unassigned.jinja:5
-msgid "View new tickets that need responders assigned to them."
+#: podaci/templates/podaci/home.jinja:37
+msgid "Selection"
 msgstr ""
 
-#: app/templates/tickets/modals/form_basic.jinja:2
-msgid "Not Allowed"
+#: podaci/templates/podaci/partials/_podaci_create_collection.jinja:10
+msgid "Name:"
 msgstr ""
 
-#: static/js/drive-picker.js:70
-msgid "Error attaching file(s)."
+#: podaci/templates/podaci/partials/_podaci_create_collection.jinja:15
+msgid "Close"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_edit_tags.jinja:7
+#: podaci/templates/podaci/partials/_podaci_selection_actions.jinja:1
+msgid "Edit tags"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_edit_tags.jinja:12
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:32
+#: templates/admin/storage.jinja:7
+msgid "Tags"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_edit_tags.jinja:20
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:78
+#: templates/tickets/request_base.jinja:141
+#: templates/tickets/request_charges_base.jinja:84
+msgid "Save"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:6
+msgid "File:"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:13
+msgid "Title"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:19
+msgid "File name"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:26
+msgid "Uploaded"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:40
+msgid "Readers"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:46
+msgid "Writers"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:56
+msgid "All staff can read"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:65
+msgid "Public"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_file_details.jinja:76
+msgid "Download"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_file_list.jinja:3
+msgid "You can drop files here to upload them to ID."
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_selection_actions.jinja:2
+msgid "Open in Overview"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_selection_actions.jinja:3
+msgid "Edit users"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_selection_actions.jinja:4
+msgid "Make public"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_selection_actions.jinja:5
+msgid "Download as Zip"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_selection_tools.jinja:2
+msgid "Select all"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_selection_tools.jinja:3
+msgid "Select none"
+msgstr ""
+
+#: podaci/templates/podaci/partials/_podaci_selection_tools.jinja:4
+msgid "Invert selection"
+msgstr ""
+
+#: search/forms.py:11
+msgid "Search terms"
 msgstr ""
 
 #: static/js/i18n.js:47 static/js/i18n.js:55
@@ -2328,23 +458,1851 @@ msgid_plural "x04"
 msgstr[0] ""
 msgstr[1] ""
 
-#: static/js/list-files.js:32
+#: static/js/list-files.js:24
 msgid "File successfully removed."
 msgstr ""
 
-#: static/js/list-files.js:34
+#: static/js/list-files.js:26
 msgid "Error removing attached file."
 msgstr ""
 
-#: static/js/list-files.js:52
+#: static/js/list-files.js:44
 msgid "No files attached."
 msgstr ""
 
-#: static/js/list-files.js:69 static/js/list-files.js:91
+#: static/js/list-files.js:71
 msgid "Error displaying attached files."
 msgstr ""
 
-#: static/js/list-files.js:81
-msgid "No attachments."
+#: static/js/validation-forms.js:42
+msgid "There was a problem with validation."
 msgstr ""
 
+#: static/js/widgets.js:191 static/js/widgets.js:237
+msgid "First/Other Names"
+msgstr ""
+
+#: templates/about_id.jinja:9
+msgid "About Investigative Dashboard"
+msgstr ""
+
+#: templates/about_id.jinja:16
+msgid "Purpose"
+msgstr ""
+
+#: templates/about_id.jinja:17
+msgid ""
+"Investigative Dashboard (ID) is intended to help investigative journalists "
+"to do their work in a fast and effective way. It combines a number of "
+"software tools, including search engines, databases, a research support "
+"system and a file manager, to try to shorten the lead time from story "
+"inception to publication."
+msgstr ""
+
+#: templates/about_id.jinja:19
+msgid "Investigative Dashboard Development"
+msgstr ""
+
+#: templates/about_id.jinja:20
+msgid ""
+"ID is developed by the Organized Crime and Corruption Reporting Project. It "
+"is designed to meet the needs of OCCRP reporters, but open for public use."
+msgstr ""
+
+#: templates/about_id.jinja:21 templates/about_id.jinja:31
+msgid "Read more..."
+msgstr ""
+
+#: templates/about_id.jinja:25
+msgid "About OCCRP"
+msgstr ""
+
+#: templates/about_id.jinja:27
+msgid ""
+"The Organized Crime and Corruption Reporting Project (OCCRP) is a not-for-"
+"profit, joint program of a number of regional non-profit investigative "
+"centers and for profit independent media stretching from Eastern Europe to "
+"Central Asia."
+msgstr ""
+
+#: templates/about_id.jinja:29
+msgid ""
+"Our goal is to help the people of the region better understand how organized "
+"crime and corruption affect their lives. OCCRP seeks to provide in-depth "
+"investigative stories as well as the latest news pertaining to organized "
+"crime and corruption activities in the region. In addition to the stories, "
+"OCCRP is building an online resource center of documents related to "
+"organized crime including court records, laws, reports, studies, company "
+"records and other public documents that will be an invaluable resource "
+"center for journalists and the public alike."
+msgstr ""
+
+#: templates/about_us.jinja:9
+msgid "OCCRP and ID development"
+msgstr ""
+
+#: templates/about_us.jinja:17
+msgid ""
+"Investigative Dashboard (ID) has been developed by the Organized Crime and "
+"Corruption Reporting Project (OCCRP), the world’s leading cross border "
+"investigative reporting organization. OCCRP designed Investigative Dashboard "
+"as a transnational collaborative effort to help journalists and civil "
+"society researchers expose organized crime and corruption around the world. "
+"It hosts three core tools: a crowd-sourced database of information and "
+"documents on persons of interest and their business connections, a worldwide "
+"list of online databases and business registries, and a research desk where "
+"journalists can go for help in sourcing hard to find information."
+msgstr ""
+
+#: templates/about_us.jinja:19
+msgid ""
+"With help from dozens of reporters and civic hackers, ID researchers have "
+"created the crowd-sourced database where connections of people and business "
+"can be mapped internationally. Through collecting public records worldwide "
+"in numerous languages and by scraping the business registries and official "
+"gazettes of countries such as Panama, British Virgin Islands, and Luxembourg "
+"among others we have made data searchable and hence truly transparent and "
+"useful. These resources are offered to the public as a searchable self-serve "
+"repository of data and documents."
+msgstr ""
+
+#: templates/about_us.jinja:21
+msgid ""
+"The Investigative Dashboard also links to more than 400 online databases in "
+"120 jurisdictions where you can search for information on persons and "
+"businesses of interest."
+msgstr ""
+
+#: templates/about_us.jinja:23
+msgid ""
+"Above and beyond the databases available on the Dashboard, the research desk "
+"provides access to a global network of expert researchers. Journalists and "
+"researchers working on organized crime and corruption topics who seek "
+"information and documents beyond their own borders and resources are invited "
+"to request the expertise of a network of information professionals. These "
+"professionals can access external databases and official filings for "
+"evidence of corporate ownership and property holdings that cross borders. "
+"For some journalists, these services are provided pro bono."
+msgstr ""
+
+#: templates/about_us.jinja:25
+msgid ""
+"Journalists have used the Investigative Dashboard to work on stories that "
+"have won more than a dozen international awards, led to indictments, arrests "
+"and seizures, forced the resignation of heads of state, and exposed the "
+"activities of organized crime."
+msgstr ""
+
+#: templates/about_us.jinja:27
+msgid "Staff"
+msgstr ""
+
+#: templates/about_us.jinja:29
+msgid "Lead Researcher"
+msgstr ""
+
+#: templates/about_us.jinja:30
+#: templates/tickets/ticket_resolution_workload.jinja:11
+msgid "Researcher"
+msgstr ""
+
+#: templates/about_us.jinja:31
+msgid "Chief Technologist"
+msgstr ""
+
+#: templates/about_us.jinja:32 templates/about_us.jinja:33
+#: templates/about_us.jinja:34
+msgid "Developer"
+msgstr ""
+
+#: templates/about_us.jinja:37
+msgid "Supporters"
+msgstr ""
+
+#: templates/about_us.jinja:38
+msgid ""
+"The Investigative Dashboard has been developed in collaboration with <a href="
+"\"http://www.google.com/ideas/\">Google Ideas</a>. Core support for the "
+"project is generously provided by the Open Society Foundations with "
+"additional assistance from USAID."
+msgstr ""
+
+#: templates/about_us.jinja:40
+msgid "Partners"
+msgstr ""
+
+#: templates/about_us.jinja:41
+msgid ""
+"The Research Desk is managed by OCCRP in co-operation with four partner "
+"Centers - African Network of Centers for Investigative Reporting (ANCIR), "
+"the Arab Reporters for Investigative Journalism (ARIJ), the International "
+"Center for Journalists, and Connectas in the Americas."
+msgstr ""
+
+#: templates/about_us.jinja:43
+msgid "ID History"
+msgstr ""
+
+#: templates/about_us.jinja:44
+msgid ""
+"The Investigative Dashboard was developed by Paul Cristian Radu (OCCRP) and "
+"Justin Arenstein (ANCIR) while they both were in residence at Stanford "
+"University as Knight Fellows. The John S. Knight Fellowships for "
+"Professional Journalists made the dashboard possible by providing access to "
+"the know-how of fellow journalists and of experts at Stanford University and "
+"in Silicon Valley."
+msgstr ""
+
+#: templates/about_us.jinja:46
+msgid "Advisory Committee"
+msgstr ""
+
+#: templates/about_us.jinja:50
+msgid ""
+"News Researcher<br/>\n"
+"                    The New York Times"
+msgstr ""
+
+#: templates/about_us.jinja:54
+msgid ""
+"Database Editor<br/>\n"
+"                    Sveriges (Swedish) Television "
+msgstr ""
+
+#: templates/about_us.jinja:57
+msgid ""
+"Research Director<br/>\n"
+"                    The Associated Press "
+msgstr ""
+
+#: templates/about_us.jinja:61
+msgid ""
+"Training Director<br/>\n"
+"                    Investigative Reporters and Editors (IRE)"
+msgstr ""
+
+#: templates/about_us.jinja:65
+msgid ""
+"Distinguished Lecturer and Interim Chief Librarian<br/>\n"
+"                    CUNY Graduate School of Journalism "
+msgstr ""
+
+#: templates/about_us.jinja:69
+msgid ""
+"Communications Strategist<br/>\n"
+"                    King Country Library System, Seattle Washington "
+msgstr ""
+
+#: templates/about_us.jinja:73
+msgid ""
+"Lecturer in Library and Information Science<br/>\n"
+"                    Rutgers School of Communication and Information "
+msgstr ""
+
+#: templates/about_us.jinja:77
+msgid ""
+" Professor and Executive Editor<br/>\n"
+"                    Investigative Reporting Workshop, The American "
+"University School of Communication<br/>\n"
+"                    Founder, The Center for Public Integrity (CPI) "
+msgstr ""
+
+#: templates/about_us.jinja:82
+msgid ""
+"Assistant News Editor, Research & Data<br/>\n"
+"                    The Wall Street Journal"
+msgstr ""
+
+#: templates/about_us.jinja:86
+msgid ""
+"Director<br/>\n"
+"                    SJMC Minnesota Journalism Center, University of "
+"Minnesota "
+msgstr ""
+
+#: templates/about_us.jinja:90
+msgid ""
+" Librarian, Writer, Editor, Compiler<br/>\n"
+"                    LJ's INFODocket "
+msgstr ""
+
+#: templates/about_us.jinja:94
+msgid ""
+"Director of Research<br/>\n"
+"                    The Washington Post "
+msgstr ""
+
+#: templates/about_us.jinja:98
+msgid ""
+"Database Correspondent,<br/>\n"
+"                    Research Editor, The International Consortium of\n"
+"                    Investigative Journalists "
+msgstr ""
+
+#: templates/about_us.jinja:104
+msgid "Acknowledgements"
+msgstr ""
+
+#: templates/about_us.jinja:106
+msgid ""
+"The Investigative Dashboard is a collaborative project and valuable "
+"information was added by many investigative journalists around the world. "
+"Individual members of the Global Investigative Journalism Network in "
+"particular contributed much of the information, explaining how to access "
+"company records in their home countries."
+msgstr ""
+
+#: templates/about_us.jinja:108
+msgid ""
+"Valuable information was added by many investigative journalists around the "
+"world."
+msgstr ""
+
+#: templates/admin_base.jinja:7 templates/tickets/request_base.jinja:67
+msgid "Manage"
+msgstr ""
+
+#: templates/admin_base.jinja:10
+msgid "External Databases"
+msgstr ""
+
+#: templates/admin_base.jinja:13
+msgid "Scraper requests"
+msgstr ""
+
+#: templates/admin_base.jinja:16
+msgid "Budgets"
+msgstr ""
+
+#: templates/admin_base.jinja:22
+msgid "Storage and databases"
+msgstr ""
+
+#: templates/admin_base.jinja:25
+msgid "Access Requests"
+msgstr ""
+
+#: templates/admin_base.jinja:28 templates/auth/user_list.jinja:13
+msgid "User Profiles"
+msgstr ""
+
+#: templates/admin_base.jinja:31
+msgid "Statistics"
+msgstr ""
+
+#: templates/external_databases.jinja:12
+msgid "Business Registries"
+msgstr ""
+
+#: templates/external_databases.jinja:14
+#, python-format
+msgid ""
+"Here you will find links to %(count)s online databases across "
+"%(jurisdictions)s jurisdictions where you can get information on the "
+"shareholders, directors and the financial reports of companies worldwide. "
+"They are organized by country. Many are free of charge and for some you must "
+"register. Databases marked with a \"$\" require a fee.  Not all are "
+"available in English, see the notes column for further details.\t"
+msgstr ""
+
+#: templates/external_databases.jinja:42
+msgid "Documentation"
+msgstr ""
+
+#: templates/external_databases.jinja:43
+msgid "Video Tutorial"
+msgstr ""
+
+#: templates/external_databases.jinja:51
+msgid "No external databases found."
+msgstr ""
+
+#: templates/external_databases.jinja:56
+msgid "Didn't find what you were looking for?"
+msgstr ""
+
+#: templates/external_databases.jinja:58
+msgid "Request manual help from our researchers."
+msgstr ""
+
+#: templates/notifications.jinja:5
+msgid "Notifications"
+msgstr ""
+
+#: templates/splash.jinja:9 templates/mail/mail_base.jinja:12
+#: templates/mail/mail_base.jinja:37 templates/mail/mail_base.jinja:38
+msgid "Investigative Dashboard"
+msgstr ""
+
+#: templates/splash.jinja:10
+msgid "Research. Understand. Expose."
+msgstr ""
+
+#: templates/splash.jinja:12
+msgid "Learn more"
+msgstr ""
+
+#: templates/splash.jinja:14 templates/errors/403.jinja:18
+#: templates/registration/activate.jinja:7
+#: templates/registration/registration_complete.jinja:19
+msgid "Sign in"
+msgstr ""
+
+#: templates/splash.jinja:15 templates/errors/403.jinja:19
+#: templates/registration/registration_complete.jinja:8
+msgid "Register"
+msgstr ""
+
+#: templates/splash.jinja:30
+msgid "Search in documents or social media."
+msgstr ""
+
+#: templates/splash.jinja:32
+msgid "Start Searching"
+msgstr ""
+
+#: templates/splash.jinja:37
+msgid "Map out relationships, get the big picture."
+msgstr ""
+
+#: templates/splash.jinja:39
+msgid "Use Vis"
+msgstr ""
+
+#: templates/splash.jinja:44
+msgid "View recommended global databases."
+msgstr ""
+
+#: templates/splash.jinja:46
+msgid "Visit Databases"
+msgstr ""
+
+#: templates/splash.jinja:51
+msgid "Ask our researchers to help you find information."
+msgstr ""
+
+#: templates/splash.jinja:53 templates/tickets/request_base.jinja:10
+msgid "My Requests"
+msgstr ""
+
+#: templates/splash.jinja:53
+msgid "Ask an Expert"
+msgstr ""
+
+#: templates/splash.jinja:58
+msgid "Keep track of all your important documents."
+msgstr ""
+
+#: templates/splash.jinja:60
+msgid "Manage files"
+msgstr ""
+
+#: templates/accessrequest/confirm_access_requested.jinja:7
+msgid "Access Requested"
+msgstr ""
+
+#: templates/accessrequest/confirm_access_requested.jinja:8
+msgid "Thank you!"
+msgstr ""
+
+#: templates/accessrequest/confirm_access_requested.jinja:9
+msgid ""
+"We've registered your request for access, and our staff will review it as "
+"soon as possible."
+msgstr ""
+
+#: templates/accessrequest/confirm_access_requested.jinja:10
+msgid "We will e-mail you when your request has been processed."
+msgstr ""
+
+#: templates/accessrequest/confirm_access_requested.jinja:12
+msgid "Error"
+msgstr ""
+
+#: templates/accessrequest/create.jinja:4 templates/errors/403.jinja:25
+msgid "Request permissions"
+msgstr ""
+
+#: templates/accessrequest/list.jinja:6 ticket/constants.py:86
+msgid "New"
+msgstr ""
+
+#: templates/accessrequest/list.jinja:8
+msgid "Denied"
+msgstr ""
+
+#: templates/accessrequest/list.jinja:12
+msgid " waiting for approval"
+msgstr ""
+
+#: templates/accessrequest/list.jinja:18
+msgid "Mail address"
+msgstr ""
+
+#: templates/accessrequest/list.jinja:19
+msgid "Creation date"
+msgstr ""
+
+#: templates/accessrequest/list.jinja:20 templates/accessrequest/list.jinja:32
+msgid "Approve"
+msgstr ""
+
+#: templates/accessrequest/list.jinja:35
+msgid "Deny"
+msgstr ""
+
+#: templates/accessrequest/list.jinja:40
+msgid "No requests"
+msgstr ""
+
+#: templates/accessrequest/volunteer_account.jinja:6
+msgid "Become a Volunteer!"
+msgstr ""
+
+#: templates/accessrequest/volunteer_account.jinja:9
+msgid ""
+"If you'd like to volunteer to track down requests, you need to have an "
+"account. Please enter your information below and one of our staff will "
+"review, and respond to your request."
+msgstr ""
+
+#: templates/accessrequest/volunteer_account.jinja:13
+msgid "Submit"
+msgstr ""
+
+#: templates/admin/feedback.jinja:7
+msgid "Feedback"
+msgstr ""
+
+#: templates/admin/feedback_thanks.jinja:7
+msgid "Thank you for your feedback"
+msgstr ""
+
+#: templates/admin/feedback_thanks.jinja:12
+msgid ""
+"Your feedback is immensely valuable to our work. We will read it through and "
+"take your suggestions into account."
+msgstr ""
+
+#: templates/admin/feedback_thanks.jinja:14
+msgid ""
+"If you have any further observations or suggestions to make, please don't "
+"hesitate to get in touch"
+msgstr ""
+
+#: templates/admin/panel.jinja:4
+msgid "Administration stream"
+msgstr ""
+
+#: templates/admin/panel.jinja:13
+msgid "No notifications worthy of your attention, administrator."
+msgstr ""
+
+#: templates/admin/storage.jinja:4
+msgid "Podaci status"
+msgstr ""
+
+#: templates/admin/storage.jinja:6
+msgid "Files"
+msgstr ""
+
+#: templates/admin/storage.jinja:8
+msgid "Collections"
+msgstr ""
+
+#: templates/admin/storage.jinja:9
+msgid "Total size"
+msgstr ""
+
+#: templates/admin/storage.jinja:10
+msgid "Root"
+msgstr ""
+
+#: templates/admin/storage.jinja:11
+msgid "Data sharding"
+msgstr ""
+
+#: templates/admin/storage.jinja:12
+msgid "Main index"
+msgstr ""
+
+#: templates/admin/storage.jinja:15
+msgid "Osoba status"
+msgstr ""
+
+#: templates/auth/user_list.jinja:8
+msgid "Filter users..."
+msgstr ""
+
+#: templates/auth/user_list.jinja:33
+msgid "Administrator "
+msgstr ""
+
+#: templates/auth/user_list.jinja:34
+msgid "Staffer "
+msgstr ""
+
+#: templates/auth/user_list.jinja:35
+msgid "Volunteer "
+msgstr ""
+
+#: templates/auth/user_list.jinja:36
+msgid "Requester "
+msgstr ""
+
+#: templates/auth/user_list.jinja:46
+msgid "No users were found matching your search criteria."
+msgstr ""
+
+#: templates/errors/400.jinja:4
+msgid "Bad Request"
+msgstr ""
+
+#: templates/errors/400.jinja:8
+msgid ""
+"This request does not seem to be correct. If you believe this is an error on "
+"our side, please contact an administrator."
+msgstr ""
+
+#: templates/errors/401.jinja:4 templates/errors/403.jinja:4
+msgid "Permission Denied"
+msgstr ""
+
+#: templates/errors/401.jinja:8
+msgid ""
+"You do not have permission to access this feature or content. If you believe "
+"this is an error, please contact an administrator."
+msgstr ""
+
+#: templates/errors/403.jinja:9
+msgid "You must log in to use this feature."
+msgstr ""
+
+#: templates/errors/403.jinja:11
+msgid ""
+"Sorry, but you don't have access to this part of Investigative Dashboard."
+msgstr ""
+
+#: templates/errors/403.jinja:22
+msgid ""
+"This part of Investigative Dashboard is only for registered users. In order "
+"to use it, register and log in to the system."
+msgstr ""
+
+#: templates/errors/403.jinja:28
+msgid ""
+"Elevated privileges are required for access to this part of Investigative "
+"Dashboard."
+msgstr ""
+
+#: templates/errors/403.jinja:29
+msgid ""
+"You can apply for extra access rights, and they will be reviewed on a case-"
+"by-case basis."
+msgstr ""
+
+#: templates/errors/404.jinja:4
+msgid "Page Not Found"
+msgstr ""
+
+#: templates/errors/404.jinja:8
+msgid ""
+"We're sorry, this page is not available. This error has been recorded will "
+"be investigated."
+msgstr ""
+
+#: templates/errors/500.jinja:4
+msgid "Application Error"
+msgstr ""
+
+#: templates/errors/500.jinja:8
+msgid ""
+"There was an error in the application. This error has been recorded and "
+"should be addressed soon."
+msgstr ""
+
+#: templates/macros/forms.jinja:28
+msgid "Select File"
+msgstr ""
+
+#: templates/macros/forms.jinja:29
+msgid "Change"
+msgstr ""
+
+#: templates/macros/forms.jinja:32
+msgid "Remove"
+msgstr ""
+
+#: templates/macros/modals.jinja:45
+msgid "To search, type your query into the search box"
+msgstr ""
+
+#: templates/mail/mail_base.jinja:36
+msgid "This message is automatically generated by "
+msgstr ""
+
+#: templates/mail/mail_base.jinja:36
+msgid "OCCRP Investigative Dashboard"
+msgstr ""
+
+#: templates/mail/mail_base.jinja:37
+msgid "If you think it was sent incorrectly, please contact an "
+msgstr ""
+
+#: templates/mail/mail_base.jinja:37
+msgid "administrator"
+msgstr ""
+
+#: templates/mail/mail_base.jinja:38
+msgid "For more information on "
+msgstr ""
+
+#: templates/mail/mail_base.jinja:39
+msgid "visit"
+msgstr ""
+
+#: templates/mail/mail_simple.jinja:16
+msgid "The Research Desk"
+msgstr ""
+
+#: templates/mail/mail_simple.jinja:16
+msgid "at the Investigative Dashboard"
+msgstr ""
+
+#: templates/mail/ticket_update.jinja:8
+msgid "your request. "
+msgstr ""
+
+#: templates/mail/ticket_update.jinja:40
+msgid "View on Site"
+msgstr ""
+
+#: templates/mail/ticket_update.jinja:41
+msgid "Add Comment"
+msgstr ""
+
+#: templates/mail/ticket_update.jinja:42
+msgid "or reply to this email directly."
+msgstr ""
+
+#: templates/mail/account_request/approved.jinja:4
+msgid "Your Account Request was approved"
+msgstr ""
+
+#: templates/mail/account_request/approved.jinja:8
+#: templates/mail/account_request/received.jinja:8
+#: templates/mail/account_request/rejected.jinja:8
+#, python-format
+msgid "Dear %(name)s,"
+msgstr ""
+
+#: templates/mail/account_request/approved.jinja:9
+msgid ""
+"Your ID registration is complete! Just login in with the Gmail account that "
+"you used to register to get started."
+msgstr ""
+
+#: templates/mail/account_request/approved.jinja:10
+msgid "Click here to submit a research request."
+msgstr ""
+
+#: templates/mail/account_request/approved.jinja:12
+msgid "You registered with the Google account "
+msgstr ""
+
+#: templates/mail/account_request/approved.jinja:14
+msgid "Good luck with your investigation."
+msgstr ""
+
+#: templates/mail/account_request/received.jinja:9
+msgid ""
+"Thank you for registering with the Investigative Dashboard. We are reviewing "
+"your information and as soon as your registration is complete you can sign "
+"into the Research Desk with the Google account that you used to register. In "
+"the meantime, get started now by searching the ID crowd-sourced and external "
+"databases. We will be in touch shortly."
+msgstr ""
+
+#: templates/mail/account_request/received_admin.jinja:8
+msgid "A new account request has been submitted! Below are the details:"
+msgstr ""
+
+#: templates/mail/account_request/received_admin.jinja:15
+msgid "Click here to review and approve or reject."
+msgstr ""
+
+#: templates/mail/account_request/rejected.jinja:9
+msgid "I am sorry but we could not register you at this time."
+msgstr ""
+
+#: templates/mail/account_request/rejected.jinja:10
+msgid "Thank you,"
+msgstr ""
+
+#: templates/modals/form_basic.jinja:3
+msgid "Not Allowed"
+msgstr ""
+
+#: templates/partials/_notifications.jinja:9
+msgid "View Stream"
+msgstr ""
+
+#: templates/partials/_notifications.jinja:10
+msgid "Mark All as Read"
+msgstr ""
+
+#: templates/partials/_notifications.jinja:22
+msgid "ago"
+msgstr ""
+
+#: templates/partials/_notifications.jinja:25
+msgid "No notifications"
+msgstr ""
+
+#: templates/partials/_request_access.jinja:2
+msgid "Which type of access would you like to apply for?"
+msgstr ""
+
+#: templates/partials/_request_access.jinja:6
+msgid ""
+"You currently do not have access to some parts of Investigative Dashboard, "
+"because your account has not been verified. In order to get access, please "
+"tell us whether you want to be an information requester, or a volunteer "
+"researcher."
+msgstr ""
+
+#: templates/partials/_request_access.jinja:16
+msgid "You are already an information requester!"
+msgstr ""
+
+#: templates/partials/_request_access.jinja:18
+msgid ""
+"You have requested permission to make information requests. Your application "
+"will be reviewed soon, and you will be notified."
+msgstr ""
+
+#: templates/partials/_request_access.jinja:20
+msgid ""
+"Take advantage of our database of knowledge to find out more information "
+"about companies, individuals, or the relationships between them."
+msgstr ""
+
+#: templates/partials/_request_access.jinja:22
+msgid "Be a Requester"
+msgstr ""
+
+#: templates/partials/_request_access.jinja:31
+msgid "You are already a volunteer!"
+msgstr ""
+
+#: templates/partials/_request_access.jinja:33
+msgid ""
+"You have requested permission to be a volunteer. Your application will be "
+"reviewed soon, and you will be notified."
+msgstr ""
+
+#: templates/partials/_request_access.jinja:35
+msgid ""
+"We have available public requests that need volunteers. Use your wealth of "
+"information to help others find answers."
+msgstr ""
+
+#: templates/partials/_request_access.jinja:37
+msgid "Be a Volunteer"
+msgstr ""
+
+#: templates/registration/activate.jinja:4
+msgid "Welcome to Investigative Dashboard"
+msgstr ""
+
+#: templates/registration/activate.jinja:5
+msgid "You are now successfully registered. Now you can sign in."
+msgstr ""
+
+#: templates/registration/activation_complete.jinja:5
+msgid "Verification successful!"
+msgstr ""
+
+#: templates/registration/activation_complete.jinja:6
+msgid "Congratulations, you're fully registered."
+msgstr ""
+
+#: templates/registration/activation_complete.jinja:6
+msgid "Now sign in!"
+msgstr ""
+
+#: templates/registration/logout.jinja:7
+msgid "Signed out!"
+msgstr ""
+
+#: templates/registration/logout.jinja:8
+msgid "Thank you for using Investigative Dashboard. Come again soon!"
+msgstr ""
+
+#: templates/registration/password_reset_done.jinja:4
+msgid "Password reset"
+msgstr ""
+
+#: templates/registration/password_reset_done.jinja:5
+msgid "Email with password reset instructions has been sent."
+msgstr ""
+
+#: templates/registration/registration_complete.jinja:16
+msgid "Registration successful"
+msgstr ""
+
+#: templates/registration/registration_complete.jinja:17
+msgid "We just sent you a verification e-mail."
+msgstr ""
+
+#: templates/search/search_documents.jinja:3
+msgid "Document Search"
+msgstr ""
+
+#: templates/search/search_documents.jinja:9
+msgid "Enter your terms..."
+msgstr ""
+
+#: templates/search/search_documents.jinja:13
+#: templates/search/search_media.jinja:32
+msgid "Search"
+msgstr ""
+
+#: templates/search/search_documents.jinja:16
+msgid "Select repositories:"
+msgstr ""
+
+#: templates/search/search_media.jinja:3
+msgid "Media Search"
+msgstr ""
+
+#: templates/search/search_media.jinja:9
+msgid "Search terms:"
+msgstr ""
+
+#: templates/search/search_media.jinja:10
+msgid "Please provide search terms to search media by."
+msgstr ""
+
+#: templates/search/search_media.jinja:13
+msgid ""
+"Select area on the map or enter latitude and longitude, and adjust search "
+"radius."
+msgstr ""
+
+#: templates/search/search_media.jinja:14
+msgid "Latitude:"
+msgstr ""
+
+#: templates/search/search_media.jinja:15
+msgid "Longitude:"
+msgstr ""
+
+#: templates/search/search_media.jinja:16
+msgid "Radius:"
+msgstr ""
+
+#: templates/search/search_media.jinja:16
+msgid "Radius (in meters)"
+msgstr ""
+
+#: templates/search/search_media.jinja:17
+msgid "Dates and times:"
+msgstr ""
+
+#: templates/search/search_media.jinja:18
+msgid "Optionally, adjust date/time thresholds."
+msgstr ""
+
+#: templates/search/search_media.jinja:19
+msgid "Start:"
+msgstr ""
+
+#: templates/search/search_media.jinja:20
+msgid "End:"
+msgstr ""
+
+#: templates/search/search_media.jinja:21
+msgid "Services:"
+msgstr ""
+
+#: templates/search/search_media.jinja:22
+msgid "Choose services to search at."
+msgstr ""
+
+#: templates/search/search_media.jinja:38
+msgid "Searching..."
+msgstr ""
+
+#: templates/tickets/request_admin_base.jinja:20
+#: templates/tickets/request_admin_base.jinja:23
+msgid "Prev"
+msgstr ""
+
+#: templates/tickets/request_admin_base.jinja:29
+#: templates/tickets/request_admin_base.jinja:32
+msgid "Next"
+msgstr ""
+
+#: templates/tickets/request_admin_base.jinja:42
+msgid "No tickets found."
+msgstr ""
+
+#: templates/tickets/request_base.jinja:13
+#: templates/tickets/request_base.jinja:32
+#: templates/tickets/request_base.jinja:50
+msgid "Open"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:21
+#: templates/tickets/request_base.jinja:40
+#: templates/tickets/request_base.jinja:58 ticket/constants.py:73
+#: ticket/constants.py:88
+msgid "Closed"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:29
+msgid "My Assignments"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:47
+msgid "Public Requests"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:70
+#: templates/tickets/admin/admin_unassigned.jinja:4
+msgid "Unassigned Tickets"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:76
+msgid "Upcoming Deadlines"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:82
+msgid "All Open Requests"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:88
+msgid "All Closed Requests"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:93
+msgid "Utilities"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:96
+#: templates/tickets/ticket_resolution_workload.jinja:5
+msgid "Researcher Workload"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:100
+msgid "Resolution Time"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:104
+msgid "Request report"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:107
+msgid "Billing"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:110
+msgid "User Fees"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:113
+msgid "Network Fees"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:116
+msgid "Budget Fees"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:120
+#: templates/tickets/admin/admin_charges_outstanding.jinja:3
+msgid "Outstanding Charges"
+msgstr ""
+
+#: templates/tickets/request_base.jinja:141
+msgid "Request Settings"
+msgstr ""
+
+#: templates/tickets/request_charges_base.jinja:21
+msgid "Requester"
+msgstr ""
+
+#: templates/tickets/request_charges_base.jinja:22
+msgid "Item"
+msgstr ""
+
+#: templates/tickets/request_charges_base.jinja:23
+msgid "Cost"
+msgstr ""
+
+#: templates/tickets/request_charges_base.jinja:24
+msgid "Cost (original currency)"
+msgstr ""
+
+#: templates/tickets/request_charges_base.jinja:25
+msgid "Reconciled"
+msgstr ""
+
+#: templates/tickets/request_charges_base.jinja:26
+msgid "Created"
+msgstr ""
+
+#: templates/tickets/request_charges_base.jinja:27
+msgid "Actions"
+msgstr ""
+
+#: templates/tickets/request_charges_base.jinja:77
+msgid "No charges found."
+msgstr ""
+
+#: templates/tickets/request_charges_base.jinja:84
+msgid "Modify Charge"
+msgstr ""
+
+#: templates/tickets/ticket_budget_fees_overview.jinja:5
+msgid "Fees charged to budgets"
+msgstr ""
+
+#: templates/tickets/ticket_budget_fees_overview.jinja:9
+msgid "Budget"
+msgstr ""
+
+#: templates/tickets/ticket_budget_fees_overview.jinja:9
+#: templates/tickets/ticket_network_fees_overview.jinja:9
+#: templates/tickets/ticket_user_fees_overview.jinja:9
+msgid "Total costs"
+msgstr ""
+
+#: templates/tickets/ticket_budget_fees_overview.jinja:9
+#: templates/tickets/ticket_budget_fees_overview.jinja:13
+#: templates/tickets/ticket_network_fees_overview.jinja:9
+#: templates/tickets/ticket_network_fees_overview.jinja:13
+#: templates/tickets/ticket_user_fees_overview.jinja:9
+#: templates/tickets/ticket_user_fees_overview.jinja:13
+msgid "Details"
+msgstr ""
+
+#: templates/tickets/ticket_budget_fees_overview.jinja:19
+#: templates/tickets/ticket_network_fees_overview.jinja:19
+#: templates/tickets/ticket_user_fees_overview.jinja:19
+msgid "Download as CSV"
+msgstr ""
+
+#: templates/tickets/ticket_budget_fees_overview.jinja:20
+#: templates/tickets/ticket_network_fees_overview.jinja:20
+#: templates/tickets/ticket_user_fees_overview.jinja:20
+msgid "Download as JSON"
+msgstr ""
+
+#: templates/tickets/ticket_network_fees_overview.jinja:5
+msgid "Network fees"
+msgstr ""
+
+#: templates/tickets/ticket_network_fees_overview.jinja:9
+msgid "Network"
+msgstr ""
+
+#: templates/tickets/ticket_resolution_time.jinja:5
+msgid "Ticket Resolution"
+msgstr ""
+
+#: templates/tickets/ticket_resolution_time.jinja:8
+msgid "Average Request Resolution Time"
+msgstr ""
+
+#: templates/tickets/ticket_resolution_time.jinja:12
+#, python-format
+msgid "(calculated from %(count)s most recently closed tickets)"
+msgstr ""
+
+#: templates/tickets/ticket_resolution_workload.jinja:10
+msgid "Type"
+msgstr ""
+
+#: templates/tickets/ticket_resolution_workload.jinja:12
+msgid "Open Tickets"
+msgstr ""
+
+#: templates/tickets/ticket_resolution_workload.jinja:13
+msgid "Closed Tickets"
+msgstr ""
+
+#: templates/tickets/ticket_resolution_workload.jinja:14
+msgid "Total Tickets"
+msgstr ""
+
+#: templates/tickets/ticket_resolution_workload.jinja:15
+msgid "Average Resolution Time (all time)"
+msgstr ""
+
+#: templates/tickets/ticket_resolution_workload.jinja:16
+msgid "Average Resolution Time (last 30 tickets)"
+msgstr ""
+
+#: templates/tickets/ticket_user_fees_overview.jinja:5
+msgid "User fees"
+msgstr ""
+
+#: templates/tickets/ticket_user_fees_overview.jinja:9
+msgid "User"
+msgstr ""
+
+#: templates/tickets/admin/admin_charges_customer.jinja:6
+msgid "Filter"
+msgstr ""
+
+#: templates/tickets/admin/admin_charges_customer.jinja:12
+msgid "Customer Charges"
+msgstr ""
+
+#: templates/tickets/admin/admin_charges_customer.jinja:13
+msgid "View all logged charges against an individual customer."
+msgstr ""
+
+#: templates/tickets/admin/admin_charges_outstanding.jinja:4
+msgid "View all outstanding charges for all tickets and requesters. "
+msgstr ""
+
+#: templates/tickets/admin/admin_history.jinja:3
+msgid "Tickets History"
+msgstr ""
+
+#: templates/tickets/admin/admin_history.jinja:4
+msgid "A simple list of closed, resolved or cancelled tickets. "
+msgstr ""
+
+#: templates/tickets/admin/admin_unassigned.jinja:5
+msgid "View new tickets that need responders assigned to them."
+msgstr ""
+
+#: templates/tickets/partials/_activity.jinja:1
+msgid "Activity"
+msgstr ""
+
+#: templates/tickets/partials/_activity.jinja:47
+msgid "delete comment"
+msgstr ""
+
+#: templates/tickets/partials/_activity.jinja:58
+msgid "No updates yet."
+msgstr ""
+
+#: templates/tickets/partials/_filelist.jinja:7
+msgid "Select "
+msgstr ""
+
+#: templates/tickets/partials/_filelist.jinja:11
+msgid "No files "
+msgstr ""
+
+#: templates/tickets/partials/_filelist.jinja:13
+msgid "Remove from ticket"
+msgstr ""
+
+#: templates/tickets/partials/_filelist.jinja:18
+msgid "Attached Files"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:1
+msgid "Request Details"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:6
+msgid "Background"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:7
+msgid "Biography"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:8 ticket/models.py:211
+msgid "Business Activities"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:9
+msgid "Initial Information"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:10
+msgid "Sources"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:11
+msgid "Story"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:12
+msgid "Question"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:16 ticket/constants.py:120
+msgid "Birthplace"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:17 ticket/models.py:205
+msgid "Date of Birth"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:18
+msgid "Family"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:18
+#: templates/tickets/partials/_ticketdetails.jinja:19
+#: templates/tickets/partials/_ticketdetails.jinja:20
+msgid "First Names"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:18
+msgid "Relation"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:19 ticket/models.py:247
+msgid "Connected People"
+msgstr ""
+
+#: templates/tickets/partials/_ticketdetails.jinja:20 ticket/models.py:204
+msgid "Aliases"
+msgstr ""
+
+#: ticket/constants.py:36
+msgid "Limited liability"
+msgstr ""
+
+#: ticket/constants.py:37
+msgid "Partnership"
+msgstr ""
+
+#: ticket/constants.py:38
+msgid "Stock company"
+msgstr ""
+
+#: ticket/constants.py:39
+msgid "Foundation"
+msgstr ""
+
+#: ticket/constants.py:40
+msgid "Non-profit"
+msgstr ""
+
+#: ticket/constants.py:46
+msgid "Active"
+msgstr ""
+
+#: ticket/constants.py:47
+msgid "Inactive"
+msgstr ""
+
+#: ticket/constants.py:51
+msgid "-----------"
+msgstr ""
+
+#: ticket/constants.py:52
+msgid "Male"
+msgstr ""
+
+#: ticket/constants.py:53
+msgid "Female"
+msgstr ""
+
+#: ticket/constants.py:63
+msgid "Identify what a person owns"
+msgstr ""
+
+#: ticket/constants.py:64
+msgid "Determine company ownership"
+msgstr ""
+
+#: ticket/constants.py:65
+msgid "Any other question"
+msgstr ""
+
+#: ticket/constants.py:69
+msgid "Updated"
+msgstr ""
+
+#: ticket/constants.py:70
+msgid "Charge Added"
+msgstr ""
+
+#: ticket/constants.py:71
+msgid "Charge Modified"
+msgstr ""
+
+#: ticket/constants.py:74 ticket/constants.py:89
+msgid "Cancelled"
+msgstr ""
+
+#: ticket/constants.py:75
+msgid "Re-Opened"
+msgstr ""
+
+#: ticket/constants.py:76
+msgid "Opened"
+msgstr ""
+
+#: ticket/constants.py:77
+msgid "Flagged"
+msgstr ""
+
+#: ticket/constants.py:78
+msgid "Documents Attached"
+msgstr ""
+
+#: ticket/constants.py:79
+msgid "Entities Attached"
+msgstr ""
+
+#: ticket/constants.py:80
+msgid "Comment Added"
+msgstr ""
+
+#: ticket/constants.py:81
+msgid "Responder Joined"
+msgstr ""
+
+#: ticket/constants.py:82
+msgid "Responder Left"
+msgstr ""
+
+#: ticket/constants.py:87
+msgid "In Progress"
+msgstr ""
+
+#: ticket/constants.py:103
+msgid "Unpaid"
+msgstr ""
+
+#: ticket/constants.py:104
+msgid "Paid"
+msgstr ""
+
+#: ticket/constants.py:105
+msgid "Paid by OCCRP"
+msgstr ""
+
+#: ticket/constants.py:106
+msgid "Invoiced"
+msgstr ""
+
+#: ticket/constants.py:111
+msgid "Parent"
+msgstr ""
+
+#: ticket/constants.py:112
+msgid "Spouse"
+msgstr ""
+
+#: ticket/constants.py:113
+msgid "Other Relative"
+msgstr ""
+
+#: ticket/constants.py:114
+msgid "Friend or Acquaintance"
+msgstr ""
+
+#: ticket/constants.py:115
+msgid "Employer"
+msgstr ""
+
+#: ticket/constants.py:116
+msgid "Business Partner"
+msgstr ""
+
+#: ticket/constants.py:117
+msgid "Proxy"
+msgstr ""
+
+#: ticket/constants.py:121 ticket/constants.py:140
+msgid "Registered Address"
+msgstr ""
+
+#: ticket/constants.py:122
+msgid "Home Address"
+msgstr ""
+
+#: ticket/constants.py:125 ticket/constants.py:135
+msgid "Director"
+msgstr ""
+
+#: ticket/constants.py:126 ticket/constants.py:136
+msgid "Secretary"
+msgstr ""
+
+#: ticket/constants.py:127
+msgid "Authorized Person"
+msgstr ""
+
+#: ticket/constants.py:128
+msgid "Representative"
+msgstr ""
+
+#: ticket/constants.py:129 ticket/constants.py:137
+msgid "Shareholder"
+msgstr ""
+
+#: ticket/constants.py:130
+msgid "Employee"
+msgstr ""
+
+#: ticket/constants.py:133
+msgid "Subsidiary"
+msgstr ""
+
+#: ticket/constants.py:134
+msgid "Trading Partner"
+msgstr ""
+
+#: ticket/constants.py:141
+msgid "Place of Business"
+msgstr ""
+
+#: ticket/constants.py:157
+msgid "Media: non-profit"
+msgstr ""
+
+#: ticket/constants.py:158
+msgid "Media: for-profit"
+msgstr ""
+
+#: ticket/constants.py:159
+msgid "Media: freelance"
+msgstr ""
+
+#: ticket/constants.py:160
+msgid "Business: due diligence/investigation"
+msgstr ""
+
+#: ticket/constants.py:161
+msgid "Business: legal"
+msgstr ""
+
+#: ticket/constants.py:162
+msgid "Business: general"
+msgstr ""
+
+#: ticket/constants.py:163
+msgid "Government"
+msgstr ""
+
+#: ticket/constants.py:164
+msgid "Civil society/non-profit"
+msgstr ""
+
+#: ticket/constants.py:165
+msgid "Individual"
+msgstr ""
+
+#: ticket/constants.py:166
+msgid "Other (please specify)"
+msgstr ""
+
+#: ticket/constants.py:172
+msgid "OCCRP"
+msgstr ""
+
+#: ticket/constants.py:173
+msgid "ARIJ"
+msgstr ""
+
+#: ticket/constants.py:174
+msgid "ANCIR"
+msgstr ""
+
+#: ticket/constants.py:175
+msgid "Connectas in the Americas"
+msgstr ""
+
+#: ticket/constants.py:180
+msgid "Website"
+msgstr ""
+
+#: ticket/constants.py:181
+msgid "Print"
+msgstr ""
+
+#: ticket/constants.py:182
+msgid "Broadcast TV"
+msgstr ""
+
+#: ticket/constants.py:183
+msgid "Broadcast Radio"
+msgstr ""
+
+#: ticket/constants.py:184
+msgid "Other or don't know"
+msgstr ""
+
+#: ticket/constants.py:189
+msgid "Less than 10,000"
+msgstr ""
+
+#: ticket/constants.py:190
+msgid "10,000 to 25,000"
+msgstr ""
+
+#: ticket/constants.py:191
+msgid "25,000 to 50,000"
+msgstr ""
+
+#: ticket/constants.py:192
+msgid "50,000 to 100,000"
+msgstr ""
+
+#: ticket/constants.py:193
+msgid "100,000 to 250,000"
+msgstr ""
+
+#: ticket/constants.py:194
+msgid "250,000 to 500,000"
+msgstr ""
+
+#: ticket/constants.py:195
+msgid "More than 500,000"
+msgstr ""
+
+#: ticket/forms.py:21 ticket/forms.py:180
+msgid "Comment"
+msgstr ""
+
+#: ticket/forms.py:24
+msgid "Paid Status"
+msgstr ""
+
+#: ticket/forms.py:25
+msgid "Marking as paid will reconcile any open charges with the request."
+msgstr ""
+
+#: ticket/forms.py:47
+msgid "Research Goal"
+msgstr ""
+
+#: ticket/forms.py:64
+msgid ""
+"This is highly sensitive, do not let volunteer research librarians see this "
+"request."
+msgstr ""
+
+#: ticket/forms.py:92 ticket/forms.py:116
+msgid "What do you know so far?"
+msgstr ""
+
+#: ticket/forms.py:95
+msgid "Any information you already have."
+msgstr ""
+
+#: ticket/forms.py:118
+msgid "What sources do you have so far?"
+msgstr ""
+
+#: ticket/forms.py:141
+msgid "Staff Responders"
+msgstr ""
+
+#: ticket/forms.py:142
+msgid "Volunteer Responders"
+msgstr ""
+
+#: ticket/forms.py:163
+msgid "Reason"
+msgstr ""
+
+#: ticket/forms.py:194
+msgid ""
+"Add a comment, visible to the person making this request and the researcher "
+"answering it."
+msgstr ""
+
+#: ticket/mixins.py:22
+msgid "Ticket successfully updated."
+msgstr ""
+
+#: ticket/mixins.py:34
+msgid "Ticket successfully saved."
+msgstr ""
+
+#: ticket/mixins.py:75 ticket/views.py:983
+msgid "Ticket successfully created."
+msgstr ""
+
+#: ticket/models.py:39
+msgid "For-Profit?"
+msgstr ""
+
+#: ticket/models.py:41
+msgid "Public?"
+msgstr ""
+
+#: ticket/models.py:41
+msgid "Are you okay with the findings becoming public immediately?"
+msgstr ""
+
+#: ticket/models.py:43
+msgid "Deadline"
+msgstr ""
+
+#: ticket/models.py:43
+msgid ""
+"How soon do you need this request fulfilled? We will try to meet your "
+"deadline, but please note that our researchers are quite busy -- give them "
+"as much time as you possibly can!"
+msgstr ""
+
+#: ticket/models.py:44
+msgid "Sensitive?"
+msgstr ""
+
+#: ticket/models.py:45
+msgid "Why is it sensitive?"
+msgstr ""
+
+#: ticket/models.py:61
+msgid "Summary"
+msgstr ""
+
+#: ticket/models.py:62
+msgid "Requested by"
+msgstr ""
+
+#: ticket/models.py:82
+msgid "Unknown"
+msgstr ""
+
+#: ticket/models.py:202
+msgid "First/other names"
+msgstr ""
+
+#: ticket/models.py:203
+msgid "Last names"
+msgstr ""
+
+#: ticket/models.py:204
+msgid "Other names they are known by"
+msgstr ""
+
+#: ticket/models.py:206 ticket/models.py:244
+msgid "Your story"
+msgstr ""
+
+#: ticket/models.py:207
+msgid "Family and associates"
+msgstr ""
+
+#: ticket/models.py:215 ticket/models.py:245
+msgid "Where have you looked?"
+msgstr ""
+
+#: ticket/models.py:240
+msgid "Company Name"
+msgstr ""
+
+#: ticket/models.py:243
+msgid "Country Registered"
+msgstr ""
+
+#: ticket/models.py:273
+msgid "What do you want to know?"
+msgstr ""
+
+#: ticket/models.py:363
+#, python-format
+msgid ""
+"Item: %(item)s\n"
+"Cost (USD): $%(cost)s\n"
+msgstr ""
+
+#: ticket/views.py:194
+msgid "A reason must be supplied to cancel the ticket."
+msgstr ""
+
+#: ticket/views.py:206
+msgid "An error came up processing your close request."
+msgstr ""
+
+#: ticket/views.py:219 ticket/views.py:282
+msgid "There was an error adding you to the ticket."
+msgstr ""
+
+#: ticket/views.py:242
+msgid "You have successfully been added to the ticket."
+msgstr ""
+
+#: ticket/views.py:243 ticket/views.py:268 ticket/views.py:522
+#: ticket/views.py:528
+msgid " has joined the ticket"
+msgstr ""
+
+#: ticket/views.py:273
+msgid "You have successfully been added to the ticket"
+msgstr ""
+
+#: ticket/views.py:275
+msgid " has been added to the ticket."
+msgstr ""
+
+#: ticket/views.py:284
+msgid "There was an error adding the user to the ticket."
+msgstr ""
+
+#: ticket/views.py:311
+msgid "You have successfully been removed from the ticket"
+msgstr ""
+
+#: ticket/views.py:313
+msgid " has been removed from the ticket."
+msgstr ""
+
+#: ticket/views.py:319 ticket/views.py:370
+msgid "There was an error removing you from the ticket."
+msgstr ""
+
+#: ticket/views.py:321
+msgid "There was an error removing the user from the ticket."
+msgstr ""
+
+#: ticket/views.py:359 ticket/views.py:383 ticket/views.py:387
+#: ticket/views.py:392 ticket/views.py:396
+msgid "You have successfully been removed from the ticket."
+msgstr ""
+
+#: ticket/views.py:362
+msgid "There was an error removing you from the ticket"
+msgstr ""
+
+#: ticket/views.py:384 ticket/views.py:393 ticket/views.py:534
+#: ticket/views.py:540
+msgid " has left the ticket"
+msgstr ""
+
+#: ticket/views.py:404
+msgid "A reason must be supplied to (re)open the ticket."
+msgstr ""
+
+#: ticket/views.py:423
+msgid "Error adding charge."
+msgstr ""
+
+#: ticket/views.py:474
+msgid "Charge successfully updated."
+msgstr ""
+
+#: ticket/views.py:479
+msgid "Error updating charge."
+msgstr ""
+
+#: ticket/views.py:499
+msgid "There was an error updating the ticket."
+msgstr ""
+
+#: ticket/views.py:594
+msgid "There was an error deleting the comment."
+msgstr ""
+
+#: ticket/views.py:597
+msgid "The comment was successfully deleted."
+msgstr ""
