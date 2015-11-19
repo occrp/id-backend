@@ -45,7 +45,7 @@
 
         <div style="line-height: 1.2em; margin-bottom: 0.5em;">
             <span style="display:inline-block; width:6.5em;">{% trans %}Requested by{% endtrans %}</span>
-            <a href="{{url('profile', ticket.requester.id)}}">{{ticket.requester}}</a> {% trans %}on{% endtrans %} <b>{{ticket.created|date('Y-m-d')}}</b>, {% trans %}complete by{% endtrans %} <b>{{ticket.deadline|date('Y-m-d')}}</b>.
+            <a href="{{url('ticket_user_list', user_id=ticket.requester.id)}}">{{ticket.requester}}</a> <small>(<a href="{{url('profile', ticket.requester.id)}}">Profile</a>)</small> {% trans %}on{% endtrans %} <b>{{ticket.created|date('Y-m-d')}}</b>, {% trans %}complete by{% endtrans %} <b>{{ticket.deadline|date('Y-m-d')}}</b>.
         </div>
 
         <div>

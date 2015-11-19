@@ -6,8 +6,8 @@ def perm(perm, view, **viewkwargs):
     def decorator(request, **reqkwargs):
         if perm != "any":
             if not request.user.is_authenticated(): raise PermissionDenied
-            user, vol, staff, admin = (request.user.is_user, 
-                                       request.user.is_volunteer, 
+            user, vol, staff, admin = (request.user.is_user,
+                                       request.user.is_volunteer,
                                        request.user.is_staff,
                                        request.user.is_superuser)
             if perm == "admin" and not admin: raise PermissionDenied
@@ -31,14 +31,18 @@ def require_staff(user):
     raise PermissionDenied
 
 def require_volunteer(user):
-    if not user.is_authenticated(): raise PermissionDenied 
+    if not user.is_authenticated(): raise PermissionDenied
     if user.is_superuser: return True
     if user.is_staff: return True
     if user.is_volunteer: return True
     raise PermissionDenied
 
 def require_user(user):
-    if not user.is_authenticated(): raise PermissionDenied 
+    if not user.is_authenticated(): raise PermissionDenied
     if user.is_superuser: return True
     if user.is_user: return True
     raise PermissionDenied
+
+def activate_user(backend, user, response, *args, **kwargs):
+    user.is_active = True
+    user.save()

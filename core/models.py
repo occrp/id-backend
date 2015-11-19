@@ -1,9 +1,12 @@
 from django.db import models
 from settings.settings import AUTH_USER_MODEL
 import re
+import logging
 from core.utils import json_dumps, json_loads
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from id.constdata import NOTIFICATION_ICONS
+
+logger = logging.getLogger(__name__)
 
 notification_channel_format = re.compile("^(([\w\d]+|\*):){4}(([\w\d]+|\*))$")
 
@@ -28,7 +31,7 @@ class Notification(models.Model):
     user            = models.ForeignKey(AUTH_USER_MODEL)
     timestamp       = models.DateTimeField(auto_now_add=True)
     is_seen         = models.BooleanField(default=False)
-    text            = models.CharField(max_length=50)
+    text            = models.CharField(max_length=200)
     url_base        = models.CharField(max_length=50, blank=True, null=True)
     url_params      = models.CharField(max_length=200, blank=True, null=True)
     url             = models.URLField(blank=True, null=True)
@@ -43,12 +46,13 @@ class Notification(models.Model):
         self.is_seen = True
         self.save()
 
-    def create(self, user, channel, text, urlname=None, params={}):
+    def create(self, user, channel, text, urlname=None, params={}, url=None):
         self.apply_components(channel_components(channel))
         self.user = user
         self.text = text
         self.url_base = urlname
         self.url_params = json_dumps(params)
+        self.url = url
         self.save()
 
         message = """
@@ -58,17 +62,18 @@ class Notification(models.Model):
 
     Regards, ID
         """ % {"user": self.user, "message": self.text}
-        self.user.email_user(self,
-            "Investigative Dashboard just sent you a notification",
-            message,
-            from_email="noreply@investigativedashboard.org")
+        self.user.email_user("Investigative Dashboard just sent you a notification", message)
 
     def get_urlparams(self):
         return json_loads(self.url_params)
 
     def get_url(self):
         if self.url_base:
-            return reverse_lazy(self.url_base, kwargs=self.get_urlparams())
+            try:
+                return reverse(self.url_base, kwargs=self.get_urlparams())
+            except Exception, e:
+                logger.debug("Failed to convert url name '%s' with kwargs %s.", self.url_base, self.url_params)
+                return None
         elif self.url:
             return self.url
         return None
@@ -96,6 +101,9 @@ class NotificationSubscription(models.Model):
 
     class Meta:
         unique_together = (('user', 'project', 'module', 'model', 'instance', 'action'), )
+
+    def __unicode__(self):
+        return self.channel
 
     @property
     def channel(self):
