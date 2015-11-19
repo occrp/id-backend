@@ -37,86 +37,86 @@
     <div class="navbar navbar-static-top">
         <div class="navbar-inner">
             <div class="container">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <i class="fa fa-bar"></i>
-            </a>
-            {% if not exception %}
-            <div class="nav-collapse collapse">
-                <ul class="nav">
-                    <a href="/"><img style="max-height:40px; padding-top:7px; padding-right: 20px;" src="/static/img/id-logo-2-dark.png"/></a>
-                </ul>
-                {% if request.path != '/' or (user and user.is_authenticated()) %}
-                <ul class="nav">
-                    <li  class="{% if url('search') in request.path %}active{% endif %}">
-                        <a href="{{ url('search') }}"><i class="fa fa-search"></i> {% trans %}Search{% endtrans %}</a>
-                    </li>
-                    <li class="{% if url('externaldb_list') in request.path %}active{% endif %}">
-                        <a href="{{ url('externaldb_list') }}"><i class="fa fa-database"></i> {% trans %}External Databases{% endtrans %}</a>
-                    </li>
-                    {% if user.is_authenticated() %}
-                    <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
-                        <a href="{{ url('ticket_list') }}"><i class="fa fa-comments-o"></i> {% trans %}My Requests{% endtrans %}</a>
-                    </li>
-                        {% if user.is_staff or user.is_superuser %}
+                <div class="navbar-header nav">
+                    <a href="/"><img style="max-height:40px; padding-top:7px; padding-right: 20px; padding-left: 10px;" src="/static/img/id-logo-2-dark.png"/></a>
+
+                    <button type="button" class="pull-right btn btn-navbar navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-main" aria-expanded="false">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+                {% if not exception %}
+                <div class="collapse navbar-collapse" id="navbar-main">
+                    {% if request.path != '/' or (user and user.is_authenticated()) %}
+                    <ul class="nav navbar-nav">
+                        <li class="{% if url('search') in request.path %}active{% endif %}">
+                            <a href="{{ url('search') }}"><i class="fa fa-search"></i> {% trans %}Search{% endtrans %}</a>
+                        </li>
+                        <li class="{% if url('externaldb_list') in request.path %}active{% endif %}">
+                            <a href="{{ url('externaldb_list') }}"><i class="fa fa-database"></i> {% trans %}External Databases{% endtrans %}</a>
+                        </li>
+                        {% if user.is_authenticated() %}
+                        <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
+                            <a href="{{ url('ticket_list') }}"><i class="fa fa-comments-o"></i> {% trans %}My Requests{% endtrans %}</a>
+                        </li>
+                        {% endif %}
+                        {% if user.is_authenticated() and (user.is_staff or user.is_superuser) %}
                         <li class="{% if url('podaci_info_home') in request.path %}active{% endif %}">
                             <a href="{{ url('podaci_info_home') }}"><i class="fa fa-files-o"></i> {% trans %}Files{% endtrans %}</a>
                         </li>
                         {% endif %}
-
+                    </ul>
                     {% endif %}
-                </ul>
-                {% endif %}
-                <ul class="nav pull-right">
+                    <ul class="nav navbar-nav pull-right">
 
-                {% if (user and user.is_authenticated()) %}
-                    {% include "partials/_notifications.jinja" %}
+                    {% if (user and user.is_authenticated()) %}
+                        {% include "partials/_notifications.jinja" %}
 
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-user"></i> {{ user.email }}
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                            <li  class="{% if url('profile') in request.path %}active{% endif %}">
-                                <a href="{{ url('profile') }}"><i class="fa fa-user"></i> {% trans %}Profile{% endtrans %}</a>
-                            </li>
-                            {% if not (user.is_admin or user.is_staff or user.is_volunteer or user.is_user) %}
-                            <li><a href="{{ url('request_access_create') }}"><i class="fa fa-asterisk"></i> {% trans %}Request Permissions{% endtrans %}</a></li>
-                            {% endif %}
-                            {% if user.is_staff or user.is_superuser %}
-                            <li  class="{% if url('admin_panel') in request.path %}active{% endif %}">
-                                <a href="{{ url('admin_panel') }}"><i class="fa fa-gears"></i> {% trans %}Admin{% endtrans %}</a>
-                            </li>
-                            {% endif %}
-                            <li><a href="{{ url('feedback') }}"><i class="fa fa-comments"></i> {% trans %}Leave Feedback{% endtrans %}</a></li>
-                            <li><a tabindex="-1" href="{{ url('logout') }}"><i class="fa fa-sign-out"></i> {% trans %}Sign out{% endtrans %}</a></li>
-                        </ul>
-                    </li>
-                {% else %}
-                    <li><a href="{{ url('login') }}"><i class="fa fa-sign-in"></i> {% trans %}Sign In{% endtrans %}</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-user"></i> {{ user.email }}
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <li  class="{% if url('profile') in request.path %}active{% endif %}">
+                                    <a href="{{ url('profile') }}"><i class="fa fa-user"></i> {% trans %}Profile{% endtrans %}</a>
+                                </li>
+                                {% if not (user.is_admin or user.is_staff or user.is_volunteer or user.is_user) %}
+                                <li><a href="{{ url('request_access_create') }}"><i class="fa fa-asterisk"></i> {% trans %}Request Permissions{% endtrans %}</a></li>
+                                {% endif %}
+                                {% if user.is_staff or user.is_superuser %}
+                                <li  class="{% if url('admin_panel') in request.path %}active{% endif %}">
+                                    <a href="{{ url('admin_panel') }}"><i class="fa fa-gears"></i> {% trans %}Admin{% endtrans %}</a>
+                                </li>
+                                {% endif %}
+                                <li><a href="{{ url('feedback') }}"><i class="fa fa-comments"></i> {% trans %}Leave Feedback{% endtrans %}</a></li>
+                                <li><a tabindex="-1" href="{{ url('logout') }}"><i class="fa fa-sign-out"></i> {% trans %}Sign out{% endtrans %}</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ url('login') }}"><i class="fa fa-sign-in"></i> {% trans %}Sign In{% endtrans %}</a></li>
+                    {% endif %}
+                    {% block language_chooser %}
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                <i class="fa fa-globe"></i>
+                                {% if selected_locale %}{{ selected_locale.display_name|capitalize }}{% endif %}
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                {% for locale in LANGUAGES %}
+                                <li{% if (user.is_authenticated() and user.locale == locale.0) or request.session.locale == locale.0 %} class="active"{% endif %}>
+                                    <a href="{{url('account_set_language', locale.0)}}?go=/">
+                                        {{ locale.1 }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endblock %}
+                    </ul>
+                </div>
                 {% endif %}
-                {% block language_chooser %}
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                            <i class="fa fa-globe"></i>
-                            {% if selected_locale %}{{ selected_locale.display_name|capitalize }}{% endif %}
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                            {% for locale in LANGUAGES %}
-                            <li{% if (user.is_authenticated() and user.locale == locale.0) or request.session.locale == locale.0 %} class="active"{% endif %}>
-                                <a href="{{url('account_set_language', locale.0)}}?go=/">
-                                    {{ locale.1 }}
-                                </a>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                {% endblock %}
-                </ul>
             </div>
-            {% endif %}
-        </div>
         </div>
     </div>
 </div>
@@ -162,6 +162,7 @@
     <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/modal.js") }}"></script>
     <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/tooltip.js") }}"></script>
     <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/dropdown.js") }}"></script>
+    <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/collapse.js") }}"></script>
     <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/alert.js") }}"></script>
     <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/tab.js") }}"></script>
     <script type="text/javascript" src="{{ static("bower_components/bootstrap/js/button.js") }}"></script>
