@@ -166,10 +166,10 @@ class ZipDownload(APIView):
 
 
 class FileUploadView(generics.CreateAPIView):
-    # parser_classes = (FileUploadParser,)
+    parser_classes = (FileUploadParser,)
 
     def create(self, request, *args, **kwargs):
-        file_obj = request.FILES['files[]']
+        file_obj = request.FILES.get('files[]')
         ticket = request.POST.get('tickets[]') or None
         if ticket is not None:
             ticket = Ticket.objects.get(pk=ticket)
