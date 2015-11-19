@@ -166,7 +166,7 @@ class ZipDownload(APIView):
 
 
 class FileUploadView(generics.CreateAPIView):
-    parser_classes = (FileUploadParser,)
+    # parser_classes = (FileUploadParser,)
 
     def create(self, request, *args, **kwargs):
         file_obj = request.FILES['files[]']
