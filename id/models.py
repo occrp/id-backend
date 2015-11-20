@@ -179,7 +179,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     @property
     def display_name(self):
         if self.first_name or self.last_name:
-            return u" ".join((self.first_name, self.last_name)).title()
+            return u" ".join((self.first_name, self.last_name))
         return self.email or u''
 
     @property
