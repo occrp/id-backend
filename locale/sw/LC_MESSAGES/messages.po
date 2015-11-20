@@ -1329,7 +1329,7 @@ msgstr "Ombi Lako la Akaunti limepitishwa"
 #: templates/mail/account_request/rejected.jinja:8
 #, python-format
 msgid "Dear %(name)s,"
-msgstr "Kwa %(ma)jina,"
+msgstr "Kwa %(name)sjina,"
 
 #: templates/mail/account_request/approved.jinja:9
 #, fuzzy
