@@ -1,14 +1,11 @@
 import logging
 import pyes
 
+from django.conf import settings
 from search.searchers.base import DocumentSearcher, ResultSet
 from search.searchers.base import DocumentSearchResult
 
 log = logging.getLogger(__name__)
-
-# FIXME: What would life be without hard-coded server IPs?
-DATATRACKER_HOST = '54.227.243.186:9200'
-DATATRACKER_INDEX = 'id_prod'
 
 
 class DocumentSearchDataTracker(DocumentSearcher):
@@ -32,8 +29,8 @@ class DocumentSearchDataTracker(DocumentSearcher):
             }
         }
         try:
-            client = pyes.ES(DATATRACKER_HOST)
-            results = client.search_raw(query, indices=[DATATRACKER_INDEX])
+            client = pyes.ES(settings.DATATRACKER_ES_SERVERS)
+            results = client.search_raw(query, indices=[settings.DATATRACKER_ES_INDEX])
         except Exception as ex:
             log.info("Failure in DataTracker search: %r", ex)
             return ResultSet(total=0)
