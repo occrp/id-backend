@@ -35,6 +35,11 @@ PODACI_ES_SERVERS = ["elasticsearch:9200"]
 PODACI_ES_INDEX = 'podaci'
 PODACI_FS_ROOT = '/data'
 
+# Datatracker search servers
+# FIXME: What would life be without hard-coded server IPs?
+DATATRACKER_ES_SERVERS = ["54.227.243.186:9200"]
+DATATRACKER_ES_INDEX   = 'id_prod'
+
 #application defaults
 DEFAULTS = {
     'search': {
