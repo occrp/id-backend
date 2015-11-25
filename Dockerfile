@@ -29,17 +29,9 @@ RUN pip install -r /tmp/requirements.txt && rm /tmp/requirements.txt
 # bower setup
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN npm install -g bower
-COPY static/bower.json /tmp/bower.json
-# bower static resources setup
-RUN cd /tmp/ && bower --allow-root install
-# bower cleanup
-RUN npm uninstall bower
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get -y purge npm nodejs git && apt-get -y autoremove && rm /usr/bin/node
-
 # these are volume-mounted in development environments
 COPY . /srv/tools/investigative-dashboard-2/
 RUN cd /srv/tools/investigative-dashboard-2/ && find ./ -iname '*.pyc' -exec rm -rf '{}' \;
-RUN mv /tmp/bower_components /srv/tools/investigative-dashboard-2/static/
 
 # this can be volume-mounted
 RUN mkdir -p /var/log/id2/

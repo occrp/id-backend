@@ -21,7 +21,8 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
-static/bower_components
+static/bower_components/**
+!static/bower_components/README.md
 static_collected/
 
 # PyInstaller
