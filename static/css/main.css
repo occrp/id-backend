@@ -10,15 +10,25 @@ h3 {
     padding-top: 60px;
     padding-bottom: -60px;
 }
+@media (min-width: 979px) {
+    .collapse {
+        overflow: visible;
+    }
+}
+@media (max-width: 979px) {
+    .collapse {
+        display: none;
+    }
+}
 .navbar {
     z-index: 1000;
     top: 0px;
     left: 0px;
     width: 100%;
-  position: fixed;
-  border-top: 4px solid #982022;
-  border-bottom: 1px solid #ddd;
-  background: #fff;
+    position: fixed;
+    border-top: 4px solid #982022;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
 }
 .navbar-inner {
     background: #fff;
