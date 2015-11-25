@@ -42,6 +42,9 @@ class Notification(models.Model):
     instance        = models.IntegerField(null=True)
     action          = models.CharField(max_length=20, null=True)
 
+    class Meta:
+        ordering = ['-timestamp']
+
     def seen(self):
         self.is_seen = True
         self.save()
