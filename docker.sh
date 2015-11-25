@@ -19,6 +19,14 @@ echo      '#####################################################################
 
 find ./ -iname '*.pyc' -exec rm -rf '{}' \;
 
+echo -e '\n#####################################################################'
+echo      '# doing a bower install run...'
+echo      '#####################################################################'
+
+cd ./static/
+bower --allow-root install
+cd ../
+
 if [ ! -e "settings/settings_local.py" ]; then
     echo -e '\n#####################################################################'
     echo      '# setting up settings_local.py from settings_local.py-docker'
