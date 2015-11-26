@@ -11,6 +11,8 @@ from ticket.models import TicketCharge
 from settings.settings import LANGUAGES, AUTH_USER_MODEL
 from django.utils import timezone
 from datetime import timedelta
+import logging
+logger = logging.getLogger(__name__)
 
 
 class Network(models.Model):
@@ -139,6 +141,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         return self.first_name
 
     def email_user(self, subject, message, from_email=None, **kwargs):
+        logger.info("E-mailed user %s with subject '%s'" % (self.email, subject))
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def get_notifications(self, start=0, count=10):
@@ -317,6 +320,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         return {"id": self.id, "email": self.email}
 
     def save(self, *args, **kw):
+        logger.info("Saving profile for user %s: {is_active:%s, is_user:%s, is_volunteer:%s, is_staff:%s, is_superuser:%s}" % (self.email, self.is_active, self.is_user, self.is_volunteer, self.is_staff, self.is_superuser))
         if self.pk is not None:
             try:
                 orig = Profile.objects.get(pk=self.pk)
