@@ -6,7 +6,8 @@ from django.contrib.auth.views import REDIRECT_FIELD_NAME, AuthenticationForm
 
 from django.http import HttpResponseRedirect
 from id.forms import FeedbackForm
-
+import logging
+logger = logging.getLogger(__name__)
 
 class ProfileRegistrationView(RegistrationView):
     """
@@ -33,7 +34,7 @@ class ProfileRegistrationView(RegistrationView):
 
         """
         return form.save()
-    
+
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             return HttpResponseRedirect(self.fallback_redirect_url)
@@ -95,3 +96,16 @@ def login(request, template_name='registration/login.html',
         return HttpResponseRedirect(fallback_redirect_url)
     else:
         return django_login(request, template_name, redirect_field_name, authentication_form, current_app, extra_context)
+
+
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.core.signals import request_finished
+from django.dispatch import receiver
+
+@receiver(user_logged_in)
+def recv_signal_user_logged_in(sender, user, **kwargs):
+    logger.info("Logged in: user %s" % (user.email))
+
+@receiver(user_logged_out)
+def recv_signal_user_logged_out(sender, user, **kwargs):
+    logger.info("Logged out: user %s" % (user.email))
