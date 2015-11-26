@@ -145,11 +145,11 @@
     {{ str|replace(qry, "<span class='highlight'>%s</span>"|safe % qry) }}
 {%- endmacro %}
 
-{% macro request_detail(label, value) %}
+{% macro request_detail(label, value, url=None) %}
     {% if value %}
         <div class="request-detail">
             <h5 class="yell soft">{{ label }}</h5>
-            <p>{{ display_value(value) }}</p>
+            <p>{% if url %}<a href="{{url}}">{% endif %}{{ display_value(value) }}{% if url %}</a>{% endif %}</p>
         </div>
     {% endif %}
 {% endmacro %}
