@@ -122,3 +122,22 @@ class NotificationSubscription(models.Model):
 
     def set_channel(self, channel):
         self.apply_components(channel_components(channel))
+
+
+class AuditLog(models.Model):
+    user         = models.ForeignKey(AUTH_USER_MODEL, null=True)
+    level        = models.IntegerField()
+    module       = models.CharField(max_length=100)
+    filename     = models.CharField(max_length=100)
+    lineno       = models.IntegerField()
+    funcname     = models.CharField(max_length=100)
+    message      = models.TextField(null=True, blank=True)
+    excinfo      = models.TextField(null=True, blank=True)
+    exctext      = models.TextField(null=True, blank=True)
+    process      = models.IntegerField()
+    thread       = models.IntegerField()
+    ip           = models.IPAddressField(blank=True, null=True)
+    timestamp    = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return u"[%s/%d] %s:%d@%d-%d: %s" % (self.timestamp, self.level, self.filename, self.lineno, self.process, self.thread, self.message)
