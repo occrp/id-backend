@@ -938,6 +938,30 @@ class TicketListUser(TicketList):
         self.ticket_list_name = "All tickets created by %s" % (u)
         return Ticket.objects.filter(requester=u).order_by("-created")
 
+class TicketListCountry(TicketList):
+    url_name = 'ticket_country_list'
+
+    def get_ticket_set(self, user):
+        from core.countries import COUNTRIES
+        country = self.kwargs.get("country")
+        u = dict(COUNTRIES)[country]
+        self.page_name = "Tickets referring to companies in %s" % (u)
+        self.ticket_list_name = "All tickets referring to country %s" % (u)
+        return CompanyTicket.objects.filter(country=country).order_by("-created")
+
+class TicketCountries(TemplateView):
+    template_name = "tickets/countries.jinja"
+    url_name = 'ticket_countries'
+
+    def get_context_data(self):
+        from core.countries import COUNTRIES
+        from django.db.models import Count
+        qs = CompanyTicket.objects.values('country').annotate(cnt_total=Count('country')).order_by('country')
+        return {
+            'countries': qs,
+            'countrynames': dict(COUNTRIES)
+        }
+
 
 class TicketRequest(TemplateView):
     template_name = "tickets/request.jinja"
@@ -996,6 +1020,7 @@ class TicketRequest(TemplateView):
         ticket = form.save(commit=False)
         ticket.requester = self.request.user
         ticket.save()
+        # FIXME: Subscribe user to relevant channel
         messages.success(self.request, _('Ticket successfully created.'))
 
         return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": ticket.id}))

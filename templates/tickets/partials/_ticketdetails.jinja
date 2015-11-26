@@ -12,7 +12,7 @@
         {{ macros.request_detail(_('Question'), ticket.question) }}
     </div>
     <div class="span5">
-        {{ macros.request_detail(_('Country'), ticket.country) }}
+        {{ macros.request_detail(_('Country'), ticket.get_country(), '/ticket/country/%s' % ticket.country ) }}
         {{ macros.request_detail(_('Birthplace'), ticket.birthplace) }}
         {{ macros.request_detail(_('Date of Birth'), ticket.dob) }}
         {{ macros.request_detail_multivalue(_('Family'), [_('Last Name'), _('First Names'), _('Relation')], ticket.family) }}

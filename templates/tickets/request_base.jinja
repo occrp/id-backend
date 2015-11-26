@@ -90,6 +90,11 @@
                         </a>
                     </li>
 
+                    <li class="{% if 'ticket_countries' in ROUTE_NAME %}active{% endif %}">
+                        <a href="{{ url('ticket_countries') }}"><i class="fa fa-globe"></i> {% trans %}Tickets by country{% endtrans %}
+                        </a>
+                    </li>
+
                     <li class="nav-header">{% trans %}Utilities{% endtrans %}</li>
 
                     <li class="{% if 'ticket_researcher_workload' in ROUTE_NAME %}active{% endif %}">
