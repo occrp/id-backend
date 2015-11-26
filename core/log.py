@@ -9,7 +9,6 @@ class AuditLogHandler(logging.Handler):
     """
 
     def emit(self, record):
-        print dir(record)
         log = AuditLog()
         log.level = record.levelno
         log.module = record.module
