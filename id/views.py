@@ -104,8 +104,8 @@ from django.dispatch import receiver
 
 @receiver(user_logged_in)
 def recv_signal_user_logged_in(sender, user, **kwargs):
-    logger.info("Logged in: user %s" % (user.email))
+    logger.info("Logged in: user %s" % (user.email), extra={'user': user})
 
 @receiver(user_logged_out)
 def recv_signal_user_logged_out(sender, user, **kwargs):
-    logger.info("Logged out: user %s" % (user.email))
+    logger.info("Logged out: user %s" % (user.email), extra={'user': user})
