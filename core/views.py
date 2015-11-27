@@ -31,7 +31,7 @@ class NotificationSeen(APIView):
                     user=request.user
                 )
             except Exception, e:
-                return JsonResponse({"error": e})
+                return JsonResponse({"error": str(e)})
 
             notification.seen()
             return JsonResponse({
@@ -64,12 +64,18 @@ class NotificationSubscriptions(APIView):
             request.user.notifications_subscribe(channel)
             return JsonResponse({'result': 'subscribed'})
         except AssertionError, e:
-            return JsonResponse({'error': 'invalid channel format'}, status_code=400)
+            j = JsonResponse({
+                'error': 'invalid channel format.',
+                'format_hint': 'app:module:model:instance:action'})
+            j.status_code = 400
+            return j
         except TypeError, e:
-            return JsonResponse({
+            j = JsonResponse({
                 'error': 'you must supply a channel',
                 'params': request.data,
-            }, status_code=400)
+            })
+            j.status_code = 400
+            return j
 
     def delete(self, request, *args, **kwargs):
         channel = request.data.get('channel')
@@ -80,12 +86,17 @@ class NotificationSubscriptions(APIView):
             else:
                 return JsonResponse({'result': 'unsubscribed', 'found': cnt})
         except AssertionError, e:
-            return JsonResponse({'error': 'invalid channel format'}, status_code=400)
+            j = JsonResponse({'error': 'invalid channel format'})
+            j.status_code = 400
+            return j
         except TypeError, e:
-            return JsonResponse({
+            j = JsonResponse({
                 'error': 'you must supply a channel',
                 'params': request.data,
-            }, status_code=418)
+            })
+            j.status_code=418
+            return j
+
 
 class Notify(NotificationMixin, APIView):
     def post(self, request, *args, **kwargs):
