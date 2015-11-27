@@ -88,24 +88,33 @@ class CoreAPIv2Test(APITestCase, UserTestCase):
         self.assertIn('locale', m.json)
         self.assertIn('id', m.json)
         self.assertEqual(m.json['email'], self.normal_user.email)
+        # FIXME: need to test code path where user is a member of a network
 
     def test_profile_bullshit_user(self):
         m = self.get('api_2_profile')
         self.assertEqual(m.status_code, 401)
         self.assertIn('detail', m.json)
 
-    def test_notification_subscriptions(self):
+    def test_notification_subscriptions_check_none(self):
         # Check that (new) user isn't subscribed to anything:
         m = self.get('api_2_notifications', user=self.normal_user)
         self.assertEqual(m.status_code, 200)
         self.assertIn('notification_subscriptions', m.json)
         self.assertEqual(m.json['notification_subscriptions'], [])
 
+    def test_notification_subscriptions_subscribe_none(self):
+        # Try subscribing to unspecified channel:
+        m = self.put('api_2_notifications', user=self.normal_user)
+        self.assertEqual(m.status_code, 400)
+        self.assertIn("error", m.json)
+
+    def test_notification_subscriptions_subscribe_erroneous(self):
         # Try subscribing to erroneous channel:
         m = self.put('api_2_notifications', data={'channel': 'foo'}, user=self.normal_user)
         self.assertEqual(m.status_code, 400)
         self.assertIn("error", m.json)
 
+    def test_notification_subscriptions_subscribe_valid_and_verify(self):
         # Try subscribing to valid channel:
         m = self.put('api_2_notifications', data={'channel': 'id:*:*:*:*'}, user=self.normal_user)
         self.assertEqual(m.status_code, 200)
@@ -117,11 +126,6 @@ class CoreAPIv2Test(APITestCase, UserTestCase):
         self.assertEqual(m.status_code, 200)
         self.assertIn('notification_subscriptions', m.json)
         self.assertEqual(m.json['notification_subscriptions'], ['id:*:*:*:*'])
-
-        # Try unsubscribing from invalid channel
-        m = self.delete('api_2_notifications', data={'channel': 'foo'}, user=self.normal_user)
-        self.assertEqual(m.status_code, 400)
-        self.assertIn("error", m.json)
 
         # Try unsubscribing from valid channel
         m = self.delete('api_2_notifications', data={'channel': 'id:*:*:*:*'}, user=self.normal_user)
@@ -139,6 +143,13 @@ class CoreAPIv2Test(APITestCase, UserTestCase):
         self.assertIn("result", m.json)
         self.assertEqual(m.json["result"], "none")
 
+    def test_notification_subscriptions_unsubscribe_invalid(self):
+        # Try unsubscribing from invalid channel
+        m = self.delete('api_2_notifications', data={'channel': 'foo'}, user=self.normal_user)
+        self.assertEqual(m.status_code, 400)
+        self.assertIn("error", m.json)
+
+    def test_notification_subscriptions_unsubscribe_none(self):
         # Not supplying a channel is... weird. I am a teapot!
         m = self.delete('api_2_notifications', user=self.normal_user)
         self.assertEqual(m.status_code, 418)
