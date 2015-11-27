@@ -31,6 +31,8 @@ class DocumentSearchPodaci(DocumentSearcher):
         user = self.request.requester if self.request else None
         query['filter'] = authorize_filter(user)
         results = search_files_raw(query)
+        if not results.has_key('hits'):
+            return ResultSet(total=0)
 
         resultset = ResultSet(total=results['hits']['total'])
         for r in results['hits']['hits']:
