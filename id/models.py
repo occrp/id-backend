@@ -310,6 +310,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         return True
 
     def notifications_unsubscribe(self, channel):
+        assert(notification_channel_format.match(channel))
         components = channel_components(channel)
         subscriptions = NotificationSubscription.objects.filter(**components)
         count = subscriptions.count()
