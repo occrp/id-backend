@@ -161,27 +161,36 @@ class PodaciAPITest(APITestCase):
         super(PodaciAPITest, self).tearDown()
         shutil.rmtree(PODACI_FS_ROOT)
 
-    def test_file_list(self):
+    def test_file_list_not_authenticated(self):
+        # Try file list as not-logged in user:
         url = reverse('podaci_file_list')
         res = self.client.get(url)
-        # is that actually what we want?
-        self.assertEqual(res.status_code, 403)
+        self.assertEqual(res.status_code, 401)
+        self.assertIn('detail', res.data)
+
+    def test_file_list_staff_authenticated(self):
+        # Try logging in as staff:
+        url = reverse('podaci_file_list')
         self.client.force_authenticate(user=self.staff_user)
         res = self.client.get(url)
-        # print url, res.content
         self.assertEqual(res.status_code, 200)
+        self.assertIn('results', res.data)
         self.assertEqual(len(res.data['results']), 1)
 
+    def test_file_list_other_authenticated(self):
+        # Try logging in as other user:
+        url = reverse('podaci_file_list')
         self.client.force_authenticate(user=self.other_user)
         res = self.client.get(url)
         self.assertEqual(res.status_code, 200)
+        self.assertIn('results', res.data)
         self.assertEqual(len(res.data['results']), 0)
 
     def test_read_file(self):
         assert self.file.id is not None, self.file
         url = reverse('podaci_file_detail', kwargs={'pk': self.file.id})
         res = self.client.get(url)
-        self.assertEqual(res.status_code, 403)
+        self.assertEqual(res.status_code, 401)
         self.client.force_authenticate(user=self.staff_user)
         res = self.client.get(url)
         self.assertEqual(res.status_code, 200)
@@ -189,9 +198,12 @@ class PodaciAPITest(APITestCase):
     def test_search_files(self):
         assert self.file.id is not None, self.file
         url = reverse('podaci_search')
-        res = self.client.get(url + '?q=requirements')
-        self.assertEqual(res.status_code, 403)
 
+        # Try searching without logging in:
+        res = self.client.get(url + '?q=requirements')
+        self.assertEqual(res.status_code, 401)
+
+        # Try searching as logged in user
         self.client.force_authenticate(user=self.staff_user)
         res = self.client.get(url + '?q=requirements')
         self.assertEqual(res.status_code, 200)
