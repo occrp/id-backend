@@ -195,20 +195,27 @@ class PodaciAPITest(APITestCase):
         res = self.client.get(url)
         self.assertEqual(res.status_code, 200)
 
-    def test_search_files(self):
+    def test_search_files_unauthorized(self):
+        # Try searching without logging in:
         assert self.file.id is not None, self.file
         url = reverse('podaci_search')
-
-        # Try searching without logging in:
         res = self.client.get(url + '?q=requirements')
         self.assertEqual(res.status_code, 401)
 
+    def test_search_files_staff_authorized(self):
         # Try searching as logged in user
+        assert self.file.id is not None, self.file
+        url = reverse('podaci_search')
         self.client.force_authenticate(user=self.staff_user)
         res = self.client.get(url + '?q=requirements')
         self.assertEqual(res.status_code, 200)
         self.assertEqual(len(res.data['results']), 1)
 
+    def test_search_files_not_existing_staff_authorized(self):
+        # Try searching as logged in user
+        assert self.file.id is not None, self.file
+        url = reverse('podaci_search')
+        self.client.force_authenticate(user=self.staff_user)
         res = self.client.get(url + '?q=banana')
         self.assertEqual(res.status_code, 200)
         self.assertEqual(len(res.data['results']), 0)
