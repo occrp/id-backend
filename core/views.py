@@ -101,25 +101,40 @@ class NotificationSubscriptions(APIView):
 class Notify(NotificationMixin, APIView):
     def post(self, request, *args, **kwargs):
         if not request.auth:
-            return JsonResponse({"error": "no valid oauth token"}, status_code=403)
+            j = JsonResponse({"error": "no valid oauth token"})
+            j.status_code = 403
+            return j
+
         channel = request.data.get('channel')
         if not notification_channel_format.match(channel):
-            return JsonResponse({'error': 'invalid channel format'}, status_code=400)
+            j = JsonResponse({'error': 'invalid channel format'})
+            j.status_code = 400
+            return j
 
         components = channel_components(channel)
         if components['app'] != request.auth.application.name:
-            return JsonResponse({
+            j = JsonResponse({
                 'error': 'invalid application name',
                 'got': components['app'],
                 'expected': request.auth.application.name
-            }, status_code=409)
+            })
+            j.status_code = 409
+            return j
 
         text = request.data.get('text', None)
         if not text:
-            return JsonResponse({'error': 'no text provided'}, status_code=400)
+            j = JsonResponse({'error': 'no text provided'})
+            j.status_code = 400
+            return j
         url = request.data.get('url', None)
 
         self.notify_channel(channel=channel, text=text, user=request.user, url=url)
+        return JsonResponse({
+            'result': 'sent',
+            'channel': channel,
+            'text': text,
+            'url': url
+        })
 
 
 class Profile(APIView):
