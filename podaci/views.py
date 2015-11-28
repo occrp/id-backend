@@ -19,7 +19,6 @@ from ticket.models import Ticket
 from podaci.models import PodaciFile, PodaciTag, PodaciCollection
 from podaci.serializers import FileSerializer, TagSerializer
 from podaci.serializers import CollectionSerializer
-from podaci.templatetags import mentions  # noqa
 
 log = logging.getLogger(__name__)
 
