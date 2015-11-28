@@ -189,3 +189,22 @@ class CoreAPIv2Test(APITestCase, UserTestCase):
         self.assertEqual(m.status_code, 200)
 
         # FIXME: Verify that marking notifications as seen marks them as seen
+
+    def test_audit_log_unauthorized(self):
+        m = self.get('api_2_audit_log', user=self.normal_user)
+        self.assertEqual(m.status_code, 403)
+
+    def test_audit_log_authorized_unfiltered(self):
+        m = self.get('api_2_audit_log', user=self.staff_user)
+        self.assertEqual(m.status_code, 200)
+        self.assertIn('results', m.json)
+        self.assertIn('count', m.json)
+
+    def test_audit_log_authorized_filtered(self):
+        # Filter for login messages
+        filters = {'level': 20}
+        m = self.get('api_2_audit_log', user=self.staff_user, data=filters)
+        print m.json
+        self.assertEqual(m.status_code, 200)
+        self.assertIn('results', m.json)
+        self.assertIn('count', m.json)
