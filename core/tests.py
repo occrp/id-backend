@@ -204,7 +204,6 @@ class CoreAPIv2Test(APITestCase, UserTestCase):
         # Filter for login messages
         filters = {'level': 20}
         m = self.get('api_2_audit_log', user=self.staff_user, data=filters)
-        print m.json
         self.assertEqual(m.status_code, 200)
         self.assertIn('results', m.json)
         self.assertIn('count', m.json)
