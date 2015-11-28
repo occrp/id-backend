@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 
 from id import requests, accounts
-from id import validation, admin, tasks, errors
+from id import admin, tasks, errors
 from core.auth import perm
 
 from django.contrib.auth import views as auth_views
