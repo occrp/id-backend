@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AnonymousUser#, User
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.test import TestCase, RequestFactory
+from core.tests import UserTestCase
 
 
 class UserRegistration(TestCase):
@@ -32,3 +33,29 @@ class DatabaseLookup(TestCase):
 		"""Select a country from the country list"""
 		pass
 
+
+class ProfileFunctions(UserTestCase):
+	def test_name_fetching(self):
+		self.normal_user.get_full_name()
+		self.normal_user.display_name
+		self.normal_user.get_short_name()
+
+	def test_email_user(self):
+		self.normal_user.email_user('test', 'test')
+
+	def test_get_notifications(self):
+		self.normal_user.get_notifications()
+
+	def test_group_memberships(self):
+		self.normal_user.groups_display()
+
+	def test_permissions(self):
+		self.normal_user.is_approved
+
+	def test_tickets(self):
+		o = self.normal_user.tickets_assigned_open()
+		c = self.normal_user.tickets_assigned_closed()
+		self.assertEqual(self.normal_user.tickets_assigned_total(), o+c)
+
+		self.normal_user.tickets_average_resolution_time()
+		self.normal_user.tickets_average_resolution_time_last_30()
