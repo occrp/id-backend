@@ -1,11 +1,11 @@
-from core.models import Notification, NotificationSubscription
+from core.models import Notification, NotificationSubscription, AuditLog
 from core.models import channel_components, notification_channel_format
-from core.serializers import NotificationSerializer
+from core.serializers import NotificationSerializer, AuditLogSerializer
 from core.mixins import NotificationMixin
 
 from rest_framework import generics
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.http import JsonResponse
 
 import random
@@ -53,7 +53,6 @@ class NotificationSubscriptions(APIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request, *args, **kwargs):
-        print request.auth
         return JsonResponse({
             'notification_subscriptions': [x.channel for x in request.user.notificationsubscription_set.all()]
         })
@@ -160,3 +159,26 @@ class Profile(APIView):
             'notifications_unseen': Notification.objects.filter(user=request.user, is_seen=False).count(),
             'notification_subscriptions': [x.channel for x in request.user.notificationsubscription_set.all()]
         })
+
+class AuditLogView(generics.ListAPIView):
+    serializer_class = AuditLogSerializer
+    permission_classes = (IsAdminUser, )
+
+    def get_queryset(self):
+        filter_terms = ["user", "level", "module", "filename", "lineno",
+                        "funcname", "message", "process",
+                        "thread", "ip", "timestamp"]
+
+        filters = {}
+        for i in filter_terms:
+            filters[i] = self.request.data.get(i, None)
+            if not filters[i]:
+                del filters[i]
+
+        if 'user' in filters:
+            filters['user__email'] = filters['user']
+            del filters['user']
+
+        audits = AuditLog.objects.filter(**filters).order_by('-timestamp')
+
+        return audits
