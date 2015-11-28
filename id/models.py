@@ -135,7 +135,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     objects = ProfileManager()
 
     def get_full_name(self):
-        return self.display_name()
+        return self.display_name
 
     def get_short_name(self):
         return self.first_name
@@ -169,7 +169,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         )).fetch()
 
     def groups_display(self):
-        return ', '.join(x.capitalize() for x in ['user', 'staff', 'volunteer', 'admin'] if getattr(self, 'is_%s' % x))
+        return ', '.join(x.capitalize() for x in ['user', 'staff', 'volunteer', 'superuser'] if getattr(self, 'is_%s' % x))
 
 
     @property
