@@ -1,5 +1,5 @@
 from django.test import TestCase
-from core.tests import UserTestCase
+from core.tests import UserTestCase, APITestCase
 from core.testclient import TestClient
 from settings.settings import *
 from django.core.urlresolvers import reverse
@@ -150,3 +150,33 @@ class TicketsTest(UserTestCase):
 
     def test_reopen_ticket(self):
         pass
+
+    def test_ticket_assign_unassign(self):
+        client = TestClient()
+        client.login_user(self.admin_user)
+        t = OtherTicket()
+        t.requester = self.normal_user
+        t.save()
+
+        t_assign = reverse('ticket_assign', kwargs={'pk': t.id})
+        t_unassign = reverse('ticket_unassign', kwargs={'pk': t.id})
+
+        # Try assigning a volunteer
+        r = client.post(t_assign, {'user': self.volunteer_user.id})
+        self.assertEqual(r.status_code, 200)
+        # print r.content
+
+        # Try unassigning a volunteer
+        r = client.post(t_unassign, {'user': self.volunteer_user.id})
+        self.assertEqual(r.status_code, 200)
+        # print r.content
+
+        # Try assigning a staff member
+        r = client.post(t_assign, {'user': self.staff_user.id})
+        self.assertEqual(r.status_code, 200)
+        # print r.content
+
+        # Try assigning a staff member
+        r = client.post(t_unassign, {'user': self.staff_user.id})
+        self.assertEqual(r.status_code, 200)
+        # print r.content
