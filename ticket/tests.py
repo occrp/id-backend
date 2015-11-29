@@ -151,6 +151,83 @@ class TicketsTest(UserTestCase):
     def test_reopen_ticket(self):
         pass
 
+    def test_ticket_list_all_open_authorized(self):
+        client = TestClient()
+        client.login_user(self.staff_user)
+        r = client.get(reverse('ticket_all_open_list'))
+        self.assertEqual(r.status_code, 200)
+        # print r.status_code, r.content
+
+    def test_ticket_list_all_closed_authorized(self):
+        client = TestClient()
+        client.login_user(self.staff_user)
+        r = client.get(reverse('ticket_all_closed_list'))
+        self.assertEqual(r.status_code, 200)
+        # r.content
+
+    def test_ticket_my_open_list_unauthorized(self):
+        client = TestClient()
+        r = client.get('ticket_list')
+        # self.assertEqual(r.status_code, 403)
+        #print r.status_code, r.content
+
+    def test_ticket_my_open_list_authorized(self):
+        client = TestClient()
+        client.login_user(self.staff_user)
+        r = client.get(reverse('ticket_list'))
+        self.assertEqual(r.status_code, 200)
+        # print r.status_code, r.content
+
+    def test_ticket_list_my_closed_authorized(self):
+        client = TestClient()
+        client.login_user(self.staff_user)
+        r = client.get(reverse('ticket_closed_list'))
+        self.assertEqual(r.status_code, 200)
+        # r.content
+
+    def test_ticket_list_my_assigned_authorized(self):
+        client = TestClient()
+        client.login_user(self.staff_user)
+        r = client.get(reverse('ticket_assigned_list'))
+        self.assertEqual(r.status_code, 200)
+        # r.content
+
+    def test_ticket_list_my_assigned_closed_authorized(self):
+        client = TestClient()
+        client.login_user(self.staff_user)
+        r = client.get(reverse('ticket_assigned_closed_list'))
+        self.assertEqual(r.status_code, 200)
+        # r.content
+
+    def test_ticket_list_public_open_authorized(self):
+        client = TestClient()
+        client.login_user(self.staff_user)
+        r = client.get(reverse('ticket_public_list'))
+        self.assertEqual(r.status_code, 200)
+        # r.content
+
+    def test_ticket_list_public_closed_authorized(self):
+        client = TestClient()
+        client.login_user(self.staff_user)
+        r = client.get(reverse('ticket_public_closed_list'))
+        self.assertEqual(r.status_code, 200)
+        # r.content
+
+    def test_ticket_list_unassigned_authorized(self):
+        client = TestClient()
+        client.login_user(self.staff_user)
+        r = client.get(reverse('ticket_unassigned_list'))
+        self.assertEqual(r.status_code, 200)
+        # r.content
+
+    def test_ticket_list_deadline_authorized(self):
+        client = TestClient()
+        client.login_user(self.staff_user)
+        r = client.get(reverse('ticket_deadline_list'))
+        self.assertEqual(r.status_code, 200)
+        # r.content
+
+
     def test_ticket_assign_unassign(self):
         client = TestClient()
         client.login_user(self.admin_user)
