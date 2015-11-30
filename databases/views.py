@@ -1,10 +1,13 @@
 from django.db.models import Count
 from django.views.generic import ListView
+from rest_framework import generics
 
 from core.countries import COUNTRIES
 from databases.models import ExternalDatabase, DATABASE_TYPES, EXPAND_REGIONS
 from databases.forms import CountryFilterForm
-
+from databases.serializers import DatabaseSerializer
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from core.auth import IsAdminOrReadOnly
 
 class ExternalDatabaseList(ListView):
     template_name = "external_databases.jinja"
@@ -32,3 +35,14 @@ class ExternalDatabaseList(ListView):
             context["jurisdictions"] = 0
 
         return context
+
+
+class DatabaseCollectionView(generics.ListCreateAPIView):
+    serializer_class = DatabaseSerializer
+    permission_classes = (IsAdminOrReadOnly, )
+    queryset = ExternalDatabase.objects.all()
+
+class DatabaseMemberView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = DatabaseSerializer
+    permission_classes = (IsAdminOrReadOnly, )
+    queryset = ExternalDatabase.objects.all()
