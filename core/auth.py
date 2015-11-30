@@ -1,4 +1,16 @@
 from django.core.exceptions import PermissionDenied
+from rest_framework import permissions
+
+class IsAdminOrReadOnly(permissions.BasePermission):
+    """Allow unsafe methods for admin users only."""
+
+    def has_permission(self, request, view):
+        if request.user.is_superuser:
+            return True
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return False
+
 
 def perm(perm, view, **viewkwargs):
     assert(perm in ["any", "loggedin", "user", "volunteer", "staff", "admin"])
