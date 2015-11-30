@@ -39,17 +39,17 @@ EXPAND_REGIONS = {
 
 class ExternalDatabase(models.Model, DisplayMixin):
     agency = models.CharField(max_length=500, blank=False,
-                              verbose_name=_('Agency / Name'))
+        verbose_name=_('Agency / Name'))
     db_type = models.CharField(max_length=20, choices=DATABASE_TYPES,
-                               verbose_name=_('Type of Database'))
+        verbose_name=_('Type of Database'))
     country = models.CharField(max_length=20, choices=DATABASE_COUNTRIES,
-                               verbose_name=_('Country'))
+        verbose_name=_('Country'))
     paid = models.BooleanField(default=False, verbose_name=_('Paid Database'))
     registration_required = models.BooleanField(default=False,
-                                                verbose_name=_('Registration Required'))
+        verbose_name=_('Registration Required'))
     government_db = models.BooleanField(default=False,
-                                        verbose_name=_('Government Database'))
+        verbose_name=_('Government Database'))
     url = models.URLField(max_length=2000, blank=False, verbose_name=_('URL'))
-    notes = models.TextField(verbose_name=_('Notes'))
-    blog_post = models.URLField(verbose_name=_('Blog Post'))
-    video_url = models.URLField(verbose_name=_('YouTube Video Url'))
+    notes = models.TextField(verbose_name=_('Notes'), blank=True)
+    blog_post = models.URLField(verbose_name=_('Blog Post'), blank=True)
+    video_url = models.URLField(verbose_name=_('YouTube Video Url'), blank=True)
