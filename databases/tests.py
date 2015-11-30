@@ -67,7 +67,6 @@ class DatabaseAPIv2Test(APITestCase, UserTestCase):
 
     def test_edit_database(self):
         post = {
-            'id': 1,
             'agency': 'Test',
             'db_type': 'ip',
             'country': 'EE',
@@ -84,6 +83,7 @@ class DatabaseAPIv2Test(APITestCase, UserTestCase):
         self.assertEqual(m.status_code, 201)
 
         # Next, update it:
+        post = m.json
         post['agency'] = 'New test agency'
         urlargs = {'pk': m.json['id']}
         m = self.put('api_2_databases_member', user=self.admin_user, urlargs=urlargs,
