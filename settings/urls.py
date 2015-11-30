@@ -9,6 +9,7 @@ from django.contrib.auth import views as auth_views
 from registration.views import ActivationView
 
 from core.views import NotificationSeen, NotificationStream, NotificationSubscriptions, Notify, Profile, AuditLogView
+from databases.views import DatabaseCollectionView, DatabaseMemberView
 from id.views import ProfileRegistrationView, login, logout
 from id.forms import ProfileRegistrationForm, FeedbackForm
 
@@ -30,6 +31,9 @@ urlpatterns = patterns('',
     url(r'^api/2/notifications/stream/$',   NotificationStream.as_view(), name='api_2_notifications_stream'),
     url(r'^api/2/notifications/notify/$',   Notify.as_view(), name='api_2_notifications_notify'),
     url(r'^api/2/audit/log/$',              AuditLogView.as_view(), name='api_2_audit_log'),
+
+    url(r'^api/2/databases/$',              DatabaseCollectionView.as_view(), name='api_2_databases_collection'),
+    url(r'^api/2/databases/(?P<pk>\d+)$',   DatabaseMemberView.as_view(), name='api_2_databases_member'),
 
     url(r'^admin/$',                        perm('staff', admin.Panel), name='admin_panel'),
     url(r'^admin/scrapers/request/$',       perm('staff', admin.DatabaseScrapeRequestCreate), name='admin_scrapers_request'),
