@@ -1,0 +1,30 @@
+before_script: '
+cd "/home/gitlab_ci_multi_runner/data/$CI_PROJECT_DIR"
+# Setup commands:
+pip install -r requirements.txt
+pip install coveralls
+VERSION="1.4.2"
+PORT="9233"
+mkdir -p ~/elasticsearch/
+pushd ~/elasticsearch/
+wget
+https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${VERSION}.zip
+unzip elasticsearch-${VERSION}.zip
+cd elasticsearch-${VERSION}
+echo "http.port: ${PORT}" >> config/elasticsearch.yml
+# Make sure to use the exact parameters you want for elasticsearch and give it enough sleep time
+nohup bash -c "./bin/elasticsearch 2>&1" &
+sleep 10
+popd
+# Sync your DB for django projects
+python manage.py syncdb --noinput
+'
+
+build_id2:
+    script: '
+cd "/home/gitlab_ci_multi_runner/data/$CI_PROJECT_DIR"
+# Run commands:
+python manage.py test
+coverage run --source=. manage.py test
+coveralls
+'
