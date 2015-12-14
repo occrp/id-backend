@@ -1,6 +1,8 @@
 before_script: '
 cd "/home/gitlab_ci_multi_runner/data/$CI_PROJECT_DIR"
 # Setup commands:
+# apt-get update - needed?
+# apt-get install python python-pip - needed?
 pip install -r requirements.txt
 pip install coveralls
 VERSION="1.4.2"
