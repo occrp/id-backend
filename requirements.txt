@@ -7,7 +7,7 @@ mock==1.0.1
 python-magic
 elasticsearch
 django-jinja
-django-compressor
+django-compressor==1.6
 django-registration-redux
 pyes
 requests>=2.8.0
