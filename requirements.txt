@@ -6,7 +6,7 @@ transifex-client==0.10
 mock==1.0.1
 python-magic
 elasticsearch
-django-jinja
+django-jinja==1.4.1
 django-compressor==1.6
 django-registration-redux
 pyes
