@@ -322,12 +322,6 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
 
     def save(self, *args, **kw):
         import traceback
-        import sys
-        try:
-            raise Exception("Fiddled with user")
-        except Exception, e:
-            (t, value, tb) = sys.exc_info()
-            tb = traceback.format_tb(tb)
 
         ## FIXME: Temporary fix to make users stop being locked out
         try:
@@ -343,7 +337,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         #####################################################################
 
         logger.info("Saving profile for user %s: {is_active:%s, is_user:%s, is_volunteer:%s, is_staff:%s, is_superuser:%s}" % (self.email, self.is_active, self.is_user, self.is_volunteer, self.is_staff, self.is_superuser))
-        logger.debug("Traceback: %s" % tb)
+        logger.debug("Traceback: %s" % traceback.format_stack())
         if self.pk is not None:
             try:
                 orig = Profile.objects.get(pk=self.pk)
