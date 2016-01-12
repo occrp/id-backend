@@ -30,7 +30,8 @@ class DocumentSearchDataTracker(DocumentSearcher):
         }
         try:
             client = pyes.ES(settings.DATATRACKER_ES_SERVERS)
-            results = client.search_raw(query, indices=[settings.DATATRACKER_ES_INDEX])
+            results = client.search_raw(query,
+                                        indices=[settings.DATATRACKER_ES_INDEX])
         except Exception as ex:
             log.info("Failure in DataTracker search: %r", ex)
             return ResultSet(total=0)
