@@ -10,13 +10,13 @@ class AuditLogHandler(logging.Handler):
 
     def emit(self, record):
         log = AuditLog()
-        log.level = record.levelno
+        log.level = int(record.levelno)
         log.module = record.module
-        log.process = record.process
-        log.thread = record.thread
+        log.process = int(record.process)
+        log.thread = int(record.thread)
         log.message = record.message
         log.filename = record.filename
-        log.lineno = record.lineno
+        log.lineno = int(record.lineno)
         log.funcname = record.funcName
         log.exctext = record.exc_text
         log.excinfo = record.exc_info
