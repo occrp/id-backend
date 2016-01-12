@@ -24,7 +24,7 @@ echo      '# doing a bower install run...'
 echo      '#####################################################################'
 
 cd ./static/
-bower --allow-root install
+bower --allow-root --config.interactive=false --verbose --force install
 cd ../
 
 if [ ! -e "settings/settings_local.py" ]; then
