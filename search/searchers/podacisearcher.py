@@ -1,8 +1,11 @@
+import logging
 from django.core.urlresolvers import reverse
 
 from podaci.search import search_files_raw, authorize_filter
 from search.searchers.base import DocumentSearcher, ResultSet
 from search.searchers.base import DocumentSearchResult
+
+log = logging.getLogger(__name__)
 
 
 class DocumentSearchPodaci(DocumentSearcher):
@@ -30,7 +33,12 @@ class DocumentSearchPodaci(DocumentSearcher):
         }
         user = self.request.requester if self.request else None
         query['filter'] = authorize_filter(user)
-        results = search_files_raw(query)
+        try:
+            results = search_files_raw(query)
+        except Exception as ex:
+            log.info("Failure in Podaci search: %r", ex)
+            return ResultSet(total=0)
+
         if not results.has_key('hits'):
             return ResultSet(total=0)
 
