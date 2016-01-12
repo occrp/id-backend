@@ -9,6 +9,7 @@ from id.forms import FeedbackForm
 import logging
 logger = logging.getLogger(__name__)
 
+
 class ProfileRegistrationView(RegistrationView):
     """
     Profile registration view.
@@ -17,8 +18,7 @@ class ProfileRegistrationView(RegistrationView):
 
     disallowed_url = REGISTRATION_CLOSED_URL
     success_url = REGISTRATION_SUCCESS_URL
-    fallback_redirect_url='/'
-
+    fallback_redirect_url = '/'
 
     def registration_allowed(self, request):
         """
@@ -43,7 +43,7 @@ class ProfileRegistrationView(RegistrationView):
 
 
 def logout(request, next_page=None,
-           template_name='registration/logged_out.html',
+           template_name='registration/logout.jinja',
            redirect_field_name=REDIRECT_FIELD_NAME,
            current_app=None, extra_context=None,
            form_class=FeedbackForm,
@@ -83,10 +83,11 @@ def logout(request, next_page=None,
         return HttpResponseRedirect(fallback_redirect_url)
 
 
-def login(request, template_name='registration/login.html',
+def login(request, template_name='registration/login.jinja',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
-          current_app=None, extra_context=None,
+          current_app=None,
+          extra_context=None,
           fallback_redirect_url='/'):
     """
     Overloading the login() function from django.contrib.auth.views
@@ -95,16 +96,19 @@ def login(request, template_name='registration/login.html',
     if request.user.is_authenticated():
         return HttpResponseRedirect(fallback_redirect_url)
     else:
-        return django_login(request, template_name, redirect_field_name, authentication_form, current_app, extra_context)
+        return django_login(request, template_name, redirect_field_name,
+                            authentication_form, current_app, extra_context)
 
 
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.core.signals import request_finished
 from django.dispatch import receiver
 
+
 @receiver(user_logged_in)
 def recv_signal_user_logged_in(sender, user, **kwargs):
     logger.info("Logged in: user %s" % (user.email), extra={'user': user})
+
 
 @receiver(user_logged_out)
 def recv_signal_user_logged_out(sender, user, **kwargs):
