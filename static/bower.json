@@ -5,6 +5,7 @@
     "jquery": "2.1.4",
     "bootstrap": "3.3.5",
     "bootstrap-datepicker": "1.4.0",
+    "bootstrap-sortable": "1.12.0",
     "select2": "4.0.0",
     "spin.js": "2.3.2",
     "moment": "2.10.6",
