@@ -332,10 +332,10 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         ## FIXME: Temporary fix to make users stop being locked out
         try:
             u = Profile.objects.get(id=self.id)
-            if self.is_active != u.is_active:
+            if u.is_active and not self.is_active:
                 logger.warn("Bug tripped: is_active set to %s" % self.is_active)
                 self.is_active = u.is_active
-            if self.is_user != u.is_user:
+            if u.is_user and not self.is_user:
                 logger.warn("Bug possibly tripped: is_user set to %s" % self.is_user)
                 self.is_user = u.is_user
         except Profile.DoesNotExist:
