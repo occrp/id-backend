@@ -321,7 +321,29 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         return {"id": self.id, "email": self.email}
 
     def save(self, *args, **kw):
+        import traceback
+        import sys
+        try:
+            raise Exception("Fiddled with user")
+        except Exception, e:
+            (t, value, tb) = sys.exc_info()
+            tb = traceback.format_tb(tb)
+
+        ## FIXME: Temporary fix to make users stop being locked out
+        try:
+            u = Profile.objects.get(id=self.id)
+            if self.is_active != u.is_active:
+                logger.warn("Bug tripped: is_active set to %s" % self.is_active)
+                self.is_active = u.is_active
+            if self.is_user != u.is_user:
+                logger.warn("Bug possibly tripped: is_user set to %s" % self.is_user)
+                self.is_user = u.is_user
+        except Profile.DoesNotExist:
+            pass
+        #####################################################################
+
         logger.info("Saving profile for user %s: {is_active:%s, is_user:%s, is_volunteer:%s, is_staff:%s, is_superuser:%s}" % (self.email, self.is_active, self.is_user, self.is_volunteer, self.is_staff, self.is_superuser))
+        logger.debug("Traceback: %s" % tb)
         if self.pk is not None:
             try:
                 orig = Profile.objects.get(pk=self.pk)
