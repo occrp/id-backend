@@ -823,7 +823,7 @@ class TicketListAllOpen(TicketList):
 
     def get_ticket_set(self, user):
         return Ticket.objects.filter(
-            ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            ~Q(status='closed')&~Q(status='cancelled')).order_by(
             "-created")
 
 class TicketListAllClosed(TicketList):
@@ -833,8 +833,7 @@ class TicketListAllClosed(TicketList):
 
     def get_ticket_set(self, user):
         return Ticket.objects.filter(
-            Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
-            "-created")
+            Q(status='closed')).order_by("-created")
 
 class TicketListMyOpen(TicketList):
     page_name = "My Requests"
@@ -843,7 +842,7 @@ class TicketListMyOpen(TicketList):
     def get_ticket_set(self, user):
         return Ticket.objects.filter(
             requester=user).filter(
-            ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            ~Q(status='closed')&~Q(status='cancelled')).order_by(
             "-created")
 
 class TicketListMyClosed(TicketList):
@@ -853,7 +852,7 @@ class TicketListMyClosed(TicketList):
     def get_ticket_set(self, user):
         return Ticket.objects.filter(
             requester=user).filter(
-            Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            Q(status='closed')).order_by(
             "-created")
 
 class TicketListMyAssigned(TicketList):
@@ -863,7 +862,7 @@ class TicketListMyAssigned(TicketList):
     def get_ticket_set(self, user):
         return Ticket.objects.filter(
             Q(responders__in=[user]) | Q(volunteers__in=[user])).filter(
-            ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            ~Q(status='closed')&~Q(status='cancelled')).order_by(
             "-created")
 
 class TicketListMyAssignedClosed(TicketList):
@@ -873,7 +872,7 @@ class TicketListMyAssignedClosed(TicketList):
     def get_ticket_set(self, user):
         return Ticket.objects.filter(
             Q(responders__in=[user]) | Q(volunteers__in=[user])).filter(
-            Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            Q(status='closed')).order_by(
             "-created")
 
 
@@ -884,7 +883,7 @@ class TicketListPublic(TicketList):
     def get_ticket_set(self, user):
         return Ticket.objects.filter(
             is_public=True).filter(
-            ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            ~Q(status='closed')&~Q(status='cancelled')).order_by(
             "-created")
 
 class TicketListPublicClosed(TicketList):
@@ -894,7 +893,7 @@ class TicketListPublicClosed(TicketList):
     def get_ticket_set(self, user):
         return Ticket.objects.filter(
             is_public=True).filter(
-            Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            Q(status='closed')).order_by(
             "-created")
 
 
@@ -921,7 +920,7 @@ class TicketListUpcomingDeadline(TicketList):
 
         return Ticket.objects.filter(
             Q(deadline__isnull=False) & Q(deadline__lte=filter_date)).filter(
-            ~Q(status=constants.get_choice('Closed', constants.TICKET_STATUS))).order_by(
+            ~Q(status='closed')).order_by(
             "-created")
 
 
