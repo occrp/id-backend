@@ -2,7 +2,7 @@ FROM python:2.7.9
 
 # you will need need these docker images too:
 #  - tpires/neo4j
-#  - mysql
+#  - postgres
 # consult README.md for more information
 
 RUN echo 'deb http://httpredir.debian.org/debian jessie non-free' > /etc/apt/sources.list.d/debian-non-free.list \
@@ -36,7 +36,7 @@ RUN cd /srv/tools/investigative-dashboard-2/ && find ./ -iname '*.pyc' -exec rm 
 # this can be volume-mounted
 RUN mkdir -p /var/log/id2/
 
-VOLUME ["/var/log/id2/", "/srv/tools/investigative-dashboard-2/static/"]
+VOLUME ["/var/log/id2/"]
 
 EXPOSE 8000
 #CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
