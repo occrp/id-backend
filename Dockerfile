@@ -36,7 +36,7 @@ RUN cd /srv/tools/investigative-dashboard-2/ && find ./ -iname '*.pyc' -exec rm 
 # this can be volume-mounted
 RUN mkdir -p /var/log/id2/
 
-VOLUME ["/var/log/id2/", "/srv/tools/investigative-dashboard-2/static/"]
+VOLUME ["/var/log/id2/"]
 
 EXPOSE 8000
 #CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
