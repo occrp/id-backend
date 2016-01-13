@@ -31,6 +31,7 @@ RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN npm install -g bower
 # these are volume-mounted in development environments
 COPY . /srv/tools/investigative-dashboard-2/
+RUN chmod -R a+rX /srv/tools/investigative-dashboard-2/
 RUN cd /srv/tools/investigative-dashboard-2/ && find ./ -iname '*.pyc' -exec rm -rf '{}' \;
 
 # this can be volume-mounted
