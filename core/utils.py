@@ -2,7 +2,7 @@ import json
 import httplib2
 import argparse
 import os.path
-from datetime import datetime
+from datetime import datetime, date
 from settings import settings
 import tempfile
 from oauth2client import tools as oauth2tools
@@ -13,8 +13,10 @@ from django.db.models.query import QuerySet
 from django.db.models.sql.query import Query
 from unidecode import unidecode
 
+
 def text_normalize(s):
     return unidecode(s.decode("utf-8"))
+
 
 def convert_group_to_select2field_choices(group):
     result = []
@@ -26,8 +28,8 @@ def convert_group_to_select2field_choices(group):
 
 
 def json_default(o):
-    if isinstance(o, datetime):
-        return o.strftime("%s")
+    if isinstance(o, (datetime, date)):
+        return o.isoformat()
     elif isinstance(o, Query):
         raise ValueError("Cannot JSON serialize a Query for security reasons.")
     elif isinstance(o, QuerySet):
