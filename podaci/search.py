@@ -37,7 +37,7 @@ def connect():
             not len(settings.PODACI_ES_SERVERS):
         log.warn("PODACI_ES_SERVERS is not configured. No Podaci indexing.")
         return None
-    return pyes.ES(settings.PODACI_ES_SERVERS)
+    return pyes.ES(list(settings.PODACI_ES_SERVERS))
 
 
 def ensure_index(clear=False):
@@ -48,7 +48,7 @@ def ensure_index(clear=False):
         try:
             conn.ensure_index(settings.PODACI_ES_INDEX, mappings=MAPPING,
                               clear=clear)
-        except pyes.exceptions.ElasticSearchException as ese:
+        except pyes.exceptions.ElasticSearchException:
             log.error("Failed to ensure the index exists. Is ElasticSearch " +
                       "running or do you need to regenerate the index?")
 
@@ -70,6 +70,7 @@ def search_files_raw(query):
         return {}
     return conn.search_raw(query, indices=[settings.PODACI_ES_INDEX],
                            doc_types=[FILE])
+
 
 def authorize_filter(user):
     """ Generate a filter against files which expresses the user's access
