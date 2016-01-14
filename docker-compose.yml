@@ -32,6 +32,8 @@ id2:
 ######################################################################
 id2dev:
   build: .
+  environment:
+    ID_ENVIRONMENT: debug
   ports:
     - "8000:8000"
   expose:
@@ -67,6 +69,8 @@ id2dev:
 ######################################################################
 id2dataimports:
   build: .
+  environment:
+    ID_ENVIRONMENT: debug
   expose:
     - "8000"
   links:
