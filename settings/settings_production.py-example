@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# import the defaults, so that we have something to work with
+from settings_defaults import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
