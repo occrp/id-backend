@@ -826,6 +826,7 @@ class TicketListAllOpen(TicketList):
             ~Q(status='closed')&~Q(status='cancelled')).order_by(
             "-created")
 
+
 class TicketListAllClosed(TicketList):
     page_name = "All Requests"
     ticket_list_name = "All Closed Requests"

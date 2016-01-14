@@ -13,7 +13,9 @@ from constants import *
 from utils import *
 import datetime
 
+
 ######## Data requests #################
+
 class Ticket(models.Model, DisplayMixin, NotificationMixin):
     """
     Common fields for all ticket types
@@ -194,6 +196,21 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
 
         return datetime.timedelta(0)
 
+    def to_json(self):
+        return {
+            'id': self.id,
+            'ticket_type': self.ticket_type,
+            'requester': self.requester,
+            'requester_type': self.requester_type,
+            'created': self.created,
+            'status': self.status,
+            'summary': self.summary,
+            'is_for_profit': self.is_for_profit,
+            'is_public': self.is_public,
+            'is_open': self.is_open(),
+            'deadline': self.deadline,
+            'sensitive': self.sensitive
+        }
 
 
 class PersonTicket(Ticket):
@@ -231,6 +248,20 @@ class PersonTicket(Ticket):
             output.append((self._properties[i]._verbose_name, self.get_display_value(i)))
         return output
 
+    def to_json(self):
+        data = super(PersonTicket, self).to_json()
+        data.update({
+            'name': self.name,
+            'surname': self.surname,
+            'aliases': self.aliases,
+            'dob': self.dob,
+            'background': self.background,
+            'family': self.family,
+            'business_activities': self.business_activities,
+            'initial_information': self.initial_information
+        })
+        return data
+
 
 class CompanyTicket(Ticket):
     """ Company ownership request """
@@ -257,13 +288,24 @@ class CompanyTicket(Ticket):
         return dict(COUNTRIES).get(self.country, self.country)
 
     def most_fields(self):
-        '''Return an iterator of tuples (verbose name, display value)
+        ''' Return an iterator of tuples (verbose name, display value)
         for all fields which can be shown to everybody on the ticket'''
         output = Ticket.most_fields(self)
         for i in ('name', 'country', 'background', 'sources',
                   'connections'):
             output.append((self._properties[i]._verbose_name, self.get_display_value(i)))
         return output
+
+    def to_json(self):
+        data = super(CompanyTicket, self).to_json()
+        data.update({
+            'name': self.name,
+            'country': self.country,
+            'background': self.background,
+            'sources': self.sources,
+            'connections': self.connections
+        })
+        return data
 
 
 class OtherTicket(Ticket):
@@ -283,6 +325,13 @@ class OtherTicket(Ticket):
             text += word + " "
             if len(text) > 120: break
         return "%s" % text.strip()
+
+    def to_json(self):
+        data = super(OtherTicket, self).to_json()
+        data.update({
+            'question': self.question
+        })
+        return data
 
 
 class TicketUpdate(models.Model, NotificationMixin):
