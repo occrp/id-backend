@@ -30,14 +30,6 @@ cd ./static/
 GIT_DIR=/tmp/ bower --allow-root --config.interactive=false --verbose --force install
 cd ../
 
-if [ ! -e "settings/settings_local.py" ]; then
-    echo -e '\n#####################################################################'
-    echo      '# setting up settings_local.py from settings_local.py-docker'
-    echo      '#####################################################################'
-    
-    cp -a settings/settings_local.py-docker settings/settings_local.py
-fi
-
 
 echo -e '\n#####################################################################'
 echo      '# make sure elasticsearch is running...'
