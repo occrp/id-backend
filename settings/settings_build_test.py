@@ -20,6 +20,9 @@ PODACI_ES_SERVERS = ["localhost:9233"]
 PODACI_ES_INDEX = 'podaci_test'
 PODACI_FS_ROOT = 'data_test'
 
+
+LOGGING['handlers']['file'['filename'] = 'log.log'
+
 LOGGING['loggers']['elasticsearch'] = {
     'handlers': ['file'],
     'level': 'DEBUG',
