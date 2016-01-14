@@ -5,6 +5,7 @@ import os
 import shutil
 import magic
 import logging
+
 logger = logging.getLogger(__name__)
 # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from settings.settings import AUTH_USER_MODEL
@@ -87,12 +88,19 @@ class PodaciFile(NotificationMixin, models.Model):
     description         = models.TextField(blank=True)
     is_entity_extracted = models.BooleanField(default=False)
 
+    @property
+    def filename_safe(self):
+        if self.filename is None:
+            return
+        return self.filename.replace('\n', ' ')
+
     def __unicode__(self):
         return self.title or self.filename
 
     def add_user(self, user, write=False, notify=True):
         """ Give a user permissions on the object. """
-        if not user: return
+        if not user:
+            return
         if user not in self.allowed_users_read.all():
             self.allowed_users_read.add(user.id)
         if write and user not in self.allowed_users_write.all():
