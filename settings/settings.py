@@ -45,6 +45,26 @@ TEMPLATE_DIRS = ('templates',)
 #   Import local settings or production settings
 #
 ##################
+
+#
+# default settings reside in settings_defaults.py (duh!).
+#
+# depending on the value of ID_ENVIRONMENT, we try loading different files:
+# "debug"      - settings_local.py
+# "production" - settings_production.py
+# "testing"    - settings_build_test.py
+#
+# if the file exists, it is assumed to contain all the settings that we expect from
+# settings_defaults.py, potentially with some changes here and there
+# 
+# the sane way of doing this is importing all the settings from settings_defaults.py
+# in such a file, and modifying just the parts that are meeded to be modified
+# 
+# example in settings_production.py-example
+# 
+# if a given file is not found, settings from settings_defaults.py are loaded directly
+#
+
 try:
     if ID_ENVIRONMENT == 'testing' or os.environ.get('BUILD_TEST'):
         from settings_build_test import *
