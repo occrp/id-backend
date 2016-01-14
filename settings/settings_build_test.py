@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
+# import the defaults so that we have something to work with
+from settings_defaults import *
 
 # SECURITY WARNING: keep the secret key used in production secret! Change for your local setup!
 SECRET_KEY = '2342##_1DFAKJkja;lkjs_117854*((*(!_sdfajkkj728k'
