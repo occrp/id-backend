@@ -183,8 +183,18 @@ try:
         from settings_production import *
     elif ID_ENVIRONMENT == 'debug':
         from settings_local import *
+        
 except ImportError:
-    raise Exception('You need to set up settings_local.py (see settings_local.py-example) or set $ID_ENVIRONMENT to "testing" or "production"')
+    # which file are we talking about?
+    if ID_ENVIRONMENT == 'testing' or os.environ.get('BUILD_TEST'):
+        fname = "settings_build_test.py"
+    elif ID_ENVIRONMENT == 'production':
+        fname = "settings_production.py"
+    elif ID_ENVIRONMENT == 'debug':
+        fname = "settings_local.py"
+    
+    # inform
+    print "WARNING: failed importing settings from %s (probably the file does not exist), using defaults." % fname
 
 
 ##################
