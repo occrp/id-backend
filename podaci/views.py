@@ -68,10 +68,10 @@ class Search(FileQuerySetMixin, generics.ListAPIView):
                     collections = []
                 elif collection == "mine":
                     collections.extend(PodaciCollection.objects.filter(
-                        owner=self.request.user))
+                                       owner=self.request.user))
                 elif collection == "shared":
                     collections.extend(PodaciCollection.objects.filter(
-                        owner=self.request.user, shared=True))
+                                       shared_with=self.request.user))
                 else:
                     collections.extend(PodaciCollection.objects.filter(
                         owner=self.request.user,
@@ -131,7 +131,7 @@ class FileDownload(APIView):
         pfile = get_object_or_404(PodaciFile, pk=id)
         resp = FileResponse(pfile.get_filehandle(request.user))
         resp['Content-Type'] = pfile.mimetype
-        resp['Content-Disposition'] = 'filename=' + pfile.filename
+        resp['Content-Disposition'] = 'filename=' + pfile.filename_safe
         return resp
 
 
