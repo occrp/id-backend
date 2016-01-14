@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# by default these are false, for SECURITY! and great justice!
+# change manually if you need that
 DEBUG = True
-
 TEMPLATE_DEBUG = True
 
 # SECURITY WARNING: keep the secret key used in production secret! Change for your local setup!
@@ -53,14 +53,9 @@ DEFAULTS = {
     },
 }
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
-    'PAGE_SIZE': 10
-}
-
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
             'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
@@ -89,7 +84,7 @@ LOGGING = {
         '': {  # root logger defined by empty string
             'handlers': ['console', 'file'],
             'level': 'DEBUG',
-            'propogate': True
+            'propagate': True
         },
         'elasticsearch': {
             'handlers': ['file'],
