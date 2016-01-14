@@ -34,6 +34,8 @@ Obviously, you'll need [Docker](http://docker.io/). [Go here](https://docs.docke
  apt-get install docker.io
 ```
 
+Also, if setting up for production use (i.e. not volume-mounting the code directory in the container, but rather relying on the code COPY'ed at build time; and running as non-root user within the container), **remember to `chmod -R a+rX ./` in the code directory before build** -- otherwise on some `docker` or `aufs` versions the permissions might be broken within the container which will cause `id2` not to run.
+
 #### Set-up and run with docker-compose
 
 You should use [docker-compose](http://docs.docker.com/compose/) to have all the images built, containers run and linked and `id2` started for you. Nice of you to ask. It's actually easier that way. **Caveat: you need at least docker 1.3 for that!**
@@ -85,6 +87,7 @@ Development/debug user accounts are:
  - `volunteer@example.com` : `asdf`
  - `staff@example.com` : `asdf`
  - `admin@example.com` : `asdf`
+
 
 ## Data
 
