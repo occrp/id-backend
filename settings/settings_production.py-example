@@ -1,0 +1,10 @@
+# -*- coding: utf-8 -*-
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+TEMPLATE_DEBUG = False
+LOGGING['loggers']['']['handlers'] = ['console', 'file', 'mail_admins'] # 'audit'
+
+# SECURITY WARNING: keep the secret key and e-mail password used in production secret! Change for your local setup!
+SECRET_KEY          = "" # this has to be set to something sane
+EMAIL_HOST_PASSWORD = "" # so is this
