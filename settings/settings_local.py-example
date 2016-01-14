@@ -19,10 +19,6 @@ EMERGENCY = None
 DATABASE_NAME = 'id2'
 DATABASE_USER = 'id2'
 DATABASE_PASSWORD = 'id2'
-# configuration for MySQL
-#DATABASE_ENGINE = 'django.db.backends.mysql'
-#DATABASE_HOST = 'mysqltools'
-#DATABASE_PORT = '3306'
 # configuration for PostgreSQL
 DATABASE_ENGINE = 'django.db.backends.postgresql_psycopg2'
 DATABASE_HOST = 'postgres'
@@ -137,7 +133,7 @@ ADMINS = (('OCCRP Tech', 'tech@occrp.org'),)
 MANAGERS = (('OCCRP Tech', 'tech@occrp.org'),)
 
 EMAIL_HOST_USER = "id@occrp.org"
-EMAIL_HOST_PASSWORD = ""
+EMAIL_HOST_PASSWORD = "" # this has to be set in settings_production.py
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True 
 EMAIL_HOST = 'smtp.gmail.com' 
