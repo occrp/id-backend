@@ -40,8 +40,6 @@ Also, if setting up for production use (i.e. not volume-mounting the code direct
 
 You should use [docker-compose](http://docs.docker.com/compose/) to have all the images built, containers run and linked and `id2` started for you. Nice of you to ask. It's actually easier that way. **Caveat: you need at least docker 1.3 for that!**
 
-**CAVEAT:** Before you do so, edit the `settings/settings_local.py-docker` file and set `DEBUG` to `True`!
-
 ```
  cd /path/to/investigative-dashboard-2
  docker-compose up id2dev
