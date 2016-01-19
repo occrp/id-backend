@@ -327,17 +327,14 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         try:
             u = Profile.objects.get(id=self.id)
             if u.is_active and not self.is_active:
-                logger.warn("Bug tripped: is_active set to %s" % self.is_active)
                 self.is_active = u.is_active
             if u.is_user and not self.is_user:
-                logger.warn("Bug possibly tripped: is_user set to %s" % self.is_user)
                 self.is_user = u.is_user
         except Profile.DoesNotExist:
             pass
         #####################################################################
 
         logger.info("Saving profile for user %s: {is_active:%s, is_user:%s, is_volunteer:%s, is_staff:%s, is_superuser:%s}" % (self.email, self.is_active, self.is_user, self.is_volunteer, self.is_staff, self.is_superuser))
-        logger.debug("Traceback: %s" % traceback.format_stack())
         if self.pk is not None:
             try:
                 orig = Profile.objects.get(pk=self.pk)
