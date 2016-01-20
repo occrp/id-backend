@@ -516,6 +516,11 @@ dd.list-files .spinner {
 .database-items {
     border-top: 1px solid #ddd;
 }
+.database-metadata {
+    float:right;
+    margin-right: 1em;
+    clear: right;
+}
 .database-metadata a {
     color: #000;
 }
