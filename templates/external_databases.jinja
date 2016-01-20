@@ -18,25 +18,25 @@
     <div class="database-items">
     {% for db in object_list %}
     <div class="database-item">
-        <h4 class="db-title">
-            <div class="pull-right">
-                {% if db.paid %}
-                    <i class="fa fa-dollar text-success" data-toggle='tooltip' title='{{ _("Paid Database") }}'></i>
-                {% endif %}
-                {% if db.registration_required %}
-                    <i class="fa fa-edit text-success" data-toggle='tooltip' title='{{ _("Registration Required") }}'></i>
-                {% endif %}
-                {% if db.government_db %}
-                    <i class="fa fa-building text-success" data-toggle='tooltip' title='{{ _("Government Database") }}'></i>
-                {% endif %}
-            </div>
-            <a href="{{ db.url }}" target="_blank">{{ db.agency }}</a>
-        </h4>
         <div class="database-metadata">
             <a href="?country={{db.country}}"><strong>{{countries.get(db.country, '')}}</strong></a>
             {% if db.country != 'GLOBAL' and db.db_type %} · {% endif %}
             <a href="?db_type={{db.db_type}}">{{database_types.get(db.db_type, '')}}</a>
+
+            ·
+            {% if db.paid %}
+                <i class="fa fa-dollar text-success" data-toggle='tooltip' title='{{ _("Paid Database") }}'></i>
+            {% endif %}
+            {% if db.registration_required %}
+                <i class="fa fa-edit text-success" data-toggle='tooltip' title='{{ _("Registration Required") }}'></i>
+            {% endif %}
+            {% if db.government_db %}
+                <i class="fa fa-building text-success" data-toggle='tooltip' title='{{ _("Government Database") }}'></i>
+            {% endif %}
         </div>
+        <h4 class="db-title">
+            <a href="{{ db.url }}" target="_blank">{{ db.agency }}</a>
+        </h4>
         <p class="database-notes">{{db.notes}}</p>
     </div>
     {% else %}
@@ -47,7 +47,7 @@
     </div>
 
     <p style="margin-top:2em;">
-        {% trans %}Viewing {{count}} databases in {{jurisdictions}} jurisdictions.{% endtrans %}
+        {% with curcnt=object_list.count() %}{% trans %}Viewing {{curcnt}}/{{count}} databases in {{jurisdictions}} jurisdictions.{% endtrans %}{%endwith%}
         {% trans %}Didn't find what you were looking for?{% endtrans %}
         <a href="{{ url('ticket_submit') }}">
             {% trans %}Request manual help from our researchers.{% endtrans %}
