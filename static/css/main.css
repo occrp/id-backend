@@ -497,47 +497,32 @@ dd.list-files .spinner {
   width: 300px !important;
 }
 /** External databases **/
-p.preserve_whitespace {
-  white-space: pre-wrap;
-  word-wrap: break-word;
+.form-horizontal {
+
 }
-.superscript {
-  vertical-align: super;
-  font-size: 10px;
+.form-horizontal li {
+    display: inline-block;
 }
-form.ext-db-filter {
-  margin-top: 7px !important;
+.higher {
+    margin-top: -2.1em;
 }
-div.ext-db {
-  box-sizing: border-box;
-  margin-bottom: 20px;
+.database-item {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 6px;
+    margin-top: 6px;
+    padding: 4px;
+    padding-left: 20px;
 }
-div.ext-db div.db-title {
-  border-bottom: 1px solid #DFDFDF;
-  padding-bottom: 5px;
+.database-items {
+    border-top: 1px solid #ddd;
 }
-div.ext-db div.db-title div {
-  margin-left: 2px;
+.database-metadata a {
+    color: #000;
 }
-div.ext-db div.db-title i {
-  margin-left: 3px;
-}
-div.ext-db div.db-title a {
-  font-size: 1.2em;
-}
-div.ext-db ul {
-  list-style-type: none;
-  margin: 7px 0;
-  color: #383f49;
-}
-div.ext-db .well {
-  height: 100%;
-  box-sizing: border-box;
-  margin-bottom: 0;
-}
-div.ext-db p {
-  font-size: 0.85em;
-  color: #555555;
+.database-notes {
+    padding: 4px;
+    max-width: 70em;
+    padding-left: 20px;
 }
 /** Request / ticket details **/
 .summary .icon {

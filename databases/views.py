@@ -14,16 +14,23 @@ class ExternalDatabaseList(ListView):
     model = ExternalDatabase
 
     def get_queryset(self):
-        country = self.request.GET.get('country')
+        filter = self.request.GET.get('filter', None)
+        country = self.request.GET.get('country', None)
+        db_type = self.request.GET.get('db_type', None)
+
         q = ExternalDatabase.objects.all()
         if country and len(country.strip()):
             expanded = EXPAND_REGIONS.get(country, [])
             q = q.filter(country__in=[country] + list(expanded))
+        if db_type:
+            q = q.filter(db_type=db_type)
+        if filter:
+            q = q.filter(agency__contains=filter)
         return q.order_by("agency")
 
     def get_context_data(self, **kwargs):
         context = super(ExternalDatabaseList, self).get_context_data(**kwargs)
-        context["filter_form"] = CountryFilterForm()
+        context["filter_form"] = CountryFilterForm(initial=self.request.GET)
         context["count"] = ExternalDatabase.objects.count()
         context["countries"] = dict(COUNTRIES)
         context["database_types"] = dict(DATABASE_TYPES)
