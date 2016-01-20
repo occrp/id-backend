@@ -3,60 +3,55 @@
 {% block content %}
 <div class="span12">
     <div class="page-header">
-        <div class="pull-right header-form">
-            <form action="{{ url('externaldb_list') }}" method="GET" class="ext-db-filter">
-                {{ filter_form.as_p() }}
-            </form>
-        </div>
-
         <h1>{% trans %}External Databases{% endtrans %}</h1>
     </div>
-    <p>{% trans %}Here you will find links to {{count}} online databases across {{jurisdictions}} jurisdictions where you can get information on the shareholders, directors and the financial reports of companies worldwide. They are organized by country. Many are free of charge and for some you must register. Databases marked with a "$" require a fee.  Not all are available in English, see the notes column for further details.	{% endtrans %}</p>
-    <br />
 
-    {% if object_list %}
-        {% for row in object_list|batch(4) %}
-            <div class="row" data-equal="div.ext-db">
-            {% for db in row %}
-                <div class="span3 ext-db">
-                    <div class="well">
-                        <div class="db-title">
-                            <div class="pull-right">
-                                {% if db.paid %}
-                                    <i class="fa fa-dollar text-success" data-toggle='tooltip' title='{{ _("Paid Database") }}'></i>
-                                {% endif %}
-                                {% if db.registration_required %}
-                                    <i class="fa fa-edit text-success" data-toggle='tooltip' title='{{ _("Registration Required") }}'></i>
-                                {% endif %}
-                                {% if db.government_db %}
-                                    <i class="fa fa-building text-success" data-toggle='tooltip' title='{{ _("Government Database") }}'></i>
-                                {% endif %}
-                            </div>
-                            <a href="{{ db.url }}" target="_blank">{{ db.agency }}</a>
-                        </div>
-                        <ul>
-                            <li>{{database_types.get(db.db_type, '')}}</li>
-                            <li><strong>{{countries.get(db.country, '')}}</strong></li>
-                        </ul>
-                        <p class="preserve_whitespace">{{ db.notes }}</p>
-                        {% if db.blog_post %}<a href="{{ db.blog_post }}" target='_blank'><i class="fa fa-file-text" data-toggle='tooltip' title='{{ _("Documentation") }}'></i></a>{% endif %}
-                        {% if db.video_url %}<a href="{{ db.video_url }}" target='_blank'><i class="fa fa-youtube-play" data-toggle='tooltip' title='{{ _("Video Tutorial") }}'></i></a>{% endif %}
-                    </div>
-                </div>
-            {% endfor %}
+    <div class="well higher center">
+    <form action="{{ url('externaldb_list') }}" method="GET" class="ext-db-filter">
+        <ul class="form-horizontal">
+            {{ filter_form.as_ul() }}
+            <li><button type="submit">{% trans %}Filter{% endtrans %}</button></li>
+        </ul>
+    </form>
+    </div>
+
+    <div class="database-items">
+    {% for db in object_list %}
+    <div class="database-item">
+        <h4 class="db-title">
+            <div class="pull-right">
+                {% if db.paid %}
+                    <i class="fa fa-dollar text-success" data-toggle='tooltip' title='{{ _("Paid Database") }}'></i>
+                {% endif %}
+                {% if db.registration_required %}
+                    <i class="fa fa-edit text-success" data-toggle='tooltip' title='{{ _("Registration Required") }}'></i>
+                {% endif %}
+                {% if db.government_db %}
+                    <i class="fa fa-building text-success" data-toggle='tooltip' title='{{ _("Government Database") }}'></i>
+                {% endif %}
             </div>
-        {% endfor %}
+            <a href="{{ db.url }}" target="_blank">{{ db.agency }}</a>
+        </h4>
+        <div class="database-metadata">
+            <a href="?country={{db.country}}"><strong>{{countries.get(db.country, '')}}</strong></a>
+            {% if db.country != 'GLOBAL' and db.db_type %} · {% endif %}
+            <a href="?db_type={{db.db_type}}">{{database_types.get(db.db_type, '')}}</a>
+        </div>
+        <p class="database-notes">{{db.notes}}</p>
+    </div>
     {% else %}
-    <div class="alert alert-block alert-warning">
+    <div class="alert alert-block alert-info">
         {% trans %}No external databases found.{% endtrans %}
     </div>
-    {% endif %}
+    {% endfor %}
+    </div>
 
-    <p>
-    {% trans %}Didn't find what you were looking for?{% endtrans %}
-    <a href="{{ url('ticket_submit') }}">
-        {% trans %}Request manual help from our researchers.{% endtrans %}
-    </a>
+    <p style="margin-top:2em;">
+        {% trans %}Viewing {{count}} databases in {{jurisdictions}} jurisdictions.{% endtrans %}
+        {% trans %}Didn't find what you were looking for?{% endtrans %}
+        <a href="{{ url('ticket_submit') }}">
+            {% trans %}Request manual help from our researchers.{% endtrans %}
+        </a>
     </p>
 
 </div>

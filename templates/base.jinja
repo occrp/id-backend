@@ -193,15 +193,6 @@
         current_user_id = {{ user.id or 'null' }};
     </script>
 
-    <!--
-    {% compress js %}
-        <script type="text/javascript" src="{{ static("bower_components/angular/angular.min.js")}}"></script>
-        <script type="text/javascript" src="{{ static("bower_components/angular-animate/angular-animate.min.js")}}"></script>
-        <script type="text/javascript" src="{{ static("bower_components/angular-aria/angular-aria.min.js")}}"></script>
-        <script type="text/javascript" src="{{ static("bower_components/angular-material/angular-material.min.js")}}"></script>
-    {% endcompress %}
-    -->
-
     {% compress js %}
         <script type="text/javascript" src="{{ static("js/widgets.js") }}"></script>
         <script type="text/javascript" src="{{ static("js/select2-field.js") }}"></script>
@@ -210,7 +201,6 @@
         <script type="text/javascript" src="{{ static("js/fragment-forms.js") }}"></script>
         <script type="text/javascript" src="{{ static("js/validation-forms.js") }}"></script>
         <script type="text/javascript" src="{{ static("js/datetime.js") }}"></script>
-        <script type="text/javascript" src="{{ static("js/external-dbs.js") }}"></script>
         <script type="text/javascript" src="{{ static("js/init.js") }}"></script>
         <script type="text/javascript" src="{{ static("js/id2/id2.js")}}"></script>
         <script type="text/javascript" src="{{ static("js/id2/search.js") }}"></script>
