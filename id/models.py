@@ -96,7 +96,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     findings_visible = models.BooleanField(default=False,
                                       verbose_name=_('Findings Public'))
 
-    is_user = models.BooleanField(default=False)
+    is_user = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_volunteer = models.BooleanField(default=False)
     is_active   = models.BooleanField(default=True)
