@@ -75,6 +75,9 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
         else:
             return OtherTicket.get_summary(self.otherticket)
 
+    def get_country(self):
+        return None
+
     def get_type_icon(self):
         if self.ticket_type == 'person_ownership': return 'user'
         elif self.ticket_type == 'company_ownership': return 'building'
