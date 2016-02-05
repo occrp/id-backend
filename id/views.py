@@ -3,6 +3,9 @@ from settings.settings import REGISTRATION_OPEN, REGISTRATION_CLOSED_URL, REGIST
 from django.contrib.auth.views import logout as django_logout
 from django.contrib.auth.views import login as django_login
 from django.contrib.auth.views import REDIRECT_FIELD_NAME, AuthenticationForm
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.core.signals import request_finished
+from django.dispatch import receiver
 
 from django.http import HttpResponseRedirect
 from id.forms import FeedbackForm
@@ -98,11 +101,6 @@ def login(request, template_name='registration/login.jinja',
     else:
         return django_login(request, template_name, redirect_field_name,
                             authentication_form, current_app, extra_context)
-
-
-from django.contrib.auth.signals import user_logged_in, user_logged_out
-from django.core.signals import request_finished
-from django.dispatch import receiver
 
 
 @receiver(user_logged_in)
