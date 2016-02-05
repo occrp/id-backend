@@ -1,12 +1,12 @@
-from django.db import models
-from django.utils.text import get_valid_filename
-
+import re
 import os
 import shutil
 import magic
 import logging
 
-logger = logging.getLogger(__name__)
+from django.db import models
+from django.utils.text import get_valid_filename
+
 # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from settings.settings import AUTH_USER_MODEL
 from settings.settings import PODACI_FS_ROOT
@@ -23,6 +23,8 @@ from core.mixins import NotificationMixin
 # WARNING: NEVER CHANGE THIS IN LIVE SYSTEMS AS ALL WILL BE LOST.
 HASH_DIRS_DEPTH = 3
 HASH_DIRS_LENGTH = 2
+
+logger = logging.getLogger(__name__)
 
 
 class AuthenticationError(Exception):
@@ -92,7 +94,8 @@ class PodaciFile(NotificationMixin, models.Model):
     def filename_safe(self):
         if self.filename is None:
             return
-        return self.filename.replace('\n', ' ')
+        fn = re.sub('\s+', ' ', self.filename, re.U)
+        return fn
 
     def __unicode__(self):
         return self.title or self.filename
