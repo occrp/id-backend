@@ -9,7 +9,6 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="login-form span12 material-form-container">
         <div class="material-form md-whiteframe-z1">
             {% if next %}<p class="alert alert-info">{% trans %}You must sign in to continue.{% endtrans %}</p>{% endif %}
@@ -30,13 +29,13 @@
             </form>
             <div class="section-container"><span class="before">{% trans %}or{% endtrans %}</span>
                 <p class="info">{% trans %}If you registered with your Google account, you can use it to sign in. Most users should sign in using the standard method.{% endtrans %}</p>
-                <a href="{{ url("social:begin", "google-oauth2") }}?next={{next | safe}}" class="btn">
+                <a href="{{ url("social:begin", "google-oauth2") }}?next={{next | urlencode}}" class="btn">
                     <i class="fa fa-google-plus"></i> {% trans %}Sign in with Google{% endtrans %}
                 </a>
             </div>
             <div class="section-container"><span class="before">{% trans %}or{% endtrans %}</span>
                 <p class="info">{% trans %}Don't have an account yet? Please consider registering.{% endtrans %}</p>
-                <a href="/accounts/register/?next={{next | safe}}" class="btn">{% trans %}Register{% endtrans %}</a>
+                <a href="/accounts/register/?next={{next | urlencode}}" class="btn">{% trans %}Register{% endtrans %}</a>
             </div>
         </div>
     </div>
