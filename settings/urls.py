@@ -63,7 +63,7 @@ urlpatterns = patterns('',
     url(r'^accounts/password/change/$',      auth_views.password_change, {'template_name': 'registration/password_change_form.jinja'}, name='password_change'),
     url(r'^accounts/password/change/done/$', auth_views.password_change_done, {'template_name': 'registration/password_change_done.jinja'}, name='password_change_done'),
     url(r'^accounts/password/reset/$',       auth_views.password_reset, {'template_name': 'registration/password_reset_form.jinja'}, name='password_reset'),
-    url(r'^accounts/password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', auth_views.password_reset_confirm, {'template_name': 'registration/password_reset_confirm.jinja'}, name='password_reset_confirm'),
+    url(r'^accounts/password/reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', auth_views.password_reset_confirm, {'template_name': 'registration/password_reset_confirm.jinja'}, name='password_reset_confirm'),
     url(r'^accounts/password/reset/complete/$', auth_views.password_reset_complete, {'template_name': 'registration/password_reset_complete.jinja'}, name='password_reset_complete'),
     url(r'^accounts/password/reset/done/$',  auth_views.password_reset_done, {'template_name': 'registration/password_reset_done.jinja'}, name='password_reset_done'),
 
