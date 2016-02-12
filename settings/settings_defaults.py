@@ -26,7 +26,7 @@ EMERGENCY = None
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 DATABASE_NAME = 'id2'
 DATABASE_USER = 'id2'
-DATABASE_PASSWORD = 'id2'
+DATABASE_PASSWORD = 'HiedaighohThoo7Dal3aiYei'
 # configuration for PostgreSQL
 DATABASE_ENGINE = 'django.db.backends.postgresql_psycopg2'
 DATABASE_HOST = 'postgres'
