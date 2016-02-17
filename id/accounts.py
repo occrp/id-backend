@@ -39,10 +39,12 @@ class ProfileSetLanguage(TemplateView):
 class ProfileUpdate(UpdateView):
     template_name = 'registration/profile.jinja'
     form_class = ProfileUpdateForm
-    success_url = "/accounts/profile/"
+
+    def get_success_url(self):
+        return "/accounts/profile/%s" % self.get_object().email
 
     def get_object(self):
-        if self.request.user.is_staff or self.request.user.is_superuser:
+        if self.request.user.is_superuser:
             if self.kwargs.has_key("pk"):
                 return get_user_model().objects.get(id=self.kwargs["pk"])
             elif self.kwargs.has_key("email"):
@@ -54,8 +56,10 @@ class ProfileUpdate(UpdateView):
         ctx = super(ProfileUpdate, self).get_context_data()
         ctx["profile"] = obj
         ctx["editing_self"] = obj == self.request.user
+        print("Editing %s" % ctx["profile"])
         if self.request.method == "POST":
             ctx["form"] = ProfileUpdateForm(self.request.POST, instance=obj)
+            print("Editing %s" % ctx["profile"])
             if ctx["form"].is_valid():
                 obj = ctx["form"].save()
             else:
