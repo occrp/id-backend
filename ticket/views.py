@@ -498,6 +498,7 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
         return [int(i.id) for i in users]
 
     def form_invalid(self, form):
+        logger.log("Form errors: %s" % form.errors)
         messages.error(self.request, _('There was an error updating the ticket.'))
         return HttpResponseRedirect(reverse(self.redirect))
 
