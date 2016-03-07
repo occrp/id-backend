@@ -16,8 +16,6 @@ DATABASE_PORT = '5432'
 DATABASE_NAME = 'test'
 DATABASE_USER = os.environ.get('PG_USER')
 DATABASE_PASSWORD = os.environ.get('PG_PASSWORD')
-PODACI_ES_SERVERS = ["localhost:9233"]
-PODACI_ES_INDEX = 'podaci_test'
 PODACI_FS_ROOT = 'data_test'
 
 

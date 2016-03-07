@@ -32,28 +32,6 @@ cd ../
 
 
 echo -e '\n#####################################################################'
-echo      '# make sure elasticsearch is running...'
-echo      '#####################################################################'
-
-echo 'waiting max 60s for elasticsearch...'
-
-CURLS=60
-while ! curl -s --max-time 1 -I http://elasticsearch:9200/ | grep 'HTTP/1.1 200 OK' > /dev/null; do
-    echo -n '.'
-    CURLS=$((CURLS-1))
-    if [[ $CURLS == 0 ]]; then
-        echo 'failed!'
-        echo
-        echo '* * * ERROR: cannot connect to elasticsearch! * * *'
-        echo
-        exit 1
-    fi
-    sleep 1
-done
-echo 'elasticsearch is up.'
-
-
-echo -e '\n#####################################################################'
 echo      '# migrate...'
 echo      '#####################################################################'
 
