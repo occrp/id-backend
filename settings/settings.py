@@ -26,7 +26,6 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     "django.core.context_processors.csrf",
     "id.context_processors.locale",
     "id.context_processors.routename",
-    "search.context_processors.search_types",
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
     'context_processors.debug'
@@ -104,7 +103,6 @@ if DEBUG:
             "django.core.context_processors.csrf",
             "id.context_processors.locale",
             "id.context_processors.routename",
-            "search.context_processors.search_types",
             "context_processors.debug",
         )
 
@@ -142,7 +140,6 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'core',
     'id',
-    'search',
     'podaci',
     'ticket',
     'databases',
@@ -202,16 +199,6 @@ REGISTRATION_OPEN=True
 REGISTRATION_CLOSED_URL="/accounts/register/closed/"
 # set to an URL that a user should be redirected upon successful registration
 REGISTRATION_SUCCESS_URL="/accounts/register/complete/"
-
-
-##################
-#
-#   API Keys (other than auth)
-#
-##################
-
-# https://api.opencorporates.com/documentation/API-Reference#api_accounts
-OPENCORPORATES_API_TOKEN = None
 
 
 ##################
