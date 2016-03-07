@@ -42,15 +42,10 @@ TIME_ZONE = 'UTC'
 LANGUAGE_CODE = 'en-us'
 DATE_FORMAT = 'd-F-Y'
 
-PODACI_ES_SERVERS = ["elasticsearch:9200"]
 PODACI_ES_INDEX = 'podaci'
 PODACI_FS_ROOT = '/data'
 
-# Datatracker search servers
-DATATRACKER_ES_SERVERS = ["elasticsearch:9200"]
-DATATRACKER_ES_INDEX   = 'datatracker'
-
-#application defaults
+# Application defaults
 DEFAULTS = {
     'search': {
         'result_limit': 100,
@@ -99,7 +94,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': '/var/log/id2/log.log',
-            'maxBytes': 1024*1024*5,  # 5 MB
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
             'backupCount': 5,
             'formatter': 'verbose'
         },

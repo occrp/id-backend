@@ -78,7 +78,6 @@ urlpatterns = patterns('',
     url(r'^notifications/stream/', perm('user', NotificationStream), name='notification_stream'),
     url(r'^notifications/', perm('user', TemplateView, template_name='notifications.jinja'), name='notifications'),
 
-    url(r'^search/', include('search.urls')),
     url(r'^ticket/', include('ticket.urls')),
     url(r'^podaci/', include('podaci.urls')),
     url(r'^databases/', include('databases.urls')),
