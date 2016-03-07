@@ -6,7 +6,6 @@ Version 2 of the Investigative Dashboard.
 ## Databases
 
  * SQLite/MySQL/PostgreSQL for tickets and accounts.
- * ElasticSearch for document storage.
 
 ## Testing
 

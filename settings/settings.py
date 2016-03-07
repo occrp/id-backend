@@ -215,8 +215,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
-    'podaci.middleware.PodaciExceptionMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware'
 )
 
 ROOT_URLCONF = 'settings.urls'

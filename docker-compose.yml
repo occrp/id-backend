@@ -23,7 +23,6 @@ id2:
     - "8000"
   links:
     - postgres
-    - elasticsearch
   volumes:
     - "./podaci-data/:/data"
 
@@ -40,7 +39,6 @@ id2dev:
     - "8000"
   links:
     - postgres
-    - elasticsearch
   volumes:
     - "./podaci-data/:/data"
     # explicitly bind-mounting each and every directory
@@ -75,7 +73,6 @@ id2dataimports:
     - "8000"
   links:
     - postgres
-    - elasticsearch
   volumes:
     - "./:/srv/tools/investigative-dashboard-2/"
     - "../export-prod/:/exported"
@@ -99,7 +96,3 @@ postgres:
     POSTGRES_USER:     id2
     POSTGRES_PASSWORD: id2
     POSTGRES_DATABASE: id2
-
-# elasticsearch    
-elasticsearch:
-  image: elasticsearch:1.7
