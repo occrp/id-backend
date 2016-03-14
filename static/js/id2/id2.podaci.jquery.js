@@ -686,24 +686,6 @@ ID2.Podaci.download_zip = function() {
     window.location = src;
 };
 
-ID2.Podaci.open_in_overview = function() {
-    if (ID2.Podaci.selection.length == 0 && ID2.Podaci.tagid) {
-        $.getJSON("/podaci/tag/" + ID2.Podaci.tagid + "/overview/", {"format": "json"}, function(data) {
-            if (data.ok) {
-                window.open("https://www.overviewproject.org/documentsets/" + data.docsetid, "_blank");
-            }
-        });
-    } else if (ID2.Podaci.selection.length == 0) {
-        alert("Cannot open all everything in Overview");
-    } else {
-        $.getJSON("/podaci/tag/selection/overview/?files=" + ID2.Podaci.selection.join("&files="), {"format": "json"}, function(data) {
-            if (data.ok) {
-                window.open("https://www.overviewproject.org/documentsets/" + data.docsetid, "_blank");
-            }
-        });
-    }
-}
-
 ID2.Podaci.file_click = function(e) {
     id = $(e.target).parent().closest("div").data("id");
     console.log('clicked: ' + id)
@@ -785,7 +767,7 @@ ID2.Podaci.file_doubleclick = function(e) {
 
       $modal.find('#file-save-link').click(function() {
         data.title = $modal.find('#file-title').val();
-        data.tags = $modal.find('#file-tags').val();
+        data.tags = $modal.find('#file-tags').val() || [];
         data.public_read = $modal.find('#file-public-read').val() || false;
         data.staff_read = $modal.find('#file-staff-read').val() || false;
         data.allowed_users_read = $modal.find('#file-users-read').val() || [];

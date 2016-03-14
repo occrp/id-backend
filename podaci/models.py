@@ -12,7 +12,6 @@ from settings.settings import AUTH_USER_MODEL
 from settings.settings import PODACI_FS_ROOT
 
 from podaci.util import sha256sum
-from podaci.search import index_file
 from core.mixins import NotificationMixin
 
 # More depth means deeper nesting, which increases lookup speed but makes
@@ -270,7 +269,6 @@ class PodaciFile(NotificationMixin, models.Model):
     def update(self):
         if os.path.isfile(self.local_path):
             self.size = os.stat(self.local_path).st_size
-        index_file(self)
         self.save()
 
     def exists_by_hash(self, sha):
