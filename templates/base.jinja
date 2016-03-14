@@ -50,8 +50,8 @@
                 <div class="collapse navbar-collapse" id="navbar-main">
                     {% if request.path != '/' or (user and user.is_authenticated()) %}
                     <ul class="nav navbar-nav">
-                        <li class="{% if url('search') in request.path %}active{% endif %}">
-                            <a href="{{ url('search') }}"><i class="fa fa-search"></i> {% trans %}Search{% endtrans %}</a>
+                        <li>
+                            <a href="https://data.occrp.org"><i class="fa fa-search"></i> {% trans %}Search{% endtrans %}</a>
                         </li>
                         <li class="{% if url('externaldb_list') in request.path %}active{% endif %}">
                             <a href="{{ url('externaldb_list') }}"><i class="fa fa-database"></i> {% trans %}External Databases{% endtrans %}</a>

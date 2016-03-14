@@ -5,13 +5,10 @@ pycountry
 transifex-client==0.10
 mock==1.0.1
 python-magic
-elasticsearch
 django-jinja==1.4.1
 django-compressor==1.6
 django-registration-redux
-pyes
 requests>=2.8.0
-neo4django
 flup
 mysql
 django_select2<5
@@ -24,7 +21,6 @@ psycopg2
 jsonfield
 pillow
 django-simple-captcha
-textract
 unidecode
 rarfile
 django-oauth-toolkit
