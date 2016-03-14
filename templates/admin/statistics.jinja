@@ -17,30 +17,7 @@
 </div>
 
 <div>
-	<h2>Search</h2>
-	<table class="table table-border">
-	<thead>
-		<tr>
-			<th>{% trans %}Type{% endtrans %}</th>
-			<th>{% trans %}Searches{% endtrans %}</th>
-			<th>{% trans %}Results found{% endtrans %}</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for search in searches %}
-		<tr>
-			<td>{{search.type}}</td>
-			<td>{{search.count}}</td>
-			<td>{{search.results}}</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-	</table>
-</div>
-
-<div>
 	<h2>{% trans %}Networks{% endtrans %}</h2>
-
 	<table class="table table-border">
 	<thead>
 		<tr>

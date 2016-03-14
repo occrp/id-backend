@@ -26,7 +26,6 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     "django.core.context_processors.csrf",
     "id.context_processors.locale",
     "id.context_processors.routename",
-    "search.context_processors.search_types",
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
     'context_processors.debug'
@@ -104,7 +103,6 @@ if DEBUG:
             "django.core.context_processors.csrf",
             "id.context_processors.locale",
             "id.context_processors.routename",
-            "search.context_processors.search_types",
             "context_processors.debug",
         )
 
@@ -142,7 +140,6 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'core',
     'id',
-    'search',
     'podaci',
     'ticket',
     'databases',
@@ -206,16 +203,6 @@ REGISTRATION_SUCCESS_URL="/accounts/register/complete/"
 
 ##################
 #
-#   API Keys (other than auth)
-#
-##################
-
-# https://api.opencorporates.com/documentation/API-Reference#api_accounts
-OPENCORPORATES_API_TOKEN = None
-
-
-##################
-#
 #   Middleware
 #
 ##################
@@ -228,8 +215,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
-    'podaci.middleware.PodaciExceptionMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware'
 )
 
 ROOT_URLCONF = 'settings.urls'
