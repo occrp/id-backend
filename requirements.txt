@@ -7,7 +7,7 @@ mock==1.0.1
 python-magic
 django-jinja==1.4.1
 django-compressor==1.6
-django-registration-redux
+django-registration-redux==1.2
 requests>=2.8.0
 flup
 mysql
