@@ -246,6 +246,11 @@ class PodaciFile(NotificationMixin, models.Model):
         obj.save()
         if ticket is not None:
             obj.tickets.add(ticket)
+            obj.add_user(ticket.requester, write=False, notify=True)
+            for u in ticket.responders.all():
+                obj.add_user(u, write=True, notify=False)
+            for u in ticket.volunteers.all():
+                obj.add_user(u, write=False, notify=False)
 
         if user:
             obj.add_user(user, write=True, notify=False)
