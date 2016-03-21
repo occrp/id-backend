@@ -1,8 +1,8 @@
 #!/bin/bash
 
 PATTERN="2.*"
-CURVER=$(git tag -l $PATTERN | tail -n 1)
-PREVVER=$(git tag -l $PATTERN | tail -n 2 | head -n 1)
+CURVER=$(git tag -l $PATTERN | sort --version-sort | tail -n 1)
+PREVVER=$(git tag -l $PATTERN | sort --version-sort | tail -n 2 | head -n 1)
 
 echo -e "subject: Investigative Dashboard v$CURVER\n"
 
