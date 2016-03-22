@@ -41,7 +41,7 @@
     <div class="pull-left" style="font-size: 35px; padding-top: 20px; width: 60px; height: 80px;"><i class="fa fa-{{ticket.get_type_icon()}}"></i></div>
     <div style="border-bottom: 1px solid #ccc; padding: 20px; padding-top: 10px; margin-bottom: 10px;">
         <div class="pull-right" style="font-variant: small-caps;">{{ticket.status}} <i class="fa fa-{{ticket.get_status_icon()}}"></i></div>
-        <h4><a href="{{url('ticket_details', ticket.id)}}">{{ticket.summary}}</a></h4>
+        <h4><a href="{{url('ticket_details', ticket.id)}}">{% if ticket.ticket_type == "company_ownership" %}<span class="label">{{ticket.get_country()}}</span> {% endif %}{{ticket.summary}}</a></h4>
 
         <div style="line-height: 1.2em; margin-bottom: 0.5em;">
             <span style="display:inline-block; width:6.5em;">{% trans %}Requested by{% endtrans %}</span>
