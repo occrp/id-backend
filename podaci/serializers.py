@@ -49,6 +49,7 @@ class FileSerializer(serializers.ModelSerializer):
     allowed_users_write = ProfileField(many=True, read_only=False,
                                        allow_empty=True,
                                        queryset=Profile.objects.filter())
+    created_by = ProfileField(read_only=True, allow_empty=False)
 
     class Meta:
         model = PodaciFile
