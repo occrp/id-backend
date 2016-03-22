@@ -241,6 +241,7 @@ class TicketActionJoin(TicketActionBaseHandler):
             added = True
 
         if added:
+            adduser.notifications_subscribe('id:ticket:ticket:%d:*' % ticket.id)
             self.success_messages = [_('You have successfully been added to the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Joined', adduser.display_name + unicode(_(' has joined the ticket')))
             self.transition_ticket_from_new(ticket)
@@ -262,12 +263,14 @@ def TicketActionAssign(request, pk):
             ticket.volunteers.add(user)
         success = True
 
+
     if request.user.is_volunteer:
         ticket.volunteers.add(request.user)
         success = True
 
     if success:
         perform_ticket_update(ticket, 'Responder Joined', user.display_name + unicode(_(' has joined the ticket')), user)
+        user.notifications_subscribe('id:ticket:ticket:%d:*' % ticket.id)
         transition_ticket_from_new(ticket)
         #tag.add_user(user, True)
 
@@ -313,6 +316,8 @@ def TicketActionUnassign(request, pk):
             success_message = ugettext("You have successfully been removed from the ticket")
         else:
             success_message = user.display_name + ugettext(' has been removed from the ticket.')
+
+        user.notifications_unsubscribe('id:ticket:ticket:%d:*' % ticket.id)
 
         return JsonResponse({'message': success_message,
                             'status': 'success'})
@@ -381,7 +386,7 @@ class TicketActionLeave(TicketActionBaseHandler):
 
         if self.request.user in ticket.responders.all():
             ticket.responders.remove(self.request.user)
-            # #tag.remove_user(self.request.user)
+            self.request.user.notifications_unsubscribe('id:ticket:ticket:%d:*' % ticket.id)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.display_name + unicode(_(' has left the ticket')))
 
@@ -391,6 +396,7 @@ class TicketActionLeave(TicketActionBaseHandler):
 
         elif self.request.user in ticket.volunteers.all():
             ticket.volunteers.remove(self.request.user)
+            self.request.user.notifications_unsubscribe('id:ticket:ticket:%d:*' % ticket.id)
             self.success_messages = [_('You have successfully been removed from the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Left', self.request.user.display_name + unicode(_(' has left the ticket')))
 
