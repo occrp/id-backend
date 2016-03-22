@@ -651,7 +651,7 @@ class TicketDetail(TemplateView):
     def get_context_data(self):
         ticket_updates = (TicketUpdate.objects
                           .filter(ticket=self.ticket, is_removed=False)
-                          .order_by("-created"))
+                          .order_by("created"))
 
         charges = (TicketCharge.objects.filter(ticket=self.ticket)
                    .order_by("created"))
