@@ -55,12 +55,12 @@ TEMPLATE_DIRS = ('templates',)
 #
 # if the file exists, it is assumed to contain all the settings that we expect from
 # settings_defaults.py, potentially with some changes here and there
-# 
+#
 # the sane way of doing this is importing all the settings from settings_defaults.py
 # in such a file, and modifying just the parts that are meeded to be modified
-# 
+#
 # example in settings_production.py-example
-# 
+#
 # if a given file is not found, settings from settings_defaults.py are loaded directly
 #
 
@@ -71,7 +71,7 @@ try:
         from settings_production import *
     elif ID_ENVIRONMENT == 'debug':
         from settings_local import *
-        
+
 except ImportError:
     # which file are we talking about?
     if ID_ENVIRONMENT == 'testing' or os.environ.get('BUILD_TEST'):
@@ -80,7 +80,7 @@ except ImportError:
         fname = "settings_production.py"
     elif ID_ENVIRONMENT == 'debug':
         fname = "settings_local.py"
-    
+
     # inform
     print "WARNING: failed importing settings from %s (probably the file does not exist), using settings_defaults.py" % fname
     from settings_defaults import * # if that fails, we're boned
@@ -95,7 +95,7 @@ if DEBUG:
         # credentials for {testing,staging}.occrp.org
         GOOGLE_OAUTH2_CLIENT_ID      = '206887598454-df3pp9ldb8367vu544hkmjvlpsl9gg46.apps.googleusercontent.com'
         GOOGLE_OAUTH2_CLIENT_SECRET  = 'y2hZUFTrCj-IgIrPf3jpTE2d'
-        
+
         from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
         TEMPLATE_CONTEXT_PROCESSORS += (
             "django.core.context_processors.request",
@@ -279,7 +279,7 @@ DATABASES = {
 
 USE_I18N = True
 USE_L10N = True
-USE_TZ = True
+USE_TZ = False
 
 LANGUAGES = (
     ('ar', u'العربية'),
