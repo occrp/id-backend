@@ -186,8 +186,10 @@ ID2.Podaci.render_file_to_resultset = function(file) {
         fo.append("<div class=\"podaci-file-public\">Public</div>");
     }
     if (file.staff_read) {
-        fo.append("<div class=\"podaci-file-staff\">OCCRP Staff Access</div>");
+        // TODO: Only show this if we're not looking at a ticket.
+        // fo.append("<div class=\"podaci-file-staff\">OCCRP Staff Access</div>");
     }
+    fo.append("<div class=\"podaci-file-uploader\">Added by " + file.created_by.display_name + "</div>")
 
     fo.attr("draggable", true);
     fo.on("dragstart", ID2.Podaci.selection_drag);
