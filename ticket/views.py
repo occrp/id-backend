@@ -905,11 +905,13 @@ class TicketListUnassigned(TicketList):
     url_name = 'ticket_unassigned_list'
 
     def get_ticket_set(self, user):
-        return Ticket.objects.exclude(status='closed').annotate(
-            volunteer_count=Count('volunteers')).annotate(
-            responder_count=Count('responders')).filter(
-            Q(volunteer_count=0) & Q(responder_count=0)).order_by(
-            "-created")
+        return (Ticket.objects
+            .exclude(status='closed')
+            .exclude(status='cancelled')
+            .annotate(volunteer_count=Count('volunteers'))
+            .annotate(responder_count=Count('responders'))
+            .filter(Q(volunteer_count=0) & Q(responder_count=0))
+            .order_by("-created"))
 
 
 class TicketListUpcomingDeadline(TicketList):
