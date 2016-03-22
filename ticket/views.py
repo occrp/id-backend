@@ -1023,7 +1023,7 @@ class TicketRequest(TemplateView):
         ticket = form.save(commit=False)
         ticket.requester = self.request.user
         ticket.save()
-        # FIXME: Subscribe user to relevant channel
+        ticket.requester.notifications_subscribe('id:ticket:ticket:%d:update' % ticket.id)
         messages.success(self.request, _('Ticket successfully created.'))
 
         return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": ticket.id}))
