@@ -176,6 +176,8 @@ class FileUploadView(generics.CreateAPIView):
                 raise PermissionDenied()
         pfile = PodaciFile.create_from_filehandle(file_obj, user=request.user,
                                                   ticket=ticket)
+        if ticket:
+            pfile.allow_staff()
         log.debug('File created: %r', pfile)
         serializer = FileSerializer(pfile)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
