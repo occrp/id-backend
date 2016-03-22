@@ -719,7 +719,7 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
     ticket_list_name = ""
     tickets = []
     page_number = 1
-    page_size = 10
+    page_size = 50
     page_buttons = 5
     page_buttons_padding = 2
     paginator = None
