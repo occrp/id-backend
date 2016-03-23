@@ -146,6 +146,7 @@ INSTALLED_APPS = (
     'django_select2',
     'captcha',
     'oauth2_provider',
+    'debug_toolbar',
 )
 
 ##################
@@ -279,7 +280,7 @@ DATABASES = {
 
 USE_I18N = True
 USE_L10N = True
-USE_TZ = False
+# USE_TZ = False
 
 LANGUAGES = (
     ('ar', u'العربية'),
