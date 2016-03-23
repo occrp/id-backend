@@ -96,9 +96,9 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     findings_visible = models.BooleanField(default=False,
                                       verbose_name=_('Findings Public'))
 
-    is_user = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    is_volunteer = models.BooleanField(default=False)
+    is_user = models.BooleanField(default=True, db_index=True)
+    is_staff = models.BooleanField(default=False, db_index=True)
+    is_volunteer = models.BooleanField(default=False, db_index=True)
     is_active   = models.BooleanField(default=True)
     date_joined = models.DateTimeField(_('Date Joined'), default=timezone.now)
 
@@ -249,35 +249,19 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
                      'for our work)')
 
     def tickets_assigned_open(self):
-        res = self.tickets_responded.filter(status__in=['new', 'in-progress'])
-        vol = self.tickets_volunteered.filter(status__in=['new', 'in-progress'])
-        rs = [x.id for x in res]
-        rs.extend([x.id for x in vol])
-        tot = set(rs)
-        return len(tot)
+        return self.tickets_responded.filter(status__in=['new', 'in-progress']).count()
 
     def tickets_assigned_closed(self):
-        res = self.tickets_responded.filter(status__in=['closed'])
-        vol = self.tickets_volunteered.filter(status__in=['closed'])
-        rs = [x.id for x in res]
-        rs.extend([x.id for x in vol])
-        tot = set(rs)
-        return len(tot)
+        return self.tickets_responded.filter(status__in=['closed']).count()
 
     def tickets_assigned_total(self):
         return self.tickets_assigned_open() + self.tickets_assigned_closed()
 
     def tickets_get_set(self, _max=None):
         res = self.tickets_responded.filter(status__in=['closed'])
-        vol = self.tickets_volunteered.filter(status__in=['closed'])
-        tot = list(res)
-        tot.extend(list(vol))
         if _max:
-            tot.sort(key=lambda x: x.created)
-            tot.reverse()
-            tot = tot[:30]
-        tot = set(tot)
-        return tot
+            res = res[:_max]
+        return res
 
     def tickets_average_resolution_time_calculate(self, tot):
         if len(tot) > 0:

@@ -19,21 +19,16 @@ import datetime
 class Ticket(models.Model, DisplayMixin, NotificationMixin):
     """
     Common fields for all ticket types
-
-    Note: Implement volunteers as a separate list of fields from responders,
-    so that permissions stay simple.
     """
     ticket_type = ""
     # Staff-facing fields
-    requester = models.ForeignKey(AUTH_USER_MODEL, related_name="ticket_requests")
+    requester = models.ForeignKey(AUTH_USER_MODEL, related_name="ticket_requests", db_index=True)
     requester_type = models.CharField(blank=False, max_length=70, choices=REQUESTER_TYPES,
                                     verbose_name=_('Requester Type'), default='subs')
     responders = models.ManyToManyField(AUTH_USER_MODEL, related_name="tickets_responded")
 
-    volunteers = models.ManyToManyField(AUTH_USER_MODEL, related_name="tickets_volunteered")
-
     created = models.DateTimeField(default=datetime.datetime.now, null=False)
-    status = models.CharField(max_length=70, choices=TICKET_STATUS, default='new')
+    status = models.CharField(max_length=70, choices=TICKET_STATUS, default='new', db_index=True)
     status_updated = models.DateTimeField(default=datetime.datetime.now, null=False)
     findings_visible = models.BooleanField(default=False,
                                            verbose_name=_('Findings Public'))
@@ -89,22 +84,20 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
     def get_status_icon(self):
         return dict(TICKET_STATUS_ICONS).get(self.status, 'question')
 
-    def actors(self, include_self=True):
+    def is_responder(self, user):
+        return self.responders.filter(id=user.id).count()
+
+    def actors(self):
         """
         Get a list of actors for a given ticket, being the requester and
         responder
         """
-        actors = [actor for actor in
-                  list(chain(self.responders.all(), self.volunteers.all())) if actor]
-        if include_self:
-            actors.append(self.requester)
-        return actors
+        return self.responders.all()
 
     def join_user(self, actor):
         """
         Adds an existing User to the list of ticket
-        contributors, if the user if a volunteer, they're forced into the
-        volunteers category.
+        contributors.
 
         Args:
             actor (UserProfile Key) - an actor to add to the ticket.
@@ -116,24 +109,18 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
         if actor in self.actors():
             return False
 
-        if actor.is_volunteer:
-            self.volunteers.add(actor)
-            self.notify(u"%s has joined ticket %s (%d) as a volunteer" % (actor, self.summary, self.id), actor, 'ticket_details', {'ticket_id': self.pk}, 'join')
-        else:
-            self.responders.add(actor)
-            self.notify(u"%s has joined ticket %s (%d) as a reponder" % (actor, self.summary, self.id), actor, 'ticket_details', {'ticket_id': self.pk}, 'join')
+        self.responders.add(actor)
+        self.notify(u"%s has joined ticket %s (%d) as a %s" % (actor, self.summary, self.id, ["responder", "volunteer"][actor.is_volunteer]), actor, 'ticket_details', {'ticket_id': self.pk}, 'join')
         return True
 
     def leave_user(self, actor):
         """
-        Remove all mentions of a UserProfile from the list of responders and
-        volunteers on a ticket.
+        Remove all mentions of a UserProfile from the list of responders on a ticket.
 
         Args:
             actor (UserProfile Key) - an actor who wants to leave the ticket.
         """
         self.responders.remove(actor)
-        self.volunteers.remove(actor)
         self.notify(u"%s has left ticket %s (%d)" % (actor, self.summary, self.id), actor, 'ticket_details', {'ticket_id': self.pk}, 'leave')
 
     def generate_update(self, comment, old=None, changed_properties=None):
@@ -214,7 +201,6 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
             'deadline': self.deadline,
             'sensitive': self.sensitive
         }
-
 
 class PersonTicket(Ticket):
     """ Person ownership request """

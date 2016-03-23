@@ -229,15 +229,12 @@ class TicketActionJoin(TicketActionBaseHandler):
         if self.request.user.is_staff or self.request.user.is_superuser:
             uid = self.request.POST.get("user", self.request.user.id)
             adduser = get_user_model().objects.get(id=uid)
-            if adduser.is_user or adduser.is_staff or adduser.is_superuser:
-                ticket.responders.add(adduser)
-            else:
-                ticket.volunteers.add(adduser)
+            ticket.responders.add(adduser)
             added = True
 
         if self.request.user.is_volunteer:
             adduser = self.request.user
-            ticket.volunteers.add(adduser)
+            ticket.responders.add(adduser)
             added = True
 
         if added:
@@ -256,16 +253,8 @@ def TicketActionAssign(request, pk):
     user = get_user_model().objects.get(id=request.POST.get('user'))
     success = False
 
-    if request.user.is_staff or request.user.is_superuser:
-        if user.is_user or user.is_staff or user.is_superuser:
-            ticket.responders.add(user)
-        else:
-            ticket.volunteers.add(user)
-        success = True
-
-
-    if request.user.is_volunteer:
-        ticket.volunteers.add(request.user)
+    if request.user.is_staff or request.user.is_superuser or request.user.is_volunteer:
+        ticket.responders.add(user)
         success = True
 
     if success:
@@ -301,17 +290,9 @@ def TicketActionUnassign(request, pk):
 
     if user in ticket.responders.all():
         ticket.responders.remove(user)
-        #tag.remove_user(user)
         perform_ticket_update(ticket, 'Responder Left', user.display_name + ' has left the ticket', user)
         success = True
 
-    elif user in ticket.volunteers.all():
-        ticket.volunteers.remove(user)
-        #tag.remove_user(user)
-        perform_ticket_update(ticket, 'Responder Left', user.display_name + ' has left the ticket', user)
-        success = True
-
-    if success:
         if request.user.id == user.id:
             success_message = ugettext("You have successfully been removed from the ticket")
         else:
@@ -333,11 +314,10 @@ def TicketActionUnassign(request, pk):
 
 
 def TicketActionRemoveFiles(request, pk):
-    print "Trying to load ticket %s -- " % (pk,)
     ticket = Ticket.objects.get(id=int(pk))
     success = False
     fids = request.POST.get("remove_ids", "").split(",")
-    if request.user in ticket.responders.all() or request.user in ticket.volunteers.all():
+    if request.user in ticket.responders.all():
         if "all" in fids:
             ticket.files.clear()
         else:
@@ -393,16 +373,6 @@ class TicketActionLeave(TicketActionBaseHandler):
             if is_ajax_call:
                 self.success_messages = [_('You have successfully been removed from the ticket.')]
                 return super(TicketActionLeave, self).perform_valid_action(form)
-
-        elif self.request.user in ticket.volunteers.all():
-            ticket.volunteers.remove(self.request.user)
-            self.request.user.notifications_unsubscribe('id:ticket:ticket:%d:*' % ticket.id)
-            self.success_messages = [_('You have successfully been removed from the ticket.')]
-            self.perform_ticket_update(ticket, 'Responder Left', self.request.user.display_name + unicode(_(' has left the ticket')))
-
-            if is_ajax_call:
-                self.success_messages = [_('You have successfully been removed from the ticket.')]
-                return super(TicketActionLeave, self).perform_valid_action(form)
         else:
             self.force_invalid = True
 
@@ -414,7 +384,7 @@ class TicketActionOpen(TicketActionBaseHandler):
     def perform_valid_action(self, form):
         ticket = self.object
 
-        if(ticket.volunteers.count() == 0 and ticket.responders.count() == 0):
+        if ticket.responders.count() == 0:
             ticket.status = constants.get_choice('New', constants.TICKET_STATUS)
         else:
             ticket.status = constants.get_choice('In Progress', constants.TICKET_STATUS)
@@ -511,12 +481,8 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
     def form_valid(self, form):
         ticket = self.object
         form_responders = [int(i) for i in form.cleaned_data['responders']]
-        form_volunteers = [int(i) for i in form.cleaned_data['volunteers']]
-
+        form_responders.extend([int(i) for i in form.cleaned_data['volunteers']])
         current_responders = self.convert_users_to_ids(ticket.responders.all())
-        current_volunteers = self.convert_users_to_ids(ticket.volunteers.all())
-
-        # tag = ticket.get_tag()
 
         if 'redirect' in self.request.POST:
             self.redirect = self.request.POST['redirect']
@@ -530,20 +496,8 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
                 #tag.add_user(u, True)
                 self.perform_ticket_update(ticket, 'Responder Joined', u.display_name + unicode(_(' has joined the ticket')))
 
-        for i in form_volunteers:
-            if i not in current_volunteers:
-                u = get_user_model().objects.get(pk=i)
-                #tag.add_user(u, True)
-                self.perform_ticket_update(ticket, 'Responder Joined', u.display_name + unicode(_(' has joined the ticket')))
-
         for i in current_responders:
             if i not in form_responders:
-                u = get_user_model().objects.get(pk=i)
-                #tag.remove_user(u)
-                self.perform_ticket_update(ticket, 'Responder Left', u.display_name + unicode(_(' has left the ticket')))
-
-        for i in current_volunteers:
-            if i not in form_volunteers:
                 u = get_user_model().objects.get(pk=i)
                 #tag.remove_user(u)
                 self.perform_ticket_update(ticket, 'Responder Left', u.display_name + unicode(_(' has left the ticket')))
@@ -620,8 +574,6 @@ class TicketDetail(TemplateView):
     View for the requester of a ticket to view what is currently going on,
     and provide feedback / close the request / etc
     """
-    #FIXME: Auth
-    #@role_in('user', 'staff', 'admin', 'volunteer')
     def dispatch(self, request, ticket_id=None):
         self.ticket = Ticket.objects.get(id=int(ticket_id))
         if hasattr(self.ticket, "personticket"):
@@ -636,16 +588,7 @@ class TicketDetail(TemplateView):
         if not self.ticket:
             return self.abort(404)
 
-        # if not self.ticket.is_public and not (
-        #     request.user.is_superuser or
-        #     request.user == self.ticket.requester or
-        #     request.user in self.ticket.responders.all() or
-        #     request.user in self.ticket.volunteers.all()):
-        #         return self.abort(401)
-
         self.form = forms.CommentForm()
-        #form.author.data = request.user.id
-        # form.ticket.data = ticket.id
         return super(TicketDetail, self).dispatch(request)
 
     def get_context_data(self):
@@ -665,7 +608,7 @@ class TicketDetail(TemplateView):
             if self.request.user.is_volunteer and self.ticket.is_public:
                 can_join_leave = True
 
-            if self.request.user.is_volunteer and self.request.user in self.ticket.volunteers.all():
+            if self.request.user.is_volunteer and self.request.user in self.ticket.responders.all():
                 can_join_leave = True
 
             if self.request.user.is_superuser or self.request.user.is_staff:
@@ -698,8 +641,6 @@ class TicketDetail(TemplateView):
         }
 
     #FIXME: AJAXize!
-    #FIXME: Auth
-    #@role_in('user', 'staff', 'admin', 'volunteer')
     def post(self, request):
         form = forms.CommentForm(self.request.POST)
 
@@ -754,6 +695,7 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
             'filter_terms': self.filter_terms,
             'start_date': self.start_date,
             'end_date': self.end_date,
+            #'possible_assignees': []
             'possible_assignees': get_user_model().objects.filter(Q(is_superuser=True) |
                                                                   Q(is_staff=True) |
                                                                   Q(is_volunteer=True))
@@ -774,7 +716,7 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
             'public_closed': TicketListPublicClosed().get_ticket_set(self.request.user).count(),
             'unassigned': TicketListUnassigned().get_ticket_set(self.request.user).count(),
             'upcoming_deadline': TicketListUpcomingDeadline().get_ticket_set(self.request.user).count(),
-            'oustanding_charges': AdminOustandingChargesList().get_charges_set().count()
+            'outstanding_charges': AdminOustandingChargesList().get_charges_set().count()
         }
 
         return ticket_figures
@@ -868,8 +810,7 @@ class TicketListMyAssigned(TicketList):
     ticket_list_name = "Open Assignments"
 
     def get_ticket_set(self, user):
-        return Ticket.objects.filter(
-            Q(responders__in=[user]) | Q(volunteers__in=[user])).filter(
+        return Ticket.objects.filter(responders__in=[user]).filter(
             ~Q(status='closed')&~Q(status='cancelled')).order_by(
             "-created")
 
@@ -878,8 +819,7 @@ class TicketListMyAssignedClosed(TicketList):
     ticket_list_name = "Closed Assignments"
 
     def get_ticket_set(self, user):
-        return Ticket.objects.filter(
-            Q(responders__in=[user]) | Q(volunteers__in=[user])).filter(
+        return Ticket.objects.filter(responders__in=[user]).filter(
             Q(status='closed')).order_by(
             "-created")
 
@@ -889,10 +829,12 @@ class TicketListPublic(TicketList):
     ticket_list_name = "Open Public Requests"
 
     def get_ticket_set(self, user):
-        return Ticket.objects.filter(
-            is_public=True).filter(
-            ~Q(status='closed')&~Q(status='cancelled')).order_by(
-            "-created")
+        return (Ticket.objects
+                      .filter(is_public=True)
+                      .exclude(status='closed')
+                      .exclude(status='cancelled')
+                      .order_by("-created")
+                )
 
 class TicketListPublicClosed(TicketList):
     page_name = "Pubic Requests"
@@ -900,9 +842,7 @@ class TicketListPublicClosed(TicketList):
 
     def get_ticket_set(self, user):
         return Ticket.objects.filter(
-            is_public=True).filter(
-            Q(status='closed')).order_by(
-            "-created")
+            is_public=True).filter(status='closed').order_by("-created")
 
 
 class TicketListUnassigned(TicketList):
@@ -914,9 +854,8 @@ class TicketListUnassigned(TicketList):
         return (Ticket.objects
             .exclude(status='closed')
             .exclude(status='cancelled')
-            .annotate(volunteer_count=Count('volunteers'))
             .annotate(responder_count=Count('responders'))
-            .filter(Q(volunteer_count=0) & Q(responder_count=0))
+            .filter(responder_count=0)
             .order_by("-created"))
 
 

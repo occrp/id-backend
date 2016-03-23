@@ -134,10 +134,10 @@ class TicketsTest(UserTestCase):
         t.save()
         response = client.post(reverse('ticket_join', kwargs={"pk": t.id}), {})
         t = OtherTicket.objects.get(id=t.id)
-        self.assertIn(self.volunteer_user, t.volunteers.all())
+        self.assertIn(self.volunteer_user, t.responders.all())
         response = client.post(reverse('ticket_leave', kwargs={"pk": t.id}), {})
         t = OtherTicket.objects.get(id=t.id)
-        self.assertNotIn(self.volunteer_user, t.volunteers.all())
+        self.assertNotIn(self.volunteer_user, t.responders.all())
 
     def test_edit_ticket(self):
         pass

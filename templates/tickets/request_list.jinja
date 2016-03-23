@@ -50,8 +50,8 @@
 
         <div>
             <span style="display:inline-block; width:6.5em;">{% trans %}Assigned to{% endtrans %}</span>
-            {% if ticket.actors(false)|length > 0 %}
-                {% for actor in ticket.actors(false) %}
+            {% if ticket.actors()|length > 0 %}
+                {% for actor in ticket.actors() %}
                     <span class="assignee" style="background: #eee; padding: 2px; border: 1px solid #ccc;">
                         <a href="{{ url('profile', pk=actor.id)}}">{{ actor.display_name }}</a>
                         <a class="remove_user" href="#" data-key="{{ticket.id}}" data-user="{{actor.id}}"><i class="fa fa-close"></i></a>
@@ -73,9 +73,7 @@
                             <select class="not_select2" data-key="{{ticket.id}}">
                                     <option value="0">--- {% trans %}select a user{% endtrans %}</option>
                                 {% for possible_assignee in possible_assignees %}
-                                    <option value="{{ possible_assignee.id }}" {% if possible_assignee in ticket.actors(false) %}
-                                        style="display: none;"
-                                    {% endif %}>{{ possible_assignee.display_name }}</option>
+                                    <option value="{{ possible_assignee.id }}">{{ possible_assignee.display_name }}</option>
                                 {% endfor %}
                             </select>
                             <a class="add_assignee_btn btn btn-small" ><i class="fa fa-plus"></i>{% trans %}Add{% endtrans %}</a>
