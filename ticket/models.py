@@ -43,6 +43,20 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
 
     files = models.ManyToManyField(PodaciFile, related_name="tickets")
 
+    def get_actual_ticket(self):
+        try:
+            return self.personticket
+        except:
+            pass
+        try:
+            return self.companyticket
+        except:
+            pass
+        try:
+            return self.otherticket
+        except:
+            pass
+
     def get_csv_header(self):
         return ["ticket_type", "summary", "requester_type",
                 "status"]
