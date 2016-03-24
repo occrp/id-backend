@@ -755,7 +755,7 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
         if self.end_date:
             ticket_set = ticket_set.filter(created__lte=self.end_date)
 
-        self.paginator = Paginator(get_actual_tickets(ticket_set), self.page_size)
+        self.paginator = Paginator(ticket_set, self.page_size)
 
     def get_ticket_set(self, user):
         return self.tickets
