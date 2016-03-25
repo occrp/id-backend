@@ -17,12 +17,11 @@ from unidecode import unidecode
 def text_normalize(s):
     return unidecode(s.decode("utf-8"))
 
-
 def convert_group_to_select2field_choices(group):
     result = []
 
     for i in group:
-        result.append((i.id, i.display_name))
+        result.append((i.id, "%s [%s%s]" % (i.display_name, ["", "V"][i.is_volunteer], ["", "S"][i.is_staff])))
 
     return result
 
