@@ -172,8 +172,8 @@
 
             <dt class="yell soft">{% trans %}Staff Responders{% endtrans %}</dt>
             <dd>
-            {% if ticket.responders.count() > 0 %}
-                {% for responder in ticket.responders.all() %}
+            {% if ticket.staffresponders.count() > 0 %}
+                {% for responder in ticket.staffresponders.all() %}
                     <a href="{{ url('profile', pk=responder.id)}}">{{ responder.display_name }}</a><br />
                 {% endfor %}
             {% else %}
