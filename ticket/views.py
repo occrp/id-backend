@@ -481,7 +481,6 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
     def form_valid(self, form):
         ticket = self.object
         form_responders = [int(i) for i in form.cleaned_data['responders']]
-        form_responders.extend([int(i) for i in form.cleaned_data['volunteers']])
         current_responders = self.convert_users_to_ids(ticket.responders.all())
 
         if 'redirect' in self.request.POST:
