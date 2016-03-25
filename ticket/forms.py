@@ -138,13 +138,12 @@ class OtherTicketForm(TicketForm):
 
 
 class TicketAdminSettingsForm(forms.ModelForm):
-    responders = Select2MultipleChoiceField(label=_("Staff Responders"), required=False)
-    volunteers = Select2MultipleChoiceField(label=_("Volunteer Responders"), required=False)
+    responders = Select2MultipleChoiceField(label=_("Responders"), required=False)
     redirect = forms.CharField(required=False, initial="default", widget=forms.HiddenInput)
 
     class Meta:
         model = models.Ticket
-        fields = ['responders', 'volunteers', 'requester_type', 'findings_visible', 'is_for_profit', 'is_public']
+        fields = ['responders', 'requester_type', 'findings_visible', 'is_for_profit', 'is_public']
         widgets = {
             'requester_type': forms.RadioSelect()
         }
@@ -152,10 +151,15 @@ class TicketAdminSettingsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
 
         super(TicketAdminSettingsForm, self).__init__(*args, **kwargs)
-        self.fields['responders'].choices = core.utils.convert_group_to_select2field_choices(
-                                                get_user_model().objects.all().filter(Q(is_superuser=1) | Q(is_staff=1)))
-        self.fields['volunteers'].choices = core.utils.convert_group_to_select2field_choices(
-                                                get_user_model().objects.all().filter(Q(is_volunteer=1)))
+        self.fields['responders'].choices = (
+            core.utils.convert_group_to_select2field_choices(
+                get_user_model().objects.all().filter(
+                    Q(is_superuser=1) |
+                    Q(is_staff=1) |
+                    Q(is_volunteer=1)
+                )
+            )
+        )
         self.fields['requester_type'].widget.attrs.update({'choices': constants.REQUESTER_TYPES})
 
 
