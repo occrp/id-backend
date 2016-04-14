@@ -247,7 +247,7 @@ class PersonTicket(Ticket):
         return self.get_summary()
 
     def get_summary(self):
-        return "%s" % smart_truncate(self.name, 150)
+        return "%s %s" % (self.name, self.surname)
 
     def most_fields(self):
         '''Return an iterator of tuples (verbose name, display value)
