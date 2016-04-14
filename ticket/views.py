@@ -676,12 +676,10 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
         self.page_number = int(self.request.GET.get("page", 1))
 
         paged_tickets = self.get_paged_tickets(self.page_number)
-        paginator = self.create_pretty_pagination_object(self.paginator,
-                                                         self.page_number,
-                                                         self.page_buttons,
-                                                         self.page_buttons_padding,
-                                                         self.url_name,
-                                                         self.url_args),
+        paginator = self.create_pretty_pagination_object(
+            self.paginator, self.page_number, self.page_buttons,
+            self.page_buttons_padding, self.url_name, self.url_args)
+            
         context = {
             'page_name': self.page_name,
             'ticket_list_name': self.ticket_list_name,
@@ -694,14 +692,13 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
             'filter_terms': self.filter_terms,
             'start_date': self.start_date,
             'end_date': self.end_date,
-            #'possible_assignees': []
             'possible_assignees': get_user_model().objects.filter(Q(is_superuser=True) |
                                                                   Q(is_staff=True) |
                                                                   Q(is_volunteer=True))
         }
 
-
         return context
+
 
     def get_ticket_list_figures(self):
         ticket_figures = {
@@ -763,6 +760,41 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(TicketList, self).dispatch(*args, **kwargs)
 
+
+class TicketListDynamic(TicketList):
+    page_name = "All Requests"
+    ticket_list_name = "All Open Requests"
+    url_name = 'ticket_list_dynamic'
+
+    def get_ticket_set(self, user):
+        exclude_status = self.request.GET.getlist("exclude_status")
+        requested_by = self.request.GET.get("requsted_by", None)
+        assigned_to = self.request.GET.getlist("assigned_to")
+        public = bool(self.request.GET.get("is_public", False))
+        deadline_days = self.request.GET.get("deadline_days", None)
+        deadline_days = int(deadline_days) if deadline_days else None
+
+        t = Ticket.objects
+
+        if public:
+            t = t.filter(public=True)
+
+        for status in exclude_status:
+            t = t.exclude(status=status)
+
+        if requested_by:
+            t = t.filter(requester_id=requested_by)
+
+        if assigned_to:
+            t = t.filter(responders__in=assigned_to)
+
+        if deadline_days:
+            filter_date = datetime.now() + timedelta(days=deadline_days)
+            t = t.filter(Q(deadline__isnull=False) & Q(deadline__lte=filter_date))
+
+        t = t.order_by("-created")
+
+        return t
 
 class TicketListAllOpen(TicketList):
     page_name = "All Requests"
