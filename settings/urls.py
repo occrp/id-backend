@@ -13,6 +13,8 @@ from databases.views import DatabaseCollectionView, DatabaseMemberView
 from id.views import ProfileRegistrationView, login, logout
 from id.forms import ProfileRegistrationForm, FeedbackForm
 
+import databases.admin as databases_admin
+
 js_info_dict = {
     'packages': ('id', 'ticket', 'search', 'podaci'),
 }
@@ -36,7 +38,12 @@ urlpatterns = patterns('',
     url(r'^api/2/databases/(?P<pk>\d+)$',   DatabaseMemberView.as_view(), name='api_2_databases_member'),
 
     url(r'^admin/$',                        perm('staff', admin.Panel), name='admin_panel'),
-    url(r'^admin/scrapers/request/$',       perm('staff', admin.DatabaseScrapeRequestCreate), name='admin_scrapers_request'),
+    url(r'^admin/external_database/$',      perm('staff', databases_admin.ExternalDatabaseCreate), name='admin_external_database'),
+    url(r'^admin/external_database/(?P<pk>\d+)$',      perm('staff', databases_admin.ExternalDatabaseUpdate), name='admin_external_database'),
+    url(r'^admin/external_database/(?P<pk>\d+)/save$',      perm('staff', databases_admin.ExternalDatabaseUpdate), name='admin_external_database_edit'),
+    url(r'^admin/external_database/(?P<pk>\d+)/delete$',      perm('staff', databases_admin.ExternalDatabaseDelete), name='admin_external_database_edit'),
+
+    url(r'^admin/scrapers/request/$',       perm('staff', admin.DatabaseScrapeRequest), name='admin_scrapers_request'),
     url(r'^admin/budgets/$',                perm('staff', admin.Budgets), name='admin_budgets'),
 
     url(r'^admin/storage/$',                perm('admin', admin.Storage), name='admin_storage'),
