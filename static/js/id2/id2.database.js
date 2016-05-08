@@ -10,14 +10,14 @@ ID2.Database.init = function() {
 ID2.Database.serializeForm = function($form){
     var serialized = $form.serializeArray();
     var s = '';
-    var data = {};  
+    var data = {};
 
     for(s in serialized) {
         data[serialized[s]['name']] = serialized[s]['value']
-    }       
+    }
 
-    return JSON.stringify(data);    
-} 
+    return JSON.stringify(data);
+}
 
 ID2.Database.getCookie = function(name) {
     var cookieValue = null;
@@ -38,29 +38,29 @@ ID2.Database.getCookie = function(name) {
 ID2.Database.submitHandler = function(event) {
     $(".register-form .btn").css('display', 'none');
     $("label[for]").css('color', 'black');
-              
+
     $.ajax({
         type: "POST",
         url: "http://10.0.0.7:8080/api/2/databases/",
         data:  ID2.Database.serializeForm($("#register-form"))  ,
-        success: function(data, textStatus, jqXHR)  { 
+        success: function(data, textStatus, jqXHR)  {
             if (data['status'] == true) {
                 $(".register-form .btn-reset").click();
 
                 $(".register-form .alert-content").text('External database successfully registered');
             }
-   
+
             else {
                  $(".register-form .alert-content").text('Unable to save, something failed');
 
                  for (key in data.errors) {
-                     $("label[for='id_register_form-" + key + "'] " ).css('color', 'red'); 
-                 } 
+                     $("label[for='id_register_form-" + key + "'] " ).css('color', 'red');
+                 }
             }
- 
+
             $(".register-form.alert").css('display', 'inline-block');
             $(".register-form .btn").css('display', ' inline-block');
- 
+
         },
         dataType: "json",
 
