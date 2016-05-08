@@ -1,13 +1,17 @@
 from django.db.models import Count
-from django.views.generic import ListView
+import django.forms
+from django.views.generic import ListView, TemplateView
 from rest_framework import generics
+from rest_framework.response import Response
 
 from core.countries import COUNTRIES
+import databases
 from databases.models import ExternalDatabase, DATABASE_TYPES, EXPAND_REGIONS
-from databases.forms import CountryFilterForm
+from databases.forms import CountryFilterForm, ExternalDatabaseForm
 from databases.serializers import DatabaseSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from core.auth import IsAdminOrReadOnly
+
 
 class ExternalDatabaseList(ListView):
     template_name = "external_databases.jinja"
@@ -49,7 +53,48 @@ class DatabaseCollectionView(generics.ListCreateAPIView):
     permission_classes = (IsAdminOrReadOnly, )
     queryset = ExternalDatabase.objects.all()
 
+    def post(self, request, format=None):
+        ed_form = ExternalDatabaseForm(
+		self.request.data, 
+		prefix='register_form'
+	)
+
+        if (ed_form.is_valid()):
+            ed = ed_form.save()
+
+            return Response({
+		'status': True,
+		'id': ed.pk
+            })
+
+	# FIXME: Do not return 200
+        return Response({
+            'status': False, 
+            'errors': ed_form.errors
+        })
+
 class DatabaseMemberView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = DatabaseSerializer
     permission_classes = (IsAdminOrReadOnly, )
     queryset = ExternalDatabase.objects.all()
+
+class DatabaseRequest(TemplateView):
+    template_name = "database/request.jinja"
+
+    def dispatch(self, *args, **kwargs):
+        self.forms = {
+            'register_form': databases.forms.ExternalDatabaseForm(
+                prefix='register_form'
+            )
+        }
+
+        return super(DatabaseRequest, self).dispatch(self.request)
+
+    def get_context_data(self, db_id=None):
+        ctx = {
+            'ticket': None
+        }
+        ctx.update(self.forms)
+        return ctx
+
+

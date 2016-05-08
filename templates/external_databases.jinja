@@ -2,9 +2,11 @@
 
 {% block content %}
 <div class="span12">
-    <div class="page-header">
-        <h1>{% trans %}External Databases{% endtrans %}</h1>
-    </div>
+ 
+   <div class="page-header">
+     <a class="btn btn-primary pull-right" href="/databases/register">Register new</a>
+     <h1>{% trans %}External Databases{% endtrans %}</h1>
+   </div>
 
     <div class="well higher center">
     <form action="{{ url('externaldb_list') }}" method="GET" class="ext-db-filter">
@@ -13,6 +15,8 @@
             <li><button type="submit">{% trans %}Filter{% endtrans %}</button></li>
         </ul>
     </form>
+   
+
     </div>
 
     <div class="database-items">
