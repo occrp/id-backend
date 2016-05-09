@@ -82,8 +82,9 @@ ID2.Database.registerFormSubmitHandler = function(event) {
 
             else {
                  $(".db-register-form .alert-content").text('Unable to save, something failed');
-                 for (var key in data.errors) {
-                     $("label[for='id_register_form-" + key + "'] " ).css('color', 'red');
+
+                 for (var key in data) {
+                     $("label[for='id_" + key + "'] " ).css('color', 'red');
                  }
             }
 

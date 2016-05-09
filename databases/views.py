@@ -53,56 +53,12 @@ class DatabaseCollectionView(generics.ListCreateAPIView):
     permission_classes = (IsAdminOrReadOnly, )
     queryset = ExternalDatabase.objects.all()
 
-    def post(self, request, format=None):
-        ed_form = ExternalDatabaseForm(
-            self.request.data,
-            prefix='register_form'
-        )
-
-        if (ed_form.is_valid()):
-            ed = ed_form.save()
-
-            return Response({
-                    'id': ed.pk
-                },
-                status=status.HTTP_201_CREATED,
-            )
-
-        return Response({
-                'errors': ed_form.errors
-            },
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
 
 class DatabaseMemberView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = DatabaseSerializer
     permission_classes = (IsAdminOrReadOnly, )
     queryset = ExternalDatabase.objects.all()
 
-    def put(self, request, format=None, pk=None):
-        ed = ExternalDatabase.objects.get(pk=pk)
-
-        ed_form = ExternalDatabaseForm(
-            self.request.data,
-            prefix='register_form',
-            instance=ed
-        )
-
-        if (ed_form.is_valid()):
-            ed = ed_form.save()
-
-            return Response({
-                    'id': ed.pk
-                },
-                status=status.HTTP_200_OK
-            )
-
-        return Response({
-                'errors': ed_form.errors
-            },
-            status=status.HTTP_400_BAD_REQUEST
-        )
 
 class DatabaseRequest(TemplateView):
     template_name = "database/request.jinja"
@@ -117,7 +73,7 @@ class DatabaseRequest(TemplateView):
         self.forms = {
             'register_form': databases.forms.ExternalDatabaseForm(
                 instance=db_obj,
-                prefix='register_form'
+                prefix=''
             )
         }
 
