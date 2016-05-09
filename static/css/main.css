@@ -529,6 +529,11 @@ dd.list-files .spinner {
     max-width: 70em;
     padding-left: 20px;
 }
+.database-item .controls {
+    float: right;
+    margin-top: -37px;
+}
+
 /** Request / ticket details **/
 .summary .icon {
   line-height: 60px;
