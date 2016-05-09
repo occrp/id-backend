@@ -44,7 +44,7 @@
         <p class="database-notes">{{db.notes}}</p>
 
         {% if user.is_staff or user.is_superuser %}
-        <div class="controls"><a href="/databases/update/{{ db.pk }}">Edit</a> <a href="#" class="db-delete-btn" db-item-id="{{ db.pk }}">Delete</a></div>
+        <div class="controls"><a href="/databases/edit/{{ db.pk }}">Edit</a> <a href="#" class="db-delete-btn" db-item-id="{{ db.pk }}">Delete</a></div>
         {% endif %}
     </div>
     {% else %}
