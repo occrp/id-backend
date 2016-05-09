@@ -55,46 +55,80 @@ class DatabaseCollectionView(generics.ListCreateAPIView):
 
     def post(self, request, format=None):
         ed_form = ExternalDatabaseForm(
-		self.request.data, 
-		prefix='register_form'
-	)
+            self.request.data,
+            prefix='register_form'
+        )
 
         if (ed_form.is_valid()):
             ed = ed_form.save()
 
             return Response({
-		'status': True,
-		'id': ed.pk
+                'status': True,
+                'id': ed.pk
             })
 
-	# FIXME: Do not return 200
+        # FIXME: Do not return 200
         return Response({
-            'status': False, 
+            'status': False,
             'errors': ed_form.errors
         })
+
 
 class DatabaseMemberView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = DatabaseSerializer
     permission_classes = (IsAdminOrReadOnly, )
     queryset = ExternalDatabase.objects.all()
 
+    def put(self, request, format=None, pk=None):
+        ed = ExternalDatabase.objects.get(pk=pk)
+
+        ed_form = ExternalDatabaseForm(
+            self.request.data,
+            prefix='register_form',
+            instance=ed
+        )
+
+        if (ed_form.is_valid()):
+            ed = ed_form.save()
+
+            return Response({
+                'status': True,
+                'id': ed.pk
+            })
+
+        # FIXME: Do not return 200
+        return Response({
+            'status': False,
+            'errors': ed_form.errors
+        })
+
 class DatabaseRequest(TemplateView):
     template_name = "database/request.jinja"
 
     def dispatch(self, *args, **kwargs):
+        if (self.kwargs.has_key('db_id')):
+            db_obj = ExternalDatabase.objects.get(pk=self.kwargs['db_id'])
+
+        else:
+            db_obj = ExternalDatabase()
+
         self.forms = {
             'register_form': databases.forms.ExternalDatabaseForm(
+                instance=db_obj,
                 prefix='register_form'
             )
         }
 
         return super(DatabaseRequest, self).dispatch(self.request)
 
-    def get_context_data(self, db_id=None):
+    def get_context_data(self):
         ctx = {
-            'ticket': None
         }
-        ctx.update(self.forms)
-        return ctx
 
+        if (self.kwargs.has_key('db_id')):
+            ctx['pk'] = self.kwargs['db_id']
+
+        ctx.update(self.forms)
+
+        return ctx
 

@@ -3,7 +3,8 @@ var ID2 = ID2 || {};
 ID2.Database = {};
 
 ID2.Database.init = function() {
-    $(".register-form").submit(ID2.Database.submitHandler);
+    $(".db-register-form").submit(ID2.Database.registerFormSubmitHandler);
+    $(".database-items .database-item .db-delete-btn").click(ID2.Database.deleteClickHandler);
 };
 
 
@@ -35,42 +36,104 @@ ID2.Database.getCookie = function(name) {
     return cookieValue;
 }
 
-ID2.Database.submitHandler = function(event) {
-    $(".register-form .btn").css('display', 'none');
+/*
+ * A little helper-function, dealing
+ * with setting content-type and
+ * relevant HTTP headers just before
+ * sending AJAX request.
+ */
+
+ID2.Database.BeforeSendHandlerHelper = function(xhr) {
+   xhr.setRequestHeader("Content-Type","application/json");
+   xhr.setRequestHeader("X-csrftoken", ID2.Database.getCookie('csrftoken'));
+}
+
+/*
+ * Handle submissions of register-form
+ */
+
+ID2.Database.registerFormSubmitHandler = function(event) {
+    $(".db-register-form .btn").css('display', 'none');
     $("label[for]").css('color', 'black');
 
+    // If pk is part off the form, we are supposed
+    // to update an entry
+    var pk = $(".form-horizontal.db-register-form #id_register_form-pk").val();
+
+    if (pk) {
+        url_suffix = "" + pk;
+    }
+
+    else {
+        url_suffix = "";
+    }
+
     $.ajax({
-        type: "POST",
-        url: "http://10.0.0.7:8080/api/2/databases/",
-        data:  ID2.Database.serializeForm($("#register-form"))  ,
+        type: pk == undefined ? "POST" : "PUT",
+        url: "/api/2/databases/" + url_suffix,
+        data:  ID2.Database.serializeForm($("#db-register-form"))  ,
         success: function(data, textStatus, jqXHR)  {
             if (data['status'] == true) {
-                $(".register-form .btn-reset").click();
+                if (!pk) {
+                    $(".db-register-form .btn-reset").click();
+                }
 
-                $(".register-form .alert-content").text('External database successfully registered');
+                $(".db-register-form .alert-content").text(
+                    pk == undefined ?
+                    'External database successfully registered' :
+                    'Updated external database'
+                );
             }
 
             else {
-                 $(".register-form .alert-content").text('Unable to save, something failed');
+                 $(".db-register-form .alert-content").text('Unable to save, something failed');
 
                  for (key in data.errors) {
                      $("label[for='id_register_form-" + key + "'] " ).css('color', 'red');
                  }
             }
 
-            $(".register-form.alert").css('display', 'inline-block');
-            $(".register-form .btn").css('display', ' inline-block');
+            $(".db-register-form.alert").css('display', 'inline-block');
+            $(".db-register-form .btn").css('display', ' inline-block');
 
         },
         dataType: "json",
-
-        beforeSend: function(xhr){
-            xhr.setRequestHeader("Content-Type","application/json");
-            xhr.setRequestHeader("X-csrftoken", ID2.Database.getCookie('csrftoken'));
-        },
+        beforeSend: ID2.Database.BeforeSendHandlerHelper,
     });
 
-    return false; // Make sure form isn't submitted
+   return false; // Make sure form isn't submitted
+}
+
+
+/*
+ * Handle when 'delete' button is pressed.
+ * Ask for confirmation, and if sure,
+ * call actual deletion handler,
+ * forwarding the event object to that handler.
+ */
+
+ID2.Database.deleteClickHandler = function(event) {
+    if (confirm('Are you sure?')) {
+        return ID2.Database.deleteSubmitHandler(event);
+    }
+}
+
+/*
+ * Actually delete database entry.
+ */
+ID2.Database.deleteSubmitHandler = function(event) {
+    $.ajax({
+        type: "DELETE",
+        url: "/api/2/databases/" + event.target.getAttribute('db-item-id'),
+        data: "",
+        success: function(data, textStatus, jqXHR) {
+           event.target.parentElement.parentElement.style.display = "none";
+        },
+        dataType: "json",
+        beforeSend: ID2.Database.BeforeSendHandlerHelper,
+    });
+
+    return false;
 }
 
 ID2.Database.init();
