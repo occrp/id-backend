@@ -66,9 +66,9 @@ ID2.Database.registerFormSubmitHandler = function(event) {
     $.ajax({
         type: ID2.Database.pk == undefined ? "POST" : "PUT",
         url: "/api/2/databases/" + (ID2.Database.pk != undefined ? ID2.Database.pk : ""),
-        data:  ID2.Database.serializeForm($("#db-register-form"))  ,
+        data:  ID2.Database.serializeForm($("#db-register-form")),
         success: function(data, textStatus, jqXHR)  {
-            if (data['status'] == true) {
+            if ((jqXHR.status == 200) || (jqXHR.status == 201)) {
                 if (!ID2.Database.pk) {
                     $(".db-register-form .btn-reset").click();
                 }
@@ -115,16 +115,27 @@ ID2.Database.deleteClickHandler = function(event) {
     }
 }
 
+
 /*
  * Actually delete database entry.
  */
+
 ID2.Database.deleteSubmitHandler = function(event) {
     $.ajax({
         type: "DELETE",
         url: "/api/2/databases/" + event.target.getAttribute('db-item-id'),
         data: "",
         success: function(data, textStatus, jqXHR) {
-           event.target.parentElement.parentElement.style.display = "none";
+            if (jqXHR.status == 204) {
+                event.target.parentElement.parentElement.style.display = "none";
+            }
+
+            else {
+                alert('An error occured: ' + jqXHR.statusText);
+            }
+        },
+        error: function(jqXHR, status, error) {
+            this.success(jqXHR.error().responseJSON, status, jqXHR);
         },
         dataType: "json",
         beforeSend: ID2.Database.BeforeSendHandlerHelper,

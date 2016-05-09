@@ -63,14 +63,12 @@ class DatabaseCollectionView(generics.ListCreateAPIView):
             ed = ed_form.save()
 
             return Response({
-                    'status': True,
                     'id': ed.pk
                 },
                 status=status.HTTP_201_CREATED,
             )
 
         return Response({
-                'status': False,
                 'errors': ed_form.errors
             },
             status=status.HTTP_400_BAD_REQUEST
@@ -95,14 +93,12 @@ class DatabaseMemberView(generics.RetrieveUpdateDestroyAPIView):
             ed = ed_form.save()
 
             return Response({
-                    'status': True,
                     'id': ed.pk
                 },
                 status=status.HTTP_200_OK
             )
 
         return Response({
-                'status': False,
                 'errors': ed_form.errors
             },
             status=status.HTTP_400_BAD_REQUEST
