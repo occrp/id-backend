@@ -60,17 +60,9 @@ ID2.Database.registerFormSubmitHandler = function(event) {
     // to update an entry
     var pk = $(".form-horizontal.db-register-form #id_register_form-pk").val();
 
-    if (pk) {
-        url_suffix = "" + pk;
-    }
-
-    else {
-        url_suffix = "";
-    }
-
     $.ajax({
         type: pk == undefined ? "POST" : "PUT",
-        url: "/api/2/databases/" + url_suffix,
+        url: "/api/2/databases/" + (pk != undefined ? pk : ""),
         data:  ID2.Database.serializeForm($("#db-register-form"))  ,
         success: function(data, textStatus, jqXHR)  {
             if (data['status'] == true) {
@@ -88,7 +80,7 @@ ID2.Database.registerFormSubmitHandler = function(event) {
             else {
                  $(".db-register-form .alert-content").text('Unable to save, something failed');
 
-                 for (key in data.errors) {
+                 for (var key in data.errors) {
                      $("label[for='id_register_form-" + key + "'] " ).css('color', 'red');
                  }
             }
