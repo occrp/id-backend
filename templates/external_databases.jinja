@@ -42,6 +42,10 @@
             <a href="{{ db.url }}" target="_blank">{{ db.agency }}</a>
         </h4>
         <p class="database-notes">{{db.notes}}</p>
+
+        {% if user.is_staff or user.is_superuser %}
+        <div class="controls"><a href="/databases/update/{{ db.pk }}">Edit</a> <a href="#" class="db-delete-btn" db-item-id="{{ db.pk }}">Delete</a></div>
+        {% endif %}
     </div>
     {% else %}
     <div class="alert alert-block alert-info">
@@ -59,4 +63,9 @@
     </p>
 
 </div>
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+    <script type="text/javascript" src="{{ static('js/id2/id2.database.js') }}"></script>
 {% endblock %}
