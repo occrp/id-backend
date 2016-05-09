@@ -1,7 +1,7 @@
 from django.db.models import Count
 import django.forms
 from django.views.generic import ListView, TemplateView
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.response import Response
 
 from core.countries import COUNTRIES
@@ -63,15 +63,18 @@ class DatabaseCollectionView(generics.ListCreateAPIView):
             ed = ed_form.save()
 
             return Response({
-                'status': True,
-                'id': ed.pk
-            })
+                    'status': True,
+                    'id': ed.pk
+                },
+                status=status.HTTP_201_CREATED,
+            )
 
-        # FIXME: Do not return 200
         return Response({
-            'status': False,
-            'errors': ed_form.errors
-        })
+                'status': False,
+                'errors': ed_form.errors
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 class DatabaseMemberView(generics.RetrieveUpdateDestroyAPIView):
@@ -92,15 +95,18 @@ class DatabaseMemberView(generics.RetrieveUpdateDestroyAPIView):
             ed = ed_form.save()
 
             return Response({
-                'status': True,
-                'id': ed.pk
-            })
+                    'status': True,
+                    'id': ed.pk
+                },
+                status=status.HTTP_200_OK
+            )
 
-        # FIXME: Do not return 200
         return Response({
-            'status': False,
-            'errors': ed_form.errors
-        })
+                'status': False,
+                'errors': ed_form.errors
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 class DatabaseRequest(TemplateView):
     template_name = "database/request.jinja"

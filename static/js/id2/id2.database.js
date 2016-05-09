@@ -48,6 +48,9 @@ ID2.Database.BeforeSendHandlerHelper = function(xhr) {
    xhr.setRequestHeader("X-csrftoken", ID2.Database.getCookie('csrftoken'));
 }
 
+ID2.Database.registerFormSubmitHandlerAjaxResponseHandler = function(event) {
+}
+
 /*
  * Handle submissions of register-form
  */
@@ -58,20 +61,20 @@ ID2.Database.registerFormSubmitHandler = function(event) {
 
     // If pk is part off the form, we are supposed
     // to update an entry
-    var pk = $(".form-horizontal.db-register-form #id_register_form-pk").val();
+    ID2.Database.pk = $(".form-horizontal.db-register-form #id_register_form-pk").val();
 
     $.ajax({
-        type: pk == undefined ? "POST" : "PUT",
-        url: "/api/2/databases/" + (pk != undefined ? pk : ""),
+        type: ID2.Database.pk == undefined ? "POST" : "PUT",
+        url: "/api/2/databases/" + (ID2.Database.pk != undefined ? ID2.Database.pk : ""),
         data:  ID2.Database.serializeForm($("#db-register-form"))  ,
         success: function(data, textStatus, jqXHR)  {
             if (data['status'] == true) {
-                if (!pk) {
+                if (!ID2.Database.pk) {
                     $(".db-register-form .btn-reset").click();
                 }
 
                 $(".db-register-form .alert-content").text(
-                    pk == undefined ?
+                    ID2.Database.pk == undefined ?
                     'External database successfully registered' :
                     'Updated external database'
                 );
@@ -79,7 +82,6 @@ ID2.Database.registerFormSubmitHandler = function(event) {
 
             else {
                  $(".db-register-form .alert-content").text('Unable to save, something failed');
-
                  for (var key in data.errors) {
                      $("label[for='id_register_form-" + key + "'] " ).css('color', 'red');
                  }
@@ -88,6 +90,9 @@ ID2.Database.registerFormSubmitHandler = function(event) {
             $(".db-register-form.alert").css('display', 'inline-block');
             $(".db-register-form .btn").css('display', ' inline-block');
 
+        },
+        error: function(jqXHR, status, error) {
+            this.success(jqXHR.error().responseJSON, status, jqXHR);
         },
         dataType: "json",
         beforeSend: ID2.Database.BeforeSendHandlerHelper,
