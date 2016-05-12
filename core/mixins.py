@@ -194,7 +194,7 @@ class NotificationMixin(object):
 
         return set([ns.user for ns in NotificationSubscription.objects.filter(terms)])
 
-    def get_channel(self, action="none"):
+    def get_channel(self, action="none", alter_notify=None):
         if hasattr(self, "id"):
             key = self.id
         else:
@@ -207,10 +207,16 @@ class NotificationMixin(object):
             "instance": key,
             "action": action.lower()
         }
+
+        # Now, if requested, put in place custom value
+        for det_key in ['project', 'instance', 'action', 'module', 'model']:
+            if (alter_notify.has_key(det_key) == True):
+                dets[det_key] = alter_notify[det_key]
+
         return "%(project)s:%(module)s:%(model)s:%(instance)s:%(action)s" % dets
 
-    def notify(self, text, user=None, urlname=None, params={}, action="none", url=None):
-        channel = self.get_channel(action)
+    def notify(self, text, user=None, urlname=None, params={}, action="none", url=None, alter_notify={}):
+        channel = self.get_channel(action, alter_notify)
         self._do_notify(channel, text, user, urlname, params, url)
 
     def notify_channel(self, channel, text, user=None, urlname=None, params={}, url=None):
