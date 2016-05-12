@@ -293,7 +293,7 @@ class TicketUpdate(models.Model, NotificationMixin):
 
     def save(self):
         super(TicketUpdate, self).save()
-        self.notify(u"%s updated ticket %s: %s" % (self.author, self.ticket.summary, self.update_type), self.author, 'ticket_details', {'ticket_id': self.ticket.pk}, 'update')
+        self.notify(u"%s updated ticket %s: %s" % (self.author, self.ticket.summary, self.update_type), self.author, 'ticket_details', {'ticket_id': self.ticket.pk}, 'update', None, {'model':'ticket', 'instance': self.ticket.pk})
 
     def update_type_display(self):
         return get_choice_display(self.update_type, TICKET_UPDATE_TYPES)
