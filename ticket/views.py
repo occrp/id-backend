@@ -20,7 +20,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from django.views.generic import TemplateView, UpdateView
 
-from core.mixins import JSONResponseMixin, CSVorJSONResponseMixin, PrettyPaginatorMixin
+from core.models import Notification
+from core.mixins import JSONResponseMixin, CSVorJSONResponseMixin, PrettyPaginatorMixin, NotificationMixin
 from core.utils import *
 from id.models import Network, Profile
 from ticket.utils import *
@@ -239,6 +240,7 @@ class TicketActionJoin(TicketActionBaseHandler):
 
         if added:
             adduser.notifications_subscribe('id:ticket:ticket:%d:*' % ticket.id)
+
             self.success_messages = [_('You have successfully been added to the ticket.')]
             self.perform_ticket_update(ticket, 'Responder Joined', adduser.display_name + unicode(_(' has joined the ticket')))
             self.transition_ticket_from_new(ticket)
@@ -258,8 +260,9 @@ def TicketActionAssign(request, pk):
         success = True
 
     if success:
-        perform_ticket_update(ticket, 'Responder Joined', user.display_name + unicode(_(' has joined the ticket')), user)
         user.notifications_subscribe('id:ticket:ticket:%d:*' % ticket.id)
+        perform_ticket_update(ticket, 'Responder Joined', user.display_name + unicode(_(' has joined the ticket')), user)
+
         transition_ticket_from_new(ticket)
         #tag.add_user(user, True)
 
@@ -267,6 +270,11 @@ def TicketActionAssign(request, pk):
             success_message = ugettext("You have successfully been added to the ticket")
         else:
             success_message = user.display_name + ugettext(' has been added to the ticket.')
+
+        # Manually notify the assigned user that
+        # he has been assigned to the ticket.
+        n = Notification()
+	n.create(user, 'id:ticket:ticket:%d:join' % ticket.id, "%s added you to ticket %s" % (request.user, ticket.summary), 'ticket_details', {'ticket_id': ticket.id})
 
         return JsonResponse({'message': success_message,
                             'status': 'success'})
@@ -650,6 +658,7 @@ class TicketDetail(TemplateView):
         comment.ticket = self.ticket
         comment.author = request.user
         comment.save()
+
         return HttpResponseRedirect(reverse('ticket_details', kwargs={ "ticket_id":self.ticket.id}))
 
 
