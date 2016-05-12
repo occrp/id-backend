@@ -489,6 +489,10 @@ ID2.Podaci.init_fileupload = function() {
         // FIXME: Test failure modes. Make this pretty.
         progressbar.hide();
         files_form.show();
+
+        // Make sure users see the actual error message
+        Alert.show("Error: " + data.jqXHR.responseJSON.detail, 'error', $('#alerts'), $('body'));
+        $("#podaci_add_modal.modal.in .modal-dialog .modal-content .modal-header button.close").click();
     });
 };
 
