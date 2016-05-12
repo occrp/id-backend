@@ -36,9 +36,11 @@
             {% if ticket.is_open() %}
 
             <div class="btn-group">
-                <a id="ticket-file-add" role="button" class="btn podaci_add" data-ticket="{{ ticket.id }}">
-                    <i class="fa fa-file-o"></i> {% trans %}Attach Files{% endtrans %}
-                </a>
+                {% if user in ticket.actors() %}
+                    <a id="ticket-file-add" role="button" class="btn podaci_add" data-ticket="{{ ticket.id }}">
+                        <i class="fa fa-file-o"></i> {% trans %}Attach Files{% endtrans %}
+                    </a>
+                {% endif %}
             </div>
 
             {% if user.is_volunteer or user.is_staff %}
