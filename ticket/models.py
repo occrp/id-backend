@@ -116,69 +116,6 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
         """
         return self.responders.all()
 
-    def join_user(self, actor):
-        """
-        Adds an existing User to the list of ticket
-        contributors.
-
-        Args:
-            actor (UserProfile Key) - an actor to add to the ticket.
-
-        Returns:
-            boolean - whether the user was added or not.
-        """
-
-        if actor in self.actors():
-            return False
-
-        self.responders.add(actor)
-        self.notify(u"%s has joined ticket %s (%d) as a %s" % (actor, self.summary, self.id, ["responder", "volunteer"][actor.is_volunteer]), actor, 'ticket_details', {'ticket_id': self.pk}, 'join')
-        return True
-
-    def leave_user(self, actor):
-        """
-        Remove all mentions of a UserProfile from the list of responders on a ticket.
-
-        Args:
-            actor (UserProfile Key) - an actor who wants to leave the ticket.
-        """
-        self.responders.remove(actor)
-        self.notify(u"%s has left ticket %s (%d)" % (actor, self.summary, self.id), actor, 'ticket_details', {'ticket_id': self.pk}, 'leave')
-
-    def generate_update(self, comment, old=None, changed_properties=None):
-        """
-        Create a TicketUpdate instance based on the ticket changes
-        """
-        kwargs = {
-            'parent': self.key,
-            'ticket': self.key,
-            'author': get_current_user_profile().key,
-            'comment': comment,
-        }
-
-        # Map status changes to ticket update types
-        if self.status == u'new':
-            kwargs['update_type'] = 'open'
-        elif 'status' in changed_properties:
-            if self.status == 'cancelled':
-                kwargs['update_type'] = 'cancel'
-            elif self.status == 'closed':
-                kwargs['update_type'] = 'close'
-            elif self.status == 'in-progress':
-                kwargs['update_type'] = 'update'
-        elif 'flagged' in changed_properties and self.flagged:
-            kwargs['update_type'] = 'flag'
-        elif ('entities' in changed_properties
-              and len(self.entities) > len(old.entities)):
-            kwargs['update_type'] = 'entities_attached'
-
-        if 'update_type' not in kwargs:
-            logging.warn('ticket update type not specified')
-            kwargs['update_type'] = 'update'
-
-        if 'update_type' in kwargs:
-            TicketUpdate(**kwargs).put()
-
     def ticket_type_display(self):
         return get_choice_display(self.ticket_type, TICKET_TYPES)
 
@@ -356,7 +293,7 @@ class TicketUpdate(models.Model, NotificationMixin):
 
     def save(self):
         super(TicketUpdate, self).save()
-        self.notify(u"%s updated ticket %s: %s" % (self.author, self.ticket.summary, self.update_type), self.author, 'ticket_details', {'ticket_id': self.ticket.pk}, 'update')
+        self.notify(u"%s updated ticket %s: %s" % (self.author, self.ticket.summary, self.update_type), self.author, 'ticket_details', {'ticket_id': self.ticket.pk}, 'update', None, {'model':'ticket', 'instance': self.ticket.pk})
 
     def update_type_display(self):
         return get_choice_display(self.update_type, TICKET_UPDATE_TYPES)

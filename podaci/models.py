@@ -254,7 +254,9 @@ class PodaciFile(NotificationMixin, models.Model):
 
         if user:
             obj.add_user(user, write=True, notify=False)
-            obj.notify("Created file '%s'." % obj, user, action="add")
+
+            if (ticket is not None):
+                obj.notify("%s created file '%s'" % (user, obj), user, 'ticket_details', {'ticket_id': ticket.pk}, "add", None, {'module': 'ticket', 'model': 'ticket', 'instance': ticket.pk, 'action':'update'})
 
         obj.update()
         logger.debug("Created file '%s'" % obj)
