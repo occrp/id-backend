@@ -1,0 +1,50 @@
+{% extends "tickets/request_base.jinja" %}
+
+# FIXME: Don't use "tickets"-template
+
+{% block inner_content %}
+    <div class="page-header">
+        <h1>{% trans %}Register External Database{% endtrans %}</h1>
+    </div>
+
+
+<form method="POST" id="db-register-form" class="form-horizontal db-register-form" enctype="multipart/form-data">
+
+{% if pk %}
+<input type="hidden" id="id_register_form-pk" value="{{ pk }}">
+{% endif %}
+
+{% csrf_token %}
+
+{{ form_macros.render_field(register_form['agency']) }}
+{{ form_macros.render_field(register_form['db_type']) }}
+{{ form_macros.render_field(register_form['country']) }}
+{{ form_macros.render_field(register_form['paid']) }}
+{{ form_macros.render_field(register_form['registration_required']) }}
+{{ form_macros.render_field(register_form['government_db']) }}
+{{ form_macros.render_field(register_form['url']) }}
+{{ form_macros.render_field(register_form['notes']) }}
+{{ form_macros.render_field(register_form['blog_post']) }}
+{{ form_macros.render_field(register_form['video_url']) }}
+
+{% set button_text = 'Submit' %}
+
+<div class="alert alert-info db-register-form" style="display: none;">
+    <div class="alert-icon"><i class="fa fa-question"></i></div>
+    <div class="alert-content db-register-form">
+    </div>
+</div>
+
+
+{{ form_macros.render_submit(_(button_text), class="btn-primary") }}
+<input type="reset" class="btn-reset" style="display: none;">
+
+</form>
+
+
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+    <script type="text/javascript" src="{{ static('js/id2/id2.database.js') }}"></script>
+{% endblock %}
