@@ -1,9 +1,11 @@
+import json
+
 from django.test import TestCase
 from django.contrib.auth.models import AnonymousUser#, User
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
-from core.testclient import APITestClient
 from django.core.urlresolvers import reverse
-import json
+
+from .testclient import APITestClient
 
 class UserTestCase(TestCase):
     def anon_user_helper(self):

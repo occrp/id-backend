@@ -1,22 +1,21 @@
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from registration.signals import user_registered
+
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
-from django.views.generic import *
+from django.views.generic import TemplateView, UpdateView, ListView
 from django.contrib.auth.decorators import login_required
-#from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
-from settings.settings import LANGUAGES
 from django.utils.translation import ugettext_lazy as _
-from registration.signals import user_registered
 from django.db.models import Q
 from django.db import IntegrityError
 
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-
+from settings.settings import LANGUAGES
 from core.mixins import MessageMixin
 
-from id.models import Profile, AccountRequest
-from id.forms import ProfileUpdateForm, ProfileBasicsForm, ProfileDetailsForm, ProfileAdminForm
+from .models import Profile, AccountRequest
+from .forms import ProfileUpdateForm, ProfileBasicsForm, ProfileDetailsForm, ProfileAdminForm
 
 
 class ProfileSetLanguage(TemplateView):

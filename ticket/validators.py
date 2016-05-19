@@ -2,7 +2,7 @@ from django.views.generic import TemplateView
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext as _nl
 
-from core.mixins import *
+from core.mixins import JSONResponseMixin
 
 class BaseValidator(JSONResponseMixin, TemplateView):
     def respond(self, status, message):

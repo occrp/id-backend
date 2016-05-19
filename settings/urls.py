@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 
 from id import requests, accounts
-from id import admin, tasks, errors
+from id import admin, tasks
 from core.auth import perm
 
 from django.contrib.auth import views as auth_views
@@ -12,8 +12,9 @@ from core.views import NotificationSeen, NotificationStream, NotificationSubscri
 from databases.views import DatabaseCollectionView, DatabaseMemberView
 from id.views import ProfileRegistrationView, login, logout
 from id.forms import ProfileRegistrationForm, FeedbackForm
-
 import databases.admin as databases_admin
+
+from . import errors
 
 js_info_dict = {
     'packages': ('id', 'ticket', 'search', 'podaci'),
@@ -99,5 +100,5 @@ urlpatterns = patterns('',
 handler400 = errors._400
 handler401 = errors._401
 handler403 = errors._403
-handler404 = errors._403
+handler404 = errors._404
 handler500 = errors._500

@@ -1,8 +1,7 @@
 from core.auth import perm
 from django.conf.urls import patterns, url
 
-from databases.views import ExternalDatabaseList, DatabaseRequest
-import databases
+from .views import ExternalDatabaseList, DatabaseRequest
 
 
 urlpatterns = patterns('',

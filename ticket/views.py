@@ -1,5 +1,6 @@
 import json
 from datetime import datetime, timedelta
+import logging
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -22,16 +23,14 @@ from django.views.generic import TemplateView, UpdateView
 
 from core.models import Notification
 from core.mixins import JSONResponseMixin, CSVorJSONResponseMixin, PrettyPaginatorMixin, NotificationMixin
-from core.utils import *
 from id.models import Network, Profile
-from ticket.utils import *
-from ticket.mixins import *
-from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, TicketUpdate, TicketCharge, Budget
-from ticket import forms
-from ticket import constants
-
 from podaci.models import PodaciFile
-import logging
+
+from .mixins import TicketUpdateMixin, perform_ticket_update, transition_ticket_from_new, TicketCreateMixin
+from .models import Ticket, PersonTicket, CompanyTicket, OtherTicket, TicketUpdate, TicketCharge, Budget
+from . import forms
+from . import constants
+
 logger = logging.getLogger(__name__)
 
 class AdminOustandingChargesList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
