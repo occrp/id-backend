@@ -322,3 +322,5 @@ REST_FRAMEWORK = {
     ),
     'PAGE_SIZE': 30
 }
+
+USE_TZ = True

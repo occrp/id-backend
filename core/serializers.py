@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from core.models import Notification, AuditLog
+
+from .models import Notification, AuditLog
 
 
 class NotificationSerializer(serializers.ModelSerializer):

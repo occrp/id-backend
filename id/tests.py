@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AnonymousUser#, User
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.test import TestCase, RequestFactory
+
 from core.tests import UserTestCase
 
 

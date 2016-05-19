@@ -1,17 +1,19 @@
+import logging
 from registration.views import RegistrationView
-from settings.settings import REGISTRATION_OPEN, REGISTRATION_CLOSED_URL, REGISTRATION_SUCCESS_URL
+
 from django.contrib.auth.views import logout as django_logout
 from django.contrib.auth.views import login as django_login
 from django.contrib.auth.views import REDIRECT_FIELD_NAME, AuthenticationForm
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.core.signals import request_finished
 from django.dispatch import receiver
-
 from django.http import HttpResponseRedirect
-from id.forms import FeedbackForm
-import logging
-logger = logging.getLogger(__name__)
 
+from settings.settings import REGISTRATION_OPEN, REGISTRATION_CLOSED_URL, REGISTRATION_SUCCESS_URL
+
+from .forms import FeedbackForm
+
+logger = logging.getLogger(__name__)
 
 class ProfileRegistrationView(RegistrationView):
     """

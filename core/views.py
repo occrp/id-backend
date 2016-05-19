@@ -1,14 +1,15 @@
-from core.models import Notification, NotificationSubscription, AuditLog
-from core.models import channel_components, notification_channel_format
-from core.serializers import NotificationSerializer, AuditLogSerializer
-from core.mixins import NotificationMixin
-
+import random
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
 from django.http import JsonResponse
 
-import random
+from .models import Notification, NotificationSubscription, AuditLog
+from .models import channel_components, notification_channel_format
+from .serializers import NotificationSerializer, AuditLogSerializer
+from .mixins import NotificationMixin
+
 
 class NotificationSeen(APIView):
     permission_classes = (IsAuthenticated, )

@@ -3,7 +3,8 @@ from core.tests import UserTestCase, APITestCase
 from core.testclient import TestClient
 from settings.settings import *
 from django.core.urlresolvers import reverse
-from ticket.models import *
+
+from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, TicketUpdate, DecimalProperty, Budget, TicketCharge
 
 class TicketsTest(UserTestCase):
     def test_create_person_ticket(self):

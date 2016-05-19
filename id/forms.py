@@ -1,12 +1,13 @@
-from django import forms
-from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
-
-from id import models
-from django.contrib.auth import get_user_model
 import re
 import math
 from captcha.fields import CaptchaField
+
+from django import forms
+from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
+from django.contrib.auth import get_user_model
+
+from . import models
 
 
 class UserFilterForm(forms.Form):

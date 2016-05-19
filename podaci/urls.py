@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 
 from core.auth import perm
-from podaci import views
+from . import views
 
 urlpatterns = patterns('',
     url(r'^$', perm('staff', TemplateView, template_name="podaci/home.jinja"), name="podaci_info_home"),

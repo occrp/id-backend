@@ -1,10 +1,13 @@
-from django.db import models
-from settings.settings import AUTH_USER_MODEL
 import re
 import logging
-from core.utils import json_dumps, json_loads
+
+from django.db import models
+from settings.settings import AUTH_USER_MODEL
+
 from django.core.urlresolvers import reverse_lazy, reverse
 from id.constdata import NOTIFICATION_ICONS
+
+from .utils import json_dumps, json_loads
 
 logger = logging.getLogger(__name__)
 
