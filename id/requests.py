@@ -8,13 +8,15 @@ from django.views.generic import (
         TemplateView, ListView, RedirectView, UpdateView,
         CreateView, FormView, View)
 from django.utils.translation import ugettext_lazy as _
+
 from core.mixins import JSONResponseMixin, MessageMixin
-from id import models
 from ticket import forms
 from ticket.models import (
     Ticket, TicketUpdate, TicketCharge,
     PersonTicket, CompanyTicket, OtherTicket
 )
+
+from . import models
 
 class RequestDetailsActionHandler(JSONResponseMixin, TemplateView):
     """

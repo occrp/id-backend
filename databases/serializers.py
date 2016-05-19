@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from databases.models import ExternalDatabase
+
+from .models import ExternalDatabase
 
 class DatabaseSerializer(serializers.ModelSerializer):
     class Meta:

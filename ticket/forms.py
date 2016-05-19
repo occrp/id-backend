@@ -1,17 +1,15 @@
 from django import forms
-#from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
-
 from django_select2 import *
 
 import core.widgets
 import core.utils
 from core.countries import CURRENCIES
 
-from ticket import constants
-from ticket import models
+from . import constants
+from . import models
 
 class TicketPaidForm(forms.Form):
     """

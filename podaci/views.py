@@ -16,9 +16,9 @@ from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 
 from ticket.models import Ticket
-from podaci.models import PodaciFile, PodaciTag, PodaciCollection
-from podaci.serializers import FileSerializer, TagSerializer
-from podaci.serializers import CollectionSerializer
+from .models import PodaciFile, PodaciTag, PodaciCollection
+from .serializers import FileSerializer, TagSerializer
+from .serializers import CollectionSerializer
 
 log = logging.getLogger(__name__)
 

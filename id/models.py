@@ -1,17 +1,22 @@
+import logging
+from datetime import timedelta
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.core.mail import send_mail
-from core.mixins import *
+from django.utils import timezone
+
+from core.mixins import DisplayMixin, NotificationMixin
 from core.models import notification_channel_format, channel_components
 from core.countries import COUNTRIES
-from id.constdata import REQUESTER_TYPES, REQUEST_TYPES
+from core.views import NotificationSubscription
 from ticket.constants import *
 from ticket.models import TicketCharge
 from settings.settings import LANGUAGES, AUTH_USER_MODEL
-from django.utils import timezone
-from datetime import timedelta
-import logging
+
+from .constdata import REQUESTER_TYPES, REQUEST_TYPES
+
 logger = logging.getLogger(__name__)
 
 

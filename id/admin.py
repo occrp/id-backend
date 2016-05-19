@@ -1,13 +1,16 @@
-from django.views.generic import *
-from core.utils import version
-from id.models import *
-from ticket.models import *
-from podaci.models import *
-from id.forms import ScraperRequestForm, FeedbackForm
-from ticket.forms import BudgetForm
-from settings import settings
+from django.views.generic import TemplateView, CreateView
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
+
+from settings import settings
+from core.utils import version
+from core.models import Notification
+from podaci.models import PodaciTag, PodaciFile, PodaciCollection, HASH_DIRS_DEPTH, HASH_DIRS_LENGTH
+from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, Budget, TicketCharge 
+from ticket.forms import BudgetForm
+
+from .models import Network, Profile, AccountRequest, Feedback, DatabaseScrapeRequest
+from .forms import ScraperRequestForm, FeedbackForm
 
 class Panel(TemplateView):
     template_name = "admin/panel.jinja"

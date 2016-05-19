@@ -1,6 +1,6 @@
+import datetime
 from itertools import chain
 
-#from django.contrib.auth.models import User
 from settings.settings import AUTH_USER_MODEL # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -9,9 +9,7 @@ from core.mixins import DisplayMixin, NotificationMixin
 from core.countries import COUNTRIES
 from podaci.models import PodaciFile
 
-from constants import *
-from utils import *
-import datetime
+from .constants import *
 
 
 ######## Data requests #################
@@ -229,8 +227,22 @@ class CompanyTicket(Ticket):
     def summary(self):
         return self.get_summary()
 
+    def smart_truncate(content, length):
+      '''
+      truncate a string, ending on a word break and adding ellipses
+      '''
+
+      if len(content) <= length:
+          return content
+
+      else:
+          if ' ' in content[-20:]:
+              return content[:length].rsplit(' ', 1)[0] + '...'
+          else:  #if there is no word break, just do an ugly break
+              return content[:length-3] + '...'
+
     def get_summary(self):
-        return "%s" % (smart_truncate(self.name, 150))
+        return "%s" % (self.smart_truncate(self.name, 150))
 
     def get_country(self):
         return dict(COUNTRIES).get(self.country, self.country)

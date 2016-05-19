@@ -11,7 +11,7 @@ from django.utils.text import get_valid_filename
 from settings.settings import AUTH_USER_MODEL
 from settings.settings import PODACI_FS_ROOT
 
-from podaci.util import sha256sum
+from .util import sha256sum
 from core.mixins import NotificationMixin
 
 # More depth means deeper nesting, which increases lookup speed but makes

@@ -3,8 +3,8 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import JsonResponse
 from django.utils.translation import ugettext_lazy as _
 
-from ticket.models import TicketUpdate
-from ticket import constants
+from .models import TicketUpdate
+from . import constants
 
 class TicketAjaxResponseMixin(object):
 

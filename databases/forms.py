@@ -1,6 +1,6 @@
 from django.forms import Form, ChoiceField, CharField, ModelForm
 
-from databases.models import DATABASE_COUNTRIES, DATABASE_TYPES, ExternalDatabase
+from .models import DATABASE_COUNTRIES, DATABASE_TYPES, ExternalDatabase
 
 
 class CountryFilterForm(Form):

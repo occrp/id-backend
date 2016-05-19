@@ -1,17 +1,18 @@
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
 from django.db.models import Count
 import django.forms
 from django.views.generic import ListView, TemplateView
-from rest_framework import generics, status
-from rest_framework.response import Response
 
 from core.countries import COUNTRIES
-import databases
-from databases.models import ExternalDatabase, DATABASE_TYPES, EXPAND_REGIONS
-from databases.forms import CountryFilterForm, ExternalDatabaseForm
-from databases.serializers import DatabaseSerializer
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from core.auth import IsAdminOrReadOnly
 
+import databases
+from .models import ExternalDatabase, DATABASE_TYPES, EXPAND_REGIONS
+from .forms import CountryFilterForm, ExternalDatabaseForm
+from .serializers import DatabaseSerializer
 
 class ExternalDatabaseList(ListView):
     template_name = "external_databases.jinja"

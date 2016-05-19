@@ -1,7 +1,10 @@
 import logging
+
 from settings.settings import AUTH_USER_MODEL
 from id.models import Profile
-from core.models import AuditLog
+
+from .models import AuditLog
+
 #logger = logging.getLogger(__name__)
 
 class AuditLogHandler(logging.Handler):
