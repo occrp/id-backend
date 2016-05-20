@@ -1,6 +1,7 @@
 from django.utils.translation import to_locale, get_language
 from django.core.urlresolvers import resolve
 from django.utils import formats
+from django.conf import settings # import the settings file
 
 def locale(request):
     lang = get_language()
@@ -18,4 +19,18 @@ def locale(request):
 def routename(request):
     return {
         'ROUTE_NAME': resolve(request.path_info).url_name
+    }
+
+# template context preprocessors
+#
+# as per:
+# http://stackoverflow.com/questions/433162/can-i-access-constants-in-settings-py-from-templates-in-django#433255
+#
+
+# debug, we might need it in the templates
+def debug(request):
+    # return the value you want as a dictionnary. you may add multiple values in there.
+    return {
+        'DEBUG': settings.DEBUG,
+        'EMERGENCY': settings.EMERGENCY
     }

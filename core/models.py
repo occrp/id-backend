@@ -5,13 +5,23 @@ from django.db import models
 from settings.settings import AUTH_USER_MODEL
 
 from django.core.urlresolvers import reverse_lazy, reverse
-from id.constdata import NOTIFICATION_ICONS
 
 from .utils import json_dumps, json_loads
 
 logger = logging.getLogger(__name__)
 
 notification_channel_format = re.compile("^(([\w\d]+|\*):){4}(([\w\d]+|\*))$")
+
+NOTIFICATION_ICONS = {
+    "none": 'bell-o',
+    "add": 'plus-square',
+    "edit": 'pencil-square',
+    "delete": 'minus-square',
+    "update": 'edit',
+    "share": 'share-alt-square',
+    "other": 'bomb'
+}
+
 
 def channel_components(channel):
     components = ("project", "module", "model", "instance", "action")

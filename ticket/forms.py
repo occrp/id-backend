@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
-from django_select2 import *
+from django_select2 import Select2MultipleChoiceField
 
 import core.widgets
 import core.utils

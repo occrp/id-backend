@@ -9,7 +9,7 @@ from core.mixins import DisplayMixin, NotificationMixin
 from core.countries import COUNTRIES
 from podaci.models import PodaciFile
 
-from .constants import *
+from .constants import get_choice_display, REQUESTER_TYPES, TICKET_STATUS, TICKET_STATUS_ICONS, TICKET_TYPES, TICKET_UPDATE_TYPES, TICKET_STATUS_ICONS, OPEN_TICKET_STATUSES, PAID_STATUS
 
 
 ######## Data requests #################
@@ -227,7 +227,7 @@ class CompanyTicket(Ticket):
     def summary(self):
         return self.get_summary()
 
-    def smart_truncate(content, length):
+    def smart_truncate(self, content, length):
       '''
       truncate a string, ending on a word break and adding ellipses
       '''
