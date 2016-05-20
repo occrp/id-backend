@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect
 
 from settings.settings import REGISTRATION_OPEN, REGISTRATION_CLOSED_URL, REGISTRATION_SUCCESS_URL
 
-from .forms import FeedbackForm
+from id.forms import FeedbackForm
 
 logger = logging.getLogger(__name__)
 

@@ -11,11 +11,22 @@ from core.mixins import DisplayMixin, NotificationMixin
 from core.models import notification_channel_format, channel_components
 from core.countries import COUNTRIES
 from core.views import NotificationSubscription
-from ticket.constants import *
+from ticket.constants import INDUSTRY_TYPES, MEDIA_TYPES, CIRCULATION_TYPES
 from ticket.models import TicketCharge
 from settings.settings import LANGUAGES, AUTH_USER_MODEL
 
-from .constdata import REQUESTER_TYPES, REQUEST_TYPES
+
+REQUESTER_TYPES = (
+    ('subs', _('Subsidized')),
+    ('cost', _('Covering Cost')),
+    ('cost_plus', _('Covering Cost +'))
+)
+
+REQUEST_TYPES = (
+    ('requester', _('Information Requester')),
+    ('volunteer', _('Volunteer'))
+)
+
 
 logger = logging.getLogger(__name__)
 
