@@ -101,9 +101,9 @@ if DEBUG:
             "django.core.context_processors.request",
             "django.contrib.messages.context_processors.messages",
             "django.core.context_processors.csrf",
-            "id.context_processors.locale",
-            "id.context_processors.routename",
-            "context_processors.debug",
+            "settings.context_processors.locale",
+            "settings.context_processors.routename",
+            "settings.context_processors.debug",
         )
 
 
@@ -323,4 +323,3 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 30
 }
 
-USE_TZ = True

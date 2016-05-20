@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 
-from id import requests, accounts
+from id import requests
 from id import admin
 from core.auth import perm
 
@@ -10,8 +10,7 @@ from registration.views import ActivationView
 
 from core.views import NotificationSeen, NotificationStream, NotificationSubscriptions, Notify, Profile, AuditLogView
 from databases.views import DatabaseCollectionView, DatabaseMemberView
-from id.views import ProfileRegistrationView, login, logout
-from id.forms import ProfileRegistrationForm, FeedbackForm
+from id.forms import FeedbackForm
 import databases.admin as databases_admin
 
 from . import errors
@@ -40,7 +39,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/$',                        perm('staff', admin.Panel), name='admin_panel'),
 
-    url(r'^admin/scrapers/request/$',       perm('staff', admin.DatabaseScrapeRequest), name='admin_scrapers_request'),
+    url(r'^admin/scrapers/request/$',       perm('staff', admin.DatabaseScrapeRequestCreate), name='admin_scrapers_request'),
     url(r'^admin/budgets/$',                perm('staff', admin.Budgets), name='admin_budgets'),
 
     url(r'^admin/storage/$',                perm('admin', admin.Storage), name='admin_storage'),
@@ -48,35 +47,7 @@ urlpatterns = patterns('',
     url(r'^feedback/$',                     perm('any', admin.Feedback), name='feedback'),
     url(r'^feedback/thankyou/$',            perm('any', admin.FeedbackThanks), name='feedback_thanks'),
 
-    url(r'^accounts/login/$',               login, {'template_name': 'registration/login.jinja'}, name='login'),
-    url(r'^accounts/logout/',               logout, {'template_name': 'registration/logout.jinja', 'fallback_redirect_url': '/accounts/login/'}, name='logout'),
-    url(r'^accounts/users/$',               perm('admin', accounts.UserList), name='userprofile_list'),
-    url(r'^accounts/suggest/$',             perm('loggedin', accounts.UserSuggest), name='userprofile_suggest'),
-    url(r'^accounts/request/$',             perm('any', accounts.AccessRequestCreate), name='request_access_create'),
-    url(r'^accounts/request/list/$',        perm('admin', accounts.AccessRequestList), name='request_access_list'),
-    url(r'^accounts/request/list/approved/$',perm('admin', accounts.AccessRequestListApproved), name='request_access_list_approved'),
-    url(r'^accounts/request/list/denied/$', perm('admin', accounts.AccessRequestListDenied), name='request_access_list_denied'),
-    url(r'^accounts/profile/$',             perm('loggedin', accounts.ProfileUpdate), name='profile'),
-    url(r'^accounts/profile/(?P<pk>[0-9]+)/$',
-                                            perm('admin', accounts.ProfileUpdate), name='profile'),
-    url(r'^accounts/profile/(?P<email>.+)/$',
-                                            perm('admin', accounts.ProfileUpdate), name='profile'),
-    url(r'^accounts/setlanguage/(?P<lang>[a-zA-Z]{2})/$',
-                                            perm('any', accounts.ProfileSetLanguage), name='account_set_language'),
-
-    url(r'^accounts/password/change/$',      auth_views.password_change, {'template_name': 'registration/password_change_form.jinja'}, name='password_change'),
-    url(r'^accounts/password/change/done/$', auth_views.password_change_done, {'template_name': 'registration/password_change_done.jinja'}, name='password_change_done'),
-    url(r'^accounts/password/reset/$',       auth_views.password_reset, {'template_name': 'registration/password_reset_form.jinja'}, name='password_reset'),
-    url(r'^accounts/password/reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', auth_views.password_reset_confirm, {'template_name': 'registration/password_reset_confirm.jinja'}, name='password_reset_confirm'),
-    url(r'^accounts/password/reset/complete/$', auth_views.password_reset_complete, {'template_name': 'registration/password_reset_complete.jinja'}, name='password_reset_complete'),
-    url(r'^accounts/password/reset/done/$',  auth_views.password_reset_done, {'template_name': 'registration/password_reset_done.jinja'}, name='password_reset_done'),
-
-    url(r'^accounts/activate/complete/$',   TemplateView.as_view(template_name='registration/activation_complete.jinja'), name='registration_activation_complete'),
-    url(r'^accounts/activate/(?P<activation_key>w+)/$', ActivationView.as_view(template_name='registration/activation_form.jinja'), name='registration_activate'),
-    url(r'^accounts/register/$',            ProfileRegistrationView.as_view(template_name='registration/registration_form.jinja', form_class=ProfileRegistrationForm), name='registration_register'),
-    url(r'^accounts/register/complete/$',   TemplateView.as_view(template_name='registration/registration_complete.jinja'), name='registration_complete'),
-    url(r'^accounts/register/closed/$',     TemplateView.as_view(template_name='registration/registration_closed.jinja'), name='registration_disallowed'),
-    url(r'^accounts/social/', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^accounts/', include('accounts.urls')),
 
     url(r'^notifications/seen/(?P<pk>([\d]+|all))/', perm('user', NotificationSeen), name='notification_seen'),
     url(r'^notifications/stream/', perm('user', NotificationStream), name='notification_stream'),
