@@ -572,7 +572,7 @@ class TicketUpdateRemoveHandler(TicketActionBaseHandler):
         super(TicketUpdateRemoveHandler, self).__init__(*args, **kwargs)
 
 
-from id.forms import FeedbackForm
+from feedback.forms import FeedbackForm
 
 class TicketDetail(TemplateView):
     template_name = "tickets/request_details.jinja"
