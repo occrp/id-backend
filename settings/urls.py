@@ -1,17 +1,17 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
-
-from id import requests
-from id import admin
-from core.auth import perm
-
 from django.contrib.auth import views as auth_views
 from registration.views import ActivationView
 
-from core.views import NotificationSeen, NotificationStream, NotificationSubscriptions, Notify, Profile, AuditLogView
+import accounts.view
+from core.auth import perm
+from core.views import NotificationSeen, NotificationStream, NotificationSubscriptions, Notify, AuditLogView
 from databases.views import DatabaseCollectionView, DatabaseMemberView
-from id.forms import FeedbackForm
 import databases.admin as databases_admin
+from id import requests
+from id import admin
+from id.forms import FeedbackForm
+import podaci
 
 from . import errors
 
@@ -27,7 +27,7 @@ urlpatterns = patterns('',
     url(r'^o/',                             include('oauth2_provider.urls', namespace='oauth2_provider')),
     # url(r'^admin/db$',                      include('admin.site.urls')),
 
-    url(r'^api/2/accounts/profile/$',       Profile.as_view(), name='api_2_profile'),
+    url(r'^api/2/accounts/profile/$',       accounts.views.Profile.as_view(), name='api_2_profile'),
     url(r'^api/2/notifications/$',          NotificationSubscriptions.as_view(), name='api_2_notifications'),
     url(r'^api/2/notifications/seen/$',     NotificationSeen.as_view(), name='api_2_notifications_seen'),
     url(r'^api/2/notifications/stream/$',   NotificationStream.as_view(), name='api_2_notifications_stream'),
@@ -42,7 +42,7 @@ urlpatterns = patterns('',
     url(r'^admin/scrapers/request/$',       perm('staff', admin.DatabaseScrapeRequestCreate), name='admin_scrapers_request'),
     url(r'^admin/budgets/$',                perm('staff', admin.Budgets), name='admin_budgets'),
 
-    url(r'^admin/storage/$',                perm('admin', admin.Storage), name='admin_storage'),
+    url(r'^admin/storage/$',                perm('admin', podaci.admin.Storage), name='admin_storage'),
     url(r'^admin/statistics/$',             perm('admin', admin.Statistics), name='statistics'),
     url(r'^feedback/$',                     perm('any', admin.Feedback), name='feedback'),
     url(r'^feedback/thankyou/$',            perm('any', admin.FeedbackThanks), name='feedback_thanks'),
