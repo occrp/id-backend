@@ -37,8 +37,6 @@ urlpatterns = patterns('',
     url(r'^api/2/databases/(?P<pk>\d+)$',   DatabaseMemberView.as_view(), name='api_2_databases_member'),
 
     url(r'^admin/$',                        perm('staff', core.admin.Panel), name='admin_panel'),
-
-    url(r'^admin/scrapers/request/$',       perm('staff', admin.DatabaseScrapeRequestCreate), name='admin_scrapers_request'),
     url(r'^admin/budgets/$',                perm('staff', admin.Budgets), name='admin_budgets'),
 
     url(r'^admin/storage/$',                perm('admin', podaci.admin.Storage), name='admin_storage'),

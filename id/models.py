@@ -454,19 +454,6 @@ class AccountRequest(models.Model, DisplayMixin):
         pass
 
 
-class DatabaseScrapeRequest(models.Model):
-    url = models.URLField(blank=False, verbose_name=_("URL"))
-    name = models.CharField(max_length=200, verbose_name=_("Name"))
-    description = models.TextField(verbose_name=_("Description"))
-    # plusones = models.ManyToManyField(AUTH_USER_MODEL)
-
-    # def plusone(self, user):
-    #    self.plusone.add(user)
-
-    #def minusone(self, user):
-    #    self.plusone.remove(user)
-
-
 class Feedback(models.Model):
     name = models.CharField(blank=False, max_length=100)
     email = models.EmailField(blank=False)
