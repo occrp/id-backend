@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 from registration.views import ActivationView
 
-import accounts.view
+import accounts.views
 from core.auth import perm
 from core.views import NotificationSeen, NotificationStream, NotificationSubscriptions, Notify, AuditLogView
 from databases.views import DatabaseCollectionView, DatabaseMemberView
