@@ -5,9 +5,7 @@ from core.utils import version
 from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, Budget, TicketCharge 
 from ticket.forms import BudgetForm
 
-from .models import Network, Profile, AccountRequest, DatabaseScrapeRequest
-from .forms import ScraperRequestForm
-
+from .models import Network, Profile, AccountRequest
 
 class Statistics(TemplateView):
     template_name = "admin/statistics.jinja"
@@ -34,17 +32,6 @@ class Statistics(TemplateView):
             "unaffiliated_costs_total": sum([x.cost for x in TicketCharge.objects.filter(user__network=0)]),
             "unaffiliated_users_count": Profile.objects.filter(network=None).count()
         }
-
-
-class DatabaseScrapeRequestCreate(CreateView):
-    form_class = ScraperRequestForm
-    template_name = "admin/database_scrape_request.jinja"
-    success_url = '/admin/scrapers/request/'
-
-    def get_context_data(self, **kwargs):
-        kwargs['object_list'] = DatabaseScrapeRequest.objects.all()
-        return super(DatabaseScrapeRequestCreate, self).get_context_data(**kwargs)
-
 
 class Budgets(CreateView):
     form_class = BudgetForm
