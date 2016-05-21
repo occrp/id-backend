@@ -1,11 +1,8 @@
 from django.views.generic import TemplateView, CreateView
-from django.db.models import Sum
 from django.http import HttpResponseRedirect
 
-from settings import settings
 from core.utils import version
 from core.models import Notification
-from podaci.models import PodaciTag, PodaciFile, PodaciCollection, HASH_DIRS_DEPTH, HASH_DIRS_LENGTH
 from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, Budget, TicketCharge 
 from ticket.forms import BudgetForm
 
@@ -19,20 +16,6 @@ class Panel(TemplateView):
         return {
             "admin_stream": (Notification.objects
                                 .order_by("-timestamp"))
-        }
-
-class Storage(TemplateView):
-    template_name = "admin/storage.jinja"
-
-    def get_context_data(self):
-        return {
-            "podaci_files": PodaciFile.objects.count(),
-            "podaci_tags": PodaciTag.objects.count(),
-            "podaci_collections": PodaciCollection.objects.count(),
-            "podaci_size": PodaciFile.objects.all().aggregate(Sum('size'))['size__sum'],
-            "podaci_data_root": settings.PODACI_FS_ROOT,
-            "podaci_data_sharding": "%d deep, %d long" % (HASH_DIRS_DEPTH, HASH_DIRS_LENGTH),
-            "podaci_index": "None"
         }
 
 class Statistics(TemplateView):
