@@ -1,4 +1,5 @@
 import logging
+import random
 from registration.views import RegistrationView
 
 from django.contrib.auth.views import logout as django_logout
@@ -7,13 +8,41 @@ from django.contrib.auth.views import REDIRECT_FIELD_NAME, AuthenticationForm
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.core.signals import request_finished
 from django.dispatch import receiver
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
+
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
 from settings.settings import REGISTRATION_OPEN, REGISTRATION_CLOSED_URL, REGISTRATION_SUCCESS_URL
 
+from core.models import Notification
 from id.forms import FeedbackForm
 
 logger = logging.getLogger(__name__)
+
+class Profile(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        groups = []
+        if request.user.is_user: groups.append({'id': 'ticket_requesters', 'name': 'Ticket Requesters'})
+        if request.user.is_volunteer: groups.append({'id': 'ticket_requesters', 'name': 'Ticket Volunteers'})
+        if request.user.is_staff: groups.append({'id': 'occrp_staff', 'name': 'OCCRP staff'})
+        if request.user.network:
+            groups.append({'id': 'group:%d' % request.user.network.id, 'name':  request.user.network.long_name})
+
+        return JsonResponse({
+            'id': request.user.id,
+            'email': request.user.email,
+            'display_name': request.user.display_name,
+            'is_admin': request.user.is_superuser,
+            'is_teapot': random.choice([True, False]),
+            'groups': groups,
+            'locale': request.user.locale,
+            'country': request.user.country,
+            'notifications_unseen': Notification.objects.filter(user=request.user, is_seen=False).count(),
+            'notification_subscriptions': [x.channel for x in request.user.notificationsubscription_set.all()]
+        })
 
 class ProfileRegistrationView(RegistrationView):
     """

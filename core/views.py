@@ -1,4 +1,3 @@
-import random
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -134,31 +133,6 @@ class Notify(NotificationMixin, APIView):
             'channel': channel,
             'text': text,
             'url': url
-        })
-
-
-class Profile(APIView):
-    permission_classes = (IsAuthenticated, )
-
-    def get(self, request, *args, **kwargs):
-        groups = []
-        if request.user.is_user: groups.append({'id': 'ticket_requesters', 'name': 'Ticket Requesters'})
-        if request.user.is_volunteer: groups.append({'id': 'ticket_requesters', 'name': 'Ticket Volunteers'})
-        if request.user.is_staff: groups.append({'id': 'occrp_staff', 'name': 'OCCRP staff'})
-        if request.user.network:
-            groups.append({'id': 'group:%d' % request.user.network.id, 'name':  request.user.network.long_name})
-
-        return JsonResponse({
-            'id': request.user.id,
-            'email': request.user.email,
-            'display_name': request.user.display_name,
-            'is_admin': request.user.is_superuser,
-            'is_teapot': random.choice([True, False]),
-            'groups': groups,
-            'locale': request.user.locale,
-            'country': request.user.country,
-            'notifications_unseen': Notification.objects.filter(user=request.user, is_seen=False).count(),
-            'notification_subscriptions': [x.channel for x in request.user.notificationsubscription_set.all()]
         })
 
 class AuditLogView(generics.ListAPIView):
