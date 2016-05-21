@@ -2,21 +2,12 @@ from django.views.generic import TemplateView, CreateView
 from django.http import HttpResponseRedirect
 
 from core.utils import version
-from core.models import Notification
 from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, Budget, TicketCharge 
 from ticket.forms import BudgetForm
 
 from .models import Network, Profile, AccountRequest, Feedback, DatabaseScrapeRequest
 from .forms import ScraperRequestForm, FeedbackForm
 
-class Panel(TemplateView):
-    template_name = "admin/panel.jinja"
-
-    def get_context_data(self):
-        return {
-            "admin_stream": (Notification.objects
-                                .order_by("-timestamp"))
-        }
 
 class Statistics(TemplateView):
     template_name = "admin/statistics.jinja"
