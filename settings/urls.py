@@ -9,9 +9,7 @@ from core.auth import perm
 from core.views import NotificationSeen, NotificationStream, NotificationSubscriptions, Notify, AuditLogView
 from databases.views import DatabaseCollectionView, DatabaseMemberView
 import databases.admin as databases_admin
-from id import requests
-from id import admin
-from id.forms import FeedbackForm
+from id import requests, admin
 import podaci
 
 from . import errors
@@ -45,9 +43,8 @@ urlpatterns = patterns('',
 
     url(r'^admin/storage/$',                perm('admin', podaci.admin.Storage), name='admin_storage'),
     url(r'^admin/statistics/$',             perm('admin', admin.Statistics), name='statistics'),
-    url(r'^feedback/$',                     perm('any', admin.Feedback), name='feedback'),
-    url(r'^feedback/thankyou/$',            perm('any', admin.FeedbackThanks), name='feedback_thanks'),
 
+    url(r'^feedback/', include('feedback.urls')),
     url(r'^accounts/', include('accounts.urls')),
 
     url(r'^notifications/seen/(?P<pk>([\d]+|all))/', perm('user', NotificationSeen), name='notification_seen'),

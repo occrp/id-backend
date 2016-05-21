@@ -16,7 +16,7 @@ from rest_framework.views import APIView
 from settings.settings import REGISTRATION_OPEN, REGISTRATION_CLOSED_URL, REGISTRATION_SUCCESS_URL
 
 from core.models import Notification
-from id.forms import FeedbackForm
+from feedback.forms import FeedbackForm
 
 logger = logging.getLogger(__name__)
 
