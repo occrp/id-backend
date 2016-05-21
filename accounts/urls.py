@@ -4,7 +4,7 @@ from django.contrib.auth import views as auth_views
 from registration.views import ActivationView
 
 from core.auth import perm
-from core.views import NotificationSeen, NotificationStream, NotificationSubscriptions, Notify, Profile, AuditLogView
+from core.views import NotificationSeen, NotificationStream, NotificationSubscriptions, Notify, AuditLogView
 from databases.views import DatabaseCollectionView, DatabaseMemberView
 import databases.admin as databases_admin
 
