@@ -10,15 +10,6 @@ from django.contrib.auth import get_user_model
 from id import models
 
 
-class UserFilterForm(forms.Form):
-    user = forms.ChoiceField(label=_("Customer"))
-
-    # FIXME: Make Ajax URL do something
-    def __init__(self, *args, **kwargs):
-        super(UserFilterForm, self).__init__(*args, **kwargs)
-        self["user"].ajax_url = reverse('select2_all_users')
-
-
 class ProfileRegistrationForm(forms.Form):
     """
     Form for registering a new user account.

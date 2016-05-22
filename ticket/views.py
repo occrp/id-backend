@@ -468,6 +468,36 @@ class TicketModifyCharge(TicketUpdateMixin, UpdateView):
                                    'Charge Modified',
                                    "$%.2f" % float(form.cleaned_data['cost']) + " - " + form.cleaned_data['item'])
 
+class TicketMarkPaid(TicketActionBaseHandler):
+    form_class = forms.TicketPaidForm
+
+    def perform_invalid_action(self, form):
+        messages.error(self.request, _('Error marking charge paid.'))
+
+    def perform_valid_action(self, form):
+        charges = TicketCharge.objects.filter(ticket=self.object)
+
+        for charge in charges:
+            if (charge.reconciled == True):
+                continue
+
+            date = datetime.now()
+
+            if (form.data['paid_status'] == 'paid'):
+                charge.reconciled = True
+                charge.reconciled_date = date
+
+            charge.paid_status = form.data['paid_status']
+            charge.save()
+
+        self.perform_ticket_update(self.object, 'Charge Modified', 'Charges marked as ' + form.data['paid_status'] + '. Comment: ' + form.data['comment'])
+
+    def form_valid(self, form):
+        self.perform_valid_action(form)
+
+        return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": self.object.pk}))
+
+
 class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
     model = Ticket
     template_name = "modals/form_basic.jinja"
@@ -605,7 +635,7 @@ class TicketDetail(TemplateView):
         charges = (TicketCharge.objects.filter(ticket=self.ticket)
                    .order_by("created"))
 
-        outstanding = sum([x.cost for x in TicketCharge.objects.filter(reconciled=False)])
+        outstanding = sum([x.cost for x in TicketCharge.objects.filter(ticket=self.ticket, reconciled=False)])
 
         # tag = self.ticket.get_tag()
 
