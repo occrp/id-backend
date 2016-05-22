@@ -4,13 +4,15 @@ from django.contrib.auth import views as auth_views
 from registration.views import ActivationView
 
 import accounts.views
+import accounts.admin
 import core.admin
 from core.auth import perm
 from core.views import NotificationSeen, NotificationStream, NotificationSubscriptions, Notify, AuditLogView
 from databases.views import DatabaseCollectionView, DatabaseMemberView
 import databases.admin as databases_admin
-from id import admin
 import podaci
+import ticket.admin
+
 
 from . import errors
 
@@ -37,10 +39,10 @@ urlpatterns = patterns('',
     url(r'^api/2/databases/(?P<pk>\d+)$',   DatabaseMemberView.as_view(), name='api_2_databases_member'),
 
     url(r'^admin/$',                        perm('staff', core.admin.Panel), name='admin_panel'),
-    url(r'^admin/budgets/$',                perm('staff', admin.Budgets), name='admin_budgets'),
+    url(r'^admin/budgets/$',                perm('staff', ticket.admin.Budgets), name='admin_budgets'),
 
     url(r'^admin/storage/$',                perm('admin', podaci.admin.Storage), name='admin_storage'),
-    url(r'^admin/statistics/$',             perm('admin', admin.Statistics), name='statistics'),
+    url(r'^admin/statistics/$',             perm('admin', accounts.admin.Statistics), name='statistics'),
 
     url(r'^feedback/', include('feedback.urls')),
     url(r'^accounts/', include('accounts.urls')),
