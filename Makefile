@@ -21,7 +21,7 @@ clean:
 	rm -rf static/bower_components
 
 testdata:
-	$(MANAGE) loaddata id/fixtures/* 
+	$(MANAGE) loaddata accounts/fixtures/*
 	$(MANAGE) loaddata data/fixtures/*
 	(cd data/importers/ID1_Import && $(PYTHON) UserProfiles_to_DjangoUsers.py ../../exporters/raw/UserProfile.csv)
 	(cd data/importers/ID1_Import && $(PYTHON) Tickets_to_ID2Tickets.py ../../exporters/raw/Ticket.csv)
