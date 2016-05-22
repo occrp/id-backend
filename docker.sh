@@ -58,7 +58,7 @@ echo -e '\n#####################################################################
 # 0 is "true" in UNIX/bash world
 if [ $DEBUG -eq 0 ]; then
     echo      '# DEBUG is True, loading fixtures...'
-    python manage.py loaddata 'id/fixtures/initial_data.json'
+    python manage.py loaddata 'accounts/fixtures/initial_data.json'
     
 else
     echo      '# DEBUG is False, omitting fixtures...'
