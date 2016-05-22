@@ -59,8 +59,6 @@ urlpatterns = patterns('',
     url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     url(r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
 
-    url(r'^json/all_users/$', requests.Select2AllHandler.as_view(), name='select2_all_users'),
-
     url(r'^captcha/', include('captcha.urls')),
 )
 

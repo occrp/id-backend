@@ -74,12 +74,9 @@ urlpatterns = patterns('',
     url(r'^_validation/request/$',   perm('user', ticket.validators.ValidateTicketRequest), name='ajax_validate_request'),
 
     # TODO: FIXME THESE SHOULD NOT BE REFERENCING REQUESTS
-    url(r'^(?P<pk>[0-9]+)/pay/$',    perm('staff', requests.RequestPaidHandler), name='request_mark_paid'),
+    url(r'^(?P<pk>[0-9]+)/pay/$',    perm('staff', ticket.views.TicketMarkPaid), name='request_mark_paid'),
     url(r'^(?P<pk>[0-9]+)/charge/$', perm('staff', ticket.views.TicketAddCharge), name='request_charge_add'),
     url(r'^(?P<pk>[0-9]+)/charge/modify/$', perm('staff', ticket.views.TicketModifyCharge), name='request_charge_modify'),
-    url(r'^fees/customer/$',         perm('staff', requests.AdminCustomerChargesHandler), name='ticket_admin_customer_charges'),
-    url(r'^fees/(?P<charge_key>.+)/reconcile/$',
-                                     perm('staff', requests.AdminChargeReconcileInlineHandler), name='ticket_admin_reconcile_charges'),
     url(r'^fees/outstanding/$',      perm('staff', ticket.views.AdminOustandingChargesList), name='ticket_admin_outstanding_charges'),
     url(r'^fees/outstanding/(?P<page>\d+)/$', perm('staff', ticket.views.AdminOustandingChargesList), name='ticket_admin_outstanding_charges'),
 )

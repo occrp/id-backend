@@ -25,6 +25,12 @@ class TicketPaidForm(forms.Form):
         required=True,
         widget=forms.RadioSelect)
 
+    def __init__(self, *args, **kwargs):
+        kwargs.pop('instance', None)
+
+        super(TicketPaidForm, self).__init__(*args, **kwargs)
+
+
 class RequestChargeForm(forms.ModelForm):
     """
     Add a charge to a ticket!
@@ -35,7 +41,6 @@ class RequestChargeForm(forms.ModelForm):
         widgets = {
             'original_currency': forms.Select(choices=CURRENCIES),
         }
-
     def __init__(self, *args, **kwargs):
         super(RequestChargeForm, self).__init__(*args, **kwargs)
         self.fields['reconciled_date'].widget.attrs.update({'class': 'datepicker'})
