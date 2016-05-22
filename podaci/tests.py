@@ -138,7 +138,7 @@ class PodaciFileTest(UserTestCase):
 
 
 class PodaciAPITest(APITestCase):
-    fixtures = ['id/fixtures/initial_data.json']
+    fixtures = ['accounts/fixtures/initial_data.json']
 
     def setUp(self):
         super(PodaciAPITest, self).setUp()
