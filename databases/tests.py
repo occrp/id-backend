@@ -1,4 +1,7 @@
+from django.test import TestCase
 from core.tests import APITestCase, UserTestCase
+
+
 
 class DatabaseAPIv2Test(APITestCase, UserTestCase):
     def test_list_databases(self):
@@ -115,3 +118,13 @@ class DatabaseAPIv2Test(APITestCase, UserTestCase):
         m = self.delete('api_2_databases_member', user=self.admin_user, urlargs=urlargs,
                         data=post)
         self.assertEqual(m.status_code, 204)
+
+class DatabaseLookup(TestCase):
+        def setUp(self):
+                pass
+
+        def test_select_country(self):
+                """Select a country from the country list"""
+                pass
+
+
