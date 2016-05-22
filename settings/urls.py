@@ -9,7 +9,7 @@ from core.auth import perm
 from core.views import NotificationSeen, NotificationStream, NotificationSubscriptions, Notify, AuditLogView
 from databases.views import DatabaseCollectionView, DatabaseMemberView
 import databases.admin as databases_admin
-from id import requests, admin
+from id import admin
 import podaci
 
 from . import errors
