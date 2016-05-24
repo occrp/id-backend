@@ -138,7 +138,7 @@ INSTALLED_APPS = (
     'django_jinja',
     'rest_framework',
     'social.apps.django_app.default',
-    'account',
+    'accounts',
     'core',
     'databases',
     'feedback',
