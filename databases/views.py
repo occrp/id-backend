@@ -7,7 +7,7 @@ import django.forms
 from django.views.generic import ListView, TemplateView
 
 from core.countries import COUNTRIES
-from core.auth import IsAdminOrReadOnly
+from core.auth import IsAtLeastStaffOrReadOnly
 
 import databases
 from .models import ExternalDatabase, DATABASE_TYPES, EXPAND_REGIONS
@@ -51,13 +51,13 @@ class ExternalDatabaseList(ListView):
 
 class DatabaseCollectionView(generics.ListCreateAPIView):
     serializer_class = DatabaseSerializer
-    permission_classes = (IsAdminOrReadOnly, )
+    permission_classes = (IsAtLeastStaffOrReadOnly, )
     queryset = ExternalDatabase.objects.all()
 
 
 class DatabaseMemberView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = DatabaseSerializer
-    permission_classes = (IsAdminOrReadOnly, )
+    permission_classes = (IsAtLeastStaffOrReadOnly, )
     queryset = ExternalDatabase.objects.all()
 
 
