@@ -2,9 +2,9 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
-import id.models
+from .models import Feedback
 
 class FeedbackForm(forms.ModelForm):
     class Meta:
-        model = id.models.Feedback
+        model = Feedback
         exclude = ("timestamp", )
