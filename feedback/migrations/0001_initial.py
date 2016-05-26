@@ -7,6 +7,11 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        # If you find your self here because you removed
+        # the id-app, please just remove this dependency.
+        # It was put in place here only to make sure that
+        # the table really existed before running this
+        # particular migration.
         ('id', '0016_rename_feedback')
     ]
 
