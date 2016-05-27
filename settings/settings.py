@@ -24,8 +24,8 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.csrf",
-    "id.context_processors.locale",
-    "id.context_processors.routename",
+    "settings.context_processors.locale",
+    "settings.context_processors.routename",
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
     'context_processors.debug'
@@ -142,7 +142,6 @@ INSTALLED_APPS = (
     'core',
     'databases',
     'feedback',
-    'id',
     'podaci',
     'ticket',
     'django_select2',
@@ -173,7 +172,7 @@ SOCIAL_AUTH_PIPELINE = (
 # google settings, potentially overridden in settings_local
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '206887598454-nigepmham8557t4uq72dqhgh159p3b1t.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'f6b3cUIp00sDoiRSLfyqAQkH'
-SOCIAL_AUTH_USER_MODEL = 'id.Profile'
+SOCIAL_AUTH_USER_MODEL = 'accounts.Profile'
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 USER_FIELDS = ['email']
 
@@ -189,7 +188,7 @@ if DEBUG:
 
 # our own precious User model
 # as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
-AUTH_USER_MODEL = 'id.Profile'
+AUTH_USER_MODEL = 'accounts.Profile'
 # SOCIAL_AUTH_SESSION_EXPIRATION = False # TODO: This shouldn't be done
 
 # registration form class
@@ -324,4 +323,3 @@ REST_FRAMEWORK = {
     ),
     'PAGE_SIZE': 30
 }
-
