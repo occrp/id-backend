@@ -9,6 +9,21 @@ REQUEST_TYPES = (
     ('volunteer', _('Volunteer'))
 )
 
+class Network(models.Model):
+    short_name = models.CharField(max_length=50)
+    long_name = models.CharField(max_length=100, blank=True)
+
+    def get_payment_total(self):
+        total = 0
+        for t in TicketCharge.objects.filter(ticket__requester__network=self):
+            total += t.cost
+        return total
+
+    def __unicode__(self):
+        if self.long_name:
+            return "%s - %s" % (self.short_name, self.long_name)
+        return self.short_name
+
 
 ######## Account management ############
 class AccountRequest(models.Model, DisplayMixin):
