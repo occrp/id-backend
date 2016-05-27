@@ -17,7 +17,7 @@ import ticket.admin
 from . import errors
 
 js_info_dict = {
-    'packages': ('id', 'ticket', 'search', 'podaci'),
+    'packages': ('ticket', 'search', 'podaci'),
 }
 
 urlpatterns = patterns('',

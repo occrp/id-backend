@@ -1,7 +1,7 @@
 import logging
 
 from settings.settings import AUTH_USER_MODEL
-from id.models import Profile
+from accounts.models import Profile
 
 from .models import AuditLog
 

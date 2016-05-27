@@ -8,10 +8,9 @@ import core.mixins
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('id', '0012_delete_externaldatabase')
     ]
 
-    state_operations = [
+    operations = [
         migrations.CreateModel(
             name='ExternalDatabase',
             fields=[
@@ -23,16 +22,12 @@ class Migration(migrations.Migration):
                 ('registration_required', models.BooleanField(default=False, verbose_name='Registration Required')),
                 ('government_db', models.BooleanField(default=False, verbose_name='Government Database')),
                 ('url', models.URLField(max_length=2000, verbose_name='URL')),
-                ('notes', models.TextField(verbose_name='Notes')),
-                ('blog_post', models.URLField(verbose_name='Blog Post')),
-                ('video_url', models.URLField(verbose_name='YouTube Video Url')),
+                ('notes', models.TextField(verbose_name='Notes', blank=True)),
+                ('blog_post', models.URLField(verbose_name='Blog Post', blank=True)),
+                ('video_url', models.URLField(verbose_name='YouTube Video Url', blank=True)),
             ],
             options={
             },
             bases=(models.Model, core.mixins.DisplayMixin),
         ),
-    ]
-
-    operations = [
-        migrations.SeparateDatabaseAndState(state_operations=state_operations)
     ]

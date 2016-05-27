@@ -34,7 +34,7 @@ DATABASE_PORT = '5432'
 
 # our own precious User model
 # as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
-AUTH_USER_MODEL = 'id.Profile'
+AUTH_USER_MODEL = 'accounts.Profile'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

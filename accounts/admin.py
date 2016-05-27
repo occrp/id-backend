@@ -2,8 +2,7 @@ from django.views.generic import TemplateView
 
 from core.utils import version
 from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, TicketCharge 
-from .models import Network, AccountRequest
-from id.models import Profile
+from .models import Network, AccountRequest, Profile
 
 class Statistics(TemplateView):
     template_name = "admin/statistics.jinja"
