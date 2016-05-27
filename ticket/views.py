@@ -21,11 +21,10 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from django.views.generic import TemplateView, UpdateView
 
-from accounts.models import Network
+from accounts.models import Network, Profile
 from core.models import Notification
 from core.mixins import JSONResponseMixin, CSVorJSONResponseMixin, PrettyPaginatorMixin, NotificationMixin
 from podaci.models import PodaciFile
-from id.models import Profile
 
 from .mixins import TicketUpdateMixin, perform_ticket_update, transition_ticket_from_new, TicketCreateMixin
 from .models import Ticket, PersonTicket, CompanyTicket, OtherTicket, TicketUpdate, TicketCharge, Budget
