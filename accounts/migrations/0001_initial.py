@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         ('auth', '0001_initial'),
     ]
 
-    state_operations = [
+    operations = [
         migrations.CreateModel(
             name='Profile',
             fields=[
@@ -62,7 +62,6 @@ class Migration(migrations.Migration):
                 'verbose_name': 'user',
                 'swappable': 'AUTH_USER_MODEL',
                 'verbose_name_plural': 'users',
-                'db_table': 'id_profile',
             },
             bases=(core.mixins.NotificationMixin, models.Model),
         ),
@@ -108,8 +107,4 @@ class Migration(migrations.Migration):
             field=models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Permission', blank=True, help_text='Specific permissions for this user.', verbose_name='user permissions'),
             preserve_default=True,
         ),
-    ]
-
-    operations = [
-        migrations.SeparateDatabaseAndState(state_operations=state_operations)
     ]
