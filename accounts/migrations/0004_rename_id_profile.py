@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations, connection
-from django.db.utils import OperationalError
+from django.db.utils import OperationalError, ProgrammingError
 import django.utils.timezone
 from django.conf import settings
 import core.mixins
@@ -28,6 +28,9 @@ def got_old_migrations():
 
     # No such table, we can return False
     except OperationalError:
+        return False
+
+    except ProgrammingError:
         return False
 
 class Migration(migrations.Migration):
