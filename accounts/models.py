@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from core.mixins import DisplayMixin
 from settings.settings import AUTH_USER_MODEL
+from ticket.models import TicketCharge
 
 REQUEST_TYPES = (
     ('requester', _('Information Requester')),
