@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations, connection
 from django.db.utils import OperationalError, ProgrammingError
+import django.db
 import django.utils.timezone
 from django.conf import settings
 import core.mixins
@@ -54,12 +55,34 @@ class Migration(migrations.Migration):
             "ALTER TABLE id_profile RENAME TO accounts_profile"
         ),
 
+        # If running on PostgreSQL, rename the sequencer also - no sequencer left behind!
+        migrations.RunSQL(
+            "ALTER SEQUENCE id_profile_id_seq RENAME TO accounts_profile_id_seq" if django.db.connection.vendor == "postgresql" \
+            else "SELECT 1"
+        ),
+
+
+
         migrations.RunSQL(
             "ALTER TABLE id_profile_groups RENAME TO accounts_profile_groups"
         ),
 
+        # If running on PostgreSQL, rename the sequencer also
+        migrations.RunSQL(
+            "ALTER SEQUENCE id_profile_groups_id_seq RENAME TO accounts_profile_groups_id_seq" if django.db.connection.vendor == "postgresql" \
+            else "SELECT 1"
+        ),
+
+
+
         migrations.RunSQL(
             "ALTER TABLE id_profile_user_permissions RENAME TO accounts_profile_user_permissions"
+        ),
+
+        # If running on PostgreSQL, rename the sequencer also
+        migrations.RunSQL(
+            "ALTER SEQUENCE id_profile_user_permissions_id_seq RENAME TO accounts_profile_user_permissions_id_seq" if django.db.connection.vendor == "postgresql" \
+            else "SELECT 1"
         ),
     ]
 
