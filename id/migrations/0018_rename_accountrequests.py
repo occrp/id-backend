@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
 
         # If running on PostgreSQL, rename the sequencer also - no sequencer left behind!
         migrations.RunSQL(
-            "ALTER SEQUENCE id_accountrequest_id_seq RENAME TO accounts_accountrequest_id_seq" if django.db.connection.vendor == "postgresql" \ 
+            "ALTER SEQUENCE id_accountrequest_id_seq RENAME TO accounts_accountrequest_id_seq" if django.db.connection.vendor == "postgresql" \
              else "SELECT 1"
         ),
 
