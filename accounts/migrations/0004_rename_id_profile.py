@@ -19,7 +19,7 @@ def got_old_migrations():
     cursor = connection.cursor()
 
     try:
-        cursor.execute('SELECT id FROM django_migrations WHERE app="accounts" AND name="0003_network"')
+        cursor.execute("SELECT id FROM django_migrations WHERE app='accounts' AND name='0003_network'")
 
         if (len(cursor.fetchall()) > 0):
             return True
