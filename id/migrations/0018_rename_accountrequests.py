@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import django.db
 
 
 class Migration(migrations.Migration):
@@ -24,6 +25,12 @@ class Migration(migrations.Migration):
         # accounts app
         migrations.RunSQL(
             "ALTER TABLE id_accountrequest RENAME TO accounts_accountrequest"
+        ),
+
+        # If running on PostgreSQL, rename the sequencer also - no sequencer left behind!
+        migrations.RunSQL(
+            "ALTER SEQUENCE id_accountrequest_id_seq RENAME TO accounts_accountrequest_id_seq" if django.db.connection.vendor == "postgresql" \ 
+             else "SELECT 1"
         ),
 
         # At this point, we have already renamed 'id_accountrequest' 
