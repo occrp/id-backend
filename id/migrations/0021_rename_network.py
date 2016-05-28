@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-
+import django.db
 
 class Migration(migrations.Migration):
 
@@ -12,7 +12,13 @@ class Migration(migrations.Migration):
 
     database_operations = [
         # First, rename 'id_network' to 'accounts_network'
-        migrations.AlterModelTable('Network', 'accounts_network')
+        migrations.AlterModelTable('Network', 'accounts_network'),
+
+        # If running on PostgreSQL, rename the sequencer also - no sequencer left behind!
+        migrations.RunSQL(
+            "ALTER SEQUENCE id_network_id_seq RENAME TO accounts_network_id_seq" if django.db.connection.vendor == "postgresql" \
+             else "SELECT 1"
+        ),
     ]
 
     state_operations = [
