@@ -30,8 +30,11 @@ class Migration(migrations.Migration):
         # to 'accounts_accountrequest', and so there is no 
         # 'id_accountrequest'. Now create 'id_accountrequest'
         # by hand, and keep it empty. Remember, the data is already safe.
+        # Note: The table is not exactly the same (i.e., id and date_created
+        # differ from the model), but that does not matter, as it will be
+        # removed immediately afterwards.
         migrations.RunSQL(
-            'CREATE TABLE "id_accountrequest" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "request_type" varchar(64) NOT NULL, "approved" bool NULL, "date_created" datetime NOT NULL, "already_updated" bool NOT NULL, "user_id" integer NOT NULL REFERENCES "id_profile" ("id"))'
+            'CREATE TABLE "id_accountrequest" ("id" integer NOT NULL, "request_type" varchar(64) NOT NULL, "approved" bool NULL, "date_created" integer NOT NULL, "already_updated" bool NOT NULL, "user_id" integer NOT NULL REFERENCES "id_profile" ("id"))'
         ),
 
         # Remove the user-field from AccountRequest (foreign-key)
