@@ -7,6 +7,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 from django.core.mail import send_mail
 from django.utils import timezone
 
+from accounts.models import AccountRequest
 from core.mixins import DisplayMixin, NotificationMixin
 from core.models import notification_channel_format, channel_components
 from core.countries import COUNTRIES
@@ -22,40 +23,7 @@ REQUESTER_TYPES = (
     ('cost_plus', _('Covering Cost +'))
 )
 
-REQUEST_TYPES = (
-    ('requester', _('Information Requester')),
-    ('volunteer', _('Volunteer'))
-)
-
-
 logger = logging.getLogger(__name__)
-
-
-class Network(models.Model):
-    short_name = models.CharField(max_length=50)
-    long_name = models.CharField(max_length=100, blank=True)
-
-    def get_payment_total(self):
-        total = 0
-        for t in TicketCharge.objects.filter(ticket__requester__network=self):
-            total += t.cost
-        return total
-
-    def __unicode__(self):
-        if self.long_name:
-            return "%s - %s" % (self.short_name, self.long_name)
-        return self.short_name
-
-
-class Center(models.Model):
-    short_name = models.CharField(max_length=50)
-    long_name = models.CharField(max_length=100, blank=True)
-    networks = models.ManyToManyField(Network)
-
-    def __unicode__(self):
-        if self.long_name:
-            return "%s - %s" % (self.short_name, self.long_name)
-        return self.short_name
 
 
 ######## User profiles #################
@@ -118,7 +86,8 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     is_active   = models.BooleanField(default=True)
     date_joined = models.DateTimeField(_('Date Joined'), default=timezone.now)
 
-    network = models.ForeignKey(Network, null=True, blank=True, related_name='members')
+    network = models.ForeignKey('accounts.Network', null=True, blank=True, related_name='members')
+
     phone_number = models.CharField(blank=True, max_length=24)
     organization_membership = models.CharField(blank=True, max_length=64)
     notes = models.TextField(blank=True)
@@ -358,113 +327,3 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         swappable = 'AUTH_USER_MODEL'
 
 
-######## Account management ############
-class AccountRequest(models.Model, DisplayMixin):
-    request_type = models.CharField(blank=False, max_length=64, choices=REQUEST_TYPES)
-    user = models.ForeignKey(AUTH_USER_MODEL, blank=False)
-    approved = models.NullBooleanField(default=None, blank=True, null=True, verbose_name=_('Approved'))
-    date_created = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('Date Created'))
-
-    # temporary fix for updated profiles
-    already_updated = models.BooleanField(default=False)
-
-    GROUPS = []
-    MAIL_TEMPLATE = 'accountrequest/mail_notification.jinja'
-
-    def __str__(self):
-        return "%s:%s:%s:%s" % (self.user, self.request_type, self.approved, self.date_created)
-
-    class Meta:
-        ordering = ['request_type', 'approved', 'date_created']
-        unique_together = (('user', 'request_type'),)
-
-    def get_display_value(self, property_name):
-        if property_name != 'approved':
-            return super(AccountRequest, self).get_display_value(property_name)
-        else:
-            return ('--' if self.approved is None
-                    else _('Yes') if self.approved is True
-                    else _('No'))
-
-    def approve(self):
-        """
-        Adds the Account Request's email address to the appropriate Google
-        groups, and marks the request as approved.
-        """
-        if self.request_type == 'volunteer':
-            self.user.is_volunteer = True
-            self.user.save()
-        elif self.request_type == 'request':
-            self.user.is_user = True
-            self.user.save()
-
-        self.approved = True
-        self.save()
-        self.notify_approved()
-
-    def reject(self):
-        """
-        Removes the user from the group!
-        """
-        if self.request_type == 'volunteer':
-            self.user.is_volunteer = False
-            self.user.save()
-        elif self.request_type == 'request':
-            self.user.is_user = False
-            self.user.save()
-
-        self.approved = False
-        self.save()
-        self.notify_rejected()
-
-    def notify_received(self):
-        self.email_notification(
-            to=self.user.email,
-            subject=unicode(_('Your Account Request was received')),
-            template='mail/account_request/received.jinja',
-            context={'request': self}
-        )
-        for admin in AUTH_USER_MODEL.objects.filter(is_superuser=True):
-            with templocale(admin.locale or 'en'):
-                self.email_notification(
-                    to=admin.email,
-                    subject=unicode(_('An Account Request was received')),
-                    template='mail/account_request/received_admin.jinja',
-                    context={'request': self}
-                )
-
-    def notify_approved(self):
-        self.email_notification(
-            to=self.user.email,
-            subject=unicode(_('An update to your Account Request')),
-            template='mail/account_request/approved.jinja',
-            context={'request': self}
-        )
-
-    def notify_rejected(self):
-        self.email_notification(
-            to=self.user.email,
-            subject=unicode(_('Your Account Request was rejected')),
-            template='mail/account_request/rejected.jinja',
-            context={'request': self}
-        )
-
-    def email_notification(self, to, subject, template, context):
-        pass
-
-
-class Feedback(models.Model):
-    name = models.CharField(blank=False, max_length=100)
-    email = models.EmailField(blank=False)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    message = models.TextField()
-
-    def __unicode__(self):
-        return u"From: %s <%s>\nDate: %s\n\n%s\n" % (self.name, self.email,
-            self.timestamp, self.message)
-
-    #def save(self):
-    #    self.notify("Received feedback from %s." % (self.name), action="add")
-    #    super(Feedback, self).save()
-    #    # Send e-mail!
