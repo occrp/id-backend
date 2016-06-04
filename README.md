@@ -73,7 +73,7 @@ Fire up a browser and check if everything works by visiting `http://*_id2_* IP a
 When running in a development environment there are several debug users available. To have these accounts set up, run:
 
 ```
- ./manage.py loaddata id/fixtures/*
+ ./manage.py loaddata accounts/fixtures/*
 ```
 
 **Do not run this in production!!**
