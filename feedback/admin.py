@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView, CreateView
 from django.http import HttpResponseRedirect
 
-from id.models import Feedback
+from .models import Feedback
 from .forms import FeedbackForm
 
 
