@@ -24,8 +24,8 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.csrf",
-    "id.context_processors.locale",
-    "id.context_processors.routename",
+    "settings.context_processors.locale",
+    "settings.context_processors.routename",
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
     'context_processors.debug'
