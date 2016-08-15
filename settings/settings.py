@@ -27,8 +27,7 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     "settings.context_processors.locale",
     "settings.context_processors.routename",
     'social.apps.django_app.context_processors.backends',
-    'social.apps.django_app.context_processors.login_redirect',
-    'context_processors.debug'
+    'social.apps.django_app.context_processors.login_redirect'
 )
 
 TEMPLATE_LOADERS = (
