@@ -14,8 +14,7 @@ from django.db import IntegrityError
 from settings.settings import LANGUAGES
 from core.mixins import MessageMixin
 
-from .models import AccountRequest
-from id.models import Profile
+from .models import AccountRequest, Profile
 from .forms import ProfileUpdateForm, ProfileBasicsForm, ProfileDetailsForm, ProfileAdminForm
 
 

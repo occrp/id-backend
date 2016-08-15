@@ -42,7 +42,7 @@
         "industry": "",
         "last_seen": "2015-03-26T17:19:04Z"
     },
-    "model": "id.profile",
+    "model": "accounts.profile",
     "pk": 1
 },
 {
@@ -88,7 +88,7 @@
         "industry": "",
         "last_seen": "2015-03-26T17:19:04Z"
     },
-    "model": "id.profile",
+    "model": "accounts.profile",
     "pk": 2
 },
 {
@@ -134,7 +134,7 @@
         "industry": "",
         "last_seen": "2015-03-26T17:19:04Z"
     },
-    "model": "id.profile",
+    "model": "accounts.profile",
     "pk": 3
 },
 {
@@ -180,7 +180,7 @@
         "industry": "",
         "last_seen": "2015-03-26T17:19:04Z"
     },
-    "model": "id.profile",
+    "model": "accounts.profile",
     "pk": 4
 },
 {
@@ -226,7 +226,7 @@
         "industry": "",
         "last_seen": "2015-03-26T17:19:04Z"
     },
-    "model": "id.profile",
+    "model": "accounts.profile",
     "pk": 5
 },
 {
@@ -272,7 +272,7 @@
         "industry": "",
         "last_seen": "2015-03-26T17:19:04Z"
     },
-    "model": "id.profile",
+    "model": "accounts.profile",
     "pk": 6
 }
 ]
