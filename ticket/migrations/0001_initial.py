@@ -11,8 +11,8 @@ import core.mixins
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('podaci', '0009_auto_20150827_1334'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('podaci', '0001_initial'),
     ]
 
     operations = [
@@ -33,19 +33,19 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('requester_type', models.CharField(default=b'subs', max_length=70, verbose_name='Requester Type', choices=[(b'subs', 'Subsidized'), (b'cost', 'Covering Cost'), (b'cost_plus', 'Covering Cost +')])),
                 ('created', models.DateTimeField(default=datetime.datetime.now)),
-                ('status', models.CharField(default=b'new', max_length=70, choices=[(b'new', 'New'), (b'in-progress', 'In Progress'), (b'closed', 'Closed'), (b'cancelled', 'Cancelled')])),
+                ('status', models.CharField(default=b'new', max_length=70, db_index=True, choices=[(b'new', 'New'), (b'in-progress', 'In Progress'), (b'closed', 'Closed'), (b'cancelled', 'Cancelled')])),
                 ('status_updated', models.DateTimeField(default=datetime.datetime.now)),
                 ('findings_visible', models.BooleanField(default=False, verbose_name='Findings Public')),
                 ('is_for_profit', models.BooleanField(default=False, verbose_name='For-Profit?')),
-                ('is_public', models.BooleanField(default=False, verbose_name='Public?')),
+                ('is_public', models.BooleanField(default=False, help_text='Are you okay with the findings becoming public immediately?', verbose_name='Public?')),
                 ('user_pays', models.BooleanField(default=True)),
-                ('deadline', models.DateField(null=True, verbose_name='Deadline', blank=True)),
+                ('deadline', models.DateField(help_text='How soon do you need this request fulfilled? We will try to meet your deadline, but please note that our researchers are quite busy -- give them as much time as you possibly can!', null=True, verbose_name='Deadline', blank=True)),
                 ('sensitive', models.BooleanField(default=False, verbose_name='Sensitive?')),
                 ('whysensitive', models.CharField(max_length=150, verbose_name='Why is it sensitive?', blank=True)),
             ],
             options={
             },
-            bases=(models.Model, core.mixins.DisplayMixin),
+            bases=(models.Model, core.mixins.DisplayMixin, core.mixins.NotificationMixin),
         ),
         migrations.CreateModel(
             name='PersonTicket',
@@ -121,7 +121,13 @@ class Migration(migrations.Migration):
             ],
             options={
             },
-            bases=(models.Model,),
+            bases=(models.Model, core.mixins.NotificationMixin),
+        ),
+        migrations.AddField(
+            model_name='ticket',
+            name='files',
+            field=models.ManyToManyField(related_name='tickets', to='podaci.PodaciFile'),
+            preserve_default=True,
         ),
         migrations.AddField(
             model_name='ticket',
@@ -133,18 +139,6 @@ class Migration(migrations.Migration):
             model_name='ticket',
             name='responders',
             field=models.ManyToManyField(related_name='tickets_responded', to=settings.AUTH_USER_MODEL),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='ticket',
-            name='tag',
-            field=models.ForeignKey(blank=True, to='podaci.PodaciTag', null=True),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='ticket',
-            name='volunteers',
-            field=models.ManyToManyField(related_name='tickets_volunteered', to=settings.AUTH_USER_MODEL),
             preserve_default=True,
         ),
     ]
