@@ -1,7 +1,8 @@
 from .models import PodaciFile, PodaciTag, PodaciCollection
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
-from id.models import Profile
+
+from accounts.models import Profile
 
 
 class TagSerializer(serializers.ModelSerializer):

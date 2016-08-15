@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
 
-from id import models
+from . import models
 
 
 class ProfileRegistrationForm(forms.Form):
