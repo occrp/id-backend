@@ -121,7 +121,7 @@ class FileList(FileQuerySetMixin, generics.ListCreateAPIView):
 
 class FileDetail(FileQuerySetMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = FileSerializer
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class FileDownload(APIView):

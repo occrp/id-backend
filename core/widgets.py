@@ -1,6 +1,5 @@
-import json
-
 from django import forms
+
 
 class Select2Field(forms.widgets.SelectMultiple):
     """

@@ -1,6 +1,7 @@
 from django.core.exceptions import PermissionDenied
 from rest_framework import permissions
 
+
 class IsAtLeastStaffOrReadOnly(permissions.BasePermission):
     """Allow unsafe methods only for those who are at least staff user."""
 
@@ -15,6 +16,7 @@ class IsAtLeastStaffOrReadOnly(permissions.BasePermission):
             return True
 
         return False
+
 
 def perm(perm, view, **viewkwargs):
     assert(perm in ["any", "loggedin", "user", "volunteer", "staff", "admin"])
@@ -35,29 +37,43 @@ def perm(perm, view, **viewkwargs):
 
     return decorator
 
+
 def require_admin(user):
-    if not user.is_authenticated(): raise PermissionDenied
-    if user.is_superuser: return True
+    if not user.is_authenticated():
+        raise PermissionDenied
+    if user.is_superuser:
+        return True
     raise PermissionDenied
+
 
 def require_staff(user):
-    if not user.is_authenticated(): raise PermissionDenied
-    if user.is_superuser: return True
-    if user.is_staff: return True
+    if not user.is_authenticated():
+        raise PermissionDenied
+    if user.is_superuser:
+        return True
+    if user.is_staff:
+        return True
     raise PermissionDenied
 
+
 def require_volunteer(user):
-    if not user.is_authenticated(): raise PermissionDenied
-    if user.is_superuser: return True
-    if user.is_staff: return True
-    if user.is_volunteer: return True
+    if not user.is_authenticated():
+        raise PermissionDenied
+    if user.is_superuser:
+        return True
+    if user.is_staff:
+        return True
+    if user.is_volunteer:
+        return True
     raise PermissionDenied
+
 
 def require_user(user):
     if not user.is_authenticated(): raise PermissionDenied
     if user.is_superuser: return True
     if user.is_user: return True
     raise PermissionDenied
+
 
 def activate_user(backend, user, response, *args, **kwargs):
     user.is_active = True

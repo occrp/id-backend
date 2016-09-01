@@ -2,6 +2,7 @@ from django.test import TestCase
 
 from core.tests import UserTestCase
 
+
 class UserRegistration(TestCase):
         def setUp(self):
                 pass
@@ -21,6 +22,7 @@ class UserRegistration(TestCase):
         def test_settings(self):
                 """Test changing user profile settings"""
                 pass
+
 
 class ProfileFunctions(UserTestCase):
         def test_name_fetching(self):
@@ -47,4 +49,3 @@ class ProfileFunctions(UserTestCase):
 
                 self.normal_user.tickets_average_resolution_time()
                 self.normal_user.tickets_average_resolution_time_last_30()
-
