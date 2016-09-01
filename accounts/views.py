@@ -71,9 +71,7 @@ class ProfileRegistrationView(RegistrationView):
     fallback_redirect_url = '/'
 
     def registration_allowed(self, request):
-        """
-        Simple as that -- and controlled from settings
-        """
+        """Simple as that -- and controlled from settings."""
         return REGISTRATION_OPEN
 
     def register(self, request, form):

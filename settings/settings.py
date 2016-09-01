@@ -191,14 +191,14 @@ AUTH_USER_MODEL = 'accounts.Profile'
 # SOCIAL_AUTH_SESSION_EXPIRATION = False # TODO: This shouldn't be done
 
 # registration form class
-#from id.forms import ProfileRegistrationForm
-#REGISTRATION_FORM=ProfileRegistrationForm
+# from id.forms import ProfileRegistrationForm
+# REGISTRATION_FORM=ProfileRegistrationForm
 # is the registration alowed?
-REGISTRATION_OPEN=True
-# set to an URL that a user should be redirected to when registration is disallowed
-REGISTRATION_CLOSED_URL="/accounts/register/closed/"
+REGISTRATION_OPEN = True
+# set to an URL that a user should be redirected to when registration is off
+REGISTRATION_CLOSED_URL = "/accounts/register/closed/"
 # set to an URL that a user should be redirected upon successful registration
-REGISTRATION_SUCCESS_URL="/accounts/register/complete/"
+REGISTRATION_SUCCESS_URL = "/accounts/register/complete/"
 
 
 ##################
@@ -302,8 +302,6 @@ LANGUAGES = (
     ('uk', u'Українська'),
 )
 
-from django.utils.translation import ugettext_lazy as _
-
 from django.conf.global_settings import DATE_INPUT_FORMATS
 DATE_INPUT_FORMATS += ('%d/%m/%y',)
 
@@ -314,7 +312,9 @@ DATE_INPUT_FORMATS += ('%d/%m/%y',)
 ##################
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',

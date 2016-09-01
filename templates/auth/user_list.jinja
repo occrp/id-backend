@@ -19,16 +19,16 @@
 <table class="table table-striped table-bordered tablesorter-default {{ extra_class }}">
     <thead>
         <tr>
-            {% for field in ("E-mail", "Full name", "Status") %}
-            <th>{{field}}</th>
-            {% endfor %}
+            <th>E-Mail</th>
+            <th>Name</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
         {% for obj in object_list %}
         <tr>
             <td><a href="{{ url('profile', pk=obj.id) }}">{{obj.email}}</a></td>
-            <td>{{obj.first_name}} {{obj.last_name}}</td>
+            <td>{{obj.display_name}}</td>
             <td>
                 {% if obj.is_superuser %}{% trans %}Administrator {% endtrans %}{% endif %}
                 {% if obj.is_staff %}{% trans %}Staffer {% endtrans %}{% endif %}
