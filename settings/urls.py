@@ -19,27 +19,22 @@ js_info_dict = {
 }
 
 urlpatterns = patterns('',
-    url(r'^$',                              perm('any', TemplateView, template_name="splash.jinja"), name="home"),
-    url(r'^about/id2/$',                    perm('any', TemplateView, template_name="about_id.jinja"), name='about_id'),
-    url(r'^about/occrp/$',                  perm('any', TemplateView, template_name="about_us.jinja"), name='about_us'),
+    url(r'^$', perm('any', TemplateView, template_name="splash.jinja"), name="home"),
+    url(r'^about/id2/$', perm('any', TemplateView, template_name="about_id.jinja"), name='about_id'),
+    url(r'^about/occrp/$', perm('any', TemplateView, template_name="about_us.jinja"), name='about_us'),
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    url(r'^api/2/accounts/profile/$', accounts.views.Profile.as_view(), name='api_2_profile'),
+    url(r'^api/2/notifications/$', NotificationSubscriptions.as_view(), name='api_2_notifications'),
+    url(r'^api/2/notifications/seen/$', NotificationSeen.as_view(), name='api_2_notifications_seen'),
+    url(r'^api/2/notifications/stream/$', NotificationStream.as_view(), name='api_2_notifications_stream'),
+    url(r'^api/2/notifications/notify/$', Notify.as_view(), name='api_2_notifications_notify'),
+    url(r'^api/2/databases/$', DatabaseCollectionView.as_view(), name='api_2_databases_collection'),
+    url(r'^api/2/databases/(?P<pk>\d+)$', DatabaseMemberView.as_view(), name='api_2_databases_member'),
 
-    url(r'^o/',                             include('oauth2_provider.urls', namespace='oauth2_provider')),
-    # url(r'^admin/db$',                      include('admin.site.urls')),
-
-    url(r'^api/2/accounts/profile/$',       accounts.views.Profile.as_view(), name='api_2_profile'),
-    url(r'^api/2/notifications/$',          NotificationSubscriptions.as_view(), name='api_2_notifications'),
-    url(r'^api/2/notifications/seen/$',     NotificationSeen.as_view(), name='api_2_notifications_seen'),
-    url(r'^api/2/notifications/stream/$',   NotificationStream.as_view(), name='api_2_notifications_stream'),
-    url(r'^api/2/notifications/notify/$',   Notify.as_view(), name='api_2_notifications_notify'),
-
-    url(r'^api/2/databases/$',              DatabaseCollectionView.as_view(), name='api_2_databases_collection'),
-    url(r'^api/2/databases/(?P<pk>\d+)$',   DatabaseMemberView.as_view(), name='api_2_databases_member'),
-
-    url(r'^admin/$',                        perm('staff', core.admin.Panel), name='admin_panel'),
-    url(r'^admin/budgets/$',                perm('staff', ticket.admin.Budgets), name='admin_budgets'),
-
-    url(r'^admin/storage/$',                perm('admin', podaci.admin.Storage), name='admin_storage'),
-    url(r'^admin/statistics/$',             perm('admin', accounts.admin.Statistics), name='statistics'),
+    url(r'^admin/$', perm('staff', core.admin.Panel), name='admin_panel'),
+    url(r'^admin/budgets/$', perm('staff', ticket.admin.Budgets), name='admin_budgets'),
+    url(r'^admin/storage/$', perm('admin', podaci.admin.Storage), name='admin_storage'),
+    url(r'^admin/statistics/$', perm('admin', accounts.admin.Statistics), name='statistics'),
 
     url(r'^feedback/', include('feedback.urls')),
     url(r'^accounts/', include('accounts.urls')),

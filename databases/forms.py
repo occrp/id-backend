@@ -7,11 +7,13 @@ class CountryFilterForm(Form):
     """ Filter form for countries. """
     filter = CharField(label="Filter")
     country = ChoiceField(help_text="", choices=DATABASE_COUNTRIES)
-    db_type = ChoiceField(label="Database type", choices=[('','All')]+list(DATABASE_TYPES))
+    db_type = ChoiceField(label="Database type",
+                          choices=[('', 'All')]+list(DATABASE_TYPES))
+
 
 class ExternalDatabaseForm(ModelForm):
     class Meta:
         model = ExternalDatabase
-        fields = ('agency', 'db_type', 'country', 'paid', 'registration_required', 
-		  'government_db', 'url', 'notes', 'blog_post', 'video_url')
-
+        fields = ('agency', 'db_type', 'country', 'paid',
+                  'registration_required', 'government_db', 'url', 'notes',
+                  'blog_post', 'video_url')

@@ -1,7 +1,6 @@
 FROM python:2.7.9
 
 # you will need need these docker images too:
-#  - tpires/neo4j
 #  - postgres
 # consult README.md for more information
 
@@ -17,7 +16,7 @@ RUN echo 'deb http://httpredir.debian.org/debian jessie non-free' > /etc/apt/sou
     #sqlite3 \
 
 #RUN export DEBIAN_FRONTEND=noninteractive && apt-get -y autoremove
-    
+
 RUN mkdir -p /srv/tools/investigative-dashboard-2
 WORKDIR /srv/tools/investigative-dashboard-2/
 
