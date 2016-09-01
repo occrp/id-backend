@@ -1,15 +1,13 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
-from django.contrib.auth import views as auth_views
-from registration.views import ActivationView
 
 import accounts.views
 import accounts.admin
 import core.admin
 from core.auth import perm
-from core.views import NotificationSeen, NotificationStream, NotificationSubscriptions, Notify, AuditLogView
+from core.views import NotificationSeen, NotificationStream
+from core.views import NotificationSubscriptions, Notify
 from databases.views import DatabaseCollectionView, DatabaseMemberView
-import databases.admin as databases_admin
 import podaci
 import ticket.admin
 
@@ -33,7 +31,6 @@ urlpatterns = patterns('',
     url(r'^api/2/notifications/seen/$',     NotificationSeen.as_view(), name='api_2_notifications_seen'),
     url(r'^api/2/notifications/stream/$',   NotificationStream.as_view(), name='api_2_notifications_stream'),
     url(r'^api/2/notifications/notify/$',   Notify.as_view(), name='api_2_notifications_notify'),
-    url(r'^api/2/audit/log/$',              AuditLogView.as_view(), name='api_2_audit_log'),
 
     url(r'^api/2/databases/$',              DatabaseCollectionView.as_view(), name='api_2_databases_collection'),
     url(r'^api/2/databases/(?P<pk>\d+)$',   DatabaseMemberView.as_view(), name='api_2_databases_member'),
@@ -54,8 +51,6 @@ urlpatterns = patterns('',
     url(r'^ticket/', include('ticket.urls')),
     url(r'^podaci/', include('podaci.urls')),
     url(r'^databases/', include('databases.urls')),
-    # url(r'^projects/', perm('staff', TemplateView, template_name='projects.jinja'), name='projects'),
-    # url(r'^api/', include('projects.urls')),
 
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),

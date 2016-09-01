@@ -10,7 +10,7 @@ from django.utils import timezone
 from core.mixins import DisplayMixin, NotificationMixin
 from core.models import notification_channel_format, channel_components
 from core.countries import COUNTRIES
-from core.views import NotificationSubscription
+from core.models import NotificationSubscription
 from ticket.constants import INDUSTRY_TYPES, MEDIA_TYPES, CIRCULATION_TYPES
 from ticket.models import TicketCharge
 from settings.settings import LANGUAGES, AUTH_USER_MODEL
