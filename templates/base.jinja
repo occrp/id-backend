@@ -51,10 +51,20 @@
                     {% if request.path != '/' or (user and user.is_authenticated()) %}
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="https://data.occrp.org"><i class="fa fa-search"></i> {% trans %}Search{% endtrans %}</a>
+                            {% if user.is_authenticated() %}
+                                <a href="https://data.occrp.org/api/1/sessions/login">
+                                    <i class="fa fa-search"></i> {% trans %}Search{% endtrans %}
+                                </a>
+                            {% else %}
+                                <a href="https://data.occrp.org">
+                                    <i class="fa fa-search"></i> {% trans %}Search{% endtrans %}
+                                </a>
+                            {% endif %}
                         </li>
                         <li class="{% if url('externaldb_list') in request.path %}active{% endif %}">
-                            <a href="{{ url('externaldb_list') }}"><i class="fa fa-database"></i> {% trans %}External Databases{% endtrans %}</a>
+                            <a href="{{ url('externaldb_list') }}">
+                                <i class="fa fa-database"></i> {% trans %}External Databases{% endtrans %}
+                            </a>
                         </li>
                         {% if user.is_authenticated() %}
                         <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
@@ -205,7 +215,6 @@
         <script type="text/javascript" src="{{ static("js/datetime.js") }}"></script>
         <script type="text/javascript" src="{{ static("js/init.js") }}"></script>
         <script type="text/javascript" src="{{ static("js/id2/id2.js")}}"></script>
-        <script type="text/javascript" src="{{ static("js/id2/search.js") }}"></script>
         <script type="text/javascript" src="{{ static("js/form-tools.js") }}"></script>
     {% endcompress %}
 
