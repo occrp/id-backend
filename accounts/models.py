@@ -3,7 +3,8 @@ from datetime import timedelta
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import BaseUserManager
 from django.core.mail import send_mail
 from django.utils import timezone
 
@@ -46,12 +47,13 @@ class Network(models.Model):
         return self.short_name
 
 
-######## User profiles #################
+# ####### User profiles #################
 # managing the profiles
 class ProfileManager(NotificationMixin, BaseUserManager):
     use_in_migrations = True
 
-    def _create_user(self, email, password, is_staff, is_superuser, **extra_fields):
+    def _create_user(self, email, password, is_staff, is_superuser,
+                     **extra_fields):
         """
         Creates and saves a User with the given email and password.
         """
@@ -69,23 +71,23 @@ class ProfileManager(NotificationMixin, BaseUserManager):
     def create_user(self, email, password=None, is_superuser=False,
                     is_staff=False, **extra_fields):
         u = self._create_user(email, password, is_staff, is_superuser,
-                                 **extra_fields)
-        self.notify("New user %s." % (u), urlname="profile", params={"pk": u.pk}, action="add")
+                              **extra_fields)
+        self.notify("New user %s." % (u), urlname="profile",
+                    params={"pk": u.pk}, action="add")
         return u
 
     def create_superuser(self, email, password, **extra_fields):
-        u = self._create_user(email, password, True, True,
-                                 **extra_fields)
-        self.notify("New superuser %s." % (u), urlname="profile", params={"pk": u.pk}, action="addsuperuser")
+        u = self._create_user(email, password, True, True, **extra_fields)
+        self.notify("New superuser %s." % (u), urlname="profile",
+                    params={"pk": u.pk}, action="addsuperuser")
         return u
 
 
 # our own User model replacement
 # as per http://stackoverflow.com/questions/20415627/how-to-properly-extend-django-user-model
 class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
-
-    email = models.EmailField(_('E-mail Address'), max_length=254, unique=True, blank=False)
-
+    email = models.EmailField(_('E-mail Address'), max_length=254,
+                              unique=True, blank=False)
     user_created = models.DateTimeField(auto_now_add=True)
     profile_updated = models.DateTimeField(auto_now=True)
     last_seen = models.DateTimeField(auto_now=True)
@@ -95,18 +97,20 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     admin_notes = models.TextField(blank=True, verbose_name=_("Admin Notes"))
     locale = models.CharField(blank=True, max_length=16, choices=LANGUAGES)
 
-    requester_type = models.CharField(blank=True, max_length=16, choices=REQUESTER_TYPES,
+    requester_type = models.CharField(blank=True, max_length=16,
+                                      choices=REQUESTER_TYPES,
                                       verbose_name=_('Requester Type'))
     findings_visible = models.BooleanField(default=False,
-                                      verbose_name=_('Findings Public'))
+                                           verbose_name=_('Findings Public'))
 
     is_user = models.BooleanField(default=True, db_index=True)
     is_staff = models.BooleanField(default=False, db_index=True)
     is_volunteer = models.BooleanField(default=False, db_index=True)
-    is_active   = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(_('Date Joined'), default=timezone.now)
 
-    network = models.ForeignKey('accounts.Network', null=True, blank=True, related_name='members')
+    network = models.ForeignKey('accounts.Network', null=True, blank=True,
+                                related_name='members')
 
     phone_number = models.CharField(blank=True, max_length=24)
     organization_membership = models.CharField(blank=True, max_length=64)
@@ -118,11 +122,14 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     country = models.CharField(blank=True, max_length=32, choices=COUNTRIES)
 
     # Requester fields
-    industry = models.CharField(blank=True, max_length=32, choices=INDUSTRY_TYPES)
+    industry = models.CharField(blank=True, max_length=32,
+                                choices=INDUSTRY_TYPES)
     industry_other = models.CharField(blank=True, max_length=256)
     media = models.CharField(blank=True, max_length=64, choices=MEDIA_TYPES)
-    circulation = models.CharField(blank=True, max_length=64, choices=CIRCULATION_TYPES)
-    title = models.CharField(blank=True, max_length=256) # because 'Controleur des finances publiques / lutte contre la frise fiscale'...
+    circulation = models.CharField(blank=True, max_length=64,
+                                   choices=CIRCULATION_TYPES)
+    # because 'Controleur des finances publiques / lutte contre la frise'...
+    title = models.CharField(blank=True, max_length=256)
 
     # Volunteer fields
     interests = models.TextField(blank=True)
@@ -155,35 +162,6 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     def unseen_notifications_count(self):
         return self.notification_set.filter(is_seen=False).count()
 
-    def can_write_to(self, obj):
-        '''
-        return bool of whether this user can upload to somewhere
-        XXX should be generalised further -- both other object types
-        and other kinds of permissions
-        '''
-        if isinstance(obj, Ticket):
-            return profile_in(self, [obj.requester, obj.responders, obj.volunteers])
-        else: # XXX handling for entities here
-            raise NotImplementedError("entity permissions not dealt with here")
-
-    def tickets_for_user(self):
-        return Ticket.query().filter(models.OR(
-            Ticket.responders == self.key,
-            Ticket.volunteers == self.key,
-            Ticket.requester == self.key
-        )).fetch()
-
-    def groups_display(self):
-        return ', '.join(x.capitalize() for x in ['user', 'staff', 'volunteer', 'superuser'] if getattr(self, 'is_%s' % x))
-
-
-    @property
-    def num_requests(self):
-        # XXX beware, this is expensive!
-        if not tickets_per_user:
-            set_ticket_counts()
-        return tickets_per_user[self.key]
-
     @property
     def display_name(self):
         if self.first_name or self.last_name:
@@ -201,37 +179,14 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         '''
         ars = AccountRequest.query(AccountRequest.email == self.user.email())
         for ar in ars:
-            if ar.approved == True: # try to get an approved one
+            if ar.approved is True:  # try to get an approved one
                 return ar
 
-        #but fallback to something rather than nothing
+        # but fallback to something rather than nothing
         try:
             return ar
         except Exception:
             return None
-
-    # Search Indexing -------------------
-
-    def _post_put_hook(self, future):
-        # Only index the user if they're in the staff group.
-        if self.is_staff:
-            index(self, only=self.Meta.search_fields,
-                  index=self.Meta.index_name)
-        else:
-            unindex(self.key, self.Meta.index_name)
-
-        # Maintain an alternate index for all users.
-        if self.is_staff or self.is_superuser or self.is_user:
-            index(self, only=self.Meta.search_fields,
-                  index=self.Meta.index_name_all)
-        else:
-            unindex(self.key, self.Meta.index_name_all)
-
-
-    @classmethod
-    def _post_delete_hook(cls, key, future):
-        unindex(key, index=cls.Meta.index_name)
-        unindex(key, index=cls.Meta.index_name_all)
 
     def to_select2(self):
         return {'id': self.key.urlsafe(), 'text': self.display_name}
@@ -310,9 +265,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         return {"id": self.id, "email": self.email}
 
     def save(self, *args, **kw):
-        import traceback
-
-        ## FIXME: Temporary fix to make users stop being locked out
+        # FIXME: Temporary fix to make users stop being locked out
         try:
             u = Profile.objects.get(id=self.id)
             if u.is_active and not self.is_active:
@@ -349,9 +302,11 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
 
 ######## Account management ############
 class AccountRequest(models.Model, DisplayMixin):
-    request_type = models.CharField(blank=False, max_length=64, choices=REQUEST_TYPES)
+    request_type = models.CharField(blank=False, max_length=64,
+                                    choices=REQUEST_TYPES)
     user = models.ForeignKey(AUTH_USER_MODEL, blank=False)
-    approved = models.NullBooleanField(default=None, blank=True, null=True, verbose_name=_('Approved'))
+    approved = models.NullBooleanField(default=None, blank=True, null=True,
+                                       verbose_name=_('Approved'))
     date_created = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('Date Created'))
 
@@ -362,7 +317,8 @@ class AccountRequest(models.Model, DisplayMixin):
     MAIL_TEMPLATE = 'accountrequest/mail_notification.jinja'
 
     def __str__(self):
-        return "%s:%s:%s:%s" % (self.user, self.request_type, self.approved, self.date_created)
+        return "%s:%s:%s:%s" % (self.user, self.request_type,
+                                self.approved, self.date_created)
 
     class Meta:
         ordering = ['request_type', 'approved', 'date_created']
@@ -415,13 +371,12 @@ class AccountRequest(models.Model, DisplayMixin):
             context={'request': self}
         )
         for admin in AUTH_USER_MODEL.objects.filter(is_superuser=True):
-            with templocale(admin.locale or 'en'):
-                self.email_notification(
-                    to=admin.email,
-                    subject=unicode(_('An Account Request was received')),
-                    template='mail/account_request/received_admin.jinja',
-                    context={'request': self}
-                )
+            self.email_notification(
+                to=admin.email,
+                subject=unicode(_('An Account Request was received')),
+                template='mail/account_request/received_admin.jinja',
+                context={'request': self}
+            )
 
     def notify_approved(self):
         self.email_notification(
