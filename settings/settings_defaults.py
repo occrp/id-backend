@@ -43,6 +43,8 @@ LANGUAGE_CODE = 'en-us'
 DATE_FORMAT = 'd-F-Y'
 
 PODACI_FS_ROOT = '/data'
+# 500mb upload limit:
+MAX_UPLOAD_SIZE = 1024 * 1024 * 500
 
 # Application defaults
 DEFAULTS = {
