@@ -173,6 +173,7 @@ class TicketCancelForm(forms.ModelForm):
         model = models.Ticket
         fields = ['reason']
 
+
 class TicketEmptyForm(forms.ModelForm):
     # this is for when no field validation is needed, but a ticket still
     # needs to be actioned by a POST method
