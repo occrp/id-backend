@@ -4,11 +4,11 @@ import logging
 from django.db import models
 from settings.settings import AUTH_USER_MODEL
 
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.core.urlresolvers import reverse
 
 from .utils import json_dumps, json_loads
 
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 notification_channel_format = re.compile("^(([\w\d]+|\*):){4}(([\w\d]+|\*))$")
 
@@ -27,6 +27,7 @@ def channel_components(channel):
     components = ("project", "module", "model", "instance", "action")
     return dict(zip(components, [None if x == '*' else x for x in channel.split(":")]))
 
+
 def all_known_channels():
     # FIXME: Ugly monster of a function.
     results = []
@@ -40,20 +41,21 @@ def all_known_channels():
                     results.append("%s:%s:%s:*:%s" % (project['project'], module['module'], model['model'], action['action']))
     return results
 
+
 class Notification(models.Model):
     user            = models.ForeignKey(AUTH_USER_MODEL)
     timestamp       = models.DateTimeField(auto_now_add=True)
     is_seen         = models.BooleanField(default=False)
-    text            = models.CharField(max_length=200)
+    text            = models.CharField(max_length=10000)
     url_base        = models.CharField(max_length=50, blank=True, null=True)
-    url_params      = models.CharField(max_length=200, blank=True, null=True)
+    url_params      = models.CharField(max_length=2000, blank=True, null=True)
     url             = models.URLField(blank=True, null=True)
 
-    project         = models.CharField(max_length=10, null=True)
-    module          = models.CharField(max_length=20, null=True)
-    model           = models.CharField(max_length=30, null=True)
+    project         = models.CharField(max_length=255, null=True)
+    module          = models.CharField(max_length=255, null=True)
+    model           = models.CharField(max_length=255, null=True)
     instance        = models.IntegerField(null=True)
-    action          = models.CharField(max_length=20, null=True)
+    action          = models.CharField(max_length=255, null=True)
 
     class Meta:
         ordering = ['-timestamp']
@@ -65,6 +67,8 @@ class Notification(models.Model):
     def create(self, user, channel, text, urlname=None, params={}, url=None):
         self.apply_components(channel_components(channel))
         self.user = user
+        if text is not None:
+            text = text[:10000]
         self.text = text
         self.url_base = urlname
         self.url_params = json_dumps(params)
@@ -87,8 +91,8 @@ class Notification(models.Model):
         if self.url_base:
             try:
                 return reverse(self.url_base, kwargs=self.get_urlparams())
-            except Exception, e:
-                logger.debug("Failed to convert url name '%s' with kwargs %s.", self.url_base, self.url_params)
+            except Exception as ex:
+                log.exception(ex)
                 return None
         elif self.url:
             return self.url
@@ -96,7 +100,8 @@ class Notification(models.Model):
 
     @property
     def channel(self):
-        return ":".join([self.project, self.module, self.model, str(self.instance), self.action])
+        return ":".join([self.project, self.module, self.model,
+                         str(self.instance), self.action])
 
     def apply_components(self, comp):
         for c, v in comp.iteritems():
@@ -123,7 +128,9 @@ class NotificationSubscription(models.Model):
 
     @property
     def channel(self):
-        return ":".join([unicode(x) if x else '*' for x in [self.project, self.module, self.model, self.instance, self.action]])
+        return ":".join([unicode(x) if x else '*' for x in
+                         [self.project, self.module, self.model,
+                          self.instance, self.action]])
         # = models.CharField(max_length=200)
 
     def apply_components(self, comp):
@@ -135,22 +142,3 @@ class NotificationSubscription(models.Model):
 
     def set_channel(self, channel):
         self.apply_components(channel_components(channel))
-
-
-class AuditLog(models.Model):
-    user         = models.ForeignKey(AUTH_USER_MODEL, null=True)
-    level        = models.IntegerField()
-    module       = models.CharField(max_length=100)
-    filename     = models.CharField(max_length=100)
-    lineno       = models.IntegerField()
-    funcname     = models.CharField(max_length=100)
-    message      = models.TextField(null=True, blank=True)
-    excinfo      = models.TextField(null=True, blank=True)
-    exctext      = models.TextField(null=True, blank=True)
-    process      = models.IntegerField()
-    thread       = models.IntegerField()
-    ip           = models.IPAddressField(blank=True, null=True)
-    timestamp    = models.DateTimeField(auto_now=True)
-
-    def __unicode__(self):
-        return u"[%s/%d] %s:%d@%d-%d: %s" % (self.timestamp, self.level, self.filename, self.lineno, self.process, self.thread, self.message)
