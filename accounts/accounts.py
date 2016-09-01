@@ -1,21 +1,21 @@
+import logging
+
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from registration.signals import user_registered
 
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 from django.views.generic import TemplateView, UpdateView, ListView
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
-from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
 from django.db import IntegrityError
 
 from settings.settings import LANGUAGES
-from core.mixins import MessageMixin
 
-from .models import AccountRequest, Profile
+from .models import AccountRequest
 from .forms import ProfileUpdateForm, ProfileBasicsForm, ProfileDetailsForm, ProfileAdminForm
+
+log = logging.getLogger(__name__)
 
 
 class ProfileSetLanguage(TemplateView):
@@ -40,14 +40,11 @@ class ProfileUpdate(UpdateView):
     form_class = ProfileUpdateForm
 
     def get_success_url(self):
-        return "/accounts/profile/%s" % self.get_object().email
+        return "/accounts/profile/%s/" % self.get_object().id
 
     def get_object(self):
         if self.request.user.is_superuser:
-            if self.kwargs.has_key("pk"):
-                return get_user_model().objects.get(id=self.kwargs["pk"])
-            elif self.kwargs.has_key("email"):
-                return get_user_model().objects.get(email=self.kwargs["email"])
+            return get_user_model().objects.get(id=self.kwargs["pk"])
         return self.request.user
 
     def get_context_data(self, form):
@@ -112,7 +109,13 @@ class UserSuggest(APIView):
 
 
 class AccessRequestCreate(TemplateView):
+    permission_classes = (IsAuthenticated, )
     template_name = 'accessrequest/create.jinja'
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_anonymous:
+            return HttpResponseRedirect('/')
+        return super(AccessRequestCreate, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self):
         request_type = self.request.GET.get("access_type", None)
@@ -123,12 +126,11 @@ class AccessRequestCreate(TemplateView):
                 "is_requester": self.request.user.is_user,
                 "is_volunteer": self.request.user.is_volunteer,
             }
-
         try:
             req = AccountRequest(request_type=request_type, user=self.request.user)
             req.save()
-        except IntegrityError, e:
-            pass
+        except IntegrityError as e:
+            log.exception(e)
 
         return {
             "status": True,
@@ -155,9 +157,11 @@ class AccessRequestList(ListView):
 
         return AccountRequest.objects.filter(approved=None)
 
+
 class AccessRequestListApproved(AccessRequestList):
     def get_queryset(self):
         return AccountRequest.objects.filter(approved=True)
+
 
 class AccessRequestListDenied(AccessRequestList):
     def get_queryset(self):
