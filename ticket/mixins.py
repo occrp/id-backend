@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from .models import TicketUpdate
 from . import constants
 
+
 class TicketAjaxResponseMixin(object):
 
     def form_invalid(self, form):
@@ -26,6 +27,7 @@ class TicketAjaxResponseMixin(object):
         else:
             return response
 
+
 class TicketUpdateMixin(object):
     redirect = "default"
 
@@ -45,7 +47,8 @@ class TicketUpdateMixin(object):
         ticket = self.get_object()
 
         if self.redirect == "default":
-            return reverse_lazy('ticket_details', kwargs={'ticket_id': ticket.id})
+            return reverse_lazy('ticket_details',
+                                kwargs={'ticket_id': ticket.id})
         else:
             return reverse_lazy(self.redirect)
 
@@ -55,6 +58,7 @@ class TicketUpdateMixin(object):
     def transition_ticket_from_new(self, ticket):
         transition_ticket_from_new(ticket)
 
+
 # stand alone
 def perform_ticket_update(ticket, update_type, comment, user):
     ticket_update = TicketUpdate(ticket=ticket)
@@ -63,11 +67,13 @@ def perform_ticket_update(ticket, update_type, comment, user):
     ticket_update.comment = comment
     ticket_update.save()
 
+
 # stand alone
 def transition_ticket_from_new(ticket):
     if ticket.status == constants.get_choice('New', constants.TICKET_STATUS):
         ticket.status = constants.get_choice('In Progress', constants.TICKET_STATUS)
         ticket.save()
+
 
 class TicketCreateMixin(object):
 

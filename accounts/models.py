@@ -346,6 +346,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         abstract = False
         swappable = 'AUTH_USER_MODEL'
 
+
 ######## Account management ############
 class AccountRequest(models.Model, DisplayMixin):
     request_type = models.CharField(blank=False, max_length=64, choices=REQUEST_TYPES)
@@ -440,6 +441,3 @@ class AccountRequest(models.Model, DisplayMixin):
 
     def email_notification(self, to, subject, template, context):
         pass
-
-
-
