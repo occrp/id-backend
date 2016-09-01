@@ -1,8 +1,10 @@
 from django.views.generic import TemplateView
 
 from core.utils import version
-from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, TicketCharge 
+from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket
+from ticket.models import TicketCharge
 from .models import Network, AccountRequest, Profile
+
 
 class Statistics(TemplateView):
     template_name = "admin/statistics.jinja"
@@ -29,5 +31,3 @@ class Statistics(TemplateView):
             "unaffiliated_costs_total": sum([x.cost for x in TicketCharge.objects.filter(user__network=0)]),
             "unaffiliated_users_count": Profile.objects.filter(network=None).count()
         }
-
-

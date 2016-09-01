@@ -36,9 +36,6 @@ class ProfileFunctions(UserTestCase):
         def test_get_notifications(self):
                 self.normal_user.get_notifications()
 
-        def test_group_memberships(self):
-                self.normal_user.groups_display()
-
         def test_permissions(self):
                 self.normal_user.is_approved
 
