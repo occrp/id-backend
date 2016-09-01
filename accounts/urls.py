@@ -4,9 +4,6 @@ from django.contrib.auth import views as auth_views
 from registration.views import ActivationView
 
 from core.auth import perm
-from core.views import NotificationSeen, NotificationStream, NotificationSubscriptions, Notify, AuditLogView
-from databases.views import DatabaseCollectionView, DatabaseMemberView
-import databases.admin as databases_admin
 
 from . import accounts, forms, views
 
@@ -21,8 +18,6 @@ urlpatterns = patterns('',
     url(r'^request/list/denied/$', perm('admin', accounts.AccessRequestListDenied), name='request_access_list_denied'),
     url(r'^profile/$',             perm('loggedin', accounts.ProfileUpdate), name='profile'),
     url(r'^profile/(?P<pk>[0-9]+)/$',
-                                            perm('admin', accounts.ProfileUpdate), name='profile'),
-    url(r'^profile/(?P<email>.+)/$',
                                             perm('admin', accounts.ProfileUpdate), name='profile'),
     url(r'^setlanguage/(?P<lang>[a-zA-Z]{2})/$',
                                             perm('any', accounts.ProfileSetLanguage), name='account_set_language'),
@@ -41,4 +36,3 @@ urlpatterns = patterns('',
     url(r'^register/closed/$',     TemplateView.as_view(template_name='registration/registration_closed.jinja'), name='registration_disallowed'),
     url(r'^social/', include('social.apps.django_app.urls', namespace='social')),
 )
-
