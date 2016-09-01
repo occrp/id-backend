@@ -59,19 +59,6 @@ class APITestCase(TestCase):
 
 
 class CoreUtilsTest(TestCase):
-    def test_auditlog(self):
-        from core.models import AuditLog
-        a = AuditLog()
-        a.level = 99
-        a.module = 'test'
-        a.filename = 'tests.py'
-        a.lineno = 65
-        a.funcname = 'test_auditlog'
-        a.process = 0
-        a.thread = 0
-        a.save()
-        m = unicode(a)
-
     def test_listchannels(self):
         from core.models import all_known_channels
         m = all_known_channels()
@@ -191,21 +178,3 @@ class CoreAPIv2Test(APITestCase, UserTestCase):
         self.assertEqual(m.status_code, 200)
 
         # FIXME: Verify that marking notifications as seen marks them as seen
-
-    def test_audit_log_unauthorized(self):
-        m = self.get('api_2_audit_log', user=self.normal_user)
-        self.assertEqual(m.status_code, 403)
-
-    def test_audit_log_authorized_unfiltered(self):
-        m = self.get('api_2_audit_log', user=self.staff_user)
-        self.assertEqual(m.status_code, 200)
-        self.assertIn('results', m.json)
-        self.assertIn('count', m.json)
-
-    def test_audit_log_authorized_filtered(self):
-        # Filter for login messages
-        filters = {'level': 20}
-        m = self.get('api_2_audit_log', user=self.staff_user, data=filters)
-        self.assertEqual(m.status_code, 200)
-        self.assertIn('results', m.json)
-        self.assertIn('count', m.json)

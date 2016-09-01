@@ -6,31 +6,46 @@ from django.contrib.auth.views import logout as django_logout
 from django.contrib.auth.views import login as django_login
 from django.contrib.auth.views import REDIRECT_FIELD_NAME, AuthenticationForm
 from django.contrib.auth.signals import user_logged_in, user_logged_out
-from django.core.signals import request_finished
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect, JsonResponse
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
-from settings.settings import REGISTRATION_OPEN, REGISTRATION_CLOSED_URL, REGISTRATION_SUCCESS_URL
+from settings.settings import REGISTRATION_OPEN, REGISTRATION_CLOSED_URL
+from settings.settings import REGISTRATION_SUCCESS_URL
 
 from core.models import Notification
 from feedback.forms import FeedbackForm
 
 logger = logging.getLogger(__name__)
 
+
 class Profile(APIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request, *args, **kwargs):
         groups = []
-        if request.user.is_user: groups.append({'id': 'ticket_requesters', 'name': 'Ticket Requesters'})
-        if request.user.is_volunteer: groups.append({'id': 'ticket_requesters', 'name': 'Ticket Volunteers'})
-        if request.user.is_staff: groups.append({'id': 'occrp_staff', 'name': 'OCCRP staff'})
+        if request.user.is_user:
+            groups.append({
+                'id': 'ticket_requesters',
+                'name': 'Ticket Requesters'
+            })
+        if request.user.is_volunteer:
+            groups.append({
+                'id': 'ticket_requesters',
+                'name': 'Ticket Volunteers'
+            })
+        if request.user.is_staff:
+            groups.append({
+                'id': 'occrp_staff',
+                'name': 'OCCRP staff'
+            })
         if request.user.network:
-            groups.append({'id': 'group:%d' % request.user.network.id, 'name':  request.user.network.long_name})
-
+            groups.append({
+                'id': 'group:%d' % request.user.network.id,
+                'name':  request.user.network.long_name
+            })
         return JsonResponse({
             'id': request.user.id,
             'email': request.user.email,
@@ -43,6 +58,7 @@ class Profile(APIView):
             'notifications_unseen': Notification.objects.filter(user=request.user, is_seen=False).count(),
             'notification_subscriptions': [x.channel for x in request.user.notificationsubscription_set.all()]
         })
+
 
 class ProfileRegistrationView(RegistrationView):
     """
@@ -88,7 +104,6 @@ def logout(request, next_page=None,
     for our feedback form
     """
     if request.user.is_authenticated() or ('cleared_for_feedback' in request.session and request.session['cleared_for_feedback'] == True):
-
         # get the feedback form
         form = FeedbackForm()
 

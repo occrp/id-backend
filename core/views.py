@@ -1,12 +1,12 @@
 from rest_framework import generics
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 
 from django.http import JsonResponse
 
-from .models import Notification, NotificationSubscription, AuditLog
+from .models import Notification
 from .models import channel_components, notification_channel_format
-from .serializers import NotificationSerializer, AuditLogSerializer
+from .serializers import NotificationSerializer
 from .mixins import NotificationMixin
 
 
@@ -47,6 +47,7 @@ class NotificationStream(generics.ListAPIView):
 
     def get_queryset(self):
         return Notification.objects.filter(user=self.request.user).order_by("-timestamp")
+
 
 class NotificationSubscriptions(APIView):
     # TODO: Needs security
@@ -134,26 +135,3 @@ class Notify(NotificationMixin, APIView):
             'text': text,
             'url': url
         })
-
-class AuditLogView(generics.ListAPIView):
-    serializer_class = AuditLogSerializer
-    permission_classes = (IsAdminUser, )
-
-    def get_queryset(self):
-        filter_terms = ["user", "level", "module", "filename", "lineno",
-                        "funcname", "message", "process",
-                        "thread", "ip", "timestamp"]
-
-        filters = {}
-        for i in filter_terms:
-            filters[i] = self.request.data.get(i, None)
-            if not filters[i]:
-                del filters[i]
-
-        if 'user' in filters:
-            filters['user__email'] = filters['user']
-            del filters['user']
-
-        audits = AuditLog.objects.filter(**filters).order_by('-timestamp')
-
-        return audits
