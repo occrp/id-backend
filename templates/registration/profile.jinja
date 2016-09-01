@@ -13,7 +13,7 @@
 
 <div class="profile-container material-form-container">
     <div class="tabpanel">
-        <form action="/accounts/profile/{{profile.email}}/" method="POST">
+        <form action="/accounts/profile/{{profile.id}}/" method="POST">
         {%csrf_token%}
         <ul class="nav nav-tabs" role="tablist">
             <li role="profile" class="active"><a href="#basics" aria-controls="basics" role="tab" data-toggle="tab" class="material-form-tab md-whiteframe-z2">{% trans %}Basics{% endtrans %}</a></li>
