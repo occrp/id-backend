@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.urlresolvers import reverse_lazy
 from django.http import JsonResponse
 from django.utils.translation import ugettext_lazy as _
 
