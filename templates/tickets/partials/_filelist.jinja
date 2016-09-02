@@ -1,29 +1,46 @@
 
 <div class="attached-files">
     <h3 class="primary-highlight">
-         <div class="btn-group pull-right" role="group" aria-label="...">
-           {% include "podaci/partials/_podaci_tag_view_type_selection.jinja" %}
-           <div class="btn-group">
-                <button id="podaci_select_menu" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{% trans %}Select {% endtrans %}<span class="caret"></span></button>
-                {% include "podaci/partials/_podaci_selection_tools.jinja" %}
-            </div>
-            <div class="btn-group">
-                <button id="podaci_selection_menu" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{% trans %}No files {% endtrans %}<span class="caret"></span></button>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a class="ticket_remove_files" data-key="{{ticket.id}}">{% trans %}Remove from ticket{% endtrans %}</a></li>
-                    {% include "podaci/partials/_podaci_selection_actions.jinja" %}
-                </ul>
-            </div>
-        </div>
         {% trans %}Attached Files{% endtrans %}
     </h3>
-    {% include "podaci/partials/_podaci_file_list.jinja" %}
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>File name</th>
+                <th>Added by</th>
+                <th>Added at</th>
+                <th>Size</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for attachment in attachments %}
+            <tr>
+                <td>
+                    <a href="{{url('ticket_attachment_download', pk=attachment.id)}}">
+                        {{attachment.filename}}
+                    </a>
+                </td>
+                <td>{{attachment.user.display_name}}</td>
+                <td>{{macros.display_datetime(attachment.created)}}</td>
+                <td>{{attachment.size | filesizeformat}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-
-    {% include "podaci/partials/_podaci_edit_tags.jinja" %}
-    {% include "podaci/partials/_podaci_file_details.jinja" %}
+    {% if ticket.is_open() %}
+        <h4>{% trans %}Upload a file{% endtrans %}</h4>
+        <div class="row-fluid">
+            <form class="comment-form" method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- {{ticket_update_form.as_p()}}
+                <div class="row-fluid">
+                    <div class="span9">
+                        <button class="btn btn-primary pull-right" type="submit">{% trans %}Comment{% endtrans %}</button>
+                    </div>
+                </div>
+                -->
+            </form>
+        </div>
+    {% endif %}
 </div>
-
-
-<input type="hidden" id="podaci-ticket-id" value="{{ticket.id}}">
-{% include "podaci/partials/_podaci_add_modal.jinja" %}

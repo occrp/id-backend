@@ -1,6 +1,4 @@
-from django.conf.urls import patterns, include, url
-from django.contrib.auth.decorators import login_required
-from django.views.generic import TemplateView
+from django.conf.urls import patterns, url
 from core.auth import perm
 
 import ticket.validators
@@ -76,4 +74,7 @@ urlpatterns = patterns('',
     url(r'^(?P<pk>[0-9]+)/charge/modify/$', perm('staff', ticket.views.TicketModifyCharge), name='request_charge_modify'),
     url(r'^fees/outstanding/$',      perm('staff', ticket.views.AdminOustandingChargesList), name='ticket_admin_outstanding_charges'),
     url(r'^fees/outstanding/(?P<page>\d+)/$', perm('staff', ticket.views.AdminOustandingChargesList), name='ticket_admin_outstanding_charges'),
+
+    url(r'^attachments/upload/$', perm('user', ticket.views.TicketAttachmentUpload), name='ticket_attachment_upload'),
+    url(r'^attachments/(?P<pk>[0-9]+)/$', perm('user', ticket.views.TicketAttachmentDownload), name='ticket_attachment_download'),
 )

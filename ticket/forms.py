@@ -155,7 +155,6 @@ class TicketAdminSettingsForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-
         super(TicketAdminSettingsForm, self).__init__(*args, **kwargs)
         self.fields['responders'].choices = (
             core.utils.convert_group_to_select2field_choices(
@@ -214,3 +213,4 @@ class BudgetForm(forms.ModelForm):
     class Meta:
         model = models.Budget
         fields = ('name', 'description')
+
