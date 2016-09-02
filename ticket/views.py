@@ -3,6 +3,7 @@ import logging
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
@@ -12,12 +13,16 @@ from django.http import Http404
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.http import FileResponse
 from django.middleware.csrf import get_token
 from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
+from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, UpdateView
+from rest_framework.generics import CreateAPIView
+from rest_framework.parsers import FileUploadParser
 
 from accounts.models import Network, Profile
 from core.models import Notification
@@ -28,7 +33,7 @@ from feedback.forms import FeedbackForm
 from .mixins import TicketUpdateMixin, perform_ticket_update
 from .mixins import transition_ticket_from_new
 from .models import Ticket, PersonTicket, CompanyTicket, OtherTicket
-from .models import TicketUpdate, TicketCharge, Budget
+from .models import TicketUpdate, TicketCharge, Budget, TicketAttachment
 from . import forms
 from . import constants
 
@@ -462,7 +467,7 @@ class TicketModifyCharge(TicketUpdateMixin, UpdateView):
         self.perform_valid_action(form)
 
         # just to get the ticket to save
-        response = super(TicketModifyCharge, self).form_valid(form, [_('Charge successfully updated.')])
+        super(TicketModifyCharge, self).form_valid(form, [_('Charge successfully updated.')])
 
         return JsonResponse({'success': 'success'})
 
@@ -671,15 +676,14 @@ class TicketDetail(TemplateView):
             'open_form': forms.TicketCancelForm(),
             'flag_form': forms.RequestFlagForm(),
             'files': self.ticket.files,
-            # 'tag': tag,
-            # 'result_files': tag.list_files(),
+            'attachments': self.ticket.attachments.all(),
             'charge_form': forms.RequestChargeForm(),
             'ticket_detail_view': True,
             'can_join_leave': can_join_leave,
             'form': form
         }
 
-    #FIXME: AJAXize!
+    # FIXME: AJAXize!
     def post(self, request):
         form = forms.CommentForm(self.request.POST)
 
@@ -1104,3 +1108,31 @@ class TicketReport(CSVorJSONResponseMixin, TemplateView):
             'start_date': start_date,
             'end_date': end_date
         }
+
+
+class TicketAttachmentDownload(TemplateView):
+
+    def dispatch(self, request, pk=None):
+        attachment = get_object_or_404(TicketAttachment, pk=pk)
+        # if request.user not in pfile.ticket.actors():
+        #     raise PermissionDenied()
+        log.debug('Serving: %s', attachment)
+        resp = FileResponse(attachment.get_filehandle())
+        resp['Content-Type'] = attachment.mimetype
+        resp['Content-Disposition'] = 'filename=' + attachment.filename
+        return resp
+
+
+class TicketAttachmentUpload(CreateAPIView):
+    parser_classes = (FileUploadParser,)
+
+    def create(self, request, *args, **kwargs):
+        file_obj = request.FILES.get('file')
+        ticket_id = request.POST.get('ticket_id') or None
+        ticket = Ticket.objects.get(pk=ticket_id)
+        if ticket is None or request.user not in ticket.actors():
+            raise PermissionDenied()
+        attachment = TicketAttachment.create_fh(ticket, request.user, file_obj)
+        log.debug('File created: %r', attachment)
+        return HttpResponseRedirect(reverse('ticket_details',
+                                            kwargs={"ticket_id": ticket.id}))

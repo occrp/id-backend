@@ -5,8 +5,6 @@
 {% block body_class %}request has-full-page-header{% endblock %}
 
 {% block before_content %}
-<link rel="stylesheet" href="{{ static('css/podaci.css') }}"/>
-
 <div class="page-header full-page-header">
 <div class="container">
 <div class="row">
@@ -261,9 +259,7 @@
     {{ super() }}
     <script type="text/javascript" src="{{ static('js/entity-view.js') }}"></script>
     <script type="text/javascript" src="{{ static('bower_components/blueimp-file-upload/js/vendor/jquery.ui.widget.js')}}"></script>
-	<script type="text/javascript" src="{{ static('bower_components/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
 	<script type="text/javascript" src="{{ static('bower_components/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
-    <script type="text/javascript" src="{{ static('js/id2/id2.podaci.jquery.js') }}"></script>
     <script type="text/javascript" src="{{ static('js/id2/tickets.js') }}"></script>
 {% endblock %}
 
