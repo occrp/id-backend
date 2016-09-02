@@ -1,8 +1,8 @@
 from django.views.generic import TemplateView
-from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext as _nl
 
 from core.mixins import JSONResponseMixin
+
 
 class BaseValidator(JSONResponseMixin, TemplateView):
     def respond(self, status, message):
@@ -15,11 +15,10 @@ class BaseValidator(JSONResponseMixin, TemplateView):
         return [o for o in objects
                 if o.key.urlsafe() != self.request.POST['validation_key']]
 
+
 class ValidateTicketRequest(BaseValidator):
-    # FIXME: Replace this validator with Javascript-side validation
-    """
-    Validate requests by counting the word length of their detail text areas.
-    """
+    """Validate requests by counting the word length of their text areas."""
+
     fields = {
         'person': ['summary', 'background', 'biography', 'business_activities',
                    'initial_information'],
@@ -49,4 +48,5 @@ class ValidateTicketRequest(BaseValidator):
                 _nl("Your request may not be answered, as you have not "
                     "provided much background. Please add more details."))
 
-        return self.respond('valid', _nl("Your request is of an appropriate length."))
+        msg = _nl("Your request is of an appropriate length.")
+        return self.respond('valid', msg)
