@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
+from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django_select2 import Select2MultipleChoiceField
@@ -11,10 +11,10 @@ from core.countries import CURRENCIES
 from . import constants
 from . import models
 
+
 class TicketPaidForm(forms.Form):
-    """
-    Update a ticket with it's payment status (from within the ticket).
-    """
+    """Update a ticket with it's payment status (from within the ticket)."""
+
     comment = forms.CharField(
         label=_("Comment"),
         widget=forms.Textarea)
@@ -32,18 +32,19 @@ class TicketPaidForm(forms.Form):
 
 
 class RequestChargeForm(forms.ModelForm):
-    """
-    Add a charge to a ticket!
-    """
+    """Add a charge to a ticket."""
+
     class Meta:
         model = models.TicketCharge
         exclude = ['ticket', 'user', 'created']
         widgets = {
             'original_currency': forms.Select(choices=CURRENCIES),
         }
+
     def __init__(self, *args, **kwargs):
         super(RequestChargeForm, self).__init__(*args, **kwargs)
         self.fields['reconciled_date'].widget.attrs.update({'class': 'datepicker'})
+
 
 class TicketTypeForm(forms.Form):
     ticket_type = forms.ChoiceField(
@@ -69,6 +70,7 @@ class TicketForm(forms.ModelForm):
                                  'request.')
             }
         }
+
 
 class PersonTicketForm(TicketForm):
 
@@ -120,6 +122,7 @@ class CompanyTicketForm(TicketForm):
         # self.fields['story'].widget.attrs.update({'class': 'span8', 'placeholder': _('What story are you working on?'), 'rows': '6'})
         self.fields['sources'].widget.attrs.update({'class': 'span8', 'placeholder': _('What sources do you have so far?'), 'rows': '6'})
         self.prefix = "company"
+
 
 class OtherTicketForm(TicketForm):
     class Meta(TicketForm.Meta):
