@@ -1,18 +1,26 @@
+import os
+import magic
+import shutil
+import logging
 import datetime
 from decimal import Decimal
 
 from settings.settings import AUTH_USER_MODEL
 from django.db import models
+from django.utils.text import get_valid_filename
 from django.utils.translation import ugettext_lazy as _
 
 from core.mixins import DisplayMixin, NotificationMixin
 from core.countries import COUNTRIES
 from podaci.models import PodaciFile
+from settings.settings import PODACI_FS_ROOT
 
 from .constants import get_choice_display, REQUESTER_TYPES, TICKET_STATUS
 from .constants import TICKET_STATUS_ICONS, TICKET_TYPES, TICKET_UPDATE_TYPES
 from .constants import OPEN_TICKET_STATUSES, PAID_STATUS
-from .util import truncate_summary
+from .util import truncate_summary, sha256sum
+
+log = logging.getLogger(__name__)
 
 
 class Ticket(models.Model, DisplayMixin, NotificationMixin):
@@ -60,7 +68,7 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
 
     def as_sequence(self):
         # FIXME
-        return [] # getattr(self, i) for i in self.get_csv_header()]
+        return []  # getattr(self, i) for i in self.get_csv_header()]
 
     def most_fields(self):
         """Return publicly visible fields of this ticket."""
@@ -377,3 +385,99 @@ class TicketCharge(models.Model, DisplayMixin):
             return [getattr(charge, pluck._name) for charge in charges]
         else:
             return charges
+
+
+class TicketAttachment(models.Model, NotificationMixin, DisplayMixin):
+    """Record for a file attached to a ticket."""
+
+    ticket = models.ForeignKey(Ticket, blank=False)
+    user = models.ForeignKey(AUTH_USER_MODEL, blank=False)
+    filename = models.CharField(max_length=256)
+    title = models.CharField(max_length=300, blank=True, null=True)
+    sha256 = models.CharField(max_length=65)
+    size = models.IntegerField(default=0)
+    mimetype = models.CharField(max_length=65)
+    created = models.DateTimeField(default=datetime.datetime.now, null=False)
+
+    def __unicode__(self):
+        return self.title or self.filename
+
+    def to_json(self):
+        return {
+            'user': self.user.id,
+            'ticket': self.ticket.id,
+            'filename': self.filename,
+            'title': self.title,
+            'sha256': self.sha256,
+            'size': self.size,
+            'mimetype': self.mimetype,
+            'created': self.created
+        }
+
+    def get_filehandle(self):
+        """Get a file handle to the file itself."""
+        return open(self.local_path)
+
+    @property
+    def local_path(self):
+        """Return the resident location of the file."""
+        if self.sha256 is None or not len(self.sha256.strip()):
+            raise ValueError("File hash is missing")
+        if self.filename is None or not len(self.filename.strip()):
+            raise ValueError("Filename is missing")
+
+        hashfragment = self.sha256[:6]
+        bytesets = [iter(hashfragment)] * 2
+        dirnames = map(lambda *x: "".join(zip(*x)[0]), *bytesets)
+        directory = os.path.join(PODACI_FS_ROOT, *dirnames)
+
+        try:
+            os.makedirs(directory)
+        except Exception as ex:
+            log.exception(ex)
+        return os.path.join(directory, self.filename)
+
+    @classmethod
+    def create_from_filehandle(cls, ticket, user, fh, filename=None):
+        """Given a file handle, create a file."""
+        if filename is None and hasattr(fh, 'name'):
+            filename = fh.name
+        if filename is None:
+            filename = "Untitled file"
+        log.debug("Creating new file '%s'" % filename)
+        obj = cls()
+        obj.ticket = ticket
+        obj.user = user
+        obj.title = filename
+        obj.filename = get_valid_filename(filename)
+        obj.sha256 = sha256sum(fh)
+        obj.mimetype = magic.Magic(mime=True).from_buffer(fh.read(100))
+
+        fh.seek(0)
+        with open(obj.local_path, 'w') as destfh:
+            shutil.copyfileobj(fh, destfh)
+
+        obj.save()
+        obj.notify("%s created file '%s'" % (user, obj.title), user,
+                   'ticket_details', {'ticket_id': ticket.pk}, "add", None,
+                   {'module': 'ticket', 'model': 'ticket',
+                    'instance': ticket.pk, 'action': 'update'})
+        log.debug("Created file '%s'" % obj.filename)
+        return obj
+
+    @classmethod
+    def create_from_path(cls, ticket, user, filename, filename_override=None):
+        """Given a file path, create a file."""
+        if not os.path.isfile(filename):
+            raise ValueError("File does not exist")
+        fn = filename_override or os.path.basename(filename)
+        with open(filename, 'r') as fh:
+            return cls.create_from_filehandle(ticket, user, fh, filename=fn)
+
+    def update(self):
+        if os.path.isfile(self.local_path):
+            self.size = os.stat(self.local_path).st_size
+        self.save()
+
+    def exists_by_hash(self, sha):
+        return TicketAttachment.objects.filter(sha256=sha).count() > 0
