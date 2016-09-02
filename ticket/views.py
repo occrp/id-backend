@@ -1,4 +1,3 @@
-import json
 from datetime import datetime, timedelta
 import logging
 
@@ -6,10 +5,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
+from django.contrib.auth import get_user_model
 from django.db.models import Count, Sum
 from django.db.models import Q
-import django.forms
 from django.http import Http404
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
@@ -23,15 +21,19 @@ from django.views.generic import TemplateView, UpdateView
 
 from accounts.models import Network, Profile
 from core.models import Notification
-from core.mixins import JSONResponseMixin, CSVorJSONResponseMixin, PrettyPaginatorMixin, NotificationMixin
+from core.mixins import CSVorJSONResponseMixin, PrettyPaginatorMixin
 from podaci.models import PodaciFile
+from feedback.forms import FeedbackForm
 
-from .mixins import TicketUpdateMixin, perform_ticket_update, transition_ticket_from_new, TicketCreateMixin
-from .models import Ticket, PersonTicket, CompanyTicket, OtherTicket, TicketUpdate, TicketCharge, Budget
+from .mixins import TicketUpdateMixin, perform_ticket_update
+from .mixins import transition_ticket_from_new
+from .models import Ticket, PersonTicket, CompanyTicket, OtherTicket
+from .models import TicketUpdate, TicketCharge, Budget
 from . import forms
 from . import constants
 
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
+
 
 class AdminOustandingChargesList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
     template_name = 'tickets/admin/admin_charges_outstanding.jinja'
@@ -98,7 +100,7 @@ class AdminOustandingChargesList(PrettyPaginatorMixin, CSVorJSONResponseMixin, T
             # If page is not an integer, deliver first page.
             paged_charges = self.paginator.page(1)
         except EmptyPage:
-            # If page is out of range (e.g. 9999), deliver last page of results.
+            # If page is out of range (e.g. 9999), deliver last page of results
             paged_charges = self.paginator.page(self.paginator.num_pages)
 
         return paged_charges
@@ -115,6 +117,7 @@ class AdminOustandingChargesList(PrettyPaginatorMixin, CSVorJSONResponseMixin, T
     def dispatch(self, *args, **kwargs):
         return super(AdminOustandingChargesList, self).dispatch(*args, **kwargs)
 
+
 class CompanyTicketUpdate(TicketUpdateMixin, UpdateView):
     model = CompanyTicket
     template_name = 'tickets/request.jinja'
@@ -129,6 +132,7 @@ class CompanyTicketUpdate(TicketUpdateMixin, UpdateView):
     def __init__(self, *args, **kwargs):
         super(CompanyTicketUpdate, self).__init__(*args, **kwargs)
 
+
 class OtherTicketUpdate(TicketUpdateMixin, UpdateView):
     model = OtherTicket
     template_name = 'tickets/request.jinja'
@@ -142,6 +146,7 @@ class OtherTicketUpdate(TicketUpdateMixin, UpdateView):
 
     def __init__(self, *args, **kwargs):
         super(OtherTicketUpdate, self).__init__(*args, **kwargs)
+
 
 class PersonTicketUpdate(TicketUpdateMixin, UpdateView):
     model = PersonTicket
@@ -174,8 +179,8 @@ class TicketActionBaseHandler(TicketUpdateMixin, UpdateView):
 
     def form_invalid(self, form):
         self.perform_invalid_action(form)
-        return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": self.object.id}))
-        #return super(TicketActionBaseHandler, self).form_invalid(form)
+        return HttpResponseRedirect(reverse('ticket_details',
+                                    kwargs={"ticket_id": self.object.id}))
 
     def form_valid(self, form):
         self.perform_valid_action(form)
@@ -189,6 +194,7 @@ class TicketActionBaseHandler(TicketUpdateMixin, UpdateView):
         ticket = self.get_object()
         return reverse_lazy('ticket_details', kwargs={'ticket_id': ticket.id})
 
+
 class TicketActionCancel(TicketActionBaseHandler):
     form_class = forms.TicketEmptyForm
 
@@ -200,6 +206,7 @@ class TicketActionCancel(TicketActionBaseHandler):
         ticket.status = constants.get_choice('Cancelled', constants.TICKET_STATUS)
         self.perform_ticket_update(ticket, 'Cancelled', '')
         return super(TicketActionCancel, self).perform_valid_action(form)
+
 
 class TicketActionClose(TicketActionBaseHandler):
     form_class = forms.TicketEmptyForm
@@ -248,6 +255,7 @@ class TicketActionJoin(TicketActionBaseHandler):
         else:
             self.perform_invalid_action(form)
 
+
 def TicketActionAssign(request, pk):
     ticket = Ticket.objects.get(id=int(pk))
     # tag = ticket.get_tag()
@@ -263,7 +271,6 @@ def TicketActionAssign(request, pk):
         perform_ticket_update(ticket, 'Responder Joined', user.display_name + unicode(_(' has joined the ticket')), user)
 
         transition_ticket_from_new(ticket)
-        #tag.add_user(user, True)
 
         if request.user.id == user.id:
             success_message = ugettext("You have successfully been added to the ticket")
@@ -273,7 +280,9 @@ def TicketActionAssign(request, pk):
         # Manually notify the assigned user that
         # he has been assigned to the ticket.
         n = Notification()
-	n.create(user, 'id:ticket:ticket:%d:join' % ticket.id, "%s added you to ticket %s" % (request.user, ticket.summary), 'ticket_details', {'ticket_id': ticket.id})
+        n.create(user, 'id:ticket:ticket:%d:join' % ticket.id,
+                 "%s added you to ticket %s" % (request.user, ticket.summary),
+                 'ticket_details', {'ticket_id': ticket.id})
 
         return JsonResponse({'message': success_message,
                             'status': 'success'})
@@ -293,12 +302,10 @@ def TicketActionUnassign(request, pk):
     ticket = Ticket.objects.get(id=int(pk))
     # tag = ticket.get_tag()
     user = get_user_model().objects.get(id=request.POST.get('user'))
-    success = False
 
     if user in ticket.responders.all():
         ticket.responders.remove(user)
         perform_ticket_update(ticket, 'Responder Left', user.display_name + ' has left the ticket', user)
-        success = True
 
         if request.user.id == user.id:
             success_message = ugettext("You have successfully been removed from the ticket")
@@ -322,7 +329,6 @@ def TicketActionUnassign(request, pk):
 
 def TicketActionRemoveFiles(request, pk):
     ticket = Ticket.objects.get(id=int(pk))
-    success = False
     fids = request.POST.get("remove_ids", "").split(",")
     if request.user in ticket.responders.all():
         if "all" in fids:
@@ -336,9 +342,7 @@ def TicketActionRemoveFiles(request, pk):
                             'status': 'success'})
     else:
         return JsonResponse({'message': 'You do not have permission to remove files from this ticket',
-                             'status': 'error'},
-                                    status=403)
-
+                             'status': 'error'}, status=403)
 
 
 class TicketActionLeave(TicketActionBaseHandler):
@@ -382,6 +386,7 @@ class TicketActionLeave(TicketActionBaseHandler):
                 return super(TicketActionLeave, self).perform_valid_action(form)
         else:
             self.force_invalid = True
+
 
 class TicketActionOpen(TicketActionBaseHandler):
 
@@ -428,6 +433,7 @@ class TicketAddCharge(TicketActionBaseHandler):
                                    "$%.2f" % float(form.cleaned_data['cost']) + " - " + form.cleaned_data['item'])
         return super(TicketAddCharge, self).perform_valid_action(form)
 
+
 class TicketModifyCharge(TicketUpdateMixin, UpdateView):
     model = TicketCharge
     template_name = 'modals/form_basic.jinja'
@@ -458,7 +464,7 @@ class TicketModifyCharge(TicketUpdateMixin, UpdateView):
         # just to get the ticket to save
         response = super(TicketModifyCharge, self).form_valid(form, [_('Charge successfully updated.')])
 
-        return JsonResponse({'success':'success'})
+        return JsonResponse({'success': 'success'})
 
     def perform_invalid_action(self, form):
         messages.error(self.request, _('Error updating charge.'))
@@ -467,6 +473,7 @@ class TicketModifyCharge(TicketUpdateMixin, UpdateView):
         self.perform_ticket_update(self.object.ticket,
                                    'Charge Modified',
                                    "$%.2f" % float(form.cleaned_data['cost']) + " - " + form.cleaned_data['item'])
+
 
 class TicketMarkPaid(TicketActionBaseHandler):
     form_class = forms.TicketPaidForm
@@ -478,7 +485,7 @@ class TicketMarkPaid(TicketActionBaseHandler):
         charges = TicketCharge.objects.filter(ticket=self.object)
 
         for charge in charges:
-            if (charge.reconciled == True):
+            if (charge.reconciled is True):
                 continue
 
             date = datetime.now()
@@ -511,7 +518,7 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
         return [int(i.id) for i in users]
 
     def form_invalid(self, form):
-        logger.warning("Form errors: %s" % form.errors)
+        log.warning("Form errors: %s" % form.errors)
         messages.error(self.request, _('There was an error updating the ticket.'))
         return HttpResponseRedirect(reverse(self.redirect))
 
@@ -529,13 +536,11 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
         for i in form_responders:
             if i not in current_responders:
                 u = get_user_model().objects.get(pk=i)
-                #tag.add_user(u, True)
                 self.perform_ticket_update(ticket, 'Responder Joined', u.display_name + unicode(_(' has joined the ticket')))
 
         for i in current_responders:
             if i not in form_responders:
                 u = get_user_model().objects.get(pk=i)
-                #tag.remove_user(u)
                 self.perform_ticket_update(ticket, 'Responder Left', u.display_name + unicode(_(' has left the ticket')))
 
         return super(TicketAdminSettingsHandler, self).form_valid(form)
@@ -558,7 +563,7 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
     def get_success_url(self):
         try:
             response = reverse_lazy(self.redirect)
-            return respose
+            return response
         except Exception:
             pass
 
@@ -601,8 +606,6 @@ class TicketUpdateRemoveHandler(TicketActionBaseHandler):
     def __init__(self, *args, **kwargs):
         super(TicketUpdateRemoveHandler, self).__init__(*args, **kwargs)
 
-
-from feedback.forms import FeedbackForm
 
 class TicketDetail(TemplateView):
     template_name = "tickets/request_details.jinja"
@@ -652,9 +655,9 @@ class TicketDetail(TemplateView):
 
         # feedback form with initial data
         form = FeedbackForm(initial={
-                'email': self.request.user.email,
-                'name' : ' '.join([self.request.user.first_name, self.request.user.last_name])
-            })
+            'email': self.request.user.email,
+            'name': self.request.user.display_name
+        })
 
         return {
             'ticket': self.ticket,
@@ -732,13 +735,10 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
             'filter_terms': self.filter_terms,
             'start_date': self.start_date,
             'end_date': self.end_date,
-            #'possible_assignees': []
             'possible_assignees': get_user_model().objects.filter(Q(is_superuser=True) |
                                                                   Q(is_staff=True) |
                                                                   Q(is_volunteer=True))
         }
-
-
         return context
 
     def get_ticket_list_figures(self):
@@ -822,6 +822,7 @@ class TicketListAllClosed(TicketList):
         return Ticket.objects.filter(
             Q(status='closed')).order_by("-created")
 
+
 class TicketListMyOpen(TicketList):
     page_name = "My Requests"
     ticket_list_name = "My Open Requests"
@@ -831,6 +832,7 @@ class TicketListMyOpen(TicketList):
             requester=user).filter(
             ~Q(status='closed')&~Q(status='cancelled')).order_by(
             "-created")
+
 
 class TicketListMyClosed(TicketList):
     page_name = "My Requests"
@@ -842,6 +844,7 @@ class TicketListMyClosed(TicketList):
             Q(status='closed')).order_by(
             "-created")
 
+
 class TicketListMyAssigned(TicketList):
     page_name = "My Assignments"
     ticket_list_name = "Open Assignments"
@@ -850,6 +853,7 @@ class TicketListMyAssigned(TicketList):
         return Ticket.objects.filter(responders__in=[user]).filter(
             ~Q(status='closed')&~Q(status='cancelled')).order_by(
             "-created")
+
 
 class TicketListMyAssignedClosed(TicketList):
     page_name = "My Assignments"
@@ -873,6 +877,7 @@ class TicketListPublic(TicketList):
                       .order_by("-created")
                 )
 
+
 class TicketListPublicClosed(TicketList):
     page_name = "Pubic Requests"
     ticket_list_name = "Closed Public Requests"
@@ -889,11 +894,11 @@ class TicketListUnassigned(TicketList):
 
     def get_ticket_set(self, user):
         return (Ticket.objects
-            .exclude(status='closed')
-            .exclude(status='cancelled')
-            .annotate(responder_count=Count('responders'))
-            .filter(responder_count=0)
-            .order_by("-created"))
+                      .exclude(status='closed')
+                      .exclude(status='cancelled')
+                      .annotate(responder_count=Count('responders'))
+                      .filter(responder_count=0)
+                      .order_by("-created"))
 
 
 class TicketListUpcomingDeadline(TicketList):
@@ -923,6 +928,7 @@ class TicketListUser(TicketList):
         self.ticket_list_name = "All tickets created by %s" % (u)
         return Ticket.objects.filter(requester=u).order_by("-created")
 
+
 class TicketListCountry(TicketList):
     url_name = 'ticket_country_list'
 
@@ -933,6 +939,7 @@ class TicketListCountry(TicketList):
         self.page_name = "Tickets referring to companies in %s" % (u)
         self.ticket_list_name = "All tickets referring to country %s" % (u)
         return CompanyTicket.objects.filter(country=country).order_by("-created")
+
 
 class TicketCountries(TemplateView):
     template_name = "tickets/countries.jinja"
@@ -1021,6 +1028,7 @@ class TicketUserFeesOverview(CSVorJSONResponseMixin, TemplateView):
             "users": get_user_model().objects.annotate(payment_count=Count('ticketcharge')).annotate(payment_total=Sum('ticketcharge__cost')).filter(payment_count__gt=0)
         }
 
+
 class TicketNetworkFeesOverview(CSVorJSONResponseMixin, TemplateView):
     template_name = 'tickets/ticket_network_fees_overview.jinja'
     CONTEXT_ITEMS_KEY = "networks"
@@ -1030,6 +1038,7 @@ class TicketNetworkFeesOverview(CSVorJSONResponseMixin, TemplateView):
             "title": "Network Fees",
             "networks": Network.objects.all(),
         }
+
 
 class TicketBudgetFeesOverview(CSVorJSONResponseMixin, TemplateView):
     template_name = 'tickets/ticket_budget_fees_overview.jinja'
@@ -1041,6 +1050,7 @@ class TicketBudgetFeesOverview(CSVorJSONResponseMixin, TemplateView):
             "budgets": Budget.objects.all(),
         }
 
+
 class TicketResolutionWorkload(TemplateView):
     template_name = 'tickets/ticket_resolution_workload.jinja'
 
@@ -1051,13 +1061,11 @@ class TicketResolutionWorkload(TemplateView):
         sort = self.request.GET.get("sort", "role")
         if sort == "role":
             researchers = researchers.order_by("-is_superuser", "-is_staff",
-                "-is_volunteer")
-        #elif sort == "time":
-        #    researchers = researchers.annotate(open_tickets=Count('ticket__'))
-
+                                               "-is_volunteer")
         return {
             "researchers": researchers
         }
+
 
 class TicketResolutionTime(TemplateView):
     template_name = 'tickets/ticket_resolution_time.jinja'
@@ -1074,6 +1082,7 @@ class TicketResolutionTime(TemplateView):
             "averagetime": average_timedelta,
             "count": tickets.count()
         }
+
 
 class TicketReport(CSVorJSONResponseMixin, TemplateView):
     template_name = 'tickets/ticket_report.jinja'
