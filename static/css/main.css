@@ -170,7 +170,8 @@ a > [class*=" icon-"] {
 /** Typography **/
 .primary-highlight {
   color: #982022;
-  font-size: 45px;
+  font-size: 25px;
+  font-weight: bold;
 }
 
 .page-header .primary-highlight {
@@ -661,6 +662,23 @@ dd {
 }
 .discussion {
   margin-bottom: 20px;
+}
+// .upload-form #file {
+//  margin: 10px;
+//  background-color: #f7f9f8;
+// }
+.upload-form #file {
+    display: none;
+}
+.upload-form .upload-label {
+    // border: 1px solid #ccc;
+    background-color: #677c88;
+    color: white;
+    display: inline-block;
+    margin-top: 10px;
+    margin-right: 10px;
+    padding: 8px 16px;
+    cursor: pointer;
 }
 
 /** Form validation **/
