@@ -12,7 +12,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from core.mixins import DisplayMixin, NotificationMixin
 from core.countries import COUNTRIES
-from podaci.models import PodaciFile
 from settings.settings import PODACI_FS_ROOT
 
 from .constants import get_choice_display, REQUESTER_TYPES, TICKET_STATUS
@@ -46,8 +45,6 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
     deadline = models.DateField(null=True, blank=True, verbose_name=_('Deadline'), help_text=_('How soon do you need this request fulfilled? We will try to meet your deadline, but please note that our researchers are quite busy -- give them as much time as you possibly can!'))
     sensitive = models.BooleanField(default=False, verbose_name=_('Sensitive?'))
     whysensitive = models.CharField(max_length=150, blank=True, verbose_name=_('Why is it sensitive?'))
-
-    files = models.ManyToManyField(PodaciFile, related_name="tickets")
 
     def get_actual_ticket(self):
         try:

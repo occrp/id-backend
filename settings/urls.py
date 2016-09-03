@@ -33,7 +33,6 @@ urlpatterns = patterns('',
 
     url(r'^admin/$', perm('staff', core.admin.Panel), name='admin_panel'),
     url(r'^admin/budgets/$', perm('staff', ticket.admin.Budgets), name='admin_budgets'),
-    url(r'^admin/storage/$', perm('admin', podaci.admin.Storage), name='admin_storage'),
     url(r'^admin/statistics/$', perm('admin', accounts.admin.Statistics), name='statistics'),
 
     url(r'^feedback/', include('feedback.urls')),
@@ -44,7 +43,6 @@ urlpatterns = patterns('',
     url(r'^notifications/', perm('user', TemplateView, template_name='notifications.jinja'), name='notifications'),
 
     url(r'^ticket/', include('ticket.urls')),
-    url(r'^podaci/', include('podaci.urls')),
     url(r'^databases/', include('databases.urls')),
 
     url(r'^i18n/', include('django.conf.urls.i18n')),
