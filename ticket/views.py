@@ -27,7 +27,6 @@ from rest_framework.parsers import FileUploadParser
 from accounts.models import Network, Profile
 from core.models import Notification
 from core.mixins import CSVorJSONResponseMixin, PrettyPaginatorMixin
-from podaci.models import PodaciFile
 from feedback.forms import FeedbackForm
 
 from .mixins import TicketUpdateMixin, perform_ticket_update
@@ -330,24 +329,6 @@ def TicketActionUnassign(request, pk):
         return JsonResponse({'message': error_message,
                              'status': 'error'},
                             status=403)
-
-
-def TicketActionRemoveFiles(request, pk):
-    ticket = Ticket.objects.get(id=int(pk))
-    fids = request.POST.get("remove_ids", "").split(",")
-    if request.user in ticket.responders.all():
-        if "all" in fids:
-            ticket.files.clear()
-        else:
-            for i in fids:
-                p = PodaciFile.objects.get(id=int(i))
-                ticket.files.remove(p)
-
-        return JsonResponse({'message': 'Removed files',
-                            'status': 'success'})
-    else:
-        return JsonResponse({'message': 'You do not have permission to remove files from this ticket',
-                             'status': 'error'}, status=403)
 
 
 class TicketActionLeave(TicketActionBaseHandler):
@@ -675,7 +656,6 @@ class TicketDetail(TemplateView):
             'close_form': forms.TicketEmptyForm(),
             'open_form': forms.TicketCancelForm(),
             'flag_form': forms.RequestFlagForm(),
-            'files': self.ticket.files,
             'attachments': self.ticket.attachments.all(),
             'charge_form': forms.RequestChargeForm(),
             'ticket_detail_view': True,

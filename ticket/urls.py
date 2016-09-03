@@ -60,7 +60,6 @@ urlpatterns = patterns('',
     url(r'^(?P<pk>[0-9]+)/leave/$',  perm('volunteer', ticket.views.TicketActionLeave), name='ticket_leave'),
     url(r'^(?P<pk>[0-9]+)/unassign/$', ticket.views.TicketActionUnassign, name='ticket_unassign'),
     url(r'^(?P<pk>[0-9]+)/assign/$', ticket.views.TicketActionAssign, name='ticket_assign'),
-    url(r'^(?P<pk>[0-9]+)/remove_files/$', ticket.views.TicketActionRemoveFiles, name='ticket_files_remove'),
     url(r'^(?P<pk>[0-9]+)/updateremove/$',
                                      perm('volunteer', ticket.views.TicketUpdateRemoveHandler), name='ticket_update_remove'),
 
