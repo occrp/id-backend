@@ -1,46 +1,53 @@
 
 <div class="attached-files">
-    <h3 class="primary-highlight">
-        {% trans %}Attached Files{% endtrans %}
-    </h3>
+  <h3 class="primary-highlight">
+    {% trans %}Attached Files{% endtrans %}
+  </h3>
+  {% if attachments | length %}
     <table class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>File name</th>
-                <th>Added by</th>
-                <th>Added at</th>
-                <th>Size</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for attachment in attachments %}
-            <tr>
-                <td>
-                    <a href="{{url('ticket_attachment_download', pk=attachment.id)}}">
-                        {{attachment.filename}}
-                    </a>
-                </td>
-                <td>{{attachment.user.display_name}}</td>
-                <td>{{macros.display_datetime(attachment.created)}}</td>
-                <td>{{attachment.size | filesizeformat}}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
+      <thead>
+        <tr>
+          <th>File name</th>
+          <th>Added by</th>
+          <th>Added at</th>
+          <th>Size</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for attachment in attachments %}
+        <tr>
+          <td>
+            <a href="{{url('ticket_attachment_download', pk=attachment.id)}}">
+              {{attachment.filename}}
+            </a>
+          </td>
+          <td>{{attachment.user.display_name}}</td>
+          <td>{{macros.display_datetime(attachment.created)}}</td>
+          <td>{{attachment.size | filesizeformat}}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
     </table>
+  {% else %}
+    <em>{% trans %}There are no files attached to this request.{% endtrans %}</em>
+  {% endif %}
 
-    {% if ticket.is_open() %}
-        <h4>{% trans %}Upload a file{% endtrans %}</h4>
+  {% if ticket.is_open() %}
+    <div class="row-fluid">
+      <form class="upload-form" method="POST" action="{{ url('ticket_attachment_upload') }}"
+            enctype="multipart/form-data">
+        {% csrf_token %}
         <div class="row-fluid">
-            <form class="comment-form" method="POST" action="" enctype="multipart/form-data">
-                {% csrf_token %}
-                <!-- {{ticket_update_form.as_p()}}
-                <div class="row-fluid">
-                    <div class="span9">
-                        <button class="btn btn-primary pull-right" type="submit">{% trans %}Comment{% endtrans %}</button>
-                    </div>
-                </div>
-                -->
-            </form>
+          <div class="span9">
+            <label for="file" class="upload-label">
+              <i class="fa fa-cloud-upload"></i> Select a file
+            </label>
+            <input type="file" name="file" id="file">
+            <input type="hidden" name="ticket" id="ticket" value="{{ticket.id}}">
+            <button class="btn btn-primary" type="submit">{% trans %}Upload{% endtrans %}</button>
+          </div>
         </div>
-    {% endif %}
+      </form>
+    </div>
+  {% endif %}
 </div>

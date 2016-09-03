@@ -1128,9 +1128,8 @@ class TicketAttachmentUpload(CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         file_obj = request.FILES.get('file')
-        ticket_id = request.POST.get('ticket_id') or None
-        ticket = Ticket.objects.get(pk=ticket_id)
-        if ticket is None or request.user not in ticket.actors():
+        ticket = Ticket.objects.get(pk=request.POST.get('ticket'))
+        if ticket is None:  # or request.user not in ticket.actors():
             raise PermissionDenied()
         attachment = TicketAttachment.create_fh(ticket, request.user, file_obj)
         log.debug('File created: %r', attachment)
