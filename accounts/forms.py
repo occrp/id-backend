@@ -11,9 +11,8 @@ from . import models
 
 
 class ProfileRegistrationForm(forms.Form):
-    """
-    Form for registering a new user account.
-    """
+    """Form for registering a new user account."""
+
     email = forms.EmailField(
             widget=forms.TextInput(attrs=dict(attrs={ 'class': 'required' }, maxlength=254)),
             label=_('E-mail Address'))

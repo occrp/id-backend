@@ -25,7 +25,7 @@
                     </a>
                 </li>
 
-                {% if user.is_staff or user.is_volunteer or user.is_superuser %}
+                {% if user.is_staff or user.is_superuser %}
                     <li class="nav-header">{% trans %}My Assignments{% endtrans %}</li>
 
                     <li class="{% if 'ticket_assigned_list' in ROUTE_NAME %}active{% endif %}">
@@ -123,7 +123,7 @@
 
                     <li class="{% if 'ticket_admin_outstanding_charges' in ROUTE_NAME %}active{% endif %}">
                         <a href="{{ url('ticket_admin_outstanding_charges') }}"><i class="fa fa-ticket"></i> {% trans %}Outstanding Charges{% endtrans %}
-                        {% if ticket_figures is defined %}
+                        {% if ticket_figures.outstanding_charges %}
                             ({{ ticket_figures.outstanding_charges }})
                         {% endif %}
                         </a>
