@@ -87,7 +87,7 @@
                                 <li  class="{% if url('profile', pk=user.id) in request.path %}active{% endif %}">
                                     <a href="{{ url('profile', pk=user.id) }}"><i class="fa fa-user"></i> {% trans %}Profile{% endtrans %}</a>
                                 </li>
-                                {% if not (user.is_admin or user.is_staff or user.is_volunteer or user.is_user) %}
+                                {% if not (user.is_admin or user.is_staff or user.is_user) %}
                                 <li><a href="{{ url('request_access_create') }}"><i class="fa fa-asterisk"></i> {% trans %}Request Permissions{% endtrans %}</a></li>
                                 {% endif %}
                                 {% if user.is_staff or user.is_superuser %}
