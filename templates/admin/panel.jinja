@@ -3,16 +3,16 @@
 
 <h2>{% trans %}Administration stream{% endtrans %}</h2>
 <div class="stream">
-{% for notification in admin_stream %}
+  {% for notification in admin_stream %}
     <div class="notification">
-        <i class="fa fa-{{notification.get_icon()}}"></i>
-        {{notification.text}}
+      <i class="fa fa-{{notification.get_icon()}}"></i>
+      {{notification.text}}
     </div>
-{% else %}
+  {% else %}
     <div class="alert alert-notice">
-        {% trans %}No notifications worthy of your attention, administrator.{% endtrans %}
+      {% trans %}No notifications worthy of your attention, administrator.{% endtrans %}
     </div>
-{% endfor %}
+  {% endfor %}
 </div>
 
 {% endblock %}
