@@ -1,4 +1,4 @@
-{% extends "admin_base.jinja" %}
+{% extends "manage_base.jinja" %}
 
 {% block admin_content %}
 <div class='page-header'>
@@ -10,7 +10,7 @@
 		<p>{% trans %}Here you can define budgets that OCCRP has to work with.{% endtrans %}</p>
 	</div>
 	<div class="span4">
-		<form action="{{ url('admin_budgets') }}" method="POST">
+		<form action="{{ url('manage_budgets') }}" method="POST">
 		{% csrf_token %}
 		<table>
 		{{form.as_table()}}

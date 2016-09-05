@@ -88,8 +88,11 @@
                                     <a href="{{ url('profile', pk=user.id) }}"><i class="fa fa-user"></i> {% trans %}Profile{% endtrans %}</a>
                                 </li>
                                 {% if user.is_staff or user.is_superuser %}
-                                <li  class="{% if url('admin_panel') in request.path %}active{% endif %}">
-                                    <a href="{{ url('admin_panel') }}"><i class="fa fa-gears"></i> {% trans %}Admin{% endtrans %}</a>
+                                <li  class="{% if url('manage_panel') in request.path %}active{% endif %}">
+                                    <a href="{{ url('manage_panel') }}">
+                                        <i class="fa fa-gears"></i>
+                                        {% trans %}Admin{% endtrans %}
+                                    </a>
                                 </li>
                                 {% endif %}
                                 <li><a tabindex="-1" href="{{ url('logout') }}"><i class="fa fa-sign-out"></i> {% trans %}Sign out{% endtrans %}</a></li>

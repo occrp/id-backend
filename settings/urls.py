@@ -2,20 +2,19 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 
 import accounts.views
-import accounts.admin
-import core.admin
+from core.manage import Panel
+from accounts.manage import Statistics
+from ticket.manage import Budgets
 from core.auth import perm
 from core.views import NotificationSeen, NotificationStream
-from core.views import NotificationSubscriptions, Notify
+from core.views import NotificationSubscriptions
 from databases.views import DatabaseCollectionView, DatabaseMemberView
-import podaci
-import ticket.admin
 
 
 from . import errors
 
 js_info_dict = {
-    'packages': ('ticket', 'search', 'podaci'),
+    'packages': ('ticket'),
 }
 
 urlpatterns = patterns('',
@@ -27,19 +26,17 @@ urlpatterns = patterns('',
     url(r'^api/2/notifications/$', NotificationSubscriptions.as_view(), name='api_2_notifications'),
     url(r'^api/2/notifications/seen/$', NotificationSeen.as_view(), name='api_2_notifications_seen'),
     url(r'^api/2/notifications/stream/$', NotificationStream.as_view(), name='api_2_notifications_stream'),
-    url(r'^api/2/notifications/notify/$', Notify.as_view(), name='api_2_notifications_notify'),
     url(r'^api/2/databases/$', DatabaseCollectionView.as_view(), name='api_2_databases_collection'),
     url(r'^api/2/databases/(?P<pk>\d+)$', DatabaseMemberView.as_view(), name='api_2_databases_member'),
 
-    url(r'^admin/$', perm('staff', core.admin.Panel), name='admin_panel'),
-    url(r'^admin/budgets/$', perm('staff', ticket.admin.Budgets), name='admin_budgets'),
-    url(r'^admin/statistics/$', perm('admin', accounts.admin.Statistics), name='statistics'),
+    url(r'^manage/$', perm('staff', Panel), name='manage_panel'),
+    url(r'^manage/budgets/$', perm('staff', Budgets), name='manage_budgets'),
+    url(r'^manage/statistics/$', perm('admin', Statistics), name='statistics'),
 
     url(r'^accounts/', include('accounts.urls')),
 
     url(r'^notifications/seen/(?P<pk>([\d]+|all))/', perm('user', NotificationSeen), name='notification_seen'),
     url(r'^notifications/stream/', perm('user', NotificationStream), name='notification_stream'),
-    url(r'^notifications/', perm('user', TemplateView, template_name='notifications.jinja'), name='notifications'),
 
     url(r'^ticket/', include('ticket.urls')),
     url(r'^databases/', include('databases.urls')),
