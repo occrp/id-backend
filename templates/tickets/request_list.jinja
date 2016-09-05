@@ -60,7 +60,7 @@
                 {% endfor %}
             {% endif %}
             <div class="pull-right">
-                {% if user.is_user or user.is_volunteer %}
+                {% if user.is_user %}
                     <a style="{% if user in ticket.actors() %}display: none;{% endif %}" class="btn btn-small join_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-plus"></i>{% trans %}Join{% endtrans %}</a>
 
                     <a style="{% if user not in ticket.actors() %}display: none;{% endif %}" class="btn btn-small leave_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-times"></i>{% trans %}Leave{% endtrans %}</a>

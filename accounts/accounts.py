@@ -46,6 +46,8 @@ class ProfileUpdate(UpdateView):
         return "/accounts/profile/%s/" % self.get_object().id
 
     def get_object(self):
+        if 'pk' not in self.kwargs:
+            return self.request.user
         if self.request.user.is_superuser:
             return get_user_model().objects.get(id=self.kwargs["pk"])
         if self.request.user.id != int(self.kwargs["pk"]):

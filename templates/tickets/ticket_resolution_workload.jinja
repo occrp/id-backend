@@ -20,7 +20,6 @@
 {% for researcher in researchers %}
     <tr>
         <td>
-            {% if researcher.is_volunteer %}<abbr title="Volunteer">V</abbr>{% endif %}
             {% if researcher.is_staff %}<abbr title="Staff member">S</abbr>{% endif %}
             {% if researcher.is_superuser %}<abbr title="Administrator">A</abbr>{% endif %}
         </td>
