@@ -8,10 +8,15 @@
 <p>{% trans  %}A new account request has been submitted! Below are the details:{% endtrans %}</p>
 <ul>
     {% for property in request.Meta.fields %}
-        <li><strong>{{ macros.verbose_name(request, property) }}:</strong> {{ request.get_display_value(property) }}</li>
+        <li>
+            <strong>{{ macros.verbose_name(request, property) }}:</strong>
+            {{ request.get_display_value(property) }}
+        </li>
     {% endfor %}
 </ul>
 
-<a href="{{ uri_for('accountrequest_edit', obj_id=request.key.urlsafe(), _full=True) }}">{% trans %}Click here to review and approve or reject.{% endtrans %}</a>
+<a href="{{ uri_for('accountrequest_edit', obj_id=request.key.urlsafe(), _full=True) }}">
+    {% trans %}Click here to review and approve or reject.{% endtrans %}
+</a>
 
 {% endblock %}

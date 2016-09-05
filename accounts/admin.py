@@ -20,7 +20,6 @@ class Statistics(TemplateView):
             "tickets_in_progress": Ticket.objects.filter(status="new").count(),
             "accounts_approved": Profile.objects.filter(is_user=True).count(),
             "accounts_user": Profile.objects.filter(is_user=True).count(),
-            "accounts_volunteer": Profile.objects.filter(is_volunteer=True).count(),
             "accounts_staff": Profile.objects.filter(is_staff=True).count(),
             "accounts_admin": Profile.objects.filter(is_superuser=True).count(),
             "accreq_total": AccountRequest.objects.count(),

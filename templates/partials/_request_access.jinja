@@ -23,21 +23,5 @@
             </div>
             {% endif %}
         </div>
-
-        <div class="span4 material-form md-whiteframe-z1 splash-item">
-            <h1 class="huge secondary-highlight"><i class="fa fa-thumbs-up"></i></h1>
-            <h3>{% trans %}Volunteer{% endtrans %}</h3>
-            {% if is_volunteer %}
-            <p>{% trans %}You are already a volunteer!{% endtrans %}</p>
-            {% elif requested_volunteer %}
-            <p>{% trans %}You have requested permission to be a volunteer. Your application will be reviewed soon, and you will be notified.{% endtrans %}</p>
-            {% else %}
-            <p>{% trans %}We have available public requests that need volunteers. Use your wealth of information to help others find answers.{% endtrans %}</p>
-            <div class="button-holder">
-                <a href="{{ url('request_access_create') }}?access_type=volunteer" class="btn btn-large">{% trans %}Be a Volunteer{% endtrans %}</a>
-            </div>
-            {% endif %}
-        </div>
-
     </div>
 </div>
