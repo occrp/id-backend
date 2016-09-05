@@ -1,9 +1,9 @@
-{% extends "admin_base.jinja" %}
+{% extends "manage_base.jinja" %}
 {% block admin_content %}
 
 <h2>{% trans %}Administration stream{% endtrans %}</h2>
 <div class="stream">
-  {% for notification in admin_stream %}
+  {% for notification in stream %}
     <div class="notification">
       <i class="fa fa-{{notification.get_icon()}}"></i>
       {{notification.text}}

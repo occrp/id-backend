@@ -144,26 +144,6 @@ class CoreAPIv2Test(APITestCase, UserTestCase):
         m = self.delete('api_2_notifications', user=self.normal_user)
         self.assertEqual(m.status_code, 418)
 
-    def test_notify_no_valid_oauth(self):
-        data = {
-            'channel': 'id:*:*:*:*',
-            'text': 'Hello everybody!',
-        }
-        m = self.post('api_2_notifications_notify', user=self.normal_user, data=data)
-        self.assertEqual(m.status_code, 403)
-        self.assertIn('error', m.json)
-
-    def test_notify_valid_oauth(self):
-        data = {
-            'channel': 'id:*:*:*:*',
-            'text': 'Hello everybody!',
-        }
-        # FIXME: Need to authorize connection via OAuth
-        # m = self.post('api_2_notifications_notify', user=self.normal_user, data=data)
-        # self.assertEqual(m.status_code, 200)
-        # self.assertIn('error', m.json)
-
-
     def test_notifications(self):
         m = self.get('api_2_notifications_stream', user=self.normal_user)
         self.assertEqual(m.status_code, 200)
