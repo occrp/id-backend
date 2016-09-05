@@ -1,14 +1,5 @@
 from datetime import datetime, date
-import tempfile
 import json
-import httplib2
-import argparse
-import os.path
-from oauth2client import tools as oauth2tools
-from oauth2client import client as oauth2client
-from oauth2client import file as oauth2file
-from uuid import UUID
-from unidecode import unidecode
 
 from django.db.models.query import QuerySet
 from django.db.models.sql.query import Query
@@ -52,8 +43,6 @@ def json_dumps(data):
 def json_loads(s):
     return json.loads(s)
 
+
 def version():
     return settings.ID_VERSION
-
-
-

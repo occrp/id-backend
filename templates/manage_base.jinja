@@ -6,8 +6,8 @@
             <ul class="nav nav-list">
                 <li class="nav-header">{% trans %}Manage{% endtrans %}</li>
 		{% if user.is_superuser or user.is_staff %}
-        		<li class="{% if 'admin_budgets' in ROUTE_NAME %}active{% endif %}">
-                    <a href="{{ url('admin_budgets') }}"><i class="fa fa-money"></i> {% trans %}Budgets{% endtrans %}</a>
+        		<li class="{% if 'manage_budgets' in ROUTE_NAME %}active{% endif %}">
+                    <a href="{{ url('manage_budgets') }}"><i class="fa fa-money"></i> {% trans %}Budgets{% endtrans %}</a>
                 </li>
 		{% endif %}
 

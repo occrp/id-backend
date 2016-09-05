@@ -5,9 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 
 from .models import Notification
-from .models import channel_components, notification_channel_format
 from .serializers import NotificationSerializer
-from .mixins import NotificationMixin
 
 
 class NotificationSeen(APIView):
@@ -85,53 +83,14 @@ class NotificationSubscriptions(APIView):
                 return JsonResponse({'result': 'none', 'found': 0})
             else:
                 return JsonResponse({'result': 'unsubscribed', 'found': cnt})
-        except AssertionError, e:
+        except AssertionError as ae:
             j = JsonResponse({'error': 'invalid channel format'})
             j.status_code = 400
             return j
-        except TypeError, e:
+        except TypeError as te:
             j = JsonResponse({
                 'error': 'you must supply a channel',
                 'params': request.data,
             })
-            j.status_code=418
+            j.status_code = 418
             return j
-
-
-class Notify(NotificationMixin, APIView):
-    def post(self, request, *args, **kwargs):
-        if not request.auth:
-            j = JsonResponse({"error": "no valid oauth token"})
-            j.status_code = 403
-            return j
-
-        channel = request.data.get('channel')
-        if not notification_channel_format.match(channel):
-            j = JsonResponse({'error': 'invalid channel format'})
-            j.status_code = 400
-            return j
-
-        components = channel_components(channel)
-        if components['app'] != request.auth.application.name:
-            j = JsonResponse({
-                'error': 'invalid application name',
-                'got': components['app'],
-                'expected': request.auth.application.name
-            })
-            j.status_code = 409
-            return j
-
-        text = request.data.get('text', None)
-        if not text:
-            j = JsonResponse({'error': 'no text provided'})
-            j.status_code = 400
-            return j
-        url = request.data.get('url', None)
-
-        self.notify_channel(channel=channel, text=text, user=request.user, url=url)
-        return JsonResponse({
-            'result': 'sent',
-            'channel': channel,
-            'text': text,
-            'url': url
-        })
