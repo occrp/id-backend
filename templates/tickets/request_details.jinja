@@ -231,14 +231,6 @@
         {% include "tickets/partials/_filelist.jinja" %}
         {% include "tickets/partials/_activity.jinja" %}
         {% include "tickets/partials/_comment.jinja" %}
-	{% if ticket.is_closed %}
-        <div class="feedback-form-container material-form md-whiteframe-z1">
-            <label for="feedback-form-control">{% trans %}As the requester for this closed ticket, please consider <span>sharing feedback</span>. We would appreciate any views on how this particular ticket has been handled, and suggestions on how to improve the process or Investigative Dashboard as a whole.{% endtrans %}</label>
-            <input type="checkbox" id="feedback-form-control"/>
-            {% set feedback_text = '' %}
-            {% include "partials/_feedback_form.jinja" with context %}
-        </div>
-	{% endif %}
     </div>
 </div>
 </div>
