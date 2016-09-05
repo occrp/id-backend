@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 class Profile(APIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
         groups = []
@@ -30,11 +30,6 @@ class Profile(APIView):
             groups.append({
                 'id': 'ticket_requesters',
                 'name': 'Ticket Requesters'
-            })
-        if request.user.is_volunteer:
-            groups.append({
-                'id': 'ticket_requesters',
-                'name': 'Ticket Volunteers'
             })
         if request.user.is_staff:
             groups.append({
@@ -44,7 +39,7 @@ class Profile(APIView):
         if request.user.network:
             groups.append({
                 'id': 'group:%d' % request.user.network.id,
-                'name':  request.user.network.long_name
+                'name': request.user.network.long_name
             })
         return JsonResponse({
             'id': request.user.id,
@@ -61,8 +56,8 @@ class Profile(APIView):
 
 
 class ProfileRegistrationView(RegistrationView):
-    """
-    Profile registration view.
+    """Profile registration view.
+
     as per http://django-registration.readthedocs.org/en/latest/views.html
     """
 
@@ -75,11 +70,10 @@ class ProfileRegistrationView(RegistrationView):
         return REGISTRATION_OPEN
 
     def register(self, request, form):
-        """
-        Implement user-registration logic here. Access to both the
-        request and the full cleaned_data of the registration form is
-        available here.
+        """Implement user-registration logic here.
 
+        Access to both the request and the full cleaned_data of the registration
+        form is available here.
         """
         return form.save()
 

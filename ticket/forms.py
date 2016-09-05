@@ -66,8 +66,7 @@ class TicketForm(forms.ModelForm):
         field_args = {
             'sensitive': {
                 'description': _('This is highly sensitive, do not let '
-                                 'volunteer research librarians see this '
-                                 'request.')
+                                 'research librarians see this request.')
             }
         }
 
@@ -160,8 +159,7 @@ class TicketAdminSettingsForm(forms.ModelForm):
             core.utils.convert_group_to_select2field_choices(
                 get_user_model().objects.all().filter(
                     Q(is_superuser=1) |
-                    Q(is_staff=1) |
-                    Q(is_volunteer=1)
+                    Q(is_staff=1)
                 )
             )
         )

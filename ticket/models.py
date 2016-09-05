@@ -79,10 +79,6 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
     def staffresponders(self):
         return self.responders.filter(is_staff=True)
 
-    @property
-    def volunteers(self):
-        return self.responders.filter(is_volunteer=True)
-
     # User-facing fields
     @property
     def summary(self):
