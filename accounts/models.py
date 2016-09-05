@@ -8,13 +8,13 @@ from django.contrib.auth.models import BaseUserManager
 from django.core.mail import send_mail
 from django.utils import timezone
 
-from core.mixins import DisplayMixin, NotificationMixin
+from core.mixins import NotificationMixin
 from core.models import notification_channel_format, channel_components
 from core.countries import COUNTRIES
 from core.models import NotificationSubscription
 from ticket.constants import INDUSTRY_TYPES, MEDIA_TYPES, CIRCULATION_TYPES
 from ticket.models import TicketCharge
-from settings.settings import LANGUAGES, AUTH_USER_MODEL
+from settings.settings import LANGUAGES
 
 
 REQUESTER_TYPES = (
@@ -96,7 +96,6 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     findings_visible = models.BooleanField(default=False,
                                            verbose_name=_('Findings Public'))
 
-    is_user = models.BooleanField(default=True, db_index=True)
     is_staff = models.BooleanField(default=False, db_index=True)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(_('Date Joined'), default=timezone.now)
@@ -158,27 +157,17 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     def display_name(self):
         if self.first_name or self.last_name:
             return u" ".join((self.first_name, self.last_name))
-        return self.email or u''
+        return self.email
 
     @property
     def is_approved(self):
-        return any((self.is_user, self.is_staff, self.is_superuser))
-
-    def get_account_request(self):
-        """Find the Account Request corresponding to this account."""
-        ars = AccountRequest.query(AccountRequest.email == self.user.email())
-        for ar in ars:
-            if ar.approved is True:  # try to get an approved one
-                return ar
-
-        # but fallback to something rather than nothing
-        try:
-            return ar
-        except Exception:
-            return None
+        return self.is_active
 
     def to_select2(self):
-        return {'id': self.key.urlsafe(), 'text': self.display_name}
+        return {
+            'id': self.key.urlsafe(),
+            'text': self.display_name
+        }
 
     def __unicode__(self):
         return unicode(self.display_name)
@@ -251,7 +240,10 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         return count
 
     def to_json(self):
-        return {"id": self.id, "email": self.email}
+        return {
+            "id": self.id,
+            "email": self.email
+        }
 
     def save(self, *args, **kw):
         # FIXME: Temporary fix to make users stop being locked out
@@ -259,13 +251,11 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
             u = Profile.objects.get(id=self.id)
             if u.is_active and not self.is_active:
                 self.is_active = u.is_active
-            if u.is_user and not self.is_user:
-                self.is_user = u.is_user
         except Profile.DoesNotExist:
             pass
         #####################################################################
 
-        logger.info("Saving profile for user %s: {is_active:%s, is_user:%s, is_staff:%s, is_superuser:%s}" % (self.email, self.is_active, self.is_user, self.is_staff, self.is_superuser))
+        logger.info("Saving profile for user %s: {is_active:%s, is_staff:%s, is_superuser:%s}" % (self.email, self.is_active, self.is_staff, self.is_superuser))
         if self.pk is not None:
             try:
                 orig = Profile.objects.get(pk=self.pk)
@@ -287,82 +277,3 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         verbose_name_plural = _('users')
         abstract = False
         swappable = 'AUTH_USER_MODEL'
-
-
-class AccountRequest(models.Model, DisplayMixin):
-    user = models.ForeignKey(AUTH_USER_MODEL, blank=False)
-    approved = models.NullBooleanField(default=None, blank=True, null=True,
-                                       verbose_name=_('Approved'))
-    date_created = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('Date Created'))
-
-    # temporary fix for updated profiles
-    already_updated = models.BooleanField(default=False)
-
-    GROUPS = []
-    MAIL_TEMPLATE = 'accountrequest/mail_notification.jinja'
-
-    def __str__(self):
-        return "%s:%s:%s" % (self.user, self.approved, self.date_created)
-
-    class Meta:
-        ordering = ['approved', 'date_created']
-        unique_together = (('user'),)
-
-    def get_display_value(self, property_name):
-        if property_name != 'approved':
-            return super(AccountRequest, self).get_display_value(property_name)
-        else:
-            return ('--' if self.approved is None
-                    else _('Yes') if self.approved is True
-                    else _('No'))
-
-    def approve(self):
-        """Mark the request as approved."""
-        self.user.is_user = True
-        self.user.save()
-        self.approved = True
-        self.save()
-        self.notify_approved()
-
-    def reject(self):
-        """Remove the user from the group."""
-        self.user.is_user = False
-        self.user.save()
-        self.approved = False
-        self.save()
-        self.notify_rejected()
-
-    def notify_received(self):
-        self.email_notification(
-            to=self.user.email,
-            subject=unicode(_('Your Account Request was received')),
-            template='mail/account_request/received.jinja',
-            context={'request': self}
-        )
-        for admin in AUTH_USER_MODEL.objects.filter(is_superuser=True):
-            self.email_notification(
-                to=admin.email,
-                subject=unicode(_('An Account Request was received')),
-                template='mail/account_request/received_admin.jinja',
-                context={'request': self}
-            )
-
-    def notify_approved(self):
-        self.email_notification(
-            to=self.user.email,
-            subject=unicode(_('An update to your Account Request')),
-            template='mail/account_request/approved.jinja',
-            context={'request': self}
-        )
-
-    def notify_rejected(self):
-        self.email_notification(
-            to=self.user.email,
-            subject=unicode(_('Your Account Request was rejected')),
-            template='mail/account_request/rejected.jinja',
-            context={'request': self}
-        )
-
-    def email_notification(self, to, subject, template, context):
-        pass

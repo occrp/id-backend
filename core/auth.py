@@ -19,20 +19,16 @@ class IsAtLeastStaffOrReadOnly(permissions.BasePermission):
 
 
 def perm(perm, view, **viewkwargs):
-    assert(perm in ["any", "loggedin", "user", "staff", "admin"])
+    assert(perm in ["any", "user", "staff", "admin"])
 
     def decorator(request, **reqkwargs):
         if perm != "any":
-            if not request.user.is_authenticated():
+            user = request.user
+            if not user.is_authenticated():
                 raise PermissionDenied
-            user, staff, admin = (request.user.is_user,
-                                  request.user.is_staff,
-                                  request.user.is_superuser)
-            if perm == "admin" and not admin:
+            if perm == "admin" and not user.is_superuser:
                 raise PermissionDenied
-            elif perm == "staff" and not (admin or staff):
-                raise PermissionDenied
-            elif perm == "user" and not (admin or staff or user):
+            elif perm == "staff" and not (user.is_superuser or user.is_staff):
                 raise PermissionDenied
 
         return view.as_view(**viewkwargs)(request, **reqkwargs)
@@ -54,16 +50,6 @@ def require_staff(user):
     if user.is_superuser:
         return True
     if user.is_staff:
-        return True
-    raise PermissionDenied
-
-
-def require_user(user):
-    if not user.is_authenticated():
-        raise PermissionDenied
-    if user.is_superuser:
-        return True
-    if user.is_user:
         return True
     raise PermissionDenied
 

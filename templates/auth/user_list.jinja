@@ -32,7 +32,7 @@
             <td>
                 {% if obj.is_superuser %}{% trans %}Administrator {% endtrans %}{% endif %}
                 {% if obj.is_staff %}{% trans %}Staffer {% endtrans %}{% endif %}
-                {% if obj.is_user %}{% trans %}Requester {% endtrans %}{% endif %}
+                {% if obj.is_active %}{% trans %}Requester {% endtrans %}{% endif %}
             </td>
         </tr>
         {% endfor %}

@@ -12,9 +12,6 @@
 		{% endif %}
 
 		{% if user.is_superuser %}
-                <li class="{% if 'accountrequest' in ROUTE_NAME %}active{% endif %}">
-                    <a href="{{ url('request_access_list') }}"><i class="fa fa-key"></i> {% trans %}Access Requests{% endtrans %}</a>
-                </li>
                 <li class="{% if 'userprofile' in ROUTE_NAME %}active{% endif %}">
                     <a href="{{ url('userprofile_list') }}"><i class="fa fa-user"></i> {% trans %}User Profiles{% endtrans %}</a>
                 </li>
