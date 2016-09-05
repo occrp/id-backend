@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 
 from .testclient import APITestClient
 
+
 class UserTestCase(TestCase):
     def anon_user_helper(self):
         return AnonymousUser()
@@ -16,13 +17,13 @@ class UserTestCase(TestCase):
 
     def setUp(self):
         self.anonymous_user = AnonymousUser()
-        self.normal_user = self.user_helper('testuser@occrp.org', is_user=True)
-        self.volunteer_user = self.user_helper('testvolunteer@occrp.org', is_volunteer=True)
+        self.normal_user = self.user_helper('testuser@occrp.org')
         self.staff_user = self.user_helper('teststaff@occrp.org', is_staff=True)
         self.admin_user = self.user_helper('testsuperuser@occrp.org', is_superuser=True)
 
     def tearDown(self):
         pass
+
 
 class APITestCase(TestCase):
     def http_action(self, verb, urlname, user, urlargs={}, data={}):
@@ -37,8 +38,8 @@ class APITestCase(TestCase):
             res = fun(url, data)
         try:
             res.json = json.loads(res.content)
-        except Exception, e:
-            pass
+        except Exception as e:
+            print e
 
         return res
 

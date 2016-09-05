@@ -1,10 +1,11 @@
-from django.test import TestCase
-from core.tests import UserTestCase, APITestCase
+from core.tests import UserTestCase
 from core.testclient import TestClient
-from settings.settings import *
+# from settings.settings import *
 from django.core.urlresolvers import reverse
 
-from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket, TicketUpdate, DecimalProperty, Budget, TicketCharge
+from ticket.models import PersonTicket, CompanyTicket, OtherTicket
+from ticket.models import TicketUpdate
+
 
 class TicketsTest(UserTestCase):
     def test_create_person_ticket(self):
@@ -127,19 +128,6 @@ class TicketsTest(UserTestCase):
         t = OtherTicket.objects.get(id=t.id)
         self.assertNotIn(self.staff_user, t.responders.all())
 
-    def test_join_and_leave_ticket_as_volunteer(self):
-        client = TestClient()
-        client.login_user(self.volunteer_user)
-        t = OtherTicket()
-        t.requester = self.normal_user
-        t.save()
-        response = client.post(reverse('ticket_join', kwargs={"pk": t.id}), {})
-        t = OtherTicket.objects.get(id=t.id)
-        self.assertIn(self.volunteer_user, t.responders.all())
-        response = client.post(reverse('ticket_leave', kwargs={"pk": t.id}), {})
-        t = OtherTicket.objects.get(id=t.id)
-        self.assertNotIn(self.volunteer_user, t.responders.all())
-
     def test_edit_ticket(self):
         pass
 
@@ -228,7 +216,6 @@ class TicketsTest(UserTestCase):
         self.assertEqual(r.status_code, 200)
         # r.content
 
-
     def test_ticket_assign_unassign(self):
         client = TestClient()
         client.login_user(self.admin_user)
@@ -238,16 +225,6 @@ class TicketsTest(UserTestCase):
 
         t_assign = reverse('ticket_assign', kwargs={'pk': t.id})
         t_unassign = reverse('ticket_unassign', kwargs={'pk': t.id})
-
-        # Try assigning a volunteer
-        r = client.post(t_assign, {'user': self.volunteer_user.id})
-        self.assertEqual(r.status_code, 200)
-        # print r.content
-
-        # Try unassigning a volunteer
-        r = client.post(t_unassign, {'user': self.volunteer_user.id})
-        self.assertEqual(r.status_code, 200)
-        # print r.content
 
         # Try assigning a staff member
         r = client.post(t_assign, {'user': self.staff_user.id})
