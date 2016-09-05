@@ -27,7 +27,6 @@ from rest_framework.parsers import FileUploadParser
 from accounts.models import Network, Profile
 from core.models import Notification
 from core.mixins import CSVorJSONResponseMixin, PrettyPaginatorMixin
-from feedback.forms import FeedbackForm
 
 from .mixins import TicketUpdateMixin, perform_ticket_update
 from .mixins import transition_ticket_from_new
@@ -623,12 +622,6 @@ class TicketDetail(TemplateView):
             if self.request.user.is_superuser or self.request.user.is_staff:
                 can_join_leave = True
 
-        # feedback form with initial data
-        form = FeedbackForm(initial={
-            'email': self.request.user.email,
-            'name': self.request.user.display_name
-        })
-
         return {
             'ticket': self.ticket,
             'ticket_updates': ticket_updates,
@@ -643,8 +636,7 @@ class TicketDetail(TemplateView):
             'attachments': self.ticket.attachments.all(),
             'charge_form': forms.RequestChargeForm(),
             'ticket_detail_view': True,
-            'can_join_leave': can_join_leave,
-            'form': form
+            'can_join_leave': can_join_leave
         }
 
     # FIXME: AJAXize!

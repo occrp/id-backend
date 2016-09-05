@@ -16,7 +16,6 @@ from settings.settings import REGISTRATION_OPEN, REGISTRATION_CLOSED_URL
 from settings.settings import REGISTRATION_SUCCESS_URL
 
 from core.models import Notification
-from feedback.forms import FeedbackForm
 
 logger = logging.getLogger(__name__)
 
@@ -82,40 +81,13 @@ def logout(request, next_page=None,
            template_name='registration/logout.jinja',
            redirect_field_name=REDIRECT_FIELD_NAME,
            current_app=None, extra_context=None,
-           form_class=FeedbackForm,
            fallback_redirect_url='/login'):
     """
     Overloading the logout() function from django.contrib.auth.views
     to provide confirmation that a user has actually just logged-out
     for our feedback form
     """
-    if request.user.is_authenticated() or ('cleared_for_feedback' in request.session and request.session['cleared_for_feedback'] == True):
-        # get the feedback form
-        form = FeedbackForm()
-
-        # add it to the template context
-        if extra_context is not None:
-            extra_context.update({
-                'form': form
-            })
-        else:
-            extra_context = {
-                'form': form
-            }
-
-        # get the result
-        result = django_logout(request, next_page, template_name, redirect_field_name, current_app, extra_context)
-
-        # make sure we can proceed with feedback if we need to
-        # for instance, if the form is not complete
-        request.session['cleared_for_feedback'] = True
-        result.request = request
-
-        # return the whole thing
-        return result
-
-    else:
-        return HttpResponseRedirect(fallback_redirect_url)
+    return HttpResponseRedirect(fallback_redirect_url)
 
 
 def login(request, template_name='registration/login.jinja',

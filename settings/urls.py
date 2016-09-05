@@ -35,7 +35,6 @@ urlpatterns = patterns('',
     url(r'^admin/budgets/$', perm('staff', ticket.admin.Budgets), name='admin_budgets'),
     url(r'^admin/statistics/$', perm('admin', accounts.admin.Statistics), name='statistics'),
 
-    url(r'^feedback/', include('feedback.urls')),
     url(r'^accounts/', include('accounts.urls')),
 
     url(r'^notifications/seen/(?P<pk>([\d]+|all))/', perm('user', NotificationSeen), name='notification_seen'),
