@@ -9,11 +9,9 @@ from django.core.exceptions import PermissionDenied
 from django.views.generic import TemplateView, UpdateView, ListView
 from django.contrib.auth import get_user_model
 from django.db.models import Q
-from django.db import IntegrityError
 
 from settings.settings import LANGUAGES
 
-from .models import AccountRequest
 from .forms import ProfileUpdateForm, ProfileBasicsForm
 from .forms import ProfileDetailsForm, ProfileAdminForm
 
@@ -113,53 +111,3 @@ class UserSuggest(APIView):
                 'display_name': obj.display_name
             })
         return JsonResponse(res)
-
-
-class AccessRequestCreate(TemplateView):
-    permission_classes = (IsAuthenticated, )
-    template_name = 'accessrequest/create.jinja'
-
-    def dispatch(self, request, *args, **kwargs):
-        if self.request.user.is_anonymous:
-            return HttpResponseRedirect('/')
-        return super(AccessRequestCreate, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self):
-        try:
-            req = AccountRequest(user=self.request.user)
-            req.save()
-        except IntegrityError as e:
-            log.exception(e)
-
-        return {
-            "status": True,
-            "requested": AccountRequest.objects.filter(user=self.request.user).count() >= 1,
-            "is_requester": self.request.user.is_user
-        }
-
-
-class AccessRequestList(ListView):
-    template_name = 'accessrequest/list.jinja'
-    model = AccountRequest
-
-    def get_queryset(self):
-        approve = self.request.GET.get("approve_req", None)
-        deny = self.request.GET.get("deny_req", None)
-        if approve:
-            ar = AccountRequest.objects.get(id=approve)
-            ar.approve()
-        if deny:
-            ar = AccountRequest.objects.get(id=deny)
-            ar.reject()
-
-        return AccountRequest.objects.filter(approved=None)
-
-
-class AccessRequestListApproved(AccessRequestList):
-    def get_queryset(self):
-        return AccountRequest.objects.filter(approved=True)
-
-
-class AccessRequestListDenied(AccessRequestList):
-    def get_queryset(self):
-        return AccountRequest.objects.filter(approved=False)

@@ -60,13 +60,17 @@
                 {% endfor %}
             {% endif %}
             <div class="pull-right">
-                {% if user.is_user %}
-                    <a style="{% if user in ticket.actors() %}display: none;{% endif %}" class="btn btn-small join_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-plus"></i>{% trans %}Join{% endtrans %}</a>
+                <a style="{% if user in ticket.actors() %}display: none;{% endif %}" class="btn btn-small join_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}">
+                    <i class="fa fa-user-plus"></i>{% trans %}Join{% endtrans %}
+                </a>
 
-                    <a style="{% if user not in ticket.actors() %}display: none;{% endif %}" class="btn btn-small leave_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-times"></i>{% trans %}Leave{% endtrans %}</a>
-                {% endif %}
+                <a style="{% if user not in ticket.actors() %}display: none;{% endif %}" class="btn btn-small leave_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-times"></i>{% trans %}Leave{% endtrans %}</a>
+
                 {% if user.is_staff %}
-                    <a class="btn btn-small" data-jq-dropdown="#jq-dropdown-{{ ticket.id }}"><i class="fa fa-plus"></i>{% trans %}Assign{% endtrans %}</a>
+                    <a class="btn btn-small" data-jq-dropdown="#jq-dropdown-{{ ticket.id }}">
+                        <i class="fa fa-plus"></i>
+                        {% trans %}Assign{% endtrans %}
+                    </a>
                     <div id="jq-dropdown-{{ ticket.id }}" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-right">
                         <div class="jq-dropdown-panel">
                             <select class="not_select2" data-key="{{ticket.id}}">
