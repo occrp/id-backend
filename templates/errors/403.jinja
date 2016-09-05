@@ -21,11 +21,6 @@
 
         <p style="text-align: center; font-size: 120%;">{% trans %}This part of Investigative Dashboard is only for registered users. In order to use it, register and log in to the system.{% endtrans %}</p>
     {% else %}
-        <div style="text-align: center; margin-bottom: 20px;">
-            <a href="{{url('request_access_create')}}" class="btn btn-primary button-x-large"><i class="fa fa-star"></i> {% trans %}Request permissions{% endtrans %}</a>
-        </div>
-
         <p style="text-align: center; font-size: 120%;">{% trans %}Elevated privileges are required for access to this part of Investigative Dashboard.{% endtrans %}</p>
-        <p style="text-align: center; font-size: 120%;">{% trans %}You can apply for extra access rights, and they will be reviewed on a case-by-case basis.{% endtrans %}</p>
     {% endif %}
 {% endblock %}

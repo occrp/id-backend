@@ -26,11 +26,6 @@ class Profile(APIView):
 
     def get(self, request, *args, **kwargs):
         groups = []
-        if request.user.is_user:
-            groups.append({
-                'id': 'ticket_requesters',
-                'name': 'Ticket Requesters'
-            })
         if request.user.is_staff:
             groups.append({
                 'id': 'occrp_staff',
@@ -46,7 +41,6 @@ class Profile(APIView):
             'email': request.user.email,
             'display_name': request.user.display_name,
             'is_admin': request.user.is_superuser,
-            'is_teapot': random.choice([True, False]),
             'groups': groups,
             'locale': request.user.locale,
             'country': request.user.country,
