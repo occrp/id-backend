@@ -234,21 +234,11 @@ class TicketActionJoin(TicketActionBaseHandler):
     def perform_valid_action(self, form):
         ticket = self.object
         adduser = None
-        added = False
-        # tag = ticket.get_tag()
 
         if self.request.user.is_staff or self.request.user.is_superuser:
             uid = self.request.POST.get("user", self.request.user.id)
             adduser = get_user_model().objects.get(id=uid)
             ticket.responders.add(adduser)
-            added = True
-
-        if self.request.user.is_volunteer:
-            adduser = self.request.user
-            ticket.responders.add(adduser)
-            added = True
-
-        if added:
             adduser.notifications_subscribe('id:ticket:ticket:%d:*' % ticket.id)
 
             self.success_messages = [_('You have successfully been added to the ticket.')]
@@ -266,7 +256,7 @@ def TicketActionAssign(request, pk):
     user = get_user_model().objects.get(id=request.POST.get('user'))
     success = False
 
-    if request.user.is_staff or request.user.is_superuser or request.user.is_volunteer:
+    if request.user.is_staff or request.user.is_superuser:
         ticket.responders.add(user)
         success = True
 
@@ -516,7 +506,7 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
         if 'redirect' in self.request.POST:
             self.redirect = self.request.POST['redirect']
 
-        if len(form_responders) > 0 or len(form_volunteers) > 0:
+        if len(form_responders) > 0:
             self.transition_ticket_from_new(ticket)
 
         for i in form_responders:
@@ -630,12 +620,6 @@ class TicketDetail(TemplateView):
 
         can_join_leave = False
         if self.request.user != self.ticket.requester:
-            if self.request.user.is_volunteer and self.ticket.is_public:
-                can_join_leave = True
-
-            if self.request.user.is_volunteer and self.request.user in self.ticket.responders.all():
-                can_join_leave = True
-
             if self.request.user.is_superuser or self.request.user.is_staff:
                 can_join_leave = True
 
@@ -720,8 +704,7 @@ class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
             'start_date': self.start_date,
             'end_date': self.end_date,
             'possible_assignees': get_user_model().objects.filter(Q(is_superuser=True) |
-                                                                  Q(is_staff=True) |
-                                                                  Q(is_volunteer=True))
+                                                                  Q(is_staff=True))
         }
         return context
 
@@ -1040,12 +1023,11 @@ class TicketResolutionWorkload(TemplateView):
 
     def get_context_data(self):
         researchers = get_user_model().objects.filter(
-            Q(is_volunteer=True) | Q(is_staff=True) | Q(is_superuser=True)
+            Q(is_staff=True) | Q(is_superuser=True)
         )
         sort = self.request.GET.get("sort", "role")
         if sort == "role":
-            researchers = researchers.order_by("-is_superuser", "-is_staff",
-                                               "-is_volunteer")
+            researchers = researchers.order_by("-is_superuser", "-is_staff")
         return {
             "researchers": researchers
         }

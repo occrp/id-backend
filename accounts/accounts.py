@@ -5,15 +5,17 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
+from django.core.exceptions import PermissionDenied
 from django.views.generic import TemplateView, UpdateView, ListView
-from django.contrib.auth import get_user_model # as per https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
+from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.db import IntegrityError
 
 from settings.settings import LANGUAGES
 
 from .models import AccountRequest
-from .forms import ProfileUpdateForm, ProfileBasicsForm, ProfileDetailsForm, ProfileAdminForm
+from .forms import ProfileUpdateForm, ProfileBasicsForm
+from .forms import ProfileDetailsForm, ProfileAdminForm
 
 log = logging.getLogger(__name__)
 
@@ -37,6 +39,7 @@ class ProfileSetLanguage(TemplateView):
 
 class ProfileUpdate(UpdateView):
     template_name = 'registration/profile.jinja'
+    permission_classes = (IsAuthenticated,)
     form_class = ProfileUpdateForm
 
     def get_success_url(self):
@@ -45,6 +48,8 @@ class ProfileUpdate(UpdateView):
     def get_object(self):
         if self.request.user.is_superuser:
             return get_user_model().objects.get(id=self.kwargs["pk"])
+        if self.request.user.id != int(self.kwargs["pk"]):
+            raise PermissionDenied
         return self.request.user
 
     def get_context_data(self, form):
@@ -54,10 +59,10 @@ class ProfileUpdate(UpdateView):
         ctx["editing_self"] = obj == self.request.user
         if self.request.method == "POST":
             ctx["form"] = ProfileUpdateForm(self.request.POST, instance=obj)
-            if ctx["form"].is_valid():
-                obj = ctx["form"].save()
+            if not ctx["form"].is_valid():
+                log.error("Error: %r", ctx["form"].errors)
             else:
-                print ctx["form"].errors
+                obj = ctx["form"].save()
             ctx["form_basics"] = ProfileBasicsForm(self.request.POST, instance=obj)
             ctx["form_details"] = ProfileDetailsForm(self.request.POST, instance=obj)
             if self.request.user.is_superuser:
@@ -118,26 +123,16 @@ class AccessRequestCreate(TemplateView):
         return super(AccessRequestCreate, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self):
-        request_type = self.request.GET.get("access_type", None)
-        if not request_type:
-            return {
-                "requested_requester": AccountRequest.objects.filter(user=self.request.user, request_type="requester").count() >= 1,
-                "requested_volunteer": AccountRequest.objects.filter(user=self.request.user, request_type="volunteer").count() >= 1,
-                "is_requester": self.request.user.is_user,
-                "is_volunteer": self.request.user.is_volunteer,
-            }
         try:
-            req = AccountRequest(request_type=request_type, user=self.request.user)
+            req = AccountRequest(user=self.request.user)
             req.save()
         except IntegrityError as e:
             log.exception(e)
 
         return {
             "status": True,
-            "requested_requester": AccountRequest.objects.filter(user=self.request.user, request_type="requester").count() >= 1,
-            "requested_volunteer": AccountRequest.objects.filter(user=self.request.user, request_type="volunteer").count() >= 1,
-            "is_requester": self.request.user.is_user,
-            "is_volunteer": self.request.user.is_volunteer,
+            "requested": AccountRequest.objects.filter(user=self.request.user).count() >= 1,
+            "is_requester": self.request.user.is_user
         }
 
 

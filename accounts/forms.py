@@ -115,5 +115,5 @@ class ProfileDetailsForm(forms.ModelForm):
 class ProfileAdminForm(forms.ModelForm):
     class Meta:
         model = models.Profile
-        fields = ("network", "findings_visible", "is_user", "is_staff", "is_volunteer", "is_superuser", "is_active")
-
+        fields = ("network", "findings_visible", "is_user", "is_staff",
+                  "is_superuser", "is_active")

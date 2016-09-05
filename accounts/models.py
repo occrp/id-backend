@@ -17,11 +17,6 @@ from ticket.models import TicketCharge
 from settings.settings import LANGUAGES, AUTH_USER_MODEL
 
 
-REQUEST_TYPES = (
-    ('requester', _('Information Requester')),
-    ('volunteer', _('Volunteer'))
-)
-
 REQUESTER_TYPES = (
     ('subs', _('Subsidized')),
     ('cost', _('Covering Cost')),
@@ -54,9 +49,7 @@ class ProfileManager(NotificationMixin, BaseUserManager):
 
     def _create_user(self, email, password, is_staff, is_superuser,
                      **extra_fields):
-        """
-        Creates and saves a User with the given email and password.
-        """
+        """Create and save a User with the given email and password."""
         now = timezone.now()
         if not email:
             raise ValueError('The email field has to be set.')
@@ -105,7 +98,6 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
 
     is_user = models.BooleanField(default=True, db_index=True)
     is_staff = models.BooleanField(default=False, db_index=True)
-    is_volunteer = models.BooleanField(default=False, db_index=True)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(_('Date Joined'), default=timezone.now)
 
@@ -170,13 +162,10 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
 
     @property
     def is_approved(self):
-        return any((
-            self.is_user, self.is_staff, self.is_volunteer, self.is_superuser
-            ))
+        return any((self.is_user, self.is_staff, self.is_superuser))
 
     def get_account_request(self):
-        '''Find the Account Request corresponding to this account
-        '''
+        """Find the Account Request corresponding to this account."""
         ars = AccountRequest.query(AccountRequest.email == self.user.email())
         for ar in ars:
             if ar.approved is True:  # try to get an approved one
@@ -276,7 +265,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
             pass
         #####################################################################
 
-        logger.info("Saving profile for user %s: {is_active:%s, is_user:%s, is_volunteer:%s, is_staff:%s, is_superuser:%s}" % (self.email, self.is_active, self.is_user, self.is_volunteer, self.is_staff, self.is_superuser))
+        logger.info("Saving profile for user %s: {is_active:%s, is_user:%s, is_staff:%s, is_superuser:%s}" % (self.email, self.is_active, self.is_user, self.is_staff, self.is_superuser))
         if self.pk is not None:
             try:
                 orig = Profile.objects.get(pk=self.pk)
@@ -300,10 +289,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
         swappable = 'AUTH_USER_MODEL'
 
 
-######## Account management ############
 class AccountRequest(models.Model, DisplayMixin):
-    request_type = models.CharField(blank=False, max_length=64,
-                                    choices=REQUEST_TYPES)
     user = models.ForeignKey(AUTH_USER_MODEL, blank=False)
     approved = models.NullBooleanField(default=None, blank=True, null=True,
                                        verbose_name=_('Approved'))
@@ -317,12 +303,11 @@ class AccountRequest(models.Model, DisplayMixin):
     MAIL_TEMPLATE = 'accountrequest/mail_notification.jinja'
 
     def __str__(self):
-        return "%s:%s:%s:%s" % (self.user, self.request_type,
-                                self.approved, self.date_created)
+        return "%s:%s:%s" % (self.user, self.approved, self.date_created)
 
     class Meta:
-        ordering = ['request_type', 'approved', 'date_created']
-        unique_together = (('user', 'request_type'),)
+        ordering = ['approved', 'date_created']
+        unique_together = (('user'),)
 
     def get_display_value(self, property_name):
         if property_name != 'approved':
@@ -333,32 +318,17 @@ class AccountRequest(models.Model, DisplayMixin):
                     else _('No'))
 
     def approve(self):
-        """
-        Adds the Account Request's email address to the appropriate Google
-        groups, and marks the request as approved.
-        """
-        if self.request_type == 'volunteer':
-            self.user.is_volunteer = True
-            self.user.save()
-        elif self.request_type == 'request':
-            self.user.is_user = True
-            self.user.save()
-
+        """Mark the request as approved."""
+        self.user.is_user = True
+        self.user.save()
         self.approved = True
         self.save()
         self.notify_approved()
 
     def reject(self):
-        """
-        Removes the user from the group!
-        """
-        if self.request_type == 'volunteer':
-            self.user.is_volunteer = False
-            self.user.save()
-        elif self.request_type == 'request':
-            self.user.is_user = False
-            self.user.save()
-
+        """Remove the user from the group."""
+        self.user.is_user = False
+        self.user.save()
         self.approved = False
         self.save()
         self.notify_rejected()

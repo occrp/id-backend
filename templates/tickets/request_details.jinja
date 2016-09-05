@@ -41,7 +41,7 @@
                 {% endif %}
             </div>
 
-            {% if user.is_volunteer or user.is_staff %}
+            {% if user.is_staff %}
                 {% if user not in ticket.actors() %}
                     <form action="{{ url('ticket_join', pk=ticket.id) }}" method="POST" class="inline-form">
                         {% csrf_token %}
@@ -104,13 +104,11 @@
                 {% endif %}
             </div>
             {% else %}
-                {% if not user.is_volunteer %}
-                    <div class="btn-group">
-                        <a href="#ReqReopenForm" class="btn btn-warning" data-toggle='modal' role='button'>
-                            <i class="fa fa-unlock"></i> {% trans %}Re-Open{% endtrans %}
-                        </a>
-                    </div>
-                {% endif %}
+                <div class="btn-group">
+                    <a href="#ReqReopenForm" class="btn btn-warning" data-toggle='modal' role='button'>
+                        <i class="fa fa-unlock"></i> {% trans %}Re-Open{% endtrans %}
+                    </a>
+                </div>
             {% endif %}
         </div>
     </div>  <!-- class="span7" -->
@@ -180,15 +178,6 @@
                 {{ _("No Responders") }}
             {% endif %}
             </dd>
-
-            {% if ticket.volunteers.count() > 0 %}
-            <dt class="yell soft">{% trans %}Volunteer Responders{% endtrans %}</dt>
-            <dd>
-                {% for volunteer in ticket.volunteers.all() %}
-                    {{ volunteer.display_name }} <br />
-                {% endfor %}
-            </dd>
-            {% endif %}
 
             <dt class="yell soft">{% trans %}Request Type{% endtrans %}</dt>
             <dd>{{ ticket.ticket_type_display() }}</dd>
