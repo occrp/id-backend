@@ -75,10 +75,6 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
         ]
         return output
 
-    @property
-    def staffresponders(self):
-        return self.responders.filter(is_staff=True)
-
     # User-facing fields
     @property
     def summary(self):
@@ -107,7 +103,7 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
         return dict(TICKET_STATUS_ICONS).get(self.status, 'question')
 
     def is_responder(self, user):
-        return self.responders.filter(id=user.id).count()
+        return self.responders.filter(id=user.id).count() > 0
 
     def actors(self):
         """Get a list of actors for a given ticket, requester and responder."""

@@ -93,7 +93,6 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
                                       verbose_name=_('Requester Type'))
 
     is_staff = models.BooleanField(default=False, db_index=True)
-    # is_superuser = models.BooleanField(default=False, db_index=True)
     is_active = models.BooleanField(default=True)
 
     network = models.ForeignKey('accounts.Network', null=True, blank=True,

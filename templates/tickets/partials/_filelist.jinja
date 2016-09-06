@@ -32,7 +32,7 @@
     <em>{% trans %}There are no files attached to this request.{% endtrans %}</em>
   {% endif %}
 
-  {% if ticket.is_open() %}
+  {% if ticket.is_open() and user.has_perm('ticket.change_ticket', ticket) %}
     <div class="row-fluid">
       <form class="upload-form" method="POST" action="{{ url('ticket_attachment_upload') }}"
             enctype="multipart/form-data">
