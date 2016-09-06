@@ -1,5 +1,6 @@
 from django.core.exceptions import PermissionDenied
 from rest_framework import permissions
+import rules
 
 
 class IsAtLeastStaffOrReadOnly(permissions.BasePermission):
@@ -36,22 +37,20 @@ def perm(perm, view, **viewkwargs):
     return decorator
 
 
-def require_admin(user):
-    if not user.is_authenticated():
-        raise PermissionDenied
-    if user.is_superuser:
-        return True
-    raise PermissionDenied
+@rules.predicate
+def is_staff(user):
+    if user.is_authenticated():
+        if user.is_superuser or user.is_staff:
+            return True
+    return False
 
 
-def require_staff(user):
-    if not user.is_authenticated():
-        raise PermissionDenied
-    if user.is_superuser:
-        return True
-    if user.is_staff:
-        return True
-    raise PermissionDenied
+@rules.predicate
+def is_superuser(user):
+    if user.is_authenticated():
+        if user.is_superuser:
+            return True
+    return False
 
 
 def activate_user(backend, user, response, *args, **kwargs):

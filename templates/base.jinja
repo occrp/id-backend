@@ -61,8 +61,8 @@
                                 </a>
                             {% endif %}
                         </li>
-                        <li class="{% if url('externaldb_list') in request.path %}active{% endif %}">
-                            <a href="{{ url('externaldb_list') }}">
+                        <li class="{% if url('databases:index') in request.path %}active{% endif %}">
+                            <a href="{{ url('databases:index') }}">
                                 <i class="fa fa-database"></i> {% trans %}External Databases{% endtrans %}
                             </a>
                         </li>

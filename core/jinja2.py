@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.utils import translation, timesince, dateformat
 
 from jinja2 import Environment, Template
+from jinja2 import contextfunction
 
 from .utils import version
 
