@@ -20,20 +20,20 @@ def perm(perm, view, **viewkwargs):
     return decorator
 
 
-@rules.predicate
-def is_staff(user):
-    if user.is_authenticated():
-        if user.is_superuser or user.is_staff:
-            return True
-    return False
+# @rules.predicate
+# def is_staff(user):
+#     if user.is_authenticated():
+#         if user.is_superuser or user.is_staff:
+#             return True
+#     return False
 
 
-@rules.predicate
-def is_superuser(user):
-    if user.is_authenticated():
-        if user.is_superuser:
-            return True
-    return False
+# @rules.predicate
+# def is_superuser(user):
+#     if user.is_authenticated():
+#         if user.is_superuser:
+#             return True
+#     return False
 
 
 def activate_user(backend, user, response, *args, **kwargs):

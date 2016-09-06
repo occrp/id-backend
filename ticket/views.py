@@ -166,7 +166,7 @@ class PersonTicketUpdate(TicketUpdateMixin, UpdateView):
 
 class TicketActionBaseHandler(TicketUpdateMixin, UpdateView):
     model = Ticket
-    form_class = forms.TicketCancelForm
+    # form_class = forms.TicketCancelForm
 
     success_messages = None
     failure_messages = None
@@ -322,7 +322,6 @@ class TicketActionLeave(TicketActionBaseHandler):
     form_class = forms.TicketEmptyForm
 
     def form_valid(self, form):
-
         if self.request.is_ajax():
             self.assign_user(form, False)
 
