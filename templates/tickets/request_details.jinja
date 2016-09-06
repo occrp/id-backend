@@ -102,7 +102,7 @@
           {% endif %}
         </div>
       {% endif %}
-      {% if not ticket.is_open() and user.has_perm('ticket.edit_ticket', ticket) %}
+      {% if not ticket.is_open() and user.has_perm('ticket.change_ticket', ticket) %}
         <div class="btn-group">
           <a href="#ReqReopenForm" class="btn btn-warning" data-toggle='modal' role='button'>
             <i class="fa fa-unlock"></i> {% trans %}Re-Open{% endtrans %}
