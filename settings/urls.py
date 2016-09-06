@@ -6,7 +6,6 @@ import accounts.views
 from core.manage import Panel
 from core.admin import admin_site
 from accounts.manage import Statistics
-from ticket.manage import Budgets
 from core.auth import perm
 from core.views import NotificationSeen, NotificationStream
 from core.views import NotificationSubscriptions
@@ -14,6 +13,7 @@ from core.views import NotificationSubscriptions
 # Instead of admin auto-discovery:
 from databases.admin import ExternalDatabaseAdmin  # noqa
 from accounts.admin import ProfileAdmin, NetworkAdmin  # noqa
+from ticket.admin import BudgetAdmin  # noqa
 
 from . import errors
 
@@ -33,8 +33,7 @@ urlpatterns = [
 
     url(r'^admin/', admin_site.urls),
     url(r'^manage/$', perm('staff', Panel), name='manage_panel'),
-    url(r'^manage/budgets/$', perm('staff', Budgets), name='manage_budgets'),
-    url(r'^manage/statistics/$', perm('admin', Statistics), name='statistics'),
+    url(r'^statistics/$', perm('admin', Statistics), name='statistics'),
 
     url(r'^accounts/', include('accounts.urls')),
 
