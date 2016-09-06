@@ -21,8 +21,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, UpdateView
-from rest_framework.generics import CreateAPIView
-from rest_framework.parsers import FileUploadParser
 
 from accounts.models import Network, Profile
 from core.models import Notification
@@ -1077,15 +1075,17 @@ class TicketAttachmentDownload(TemplateView):
         return resp
 
 
-class TicketAttachmentUpload(CreateAPIView):
-    parser_classes = (FileUploadParser,)
+class TicketAttachmentUpload(TemplateView):
 
-    def create(self, request, *args, **kwargs):
-        file_obj = request.FILES.get('file')
-        ticket = Ticket.objects.get(pk=request.POST.get('ticket'))
-        if ticket is None:  # or request.user not in ticket.actors():
-            raise PermissionDenied()
-        attachment = TicketAttachment.create_fh(ticket, request.user, file_obj)
-        log.debug('File created: %r', attachment)
+    def dispatch(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            file_obj = request.FILES.get('file')
+            ticket = Ticket.objects.get(pk=request.POST.get('ticket'))
+            if ticket is not None and file_obj is not None:
+                raise PermissionDenied()
+                # or request.user not in ticket.actors()
+                attachment = TicketAttachment.create_fh(ticket, request.user,
+                                                        file_obj)
+                log.debug('File created: %r', attachment)
         return HttpResponseRedirect(reverse('ticket_details',
                                             kwargs={"ticket_id": ticket.id}))

@@ -3,8 +3,9 @@
 Django settings for Investigative Dashboard
 """
 import os
-here = lambda x: os.path.realpath(os.path.join(os.path.realpath(os.path.dirname(__file__)), x))
-BASE_DIR = here('../')
+from django.conf.global_settings import DATE_INPUT_FORMATS
+
+BASE_DIR = os.path.join(os.path.realpath(os.path.dirname(__file__)), '../')
 
 ID_VERSION = "2.2.0"
 ID_ENVIRONMENT = os.environ.get('ID_ENVIRONMENT', 'debug')
@@ -19,24 +20,33 @@ EMERGENCY = False
 #
 ##################
 
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
-TEMPLATE_CONTEXT_PROCESSORS += (
-    "django.core.context_processors.request",
-    "django.contrib.messages.context_processors.messages",
-    "django.core.context_processors.csrf",
-    "settings.context_processors.locale",
-    "settings.context_processors.routename",
-    'social.apps.django_app.context_processors.backends',
-    'social.apps.django_app.context_processors.login_redirect'
-)
-
-TEMPLATE_LOADERS = (
-    'django_jinja.loaders.FileSystemLoader',
-    'django_jinja.loaders.AppLoader',
-)
-
-TEMPLATE_DIRS = ('templates',)
-
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'environment': 'core.jinja2.environment'
+        }
+    },
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                # "django.core.context_processors.request",
+                # "django.contrib.messages.context_processors.messages",
+                # "django.core.context_processors.csrf",
+                # 'social.apps.django_app.context_processors.backends',
+                # 'social.apps.django_app.context_processors.login_redirect'
+            ]
+        },
+    },
+]
 
 ##################
 #
@@ -92,18 +102,18 @@ except ImportError:
 ##################
 if DEBUG:
         # credentials for {testing,staging}.occrp.org
-        GOOGLE_OAUTH2_CLIENT_ID      = '206887598454-df3pp9ldb8367vu544hkmjvlpsl9gg46.apps.googleusercontent.com'
-        GOOGLE_OAUTH2_CLIENT_SECRET  = 'y2hZUFTrCj-IgIrPf3jpTE2d'
+        GOOGLE_OAUTH2_CLIENT_ID = '206887598454-df3pp9ldb8367vu544hkmjvlpsl9gg46.apps.googleusercontent.com'
+        GOOGLE_OAUTH2_CLIENT_SECRET = 'y2hZUFTrCj-IgIrPf3jpTE2d'
 
-        from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
-        TEMPLATE_CONTEXT_PROCESSORS += (
-            "django.core.context_processors.request",
-            "django.contrib.messages.context_processors.messages",
-            "django.core.context_processors.csrf",
-            "settings.context_processors.locale",
-            "settings.context_processors.routename",
-            "settings.context_processors.debug",
-        )
+        # from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+        # TEMPLATE_CONTEXT_PROCESSORS += (
+        #     "django.core.context_processors.request",
+        #     "django.contrib.messages.context_processors.messages",
+        #     "django.core.context_processors.csrf",
+        #     "settings.context_processors.locale",
+        #     "settings.context_processors.routename",
+        #     "settings.context_processors.debug",
+        # )
 
 
 ##################
@@ -134,7 +144,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'registration',
     'compressor',
-    'django_jinja',
     'rest_framework',
     'social.apps.django_app.default',
     'accounts',
@@ -220,14 +229,6 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'settings.urls'
 AUTO_RENDER_SELECT2_STATICS = False
-DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja'
-
-from django_jinja.builtins import DEFAULT_EXTENSIONS
-
-JINJA2_EXTENSIONS = DEFAULT_EXTENSIONS + [
-    "jinja2.ext.i18n",
-    "compressor.contrib.jinja2ext.CompressorExtension",
-]
 
 ##################
 #
@@ -302,7 +303,6 @@ LANGUAGES = (
     ('uk', u'Українська'),
 )
 
-from django.conf.global_settings import DATE_INPUT_FORMATS
 DATE_INPUT_FORMATS += ('%d/%m/%y',)
 
 ##################

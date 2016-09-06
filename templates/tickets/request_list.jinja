@@ -15,7 +15,7 @@
 
     {% if filter_terms is defined %}
     <form id="filter_form" method="GET">
-        {% csrf_token %}
+        {{ csrf_input }}
         <div class="controls md-whiteframe-z1 material-form" style="text-align:center;">
             <div class="input-append">
                 <input name="filter" value="{{filter_terms}}" placeholder="{%trans%}Filter terms{%endtrans%}" id="filter_tickets" type="search"/>
@@ -46,7 +46,7 @@
 
         <div style="line-height: 1.2em; margin-bottom: 0.5em;">
             <span style="display:inline-block; width:6.5em;">{% trans %}Requested by{% endtrans %}</span>
-            <a href="{{url('ticket_user_list', user_id=ticket.requester.id)}}">{{ticket.requester}}</a> <small>(<a href="{{url('profile', ticket.requester.id)}}">Profile</a>)</small> {% trans %}on{% endtrans %} <b>{{ticket.created|date('Y-m-d')}}</b>, {% trans %}complete by{% endtrans %} <b>{{ticket.deadline|date('Y-m-d')}}</b>.
+            <a href="{{url('ticket_user_list', user_id=ticket.requester.id)}}">{{ticket.requester}}</a> <small>(<a href="{{url('profile', ticket.requester.id)}}">Profile</a>)</small> {% trans %}on{% endtrans %} <b>{{ticket.created|date('Y-m-d')}}</b>{% if ticket.deadline %}, {% trans %}complete by{% endtrans %} <b>{{ticket.deadline|date('Y-m-d')}}</b>{% endif %}.
         </div>
 
         <div>

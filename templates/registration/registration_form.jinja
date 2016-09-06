@@ -13,7 +13,7 @@
 
 <div class="span12 registration-form material-form-container">
     <form action="/accounts/register/" method="POST">
-    {%csrf_token%}
+    {{ csrf_input }}
         {% if next %}<input type="hidden" name="next" value="{{next}}"/>{% endif %}
         <fieldset>
             <table class="tab-pane material-form md-whiteframe-z1">

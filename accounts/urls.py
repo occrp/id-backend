@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 from registration.views import ActivationView
@@ -7,7 +7,7 @@ from core.auth import perm
 
 from . import accounts, forms, views
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^login/$', views.login, {'template_name': 'registration/login.jinja'}, name='login'),
     url(r'^logout/', views.logout, {}, name='logout'),
     url(r'^users/$', perm('admin', accounts.UserList), name='userprofile_list'),
@@ -29,4 +29,4 @@ urlpatterns = patterns('',
     url(r'^register/complete/$', TemplateView.as_view(template_name='registration/registration_complete.jinja'), name='registration_complete'),
     url(r'^register/closed/$', TemplateView.as_view(template_name='registration/registration_closed.jinja'), name='registration_disallowed'),
     url(r'^social/', include('social.apps.django_app.urls', namespace='social')),
-)
+]

@@ -14,7 +14,7 @@
 <input type="hidden" id="id_register_form-pk" value="{{ pk }}">
 {% endif %}
 
-{% csrf_token %}
+{{ csrf_input }}
 
 {{ form_macros.render_field(register_form['agency']) }}
 {{ form_macros.render_field(register_form['db_type']) }}

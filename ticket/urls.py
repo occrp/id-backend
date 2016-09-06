@@ -1,10 +1,10 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from core.auth import perm
 
 import ticket.validators
 import ticket.views
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^all_open/$', perm('staff', ticket.views.TicketListAllOpen), name='ticket_all_open_list'),
     url(r'^all_open/(?P<page>\d+)/$', perm('staff', ticket.views.TicketListAllOpen), name='ticket_all_open_list'),
     url(r'^all_closed/$', perm('staff', ticket.views.TicketListAllClosed), name='ticket_all_closed_list'),
@@ -64,4 +64,4 @@ urlpatterns = patterns('',
 
     url(r'^attachments/upload/$', perm('user', ticket.views.TicketAttachmentUpload), name='ticket_attachment_upload'),
     url(r'^attachments/(?P<pk>[0-9]+)/$', perm('user', ticket.views.TicketAttachmentDownload), name='ticket_attachment_download'),
-)
+]

@@ -13,7 +13,7 @@
         <div class="material-form md-whiteframe-z1">
             {% if next %}<p class="alert alert-info">{% trans %}You must sign in to continue.{% endtrans %}</p>{% endif %}
             <form action="/accounts/login/" method="POST">
-                {%csrf_token%}
+                {{ csrf_input }}
                 {% if next %}<input type="hidden" name="next" value="{{next}}"/>{% endif %}
                 <fieldset>
                     <table>
