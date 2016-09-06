@@ -12,7 +12,6 @@ from core.mixins import NotificationMixin
 from core.models import notification_channel_format, channel_components
 from core.countries import COUNTRIES
 from core.models import NotificationSubscription
-from ticket.constants import INDUSTRY_TYPES, MEDIA_TYPES, CIRCULATION_TYPES
 from ticket.models import TicketCharge
 from settings.settings import LANGUAGES
 
@@ -82,53 +81,27 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     email = models.EmailField(_('E-mail Address'), max_length=254,
                               unique=True, blank=False)
     user_created = models.DateTimeField(auto_now_add=True)
+    date_joined = models.DateTimeField(_('Date Joined'), default=timezone.now)
     profile_updated = models.DateTimeField(auto_now=True)
-    last_seen = models.DateTimeField(auto_now=True)
 
     first_name = models.CharField(max_length=64, verbose_name=_("First Name"))
     last_name = models.CharField(max_length=64, verbose_name=_("Last Name"))
-    admin_notes = models.TextField(blank=True, verbose_name=_("Admin Notes"))
     locale = models.CharField(blank=True, max_length=16, choices=LANGUAGES)
 
     requester_type = models.CharField(blank=True, max_length=16,
                                       choices=REQUESTER_TYPES,
                                       verbose_name=_('Requester Type'))
-    findings_visible = models.BooleanField(default=False,
-                                           verbose_name=_('Findings Public'))
 
     is_staff = models.BooleanField(default=False, db_index=True)
+    # is_superuser = models.BooleanField(default=False, db_index=True)
     is_active = models.BooleanField(default=True)
-    date_joined = models.DateTimeField(_('Date Joined'), default=timezone.now)
 
     network = models.ForeignKey('accounts.Network', null=True, blank=True,
                                 related_name='members')
 
-    phone_number = models.CharField(blank=True, max_length=24)
-    organization_membership = models.CharField(blank=True, max_length=64)
-    notes = models.TextField(blank=True)
-    address = models.CharField(blank=True, max_length=128)
-    city = models.CharField(blank=True, max_length=64)
-    province = models.CharField(blank=True, max_length=64)
-    postal_code = models.CharField(blank=True, max_length=24)
+    phone_number = models.CharField(blank=True, max_length=255)
+    organization = models.CharField(blank=True, max_length=1024)
     country = models.CharField(blank=True, max_length=32, choices=COUNTRIES)
-
-    # Requester fields
-    industry = models.CharField(blank=True, max_length=32,
-                                choices=INDUSTRY_TYPES)
-    industry_other = models.CharField(blank=True, max_length=256)
-    media = models.CharField(blank=True, max_length=64, choices=MEDIA_TYPES)
-    circulation = models.CharField(blank=True, max_length=64,
-                                   choices=CIRCULATION_TYPES)
-    # because 'Controleur des finances publiques / lutte contre la frise'...
-    title = models.CharField(blank=True, max_length=256)
-
-    # Volunteer fields
-    interests = models.TextField(blank=True)
-    expertise = models.TextField(blank=True)
-    languages = models.TextField(blank=True)
-    availability = models.TextField(blank=True)
-    databases = models.TextField(blank=True)
-    conflicts = models.TextField(blank=True)
 
     # Django auth module settings
     USERNAME_FIELD = 'email'
@@ -143,25 +116,11 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     def get_short_name(self):
         return self.first_name
 
-    def email_user(self, subject, message, from_email=None, **kwargs):
-        logger.info("E-mailed user %s with subject '%s'" % (self.email, subject))
-        send_mail(subject, message, from_email, [self.email], **kwargs)
-
-    def get_notifications(self, start=0, count=10):
-        return self.notification_set.all()[start:count]
-
-    def unseen_notifications_count(self):
-        return self.notification_set.filter(is_seen=False).count()
-
     @property
     def display_name(self):
         if self.first_name or self.last_name:
             return u" ".join((self.first_name, self.last_name))
         return self.email
-
-    @property
-    def is_approved(self):
-        return self.is_active
 
     def to_select2(self):
         return {
@@ -222,6 +181,16 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
 
         tot = self.tickets_get_set()
         return self.tickets_average_resolution_time_calculate(tot)
+
+    def email_user(self, subject, message, from_email=None, **kwargs):
+        logger.info("E-mailed user %s with subject '%s'" % (self.email, subject))
+        send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    def get_notifications(self, start=0, count=10):
+        return self.notification_set.all()[start:count]
+
+    def unseen_notifications_count(self):
+        return self.notification_set.filter(is_seen=False).count()
 
     def notifications_subscribe(self, channel):
         assert(notification_channel_format.match(channel))

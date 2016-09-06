@@ -3,6 +3,10 @@ from django.core.urlresolvers import resolve
 from django.utils import formats
 from django.conf import settings # import the settings file
 
+# import django.contrib.auth.context_processors.auth
+# import django.contrib.messages.context_processors.message
+
+
 def locale(request):
     lang = get_language()
 

@@ -18,11 +18,8 @@ google-api-python-client
 rules
 python-social-auth>=0.2.13
 psycopg2
-jsonfield
 pillow
 django-simple-captcha
-unidecode
-rarfile
 django-oauth-toolkit
 oauth2_provider
 sqlparse
