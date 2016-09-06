@@ -9,7 +9,7 @@ from . import accounts, forms, views
 
 urlpatterns = patterns('',
     url(r'^login/$', views.login, {'template_name': 'registration/login.jinja'}, name='login'),
-    url(r'^logout/', views.logout, {'template_name': 'registration/logout.jinja', 'fallback_redirect_url': '/accounts/login/'}, name='logout'),
+    url(r'^logout/', views.logout, {}, name='logout'),
     url(r'^users/$', perm('admin', accounts.UserList), name='userprofile_list'),
     url(r'^suggest/$', perm('user', accounts.UserSuggest), name='userprofile_suggest'),
     url(r'^profile/$', perm('user', accounts.ProfileUpdate), name='profile'),

@@ -1,12 +1,9 @@
 import logging
-import random
 from registration.views import RegistrationView
 
 from django.contrib.auth.views import logout as django_logout
 from django.contrib.auth.views import login as django_login
 from django.contrib.auth.views import REDIRECT_FIELD_NAME, AuthenticationForm
-from django.contrib.auth.signals import user_logged_in, user_logged_out
-from django.dispatch import receiver
 from django.http import HttpResponseRedirect, JsonResponse
 
 from rest_framework.permissions import IsAuthenticated
@@ -77,41 +74,29 @@ class ProfileRegistrationView(RegistrationView):
             return super(ProfileRegistrationView, self).dispatch(request, *args, **kwargs)
 
 
-def logout(request, next_page=None,
-           template_name='registration/logout.jinja',
-           redirect_field_name=REDIRECT_FIELD_NAME,
-           current_app=None, extra_context=None,
-           fallback_redirect_url='/login'):
-    """
+def logout(request):
+    """Log out the current user.
+
     Overloading the logout() function from django.contrib.auth.views
     to provide confirmation that a user has actually just logged-out
     for our feedback form
     """
-    return HttpResponseRedirect(fallback_redirect_url)
+    django_logout(request)
+    return HttpResponseRedirect('/')
 
 
 def login(request, template_name='registration/login.jinja',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
           current_app=None,
-          extra_context=None,
-          fallback_redirect_url='/'):
-    """
+          extra_context=None):
+    """Show a form for the user to sign in.
+
     Overloading the login() function from django.contrib.auth.views
     to redirect logged-in users somewhere else
     """
     if request.user.is_authenticated():
-        return HttpResponseRedirect(fallback_redirect_url)
+        return HttpResponseRedirect('/')
     else:
         return django_login(request, template_name, redirect_field_name,
                             authentication_form, current_app, extra_context)
-
-
-@receiver(user_logged_in)
-def recv_signal_user_logged_in(sender, user, **kwargs):
-    logger.info("Logged in: user %s" % (user.email), extra={'user': user})
-
-
-@receiver(user_logged_out)
-def recv_signal_user_logged_out(sender, user, **kwargs):
-    logger.info("Logged out: user %s" % (user.email), extra={'user': user})

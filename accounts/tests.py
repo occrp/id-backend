@@ -1,27 +1,4 @@
-from django.test import TestCase
-
 from core.tests import UserTestCase
-
-
-class UserRegistration(TestCase):
-    def setUp(self):
-        pass
-
-    def test_register_user(self):
-        """Test registering for an account"""
-        pass
-
-    def test_signin(self):
-        """Test signing in to an account"""
-        pass
-
-    def test_logout(self):
-        """Test logging out"""
-        pass
-
-    def test_settings(self):
-        """Test changing user profile settings"""
-        pass
 
 
 class ProfileFunctions(UserTestCase):
@@ -35,9 +12,6 @@ class ProfileFunctions(UserTestCase):
 
     def test_get_notifications(self):
         self.normal_user.get_notifications()
-
-    def test_permissions(self):
-        self.normal_user.is_approved
 
     def test_tickets(self):
         o = self.normal_user.tickets_assigned_open()

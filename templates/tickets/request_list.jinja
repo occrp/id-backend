@@ -66,7 +66,7 @@
 
                 <a style="{% if user not in ticket.actors() %}display: none;{% endif %}" class="btn btn-small leave_btn" data-key={{ ticket.id }} data-user={{ user.id }} data-display-name="{{ user.display_name }}"><i class="fa fa-user-times"></i>{% trans %}Leave{% endtrans %}</a>
 
-                {% if user.is_staff %}
+                {% if user.is_staff or user.is_superuser %}
                     <a class="btn btn-small" data-jq-dropdown="#jq-dropdown-{{ ticket.id }}">
                         <i class="fa fa-plus"></i>
                         {% trans %}Assign{% endtrans %}
