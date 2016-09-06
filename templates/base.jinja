@@ -159,8 +159,6 @@
 </div>
 
 {% block js %}
-    <script type="text/javascript" src="{{ url('django.views.i18n.javascript_catalog') }}"></script>
-
     {% compress js %}
     <script type="text/javascript" src="{{ static("js/i18n.js") }}"></script>
     <script type="text/javascript" src="{{ static("bower_components/jquery/dist/jquery.min.js") }}"></script>
@@ -212,10 +210,6 @@
         <script type="text/javascript" src="{{ static("js/form-tools.js") }}"></script>
     {% endcompress %}
 
-    <!--
-    <script type="text/javascript" src="{{ static("js/id2/id2.js")}}"></script>
-    <script type="text/javascript" src="{{ static("js/id2/filters.js")}}"></script>
-    -->
 {% endblock %}
 
 {% block after_js %}

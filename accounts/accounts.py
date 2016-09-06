@@ -52,7 +52,7 @@ class ProfileUpdate(UpdateView):
             raise PermissionDenied
         return self.request.user
 
-    def get_context_data(self, form):
+    def get_context_data(self):
         obj = self.get_object()
         ctx = super(ProfileUpdate, self).get_context_data()
         ctx["profile"] = obj
@@ -80,7 +80,7 @@ class UserList(ListView):
     template_name = 'auth/user_list.jinja'
 
     def get_queryset(self):
-        filter_terms = self.request.REQUEST.get("filter_terms", "")
+        filter_terms = self.request.GET.get("filter_terms", "")
         if filter_terms:
             query = (Q(email__contains=filter_terms)
                      | Q(first_name__contains=filter_terms)
@@ -91,7 +91,7 @@ class UserList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(UserList, self).get_context_data(**kwargs)
-        context["filter_terms"] = self.request.REQUEST.get("filter_terms", "")
+        context["filter_terms"] = self.request.GET.get("filter_terms", "")
         return context
 
 
