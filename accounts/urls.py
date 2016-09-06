@@ -10,7 +10,6 @@ from . import accounts, forms, views
 urlpatterns = [
     url(r'^login/$', views.login, {'template_name': 'registration/login.jinja'}, name='login'),
     url(r'^logout/', views.logout, {}, name='logout'),
-    url(r'^users/$', perm('admin', accounts.UserList), name='userprofile_list'),
     url(r'^suggest/$', perm('user', accounts.UserSuggest), name='userprofile_suggest'),
     url(r'^profile/$', perm('user', accounts.ProfileUpdate), name='profile'),
     url(r'^profile/(?P<pk>[0-9]+)/$', perm('user', accounts.ProfileUpdate), name='profile'),
