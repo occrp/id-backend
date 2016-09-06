@@ -32,7 +32,7 @@
          <h5 class="yell"><i class="fa fa-circle"></i> {{ ticket.status }}</h5>
       </div>
       {% if ticket.is_open() %}
-        {% if user.has_perm('ticket.join_ticket', ticket) %}
+        {% if user.has_perm('ticket.join_ticket', ticket) and not ticket.is_responder(user) %}
           <form action="{{ url('ticket_join', pk=ticket.id) }}" method="POST" class="inline-form">
             {{ csrf_input }}
             <button type="submit" class="btn">
@@ -41,7 +41,7 @@
             </button>
           </form>
         {% endif %}
-        {% if user.has_perm('ticket.leave_ticket', ticket) %}
+        {% if user.has_perm('ticket.leave_ticket', ticket) and ticket.is_responder(user) %}
           <form action="{{ url('ticket_leave', pk=ticket.id) }}" method="POST" class="inline-form">
             {{ csrf_input }}
             <button type="submit" class="btn">
