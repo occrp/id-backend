@@ -1,4 +1,3 @@
-from core.auth import perm
 from django.conf.urls import url
 
 from .views import index

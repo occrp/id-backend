@@ -13,6 +13,7 @@ from core.views import NotificationSubscriptions
 
 # Instead of admin auto-discovery:
 from databases.admin import ExternalDatabaseAdmin  # noqa
+from accounts.admin import ProfileAdmin, NetworkAdmin  # noqa
 
 from . import errors
 
