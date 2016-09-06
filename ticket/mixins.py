@@ -1,7 +1,9 @@
+from __future__ import absolute_import
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 from django.http import JsonResponse
 from django.utils.translation import ugettext_lazy as _
+from rules.contrib.views import PermissionRequiredMixin
 
 from .models import TicketUpdate
 from . import constants
@@ -28,7 +30,7 @@ class TicketAjaxResponseMixin(object):
             return response
 
 
-class TicketUpdateMixin(object):
+class TicketUpdateMixin(PermissionRequiredMixin):
     redirect = "default"
 
     def form_valid(self, form, form_messages=None):
