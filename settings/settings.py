@@ -150,7 +150,7 @@ INSTALLED_APPS = (
     'core',
     'databases',
     'ticket',
-    'rules',
+    'rules.apps.AutodiscoverRulesConfig',
     'django_select2',
     'captcha',
     'oauth2_provider',
@@ -186,7 +186,7 @@ USER_FIELDS = ['email']
 AUTHENTICATION_BACKENDS = (
     'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'social.backends.google.GoogleOAuth2',
+    # 'social.backends.google.GoogleOAuth2',
 )
 
 if DEBUG:
