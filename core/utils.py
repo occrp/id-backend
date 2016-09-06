@@ -9,10 +9,8 @@ from settings import settings
 
 def convert_group_to_select2field_choices(group):
     result = []
-
     for i in group:
         result.append((i.id, "%s [%s%s]" % (i.display_name, ["", "S"][i.is_staff])))
-
     return result
 
 

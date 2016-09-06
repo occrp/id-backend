@@ -13,7 +13,7 @@ from django.db.models import Q
 from settings.settings import LANGUAGES
 
 from .forms import ProfileUpdateForm, ProfileBasicsForm
-from .forms import ProfileDetailsForm, ProfileAdminForm
+from .forms import ProfileAdminForm
 
 log = logging.getLogger(__name__)
 
@@ -64,13 +64,11 @@ class ProfileUpdate(UpdateView):
             else:
                 obj = ctx["form"].save()
             ctx["form_basics"] = ProfileBasicsForm(self.request.POST, instance=obj)
-            ctx["form_details"] = ProfileDetailsForm(self.request.POST, instance=obj)
             if self.request.user.is_superuser:
                 ctx["form_admin"] = ProfileAdminForm(self.request.POST, instance=obj)
         else:
             ctx["form"] = ProfileUpdateForm(instance=obj)
             ctx["form_basics"] = ProfileBasicsForm(instance=obj)
-            ctx["form_details"] = ProfileDetailsForm(instance=obj)
             if self.request.user.is_superuser:
                 ctx["form_admin"] = ProfileAdminForm(instance=obj)
         return ctx

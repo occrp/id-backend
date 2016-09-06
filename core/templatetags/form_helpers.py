@@ -1,5 +1,4 @@
 from django_jinja import library
-import jinja2
 from core.utils import version
 
 
@@ -21,16 +20,11 @@ def get_field_type(field):
 
 @library.global_function
 def get_widget_classes(field):
-    #returns the extra classes defined in the widget attributes of the form model
+    # returns the extra classes defined in the widget attributes of the form model
     try:
         return field.field.widget.attrs['class']
     except:
         print field.field.widget.attrs
-
-
-@library.global_function
-def iso_dateformat(value):
-    return
 
 
 @library.global_function
