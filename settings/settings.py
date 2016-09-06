@@ -137,7 +137,7 @@ if "CREDENTIALS_DIR" not in vars():
 
 INSTALLED_APPS = (
     'django.contrib.auth',
-    'django.contrib.admin',
+    'django.contrib.admin.apps.SimpleAdminConfig',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -215,15 +215,15 @@ REGISTRATION_SUCCESS_URL = "/accounts/register/complete/"
 #
 ##################
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware'
+    # 'social.apps.django_app.middleware.SocialAuthExceptionMiddleware'
 )
 
 ROOT_URLCONF = 'settings.urls'

@@ -53,3 +53,9 @@ class ExternalDatabase(models.Model, DisplayMixin):
     notes = models.TextField(verbose_name=_('Notes'), blank=True)
     blog_post = models.URLField(verbose_name=_('Blog Post'), blank=True)
     video_url = models.URLField(verbose_name=_('YouTube Video Url'), blank=True)
+
+    def __str__(self):
+        return self.agency
+
+    def __unicode__(self):
+        return unicode(self.agency)
