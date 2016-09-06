@@ -9,7 +9,6 @@ from ticket.manage import Budgets
 from core.auth import perm
 from core.views import NotificationSeen, NotificationStream
 from core.views import NotificationSubscriptions
-from databases.views import DatabaseCollectionView, DatabaseMemberView
 
 
 from . import errors
@@ -27,8 +26,6 @@ urlpatterns = [
     url(r'^api/2/notifications/$', NotificationSubscriptions.as_view(), name='api_2_notifications'),
     url(r'^api/2/notifications/seen/$', NotificationSeen.as_view(), name='api_2_notifications_seen'),
     url(r'^api/2/notifications/stream/$', NotificationStream.as_view(), name='api_2_notifications_stream'),
-    url(r'^api/2/databases/$', DatabaseCollectionView.as_view(), name='api_2_databases_collection'),
-    url(r'^api/2/databases/(?P<pk>\d+)$', DatabaseMemberView.as_view(), name='api_2_databases_member'),
 
     url(r'^manage/$', perm('staff', Panel), name='manage_panel'),
     url(r'^manage/budgets/$', perm('staff', Budgets), name='manage_budgets'),

@@ -1,18 +1,12 @@
-from rest_framework import generics, status
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-
 from django.db.models import Count
-import django.forms
 from django.views.generic import ListView, TemplateView
+from rules.contrib.views import PermissionRequiredMixin
 
 from core.countries import COUNTRIES
-from core.auth import IsAtLeastStaffOrReadOnly
 
-import databases
 from .models import ExternalDatabase, DATABASE_TYPES, EXPAND_REGIONS
 from .forms import CountryFilterForm, ExternalDatabaseForm
-from .serializers import DatabaseSerializer
+
 
 class ExternalDatabaseList(ListView):
     template_name = "external_databases.jinja"
@@ -49,45 +43,28 @@ class ExternalDatabaseList(ListView):
         return context
 
 
-class DatabaseCollectionView(generics.ListCreateAPIView):
-    serializer_class = DatabaseSerializer
-    permission_classes = (IsAtLeastStaffOrReadOnly, )
-    queryset = ExternalDatabase.objects.all()
-
-
-class DatabaseMemberView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = DatabaseSerializer
-    permission_classes = (IsAtLeastStaffOrReadOnly, )
-    queryset = ExternalDatabase.objects.all()
-
-
-class DatabaseRequest(TemplateView):
+class DatabaseRequest(TemplateView, PermissionRequiredMixin):
     template_name = "database/request.jinja"
+    model = ExternalDatabase
 
     def dispatch(self, *args, **kwargs):
-        if (self.kwargs.has_key('db_id')):
+        if 'db_id' in self.kwargs:
             db_obj = ExternalDatabase.objects.get(pk=self.kwargs['db_id'])
 
         else:
             db_obj = ExternalDatabase()
 
         self.forms = {
-            'register_form': databases.forms.ExternalDatabaseForm(
+            'register_form': ExternalDatabaseForm(
                 instance=db_obj,
                 prefix=''
             )
         }
-
         return super(DatabaseRequest, self).dispatch(self.request)
 
     def get_context_data(self):
-        ctx = {
-        }
-
-        if (self.kwargs.has_key('db_id')):
+        ctx = {}
+        if 'db_id' in self.kwargs:
             ctx['pk'] = self.kwargs['db_id']
-
         ctx.update(self.forms)
-
         return ctx
-
