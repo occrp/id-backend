@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from datetime import datetime, timedelta
 import logging
 
@@ -21,6 +22,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, UpdateView
+from rules.contrib.views import PermissionRequiredMixin
 
 from accounts.models import Network, Profile
 from core.models import Notification
@@ -119,10 +121,12 @@ class AdminOustandingChargesList(PrettyPaginatorMixin, CSVorJSONResponseMixin, T
         return super(AdminOustandingChargesList, self).dispatch(*args, **kwargs)
 
 
-class CompanyTicketUpdate(TicketUpdateMixin, UpdateView):
+class CompanyTicketUpdate(TicketUpdateMixin, UpdateView,
+                          PermissionRequiredMixin):
     model = CompanyTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.CompanyTicketForm
+    permission_required = 'ticket.change_ticket'
 
     def get_context_data(self, **kwargs):
         context = super(CompanyTicketUpdate, self).get_context_data(**kwargs)
@@ -134,10 +138,12 @@ class CompanyTicketUpdate(TicketUpdateMixin, UpdateView):
         super(CompanyTicketUpdate, self).__init__(*args, **kwargs)
 
 
-class OtherTicketUpdate(TicketUpdateMixin, UpdateView):
+class OtherTicketUpdate(TicketUpdateMixin, UpdateView,
+                        PermissionRequiredMixin):
     model = OtherTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.OtherTicketForm
+    permission_required = 'ticket.change_ticket'
 
     def get_context_data(self, **kwargs):
         context = super(OtherTicketUpdate, self).get_context_data(**kwargs)
@@ -149,10 +155,12 @@ class OtherTicketUpdate(TicketUpdateMixin, UpdateView):
         super(OtherTicketUpdate, self).__init__(*args, **kwargs)
 
 
-class PersonTicketUpdate(TicketUpdateMixin, UpdateView):
+class PersonTicketUpdate(TicketUpdateMixin, UpdateView,
+                         PermissionRequiredMixin):
     model = PersonTicket
     template_name = 'tickets/request.jinja'
     form_class = forms.PersonTicketForm
+    permission_required = 'ticket.change_ticket'
 
     def get_context_data(self, **kwargs):
         context = super(PersonTicketUpdate, self).get_context_data(**kwargs)
@@ -164,9 +172,11 @@ class PersonTicketUpdate(TicketUpdateMixin, UpdateView):
         super(PersonTicketUpdate, self).__init__(*args, **kwargs)
 
 
-class TicketActionBaseHandler(TicketUpdateMixin, UpdateView):
+class TicketActionBaseHandler(TicketUpdateMixin, UpdateView,
+                              PermissionRequiredMixin):
     model = Ticket
-    # form_class = forms.TicketCancelForm
+    form_class = forms.TicketCancelForm
+    permission_required = 'ticket.change_ticket'
 
     success_messages = None
     failure_messages = None
@@ -198,6 +208,7 @@ class TicketActionBaseHandler(TicketUpdateMixin, UpdateView):
 
 class TicketActionCancel(TicketActionBaseHandler):
     form_class = forms.TicketEmptyForm
+    permission_required = 'ticket.revoke_ticket'
 
     def perform_invalid_action(self, form):
         messages.error(self.request, _('A reason must be supplied to cancel the ticket.'))
@@ -211,6 +222,7 @@ class TicketActionCancel(TicketActionBaseHandler):
 
 class TicketActionClose(TicketActionBaseHandler):
     form_class = forms.TicketEmptyForm
+    permission_required = 'ticket.change_ticket'
 
     def perform_invalid_action(self, form):
         messages.error(self.request, _('An error came up processing your close request.'))
@@ -224,6 +236,7 @@ class TicketActionClose(TicketActionBaseHandler):
 
 class TicketActionJoin(TicketActionBaseHandler):
     form_class = forms.TicketEmptyForm
+    permission_required = 'ticket.join_ticket'
 
     def perform_invalid_action(self, form):
         messages.error(self.request, _('There was an error adding you to the ticket.'))
@@ -249,49 +262,36 @@ class TicketActionJoin(TicketActionBaseHandler):
 
 def TicketActionAssign(request, pk):
     ticket = Ticket.objects.get(id=int(pk))
-    # tag = ticket.get_tag()
+    if not request.user.has_perm('ticket.manage_ticket', ticket):
+        raise PermissionDenied
     user = get_user_model().objects.get(id=request.POST.get('user'))
-    success = False
+    ticket.responders.add(user)
+    user.notifications_subscribe('id:ticket:ticket:%d:*' % ticket.id)
+    perform_ticket_update(ticket, 'Responder Joined', user.display_name + unicode(_(' has joined the ticket')), user)
 
-    if request.user.is_staff or request.user.is_superuser:
-        ticket.responders.add(user)
-        success = True
+    transition_ticket_from_new(ticket)
 
-    if success:
-        user.notifications_subscribe('id:ticket:ticket:%d:*' % ticket.id)
-        perform_ticket_update(ticket, 'Responder Joined', user.display_name + unicode(_(' has joined the ticket')), user)
-
-        transition_ticket_from_new(ticket)
-
-        if request.user.id == user.id:
-            success_message = ugettext("You have successfully been added to the ticket")
-        else:
-            success_message = user.display_name + ugettext(' has been added to the ticket.')
-
-        # Manually notify the assigned user that
-        # he has been assigned to the ticket.
-        n = Notification()
-        n.create(user, 'id:ticket:ticket:%d:join' % ticket.id,
-                 "%s added you to ticket %s" % (request.user, ticket.summary),
-                 'ticket_details', {'ticket_id': ticket.id})
-
-        return JsonResponse({'message': success_message,
-                            'status': 'success'})
+    if request.user.id == user.id:
+        success_message = ugettext("You have successfully been added to the ticket")
     else:
+        success_message = user.display_name + ugettext(' has been added to the ticket.')
 
-        if request.user.id == user.id:
-            error_message = ugettext('There was an error adding you to the ticket.')
-        else:
-            error_message = ugettext('There was an error adding the user to the ticket.')
+    # Manually notify the assigned user that
+    # he has been assigned to the ticket.
+    n = Notification()
+    n.create(user, 'id:ticket:ticket:%d:join' % ticket.id,
+             "%s added you to ticket %s" % (request.user, ticket.summary),
+             'ticket_details', {'ticket_id': ticket.id})
 
-        return JsonResponse({'message': error_message,
-                             'status': 'error'},
-                            status=403)
+    return JsonResponse({'message': success_message,
+                        'status': 'success'})
 
 
 def TicketActionUnassign(request, pk):
     ticket = Ticket.objects.get(id=int(pk))
-    # tag = ticket.get_tag()
+    if not request.user.has_perm('ticket.manage_ticket', ticket):
+        raise PermissionDenied
+
     user = get_user_model().objects.get(id=request.POST.get('user'))
 
     if user in ticket.responders.all():
@@ -320,6 +320,7 @@ def TicketActionUnassign(request, pk):
 
 class TicketActionLeave(TicketActionBaseHandler):
     form_class = forms.TicketEmptyForm
+    permission_required = 'ticket.leave_ticket'
 
     def form_valid(self, form):
         if self.request.is_ajax():
@@ -361,6 +362,7 @@ class TicketActionLeave(TicketActionBaseHandler):
 
 
 class TicketActionOpen(TicketActionBaseHandler):
+    permission_required = 'ticket.change_ticket'
 
     def perform_invalid_action(self, form):
         messages.error(self.request, _('A reason must be supplied to (re)open the ticket.'))
@@ -380,6 +382,7 @@ class TicketActionOpen(TicketActionBaseHandler):
 
 class TicketAddCharge(TicketActionBaseHandler):
     form_class = forms.RequestChargeForm
+    permission_required = 'ticket.manage_ticket'
 
     def perform_invalid_action(self, form):
         messages.error(self.request, _('Error adding charge.'))
@@ -410,13 +413,14 @@ class TicketModifyCharge(TicketUpdateMixin, UpdateView):
     model = TicketCharge
     template_name = 'modals/form_basic.jinja'
     form_class = forms.RequestChargeForm
+    permission_required = 'ticket.manage_ticket'
 
     # it should be noted here that this is ugly
     # when using the get, the pk stands for the
     def get(self, request, pk, status='success'):
         super(TicketModifyCharge, self).get(self, request)
-
-        t = render_to_string('modals/form_basic.jinja', self.get_context_data())
+        t = render_to_string('modals/form_basic.jinja',
+                             self.get_context_data())
         return JsonResponse({'status': status, 'html': t})
 
     def get_context_data(self, **kwargs):
@@ -449,6 +453,7 @@ class TicketModifyCharge(TicketUpdateMixin, UpdateView):
 
 class TicketMarkPaid(TicketActionBaseHandler):
     form_class = forms.TicketPaidForm
+    permission_required = 'ticket.manage_ticket'
 
     def perform_invalid_action(self, form):
         messages.error(self.request, _('Error marking charge paid.'))
@@ -482,6 +487,8 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
     template_name = "modals/form_basic.jinja"
     form_class = forms.TicketAdminSettingsForm
     redirect = "ticket_list"
+    permission_required = 'ticket.manage_ticket'
+
     """
     Administrator edits a ticket's properties (re-assignment, closing, etc)
     """
@@ -536,11 +543,12 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
         try:
             response = reverse_lazy(self.redirect)
             return response
-        except Exception:
-            pass
+        except Exception as ex:
+            log.exception(ex)
 
-        response = reverse_lazy(self.redirect, kwargs={'ticket_id': self.object.id})
-        return response
+        return reverse_lazy(self.redirect, kwargs={
+            'ticket_id': self.object.id
+        })
 
 
 class TicketUpdateRemoveHandler(TicketActionBaseHandler):
@@ -551,6 +559,7 @@ class TicketUpdateRemoveHandler(TicketActionBaseHandler):
     model = TicketUpdate
     form_class = forms.TicketEmptyForm
     ticket = None
+    permission_required = 'ticket.manage_ticket'
 
     def get_ticket(self):
         self.ticket = Ticket.objects.get(pk=self.object.ticket_id)
@@ -558,13 +567,17 @@ class TicketUpdateRemoveHandler(TicketActionBaseHandler):
     def form_invalid(self, form):
         self.get_ticket()
         self.perform_invalid_action(form)
-        return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": self.ticket.id}))
+        return HttpResponseRedirect(reverse('ticket_details', kwargs={
+            "ticket_id": self.ticket.id
+        }))
 
     def form_valid(self, form):
         self.get_ticket()
         self.perform_valid_action(form)
         super(TicketUpdateRemoveHandler, self).form_valid(form)
-        return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": self.ticket.id}))
+        return HttpResponseRedirect(reverse('ticket_details', kwargs={
+            "ticket_id": self.ticket.id
+        }))
 
     def perform_invalid_action(self, form):
         messages.error(self.request, _('There was an error deleting the comment.'))
@@ -579,14 +592,21 @@ class TicketUpdateRemoveHandler(TicketActionBaseHandler):
         super(TicketUpdateRemoveHandler, self).__init__(*args, **kwargs)
 
 
-class TicketDetail(TemplateView):
+class TicketDetail(TemplateView, PermissionRequiredMixin):
     template_name = "tickets/request_details.jinja"
+    permission_required = 'ticket.view_ticket'
+
     """
     View for the requester of a ticket to view what is currently going on,
     and provide feedback / close the request / etc
     """
-    def dispatch(self, request, ticket_id=None):
-        self.ticket = Ticket.objects.get(id=int(ticket_id))
+    def get_object(self):
+        return Ticket.objects.get(id=self.kwargs["ticket_id"])
+
+    def dispatch(self, request, **kwargs):
+        if not self.has_permission():
+            return self.handle_no_permission()
+        self.ticket = self.get_object()
         if hasattr(self.ticket, "personticket"):
             self.ticket = self.ticket.personticket
         elif hasattr(self.ticket, "companyticket"):
@@ -610,14 +630,9 @@ class TicketDetail(TemplateView):
         charges = (TicketCharge.objects.filter(ticket=self.ticket)
                    .order_by("created"))
 
-        outstanding = sum([x.cost for x in TicketCharge.objects.filter(ticket=self.ticket, reconciled=False)])
-
-        # tag = self.ticket.get_tag()
-
-        can_join_leave = False
-        if self.request.user != self.ticket.requester:
-            if self.request.user.is_superuser or self.request.user.is_staff:
-                can_join_leave = True
+        outstanding = TicketCharge.objects.filter(ticket=self.ticket,
+                                                  reconciled=False)
+        outstanding = sum([x.cost for x in outstanding])
 
         return {
             'ticket': self.ticket,
@@ -632,8 +647,7 @@ class TicketDetail(TemplateView):
             'flag_form': forms.RequestFlagForm(),
             'attachments': self.ticket.attachments.all(),
             'charge_form': forms.RequestChargeForm(),
-            'ticket_detail_view': True,
-            'can_join_leave': can_join_leave
+            'ticket_detail_view': True
         }
 
     # FIXME: AJAXize!
@@ -648,7 +662,9 @@ class TicketDetail(TemplateView):
         comment.author = request.user
         comment.save()
 
-        return HttpResponseRedirect(reverse('ticket_details', kwargs={ "ticket_id":self.ticket.id}))
+        return HttpResponseRedirect(reverse('ticket_details', kwargs={
+            "ticket_id": self.ticket.id
+        }))
 
 
 class TicketList(PrettyPaginatorMixin, CSVorJSONResponseMixin, TemplateView):
@@ -786,7 +802,7 @@ class TicketListMyOpen(TicketList):
     def get_ticket_set(self, user):
         return Ticket.objects.filter(
             requester=user).filter(
-            ~Q(status='closed')&~Q(status='cancelled')).order_by(
+            ~Q(status='closed') & ~Q(status='cancelled')).order_by(
             "-created")
 
 
@@ -911,14 +927,14 @@ class TicketCountries(TemplateView):
         }
 
 
-class TicketRequest(TemplateView):
+class TicketRequest(PermissionRequiredMixin, TemplateView):
     template_name = "tickets/request.jinja"
+    permission_required = 'ticket.add_ticket'
 
     # runs when django forms clean the data but before django saves the object
 
     """ Some registered user submits a ticket for response by a responder. """
     def dispatch(self, *args, **kwargs):
-
         if self.request.method == 'POST':
             self.ticket_type_form = forms.TicketTypeForm(self.request.POST,
                                                          prefix='ticket_type')
@@ -957,12 +973,13 @@ class TicketRequest(TemplateView):
             # self.add_message("Error")
             return
 
-        ticket_type = self.forms["ticket_type_form"].cleaned_data["ticket_type"]
-        form = self.forms[ticket_type+"_form"]
+        ticket_type_form = self.forms["ticket_type_form"]
+        ticket_type = ticket_type_form.cleaned_data["ticket_type"]
+        form = self.forms[ticket_type + "_form"]
 
         if not form.is_valid():
             # self.add_message(_("Error: Form was not valid"))
-            print "FORM ERROR NOT VALID!!!"
+            log.error('Invalid ticket creation form.')
             return self.get(None)
 
         ticket = form.save(commit=False)
@@ -970,23 +987,32 @@ class TicketRequest(TemplateView):
         ticket.save()
         ticket.requester.notifications_subscribe('id:ticket:ticket:%d:update' % ticket.id)
         messages.success(self.request, _('Ticket successfully created.'))
+        return HttpResponseRedirect(reverse('ticket_details', kwargs={
+            "ticket_id": ticket.id
+        }))
 
-        return HttpResponseRedirect(reverse('ticket_details', kwargs={"ticket_id": ticket.id}))
 
-
-class TicketUserFeesOverview(CSVorJSONResponseMixin, TemplateView):
+class TicketUserFeesOverview(PermissionRequiredMixin, CSVorJSONResponseMixin,
+                             TemplateView):
     template_name = 'tickets/ticket_user_fees_overview.jinja'
+    permission_required = 'ticket.report_ticket'
     CONTEXT_ITEMS_KEY = "users"
 
     def get_context_data(self):
+        q = get_user_model().objects
+        q = q.annotate(payment_count=Count('ticketcharge'))
+        q = q.annotate(payment_total=Sum('ticketcharge__cost'))
+        q = q.filter(payment_count__gt=0)
         return {
             "title": "User Fees",
-            "users": get_user_model().objects.annotate(payment_count=Count('ticketcharge')).annotate(payment_total=Sum('ticketcharge__cost')).filter(payment_count__gt=0)
+            "users": q
         }
 
 
-class TicketNetworkFeesOverview(CSVorJSONResponseMixin, TemplateView):
+class TicketNetworkFeesOverview(PermissionRequiredMixin, CSVorJSONResponseMixin,
+                                TemplateView):
     template_name = 'tickets/ticket_network_fees_overview.jinja'
+    permission_required = 'ticket.report_ticket'
     CONTEXT_ITEMS_KEY = "networks"
 
     def get_context_data(self):
@@ -996,7 +1022,8 @@ class TicketNetworkFeesOverview(CSVorJSONResponseMixin, TemplateView):
         }
 
 
-class TicketBudgetFeesOverview(CSVorJSONResponseMixin, TemplateView):
+class TicketBudgetFeesOverview(PermissionRequiredMixin, CSVorJSONResponseMixin,
+                               TemplateView):
     template_name = 'tickets/ticket_budget_fees_overview.jinja'
     CONTEXT_ITEMS_KEY = "budgets"
 
@@ -1007,8 +1034,9 @@ class TicketBudgetFeesOverview(CSVorJSONResponseMixin, TemplateView):
         }
 
 
-class TicketResolutionWorkload(TemplateView):
+class TicketResolutionWorkload(PermissionRequiredMixin, TemplateView):
     template_name = 'tickets/ticket_resolution_workload.jinja'
+    permission_required = 'ticket.report_ticket'
 
     def get_context_data(self):
         researchers = get_user_model().objects.filter(
@@ -1022,8 +1050,9 @@ class TicketResolutionWorkload(TemplateView):
         }
 
 
-class TicketResolutionTime(TemplateView):
+class TicketResolutionTime(PermissionRequiredMixin, TemplateView):
     template_name = 'tickets/ticket_resolution_time.jinja'
+    permission_required = 'ticket.report_ticket'
 
     def get_context_data(self):
         tickets = Ticket.objects.filter(status="closed")[:100]
@@ -1039,9 +1068,10 @@ class TicketResolutionTime(TemplateView):
         }
 
 
-class TicketReport(CSVorJSONResponseMixin, TemplateView):
+class TicketReport(CSVorJSONResponseMixin, PermissionRequiredMixin, TemplateView):
     template_name = 'tickets/ticket_report.jinja'
     CONTEXT_ITEMS_KEY = "tickets"
+    permission_required = 'ticket.report_ticket'
 
     def get_context_data(self):
         start_date = self.request.GET.get('start_date', '')
@@ -1065,8 +1095,8 @@ class TicketAttachmentDownload(TemplateView):
 
     def dispatch(self, request, pk=None):
         attachment = get_object_or_404(TicketAttachment, pk=pk)
-        # if request.user not in pfile.ticket.actors():
-        #     raise PermissionDenied()
+        if not request.user.has_perm('ticket.view_ticket', attachment.ticket):
+            raise PermissionDenied()
         log.debug('Serving: %s', attachment)
         resp = FileResponse(attachment.get_filehandle())
         resp['Content-Type'] = attachment.mimetype
@@ -1080,11 +1110,15 @@ class TicketAttachmentUpload(TemplateView):
         if request.method == 'POST':
             file_obj = request.FILES.get('file')
             ticket = Ticket.objects.get(pk=request.POST.get('ticket'))
-            if ticket is not None and file_obj is not None:
+            if not request.user.has_perm('ticket.view_ticket', ticket):
                 raise PermissionDenied()
+
+            if ticket is not None and file_obj is not None:
+                # raise PermissionDenied()
                 # or request.user not in ticket.actors()
                 attachment = TicketAttachment.create_fh(ticket, request.user,
                                                         file_obj)
                 log.debug('File created: %r', attachment)
-        return HttpResponseRedirect(reverse('ticket_details',
-                                            kwargs={"ticket_id": ticket.id}))
+        return HttpResponseRedirect(reverse('ticket_details', kwargs={
+            "ticket_id": ticket.id
+        }))
