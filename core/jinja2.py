@@ -5,7 +5,6 @@ from django.core.urlresolvers import reverse
 from django.utils import translation, timesince, dateformat
 
 from jinja2 import Environment, Template
-from jinja2 import contextfunction
 
 from .utils import version
 
@@ -65,6 +64,7 @@ class ContextTemplate(Template):
         context['LOCALE'] = to_locale(get_language())
         context['LOCALE_LC'] = to_locale(get_language()).lower()
         context['LANGUAGE_LC'] = lang.lower()
+        context['LANGUAGES'] = settings.LANGUAGES
         short_format = formats.get_format("SHORT_DATE_FORMAT",
                                           lang=get_language())
         context['LANGUAGE_SHORT_DATE_FORMAT'] = short_format
