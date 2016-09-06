@@ -16,8 +16,8 @@
     {% set button_text = 'Save' %}
   {% endif %}
 
-  <form method="POST" class="form-horizontal requestform" enctype="multipart/form-data">
-    {% csrf_token %}
+  <form method="POST" class="form-horizontal requestform" enctype="multipart/form-data" novalidate>
+    {{ csrf_input }}
 
     <div class="control-group" style="{% if not ticket_type_form is defined %}display: none;{% endif %}">
       {% if ticket_type_form is defined %}{{ticket_type_form.as_p()}}{% endif %}

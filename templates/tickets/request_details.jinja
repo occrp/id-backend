@@ -33,18 +33,10 @@
             </div>
             {% if ticket.is_open() %}
 
-            <div class="btn-group">
-                {% if user in ticket.actors() %}
-                    <a id="ticket-file-add" role="button" class="btn podaci_add" data-ticket="{{ ticket.id }}">
-                        <i class="fa fa-file-o"></i> {% trans %}Attach Files{% endtrans %}
-                    </a>
-                {% endif %}
-            </div>
-
             {% if user.is_staff %}
                 {% if user not in ticket.actors() %}
                     <form action="{{ url('ticket_join', pk=ticket.id) }}" method="POST" class="inline-form">
-                        {% csrf_token %}
+                        {{ csrf_input }}
                         <button type="submit" class="btn">
                             <i class="fa fa-eye-open"></i>
                             {% trans %}Join{% endtrans %}
@@ -52,7 +44,7 @@
                     </form>
                 {% else %}
                     <form action="{{ url('ticket_leave', pk=ticket.id) }}" method="POST" class="inline-form">
-                        {% csrf_token %}
+                        {{ csrf_input }}
                         <button type="submit" class="btn">
                             <i class='fa fa-eye-open'></i>
                             {% trans %}Leave{% endtrans %}

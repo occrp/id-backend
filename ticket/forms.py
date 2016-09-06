@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
-from django_select2 import Select2MultipleChoiceField
+from django_select2.forms import Select2Widget
 
 import core.widgets
 import core.utils
@@ -38,7 +38,7 @@ class RequestChargeForm(forms.ModelForm):
         model = models.TicketCharge
         exclude = ['ticket', 'user', 'created']
         widgets = {
-            'original_currency': forms.Select(choices=CURRENCIES),
+            'original_currency': Select2Widget(choices=CURRENCIES),
         }
 
     def __init__(self, *args, **kwargs):
@@ -143,7 +143,7 @@ class OtherTicketForm(TicketForm):
 
 
 class TicketAdminSettingsForm(forms.ModelForm):
-    responders = Select2MultipleChoiceField(label=_("Responders"), required=False)
+    responders = forms.ChoiceField(label=_("Responders"), required=False)
     redirect = forms.CharField(required=False, initial="default", widget=forms.HiddenInput)
 
     class Meta:

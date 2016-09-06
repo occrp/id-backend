@@ -1,5 +1,6 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.views.generic import TemplateView
+from django.views.i18n import javascript_catalog
 
 import accounts.views
 from core.manage import Panel
@@ -17,7 +18,7 @@ js_info_dict = {
     'packages': ('ticket'),
 }
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', perm('any', TemplateView, template_name="splash.jinja"), name="home"),
     url(r'^about/id2/$', perm('any', TemplateView, template_name="about_id.jinja"), name='about_id'),
     url(r'^about/occrp/$', perm('any', TemplateView, template_name="about_us.jinja"), name='about_us'),
@@ -41,12 +42,12 @@ urlpatterns = patterns('',
     url(r'^ticket/', include('ticket.urls')),
     url(r'^databases/', include('databases.urls')),
 
-    url(r'^i18n/', include('django.conf.urls.i18n')),
-    url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-    url(r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
+    # url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^jsi18n/$', javascript_catalog, js_info_dict),
+    url(r'^jsi18n/(?P<packages>\S+?)/$', javascript_catalog),
 
     url(r'^captcha/', include('captcha.urls')),
-)
+]
 
 handler400 = errors._400
 handler401 = errors._401
