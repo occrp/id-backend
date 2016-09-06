@@ -7,7 +7,7 @@ from .models import Network, Profile
 
 
 class Statistics(TemplateView):
-    template_name = "manage/statistics.jinja"
+    template_name = "statistics.jinja"
 
     def get_context_data(self):
         return {
