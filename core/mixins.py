@@ -36,17 +36,17 @@ class JSONResponseMixin(object):
         return self.render_to_response(request)
 
     def render_to_response(self, request):
-        "Returns a JSON response containing 'context' as payload"
+        """Return a JSON response containing 'context' as payload."""
         return self.get_json_response(self.convert_context_to_json())
 
     def get_json_response(self, content, **httpresponse_kwargs):
-        "Construct an `HttpResponse` object."
+        """Construct an `HttpResponse` object."""
         return HttpResponse(content,
                             content_type='application/json',
                             **httpresponse_kwargs)
 
     def convert_context_to_json(self):
-        "Convert the context dictionary into a JSON object"
+        """Convert the context dictionary into a JSON object."""
         return json_dumps(self.get_context_data())
 
 
@@ -67,10 +67,8 @@ class CSVResponder(object):
                                            % slugify(title))
 
         writer = csv.writer(response)
-
         for item in context[ctxkey]:
             writer.writerow(item.as_sequence())
-
         return response
 
 
@@ -150,7 +148,8 @@ class PrettyPaginatorMixin(object):
             if padded_page_end > total_pages:
                 padded_page_end = total_pages
                 padded_page_start = total_pages - (page_padding * 2 + 1)
-                if padded_page_start <= 1: padded_page_start = 2
+                if padded_page_start <= 1:
+                    padded_page_start = 2
 
             obj['page_objects'] = [self.create_page_object(1,
                                                            self.is_current_page(1, page_number),
@@ -186,14 +185,14 @@ class NotificationMixin(object):
         assert(notification_channel_format.match(channel))
         components = channel_components(channel)
 
-        terms = ((Q(project=components["project"]) | Q(project=None))
-               & (Q(module=components["module"]) | Q(module=None))
-               & (Q(model=components["model"]) | Q(model=None))
-               & (Q(instance=components["instance"]) | Q(instance=None))
-               & (Q(action=components["action"]) | Q(action=None))
-               )
+        terms = ((Q(project=components["project"]) | Q(project=None)) &
+                 (Q(module=components["module"]) | Q(module=None)) &
+                 (Q(model=components["model"]) | Q(model=None)) &
+                 (Q(instance=components["instance"]) | Q(instance=None)) &
+                 (Q(action=components["action"]) | Q(action=None)))
 
-        return set([ns.user for ns in NotificationSubscription.objects.filter(terms)])
+        subscriptions = NotificationSubscription.objects.filter(terms)
+        return set([ns.user for ns in subscriptions])
 
     def get_channel(self, action="none", alter_notify=None):
         if hasattr(self, "id"):
@@ -202,7 +201,7 @@ class NotificationMixin(object):
             key = 0
 
         dets = {
-            "project":  "id",
+            "project": "id",
             "module": self.__module__.split(".")[0].lower(),
             "model": self.__class__.__name__.lower(),
             "instance": key,
@@ -211,19 +210,22 @@ class NotificationMixin(object):
 
         # Now, if requested, put in place custom value
         for det_key in ['project', 'instance', 'action', 'module', 'model']:
-            if (alter_notify.has_key(det_key) == True):
+            if det_key in alter_notify:
                 dets[det_key] = alter_notify[det_key]
 
         return "%(project)s:%(module)s:%(model)s:%(instance)s:%(action)s" % dets
 
-    def notify(self, text, user=None, urlname=None, params={}, action="none", url=None, alter_notify={}):
+    def notify(self, text, user=None, urlname=None, params={}, action="none",
+               url=None, alter_notify={}):
         channel = self.get_channel(action, alter_notify)
         self._do_notify(channel, text, user, urlname, params, url)
 
-    def notify_channel(self, channel, text, user=None, urlname=None, params={}, url=None):
+    def notify_channel(self, channel, text, user=None, urlname=None,
+                       params={}, url=None):
         self._do_notify(channel, text, user, urlname, params)
 
-    def _do_notify(self, channel, text, user=None, urlname=None, params={}, url=None):
+    def _do_notify(self, channel, text, user=None, urlname=None,
+                   params={}, url=None):
         subs = self.get_notification_channel_subscribers(channel)
         for u in subs:
             if u == user:
