@@ -1,5 +1,5 @@
 import logging
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -57,6 +57,7 @@ class ProfileManager(NotificationMixin, BaseUserManager):
                           is_superuser=is_superuser, date_joined=now,
                           **extra_fields)
         user.set_password(password)
+        user.last_login = datetime.utcnow()
         user.save(using=self._db)
         return user
 
