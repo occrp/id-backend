@@ -87,7 +87,7 @@ LOGGING = {
         'mail_admins': {
             'class': 'django.utils.log.AdminEmailHandler',
             'level': 'WARNING',
-             # But the emails are plain text by default - HTML is nicer
+            # But the emails are plain text by default - HTML is nicer
             'include_html': True,
         },
         'file': {
@@ -97,10 +97,6 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 5,  # 5 MB
             'backupCount': 5,
             'formatter': 'verbose'
-        },
-        'audit': {
-            'level': 'INFO',
-            'class': 'core.log.AuditLogHandler',
         }
     },
     'loggers': {
