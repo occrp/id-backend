@@ -11,7 +11,6 @@
 # by default these are false, for SECURITY! and great justice!
 # change manually if you need that
 DEBUG = True
-TEMPLATE_DEBUG = True
 
 # SECURITY WARNING: keep the secret key used in production secret! Change for your local setup!
 SECRET_KEY = 'lk;jsaoipas0202lknasdlsadfasdfdsakhao2f2sdfasfdsafdsafdsafasdfdsafdsafaib23jsk'
