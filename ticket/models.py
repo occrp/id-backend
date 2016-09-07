@@ -27,24 +27,36 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
 
     ticket_type = ""
     # Staff-facing fields
-    requester = models.ForeignKey(AUTH_USER_MODEL, related_name="ticket_requests", db_index=True)
-    requester_type = models.CharField(blank=False, max_length=70, choices=REQUESTER_TYPES,
-                                      verbose_name=_('Requester Type'), default='subs')
-    responders = models.ManyToManyField(AUTH_USER_MODEL, related_name="tickets_responded")
+    requester = models.ForeignKey(AUTH_USER_MODEL,
+                                  related_name="ticket_requests",
+                                  db_index=True)
+    requester_type = models.CharField(blank=False, max_length=70,
+                                      choices=REQUESTER_TYPES,
+                                      verbose_name=_('Requester Type'),
+                                      default='subs')
+    responders = models.ManyToManyField(AUTH_USER_MODEL,
+                                        related_name="tickets_responded")
 
     created = models.DateTimeField(default=datetime.datetime.now, null=False)
-    status = models.CharField(max_length=70, choices=TICKET_STATUS, default='new', db_index=True)
-    status_updated = models.DateTimeField(default=datetime.datetime.now, null=False)
+    status = models.CharField(max_length=70, choices=TICKET_STATUS,
+                              default='new', db_index=True)
+    status_updated = models.DateTimeField(default=datetime.datetime.now,
+                                          null=False)
     findings_visible = models.BooleanField(default=False,
                                            verbose_name=_('Findings Public'))
     is_for_profit = models.BooleanField(default=False,
                                         verbose_name=_('For-Profit?'))
     is_public = models.BooleanField(default=False,
-                                    verbose_name=_('Public?'), help_text=_('Are you okay with the findings becoming public immediately?'))
+                                    verbose_name=_('Public?'),
+                                    help_text=_('Are you okay with the findings becoming public immediately?'))
     user_pays = models.BooleanField(default=True)
-    deadline = models.DateField(null=True, blank=True, verbose_name=_('Deadline'), help_text=_('How soon do you need this request fulfilled? We will try to meet your deadline, but please note that our researchers are quite busy -- give them as much time as you possibly can!'))
-    sensitive = models.BooleanField(default=False, verbose_name=_('Sensitive?'))
-    whysensitive = models.CharField(max_length=150, blank=True, verbose_name=_('Why is it sensitive?'))
+    deadline = models.DateField(null=True, blank=True,
+                                verbose_name=_('Deadline'),
+                                help_text=_('How soon do you need this request fulfilled? We will try to meet your deadline, but please note that our researchers are quite busy -- give them as much time as you possibly can!'))
+    sensitive = models.BooleanField(default=False,
+                                    verbose_name=_('Sensitive?'))
+    whysensitive = models.CharField(max_length=150, blank=True,
+                                    verbose_name=_('Why is it sensitive?'))
 
     def get_actual_ticket(self):
         try:
@@ -60,20 +72,9 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
         except:
             pass
 
-    def get_csv_header(self):
-        return ["ticket_type", "summary", "requester_type", "status"]
-
     def as_sequence(self):
         # FIXME
-        return []  # getattr(self, i) for i in self.get_csv_header()]
-
-    def most_fields(self):
-        """Return publicly visible fields of this ticket."""
-        output = [
-            (_('Summary'), self.summary),
-            (_('Requested by'), self.requester.get().display_name),
-        ]
-        return output
+        return []
 
     # User-facing fields
     @property
@@ -178,16 +179,6 @@ class PersonTicket(Ticket):
     def summary(self):
         return truncate_summary("%s %s" % (self.name, self.surname))
 
-    def most_fields(self):
-        """Return publicly visible fields of this ticket."""
-        output = Ticket.most_fields(self)
-        for i in ('name', 'aliases', 'background', 'biography', 'family',
-                  'business_activities', 'dob', 'birthplace',
-                  'initial_information', 'location'):
-            output.append((self._properties[i]._verbose_name,
-                           self.get_display_value(i)))
-        return output
-
     def to_json(self):
         data = super(PersonTicket, self).to_json()
         data.update({
@@ -222,15 +213,6 @@ class CompanyTicket(Ticket):
 
     def get_country(self):
         return dict(COUNTRIES).get(self.country, self.country)
-
-    def most_fields(self):
-        """Return publicly visible fields of this ticket."""
-        output = Ticket.most_fields(self)
-        for i in ('name', 'country', 'background', 'sources',
-                  'connections'):
-            output.append((self._properties[i]._verbose_name,
-                           self.get_display_value(i)))
-        return output
 
     def to_json(self):
         data = super(CompanyTicket, self).to_json()
@@ -337,7 +319,8 @@ class TicketCharge(models.Model, DisplayMixin):
     # whether the bill has been reconciled or not
     reconciled = models.BooleanField(default=False)
     reconciled_date = models.DateTimeField(blank=True, null=True)
-    paid_status = models.CharField(max_length=70, choices=PAID_STATUS, default='unpaid', blank=False)
+    paid_status = models.CharField(max_length=70, choices=PAID_STATUS,
+                                   default='unpaid', blank=False)
 
     # when the charge was created
     created = models.DateTimeField(default=datetime.datetime.now, null=False)
@@ -379,7 +362,7 @@ class TicketCharge(models.Model, DisplayMixin):
 class TicketAttachment(models.Model, NotificationMixin, DisplayMixin):
     """Record for a file attached to a ticket."""
 
-    # Surprise history lesson! This used to be it's own Django app, Podaci -
+    # Surprise history lesson! This used to be it's own app, Podaci -
     # basically a version of Dropbox built into ID. Because it turns out that
     # this involves actual work to get right, documents are now (once more)
     # stored as an attachment to a ticket.
