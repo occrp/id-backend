@@ -84,8 +84,8 @@
                 <b class="caret"></b>
               </a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <li  class="{% if url('profile', pk=user.id) in request.path %}active{% endif %}">
-                  <a href="{{ url('profile', pk=user.id) }}"><i class="fa fa-user"></i> {% trans %}Profile{% endtrans %}</a>
+                <li  class="{% if url('profile') in request.path %}active{% endif %}">
+                  <a href="{{ url('profile') }}"><i class="fa fa-user"></i> {% trans %}Profile{% endtrans %}</a>
                 </li>
                 {% if user.is_staff or user.is_superuser %}
                   <li>

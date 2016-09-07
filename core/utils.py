@@ -7,10 +7,10 @@ from django.db.models.sql.query import Query
 from settings import settings
 
 
-def convert_group_to_select2field_choices(group):
+def convert_group_to_select2field_choices(users):
     result = []
-    for i in group:
-        result.append((i.id, "%s [%s%s]" % (i.display_name, ["", "S"][i.is_staff])))
+    for user in users:
+        result.append((user.id, user.display_name))
     return result
 
 

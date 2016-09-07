@@ -501,29 +501,6 @@ class TicketAdminSettingsHandler(TicketUpdateMixin, UpdateView):
         messages.error(self.request, _('There was an error updating the ticket.'))
         return HttpResponseRedirect(reverse(self.redirect))
 
-    def form_valid(self, form):
-        ticket = self.object
-        form_responders = [int(i) for i in form.cleaned_data['responders']]
-        current_responders = self.convert_users_to_ids(ticket.responders.all())
-
-        if 'redirect' in self.request.POST:
-            self.redirect = self.request.POST['redirect']
-
-        if len(form_responders) > 0:
-            self.transition_ticket_from_new(ticket)
-
-        for i in form_responders:
-            if i not in current_responders:
-                u = get_user_model().objects.get(pk=i)
-                self.perform_ticket_update(ticket, 'Responder Joined', u.display_name + unicode(_(' has joined the ticket')))
-
-        for i in current_responders:
-            if i not in form_responders:
-                u = get_user_model().objects.get(pk=i)
-                self.perform_ticket_update(ticket, 'Responder Left', u.display_name + unicode(_(' has left the ticket')))
-
-        return super(TicketAdminSettingsHandler, self).form_valid(form)
-
     def get(self, request, pk, redirect, status='success'):
         super(TicketAdminSettingsHandler, self).get(self, request)
         self.redirect = redirect
@@ -1025,6 +1002,7 @@ class TicketNetworkFeesOverview(PermissionRequiredMixin, CSVorJSONResponseMixin,
 class TicketBudgetFeesOverview(PermissionRequiredMixin, CSVorJSONResponseMixin,
                                TemplateView):
     template_name = 'tickets/ticket_budget_fees_overview.jinja'
+    permission_required = 'ticket.report_ticket'
     CONTEXT_ITEMS_KEY = "budgets"
 
     def get_context_data(self):

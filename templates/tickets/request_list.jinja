@@ -48,7 +48,12 @@
 
     <div style="line-height: 1.2em; margin-bottom: 0.5em;">
       <span style="display:inline-block; width:6.5em;">{% trans %}Requested by{% endtrans %}</span>
-      <a href="{{url('ticket_user_list', user_id=ticket.requester.id)}}">{{ticket.requester}}</a> <small>(<a href="{{url('profile', ticket.requester.id)}}">Profile</a>)</small> {% trans %}on{% endtrans %} <b>{{ticket.created|date('Y-m-d')}}</b>{% if ticket.deadline %}, {% trans %}complete by{% endtrans %} <b>{{ticket.deadline|date('Y-m-d')}}</b>{% endif %}.
+      <a href="{{url('ticket_user_list', user_id=ticket.requester.id)}}">{{ticket.requester}}</a>
+      {% if user.is_staff or user.is_superuser %}
+        <small>(<a href="{{url('admin:accounts_profile_change', ticket.requester.id)}}">Admin</a>)</small>
+      {% endif %}
+
+      {% trans %}on{% endtrans %} <b>{{ticket.created|date('Y-m-d')}}</b>{% if ticket.deadline %}, {% trans %}complete by{% endtrans %} <b>{{ticket.deadline|date('Y-m-d')}}</b>{% endif %}.
     </div>
 
     <div>
@@ -56,7 +61,7 @@
       {% if ticket.actors()|length > 0 %}
         {% for actor in ticket.actors() %}
           <span class="assignee" style="background: #eee; padding: 2px; border: 1px solid #ccc;">
-            <a href="{{ url('profile', pk=actor.id)}}">{{ actor.display_name }}</a>
+            {{ actor.display_name }}
             <a class="remove_user" href="#" data-key="{{ticket.id}}" data-user="{{actor.id}}"><i class="fa fa-close"></i></a>
           </span>
         {% endfor %}

@@ -23,7 +23,7 @@
             {% if researcher.is_staff %}<abbr title="Staff member">S</abbr>{% endif %}
             {% if researcher.is_superuser %}<abbr title="Administrator">A</abbr>{% endif %}
         </td>
-        <td><a href="{{url("profile", researcher.id)}}">{{researcher}}</a></td>
+        <td><a href="{{url('admin:accounts_profile_change', researcher.id)}}">{{researcher}}</a></td>
         <td>{{researcher.tickets_assigned_open()}}</td>
         <td>{{researcher.tickets_assigned_closed()}}</td>
         <td>{{researcher.tickets_assigned_total()}}</td>
