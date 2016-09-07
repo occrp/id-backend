@@ -33,7 +33,7 @@
     {% for ticket in tickets %}
     <tr>
         <td style="white-space:nowrap;">{{ticket.created|date('Y-m-d')}}</td>
-        <td><a href="{{url('profile', ticket.requester.id)}}">{{ticket.requester}}</a></td>
+        <td><a href="{{url('admin:accounts_profile_change', ticket.requester.id)}}">{{ticket.requester}}</a></td>
         <td>{{ticket.requester.country}}</td>
         <td>{{ticket.requester.organization}}</td>
         <td>{{ticket.requester.network}}</td>

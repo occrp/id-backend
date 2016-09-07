@@ -1,28 +1,24 @@
 import logging
-
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
-from django.core.exceptions import PermissionDenied
 from django.views.generic import TemplateView, UpdateView
+from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django.conf import settings
 
-from settings.settings import LANGUAGES
-
-from .forms import ProfileUpdateForm, ProfileBasicsForm
-from .forms import ProfileAdminForm
+from .forms import ProfileUpdateForm
 
 log = logging.getLogger(__name__)
 
 
 class ProfileSetLanguage(TemplateView):
-    template_name = 'registration/profile.jinja'
+    # template_name = 'registration/profile.jinja'
 
     def get(self, request, lang, **kwargs):
-        if lang in [x[0] for x in LANGUAGES]:
+        if lang in [x[0] for x in settings.LANGUAGES]:
             request.session['django_language'] = lang
             if request.user.is_authenticated():
                 request.user.locale = lang
@@ -36,42 +32,29 @@ class ProfileSetLanguage(TemplateView):
 
 
 class ProfileUpdate(UpdateView):
-    template_name = 'registration/profile.jinja'
+    template_name = 'profile.jinja'
     permission_classes = (IsAuthenticated,)
     form_class = ProfileUpdateForm
 
-    def get_success_url(self):
-        return "/accounts/profile/%s/" % self.get_object().id
-
     def get_object(self):
-        if 'pk' not in self.kwargs:
-            return self.request.user
-        if self.request.user.is_superuser:
-            return get_user_model().objects.get(id=self.kwargs["pk"])
-        if self.request.user.id != int(self.kwargs["pk"]):
-            raise PermissionDenied
         return self.request.user
 
     def get_context_data(self):
         obj = self.get_object()
         ctx = super(ProfileUpdate, self).get_context_data()
         ctx["profile"] = obj
-        ctx["editing_self"] = obj == self.request.user
         if self.request.method == "POST":
             ctx["form"] = ProfileUpdateForm(self.request.POST, instance=obj)
             if not ctx["form"].is_valid():
                 log.error("Error: %r", ctx["form"].errors)
             else:
                 obj = ctx["form"].save()
-            ctx["form_basics"] = ProfileBasicsForm(self.request.POST, instance=obj)
-            if self.request.user.is_superuser:
-                ctx["form_admin"] = ProfileAdminForm(self.request.POST, instance=obj)
         else:
             ctx["form"] = ProfileUpdateForm(instance=obj)
-            ctx["form_basics"] = ProfileBasicsForm(instance=obj)
-            if self.request.user.is_superuser:
-                ctx["form_admin"] = ProfileAdminForm(instance=obj)
         return ctx
+
+    def get_success_url(self):
+        return reverse('profile')
 
 
 class UserSuggest(APIView):

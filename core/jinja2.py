@@ -1,17 +1,15 @@
-from __future__ import absolute_import  # Python 2 only
-
-from django.contrib.staticfiles.storage import staticfiles_storage
-from django.core.urlresolvers import reverse
-from django.utils import translation, timesince, dateformat
+from __future__ import absolute_import
 
 from jinja2 import Environment, Template
+from django.utils.translation import to_locale, get_language
+from django.core.urlresolvers import resolve, reverse
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.utils import translation, timesince, dateformat
+from django.utils import formats
+from django.conf import settings
 
 from .utils import version
 
-from django.utils.translation import to_locale, get_language
-from django.core.urlresolvers import resolve
-from django.utils import formats
-from django.conf import settings
 
 EXTENSIONS = [
     'jinja2.ext.i18n',
@@ -60,7 +58,10 @@ class ContextTemplate(Template):
         lang = get_language()
         if lang.startswith("en-"):
             lang = "en"
-        context['user'] = request.user
+        if request is not None:
+            context['user'] = request.user
+            context['ROUTE_NAME'] = resolve(request.path_info).url_name
+
         context['LOCALE'] = to_locale(get_language())
         context['LOCALE_LC'] = to_locale(get_language()).lower()
         context['LANGUAGE_LC'] = lang.lower()
@@ -69,7 +70,6 @@ class ContextTemplate(Template):
                                           lang=get_language())
         context['LANGUAGE_SHORT_DATE_FORMAT'] = short_format
 
-        context['ROUTE_NAME'] = resolve(request.path_info).url_name
         context['DEBUG'] = settings.DEBUG
         context['EMERGENCY'] = settings.EMERGENCY
         return super(ContextTemplate, self).render(context)
