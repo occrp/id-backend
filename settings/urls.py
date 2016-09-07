@@ -15,8 +15,6 @@ from databases.admin import ExternalDatabaseAdmin  # noqa
 from accounts.admin import ProfileAdmin, NetworkAdmin  # noqa
 from ticket.admin import BudgetAdmin  # noqa
 
-from . import errors
-
 js_info_dict = {
     'packages': ('ticket'),
 }
