@@ -125,12 +125,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='ticket',
-            name='files',
-            field=models.ManyToManyField(related_name='tickets', to='podaci.PodaciFile'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='ticket',
             name='requester',
             field=models.ForeignKey(related_name='ticket_requests', to=settings.AUTH_USER_MODEL),
             preserve_default=True,

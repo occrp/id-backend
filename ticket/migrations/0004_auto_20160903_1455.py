@@ -12,10 +12,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RemoveField(
-            model_name='ticket',
-            name='files',
-        ),
-        migrations.RemoveField(
             model_name='ticketattachment',
             name='title',
         ),

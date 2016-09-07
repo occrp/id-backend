@@ -98,10 +98,6 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 5,  # 5 MB
             'backupCount': 5,
             'formatter': 'verbose'
-        },
-        'audit': {
-            'level': 'INFO',
-            'class': 'core.log.AuditLogHandler',
         }
     },
     'loggers': {
