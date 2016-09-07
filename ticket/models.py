@@ -202,10 +202,12 @@ class CompanyTicket(Ticket):
                             verbose_name=_('Company Name'))
     country = models.CharField(max_length=100, choices=COUNTRIES, blank=False,
                                verbose_name=_('Country Registered'))
-    background = models.TextField(max_length=300, blank=False, verbose_name=_('Your story'))
-    sources = models.TextField(blank=False, max_length=150, verbose_name=_('Where have you looked?'))
-    # story = models.TextField(blank=False, verbose_name=_('Your Story'))
-    connections = models.TextField(blank=True, verbose_name=_('Connected People'))
+    background = models.TextField(max_length=300, blank=False,
+                                  verbose_name=_('Your story'))
+    sources = models.TextField(blank=False, max_length=150,
+                               verbose_name=_('Where have you looked?'))
+    connections = models.TextField(blank=True,
+                                   verbose_name=_('Connected People'))
 
     @property
     def summary(self):
@@ -248,7 +250,8 @@ class OtherTicket(Ticket):
 class TicketUpdate(models.Model, NotificationMixin):
     update_type = models.CharField(max_length=70, choices=TICKET_UPDATE_TYPES,
                                    default=TICKET_UPDATE_TYPES[0][0])
-    author = models.ForeignKey(AUTH_USER_MODEL, blank=False)  # either requester, or responder
+    # either requester, or responder:
+    author = models.ForeignKey(AUTH_USER_MODEL, blank=False)
     ticket = models.ForeignKey(Ticket, blank=False)
     created = models.DateTimeField(default=datetime.datetime.now, null=False)
     comment = models.TextField()
