@@ -11,8 +11,7 @@ urlpatterns = [
     url(r'^login/$', views.login, {'template_name': 'registration/login.jinja'}, name='login'),
     url(r'^logout/', views.logout, {}, name='logout'),
     url(r'^suggest/$', perm('user', accounts.UserSuggest), name='userprofile_suggest'),
-    url(r'^profile/$', perm('user', accounts.ProfileUpdate), name='profile'),
-    url(r'^profile/(?P<pk>[0-9]+)/$', perm('user', accounts.ProfileUpdate), name='profile'),
+    url(r'^profile$', perm('user', accounts.ProfileUpdate), name='profile'),
     url(r'^setlanguage/(?P<lang>[a-zA-Z]{2})/$', perm('any', accounts.ProfileSetLanguage), name='account_set_language'),
 
     url(r'^password/change/$', auth_views.password_change, {'template_name': 'registration/password_change_form.jinja'}, name='password_change'),

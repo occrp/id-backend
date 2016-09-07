@@ -143,31 +143,27 @@ class OtherTicketForm(TicketForm):
 
 
 class TicketAdminSettingsForm(forms.ModelForm):
-    responders = forms.ChoiceField(label=_("Responders"), required=False)
-    redirect = forms.CharField(required=False, initial="default", widget=forms.HiddenInput)
+    redirect = forms.CharField(required=False, initial="default",
+                               widget=forms.HiddenInput)
 
     class Meta:
         model = models.Ticket
-        fields = ['responders', 'requester_type', 'findings_visible', 'is_for_profit', 'is_public']
+        fields = ['requester_type', 'findings_visible',
+                  'is_for_profit', 'is_public']
         widgets = {
             'requester_type': forms.RadioSelect()
         }
 
     def __init__(self, *args, **kwargs):
         super(TicketAdminSettingsForm, self).__init__(*args, **kwargs)
-        self.fields['responders'].choices = (
-            core.utils.convert_group_to_select2field_choices(
-                get_user_model().objects.all().filter(
-                    Q(is_superuser=1) |
-                    Q(is_staff=1)
-                )
-            )
-        )
-        self.fields['requester_type'].widget.attrs.update({'choices': constants.REQUESTER_TYPES})
+        self.fields['requester_type'].widget.attrs.update({
+            'choices': constants.REQUESTER_TYPES
+        })
 
 
 class TicketCancelForm(forms.ModelForm):
-    reason = forms.CharField(label=_("Reason"), widget=forms.Textarea(attrs={'rows': 6}))
+    reason = forms.CharField(label=_("Reason"),
+                             widget=forms.Textarea(attrs={'rows': 6}))
 
     class Meta:
         model = models.Ticket

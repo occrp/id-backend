@@ -86,18 +86,8 @@ class ProfileRegistrationForm(forms.Form):
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
-        exclude = ('user', 'password', 'last_login', 'email', 'date_joined')
-        model = models.Profile
-
-
-class ProfileBasicsForm(forms.ModelForm):
-    class Meta:
         model = models.Profile
         fields = ("first_name", "last_name", "locale",
                   "country", "phone_number", "organization",)
-
-
-class ProfileAdminForm(forms.ModelForm):
-    class Meta:
-        model = models.Profile
-        fields = ("network", "is_staff", "is_superuser", "is_active")
+        exclude = ('user', 'password', 'last_login', 'email', 'date_joined',
+                   "network", "is_staff", "is_superuser", "is_active")
