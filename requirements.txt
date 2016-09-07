@@ -7,7 +7,7 @@ python-magic
 django-compressor==2.1
 django-registration-redux==1.4
 requests>=2.11
-flup
+gunicorn
 django_select2==5.8.9
 djangorestframework==3.4.6
 oauth2client==3.0.0
@@ -18,3 +18,4 @@ psycopg2
 django-simple-captcha
 django-oauth-toolkit
 oauth2_provider
+dj-database-url
