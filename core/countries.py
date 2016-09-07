@@ -271,28 +271,3 @@ CONTINENTS = {
     'Africa': set(['BF', 'DJ', 'BI', 'BJ', 'ZA', 'BW', 'DZ', 'GN', 'YT', 'RW', 'TZ', 'GQ', 'NA', 'NE', 'NG', 'TN', 'RE', 'LR', 'LS', 'TG', 'TD', 'GH', 'LY', 'GW', 'ZM', 'CI', 'EH', 'CM', 'EG', 'SL', 'CG', 'CF', 'AO', 'CD', 'GA', 'ET', 'GM', 'ZW', 'CV', 'ER', 'SZ', 'MG', 'MA', 'KE', 'SS', 'ML', 'KM', 'ST', 'MU', 'MW', 'SH', 'SO', 'SN', 'MR', 'SC', 'UG', 'SD', 'MZ']),
     'Asia': set(['BD', 'KH', 'BN', 'JP', 'BT', 'HK', 'JO', 'PS', 'AZ', 'LB', 'LA', 'TR', 'LK', 'TL', 'TM', 'TJ', 'TH', 'NP', 'PK', 'PH', 'AE', 'CN', 'AF', 'IQ', 'BH', 'IR', 'AM', 'SY', 'VN', 'CY', 'IL', 'IN', 'KP', 'ID', 'OM', 'KG', 'UZ', 'MM', 'SG', 'MO', 'MN', 'GE', 'QA', 'KR', 'MV', 'KW', 'KZ', 'SA', 'MY', 'YE']),
     'Americas': set(['DO', 'CL', 'DM', 'BB', 'BL', 'BM', 'BO', 'HT', 'SV', 'JM', 'GT', 'HN', 'BQ', 'BR', 'BS', 'FK', 'BZ', 'PR', 'NI', 'LC', 'TT', 'GP', 'PA', 'UY', 'PE', 'TC', 'PM', 'VC', 'CO', 'VE', 'AG', 'VG', 'AI', 'VI', 'CA', 'EC', 'GF', 'GD', 'GY', 'AW', 'CR', 'GL', 'CW', 'CU', 'MF', 'SX', 'SR', 'KN', 'US', 'AR', 'MQ', 'PY', 'MS', 'KY', 'MX'])}
-
-REGIONS = {
-     'Australia and New Zealand': set(['NZ', 'AU', 'NF']),
-     'Caribbean': set(['DO', 'DM', 'BB', 'BL', 'HT', 'JM', 'BQ', 'BS', 'PR', 'LC', 'TT', 'GP', 'TC', 'VC', 'AG', 'VG', 'AI', 'VI', 'GD', 'AW', 'CW', 'CU', 'MF', 'SX', 'KN', 'MQ', 'MS', 'KY']),
-     'Central America': set(['NI', 'GT', 'SV', 'PA', 'HN', 'CR', 'MX', 'BZ']),
-     'Central Asia': set(['KZ', 'TJ', 'KG', 'TM', 'UZ']),
-     'Eastern Africa': set(['ZM', 'MG', 'RW', 'DJ', 'KE', 'BI', 'KM', 'MU', 'RE', 'MW', 'SO', 'TZ', 'ZW', 'SC', 'ET', 'UG', 'MZ', 'YT', 'ER']),
-     'Eastern Asia': set(['CN', 'KR', 'MO', 'MN', 'JP', 'HK', 'KP']),
-     'Eastern Europe': set(['MD', 'BG', 'RU', 'HU', 'SK', 'CZ', 'RO', 'UA', 'BY', 'PL']),
-     'Latin America and the Caribbean': set([]),
-     'Melanesia': set(['SB', 'FJ', 'NC', 'PG', 'VU']),
-     'Micronesia': set(['GU', 'PW', 'KI', 'MH', 'MP', 'NR', 'FM']),
-     'Middle Africa': set(['GQ', 'CM', 'CG', 'CF', 'AO', 'CD', 'GA', 'TD', 'ST']),
-     'Northern Africa': set(['MA', 'EH', 'SS', 'EG', 'TN', 'DZ', 'LY', 'SD']),
-     'Northern America': set(['BM', 'CA', 'GL', 'US', 'PM']),
-     'Northern Europe': set(['', 'LV', 'JE', 'DK', 'NO', 'EE', 'IS', 'GG', 'SJ', 'LT', 'IM', 'GB', 'FI', 'AX', 'IE', 'SE', 'FO']),
-     'Polynesia': set(['CK', 'WF', 'TV', 'TO', 'AS', 'PF', 'TK', 'WS', 'PN', 'NU']),
-     'South America': set(['PY', 'CO', 'VE', 'CL', 'SR', 'BO', 'EC', 'GF', 'AR', 'GY', 'BR', 'PE', 'UY', 'FK']),
-     'South-Eastern Asia': set(['LA', 'MM', 'SG', 'BN', 'KH', 'VN', 'TL', 'TH', 'PH', 'MY', 'ID']),
-     'Southern Africa': set(['SZ', 'NA', 'BW', 'LS', 'ZA']),
-     'Southern Asia': set(['BD', 'AF', 'IR', 'LK', 'BT', 'MV', 'IN', 'NP', 'PK']),
-     'Southern Europe': set(['ME', 'VA', 'GR', 'PT', 'RS', 'HR', 'AL', 'MK', 'IT', 'MT', 'SI', 'ES', 'SM', 'AD', 'GI', 'BA']),
-     'Western Africa': set(['GW', 'BF', 'ML', 'SL', 'CI', 'BJ', 'NE', 'TG', 'SH', 'LR', 'SN', 'MR', 'GN', 'GM', 'NG', 'CV', 'GH']),
-     'Western Asia': set(['PS', 'OM', 'LB', 'IQ', 'AM', 'TR', 'BH', 'GE', 'SY', 'QA', 'CY', 'JO', 'KW', 'IL', 'AE', 'SA', 'AZ', 'YE']),
-     'Western Europe': set(['BE', 'FR', 'CH', 'NL', 'MC', 'DE', 'LI', 'LU', 'AT'])}
