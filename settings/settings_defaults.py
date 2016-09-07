@@ -15,7 +15,6 @@ TEMPLATE_DEBUG = True
 
 # SECURITY WARNING: keep the secret key used in production secret! Change for your local setup!
 SECRET_KEY = 'lk;jsaoipas0202lknasdlsadfasdfdsakhao2f2sdfasfdsafdsafdsafasdfdsafdsafaib23jsk'
-CREDENTIALS_DIR = 'data/credentials'
 
 # this should be done better, but for the time being it will have to do
 # because nginx container does not have a static IP

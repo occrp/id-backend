@@ -49,9 +49,3 @@ urlpatterns = [
 
     url(r'^captcha/', include('captcha.urls')),
 ]
-
-handler400 = errors._400
-handler401 = errors._401
-handler403 = errors._403
-handler404 = errors._404
-handler500 = errors._500
