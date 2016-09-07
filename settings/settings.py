@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
-"""
-Django settings for Investigative Dashboard
-"""
+"""Settings for Investigative Dashboard."""
+
+# cf. https://12factor.net/config
 import os
+import dj_database_url
 from django.conf.global_settings import DATE_INPUT_FORMATS
 
 BASE_DIR = os.path.join(os.path.realpath(os.path.dirname(__file__)), '../')
 
 ID_VERSION = "2.3.0"
-ID_ENVIRONMENT = os.environ.get('ID_ENVIRONMENT', 'debug')
-print "Starting ID version %s (%s)" % (ID_VERSION, ID_ENVIRONMENT)
+ID_ENVRIONMENT = os.environ.get('ID_ENVRIONMENT', 'debug')
+DEBUG = ID_ENVRIONMENT == 'debug'
+ID_SITE_NAME = 'Investigative Dashboard'
 
-ALLOWED_HOSTS = []
-EMERGENCY = False
+print "Starting %s, v. %s (%s)" % (ID_SITE_NAME, ID_VERSION, ID_ENVRIONMENT)
+
+ALLOWED_HOSTS = ["*", ]
+EMERGENCY = os.environ.get('ID_EMERGENCY', False)
+
 
 ##################
 #
@@ -48,82 +53,19 @@ TEMPLATES = [
     },
 ]
 
-##################
-#
-#   Import local settings or production settings
-#
-##################
-
-#
-# default settings reside in settings_defaults.py (duh!).
-#
-# depending on the value of ID_ENVIRONMENT, we try loading different files:
-# "debug"      - settings_local.py
-# "production" - settings_production.py
-# "testing"    - settings_build_test.py
-#
-# if the file exists, it is assumed to contain all the settings that we expect from
-# settings_defaults.py, potentially with some changes here and there
-#
-# the sane way of doing this is importing all the settings from settings_defaults.py
-# in such a file, and modifying just the parts that are meeded to be modified
-#
-# example in settings_production.py-example
-#
-# if a given file is not found, settings from settings_defaults.py are loaded directly
-#
-
-try:
-    if ID_ENVIRONMENT == 'testing' or os.environ.get('BUILD_TEST'):
-        from settings_build_test import *
-    elif ID_ENVIRONMENT == 'production':
-        from settings_production import *
-    elif ID_ENVIRONMENT == 'debug':
-        from settings_local import *
-
-except ImportError:
-    # which file are we talking about?
-    if ID_ENVIRONMENT == 'testing' or os.environ.get('BUILD_TEST'):
-        fname = "settings_build_test.py"
-    elif ID_ENVIRONMENT == 'production':
-        fname = "settings_production.py"
-    elif ID_ENVIRONMENT == 'debug':
-        fname = "settings_local.py"
-
-    # inform
-    print "WARNING: failed importing settings from %s (probably the file does not exist), using settings_defaults.py" % fname
-    from settings_defaults import * # if that fails, we're boned
-
 
 ##################
 #
-#   Debug-related settings
-#
-##################
-if DEBUG:
-        # credentials for {testing,staging}.occrp.org
-        GOOGLE_OAUTH2_CLIENT_ID = '206887598454-df3pp9ldb8367vu544hkmjvlpsl9gg46.apps.googleusercontent.com'
-        GOOGLE_OAUTH2_CLIENT_SECRET = 'y2hZUFTrCj-IgIrPf3jpTE2d'
-
-        # from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
-        # TEMPLATE_CONTEXT_PROCESSORS += (
-        #     "django.core.context_processors.request",
-        #     "django.contrib.messages.context_processors.messages",
-        #     "django.core.context_processors.csrf",
-        #     "settings.context_processors.locale",
-        #     "settings.context_processors.routename",
-        #     "settings.context_processors.debug",
-        # )
-
-
-##################
-#
-#   Some error checking for local_settings
+#   Security-related settings.
 #
 ##################
 
-if not SECRET_KEY:
-    raise Exception('You need to specify Django SECRET_KEY in the settings_local.py!')
+SECRET_KEY = os.environ.get("ID_SECRET_KEY")
+assert SECRET_KEY, 'You need to specify ID_SECRET_KEY in the env!'
+
+# HTTPS if needed
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTOCOL", "https")
+
 
 ##################
 #
@@ -158,6 +100,12 @@ INSTALLED_APPS = (
 #
 ##################
 
+AUTHENTICATION_BACKENDS = (
+    'rules.permissions.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'social.backends.google.GoogleOAuth2',
+)
+
 SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_details',
     'social.pipeline.social_auth.social_uid',
@@ -172,31 +120,18 @@ SOCIAL_AUTH_PIPELINE = (
     'core.auth.activate_user'
 )
 
-# google settings, potentially overridden in settings_local
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '206887598454-nigepmham8557t4uq72dqhgh159p3b1t.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'f6b3cUIp00sDoiRSLfyqAQkH'
-SOCIAL_AUTH_USER_MODEL = 'accounts.Profile'
-SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
-USER_FIELDS = ['email']
-
-AUTHENTICATION_BACKENDS = (
-    'rules.permissions.ObjectPermissionBackend',
-    'django.contrib.auth.backends.ModelBackend',
-    # 'social.backends.google.GoogleOAuth2',
-)
-
-if DEBUG:
-    SOCIAL_AUTH_RAISE_EXCEPTIONS = True
-    RAISE_EXCEPTIONS = True
-
 # our own precious User model
 # as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
 AUTH_USER_MODEL = 'accounts.Profile'
-# SOCIAL_AUTH_SESSION_EXPIRATION = False # TODO: This shouldn't be done
+
+# google settings, potentially overridden in settings_local
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('ID_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('ID_GOOGLE_OAUTH2_SECRET')
+SOCIAL_AUTH_USER_MODEL = AUTH_USER_MODEL
+SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+USER_FIELDS = ['email']
 
 # registration form class
-# from id.forms import ProfileRegistrationForm
-# REGISTRATION_FORM=ProfileRegistrationForm
 # is the registration alowed?
 REGISTRATION_OPEN = True
 # set to an URL that a user should be redirected to when registration is off
@@ -250,20 +185,41 @@ COMPRESS_ENABLED = False
 
 ##################
 #
-#   Database defaults
-#   https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+#   Storage and database
 #
 ##################
 
+ID_DATABASE_URL = os.environ.get('ID_DATABASE_URL')
 DATABASES = {
-    'default': {
-        'ENGINE': DATABASE_ENGINE,
-        'NAME': DATABASE_NAME,
-        'USER': DATABASE_USER,
-        'PASSWORD': DATABASE_PASSWORD,
-        'HOST': DATABASE_HOST,
-        'PORT': DATABASE_PORT,
-    }
+    'default': dj_database_url.config(default=ID_DATABASE_URL)
+}
+
+# Location for uploaded ticket attachments.
+DOCUMENT_PATH = os.environ.get('ID_DOCUMENT_PATH', '/data')
+
+# 500mb upload limit:
+MAX_UPLOAD_SIZE = 1024 * 1024 * 500
+
+
+##################
+#
+#   Application defaults
+#
+##################
+
+DEFAULTS = {
+    'ticket_notifications': {
+        'update': ['requester', 'responders', 'admin'],
+        'charge': ['requester', 'responders', 'admin'],
+        'paid': ['requester', 'responders', 'admin'],
+        'close': ['requester', 'responders', 'admin'],
+        'cancel': ['requester', 'responders', 'admin'],
+        'reopen': ['requester', 'responders', 'admin'],
+        'open': ['requester', 'responders', 'admin'],
+        'flag': ['requester', 'responders', 'admin'],
+        'docs_changed': ['requester', 'responder', 'admin'],
+        'entities_attached': ['requester', 'responder', 'admin']
+    },
 }
 
 
@@ -273,6 +229,10 @@ DATABASES = {
 #   https://docs.djangoproject.com/en/1.6/topics/i18n/
 #
 ##################
+
+TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'en-us'
+DATE_FORMAT = 'd-F-Y'
 
 USE_I18N = True
 USE_L10N = True
@@ -301,6 +261,78 @@ LANGUAGES = (
 
 DATE_INPUT_FORMATS += ('%d/%m/%y',)
 
+
+##################
+#
+#   E-Mail
+#
+##################
+
+EMAIL_HOST_USER = os.environ.get('ID_EMAIL_USER', 'id@occrp.org')
+EMAIL_HOST_PASSWORD = os.environ.get('ID_EMAIL_PASSWORD')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = os.environ.get('ID_EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = 587
+DEFAULT_FROM = '%s <id@occprp.org>' % ID_SITE_NAME
+DEFAULT_FROM_EMAIL = os.environ.get('ID_EMAIL_FROM', DEFAULT_FROM)
+
+ID_EMAIL_RECIPIENT_NAME = '%s Admin' % ID_SITE_NAME
+ID_EMAIL_RECIPIENT = os.environ.get('ID_EMAIL_RECIPIENT', 'tech@occrp.org')
+
+ADMINS = ((ID_EMAIL_RECIPIENT_NAME, ID_EMAIL_RECIPIENT),)
+MANAGERS = ((ID_EMAIL_RECIPIENT_NAME, ID_EMAIL_RECIPIENT),)
+
+
+##################
+#
+#   Logging
+#
+##################
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'mail_admins': {
+            'class': 'django.utils.log.AdminEmailHandler',
+            'level': 'WARNING',
+            # But the emails are plain text by default - HTML is nicer
+            'include_html': True,
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/var/log/id2/log.log',
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        '': {  # root logger defined by empty string
+            'handlers': ['console', 'file', 'mail_admins'],
+            'level': 'DEBUG',
+            'propagate': True
+        }
+    }
+}
+
+
 ##################
 #
 #   REST Framework
@@ -318,3 +350,20 @@ REST_FRAMEWORK = {
     ),
     'PAGE_SIZE': 30
 }
+
+
+##################
+#
+#   Debug-related settings
+#
+##################
+
+if DEBUG:
+
+    # Disable log file and emails to admins for debug mode:
+    LOGGING['handlers'].pop('file')
+    LOGGING['handlers'].pop('mail_admins')
+    LOGGING['loggers']['']['handlers'] = ['console']
+
+    SOCIAL_AUTH_RAISE_EXCEPTIONS = True
+    RAISE_EXCEPTIONS = True

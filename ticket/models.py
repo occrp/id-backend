@@ -5,14 +5,13 @@ import logging
 import datetime
 from decimal import Decimal
 
-from settings.settings import AUTH_USER_MODEL
 from django.db import models
+from django.conf import settings
 from django.utils.text import get_valid_filename
 from django.utils.translation import ugettext_lazy as _
 
 from core.mixins import DisplayMixin, NotificationMixin
 from core.countries import COUNTRIES
-from settings.settings import PODACI_FS_ROOT
 
 from .constants import get_choice_display, REQUESTER_TYPES, TICKET_STATUS
 from .constants import TICKET_STATUS_ICONS, TICKET_TYPES, TICKET_UPDATE_TYPES
@@ -27,14 +26,14 @@ class Ticket(models.Model, DisplayMixin, NotificationMixin):
 
     ticket_type = ""
     # Staff-facing fields
-    requester = models.ForeignKey(AUTH_USER_MODEL,
+    requester = models.ForeignKey(settings.AUTH_USER_MODEL,
                                   related_name="ticket_requests",
                                   db_index=True)
     requester_type = models.CharField(blank=False, max_length=70,
                                       choices=REQUESTER_TYPES,
                                       verbose_name=_('Requester Type'),
                                       default='subs')
-    responders = models.ManyToManyField(AUTH_USER_MODEL,
+    responders = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                         related_name="tickets_responded")
 
     created = models.DateTimeField(default=datetime.datetime.now, null=False)
@@ -251,7 +250,7 @@ class TicketUpdate(models.Model, NotificationMixin):
     update_type = models.CharField(max_length=70, choices=TICKET_UPDATE_TYPES,
                                    default=TICKET_UPDATE_TYPES[0][0])
     # either requester, or responder:
-    author = models.ForeignKey(AUTH_USER_MODEL, blank=False)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, blank=False)
     ticket = models.ForeignKey(Ticket, blank=False)
     created = models.DateTimeField(default=datetime.datetime.now, null=False)
     comment = models.TextField()
@@ -306,7 +305,7 @@ class TicketCharge(models.Model, DisplayMixin):
     """
 
     ticket = models.ForeignKey(Ticket, blank=False)
-    user = models.ForeignKey(AUTH_USER_MODEL, blank=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=False)
 
     # comment on what the charge is for
     item = models.CharField(max_length=64, blank=False)
@@ -371,7 +370,7 @@ class TicketAttachment(models.Model, NotificationMixin, DisplayMixin):
     # stored as an attachment to a ticket.
 
     ticket = models.ForeignKey(Ticket, blank=False, related_name="attachments")
-    user = models.ForeignKey(AUTH_USER_MODEL, blank=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=False)
     filename = models.CharField(max_length=256)
     sha256 = models.CharField(max_length=65)
     size = models.IntegerField(default=0)
@@ -393,7 +392,7 @@ class TicketAttachment(models.Model, NotificationMixin, DisplayMixin):
         hashfragment = self.sha256[:6]
         bytesets = [iter(hashfragment)] * 2
         dirnames = map(lambda *x: "".join(zip(*x)[0]), *bytesets)
-        directory = os.path.join(PODACI_FS_ROOT, *dirnames)
+        directory = os.path.join(settings.DOCUMENT_PATH, *dirnames)
 
         try:
             os.makedirs(directory)
