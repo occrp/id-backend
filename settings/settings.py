@@ -7,7 +7,7 @@ from django.conf.global_settings import DATE_INPUT_FORMATS
 
 BASE_DIR = os.path.join(os.path.realpath(os.path.dirname(__file__)), '../')
 
-ID_VERSION = "2.2.0"
+ID_VERSION = "2.3.0"
 ID_ENVIRONMENT = os.environ.get('ID_ENVIRONMENT', 'debug')
 print "Starting ID version %s (%s)" % (ID_VERSION, ID_ENVIRONMENT)
 
@@ -125,10 +125,6 @@ if DEBUG:
 if not SECRET_KEY:
     raise Exception('You need to specify Django SECRET_KEY in the settings_local.py!')
 
-if "CREDENTIALS_DIR" not in vars():
-    raise Exception('You need to specify a path to CREDENTIALS_DIR in settings_local.py')
-
-
 ##################
 #
 #   Apps
@@ -236,8 +232,9 @@ AUTO_RENDER_SELECT2_STATICS = False
 #
 ##################
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
-# STATIC_ROOT = os.path.join(BASE_DIR, "static_gen")
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 STATIC_URL = '/static/'
 
 COMPRESS_ROOT = os.path.join(BASE_DIR, "static")

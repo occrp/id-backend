@@ -5,7 +5,6 @@ from settings_defaults import *
 
 # SECURITY WARNING: keep the secret key used in production secret! Change for your local setup!
 SECRET_KEY = '2342##_1DFAKJkja;lkjs_117854*((*(!_sdfajkkj728k'
-CREDENTIALS_DIR = 'data/credentials/'
 ALLOWED_HOSTS = ["127.0.0.1:8000"]
 
 
