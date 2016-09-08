@@ -1,5 +1,13 @@
 $occrp-red: #982022 !default;
+
+$page-bg: white;
+$text-muted: #999;
+$default-radius: 3px;
 $brand-primary: $occrp-red;
 
-@import "../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap";
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+
+@import "mixins";
+@import "base";
+@import "nav";
 
