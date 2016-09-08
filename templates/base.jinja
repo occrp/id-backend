@@ -12,7 +12,7 @@
   <title>{% trans %}Investigative Dashboard{% endtrans %}</title>
   <meta name="description" content=""/>
   <meta name="viewport" content="width=device-width"/>
-  <meta name="id_version" content="{{id_version()}}"/>
+  <meta name="id_version" content="{{ ID_VERSION }}"/>
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"
         rel="stylesheet" type="text/css">
@@ -163,7 +163,7 @@
     <a id="occrp-logo" class="hidden-phone" href="http://www.occrp.org"><img src="{{ static("img/occrp-logo.png") }}" /></a>
     <a id="ancir-logo" class="hidden-phone" href="http://investigativecenters.org/"><img src="{{ static("img/ancir-logo.png") }}" style="height:65px" /></a>
     <a id="arij-logo" class="hidden-phone" href="http://arij.net/en"> <img src="{{ static("img/arij-logo.png") }}" style="height:65px" /></a>
-    <small class="pull-right">ID v{{id_version()}}. {% trans %}&copy; 2015 - OCCRP.{% endtrans %} <a href="{{ url('about_us') }}">{% trans %}About this site{% endtrans %}</a></small>
+    <small class="pull-right">ID v{{ ID_VERSION }}. {% trans %}&copy; 2015 - OCCRP.{% endtrans %} <a href="{{ url('about_us') }}">{% trans %}About this site{% endtrans %}</a></small>
   </div>
 </div>
 </div>

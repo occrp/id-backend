@@ -39,18 +39,17 @@ class ProfileUpdate(UpdateView):
     def get_object(self):
         return self.request.user
 
-    def get_context_data(self):
+    def get_context_data(self, form=None):
         obj = self.get_object()
         ctx = super(ProfileUpdate, self).get_context_data()
         ctx["profile"] = obj
-        if self.request.method == "POST":
-            ctx["form"] = ProfileUpdateForm(self.request.POST, instance=obj)
-            if not ctx["form"].is_valid():
+        if form is not None:
+            if form.is_valid():
                 log.error("Error: %r", ctx["form"].errors)
             else:
-                obj = ctx["form"].save()
+                obj = form.save()
         else:
-            ctx["form"] = ProfileUpdateForm(instance=obj)
+            form = ProfileUpdateForm(instance=obj)
         return ctx
 
     def get_success_url(self):

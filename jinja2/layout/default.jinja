@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"> 
   <title>{% block title %}{% endblock %} - {{ID_SITE_NAME}}</title>
 
-  {% stylesheet 'style' %}
+  {% assets "style" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+  {% endassets %}
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="shortcut icon" href="{{ ID_FAVICON_URL }}">
   <meta name="robots" content="index, follow">
@@ -13,6 +15,19 @@
 </head>
 <body>
   <div id="page">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{{ url('home') }}">
+            <img alt="{{ID_SITE_NAME}}" src="https://cdn.occrp.org/common/logo/occrp_logo_mobile.png">
+          </a>
+          <a class="navbar-brand" href="{{ url('home') }}">
+            {{ID_SITE_NAME}}
+          </a>
+        </div>
+      </div>
+    </nav>
+
     <div id="content">
       {% block content %}{% endblock %}
     </div>
@@ -30,6 +45,8 @@
     </div>
   </footer>
 
-  {% javascript 'script' %}
+  {% assets "script" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
 </body>
 </html>

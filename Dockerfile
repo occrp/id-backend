@@ -24,6 +24,8 @@ RUN pip install -q --upgrade pip
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install -q -r /tmp/requirements.txt && rm /tmp/requirements.txt
 
+# bower setup
+RUN npm --quiet --silent install -g bower uglifyjs
 # these are volume-mounted in development environments
 COPY . /id/
 RUN chmod -R a+rX /id/

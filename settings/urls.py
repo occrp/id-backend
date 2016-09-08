@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.conf.urls import include, url
 from django.views.generic import TemplateView
 from django.views.i18n import javascript_catalog
+from django.conf.urls.static import static
 
 import accounts.views
 from core.manage import Panel
@@ -46,4 +48,4 @@ urlpatterns = [
     url(r'^jsi18n/(?P<packages>\S+?)/$', javascript_catalog),
 
     url(r'^captcha/', include('captcha.urls')),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
