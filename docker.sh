@@ -82,7 +82,7 @@ while true; do
         python manage.py runserver 0.0.0.0:8000
     else
         #python manage.py runfcgi method=prefork host=0.0.0.0 port=8000 daemonize=false
-        gunicorn -w 3 --forwarded-allow-ips="*" wsgi:application
+        gunicorn -w 5 --forwarded-allow-ips="*" -b 0.0.0.0:8000 -t 60 --keep-alive 5 --log-level info --log-file - wsgi:application
     fi
     
     sleep 5
