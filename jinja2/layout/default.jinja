@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="{{LANGUAGE_LC}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"> 
+  <title>{% block title %}{% endblock %} - {{ID_SITE_NAME}}</title>
+
+  {% stylesheet 'style' %}
+  <link rel="shortcut icon" href="{{ ID_FAVICON_URL }}">
+  <meta name="robots" content="index, follow">
+  <link rel="home" href="{{ url('home') }}">
+</head>
+<body>
+  {% block content %}{% endblock %}
+
+  {% javascript 'script' %}
+</body>
+</html>

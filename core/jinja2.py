@@ -14,7 +14,8 @@ from .utils import version
 
 EXTENSIONS = [
     'jinja2.ext.i18n',
-    'jinja2.ext.with_'
+    'jinja2.ext.with_',
+    'pipeline.jinja2.PipelineExtension'
 ]
 
 
@@ -72,6 +73,8 @@ class ContextTemplate(Template):
 
         context['DEBUG'] = settings.DEBUG
         context['EMERGENCY'] = settings.EMERGENCY
+        context['ID_SITE_NAME'] = settings.ID_SITE_NAME
+        context['ID_FAVICON_URL'] = settings.ID_FAVICON_URL
         return super(ContextTemplate, self).render(context)
 
 
