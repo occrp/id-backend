@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
+from django.conf import settings
 
-from core.utils import version
 from ticket.models import Ticket, PersonTicket, CompanyTicket, OtherTicket
 from ticket.models import TicketCharge
 from .models import Network, Profile
@@ -11,7 +11,7 @@ class Statistics(TemplateView):
 
     def get_context_data(self):
         return {
-            "version": version(),
+            "version": settings.ID_VERSION,
             "tickets_opened": Ticket.objects.count(),
             "tickets_people": PersonTicket.objects.count(),
             "tickets_company": CompanyTicket.objects.count(),

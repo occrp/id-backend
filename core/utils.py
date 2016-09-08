@@ -40,7 +40,3 @@ def json_dumps(data):
 
 def json_loads(s):
     return json.loads(s)
-
-
-def version():
-    return settings.ID_VERSION
