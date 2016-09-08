@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 
 from jinja2 import Environment, Template
-from jinja2.ext import Extension
 from django_assets.env import get_env
 from django.utils.translation import to_locale, get_language
 from django.core.urlresolvers import resolve, reverse
@@ -49,13 +48,13 @@ class ContextTemplate(Template):
 
     def render(self, context):
         request = context.get('request')
-        lang = get_language()
-        if lang.startswith("en-"):
-            lang = "en"
         if request is not None:
             context['user'] = request.user
             context['ROUTE_NAME'] = resolve(request.path_info).url_name
 
+        lang = get_language()
+        if lang.startswith("en-"):
+            lang = "en"
         context['LOCALE'] = to_locale(get_language())
         context['LOCALE_LC'] = to_locale(get_language()).lower()
         context['LANGUAGE_LC'] = lang.lower()
