@@ -5,6 +5,12 @@ $text-muted: #999;
 $default-radius: 3px;
 $brand-primary: $occrp-red;
 
+// Style tiles, Fonts
+$font-family-sans-serif: 'Open Sans', sans-serif !default;
+$font-family-serif: 'Georgia', serif !default;
+$input-border-focus: $brand-primary;
+
+
 @import "../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 
 @import "mixins";
