@@ -4,6 +4,7 @@ build/
 dist/
 static/.webassets-cache/
 static/bower_components/
+static_out/
 *.egg-info/
 *.egg
 *.manifest

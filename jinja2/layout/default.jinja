@@ -6,12 +6,29 @@
   <title>{% block title %}{% endblock %} - {{ID_SITE_NAME}}</title>
 
   {% stylesheet 'style' %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="shortcut icon" href="{{ ID_FAVICON_URL }}">
   <meta name="robots" content="index, follow">
   <link rel="home" href="{{ url('home') }}">
 </head>
 <body>
-  {% block content %}{% endblock %}
+  <div id="page">
+    <div id="content">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+
+  <footer>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <p class="pull-right">
+            {{ID_SITE_NAME}} v.{{ID_VERSION}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   {% javascript 'script' %}
 </body>

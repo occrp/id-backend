@@ -178,25 +178,28 @@ AUTO_RENDER_SELECT2_STATICS = False
 ##################
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
-STATIC_URL = '/static/'
-
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'pipeline.finders.PipelineFinder',
 )
+NODE_DIR = os.path.join(BASE_DIR, "node_modules")
+STATICFILES_DIRS = (
+    NODE_DIR,
+    os.path.join(BASE_DIR, "assets"),
+)
+STATIC_URL = '/static/'
+STATIC_ROOT = 'static_out'
 
 PIPELINE = {
-    'PIPELINE_ENABLED': True,
+    'PIPELINE_ENABLED': not DEBUG,
+    'PIPELINE_COLLECTOR_ENABLED': DEBUG,
     'STYLESHEETS': {
         'style': {
             'source_filenames': (
-                'css/core.css'
+                'style/id.scss',
             ),
-            'output_filename': 'assets/style.css',
+            'output_filename': 'style.css',
             'extra_context': {
                 'media': 'screen,projection',
             },
@@ -205,12 +208,21 @@ PIPELINE = {
     'JAVASCRIPT': {
         'script': {
             'source_filenames': (
-                '../node_modules/jquery/dist/jquery.js'
+                'jquery/dist/jquery.js',
             ),
             'output_filename': 'assets/script.js',
         }
-    }
+    },
+    'COMPILERS': (
+        'pipeline.compilers.sass.SASSCompiler',
+    ),
+    'JS_COMPRESSOR': (
+        'pipeline.compressors.uglifyjs.UglifyJSCompressor',
+    ),
+    'UGLIFYJS_BINARY': os.path.join(NODE_DIR, 'uglifyjs/bin/uglifyjs'),
+    'SASS_BINARY': os.path.join(NODE_DIR, 'node-sass/bin/node-sass')
 }
+
 
 ##################
 #
@@ -311,6 +323,21 @@ ID_EMAIL_RECIPIENT = os.environ.get('ID_EMAIL_RECIPIENT', 'tech@occrp.org')
 
 ADMINS = ((ID_EMAIL_RECIPIENT_NAME, ID_EMAIL_RECIPIENT),)
 MANAGERS = ((ID_EMAIL_RECIPIENT_NAME, ID_EMAIL_RECIPIENT),)
+
+
+##################
+#
+#   Logging
+#
+##################
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'TIMEOUT': 3600,
+        'KEY_PREFIX': 'id',
+    },
+}
 
 
 ##################
