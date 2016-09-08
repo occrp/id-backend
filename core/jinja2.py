@@ -9,8 +9,6 @@ from django.utils import translation, timesince, dateformat
 from django.utils import formats
 from django.conf import settings
 
-from .utils import version
-
 
 EXTENSIONS = [
     'jinja2.ext.i18n',
@@ -74,6 +72,7 @@ class ContextTemplate(Template):
         context['DEBUG'] = settings.DEBUG
         context['EMERGENCY'] = settings.EMERGENCY
         context['ID_SITE_NAME'] = settings.ID_SITE_NAME
+        context['ID_VERSION'] = settings.ID_VERSION
         context['ID_FAVICON_URL'] = settings.ID_FAVICON_URL
         return super(ContextTemplate, self).render(context)
 
@@ -84,7 +83,6 @@ def environment(**options):
         'static': staticfiles_storage.url,
         'url': url_for,
         'reverse': reverse,
-        'id_version': version,
         'get_messages': get_messages,
         'get_field_type': get_field_type,
         'get_widget_classes': get_widget_classes,
