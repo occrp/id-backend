@@ -14,8 +14,8 @@
   <meta name="viewport" content="width=device-width"/>
   <meta name="id_version" content="{{id_version()}}"/>
 
-  <link type="text/css" href="{{ static("bower_components/font-awesome/css/font-awesome.min.css") }}" rel="stylesheet">
-  <!-- link type="text/css" href="{{ static("bower_components/angular-material/angular-material.min.css") }}" rel="stylesheet" -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"
+        rel="stylesheet" type="text/css">
   <link type="text/css" href="{{ static("bower_components/ol3-unofficial/ol.css") }}" rel="stylesheet">
   <link type="text/css" href="{{ static("bower_components/bootstrap-sortable/Contents/bootstrap-sortable.css")}}" rel="stylesheet"/>
   <link type="text/css" href="{{ static("bower_components/roboto-fontface/css/roboto-fontface.css") }}" rel="stylesheet">
@@ -44,7 +44,6 @@
             <i class="fa fa-bars"></i>
           </button>
         </div>
-        {% if not exception %}
         <div class="collapse navbar-collapse" id="navbar-main">
           {% if request.path != '/' or (user and user.is_authenticated()) %}
           <ul class="nav navbar-nav">
@@ -65,12 +64,20 @@
               </a>
             </li>
             {% if user.is_authenticated() %}
-            <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
-              <a href="{{ url('ticket_list') }}"><i class="fa fa-comments-o"></i> {% trans %}My Requests{% endtrans %}</a>
-            </li>
+              <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
+                <a href="{{ url('ticket_list') }}">
+                  <i class="fa fa-comments-o"></i> 
+                  {% trans %}My Requests{% endtrans %}
+                </a>
+              </li>
+            {% else %}
+              <li>
+                <a href="{{ url('login') }}?next={{ url('ticket_list') }}">
+                  <i class="fa fa-comments-o"></i>
+                  {% trans %}My Requests{% endtrans %}</a>
+              </li>
             {% endif %}
           </ul>
-          {% endif %}
           <ul class="nav navbar-nav pull-right">
 
           {% if (user and user.is_authenticated()) %}
