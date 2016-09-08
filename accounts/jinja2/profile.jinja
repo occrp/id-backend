@@ -1,6 +1,6 @@
-{% extends "base.jinja" %}
+{% extends "layout/default.jinja" %}
 
-{% block body_class %}splash has-full-page-header{% endblock %}
+{% block title %}Your profile{% endblock %}
 
 {% block before_content %}
   <div class="page-header full-page-header">
@@ -14,7 +14,6 @@
   <div class="profile-container material-form-container">
     <form action="{{ url('profile') }}" method="POST">
     {{ csrf_input }}
-    {{ form_macros.render_form_fragment(form) }}
 
     <label></label>
     <input class="material-form-submit btn primary md-whiteframe-z2"

@@ -12,6 +12,7 @@ ID_VERSION = "2.4.0"
 ID_ENVIRONMENT = os.environ.get('ID_ENVIRONMENT', 'debug')
 DEBUG = ID_ENVIRONMENT == 'debug'
 ID_SITE_NAME = 'Investigative Dashboard'
+ID_FAVICON_URL = 'https://cdn.occrp.org/common/favicon/large.png'
 
 print "Starting %s, v. %s (%s)" % (ID_SITE_NAME, ID_VERSION, ID_ENVIRONMENT)
 
@@ -30,6 +31,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'jinja2'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -80,17 +82,18 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rules.apps.AutodiscoverRulesConfig',
     'registration',
     'rest_framework',
+    'pipeline',
+    'django_select2',
+    'captcha',
+    'oauth2_provider',
     'social.apps.django_app.default',
     'accounts',
     'core',
     'databases',
-    'ticket',
-    'rules.apps.AutodiscoverRulesConfig',
-    'django_select2',
-    'captcha',
-    'oauth2_provider',
+    'ticket'
 )
 
 ##################
@@ -174,6 +177,7 @@ AUTO_RENDER_SELECT2_STATICS = False
 #
 ##################
 
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
@@ -182,7 +186,31 @@ STATIC_URL = '/static/'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
 )
+
+PIPELINE = {
+    'PIPELINE_ENABLED': True,
+    'STYLESHEETS': {
+        'style': {
+            'source_filenames': (
+                'css/core.css'
+            ),
+            'output_filename': 'assets/style.css',
+            'extra_context': {
+                'media': 'screen,projection',
+            },
+        },
+    },
+    'JAVASCRIPT': {
+        'script': {
+            'source_filenames': (
+                '../node_modules/jquery/dist/jquery.js'
+            ),
+            'output_filename': 'assets/script.js',
+        }
+    }
+}
 
 ##################
 #
