@@ -24,6 +24,7 @@ coverage.xml
 pyenv/
 static/CACHE
 bower_components/**
+static/bower_components/**
 !static/bower_components/README.md
 node_modules/
 
