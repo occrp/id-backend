@@ -73,7 +73,7 @@ echo -e '\n#####################################################################
 if [ $DEBUG -eq 0 ]; then
     echo      "# running debug django (runserver) on $IP..."
 else
-    echo      "# running production django (runfcgi) on $IP..."
+    echo      "# running production django (gunicorn) on $IP..."
 fi
 echo      '#####################################################################'
 
@@ -81,7 +81,8 @@ while true; do
     if [ $DEBUG -eq 0 ]; then
         python manage.py runserver 0.0.0.0:8000
     else
-        python manage.py runfcgi method=prefork host=0.0.0.0 port=8000 daemonize=false
+        #python manage.py runfcgi method=prefork host=0.0.0.0 port=8000 daemonize=false
+        gunicorn -w 3 --forwarded-allow-ips="*" id2:application
     fi
     
     sleep 5
@@ -89,7 +90,7 @@ while true; do
     if [ $DEBUG -eq 0 ]; then
         echo      "# restarting debug django (runserver) on $IP..."
     else
-        echo      "# restarting production django (runfcgi) on $IP..."
+        echo      "# restarting production django (gunicorn) on $IP..."
     fi
     echo      '#####################################################################'
 done
