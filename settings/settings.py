@@ -81,7 +81,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'registration',
-    'compressor',
     'rest_framework',
     'social.apps.django_app.default',
     'accounts',
@@ -172,16 +171,10 @@ STATICFILES_DIRS = (
 )
 STATIC_URL = '/static/'
 
-COMPRESS_ROOT = os.path.join(BASE_DIR, "static")
-
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
 )
-
-COMPRESS_ENABLED = False
-
 
 ##################
 #

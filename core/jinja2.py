@@ -13,8 +13,7 @@ from .utils import version
 
 EXTENSIONS = [
     'jinja2.ext.i18n',
-    'jinja2.ext.with_',
-    'compressor.contrib.jinja2ext.CompressorExtension'
+    'jinja2.ext.with_'
 ]
 
 

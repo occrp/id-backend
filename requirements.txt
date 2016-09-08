@@ -4,7 +4,6 @@ Babel==2.3.4
 pycountry
 mock
 python-magic
-django-compressor==2.1
 django-registration-redux==1.4
 requests>=2.11
 gunicorn
