@@ -16,4 +16,5 @@ python-social-auth==0.2.21
 psycopg2
 django-simple-captcha
 django-oauth-toolkit==0.10.0
+django-assets==0.12
 dj-database-url
