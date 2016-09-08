@@ -1,6 +1,7 @@
 import logging
 from registration.views import RegistrationView
 
+from django.conf import settings
 from django.contrib.auth.views import logout as django_logout
 from django.contrib.auth.views import login as django_login
 from django.contrib.auth.views import REDIRECT_FIELD_NAME, AuthenticationForm
@@ -8,9 +9,6 @@ from django.http import HttpResponseRedirect, JsonResponse
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-
-from settings.settings import REGISTRATION_OPEN, REGISTRATION_CLOSED_URL
-from settings.settings import REGISTRATION_SUCCESS_URL
 
 from core.models import Notification
 
@@ -51,15 +49,15 @@ class ProfileRegistrationView(RegistrationView):
     as per http://django-registration.readthedocs.org/en/latest/views.html
     """
 
-    disallowed_url = REGISTRATION_CLOSED_URL
-    success_url = REGISTRATION_SUCCESS_URL
+    disallowed_url = settings.REGISTRATION_CLOSED_URL
+    success_url = settings.REGISTRATION_SUCCESS_URL
     fallback_redirect_url = '/'
 
-    def registration_allowed(self, request):
+    def registration_allowed(self):
         """Simple as that -- and controlled from settings."""
-        return REGISTRATION_OPEN
+        return settings.REGISTRATION_OPEN
 
-    def register(self, request, form):
+    def register(self, form):
         """Implement user-registration logic here.
 
         Access to both the request and the full cleaned_data of the registration
@@ -67,11 +65,11 @@ class ProfileRegistrationView(RegistrationView):
         """
         return form.save()
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
-            return HttpResponseRedirect(self.fallback_redirect_url)
-        else:
-            return super(ProfileRegistrationView, self).dispatch(request, *args, **kwargs)
+    # def dispatch(self, request, *args, **kwargs):
+    #     if request.user.is_authenticated():
+    #         return HttpResponseRedirect(self.fallback_redirect_url)
+    #     else:
+    #         return super(ProfileRegistrationView, self).dispatch(request, *args, **kwargs)
 
 
 def logout(request):
