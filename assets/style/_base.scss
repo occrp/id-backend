@@ -1,0 +1,27 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    background-color: $text-muted;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#page {
+    position: relative;
+    background-color: white;
+    padding-bottom: 2em;
+}
+
+footer {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    color: white;
+
+    a {
+        color: white;
+        text-decoration: underline;
+    }    
+}

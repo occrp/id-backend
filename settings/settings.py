@@ -22,6 +22,35 @@ EMERGENCY = os.environ.get('ID_EMERGENCY', False)
 
 ##################
 #
+#   Apps
+#
+##################
+
+INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.admin.apps.SimpleAdminConfig',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rules.apps.AutodiscoverRulesConfig',
+    'registration',
+    'rest_framework',
+    'webassets',
+    'django_assets',
+    'django_select2',
+    'captcha',
+    'oauth2_provider',
+    'social.apps.django_app.default',
+    'accounts',
+    'core',
+    'databases',
+    'ticket'
+)
+
+
+##################
+#
 #   Template loaders and such
 #
 ##################
@@ -55,6 +84,39 @@ TEMPLATES = [
     },
 ]
 
+JINJA2_EXTENSIONS = [
+    'jinja2.ext.i18n',
+    'jinja2.ext.with_',
+    'webassets.ext.jinja2.AssetsExtension'
+]
+ASSETS_JINJA2_EXTENSIONS = JINJA2_EXTENSIONS
+
+
+##################
+#
+#   Static files (CSS, JavaScript, Images, compression)
+#   https://docs.djangoproject.com/en/1.6/howto/static-files/
+#
+##################
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django_assets.finders.AssetsFinder'
+)
+NODE_DIR = os.path.join(BASE_DIR, "node_modules")
+
+STATICFILES_DIRS = (
+    NODE_DIR,
+    os.path.join(BASE_DIR, "assets"),
+)
+
+STATIC_URL = '/static/'
+STATIC_ROOT = 'build'
+
+ASSETS_DEBUG = DEBUG
+os.environ['SASS_PATH'] = os.path.join(BASE_DIR, "assets/style")
+
 
 ##################
 #
@@ -68,33 +130,6 @@ assert SECRET_KEY, 'You need to specify ID_SECRET_KEY in the env!'
 # HTTPS if needed
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTOCOL", "https")
 
-
-##################
-#
-#   Apps
-#
-##################
-
-INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.admin.apps.SimpleAdminConfig',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rules.apps.AutodiscoverRulesConfig',
-    'registration',
-    'rest_framework',
-    'pipeline',
-    'django_select2',
-    'captcha',
-    'oauth2_provider',
-    'social.apps.django_app.default',
-    'accounts',
-    'core',
-    'databases',
-    'ticket'
-)
 
 ##################
 #
@@ -169,59 +204,6 @@ MIDDLEWARE = (
 
 ROOT_URLCONF = 'settings.urls'
 AUTO_RENDER_SELECT2_STATICS = False
-
-##################
-#
-#   Static files (CSS, JavaScript, Images, compression)
-#   https://docs.djangoproject.com/en/1.6/howto/static-files/
-#
-##################
-
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'pipeline.finders.PipelineFinder',
-)
-NODE_DIR = os.path.join(BASE_DIR, "node_modules")
-STATICFILES_DIRS = (
-    NODE_DIR,
-    os.path.join(BASE_DIR, "assets"),
-)
-STATIC_URL = '/static/'
-STATIC_ROOT = 'static_out'
-
-PIPELINE = {
-    'PIPELINE_ENABLED': not DEBUG,
-    'PIPELINE_COLLECTOR_ENABLED': DEBUG,
-    'STYLESHEETS': {
-        'style': {
-            'source_filenames': (
-                'style/id.scss',
-            ),
-            'output_filename': 'style.css',
-            'extra_context': {
-                'media': 'screen,projection',
-            },
-        },
-    },
-    'JAVASCRIPT': {
-        'script': {
-            'source_filenames': (
-                'jquery/dist/jquery.js',
-            ),
-            'output_filename': 'assets/script.js',
-        }
-    },
-    'COMPILERS': (
-        'pipeline.compilers.sass.SASSCompiler',
-    ),
-    'JS_COMPRESSOR': (
-        'pipeline.compressors.uglifyjs.UglifyJSCompressor',
-    ),
-    'UGLIFYJS_BINARY': os.path.join(NODE_DIR, 'uglifyjs/bin/uglifyjs'),
-    'SASS_BINARY': os.path.join(NODE_DIR, 'node-sass/bin/node-sass')
-}
 
 
 ##################

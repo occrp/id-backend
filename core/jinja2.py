@@ -1,6 +1,8 @@
 from __future__ import absolute_import
 
 from jinja2 import Environment, Template
+from jinja2.ext import Extension
+from django_assets.env import get_env
 from django.utils.translation import to_locale, get_language
 from django.core.urlresolvers import resolve, reverse
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -8,13 +10,6 @@ from django.contrib.messages import get_messages
 from django.utils import translation, timesince, dateformat
 from django.utils import formats
 from django.conf import settings
-
-
-EXTENSIONS = [
-    'jinja2.ext.i18n',
-    'jinja2.ext.with_',
-    'pipeline.jinja2.PipelineExtension'
-]
 
 
 def get_verbose_or_field_name(field):
@@ -78,7 +73,7 @@ class ContextTemplate(Template):
 
 
 def environment(**options):
-    env = Environment(extensions=EXTENSIONS, **options)
+    env = Environment(extensions=settings.JINJA2_EXTENSIONS, **options)
     env.globals.update({
         'static': staticfiles_storage.url,
         'url': url_for,
@@ -88,6 +83,7 @@ def environment(**options):
         'get_widget_classes': get_widget_classes,
         'get_verbose_or_field_name': get_verbose_or_field_name
     })
+    env.assets_environment = get_env()
     env.filters['timesince'] = timesince.timesince
     env.filters['date'] = date_filter
     env.template_class = ContextTemplate
