@@ -1,80 +1,93 @@
-{% extends "base.jinja" %}
+{% extends "layout/default.jinja" %}
+{% block title %}External Databases{% endblock %}
 
 {% block content %}
-<div class="span12">
- 
-   <div class="page-header">
-        {% if user.has_perm('is_staff') %}
-            <a class="btn btn-primary pull-right" href="{{ url('admin:databases_externaldatabase_add') }}">
-                Register new
-            </a>
-        {% endif %}
-        <h1>{% trans %}External Databases{% endtrans %}</h1>
-   </div>
-
-    <div class="well higher center">
-    <form action="{{ url('databases:index') }}" method="GET" class="ext-db-filter">
-        <ul class="form-horizontal">
-            {{ filter_form.as_ul() }}
-            <li><button type="submit">{% trans %}Filter{% endtrans %}</button></li>
-        </ul>
-    </form>
-   
-
+  <div class="container-fluid">
+    <div class="page-header">
+      {% if user.has_perm('is_staff') %}
+        <a class="btn btn-primary pull-right" href="{{ url('admin:databases_externaldatabase_add') }}">
+          Register new
+        </a>
+      {% endif %}
+      <h1>{% trans %}External Databases{% endtrans %}</h1>
     </div>
 
-    <div class="database-items">
-    {% for db in databases %}
-    <div class="database-item">
-        <div class="database-metadata">
-            <a href="?country={{db.country}}"><strong>{{countries.get(db.country, '')}}</strong></a>
-            {% if db.country != 'GLOBAL' and db.db_type %} · {% endif %}
-            <a href="?db_type={{db.db_type}}">{{database_types.get(db.db_type, '')}}</a>
+  <div class="well higher center">
+    <form action="{{ url('databases:index') }}" method="GET" class="ext-db-filter">
+      <ul class="form-horizontal">
+        {{ filter_form.as_ul() }}
+        <li><button type="submit">{% trans %}Filter{% endtrans %}</button></li>
+      </ul>
+    </form>
+  </div>
 
-            ·
-            {% if db.paid %}
-                <i class="fa fa-dollar text-success" data-toggle='tooltip' title='{{ _("Paid Database") }}'></i>
-            {% endif %}
-            {% if db.registration_required %}
-                <i class="fa fa-edit text-success" data-toggle='tooltip' title='{{ _("Registration Required") }}'></i>
-            {% endif %}
-            {% if db.government_db %}
-                <i class="fa fa-building text-success" data-toggle='tooltip' title='{{ _("Government Database") }}'></i>
-            {% endif %}
+  <div class="database-items">
+    {% for db in databases %}
+      <div class="database-item">
+        <div class="database-metadata">
+          <a href="?country={{db.country}}">
+            <strong>
+              {{countries.get(db.country, '')}}
+            </strong>
+          </a>
+          
+          {% if db.country != 'GLOBAL' and db.db_type %}
+            &middot;
+          {% endif %}
+
+          <a href="?db_type={{db.db_type}}">
+            {{database_types.get(db.db_type, '')}}
+          </a>
+
+          &middot;
+
+          {% if db.paid %}
+            <i class="fa fa-dollar text-success" data-toggle='tooltip' title='{{ _("Paid Database") }}'></i>
+          {% endif %}
+          {% if db.registration_required %}
+            <i class="fa fa-edit text-success" data-toggle='tooltip' title='{{ _("Registration Required") }}'></i>
+          {% endif %}
+          {% if db.government_db %}
+            <i class="fa fa-building text-success" data-toggle='tooltip' title='{{ _("Government Database") }}'></i>
+          {% endif %}
         </div>
         <h4 class="db-title">
-            <a href="{{ db.url }}" target="_blank">{{ db.agency }}</a>
+          <a href="{{ db.url }}" target="_blank">
+            {{ db.agency }}
+          </a>
         </h4>
-        <p class="database-notes">{{db.notes}}</p>
+        <p class="database-notes">
+          {{db.notes}}
+        </p>
 
         {% if user.is_staff or user.is_superuser %}
-            <div class="controls">
-                <a href="{{ url('admin:databases_externaldatabase_change', db.pk) }}">Edit</a>
-                <a href="{{ url('admin:databases_externaldatabase_delete', db.pk) }}">Delete</a>
-            </div>
+          <div class="controls">
+            <a href="{{ url('admin:databases_externaldatabase_change', db.pk) }}">Edit</a>
+            <a href="{{ url('admin:databases_externaldatabase_delete', db.pk) }}">Delete</a>
+          </div>
         {% endif %}
-    </div>
+      </div>
     {% else %}
-    <div class="alert alert-block alert-info">
+      <div class="alert alert-block alert-info">
         {% trans %}No external databases found.{% endtrans %}
-    </div>
+      </div>
     {% endfor %}
-    </div>
+  </div>
 
-    <p style="margin-top:2em;">
-        {% with curcnt=databases.count() %}
-            {% trans %}Viewing {{curcnt}}/{{count}} databases.{% endtrans %}
-        {%endwith%}
-        {% trans %}Didn't find what you were looking for?{% endtrans %}
-        <a href="{{ url('ticket_submit') }}">
-            {% trans %}Request manual help from our researchers.{% endtrans %}
-        </a>
-    </p>
+  <p class="help-block">
+    {% with curcnt=databases.count() %}
+      {% trans %}Viewing {{curcnt}}/{{count}} databases.{% endtrans %}
+    {%endwith%}
+    {% trans %}Didn't find what you were looking for?{% endtrans %}
+    <a href="{{ url('ticket_submit') }}">
+      {% trans %}Request manual help from our researchers.{% endtrans %}
+    </a>
+  </p>
 
 </div>
 {% endblock %}
 
 {% block js %}
-    {{ super() }}
-    <script type="text/javascript" src="{{ static('js/id2/id2.database.js') }}"></script>
+  {{ super() }}
+  <script type="text/javascript" src="{{ static('js/id2/id2.database.js') }}"></script>
 {% endblock %}
