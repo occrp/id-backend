@@ -203,6 +203,15 @@ ID2.Tickets.remove_files = function(ticket) {
 
 $(function() {
 	ID2.Tickets.init();
+
+    var $uploadForm = $('.upload-form'),
+        $uploadField = $uploadForm.find('input[type="file"]');
+    $uploadField.change(function(e) {
+        if ($uploadField.val()) {
+            $uploadForm.submit();
+        }
+    });
+
 });
 
 $.ajaxSetup({
