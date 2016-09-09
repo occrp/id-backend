@@ -9,8 +9,8 @@ from django.conf.global_settings import DATE_INPUT_FORMATS
 BASE_DIR = os.path.join(os.path.realpath(os.path.dirname(__file__)), '../')
 
 ID_VERSION = "2.4.0"
-ID_ENVRIONMENT = os.environ.get('ID_ENVIRONMENT', 'debug')
-DEBUG = ID_ENVRIONMENT == 'debug'
+ID_ENVIRONMENT = os.environ.get('ID_ENVIRONMENT', 'debug')
+DEBUG = ID_ENVIRONMENT == 'debug'
 ID_SITE_NAME = 'Investigative Dashboard'
 
 print "Starting %s, v. %s (%s)" % (ID_SITE_NAME, ID_VERSION, ID_ENVRIONMENT)
