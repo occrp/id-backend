@@ -314,9 +314,21 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 5,  # 5 MB
             'backupCount': 5,
             'formatter': 'verbose'
-        }
+        },
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
     },
     'loggers': {
+        'django.security.DisallowedHost': {
+            'handlers': ['null'],
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['null'],
+            'propagate': False,
+        },
         '': {  # root logger defined by empty string
             'handlers': ['console', 'file', 'mail_admins'],
             'level': 'DEBUG',
