@@ -13,7 +13,7 @@ ID_ENVIRONMENT = os.environ.get('ID_ENVIRONMENT', 'debug')
 DEBUG = ID_ENVIRONMENT == 'debug'
 ID_SITE_NAME = 'Investigative Dashboard'
 
-print "Starting %s, v. %s (%s)" % (ID_SITE_NAME, ID_VERSION, ID_ENVRIONMENT)
+print "Starting %s, v. %s (%s)" % (ID_SITE_NAME, ID_VERSION, ID_ENVIRONMENT)
 
 ALLOWED_HOSTS = ["*", ]
 EMERGENCY = os.environ.get('ID_EMERGENCY', False)
