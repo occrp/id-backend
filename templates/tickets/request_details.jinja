@@ -53,7 +53,7 @@
 
         <div class="btn-group">
           {% if user.has_perm('ticket.change_ticket', ticket) %}
-            {% if user.has_perm('ticket.revoke_ticket', ticket) %}
+            {% if user == ticket.requester %}
               <a href="#ReqCancelForm" class="btn" data-toggle="modal" role='button'>
                 <i class="fa fa-minus"></i> {% trans %}Cancel Request{% endtrans %}
               </a>
