@@ -11,10 +11,8 @@ from django.contrib.auth import get_user_model
 from django.db.models import Count, Sum
 from django.db.models import Q
 from django.http import Http404
-from django.http import HttpResponseRedirect
-from django.http import HttpResponse
-from django.http import JsonResponse
-from django.http import FileResponse
+from django.http import HttpResponseRedirect, HttpResponse
+from django.http import JsonResponse, FileResponse
 from django.middleware.csrf import get_token
 from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
@@ -1086,14 +1084,13 @@ class TicketAttachmentUpload(TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.method == 'POST':
-            file_obj = request.FILES.get('file')
             ticket = Ticket.objects.get(pk=request.POST.get('ticket'))
+            if ticket is None:
+                raise Http404()
             if not request.user.has_perm('ticket.view_ticket', ticket):
                 raise PermissionDenied()
 
-            if ticket is not None and file_obj is not None:
-                # raise PermissionDenied()
-                # or request.user not in ticket.actors()
+            for file_obj in request.FILES.getlist('file'):
                 attachment = TicketAttachment.create_fh(ticket, request.user,
                                                         file_obj)
                 log.debug('File created: %r', attachment)
