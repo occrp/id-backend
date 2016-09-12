@@ -139,6 +139,14 @@ REGISTRATION_CLOSED_URL = "/accounts/register/closed/"
 REGISTRATION_SUCCESS_URL = "/accounts/register/complete/"
 
 
+OAUTH2_PROVIDER = {
+    'SCOPES': {
+        'read': 'Read scope',
+        'write': 'Write scope',
+    },
+    'DEFAULT_SCOPES': ['read']
+}
+
 ##################
 #
 #   Middleware
