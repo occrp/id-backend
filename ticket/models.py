@@ -397,7 +397,7 @@ class TicketAttachment(models.Model, NotificationMixin, DisplayMixin):
         try:
             os.makedirs(directory)
         except Exception as ex:
-            log.exception(ex)
+            pass
         return os.path.join(directory, self.filename)
 
     @classmethod
