@@ -329,12 +329,9 @@ LOGGING = {
         },
     },
     'loggers': {
-        'django.security.DisallowedHost': {
-            'handlers': ['null'],
-            'propagate': False,
-        },
         'django.request': {
-            'handlers': ['null'],
+            'handlers': ['console', 'file', 'mail_admins'],
+            'level': 'ERROR',
             'propagate': False,
         },
         '': {  # root logger defined by empty string
