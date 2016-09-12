@@ -329,11 +329,11 @@ LOGGING = {
         },
     },
     'loggers': {
-        # 'django.request': {
-        #     'handlers': ['console', 'file', 'mail_admins'],
-        #     'level': 'ERROR',
-        #     'propagate': False,
-        # },
+        'django.request': {
+            'handlers': ['null'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
         '': {  # root logger defined by empty string
             'handlers': ['console', 'file', 'mail_admins'],
             'level': 'DEBUG',
