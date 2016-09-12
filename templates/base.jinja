@@ -142,16 +142,13 @@
 
 <div id="content">
   <div class="before-content">
-    {% if ticket_detail_view is not defined %}
     <div id="alerts" class="container">
-        {% for message in messages %}
-          <div class="alert alert-block alert-{{ message.tags }}">
-            <a class="close" data-dismiss="alert">×</a>
-            {{ message }}
-          </div>
-        {% endfor %}
+      {% for message in get_messages(request) %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+          {{ message }}
+        </li>
+      {% endfor %}
     </div>
-    {% endif %}
     {% block before_content %}{% endblock %}
   </div>
 

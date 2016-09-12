@@ -4,6 +4,7 @@ from jinja2 import Environment, Template
 from django.utils.translation import to_locale, get_language
 from django.core.urlresolvers import resolve, reverse
 from django.contrib.staticfiles.storage import staticfiles_storage
+from django.contrib.messages import get_messages
 from django.utils import translation, timesince, dateformat
 from django.utils import formats
 from django.conf import settings
@@ -81,6 +82,7 @@ def environment(**options):
         'url': url_for,
         'reverse': reverse,
         'id_version': version,
+        'get_messages': get_messages,
         'get_field_type': get_field_type,
         'get_widget_classes': get_widget_classes,
         'get_verbose_or_field_name': get_verbose_or_field_name
