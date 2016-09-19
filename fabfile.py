@@ -39,7 +39,7 @@ def deploy():
 
 def migrate():
     with cd(DEPLOY_DIR):
-        run("docker-compose run --rm web pg_dump -f /dumps/id2-`date +%d%m%Y%H%M%S`.sql id2")
+        run("docker-compose run --rm web bash /id/contrib/scripts/dump.sh")
         run("docker-compose run --rm web python manage.py migrate --noinput")
 
 
