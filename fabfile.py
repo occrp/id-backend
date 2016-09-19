@@ -1,6 +1,7 @@
 import os
+import time
 # import requests
-from fabric.api import run, env, local, cd, settings
+from fabric.api import run, env, cd, settings
 from fabric.api import parallel, put
 
 
@@ -18,13 +19,19 @@ def staging():
     env.hosts = ['woodward.occrp.org']
 
 
+def production():
+    env.hosts = ['pine.occrp.org']
+
+
 def deploy():
     checkout()
     with cd(DEPLOY_DIR):
         run("docker-compose build")
-        run("docker-compose down")
+        run("docker-compose stop")
         run("docker-compose rm -f")
         run("docker-compose up -d postgres")
+        # let postgres boot
+        time.sleep(5)
         run("docker-compose run --rm web python manage.py migrate --noinput")
         # run("docker-compose run --rm web python manage.py collectstatic")
         run("docker-compose up -d web")
