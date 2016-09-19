@@ -33,7 +33,7 @@ def deploy():
         # let postgres boot
         time.sleep(5)
         run("docker-compose run --rm web python manage.py migrate --noinput")
-        # run("docker-compose run --rm web python manage.py collectstatic")
+        # run("docker-compose run --rm web python manage.py collectstatic --noinput")
         run("docker-compose up -d web")
 
 
@@ -45,5 +45,4 @@ def checkout():
     with cd(DEPLOY_DIR):
         run("git reset --hard HEAD")
         run("git pull -q")
-    put("%s.env" % env.hosts[0],
-        "%s/id.env" % DEPLOY_DIR)
+    put("%s.env" % env.hosts[0], os.path.join(DEPLOY_DIR, 'id.env'))

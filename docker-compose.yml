@@ -20,8 +20,8 @@ services:
     links:
       - postgres
     volumes:
-      - "./podaci-data/:/data"
-      - "./log/:/var/log/id2/"
+      - "/srv/data/live/podaci/:/data"
+      - "/srv/logs/id2/:/var/log/id2/"
     env_file:
       - id.env
     networks:
@@ -33,7 +33,7 @@ services:
   postgres:
     image: postgres:9.4
     volumes:
-      - './db/:/var/lib/postgresql/data'
+      - '/srv/data/live/postgres/id2/:/var/lib/postgresql/data'
     environment:
       POSTGRES_USER:     id2
       POSTGRES_PASSWORD: id2
