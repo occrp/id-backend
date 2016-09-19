@@ -2,7 +2,7 @@ import os
 import time
 # import requests
 from fabric.api import run, env, cd, settings
-from fabric.api import parallel, put
+from fabric.api import parallel, put, execute
 
 
 DEPLOY_DIR = '/srv/tools/id'
@@ -32,9 +32,19 @@ def deploy():
         run("docker-compose up -d postgres")
         # let postgres boot
         time.sleep(5)
-        run("docker-compose run --rm web python manage.py migrate --noinput")
+        # execute(migrate)
         # run("docker-compose run --rm web python manage.py collectstatic --noinput")
         run("docker-compose up -d web")
+
+
+def migrate():
+    with cd(DEPLOY_DIR):
+        run("docker-compose run --rm web pg_dump -f /dumps/id2-`date +%d%m%Y%H%M%S`.sql id2")
+        run("docker-compose run --rm web python manage.py migrate --noinput")
+
+
+# things missing:
+# python manage.py loaddata 'accounts/fixtures/initial_data.json'
 
 
 @parallel
