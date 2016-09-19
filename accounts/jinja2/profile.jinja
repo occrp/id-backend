@@ -6,21 +6,17 @@
   <div class="id-page-header">
     <h2>
       <i class="fa fa-user" aria-hidden="true"></i>
-      Change your settings
+      {{ self.title() }}
     </h2>
     <div class="clearfix"></div>
-    <ul class="nav nav-tabs">
-
-    </ul>
   </div>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-offset-3 col-md-6">
+      <div class="col-md-6">
         <form action="{{ url('profile') }}" method="POST" class="form-horizontal">
           {{ csrf_input }}
           {{ forms.render_form_fragment(form) }}
-
-          {{ forms.render_submit() }}    
+          {{ forms.render_submit() }}
         </form>
       </div>
     </div>
