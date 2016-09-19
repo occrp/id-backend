@@ -19,16 +19,16 @@ echo      '#####################################################################
 
 find ./ -iname '*.pyc' -exec rm -rf '{}' \;
 
-echo -e '\n#####################################################################'
-echo      '# doing a bower install run...'
-echo      '#####################################################################'
+# echo -e '\n#####################################################################'
+# echo      '# doing a bower install run...'
+# echo      '#####################################################################'
 
-cd ./static/
-# we need --allow-root for when this is actually run as root (which should *not* happen in production!)
-# and we need GIT_DIR=/tmp/ because otherwise when run as a different user than the one that owns ~/.git/config
-# git will fails, and take bower with it
-GIT_DIR=/tmp/ bower --allow-root --config.interactive=false --verbose --force install
-cd ../
+# cd ./static/
+# # we need --allow-root for when this is actually run as root (which should *not* happen in production!)
+# # and we need GIT_DIR=/tmp/ because otherwise when run as a different user than the one that owns ~/.git/config
+# # git will fails, and take bower with it
+# GIT_DIR=/tmp/ bower --allow-root --config.interactive=false --verbose --force install
+# cd ../
 
 
 echo -e '\n#####################################################################'
@@ -45,14 +45,6 @@ done
 
 echo -ne 'from django.conf import settings\nprint settings.DEBUG\n\n' | python manage.py shell 2>/dev/null | grep True > /dev/null 
 DEBUG=$?
-
-# root permitted only in debug mode
-if [ `whoami` = "root" ] && [ $DEBUG != 0 ]; then
-    echo
-    echo "ERROR: running as root, but DEBUG is false, aborting!"
-    echo
-    abort
-fi
 
 echo -e '\n#####################################################################'
 # 0 is "true" in UNIX/bash world

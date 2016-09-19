@@ -1,98 +1,28 @@
 # docker compose config
 # http://docs.docker.com/compose/
-#
-# this is the production, testing and dataimports configuration
-# compose file
-# 
+version: "2"
 
-######################################################################
-# production setup
-######################################################################
-nginx:
-    image: nginx:1.7
-    volumes:
-        - "./settings/nginx/:/etc/nginx/"
-    volumes_from:
-        - id2
+services:
+  web:
+    build: .
+    command: gunicorn -w 5 -b 0.0.0.0:8000 -t 60 --keep-alive 5 --log-level info --log-file - wsgi:application
+    ports:
+      - "8000:8000"
     links:
-        - id2
+      - postgres
+    volumes:
+      - "./podaci-data/:/data"
+      - "./log/:/var/log/id2/"
+    env_file:
+      - id.env
 
-id2:
-  build: .
-  expose:
-    - "8000"
-  links:
-    - postgres
-  volumes:
-    - "./podaci-data/:/data"
-
-######################################################################
-# development setup
-######################################################################
-id2dev:
-  build: .
-  environment:
-    ID_ENVIRONMENT: debug
-  ports:
-    - "8000:8000"
-  expose:
-    - "8000"
-  links:
-    - postgres
-  volumes:
-    - "./podaci-data/:/data"
-    # explicitly bind-mounting each and every directory
-    # because bower
-    - "./tools:/srv/tools/investigative-dashboard-2/tools"
-    - "./core:/srv/tools/investigative-dashboard-2/core"
-    - "./settings:/srv/tools/investigative-dashboard-2/settings"
-    - "./locale:/srv/tools/investigative-dashboard-2/locale"
-    - "./doc:/srv/tools/investigative-dashboard-2/doc"
-    - "./projects:/srv/tools/investigative-dashboard-2/projects"
-    - "./robots:/srv/tools/investigative-dashboard-2/robots"
-    - "./data:/srv/tools/investigative-dashboard-2/data"
-    - "./ticket:/srv/tools/investigative-dashboard-2/ticket"
-    - "./templates:/srv/tools/investigative-dashboard-2/templates"
-    - "./search:/srv/tools/investigative-dashboard-2/search"
-    - "./id:/srv/tools/investigative-dashboard-2/id"
-    - "./podaci:/srv/tools/investigative-dashboard-2/podaci"
-    - "./static/js:/srv/tools/investigative-dashboard-2/static/js"
-    - "./static/css:/srv/tools/investigative-dashboard-2/static/css"
-    - "./static/html:/srv/tools/investigative-dashboard-2/static/html"
-    - "./static/less:/srv/tools/investigative-dashboard-2/static/less"
-    - "./static/img:/srv/tools/investigative-dashboard-2/static/img"
-    
-######################################################################
-# dataimports version
-######################################################################
-id2dataimports:
-  build: .
-  environment:
-    ID_ENVIRONMENT: debug
-  expose:
-    - "8000"
-  links:
-    - postgres
-  volumes:
-    - "./:/srv/tools/investigative-dashboard-2/"
-    - "../export-prod/:/exported"
-    - "./podaci-data/:/data"
-    - "../google_appengine/:/usr/src/google_appengine/"
-    - "../investigative-dashboard/:/usr/src/id/"
-  command: /bin/bash
-  
-  
-######################################################################
-# utilities
-######################################################################
-
-# postgres
-# TODO FIXME before we go to production with this!
-postgres:
-  image: postgres:9.4
-  volumes:
-    - './db/:/var/lib/postgresql/data'
-  environment:
-    POSTGRES_USER:     id2
-    POSTGRES_PASSWORD: id2
-    POSTGRES_DATABASE: id2
+  # postgres
+  # TODO FIXME before we go to production with this!
+  postgres:
+    image: postgres:9.4
+    volumes:
+      - './db/:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_USER:     id2
+      POSTGRES_PASSWORD: id2
+      POSTGRES_DATABASE: id2

@@ -1,39 +1,36 @@
-FROM python:2.7.9
+FROM python:2.7.10
+ENV DEBIAN_FRONTEND noninteractive
 
 # you will need need these docker images too:
 #  - postgres
 # consult README.md for more information
 
-RUN echo 'deb http://httpredir.debian.org/debian jessie non-free' > /etc/apt/sources.list.d/debian-non-free.list \
-    && export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get -y upgrade && apt-get -y dist-upgrade && apt-get install -y \
-    unrar gcc npm git libz-dev libjpeg-dev libfreetype6-dev python-dev gunicorn \
-    --no-install-recommends && rm -rf /var/lib/apt/lists/*
-    #postgresql-client libpq-dev \
-    #sqlite3 \
+RUN echo 'deb http://httpredir.debian.org/debian jessie non-free' > /etc/apt/sources.list.d/debian-non-free.list
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN apt-get update && apt-get -y upgrade && apt-get -y dist-upgrade \
+    && apt-get install -y -q --no-install-recommends unrar gcc nodejs \
+        git libz-dev libjpeg-dev libfreetype6-dev python-dev gunicorn \
+    && rm -rf /var/lib/apt/lists/*
 
-#RUN export DEBIAN_FRONTEND=noninteractive && apt-get -y autoremove
-
-RUN mkdir -p /srv/tools/investigative-dashboard-2
-WORKDIR /srv/tools/investigative-dashboard-2/
-
-# python setup
-RUN pip install --upgrade pip
-COPY requirements.txt /tmp/requirements.txt
-RUN pip install -r /tmp/requirements.txt && rm /tmp/requirements.txt
+RUN mkdir -p /id
+WORKDIR /id/
 
 # bower setup
-RUN ln -s /usr/bin/nodejs /usr/bin/node
-RUN npm install -g bower
+RUN npm --quiet --silent install -g bower uglifyjs
+
+# python setup
+RUN pip install -q --upgrade pip
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -q -r /tmp/requirements.txt && rm /tmp/requirements.txt
+
 # these are volume-mounted in development environments
-COPY . /srv/tools/investigative-dashboard-2/
-RUN chmod -R a+rX /srv/tools/investigative-dashboard-2/
-RUN cd /srv/tools/investigative-dashboard-2/ && find ./ -iname '*.pyc' -exec rm -rf '{}' \;
+COPY . /id/
+RUN chmod -R a+rX /id/
+# && pip install -e /id
+RUN cd /id/static && bower --allow-root --quiet --config.interactive=false --force install
 
 # this can be volume-mounted
 RUN mkdir -p /var/log/id2/
 
-VOLUME ["/var/log/id2/"]
-
-EXPOSE 8000
-#CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-CMD ["/srv/tools/investigative-dashboard-2/docker.sh"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# CMD ["/id/docker.sh"]
