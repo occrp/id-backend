@@ -10,6 +10,7 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get update && apt-get -y upgrade && apt-get -y dist-upgrade \
     && apt-get install -y -q --no-install-recommends unrar gcc nodejs \
         git libz-dev libjpeg-dev libfreetype6-dev python-dev gunicorn \
+        postgresql-client-9.4 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /id
