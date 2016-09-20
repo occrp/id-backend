@@ -6,6 +6,7 @@ from django.utils.translation import to_locale, get_language
 from django.core.urlresolvers import resolve, reverse
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.messages import get_messages
+from django.contrib.humanize.templatetags import humanize
 from django.utils import translation, timesince, dateformat
 from django.utils import formats
 from django.conf import settings
@@ -42,6 +43,10 @@ def date_filter(date, format):
     if date is not None:
         return dateformat.format(date, format)
     return ''
+
+
+def intcomma_filter(source, use_l10n=True):
+    return humanize.intcomma(source, use_l10n)
 
 
 class ContextTemplate(Template):
@@ -85,6 +90,7 @@ def environment(**options):
     env.assets_environment = get_env()
     env.filters['timesince'] = timesince.timesince
     env.filters['date'] = date_filter
+    env.filters['intcomma'] = intcomma_filter
     env.template_class = ContextTemplate
     env.install_gettext_translations(translation)
     return env
