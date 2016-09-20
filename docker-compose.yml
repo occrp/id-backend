@@ -23,6 +23,7 @@ services:
       - "/srv/data/live/podaci/:/data"
       - "/srv/logs/id2/:/var/log/id2/"
       - "/srv/data/dumps/:/dumps/"
+      - "/srv/data/live/idstatic/:/id/build/"
     env_file:
       - id.env
     networks:

@@ -33,7 +33,7 @@ def deploy():
         # let postgres boot
         time.sleep(5)
         execute(migrate)
-        # run("docker-compose run --rm web python manage.py collectstatic --noinput")
+        run("docker-compose run --rm web python manage.py collectstatic -v0 --noinput")
         run("docker-compose up -d web")
 
 
