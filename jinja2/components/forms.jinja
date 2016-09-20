@@ -16,9 +16,13 @@
   </div>
 {% endmacro %}
 
-{% macro render_text(field) %}
-  <input class="form-control" name="{{ field.html_name }}"
+{% macro render_text(field, type='text') %}
+  <input type="{{type}}" class="form-control" name="{{ field.html_name }}"
           id="{{ field.auto_id }}" {% if field.value() %}value="{{ field.value() }}"{% endif %}>
+{% endmacro %}
+
+{% macro render_captcha(field) %}
+  {{ field }}
 {% endmacro %}
 
 {% macro render_select(field) %}
@@ -71,6 +75,12 @@
           {{ render_datefield(field) }}
         {% elif get_field_type(field) == 'TextInput' %}
           {{ render_text(field) }}
+        {% elif get_field_type(field) == 'CaptchaTextInput' %}
+          {{ render_captcha(field) }}
+        {% elif get_field_type(field) == 'PasswordInput' %}
+          {{ render_text(field, type='password') }}
+        {% elif get_field_type(field) == 'EmailInput' %}
+          {{ render_text(field, type='email') }}
         {% elif get_field_type(field) == 'Select' %}
           {{ render_select(field) }}
         {% elif get_field_type(field) == 'ClassedTextAreaField' %}

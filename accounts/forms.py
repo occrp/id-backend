@@ -12,14 +12,25 @@ from . import models
 class ProfileRegistrationForm(forms.Form):
     """Form for registering a new user account."""
 
+    first_name = forms.CharField(
+            widget=forms.TextInput(),
+            label=_('First name'))
+    last_name = forms.CharField(
+            widget=forms.TextInput(),
+            label=_('Last/family name'))
+    organization = forms.CharField(
+            widget=forms.TextInput(),
+            label=_('Organization'),
+            help_text=_('Your affiliation with a news or research organisation, or freelance.'))
     email = forms.EmailField(
-            widget=forms.TextInput(attrs=dict(attrs={'class': 'required'}, maxlength=254)),
-            label=_('E-mail Address'))
+            widget=forms.TextInput(),
+            label=_('E-mail Address'),
+            help_text=_('Your affiliation with a news or research organisation, or freelance.'))
     password1 = forms.CharField(
-            widget=forms.PasswordInput(attrs={'class': 'required'}, render_value=False),
+            widget=forms.PasswordInput(render_value=False),
             label=_('Password'))
     password2 = forms.CharField(
-            widget=forms.PasswordInput(attrs={'class': 'required'}, render_value=False),
+            widget=forms.PasswordInput(render_value=False),
             label=_('Password confirmation'))
     """
     Captcha, because why not
@@ -80,7 +91,10 @@ class ProfileRegistrationForm(forms.Form):
     def save(self, profile_callback=None):
         new_user = get_user_model().objects.create_user(
             email=self.cleaned_data['email'],
-            password=self.cleaned_data['password1'])
+            password=self.cleaned_data['password1'],
+            first_name=self.cleaned_data['first_name'],
+            last_name=self.cleaned_data['last_name'],
+            organization=self.cleaned_data['organization'])
         return new_user
 
 
