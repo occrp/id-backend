@@ -1,0 +1,17 @@
+{% extends "layout/default.jinja" %}
+
+{% block title %}{% trans %}Register{% endtrans %}{% endblock %}
+{% block header_icon %}user{% endblock %}
+
+{% block inner_content %}  
+  <div class="col-md-6">
+    <form method="POST" class="form-horizontal" action="{{ url('registration_register') }}">
+      {{ csrf_input }}
+      {% if next %}
+        <input type="hidden" name="next" value="{{next}}"/>
+      {% endif %}
+      {{ forms.render_form_fragment(form) }}
+      {{ forms.render_submit(submit_title="Send password") }}
+    </form>
+  </div>
+{% endblock %}

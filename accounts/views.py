@@ -1,16 +1,18 @@
 import logging
-from registration.views import RegistrationView
 
-from django.conf import settings
 from django.contrib.auth.views import logout as django_logout
 from django.contrib.auth.views import login as django_login
+from django.contrib.auth import login as django_programmatic_login
 from django.contrib.auth.views import REDIRECT_FIELD_NAME, AuthenticationForm
 from django.http import HttpResponseRedirect, JsonResponse
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from registration.backends.default.views import RegistrationView
+from registration.backends.default.views import ActivationView
 
 from core.models import Notification
+from .forms import ProfileRegistrationForm
 
 logger = logging.getLogger(__name__)
 
@@ -44,32 +46,17 @@ class Profile(APIView):
 
 
 class ProfileRegistrationView(RegistrationView):
-    """Profile registration view.
+    """Profile registration view."""
 
-    as per http://django-registration.readthedocs.org/en/latest/views.html
-    """
+    form_class = ProfileRegistrationForm
 
-    disallowed_url = settings.REGISTRATION_CLOSED_URL
-    success_url = settings.REGISTRATION_SUCCESS_URL
-    fallback_redirect_url = '/'
 
-    def registration_allowed(self):
-        """Simple as that -- and controlled from settings."""
-        return settings.REGISTRATION_OPEN
+class ProfileActivationView(ActivationView):
 
-    def register(self, form):
-        """Implement user-registration logic here.
-
-        Access to both the request and the full cleaned_data of the registration
-        form is available here.
-        """
-        return form.save()
-
-    # def dispatch(self, request, *args, **kwargs):
-    #     if request.user.is_authenticated():
-    #         return HttpResponseRedirect(self.fallback_redirect_url)
-    #     else:
-    #         return super(ProfileRegistrationView, self).dispatch(request, *args, **kwargs)
+    def get_success_url(self, user):
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        django_programmatic_login(self.request, user)
+        return '/'
 
 
 def logout(request):
@@ -83,7 +70,7 @@ def logout(request):
     return HttpResponseRedirect('/')
 
 
-def login(request, template_name='registration/login.jinja',
+def login(request, template_name='login.jinja',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
           current_app=None,

@@ -2,6 +2,7 @@ from __future__ import absolute_import
 
 from jinja2 import Environment, Template
 from django_assets.env import get_env
+from django.template import RequestContext
 from django.utils.translation import to_locale, get_language
 from django.core.urlresolvers import resolve, reverse
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -73,6 +74,11 @@ class ContextTemplate(Template):
         context['ID_SITE_NAME'] = settings.ID_SITE_NAME
         context['ID_VERSION'] = settings.ID_VERSION
         context['ID_FAVICON_URL'] = settings.ID_FAVICON_URL
+
+        # FIXME DEBUG
+        if isinstance(context, RequestContext):
+            context = dict(context.flatten())
+
         return super(ContextTemplate, self).render(context)
 
 
