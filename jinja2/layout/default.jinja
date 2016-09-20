@@ -20,7 +20,22 @@
     {% include 'includes/nav.jinja' %}
 
     <div id="content">
-      {% block content %}{% endblock %}
+      {% block content %}
+        {% block header %}
+          <div class="id-page-header">
+            <h2>
+              <i class="fa fa-{% block header_icon %}{% endblock %}" aria-hidden="true"></i>
+              {{ self.title() }}
+            </h2>
+            <div class="clearfix"></div>
+          </div>
+        {% endblock %}
+        <div class="container-fluid">
+          <div class="row">
+            {% block inner_content %}{% endblock %}
+          </div>
+        </div>
+      {% endblock %}
     </div>
   </div>
   {% include 'includes/footer.jinja' %}
