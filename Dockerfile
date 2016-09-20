@@ -24,14 +24,19 @@ RUN pip install -q --upgrade pip
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install -q -r /tmp/requirements.txt && rm /tmp/requirements.txt
 
+COPY package.json /id
+RUN cd /id && npm install --unsafe-perm
+
 # these are volume-mounted in development environments
 COPY . /id/
 RUN chmod -R a+rX /id/
 # && pip install -e /id
 RUN cd /id/static && bower --allow-root --quiet --config.interactive=false --force install
 
+
 # this can be volume-mounted
 RUN mkdir -p /var/log/id2/
+RUN python manage.py collectstatic --noinput
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 # CMD ["/id/docker.sh"]
