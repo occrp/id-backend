@@ -36,7 +36,7 @@ RUN cd /id/static && bower --allow-root --quiet --config.interactive=false --for
 
 # this can be volume-mounted
 RUN mkdir -p /var/log/id2/
-RUN export ID_SECRET_KEY=foo && python manage.py collectstatic --noinput
+RUN export ID_SECRET_KEY=foo && python manage.py collectstatic -v0 --noinput
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 # CMD ["/id/docker.sh"]

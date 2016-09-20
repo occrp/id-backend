@@ -11,7 +11,8 @@
     "type": "git",
     "url": "git+https://github.com/occrp/investigative-dashboard-2.git"
   },
-  "license": "no",
+  "license": "UNLICENSED",
+  "private": true,
   "author": "OCCRP Technology Team <tech@occrp.org>",
   "bugs": {
     "url": "https://github.com/occrp/investigative-dashboard-2/issues"
