@@ -1,0 +1,1 @@
+{% trans %}Welcome to {{ ID_SITE_NAME }}{% endtrans %}

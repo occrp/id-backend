@@ -53,7 +53,7 @@ class ProfileManager(NotificationMixin, BaseUserManager):
         if not email:
             raise ValueError('The email field has to be set.')
         email = self.normalize_email(email)
-        user = self.model(email=email, is_staff=is_staff, is_active=True,
+        user = self.model(email=email, is_staff=is_staff, is_active=False,
                           is_superuser=is_superuser, date_joined=now,
                           **extra_fields)
         user.set_password(password)
@@ -65,14 +65,10 @@ class ProfileManager(NotificationMixin, BaseUserManager):
                     is_staff=False, **extra_fields):
         u = self._create_user(email, password, is_staff, is_superuser,
                               **extra_fields)
-        self.notify("New user %s." % (u), urlname="profile",
-                    params={"pk": u.pk}, action="add")
         return u
 
     def create_superuser(self, email, password, **extra_fields):
         u = self._create_user(email, password, True, True, **extra_fields)
-        self.notify("New superuser %s." % (u), urlname="profile",
-                    params={"pk": u.pk}, action="addsuperuser")
         return u
 
 

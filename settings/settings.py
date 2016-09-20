@@ -27,15 +27,15 @@ EMERGENCY = os.environ.get('ID_EMERGENCY', False)
 ##################
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
     'django.contrib.admin.apps.SimpleAdminConfig',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'rules.apps.AutodiscoverRulesConfig',
     'registration',
+    'django.contrib.auth',
+    'rules.apps.AutodiscoverRulesConfig',
     'rest_framework',
     'webassets',
     'django_assets',
@@ -173,10 +173,13 @@ USER_FIELDS = ['email']
 # registration form class
 # is the registration alowed?
 REGISTRATION_OPEN = True
-# set to an URL that a user should be redirected to when registration is off
-REGISTRATION_CLOSED_URL = "/accounts/register/closed/"
+REGISTRATION_AUTO_LOGIN = True
+REGISTRATION_EMAIL_HTML = False
 # set to an URL that a user should be redirected upon successful registration
 REGISTRATION_SUCCESS_URL = "/accounts/register/complete/"
+ACCOUNT_ACTIVATION_DAYS = 7
+ACTIVATION_EMAIL_BODY = 'activation_email.txt'
+ACTIVATION_EMAIL_SUBJECT = 'activation_email_subject.txt'
 
 
 OAUTH2_PROVIDER = {
