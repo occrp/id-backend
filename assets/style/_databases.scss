@@ -1,0 +1,17 @@
+
+.id-databases {
+    .database-facet {
+        // font-weight: bold;
+        margin-bottom: 1em;
+    }
+
+    .database-item {
+        min-height: 2.2em;
+
+        .badge {
+            background-color: white;
+            color: $text-muted;
+            // float: right;
+        }
+    }
+}

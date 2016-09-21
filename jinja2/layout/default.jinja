@@ -19,12 +19,12 @@
   <div id="page">
     {% include 'includes/nav.jinja' %}
 
-    <div id="content">
+    <div id="content" class="{% block content_class %}{% endblock %}">
       {% block content %}
         {% block header %}
           <div class="id-page-header">
             <h2>
-              <i class="fa fa-{% block header_icon %}{% endblock %}" aria-hidden="true"></i>
+              <i class="fa fa-fw fa-{% block header_icon %}{% endblock %}" aria-hidden="true"></i>
               {{ self.title() }}
             </h2>
             <div class="clearfix"></div>

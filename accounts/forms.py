@@ -25,7 +25,7 @@ class ProfileRegistrationForm(forms.Form):
     email = forms.EmailField(
             widget=forms.TextInput(),
             label=_('E-mail Address'),
-            help_text=_('Your affiliation with a news or research organisation, or freelance.'))
+            help_text=_('You will receive a confirmation and use this address to sign in.'))
     password1 = forms.CharField(
             widget=forms.PasswordInput(render_value=False),
             label=_('Password'))
