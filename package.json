@@ -20,8 +20,6 @@
   "homepage": "https://github.com/occrp/investigative-dashboard-2#readme",
   "dependencies": {
     "bootstrap-sass": "^3.3.7",
-    "jquery": "^3.1.0",
-    "node-sass": "^3.9.3",
-    "uglifyjs": "^2.4.10"
+    "jquery": "^3.1.0"
   }
 }
