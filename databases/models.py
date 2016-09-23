@@ -61,6 +61,14 @@ class ExternalDatabase(models.Model, DisplayMixin):
     blog_post = models.URLField(verbose_name=_('Blog Post'), blank=True)
     video_url = models.URLField(verbose_name=_('YouTube Video Url'), blank=True)
 
+    @property
+    def db_type_name(self):
+        return dict(DATABASE_TYPES).get(self.db_type) or _('Other registry')
+
+    @property
+    def country_name(self):
+        return dict(DATABASE_COUNTRIES).get(self.country) or _('No country')
+
     def __str__(self):
         return self.agency
 
