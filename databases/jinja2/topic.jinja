@@ -1,7 +1,16 @@
 {% extends "layout/default.jinja" %}
-{% block title %}Databases about {{db_type_name}}{% endblock %}
+{% import "components/db.jinja" as dbmacros with context %}
+
+{% block title %}{{db_type_name}}{% endblock %}
 {% block header_icon %}database{% endblock %}
 
-{% block content_inner %}
-    
+{% block inner_content %}
+  <div class="col-md-8">
+    {% for db in databases | sort(attribute='country_name') %}
+      {{ dbmacros.render(db, db.country_name) }}
+    {% endfor %}    
+  </div>
+  <div class="col-md-4">
+    {% include "includes/db_request.jinja" %}
+  </div>
 {% endblock %}
