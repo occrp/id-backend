@@ -59,6 +59,7 @@ def topic(request, db_type):
     q = ExternalDatabase.objects.all()
     q = q.filter(db_type=db_type)
     q = q.order_by("agency")
+    print list(q)
     return render(request, 'topic.jinja', {
         'count': q.count(),
         'db_type': db_type,
