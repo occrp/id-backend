@@ -4,62 +4,83 @@
 {% block content_class %}id-databases{% endblock %}
 
 {% block content %}
-  {#
-  {% if user.has_perm('is_staff') %}
-    <a class="btn btn-primary pull-right" href="{{ url('admin:databases_externaldatabase_add') }}">
-      {% trans %}Register new{% endtrans %}
-    </a>
-  {% endif %}
-  #}
-
-  <div class="container-fluid">
+  <div class="container-fluid databases-index">
     <div class="row">
-      <div class="col-md-12">
-        <h2 class="page-header">
+      <div class="col-md-9">
+        <h2>
           {{ self.title() }}
         </h2>
       </div>
-    </div>
-    {#
-    <div class="row">
-      <div class="col-md-9">
-        <p>Hier könnte Ihre Werbung stehen</p>
-      </div>
       <div class="col-md-3">
         {% include "includes/db_request.jinja" %}
       </div>
     </div>
-    #}
     <div class="row">
       <div class="col-md-9">
-        {% for region in countries|groupby('region') %}
-          <h3 class="database-facet">
-            {{region.grouper}}
-          </h3>
-          <div class="row">
-            {% for country in region.list|sort(attribute='name') %}
-              <div class="col-sm-4">
-                <div class="database-item">
-                  <a href="{{ url('databases:country', country_code=country.code)}}">{{country.name}}</a>
-                  <div class="badge">{{country.count}}</div>
-                </div>
-              </div>
-            {% endfor %}
-          </div>
-        {% endfor %}
-      </div>
-      <div class="col-md-3">
-        <h3 class="database-facet">
-          {% trans %}Topics{% endtrans %}
-        </h3>
-        {% for type in types|sort(attribute='count', reverse=True) %}
-          <div class="database-item">
-            <a href="{{ url('databases:topic', db_type=type.code)}}">{{type.name}}</a>
-            <div class="badge">{{type.count}}</div>
-          </div>
-        {% endfor %}
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active">
+            <a href="#regionALL" aria-controls="regionALL" role="tab" data-toggle="tab">
+              Worldwide
+            </a>
+          </li>
+          {% for region in regions %}
+          <li role="presentation">
+            <a href="#region{{region}}" aria-controls="region{{region}}" role="tab" data-toggle="tab">
+              {{country_names.get(region)}}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
 
-        {% include "includes/db_request.jinja" %}
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="regionALL">
+            <div class="row">
+              {% for country in countries|sort(attribute='name') %}
+                <div class="col-sm-4">
+                  <div class="database-item">
+                    <a href="{{ url('databases:country', country_code=country.code)}}">{{country.name}}</a>
+                    <div class="badge">{{country.count}}</div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% for region in regions %}
+            <div role="tabpanel" class="tab-pane" id="region{{region}}">
+              <div class="row">
+                {% for country in countries|sort(attribute='name') %}
+                  {% if region in country.regions %}
+                    <div class="col-sm-4">
+                      <div class="database-item">
+                        <a href="{{ url('databases:country', country_code=country.code)}}">{{country.name}}</a>
+                        <div class="badge">{{country.count}}</div>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active">
+            <a role="tab">
+              {% trans %}Database types{% endtrans %}
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          {% for type in types|sort(attribute='count', reverse=True) %}
+            <div class="database-item">
+              <a href="{{ url('databases:topic', db_type=type.code)}}">{{type.name}}</a>
+              <div class="badge">{{type.count}}</div>
+            </div>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>
