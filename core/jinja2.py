@@ -74,6 +74,7 @@ class ContextTemplate(Template):
         context['ID_SITE_NAME'] = settings.ID_SITE_NAME
         context['ID_VERSION'] = settings.ID_VERSION
         context['ID_FAVICON_URL'] = settings.ID_FAVICON_URL
+        context['ALEPH_URL'] = settings.ALEPH_URL
 
         # FIXME DEBUG
         if isinstance(context, RequestContext):

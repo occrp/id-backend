@@ -1,4 +1,16 @@
 
+.database-listing-title {
+    font-weight: bolder;
+    font-size: 1.4em;
+    margin-bottom: 0.7em;
+}
+
+.database-listing-summary {
+    @extend .text-muted;
+    font-size: 1.2em;
+    margin-bottom: 2em;
+}
+
 .databases-index {
     .tab-content {
         padding-top: 1em;
