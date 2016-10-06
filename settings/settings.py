@@ -13,6 +13,7 @@ ID_ENVIRONMENT = os.environ.get('ID_ENVIRONMENT', 'debug')
 DEBUG = ID_ENVIRONMENT == 'debug'
 ID_SITE_NAME = 'Investigative Dashboard'
 ID_FAVICON_URL = 'https://cdn.occrp.org/common/favicon/large.png'
+ALEPH_URL = 'https://data.occrp.org'
 
 print "Starting %s, v. %s (%s)" % (ID_SITE_NAME, ID_VERSION, ID_ENVIRONMENT)
 
