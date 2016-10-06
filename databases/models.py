@@ -21,27 +21,53 @@ DATABASE_TYPES = (
 DATABASE_COUNTRIES = (
     ('', _('All Databases')),
     ('GLOBAL', _('Global Databases')),
-    ('-', '---'),
     ('AFRICA', _('Africa')),
     ('ASIA', _('Asia')),
     ('EUROPE', _('Europe')),
     ('LAMERICA', _('Latin America')),
-    ('-', '---'),
+    ('OFFSHORE', _('Offshores')),
+    ('EASTERNEUROPE', _('Eastern Europe')),
 ) + COUNTRIES[1:]
 
 
 EXPAND_REGIONS = {
-    'EUROPE': set(['BE', 'FR', 'BG', 'DK', 'HR', 'MT', 'BA', 'HU', 'CH', 'FI', 'JE', 'BY', 'GR', 'FO', 'RU', 'NL', 'PT', 'NO', 'LI', 'LV', 'LT', 'LU', 'ES', 'RO', 'PL', 'VA', 'DE', 'AD', 'EE', 'IS', 'AL', 'IT', 'GG', 'CZ', 'IM', 'GB', 'AX', 'IE', 'GI', 'ME', 'MD', 'MC', 'RS', 'MK', 'SK', 'SJ', 'SI', 'SM', 'UA', 'SE', 'AT']),
-    'AFRICA': set(['BF', 'DJ', 'BI', 'BJ', 'ZA', 'BW', 'DZ', 'GN', 'YT', 'RW', 'TZ', 'GQ', 'NA', 'NE', 'NG', 'TN', 'RE', 'LR', 'LS', 'TG', 'TD', 'GH', 'LY', 'GW', 'ZM', 'CI', 'EH', 'CM', 'EG', 'SL', 'CG', 'CF', 'AO', 'CD', 'GA', 'ET', 'GM', 'ZW', 'CV', 'ER', 'SZ', 'MG', 'MA', 'KE', 'SS', 'ML', 'KM', 'ST', 'MU', 'MW', 'SH', 'SO', 'SN', 'MR', 'SC', 'UG', 'SD', 'MZ']),
-    'ASIA': set(['BD', 'KH', 'BN', 'JP', 'BT', 'HK', 'JO', 'PS', 'AZ', 'LB', 'LA', 'TR', 'LK', 'TL', 'TM', 'TJ', 'TH', 'NP', 'PK', 'PH', 'AE', 'CN', 'AF', 'IQ', 'BH', 'IR', 'AM', 'SY', 'VN', 'CY', 'IL', 'IN', 'KP', 'ID', 'OM', 'KG', 'UZ', 'MM', 'SG', 'MO', 'MN', 'GE', 'QA', 'KR', 'MV', 'KW', 'KZ', 'SA', 'MY', 'YE']),
-    'LAMERICA': set(['DO', 'CL', 'DM', 'BB', 'BL', 'BM', 'BO', 'HT', 'SV', 'JM', 'GT', 'HN', 'BQ', 'BR', 'BS', 'FK', 'BZ', 'PR', 'NI', 'LC', 'TT', 'GP', 'PA', 'UY', 'PE', 'TC', 'PM', 'VC', 'CO', 'VE', 'AG', 'VG', 'AI', 'VI', 'EC', 'GF', 'GD', 'GY', 'AW', 'CR', 'GL', 'CW', 'CU', 'MF', 'SX', 'SR', 'KN', 'AR', 'MQ', 'PY', 'MS', 'KY', 'MX'])}
+    'EUROPE': set(['BE', 'FR', 'BG', 'DK', 'HR', 'MT', 'BA', 'HU', 'CH', 'FI',
+                   'JE', 'BY', 'GR', 'FO', 'RU', 'NL', 'PT', 'NO', 'LI', 'LV',
+                   'LT', 'LU', 'ES', 'RO', 'PL', 'VA', 'DE', 'AD', 'EE', 'IS',
+                   'AL', 'IT', 'GG', 'CZ', 'IM', 'GB', 'AX', 'IE', 'GI', 'ME',
+                   'MD', 'MC', 'RS', 'MK', 'SK', 'SJ', 'SI', 'SM', 'UA', 'SE',
+                   'AT']),
+    'AFRICA': set(['BF', 'DJ', 'BI', 'BJ', 'ZA', 'BW', 'DZ', 'GN', 'YT', 'RW',
+                   'TZ', 'GQ', 'NA', 'NE', 'NG', 'TN', 'RE', 'LR', 'LS', 'TG',
+                   'TD', 'GH', 'LY', 'GW', 'ZM', 'CI', 'EH', 'CM', 'EG', 'SL',
+                   'CG', 'CF', 'AO', 'CD', 'GA', 'ET', 'GM', 'ZW', 'CV', 'ER',
+                   'SZ', 'MG', 'MA', 'KE', 'SS', 'ML', 'KM', 'ST', 'MU', 'MW',
+                   'SH', 'SO', 'SN', 'MR', 'SC', 'UG', 'SD', 'MZ']),
+    'ASIA': set(['BD', 'KH', 'BN', 'JP', 'BT', 'HK', 'JO', 'PS', 'AZ', 'LB',
+                 'LA', 'TR', 'LK', 'TL', 'TM', 'TJ', 'TH', 'NP', 'PK', 'PH',
+                 'AE', 'CN', 'AF', 'IQ', 'BH', 'IR', 'AM', 'SY', 'VN', 'CY',
+                 'IL', 'IN', 'KP', 'ID', 'OM', 'KG', 'UZ', 'MM', 'SG', 'MO',
+                 'MN', 'GE', 'QA', 'KR', 'MV', 'KW', 'KZ', 'SA', 'MY', 'YE']),
+    'LAMERICA': set(['DO', 'CL', 'DM', 'BB', 'BL', 'BM', 'BO', 'HT', 'SV',
+                     'JM', 'GT', 'HN', 'BQ', 'BR', 'BS', 'FK', 'BZ', 'PR',
+                     'NI', 'LC', 'TT', 'GP', 'PA', 'UY', 'PE', 'TC', 'PM',
+                     'VC', 'CO', 'VE', 'AG', 'VG', 'AI', 'VI', 'EC', 'GF',
+                     'GD', 'GY', 'AW', 'CR', 'GL', 'CW', 'CU', 'MF', 'SX',
+                     'SR', 'KN', 'AR', 'MQ', 'PY', 'MS', 'KY', 'MX']),
+    'OFFSHORE': set(['CH', 'BM', 'BS', 'CY', 'VG', 'PA', 'SC', 'SG', 'LU',
+                     'LI', 'AE', 'GB', 'JC', 'GG', 'GI', 'IM', 'MT', 'LR']),
+    'EASTERNEUROPE': set(['RU', 'UA', 'PL', 'BY', 'LV', 'LT', 'EE', 'CZ',
+                          'SI', 'SK', 'RS', 'XK', 'AL', 'ME', 'MK', 'HU',
+                          'RO', 'MD', 'BG', 'TR', 'AM', 'GE', 'KZ', 'UZ',
+                          'TJ', 'KG', 'AT'])}
 
 
-def get_region(country):
-    names = dict(DATABASE_COUNTRIES)
+def get_regions(country):
+    regions = []
     for region, countries in EXPAND_REGIONS.items():
         if country in countries:
-            return names.get(region) + ''
+            regions.append(region)
+    return regions
 
 
 class ExternalDatabase(models.Model, DisplayMixin):
