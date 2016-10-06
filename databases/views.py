@@ -3,10 +3,10 @@ from collections import namedtuple
 from django.shortcuts import render
 from django.db.models import Count
 
-from .models import ExternalDatabase, DATABASE_TYPES, DATABASE_COUNTRIES
-from .models import get_region
+from .models import ExternalDatabase, get_regions
+from .models import DATABASE_TYPES, DATABASE_COUNTRIES, EXPAND_REGIONS
 
-Country = namedtuple('Country', ['code', 'name', 'region', 'count'])
+Country = namedtuple('Country', ['code', 'name', 'regions', 'count'])
 Type = namedtuple('Type', ['code', 'name', 'count'])
 COUNTRY_NAMES = dict(DATABASE_COUNTRIES)
 TYPE_NAMES = dict(DATABASE_TYPES)
@@ -18,12 +18,12 @@ def index(request):
     countries = []
     for row in q:
         country = row.get('country')
-        region = get_region(country)
-        if region is None:
+        regions = get_regions(country)
+        if not len(regions):
             continue
         countries.append(Country(code=country,
                                  name=COUNTRY_NAMES.get(country),
-                                 region=region,
+                                 regions=regions,
                                  count=row.get('num')))
 
     q = ExternalDatabase.objects.values('db_type')
@@ -39,6 +39,8 @@ def index(request):
     return render(request, 'index.jinja', {
         'count': ExternalDatabase.objects.count(),
         'countries': countries,
+        'country_names': COUNTRY_NAMES,
+        'regions': EXPAND_REGIONS.keys(),
         'types': types
     })
 
@@ -59,7 +61,6 @@ def topic(request, db_type):
     q = ExternalDatabase.objects.all()
     q = q.filter(db_type=db_type)
     q = q.order_by("agency")
-    print list(q)
     return render(request, 'topic.jinja', {
         'count': q.count(),
         'db_type': db_type,
