@@ -10,7 +10,7 @@ from core.admin import admin_site
 from accounts.manage import Statistics
 from core.auth import perm
 from core.views import NotificationSeen, NotificationStream
-from core.views import NotificationSubscriptions
+from core.views import NotificationSubscriptions, home
 
 # Instead of admin auto-discovery:
 from databases.admin import ExternalDatabaseAdmin  # noqa
@@ -22,7 +22,7 @@ js_info_dict = {
 }
 
 urlpatterns = [
-    url(r'^$', perm('any', TemplateView, template_name="splash.jinja"), name="home"),
+    url(r'^$', home, name='home'),
     url(r'^about/id2/$', perm('any', TemplateView, template_name="about_id.jinja"), name='about_id'),
     url(r'^about/occrp/$', perm('any', TemplateView, template_name="about_us.jinja"), name='about_us'),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
