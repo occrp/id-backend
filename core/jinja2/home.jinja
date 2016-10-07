@@ -1,5 +1,5 @@
 {% extends "layout/default.jinja" %}
-{% block title %}{% trans -%}Investigative Dashboard{%- endtrans %}{% endblock %}
+{% block title %}{% trans -%}Dig for the facts{%- endtrans %}{% endblock %}
 {% block content_class %}home{% endblock %}
 
 {% block content %}
@@ -14,28 +14,24 @@
       <div class="col-md-4 col-sm-6">
         <h3>
           <i class="fa fa-fw fa-comments-o"></i>
-          Work with our researchers
+          Ask our researchers
         </h3>
         <p>
           Journalists can rely on the assistance of the
           research team to take their stories cross-border.
         </p>
         <p>
-          <a href="{{ url('ticket_submit') }}">Determine company ownership</a>
-          &middot;
-          <a href="{{ url('ticket_submit') }}">Find a person's assets</a>
-          &middot;
-          <a href="{{ url('ticket_submit') }}">Other research tasks</a>
+          <a href="{{ url('ticket_submit') }}">Send a research request</a>
         </p>
       </div>
       <div class="col-md-4 col-sm-6">
         <h3>
           <i class="fa fa-fw fa-search"></i>
-          Search for evidence
+          Search for leads
         </h3>
         <p>
-          Search millions of documents and datasets, and
-          browse curated public registries.
+          Search millions of documents and datasets, from public sources,
+          leaks and investigations.
         </p>
         <p>
           {% if user.is_authenticated() %}
@@ -44,9 +40,6 @@
             <a href="{{ALEPH_URL}}">
           {% endif %}
             Search our document archive</a>
-
-          &middot;
-          <a href="{{ url('databases:index') }}">Find public records</a>
         </p>
       </div>
       <div class="col-md-4 col-sm-6">
@@ -55,18 +48,55 @@
           Map your investigation
         </h3>
         <p>
-          Make your documents searchable, find entities in them,
-          and plot the findings as a network diagram.
+          Create visual investigative scenarios that map the 
+          people and companies in your story.
         </p>
         <p>
           <a href="https://vis.occrp.org">Visualise networks</a>
-          &middot;
+        </p>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <h3>
+          <i class="fa fa-fw fa-cloud-upload"></i>
+          Search your stuff
+        </h3>
+        <p>
+          Upload documents, make them searchable, and find mentions
+          of persons and companies.
+        </p>
+        <p>
           {% if user.is_authenticated() %}
             <a href="{{ALEPH_URL}}/api/1/sessions/login?next=/collections">
           {% else %}
             <a href="{{ALEPH_URL}}/collections">
           {% endif %}
-            Upload and search source materials</a>
+            Upload and search documents</a>
+        </p>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <h3>
+          <i class="fa fa-fw fa-database"></i>
+          Find online sources
+        </h3>
+        <p>
+          Browse our global index of public registries for companies,
+          land registries and courts.
+        </p>
+        <p>
+          <a href="{{ url('databases:index') }}">Find public databases</a>
+        </p>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <h3>
+          <i class="fa fa-fw fa-question-circle"></i>
+          Learn more about ID
+        </h3>
+        <p>
+          Make your documents searchable, find entities in them,
+          and plot the findings as a network diagram.
+        </p>
+        <p>
+          <a href="/about/id2/">About Investigative Dashboard</a>
         </p>
       </div>
     </div>
@@ -126,6 +156,41 @@
     </div>
   </div>
 
+  <div class="credits">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>Who is behind this?</h3>
+          <p>
+            The Investigative Dashboard is operated by the <a href="https://occrp.org">Organised
+            Crime and Corruption Reporting Project</a>, a not-for-profit network of
+            award-winning investigative reporting teams. ID is supported by international
+            partner networks and our donors.
+          </p>
+        </div>
+        <div class="col-md-12 logos">
+          <a href="https://occrp.org" class="logo first">
+            <img src="{{ static('images/logos/occrp.png' )}}">
+          </a>
+          <a href="http://en.arij.net/" class="logo">
+            <img src="{{ static('images/logos/arij.png' )}}">
+          </a>
+          <a href="https://investigativecenters.org/" class="logo">
+            <img src="{{ static('images/logos/ancir.png' )}}">
+          </a>
+        </div>
+        <div class="col-md-12 logos">
+          <a href="https://jigsaw.google.com/" class="logo first">
+            <img src="{{ static('images/logos/jigsaw.png' )}}">
+          </a>
+          <a href="https://www.opensocietyfoundations.org/" class="logo">
+            <img src="{{ static('images/logos/osf.png' )}}">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="databases databases-index">
     <div class="container">
       <div class="row">
@@ -140,4 +205,5 @@
       </div>
     </div>
   </div>
+
 {% endblock %}
