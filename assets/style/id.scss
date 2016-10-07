@@ -1,9 +1,11 @@
 $occrp-red: #982022 !default;
+$occrp-olive: #374953 !default;
 
 $page-bg: white;
 $text-muted: #999;
 $default-radius: 3px;
 $brand-primary: $occrp-red;
+$brand-secondary: $occrp-olive;
 
 // Style tiles, Fonts
 $font-family-sans-serif: 'Open Sans', sans-serif !default;
@@ -18,5 +20,5 @@ $input-border-focus: $brand-primary;
 @import "nav";
 @import "header";
 @import "tables";
+@import "home";
 @import "databases";
-

@@ -1,11 +1,16 @@
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-
+from django.shortcuts import render
 from django.http import JsonResponse
 
 from .models import Notification
 from .serializers import NotificationSerializer
+
+
+def home(request):
+    from databases.views import get_databases_index
+    return render(request, 'home.jinja', get_databases_index())
 
 
 class NotificationSeen(APIView):

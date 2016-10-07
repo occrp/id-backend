@@ -25,7 +25,7 @@ def get_aleph_metadata():
     return ALEPH_METADATA
 
 
-def index(request):
+def get_databases_index():
     q = ExternalDatabase.objects.values('country')
     q = q.annotate(num=Count('country'))
     countries = []
@@ -49,13 +49,16 @@ def index(request):
         types.append(Type(code=db_type,
                           name=TYPE_NAMES.get(db_type),
                           count=row.get('num')))
-    return render(request, 'index.jinja', {
-        'count': ExternalDatabase.objects.count(),
+    return {
         'countries': countries,
         'country_names': COUNTRY_NAMES,
         'regions': EXPAND_REGIONS.keys(),
         'types': types
-    })
+    }
+
+
+def index(request):
+    return render(request, 'index.jinja', get_databases_index())
 
 
 def country(request, country_code):
