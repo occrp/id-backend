@@ -9,9 +9,7 @@
     </div>
     <div class="span6">
         {{ macros.request_detail(_('Surname'), ticket.surname) }}
-        {{ macros.request_detail(_('Date of Birth'), ticket.dob) }}
-        {{ macros.request_detail(_('Country'), ticket.get_country(), '/ticket/country/%s' % ticket.country ) }}
-        {{ macros.request_detail(_('Family'), ticket.family) }}
+        {{ macros.request_detail(_('Date of Birth'), ticket.dob) }}   
     </div>
 </div>
 <div class="row-fluid">
@@ -25,5 +23,6 @@
         {{ macros.request_detail(_('Connections'), ticket.connections) }}
         {{ macros.request_detail(_('Story'), ticket.story) }}
         {{ macros.request_detail(_('Question'), ticket.question) }}
+        {{ macros.request_detail(_('Family'), ticket.family) }}
     </div>
 </div>
