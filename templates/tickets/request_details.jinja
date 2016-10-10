@@ -194,7 +194,11 @@
       <dd>{{ _("Yes") if ticket.findings_public else _("No") }}</dd>
 
       <dt class="yell soft">{% trans %}Sensitive{% endtrans %}</dt>
-      <dd>{{ _("Yes") if ticket.sensitive else _("No") }}</dd>
+      <dd>{{ _("Yes") if ticket.sensitive else _("No") }}
+        {% if ticket.whysensitive %}
+          <p>{{ticket.whysensitive}}</p>
+        {% endif %}
+      </dd>
     </dl>
 
     <h4>{% trans %}Billing Information{% endtrans %}</h4>
