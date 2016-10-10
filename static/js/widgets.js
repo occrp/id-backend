@@ -266,22 +266,22 @@
 
 
   // aliases (last name, other names)
-  var aliasesWidget = new MultiWidgetContainer({
-    textarea: $('textarea[name="person-aliases"]'),
-    widgetType: NamesWidget
-  });
+  // var aliasesWidget = new MultiWidgetContainer({
+  //   textarea: $('textarea[name="person-aliases"]'),
+  //   widgetType: NamesWidget
+  // });
 
   // sources (last name, other names)
-  var sourcesWidget = new MultiWidgetContainer({
-    textarea: $('textarea[name="company-connections"]'),
-    widgetType: NamesWidget
-  });
+  // var sourcesWidget = new MultiWidgetContainer({
+  //   textarea: $('textarea[name="company-connections"]'),
+  //   widgetType: NamesWidget
+  // });
 
   // family (last name, other names, dropdown)
-  var familyWidget = new MultiWidgetContainer({
-    textarea: $('textarea[name="person-family"]'),
-    widgetType: RelationWidget
-  });
+  // var familyWidget = new MultiWidgetContainer({
+  //   textarea: $('textarea[name="person-family"]'),
+  //   widgetType: RelationWidget
+  // });
 
   window.IDSpinner = IDSpinner;
   window.Alert = Alert;
