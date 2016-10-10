@@ -1,11 +1,7 @@
 from django import forms
-from django.contrib.auth import get_user_model
-from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django_select2.forms import Select2Widget
 
-import core.widgets
-import core.utils
 from core.countries import CURRENCIES
 
 from . import constants
@@ -73,14 +69,6 @@ class TicketForm(forms.ModelForm):
 
 class PersonTicketForm(TicketForm):
 
-    def clean_family(self):
-        data = self.cleaned_data['family']
-        return data.strip()
-
-    def clean_aliases(self):
-        data = self.cleaned_data['aliases']
-        return data.strip()
-
     class Meta(TicketForm.Meta):
         model = models.PersonTicket
         fields = ('name', 'surname', 'aliases', 'dob', 'family',
@@ -94,6 +82,8 @@ class PersonTicketForm(TicketForm):
         self.fields['deadline'].widget.attrs.update({'class': 'datepicker deadline'})
         self.fields['dob'].widget.attrs.update({'class': 'datepicker dob'})
         self.fields['background'].widget.attrs.update({'class': 'span8', 'placeholder': _('What do you know so far?'), 'rows': '6'})
+        self.fields['family'].widget.attrs.update({'class': 'span8', 'placeholder': _('Known family relationships.'), 'rows': '2'})
+        self.fields['aliases'].widget.attrs.update({'class': 'span8', 'placeholder': _('Other spellings, or cover names.'), 'rows': '2'})
         # self.fields['biography'].widget.attrs.update({'class': 'span8', 'rows': '6'})
         self.fields['business_activities'].widget.attrs.update({'class': 'span8', 'rows': '6'})
         self.fields['initial_information'].widget.attrs.update({'class': 'span8', 'placeholder': _('Any information you already have.'), 'rows': '6'})
@@ -207,4 +197,3 @@ class BudgetForm(forms.ModelForm):
     class Meta:
         model = models.Budget
         fields = ('name', 'description')
-
