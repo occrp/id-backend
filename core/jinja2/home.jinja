@@ -10,6 +10,17 @@
     </div>
   </div>
   <div class="container services">
+    
+    {% if EMERGENCY %}
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-danger">
+            {{EMERGENCY}}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
     <div class="row">
       <div class="col-md-4 col-sm-6">
         <h3>
