@@ -1076,7 +1076,7 @@ class TicketAttachmentDownload(TemplateView):
         log.debug('Serving: %s', attachment)
         resp = FileResponse(attachment.get_filehandle())
         resp['Content-Type'] = attachment.mimetype
-        resp['Content-Disposition'] = 'filename=' + attachment.filename
+        resp['Content-Disposition'] = 'filename=' + attachment.filename_clean
         return resp
 
 
