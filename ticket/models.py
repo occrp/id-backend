@@ -396,7 +396,7 @@ class TicketAttachment(models.Model, NotificationMixin, DisplayMixin):
 
         try:
             os.makedirs(directory)
-        except Exception as ex:
+        except Exception:
             pass
         return os.path.join(directory, self.filename)
 
@@ -428,8 +428,16 @@ class TicketAttachment(models.Model, NotificationMixin, DisplayMixin):
         log.debug("Created file '%s'" % obj.filename)
         return obj
 
+    @property
+    def filename_clean(self):
+        try:
+            return get_valid_filename(self.filename)
+        except Exception as ex:
+            log.exception(ex)
+            return 'invalid_file_name'
+
     def __unicode__(self):
-        return self.filename
+        return self.filename_clean
 
     def to_json(self):
         return {
