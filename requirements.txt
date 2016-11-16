@@ -3,6 +3,7 @@ Jinja2==2.8
 Babel==2.3.4
 oauthlib==1.0.3
 pycountry
+unidecode
 mock
 python-magic
 django-registration-redux==1.4

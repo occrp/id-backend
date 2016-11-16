@@ -3,6 +3,7 @@ import magic
 import shutil
 import logging
 import datetime
+from unidecode import unidecode
 from decimal import Decimal
 
 from django.db import models
@@ -406,6 +407,7 @@ class TicketAttachment(models.Model, NotificationMixin, DisplayMixin):
         if filename is None and hasattr(fh, 'name'):
             filename = fh.name
         filename = filename or "Untitled file"
+        filename = unidecode(filename).encode('ascii', 'ignore')
         log.debug("Creating new file '%s'" % filename)
         obj = cls()
         obj.ticket = ticket
@@ -431,7 +433,8 @@ class TicketAttachment(models.Model, NotificationMixin, DisplayMixin):
     @property
     def filename_clean(self):
         try:
-            return get_valid_filename(self.filename)
+            filename = get_valid_filename(self.filename)
+            return unidecode(filename).encode('ascii', 'ignore')
         except Exception as ex:
             log.exception(ex)
             return 'invalid_file_name'
