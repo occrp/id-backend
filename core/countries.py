@@ -7,9 +7,9 @@ skipped_codes = (
     'USS',
 )
 
-CURRENCIES = [(x.letter, '%s - %s' % (x.letter, x.name))
+CURRENCIES = [(x.alpha_3, '%s - %s' % (x.alpha_3, x.name))
               for x in pycountry.currencies
-              if x.letter not in skipped_codes]
+              if x.alpha_3 not in skipped_codes]
 
 COUNTRIES = (
     ('', u'-----------'),
