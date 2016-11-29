@@ -49,3 +49,6 @@ urlpatterns = [
 
     url(r'^captcha/', include('captcha.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+handler403 = 'core.errors.redirect_403'
