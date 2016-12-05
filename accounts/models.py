@@ -49,6 +49,7 @@ class ProfileManager(NotificationMixin, BaseUserManager):
     def _create_user(self, email, password, is_staff, is_superuser,
                      **extra_fields):
         """Create and save a User with the given email and password."""
+        raise Exception("User creation is disabled.")
         now = timezone.now()
         if not email:
             raise ValueError('The email field has to be set.')

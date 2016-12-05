@@ -173,7 +173,7 @@ USER_FIELDS = ['email']
 
 # registration form class
 # is the registration alowed?
-REGISTRATION_OPEN = True
+REGISTRATION_OPEN = False
 REGISTRATION_AUTO_LOGIN = True
 REGISTRATION_EMAIL_HTML = False
 # set to an URL that a user should be redirected upon successful registration
