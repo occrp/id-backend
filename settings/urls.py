@@ -4,7 +4,6 @@ from django.views.generic import TemplateView
 from django.views.i18n import javascript_catalog
 from django.conf.urls.static import static
 
-import accounts.views
 from core.manage import Panel
 from core.admin import admin_site
 from accounts.manage import Statistics
@@ -14,7 +13,7 @@ from core.views import NotificationSubscriptions, home
 
 # Instead of admin auto-discovery:
 from databases.admin import ExternalDatabaseAdmin  # noqa
-from accounts.admin import ProfileAdmin, NetworkAdmin  # noqa
+from accounts.admin import ProfileAdmin  # noqa
 from ticket.admin import BudgetAdmin  # noqa
 
 js_info_dict = {
@@ -26,7 +25,6 @@ urlpatterns = [
     url(r'^about/id2/$', perm('any', TemplateView, template_name="about_id.jinja"), name='about_id'),
     url(r'^about/occrp/$', perm('any', TemplateView, template_name="about_us.jinja"), name='about_us'),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    url(r'^api/2/accounts/profile/$', accounts.views.Profile.as_view(), name='api_2_profile'),
     url(r'^api/2/notifications/$', NotificationSubscriptions.as_view(), name='api_2_notifications'),
     url(r'^api/2/notifications/seen/$', NotificationSeen.as_view(), name='api_2_notifications_seen'),
     url(r'^api/2/notifications/stream/$', NotificationStream.as_view(), name='api_2_notifications_stream'),
