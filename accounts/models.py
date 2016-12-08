@@ -49,7 +49,6 @@ class ProfileManager(NotificationMixin, BaseUserManager):
     def _create_user(self, email, password, is_staff, is_superuser,
                      **extra_fields):
         """Create and save a User with the given email and password."""
-        raise Exception("User creation is disabled.")
         now = timezone.now()
         if not email:
             raise ValueError('The email field has to be set.')
@@ -210,33 +209,6 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
             "id": self.id,
             "email": self.email
         }
-
-    def save(self, *args, **kw):
-        # FIXME: Temporary fix to make users stop being locked out
-        try:
-            u = Profile.objects.get(id=self.id)
-            if u.is_active and not self.is_active:
-                self.is_active = u.is_active
-        except Profile.DoesNotExist:
-            pass
-        #####################################################################
-
-        logger.info("Saving profile for user %s: {is_active:%s, is_staff:%s, is_superuser:%s}" % (self.email, self.is_active, self.is_staff, self.is_superuser))
-        if self.pk is not None:
-            try:
-                orig = Profile.objects.get(pk=self.pk)
-                if orig.network != self.network:
-                    self.notify("User %s changed network from %s to %s" % (self, orig.network, self.network), urlname="profile", params={"pk": self.pk}, action="update")
-                if orig.is_superuser != self.is_superuser:
-                    self.notify("User %s admin status changed to %s" % (self, self.is_superuser), urlname="profile", params={"pk": self.pk}, action="update")
-            except Profile.DoesNotExist:
-                pass
-
-        else:
-            if len(Profile.objects.filter(email=self.email)) > 0:
-                raise Exception("Cannot create duplicate user!")
-
-        return super(Profile, self).save(*args, **kw)
 
     class Meta:
         verbose_name = _('user')
