@@ -1,7 +1,0 @@
-{% trans %}Welcome to {{ ID_SITE_NAME }}{% endtrans %}
-
-{% trans %}You need to activate your account at:{%endtrans%}
-
-http://{{ site.domain }}{{ url('registration_activate', activation_key=activation_key) }}
-
-{% trans %}This link will be active for {{ expiration_days }} days.{% endtrans %}

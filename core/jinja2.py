@@ -54,6 +54,8 @@ class ContextTemplate(Template):
 
     def render(self, context):
         request = context.get('request')
+        context['DEBUG'] = settings.DEBUG
+
         if request is not None:
             context['user'] = request.user
             context['ROUTE_NAME'] = resolve(request.path_info).url_name
@@ -68,8 +70,6 @@ class ContextTemplate(Template):
         short_format = formats.get_format("SHORT_DATE_FORMAT",
                                           lang=get_language())
         context['LANGUAGE_SHORT_DATE_FORMAT'] = short_format
-
-        context['DEBUG'] = settings.DEBUG
         context['EMERGENCY'] = settings.EMERGENCY
         context['ID_SITE_NAME'] = settings.ID_SITE_NAME
         context['ID_VERSION'] = settings.ID_VERSION

@@ -66,7 +66,7 @@
             {% if user.is_authenticated() %}
               <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
                 <a href="{{ url('ticket_list') }}">
-                  <i class="fa fa-comments-o"></i> 
+                  <i class="fa fa-comments-o"></i>
                   {% trans %}My Requests{% endtrans %}
                 </a>
               </li>
@@ -89,7 +89,7 @@
                 <b class="caret"></b>
               </a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <li  class="{% if url('profile') in request.path %}active{% endif %}">
+                <li>
                   <a href="{{ url('profile') }}"><i class="fa fa-user"></i> {% trans %}Profile{% endtrans %}</a>
                 </li>
                 {% if user.is_staff or user.is_superuser %}
