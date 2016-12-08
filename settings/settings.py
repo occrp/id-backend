@@ -143,7 +143,7 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTOCOL", "https")
 AUTHENTICATION_BACKENDS = (
     'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'social.backends.google.GoogleOAuth2',
+    'accounts.backend.KeycloakOAuth2',
 )
 
 SOCIAL_AUTH_PIPELINE = (
@@ -164,9 +164,12 @@ SOCIAL_AUTH_PIPELINE = (
 # as per: https://docs.djangoproject.com/en/dev/topics/auth/customizing/
 AUTH_USER_MODEL = 'accounts.Profile'
 
-# google settings, potentially overridden in settings_local
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('ID_GOOGLE_OAUTH2_KEY')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('ID_GOOGLE_OAUTH2_SECRET')
+KEYCLOAK_URL = 'https://secure.occrp.org/'
+KEYCLOAK_REALM = 'general'
+
+# settings, potentially overridden in settings_local
+SOCIAL_AUTH_KEYCLOAK_KEY = os.environ.get('ID_KEYCLOAK_KEY')
+SOCIAL_AUTH_KEYCLOAK_SECRET = os.environ.get('ID_KEYCLOAK_SECRET')
 SOCIAL_AUTH_USER_MODEL = AUTH_USER_MODEL
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 USER_FIELDS = ['email']

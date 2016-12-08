@@ -1,7 +1,7 @@
 <ul class="nav navbar-nav navbar-right">
-  
+
   {# user drop-down #}
-  {% if user.is_authenticated() %}          
+  {% if user.is_authenticated() %}
     <li class="dropdown">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <i class="fa fa-user"></i>
@@ -9,7 +9,7 @@
         <b class="caret"></b>
       </a>
       <ul class="dropdown-menu" role="menu">
-        <li class="{% if url('profile') in request.path %}active{% endif %}">
+        <li>
           <a href="{{ url('profile') }}">
             <i class="fa fa-user"></i>
             {% trans %}Profile{% endtrans %}
