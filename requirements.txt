@@ -5,6 +5,7 @@ oauthlib==1.0.3
 pycountry
 unidecode
 mock
+pyjwt
 python-magic
 django-registration-redux==1.4
 requests>=2.11

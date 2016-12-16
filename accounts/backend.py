@@ -1,4 +1,4 @@
-import requests
+import jwt
 from urlparse import urljoin
 from social.backends.oauth import BaseOAuth2
 from django.conf import settings
@@ -17,19 +17,18 @@ class KeycloakOAuth2(BaseOAuth2):
     ACCESS_TOKEN_METHOD = 'POST'
 
     def get_user_details(self, response):
-        groups = response.get('groups')
+        roles = set()
+        for client, data in response.get('resource_access', {}).items():
+            roles.update(data.get('roles', []))
+
         return {
-            'username': response.get('username'),
+            'username': response.get('preferred_username'),
             'email': response.get('email'),
-            'first_name': response.get('firstName'),
-            'last_name': response.get('lastName'),
-            'is_staff': 'functionStaff' in groups,
-            'is_superuser': 'functionSuperuser' in groups,
+            'first_name': response.get('given_name'),
+            'last_name': response.get('family_name'),
+            'is_staff': 'staff' in roles,
+            'is_superuser': 'superuser' in roles,
         }
 
     def user_data(self, access_token, *args, **kwargs):
-        res = requests.post(self.USERINFO_URL, headers={
-            'Authorization': 'Bearer %s' % access_token
-        })
-        # print res.json()
-        return res.json()
+        return jwt.decode(access_token, verify=False)
