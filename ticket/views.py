@@ -89,7 +89,6 @@ class AdminOustandingChargesList(PrettyPaginatorMixin, CSVorJSONResponseMixin, T
             'upcoming_deadline': TicketListUpcomingDeadline().get_ticket_set(self.request.user).count(),
             'oustanding_charges': AdminOustandingChargesList().get_charges_set().count()
         }
-
         return ticket_figures
 
     def get_paged_charges(self, page_number):
@@ -797,9 +796,10 @@ class TicketListMyAssigned(TicketList):
     ticket_list_name = "Open Assignments"
 
     def get_ticket_set(self, user):
-        return Ticket.objects.filter(responders__in=[user]).filter(
-            ~Q(status='closed')&~Q(status='cancelled')).order_by(
-            "-created")
+        return Ticket.objects \
+            .filter(responders__in=[user]) \
+            .filter(~Q(status='closed') & ~Q(status='cancelled')) \
+            .order_by("deadline", "-created")
 
 
 class TicketListMyAssignedClosed(TicketList):
@@ -807,9 +807,10 @@ class TicketListMyAssignedClosed(TicketList):
     ticket_list_name = "Closed Assignments"
 
     def get_ticket_set(self, user):
-        return Ticket.objects.filter(responders__in=[user]).filter(
-            Q(status='closed')).order_by(
-            "-created")
+        return Ticket.objects \
+            .filter(responders__in=[user]) \
+            .filter(Q(status='closed')) \
+            .order_by("-created")
 
 
 class TicketListPublic(TicketList):
