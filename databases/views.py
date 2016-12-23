@@ -20,8 +20,11 @@ ALEPH_METADATA = {}
 
 def get_aleph_metadata():
     if not len(ALEPH_METADATA):
-        res = requests.get(urljoin(settings.ALEPH_URL, '/api/1/metadata'))
-        ALEPH_METADATA.update(res.json())
+        try:
+            res = requests.get(urljoin(settings.ALEPH_URL, '/api/1/metadata'))
+            ALEPH_METADATA.update(res.json())
+        except Exception as ex:
+            log.exception(ex)
     return ALEPH_METADATA
 
 
@@ -31,11 +34,11 @@ def get_databases_index():
     countries = []
     for row in q:
         country = row.get('country')
-        regions = get_regions(country)
-        if not len(regions):
+        if not len(country):
             continue
+        regions = get_regions(country)
         countries.append(Country(code=country,
-                                 name=COUNTRY_NAMES.get(country),
+                                 name=COUNTRY_NAMES.get(country, country),
                                  regions=regions,
                                  count=row.get('num')))
 
