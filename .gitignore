@@ -21,6 +21,8 @@ coverage.xml
 *.log
 *.log.*
 .DS_Store
+*.sw[op]
+tags
 
 pyenv/
 static/CACHE
