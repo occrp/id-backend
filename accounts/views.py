@@ -1,16 +1,22 @@
 import urllib
 import logging
 from urlparse import urljoin
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 from django.contrib.auth.views import logout as django_logout
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.conf import settings
+from rest_framework.generics import GenericAPIView, RetrieveAPIView
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+from .serializers import ProfileSerializer
 
 
 logger = logging.getLogger(__name__)
@@ -67,3 +73,17 @@ class UserSuggest(APIView):
                 'display_name': obj.display_name
             })
         return JsonResponse(res)
+
+
+class SessionEndpoint(GenericAPIView):
+    serializer_class = ProfileSerializer
+
+    def get(self, request, *args, **kwargs):
+        # based on RetrieveModelMixin
+        # (it doesn't pass request to get_object, so we can't use that)
+        instance = self.get_object(request)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def get_object(self, request, *args, **kwargs):
+        return request.user
