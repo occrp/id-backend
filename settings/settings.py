@@ -166,7 +166,7 @@ SOCIAL_AUTH_PIPELINE = (
 AUTH_USER_MODEL = 'accounts.Profile'
 
 KEYCLOAK_URL = 'https://secure.occrp.org/'
-KEYCLOAK_REALM = 'general'
+KEYCLOAK_REALM = os.environ.get('ID_KEYCLOAK_REALM')
 
 # settings, potentially overridden in settings_local
 SOCIAL_AUTH_KEYCLOAK_KEY = os.environ.get('ID_KEYCLOAK_KEY')
