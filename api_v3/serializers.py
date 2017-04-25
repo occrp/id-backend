@@ -1,6 +1,6 @@
 from rest_framework_json_api import serializers
 
-from accounts.models import Profile
+from .models import Profile, Ticket
 
 class ProfileSerializer(serializers.ModelSerializer):
 
@@ -14,4 +14,20 @@ class ProfileSerializer(serializers.ModelSerializer):
             'is_staff',
             'is_superuser',
             'locale'
+        )
+
+
+class TicketSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Ticket
+        fields = (
+            'id',
+            'ticket_type',
+            'created',
+            'status',
+            'status_updated',
+            'sensitive',
+            'whysensitive',
+            'deadline',
         )
