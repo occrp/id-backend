@@ -18,7 +18,24 @@ Manually run tests with:
 
 ## Running
 
-You can run `id2` eitehr with `docker`, or standalone.
+You can run `id2` either with `docker`, or standalone.
+
+Before you begin, copy the `id.env.tmpl` file and edit the settings in it.
+
+This files is used by Docker, in order to run the application locally,
+you will have to export the settings to environment variables manually.
+
+If you are running the application for the first time, you will need to
+run the migrations:
+```
+python manage.py migrate
+```
+
+Now you can start the application:
+
+```
+ ./manage.py runserver
+```
 
 ### Running with Docker and Docker Compose
 
@@ -46,9 +63,9 @@ You should use [docker-compose](http://docs.docker.com/compose/) to have all the
 Get some info on the containers being run:
 ```
  $ ../docker-compose ps
-                    Name                                Command               State          Ports        
+                    Name                                Command               State          Ports
  -------------------------------------------------------------------------------------------------------
- investigativedashboard2_elasticsearch_1    /docker-entrypoint.sh elas ...   Up       9200/tcp, 9300/tcp 
+ investigativedashboard2_elasticsearch_1    /docker-entrypoint.sh elas ...   Up       9200/tcp, 9300/tcp
  investigativedashboard2_id2_1              python manage.py runserver ...   Up       8000/tcp
  investigativedashboard2_postgres_1         /docker-entrypoint.sh postgres   Up       5432/tcp
 ```
@@ -60,12 +77,6 @@ Check the IP address of `*_id2_*` (in the case above: `investigativedashboard2_i
 ```
 
 Fire up a browser and check if everything works by visiting `http://*_id2_* IP address>:8000/`. You should see Investigative Dashboard's main page.
-
-### Running locally
-
-```
- ./manage.py runserver
-```
 
 ## Development accounts
 
