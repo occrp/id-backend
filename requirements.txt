@@ -9,7 +9,7 @@ django-registration-redux==1.4
 django-simple-captcha
 django_select2==5.8.9
 djangorestframework==3.4.6
-djangorestframework-jsonapi==2.0.0b1
+djangorestframework-jsonapi==2.2.0
 gunicorn
 mock
 oauth2client==3.0.0
