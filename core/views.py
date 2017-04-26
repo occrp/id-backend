@@ -13,6 +13,10 @@ def home(request):
     return render(request, 'home.jinja', get_databases_index())
 
 
+def tickets_home(request):
+    return render(request, 'tickets.jinja')
+
+
 class NotificationSeen(APIView):
     permission_classes = (IsAuthenticated, )
 

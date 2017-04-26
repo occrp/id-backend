@@ -4,7 +4,7 @@
 <html lang="{{LANGUAGE_LC}}">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
   <title>{% block title %}{% endblock %} - {{ID_SITE_NAME}}</title>
 
   {% assets "style" %}
@@ -17,6 +17,9 @@
   <link rel="shortcut icon" href="{{ ID_FAVICON_URL }}">
   <meta name="robots" content="index, follow">
   <link rel="home" href="{{ url('home') }}">
+
+  {% block head_extra %}
+  {% endblock %}
 </head>
 <body>
   <div id="page">
@@ -41,7 +44,7 @@
       {% endblock %}
     </div>
   </div>
-  
+
   {% include 'includes/footer.jinja' %}
   {% assets "script" %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>

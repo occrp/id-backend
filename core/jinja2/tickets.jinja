@@ -1,0 +1,33 @@
+{% extends "layout/default.jinja" %}
+
+/* Add extra assets into HTML head */
+{% block head_extra %}
+  <link rel="stylesheet" href="/static/id-frontend/id2-frontend.css">
+  <meta name="id2-frontend/config/environment" content="{{
+    '{
+      "APP": {"name":"id2-frontend", "version": "0.0.1 beta"},
+      "modulePrefix":"id2-frontend",
+      "podModulePrefix":"id2-frontend/pods",
+      "environment":"production",
+      "rootURL":"/tickets",
+      "locationType": "auto",
+      "exportApplicationGlobal": true
+    }' | urlencode
+  }}" >
+{% endblock %}
+
+/* Set page title */
+{% block title %}
+  {% trans -%}Dig for the facts{%- endtrans %}
+{% endblock %}
+
+/* Hide header title */
+{% block header %}{% endblock %}
+
+/* Load the Ember.js application */
+{% block content %}
+  <div id="container"></div>
+
+  <script src="/static/id-frontend/vendor.js"></script>
+  <script src="/static/id-frontend/id2-frontend.js"></script>
+{% endblock %}
