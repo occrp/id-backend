@@ -1,7 +1,9 @@
 *.py[cod]
 env/
+venv/
 build/
 dist/
+data/
 static/.webassets-cache/
 static/bower_components/
 static_out/
