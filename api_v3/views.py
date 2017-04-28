@@ -1,25 +1,33 @@
-import rest_framework.generics
-import rest_framework.viewsets
+from rest_framework import generics, response, viewsets
 
 
-from .models import Profile, Ticket
-from .serializers import ProfileSerializer, TicketSerializer
 from .support import JSONApiEndpoint
+from .models import Profile, Ticket, Notification
+from .serializers import(
+    ProfileSerializer,
+    TicketSerializer,
+    NotificationSerializer
+)
 
 
-class SessionEndpoint(rest_framework.generics.GenericAPIView):
+class SessionEndpoint(generics.GenericAPIView):
     serializer_class = ProfileSerializer
 
     def get(self, request, *args, **kwargs):
         serializer = self.get_serializer(request.user)
-        return rest_framework.response.Response(serializer.data)
+        return response.Response(serializer.data)
 
 
-class TicketsEndpoint(JSONApiEndpoint, rest_framework.viewsets.ModelViewSet):
+class TicketsEndpoint(JSONApiEndpoint, viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
 
 
-class UsersEndpoint(JSONApiEndpoint, rest_framework.viewsets.ModelViewSet):
+class UsersEndpoint(JSONApiEndpoint, viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
+
+class NotificationsEndpoint(JSONApiEndpoint, viewsets.ModelViewSet):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer

@@ -1,6 +1,6 @@
 from rest_framework_json_api import serializers
 
-from .models import Profile, Ticket
+from .models import Profile, Ticket, Notification
 
 class ProfileSerializer(serializers.ModelSerializer):
 
@@ -30,4 +30,25 @@ class TicketSerializer(serializers.ModelSerializer):
             'sensitive',
             'whysensitive',
             'deadline',
+        )
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Notification
+        fields = (
+            'id',
+            'timestamp',
+            'is_seen',
+            'text',
+            'url_base',
+            'url_params',
+            'url',
+            'project',
+            'module',
+            'model',
+            'instance',
+            'action',
+            'user'
         )
