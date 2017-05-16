@@ -17,9 +17,9 @@ class KeycloakOAuth2(BaseOAuth2):
     ACCESS_TOKEN_METHOD = 'POST'
 
     def get_user_details(self, response):
-        roles = set()
-        for client, data in response.get('resource_access', {}).items():
-            roles.update(data.get('roles', []))
+        clients = response.get('resource_access', {})
+        client = clients.get(settings.SOCIAL_AUTH_KEYCLOAK_KEY, {})
+        roles = set(client.get('roles', []))
 
         return {
             'username': response.get('preferred_username'),
