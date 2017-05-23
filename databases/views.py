@@ -24,7 +24,7 @@ def get_aleph_metadata():
             res = requests.get(urljoin(settings.ALEPH_URL, '/api/1/metadata'))
             ALEPH_METADATA.update(res.json())
         except Exception as ex:
-            log.exception(ex)
+            log.info('Error getting aleph data: %r', ex)
     return ALEPH_METADATA
 
 
@@ -79,7 +79,7 @@ def country(request, country_code):
         })
         collections = res.json()
     except Exception as ex:
-        log.exception(ex)
+        log.info('Error getting aleph data: %r', ex)
         collections = {'total': 0, 'results': []}
 
     return render(request, 'country.jinja', {
