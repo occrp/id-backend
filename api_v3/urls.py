@@ -15,8 +15,8 @@ router.register(r'tickets', TicketsEndpoint)
 router.register(r'users', UsersEndpoint)
 router.register(r'notifications', NotificationsEndpoint)
 router.register(r'attachments', AttachmentsEndpoint)
+router.register(r'me', SessionEndpoint, base_name='me')
 
 urlpatterns = [
-    url(r'^me/$', SessionEndpoint.as_view()),
     url(r'^', include(router.urls)),
 ]

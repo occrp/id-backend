@@ -1,9 +1,7 @@
 import rest_framework.exceptions
-import rest_framework.generics
 import rest_framework.parsers
 import rest_framework.renderers
 import rest_framework.response
-import rest_framework.viewsets
 import rest_framework_json_api.metadata
 import rest_framework_json_api.parsers
 import rest_framework_json_api.renderers
