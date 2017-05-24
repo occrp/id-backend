@@ -52,7 +52,9 @@ class Ticket(models.Model, NotificationMixin):
 class Attachment(models.Model, NotificationMixin):
     """Record for a file attached to a ticket."""
 
-    ticket = models.ForeignKey(Ticket, blank=False, related_name='attachments')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=False)
-    mimetype = models.CharField(max_length=65)
+    ticket = models.ForeignKey(
+        Ticket, blank=False, related_name='attachments', db_index=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, blank=False, db_index=True)
+    upload = models.FileField(upload_to='attachments/%Y/%m/%d')
     created_at = models.DateTimeField(auto_now_add=True)
