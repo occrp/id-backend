@@ -18,6 +18,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class TicketSerializer(serializers.ModelSerializer):
+    requester = ProfileSerializer(read_only=True, required=False)
 
     class Meta:
         model = Ticket
@@ -70,7 +71,7 @@ class NotificationSerializer(serializers.ModelSerializer):
 
 
 class AttachmentSerializer(serializers.ModelSerializer):
-    user = ProfileSerializer(required=False)
+    user = ProfileSerializer(read_only=True, required=False)
 
     class Meta:
         model = Attachment
