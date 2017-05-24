@@ -5,20 +5,23 @@ from core.models import Notification  # noqa
 from core.mixins import NotificationMixin
 from core.countries import COUNTRIES
 from accounts.models import Profile  # noqa
-
-from .constants import REQUESTER_TYPES, TICKET_STATUS, TICKET_TYPES
+from ticket.constants import REQUESTER_TYPES, TICKET_STATUS, TICKET_TYPES
 
 
 class Ticket(models.Model, NotificationMixin):
     """Ticket model."""
 
-    responders = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    responders = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name='assigned_tickets',
+        db_index=True)
     requester = models.ForeignKey(
-        settings.AUTH_USER_MODEL, db_index=True)
+        settings.AUTH_USER_MODEL, related_name='requested_tickets',
+        db_index=True)
 
-    kind = models.CharField(blank=False, max_length=70, choices=TICKET_TYPES)
+    kind = models.CharField(
+        blank=False, max_length=70, choices=TICKET_TYPES, db_index=True)
     request_type = models.CharField(
-        blank=False, max_length=70, choices=REQUESTER_TYPES)
+        blank=False, max_length=70, choices=REQUESTER_TYPES, db_index=True)
     status = models.CharField(
         max_length=70, choices=TICKET_STATUS, default='new', db_index=True)
 
@@ -42,7 +45,8 @@ class Ticket(models.Model, NotificationMixin):
 
     # Company ticket type fields
     company_name = models.CharField(max_length=512, blank=False)
-    country = models.CharField(max_length=100, choices=COUNTRIES, blank=False)
+    country = models.CharField(
+        max_length=100, choices=COUNTRIES, blank=False, db_index=True)
 
 
 class Attachment(models.Model, NotificationMixin):
