@@ -10,8 +10,8 @@ services:
   postgres:
     image: postgres:9.4
     volumes:
-      - "./build/data/postgres:/var/lib/postgresql/data"
-      - "./build/logs/postgres:/var/log"
+      - ".build/data/postgres:/var/lib/postgresql/data"
+      - ".build/logs/postgres:/var/log"
     environment:
       POSTGRES_USER:     id2
       POSTGRES_PASSWORD: id2
