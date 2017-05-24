@@ -2,11 +2,12 @@ from rest_framework import generics, response, viewsets
 
 
 from .support import JSONApiEndpoint
-from .models import Profile, Ticket, Notification
+from .models import Profile, Ticket, Notification, Attachment
 from .serializers import(
     ProfileSerializer,
     TicketSerializer,
-    NotificationSerializer
+    NotificationSerializer,
+    AttachmentSerializer
 )
 
 
@@ -31,3 +32,11 @@ class UsersEndpoint(JSONApiEndpoint, viewsets.ModelViewSet):
 class NotificationsEndpoint(JSONApiEndpoint, viewsets.ModelViewSet):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
+
+
+class AttachmentsEndpoint(JSONApiEndpoint, viewsets.ModelViewSet):
+    queryset = Attachment.objects.all()
+    serializer_class = AttachmentSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

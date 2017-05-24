@@ -1,6 +1,6 @@
 from rest_framework_json_api import serializers
 
-from .models import Profile, Ticket, Notification
+from .models import Profile, Ticket, Notification, Attachment
 
 class ProfileSerializer(serializers.ModelSerializer):
 
@@ -23,13 +23,28 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         fields = (
             'id',
-            'ticket_type',
-            'created',
+            'responders',
+            'requester',
+
+            'kind',
+            'request_type',
             'status',
-            'status_updated',
             'sensitive',
             'whysensitive',
-            'deadline',
+            'deadline_at',
+            'created_at',
+            'updated_at',
+
+            'background',
+            'first_name',
+            'last_name',
+            'born_at',
+            'connections',
+            'sources',
+            'activities',
+            'initial_information',
+            'company_name',
+            'country'
         )
 
 
@@ -51,4 +66,18 @@ class NotificationSerializer(serializers.ModelSerializer):
             'instance',
             'action',
             'user'
+        )
+
+
+class AttachmentSerializer(serializers.ModelSerializer):
+    user = ProfileSerializer(required=False)
+
+    class Meta:
+        model = Attachment
+        fields = (
+            'id',
+            'user',
+            'ticket',
+            'upload',
+            'created_at'
         )

@@ -5,7 +5,8 @@ from .views import(
     SessionEndpoint,
     TicketsEndpoint,
     UsersEndpoint,
-    NotificationsEndpoint
+    NotificationsEndpoint,
+    AttachmentsEndpoint
 )
 
 
@@ -13,6 +14,7 @@ router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'tickets', TicketsEndpoint)
 router.register(r'users', UsersEndpoint)
 router.register(r'notifications', NotificationsEndpoint)
+router.register(r'attachments', AttachmentsEndpoint)
 
 urlpatterns = [
     url(r'^me/$', SessionEndpoint.as_view()),

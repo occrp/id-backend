@@ -35,16 +35,16 @@ class Ticket(models.Model, NotificationMixin):
     background = models.TextField(blank=False, max_length=1000)
 
     # Person ticket type fields
-    first_name = models.CharField(max_length=512, blank=False)
-    last_name = models.CharField(max_length=512, blank=False)
+    first_name = models.CharField(max_length=512, blank=True)
+    last_name = models.CharField(max_length=512, blank=True)
     born_at = models.DateField(null=True, blank=True)
     connections = models.TextField(blank=True)
     sources = models.TextField(blank=True)
-    activities = models.TextField(blank=False, max_length=1000)
-    initial_information = models.TextField(max_length=1000, blank=False)
+    activities = models.TextField(blank=True, max_length=1000)
+    initial_information = models.TextField(max_length=1000, blank=True)
 
     # Company ticket type fields
-    company_name = models.CharField(max_length=512, blank=False)
+    company_name = models.CharField(max_length=512, blank=True)
     country = models.CharField(
         max_length=100, choices=COUNTRIES, blank=False, db_index=True)
 
@@ -56,5 +56,6 @@ class Attachment(models.Model, NotificationMixin):
         Ticket, blank=False, related_name='attachments', db_index=True)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, blank=False, db_index=True)
-    upload = models.FileField(upload_to='attachments/%Y/%m/%d')
+    upload = models.FileField(
+        upload_to='{}/attachments/%Y/%m/%d'.format(settings.DOCUMENT_PATH))
     created_at = models.DateTimeField(auto_now_add=True)
