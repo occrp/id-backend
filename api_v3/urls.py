@@ -1,4 +1,6 @@
-from django.conf.urls import include, url
+import os.path
+
+from django.conf import urls, settings
 from rest_framework import routers
 
 from .views import(
@@ -18,5 +20,8 @@ router.register(r'attachments', AttachmentsEndpoint)
 router.register(r'me', SessionEndpoint, base_name='me')
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
-]
+    urls.url(r'^', urls.include(router.urls)),
+] + urls.static.static(
+    os.path.join(settings.DOCUMENT_PATH, '/'),
+    document_root=os.path.abspath(settings.BASE_DIR)
+)
