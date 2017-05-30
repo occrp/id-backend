@@ -8,7 +8,8 @@ from .views import(
     TicketsEndpoint,
     UsersEndpoint,
     NotificationsEndpoint,
-    AttachmentsEndpoint
+    AttachmentsEndpoint,
+    CommentsEndpoint
 )
 
 
@@ -17,6 +18,7 @@ router.register(r'tickets', TicketsEndpoint)
 router.register(r'users', UsersEndpoint)
 router.register(r'notifications', NotificationsEndpoint)
 router.register(r'attachments', AttachmentsEndpoint)
+router.register(r'comments', CommentsEndpoint)
 router.register(r'me', SessionEndpoint, base_name='me')
 
 urlpatterns = [

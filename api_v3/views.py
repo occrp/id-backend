@@ -1,4 +1,3 @@
-from django.db import models
 from rest_framework import generics, response, viewsets, mixins, serializers
 
 from .support import JSONApiEndpoint
@@ -96,7 +95,7 @@ class CommentsEndpoint(
     serializer_class = CommentSerializer
 
     def get_queryset(self):
-        queryset = super(CommentSerializer, self).get_queryset()
+        queryset = super(CommentsEndpoint, self).get_queryset()
 
         if self.request.user.is_superuser:
             return queryset

@@ -1,6 +1,6 @@
 from rest_framework_json_api import serializers
 
-from .models import Profile, Ticket, Notification, Attachment
+from .models import Profile, Ticket, Notification, Attachment, Comment
 
 class ProfileSerializer(serializers.ModelSerializer):
 
@@ -89,7 +89,7 @@ class CommentSerializer(serializers.ModelSerializer):
     user = ProfileSerializer(read_only=True)
 
     class Meta:
-        model = Attachment
+        model = Comment
         fields = (
             'id',
             'user',
