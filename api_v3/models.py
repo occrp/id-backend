@@ -48,9 +48,22 @@ class Ticket(models.Model, NotificationMixin):
     country = models.CharField(
         max_length=100, choices=COUNTRIES, blank=False, db_index=True)
 
+    @classmethod
+    def filter_by_user(cls, user, queryset=None):
+        """Returns any user tickets.
+
+        Either the ones he created or he is subscribed to.
+        """
+        return (queryset or cls.objects).filter(
+            # Allow ticket authors to send attachments
+            models.Q(requester=user) |
+            # Allow ticket responders to send attachments
+            models.Q(responders=user)
+        )
+
 
 class Attachment(models.Model, NotificationMixin):
-    """Record for a file attached to a ticket."""
+    """Ticket attachment model."""
 
     ticket = models.ForeignKey(
         Ticket, blank=False, related_name='attachments', db_index=True)
@@ -59,6 +72,21 @@ class Attachment(models.Model, NotificationMixin):
     upload = models.FileField(
         upload_to='{}/attachments/%Y/%m/%d'.format(settings.DOCUMENT_PATH))
     created_at = models.DateTimeField(auto_now_add=True)
+
+    @classmethod
+    def filter_by_user(cls, user, queryset=None):
+        """Returns any user accessible attachments.
+
+        Either the ones he created or he has access to through the tickets.
+        """
+        return (queryset or cls.objects).filter(
+            # Let ticket authors see ticket attachments
+            models.Q(ticket__requester=user) |
+            # Let ticket responders see tickets attachments
+            models.Q(ticket__responders=user) |
+            # Let attachment authors see own attachments
+            models.Q(user=user)
+        )
 
 
 class Comment(models.Model, NotificationMixin):

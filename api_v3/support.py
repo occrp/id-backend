@@ -2,6 +2,7 @@ import rest_framework.exceptions
 import rest_framework.parsers
 import rest_framework.renderers
 import rest_framework.response
+import rest_framework.status
 import rest_framework_json_api.metadata
 import rest_framework_json_api.parsers
 import rest_framework_json_api.renderers
@@ -28,7 +29,7 @@ class JSONApiEndpoint(object):
         if isinstance(exc, rest_framework.exceptions.ValidationError):
             # some require that validation errors return 422 status
             # for example ember-data (isInvalid method on adapter)
-            exc.status_code = 422
+            exc.status_code = status.HTTP_422_UNPROCESSABLE_ENTITY
         # exception handler can't be set on class so you have to
         # override the error response in this method
         response = super(JSONApiEndpoint, self).handle_exception(exc)
