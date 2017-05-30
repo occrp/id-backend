@@ -7,7 +7,8 @@ from .serializers import(
     ProfileSerializer,
     TicketSerializer,
     NotificationSerializer,
-    AttachmentSerializer
+    AttachmentSerializer,
+    CommentSerializer
 )
 
 
@@ -102,6 +103,32 @@ class AttachmentsEndpoint(
                 responders=self.request.user
             )
         ).filter(
+
+
+class CommentsEndpoint(
+        JSONApiEndpoint,
+        mixins.CreateModelMixin,
+        viewsets.ReadOnlyModelViewSet):
+
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        queryset = super(CommentSerializer, self).get_queryset()
+
+        if self.request.user.is_superuser:
+            return queryset
+
+        # If this is anonymous, for some reason DRF evaluates the
+        # authentication after the queryset
+        if not self.request.user.is_active:
+            return queryset.none()
+
+        return Comment.filter_by_user(self.request.user, queryset)
+
+    def perform_create(self, serializer):
+        """Make sure every new attachment is linked to current user."""
+        ticket = Ticket.filter_by_user(self.request.user).filter(
             id=getattr(serializer.validated_data['ticket'], 'id', None)
         ).first()
 

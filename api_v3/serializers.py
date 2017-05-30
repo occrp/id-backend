@@ -83,3 +83,17 @@ class AttachmentSerializer(serializers.ModelSerializer):
             'upload',
             'created_at'
         )
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    user = ProfileSerializer(read_only=True)
+
+    class Meta:
+        model = Attachment
+        fields = (
+            'id',
+            'user',
+            'ticket',
+            'body',
+            'created_at'
+        )
