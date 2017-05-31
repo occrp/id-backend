@@ -20,7 +20,12 @@ class SessionEndpoint(viewsets.GenericViewSet):
         return response.Response(serializer.data)
 
 
-class TicketsEndpoint(JSONApiEndpoint, viewsets.ModelViewSet):
+class TicketsEndpoint(
+        JSONApiEndpoint,
+        mixins.CreateModelMixin,
+        mixins.UpdateModelMixin,
+        viewsets.ReadOnlyModelViewSet):
+
     queryset = Ticket.objects
     serializer_class = TicketSerializer
 
@@ -42,6 +47,21 @@ class TicketsEndpoint(JSONApiEndpoint, viewsets.ModelViewSet):
         ticket = serializer.save(requester=self.request.user)
         activity = Action.objects.create(
             actor=self.request.user, target=ticket, verb=self.request.method)
+
+    def perform_update(self, serializer):
+        """Allow only super users and ticket authors to update the ticket."""
+        if not self.request.user.is_superuser:
+            raise exceptions.NotFound()
+
+        if instance.status != validated_data.get('status'):
+            verb = 'status_{}'.format(validated_data['status'])
+        else:
+            verb = self.request.method
+
+        instance = serializer.save()
+
+        activity = Action.objects.create(
+            actor=self.request.user, target=ticket, verb=verb)
 
 
 class UsersEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
