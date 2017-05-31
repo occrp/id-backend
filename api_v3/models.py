@@ -14,6 +14,9 @@ class Responder(models.Model):
     ticket = models.ForeignKey(
         'Ticket', related_name='responders', db_index=True)
 
+    class Meta:
+        unique_together = ('user', 'ticket')
+
 
 class Ticket(models.Model, NotificationMixin):
     """Ticket model."""
