@@ -90,3 +90,9 @@ class ActionSerializer(serializers.ModelSerializer):
         resource_name = 'Activity'
 
 
+class ResponderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Ticket.responders.through
+        fields = ('ticket', 'profile')
+        resource_name = 'Responder'

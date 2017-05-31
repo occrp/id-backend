@@ -7,7 +7,8 @@ from .serializers import(
     TicketSerializer,
     AttachmentSerializer,
     ActionSerializer,
-    CommentSerializer
+    CommentSerializer,
+    ResponderSerializer
 )
 
 
@@ -144,3 +145,43 @@ class CommentsEndpoint(
             activity = Action.objects.create(
                 actor=self.request.user, target=ticket, action=comment,
                 verb=self.request.method)
+
+
+class RespondersEndpoint(
+        JSONApiEndpoint,
+        mixins.CreateModelMixin,
+        mixins.DestroyModelMixin,
+        viewsets.GenericViewSet):
+    """Ticket responders endpoint.
+
+    Use it to add or remove ticket responders.
+    """
+
+    queryset = Ticket.responders.through.objects.all()
+    serializer_class = ResponderSerializer
+
+    def perform_create(self, serializer):
+        """Make sure only super user can add responders."""
+        if not self.request.user.is_superuser:
+            raise serializers.ValidationError(
+                [{'data/attributes/ticket': 'Ticket not found.'}]
+            )
+
+        responder = serializer.save()
+        activity = Action.objects.create(
+            actor=self.request.user, target=responder.ticket,
+            action=responder.profile, verb=self.request.method)
+
+    def perform_delete(self, instance):
+        """Make sure only super user or user himself can remove responders."""
+        if not self.request.user.is_superuser or (
+                self.request.user != instance.profile):
+            raise exceptions.NotFound()
+
+        activity = Action.objects.create(
+            actor=self.request.user, target=responder.ticket,
+            action=responder.profile, verb=self.request.method)
+
+        instance.delete()
+
+        return activity
