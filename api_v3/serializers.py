@@ -87,3 +87,6 @@ class ActionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Action
         fields = ('actor', 'action', 'verb', 'target')
+        resource_name = 'Activity'
+
+

@@ -1,4 +1,4 @@
-from rest_framework import generics, response, viewsets, mixins, serializers
+from rest_framework import response, viewsets, mixins, serializers, exceptions
 
 from .support import JSONApiEndpoint
 from .models import Profile, Ticket, Action, Attachment, Comment
@@ -51,9 +51,6 @@ class UsersEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
 class ActivitiesEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
     queryset = Action.objects.all()
     serializer_class = ActionSerializer
-
-    class Meta:
-        resource_name = 'Activity'
 
     def get_queryset(self):
         queryset = super(ActivitiesEndpoint, self).get_queryset()
