@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
+from activity.models import Action  # noqa
 
-from core.models import Notification  # noqa
 from core.mixins import NotificationMixin
 from core.countries import COUNTRIES
 from accounts.models import Profile  # noqa

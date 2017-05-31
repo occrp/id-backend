@@ -49,7 +49,8 @@ INSTALLED_APPS = (
     'core',
     'databases',
     'ticket',
-    'api_v3'
+    'api_v3',
+    'activity'
 )
 
 

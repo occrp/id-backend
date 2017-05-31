@@ -1,6 +1,7 @@
-from rest_framework_json_api import serializers
+from rest_framework_json_api import serializers, relations
 
-from .models import Profile, Ticket, Notification, Attachment, Comment
+from .models import Profile, Ticket, Attachment, Comment, Action
+
 
 class ProfileSerializer(serializers.ModelSerializer):
 
@@ -18,11 +19,10 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class TicketSerializer(serializers.ModelSerializer):
-    requester = ProfileSerializer(read_only=True)
-    responders = ProfileSerializer(read_only=True, many=True)
 
     class Meta:
         model = Ticket
+        read_only_fields = ('requester', 'responders')
         fields = (
             'id',
             'responders',
@@ -50,32 +50,11 @@ class TicketSerializer(serializers.ModelSerializer):
         )
 
 
-class NotificationSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Notification
-        fields = (
-            'id',
-            'timestamp',
-            'is_seen',
-            'text',
-            'url_base',
-            'url_params',
-            'url',
-            'project',
-            'module',
-            'model',
-            'instance',
-            'action',
-            'user'
-        )
-
-
 class AttachmentSerializer(serializers.ModelSerializer):
-    user = ProfileSerializer(read_only=True)
 
     class Meta:
         model = Attachment
+        read_only_fields = ('user',)
         fields = (
             'id',
             'user',
@@ -86,10 +65,10 @@ class AttachmentSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = ProfileSerializer(read_only=True)
 
     class Meta:
         model = Comment
+        read_only_fields = ('user',)
         fields = (
             'id',
             'user',
@@ -97,3 +76,14 @@ class CommentSerializer(serializers.ModelSerializer):
             'body',
             'created_at'
         )
+
+
+class ActionSerializer(serializers.ModelSerializer):
+
+    actor = relations.ResourceRelatedField(read_only=True)
+    action = relations.ResourceRelatedField(read_only=True)
+    target = relations.ResourceRelatedField(read_only=True)
+
+    class Meta:
+        model = Action
+        fields = ('actor', 'action', 'verb', 'target')

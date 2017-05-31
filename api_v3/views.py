@@ -1,12 +1,12 @@
 from rest_framework import generics, response, viewsets, mixins, serializers
 
 from .support import JSONApiEndpoint
-from .models import Profile, Ticket, Notification, Attachment, Comment
+from .models import Profile, Ticket, Action, Attachment, Comment
 from .serializers import(
     ProfileSerializer,
     TicketSerializer,
-    NotificationSerializer,
     AttachmentSerializer,
+    ActionSerializer,
     CommentSerializer
 )
 
@@ -46,9 +46,28 @@ class UsersEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
     serializer_class = ProfileSerializer
 
 
-class NotificationsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
-    queryset = Notification.objects.all()
-    serializer_class = NotificationSerializer
+class ActivitiesEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
+    queryset = Action.objects.all()
+    serializer_class = ActionSerializer
+
+    class Meta:
+        resource_name = 'Activity'
+
+    def get_queryset(self):
+        queryset = super(ActivitiesEndpoint, self).get_queryset()
+
+        if self.request.user.is_superuser:
+            return queryset
+
+        # If this is anonymous, for some reason DRF evaluates the
+        # authentication after the queryset
+        if not self.request.user.is_active:
+            return queryset.none()
+
+        user_ticket_ids = Ticket.filter_by_user(
+            self.request.user).values_list('id', flat=True)
+        return Action.objects.filter(
+            target_object_id__in=map(str, user_ticket_ids))
 
 
 class AttachmentsEndpoint(
