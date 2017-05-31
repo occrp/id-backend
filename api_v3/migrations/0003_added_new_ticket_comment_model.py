@@ -25,36 +25,6 @@ class Migration(migrations.Migration):
             ],
             bases=(models.Model, core.mixins.NotificationMixin),
         ),
-        migrations.AlterField(
-            model_name='attachment',
-            name='upload',
-            field=models.FileField(upload_to=b'./data/attachments/%Y/%m/%d'),
-        ),
-        migrations.AlterField(
-            model_name='ticket',
-            name='activities',
-            field=models.TextField(blank=True, max_length=1000),
-        ),
-        migrations.AlterField(
-            model_name='ticket',
-            name='company_name',
-            field=models.CharField(blank=True, max_length=512),
-        ),
-        migrations.AlterField(
-            model_name='ticket',
-            name='first_name',
-            field=models.CharField(blank=True, max_length=512),
-        ),
-        migrations.AlterField(
-            model_name='ticket',
-            name='initial_information',
-            field=models.TextField(blank=True, max_length=1000),
-        ),
-        migrations.AlterField(
-            model_name='ticket',
-            name='last_name',
-            field=models.CharField(blank=True, max_length=512),
-        ),
         migrations.AddField(
             model_name='comment',
             name='ticket',

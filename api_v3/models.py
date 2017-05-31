@@ -8,12 +8,18 @@ from accounts.models import Profile  # noqa
 from ticket.constants import REQUESTER_TYPES, TICKET_STATUS, TICKET_TYPES
 
 
+class Responder(models.Model):
+    """Intermediate model for ticket responders (M2M)."""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, db_index=True)
+    ticket = models.ForeignKey(
+        'Ticket', related_name='responders', db_index=True)
+
+
 class Ticket(models.Model, NotificationMixin):
     """Ticket model."""
 
-    responders = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name='assigned_tickets',
-        db_index=True)
+    users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, through=Responder, db_index=True)
     requester = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='requested_tickets',
         db_index=True)
@@ -58,7 +64,7 @@ class Ticket(models.Model, NotificationMixin):
             # Allow ticket authors to send attachments
             models.Q(requester=user) |
             # Allow ticket responders to send attachments
-            models.Q(responders=user)
+            models.Q(users=user)
         )
 
 
@@ -83,7 +89,7 @@ class Attachment(models.Model, NotificationMixin):
             # Let ticket authors see ticket attachments
             models.Q(ticket__requester=user) |
             # Let ticket responders see tickets attachments
-            models.Q(ticket__responders=user) |
+            models.Q(ticket__users=user) |
             # Let attachment authors see own attachments
             models.Q(user=user)
         )
@@ -110,7 +116,7 @@ class Comment(models.Model, NotificationMixin):
             # Let ticket authors see ticket attachments
             models.Q(ticket__requester=user) |
             # Let ticket responders see tickets attachments
-            models.Q(ticket__responders=user) |
+            models.Q(ticket__users=user) |
             # Let attachment authors see own attachments
             models.Q(user=user)
         )

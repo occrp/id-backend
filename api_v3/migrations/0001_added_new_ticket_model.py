@@ -18,6 +18,12 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Responder',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+            ],
+        ),
+        migrations.CreateModel(
             name='Ticket',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -30,18 +36,28 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('background', models.TextField(max_length=1000)),
-                ('first_name', models.CharField(max_length=512)),
-                ('last_name', models.CharField(max_length=512)),
+                ('first_name', models.CharField(blank=True, max_length=512)),
+                ('last_name', models.CharField(blank=True, max_length=512)),
                 ('born_at', models.DateField(blank=True, null=True)),
                 ('connections', models.TextField(blank=True)),
                 ('sources', models.TextField(blank=True)),
-                ('activities', models.TextField(max_length=1000)),
-                ('initial_information', models.TextField(max_length=1000)),
-                ('company_name', models.CharField(max_length=512)),
+                ('activities', models.TextField(blank=True, max_length=1000)),
+                ('initial_information', models.TextField(blank=True, max_length=1000)),
+                ('company_name', models.CharField(blank=True, max_length=512)),
                 ('country', models.CharField(db_index=True, max_length=100)),
                 ('requester', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='requested_tickets', to=settings.AUTH_USER_MODEL)),
-                ('responders', models.ManyToManyField(db_index=True, related_name='assigned_tickets', to=settings.AUTH_USER_MODEL)),
+                ('users', models.ManyToManyField(db_index=True, through='api_v3.Responder', to=settings.AUTH_USER_MODEL)),
             ],
             bases=(models.Model, core.mixins.NotificationMixin),
+        ),
+        migrations.AddField(
+            model_name='responder',
+            name='ticket',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='responders', to='api_v3.Ticket'),
+        ),
+        migrations.AddField(
+            model_name='responder',
+            name='user',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
     ]

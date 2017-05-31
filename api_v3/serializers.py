@@ -1,6 +1,6 @@
 from rest_framework_json_api import serializers, relations
 
-from .models import Profile, Ticket, Attachment, Comment, Action
+from .models import Profile, Ticket, Action, Attachment, Comment, Responder
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -22,11 +22,12 @@ class TicketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ticket
-        read_only_fields = ('requester', 'responders')
+        read_only_fields = ('requester', 'responders', 'users')
         fields = (
             'id',
             'responders',
             'requester',
+            'users',
 
             'kind',
             'request_type',
@@ -93,6 +94,6 @@ class ActionSerializer(serializers.ModelSerializer):
 class ResponderSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Ticket.responders.through
-        fields = ('ticket', 'profile')
+        model = Responder
+        fields = ('ticket', 'user')
         resource_name = 'Responder'

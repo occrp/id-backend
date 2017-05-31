@@ -1,7 +1,7 @@
 from rest_framework import response, viewsets, mixins, serializers, exceptions
 
 from .support import JSONApiEndpoint
-from .models import Profile, Ticket, Action, Attachment, Comment
+from .models import Profile, Ticket, Action, Attachment, Comment, Responder
 from .serializers import(
     ProfileSerializer,
     TicketSerializer,
@@ -26,7 +26,7 @@ class TicketsEndpoint(
         mixins.UpdateModelMixin,
         viewsets.ReadOnlyModelViewSet):
 
-    queryset = Ticket.objects
+    queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
 
     def get_queryset(self):
@@ -45,22 +45,26 @@ class TicketsEndpoint(
     def perform_create(self, serializer):
         """Make sure every new ticket is linked to current user."""
         ticket = serializer.save(requester=self.request.user)
-        activity = Action.objects.create(
-            actor=self.request.user, target=ticket, verb=self.request.method)
+        Action.objects.create(
+            actor=self.request.user, target=ticket,
+            verb=self.request.method.lower())
+        return ticket
 
     def perform_update(self, serializer):
         """Allow only super users and ticket authors to update the ticket."""
         if not self.request.user.is_superuser:
             raise exceptions.NotFound()
 
-        if instance.status != validated_data.get('status'):
-            verb = 'status_{}'.format(validated_data['status'])
+        status = serializer.validated_data.get('status')
+
+        if serializer.instance.status != status:
+            verb = 'status_{}'.format(status)
         else:
-            verb = self.request.method
+            verb = self.request.method.lower()
 
-        instance = serializer.save()
+        ticket = serializer.save()
 
-        activity = Action.objects.create(
+        return Action.objects.create(
             actor=self.request.user, target=ticket, verb=verb)
 
 
@@ -113,7 +117,7 @@ class AttachmentsEndpoint(
 
     def perform_create(self, serializer):
         """Make sure every new attachment is linked to current user."""
-        ticket = Ticket.filter_by_user(self.requester.user).filter(
+        ticket = Ticket.filter_by_user(self.request.user).filter(
             id=getattr(serializer.validated_data['ticket'], 'id', None)
         ).first()
 
@@ -123,10 +127,10 @@ class AttachmentsEndpoint(
             )
         else:
             attachment = serializer.save(user=self.request.user)
-            activity = Action.objects.create(
+
+            return Action.objects.create(
                 actor=self.request.user, target=ticket, action=attachment,
-                verb=self.request.method)
-            return attachment
+                verb=self.request.method.lower())
 
 
 class CommentsEndpoint(
@@ -162,9 +166,10 @@ class CommentsEndpoint(
             )
         else:
             comment = serializer.save(user=self.request.user)
-            activity = Action.objects.create(
+
+            return Action.objects.create(
                 actor=self.request.user, target=ticket, action=comment,
-                verb=self.request.method)
+                verb=self.request.method.lower())
 
 
 class RespondersEndpoint(
@@ -177,7 +182,7 @@ class RespondersEndpoint(
     Use it to add or remove ticket responders.
     """
 
-    queryset = Ticket.responders.through.objects.all()
+    queryset = Responder.objects.all()
     serializer_class = ResponderSerializer
 
     def perform_create(self, serializer):
@@ -188,19 +193,20 @@ class RespondersEndpoint(
             )
 
         responder = serializer.save()
-        activity = Action.objects.create(
-            actor=self.request.user, target=responder.ticket,
-            action=responder.profile, verb=self.request.method)
 
-    def perform_delete(self, instance):
+        return Action.objects.create(
+            actor=self.request.user, target=responder.ticket,
+            action=responder.user, verb=self.request.method.lower())
+
+    def perform_destroy(self, instance):
         """Make sure only super user or user himself can remove responders."""
-        if not self.request.user.is_superuser or (
-                self.request.user != instance.profile):
+        if not self.request.user.is_superuser and (
+                self.request.user != instance.user):
             raise exceptions.NotFound()
 
         activity = Action.objects.create(
-            actor=self.request.user, target=responder.ticket,
-            action=responder.profile, verb=self.request.method)
+            actor=self.request.user, target=instance.ticket,
+            action=instance.user, verb=self.request.method.lower())
 
         instance.delete()
 
