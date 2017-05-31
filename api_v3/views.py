@@ -38,7 +38,9 @@ class TicketsEndpoint(JSONApiEndpoint, viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Make sure every new ticket is linked to current user."""
-        serializer.save(requester=self.request.user)
+        ticket = serializer.save(requester=self.request.user)
+        activity = Action.objects.create(
+            actor=self.request.user, target=ticket, verb=self.request.method)
 
 
 class UsersEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
@@ -102,7 +104,11 @@ class AttachmentsEndpoint(
                 [{'data/attributes/ticket': 'Ticket not found.'}]
             )
         else:
-            return serializer.save(user=self.request.user)
+            attachment = serializer.save(user=self.request.user)
+            activity = Action.objects.create(
+                actor=self.request.user, target=ticket, action=attachment,
+                verb=self.request.method)
+            return attachment
 
 
 class CommentsEndpoint(
@@ -137,4 +143,7 @@ class CommentsEndpoint(
                 [{'data/attributes/ticket': 'Ticket not found.'}]
             )
         else:
-            return serializer.save(user=self.request.user)
+            comment = serializer.save(user=self.request.user)
+            activity = Action.objects.create(
+                actor=self.request.user, target=ticket, action=comment,
+                verb=self.request.method)
