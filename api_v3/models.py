@@ -28,11 +28,14 @@ class Ticket(models.Model, NotificationMixin):
         db_index=True)
 
     kind = models.CharField(
-        blank=False, max_length=70, choices=TICKET_TYPES, db_index=True)
+        blank=False, max_length=70, choices=TICKET_TYPES,
+        default=TICKET_TYPES[-1][0], db_index=True)
     request_type = models.CharField(
-        blank=False, max_length=70, choices=REQUESTER_TYPES, db_index=True)
+        blank=False, max_length=70, choices=REQUESTER_TYPES,
+        default=REQUESTER_TYPES[0][0], db_index=True)
     status = models.CharField(
-        max_length=70, choices=TICKET_STATUS, default='new', db_index=True)
+        max_length=70, choices=TICKET_STATUS,
+        default=TICKET_STATUS[0][0], db_index=True)
 
     sensitive = models.BooleanField(default=False)
     whysensitive = models.CharField(max_length=150, blank=True)
