@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import response, viewsets, mixins, serializers, exceptions
 
 from .support import JSONApiEndpoint
@@ -69,7 +70,9 @@ class TicketsEndpoint(
 
 
 class UsersEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
-    queryset = Profile.objects.filter(is_staff=True, is_superuser=True).all()
+    queryset = Profile.objects.filter(
+        Q(is_staff=True) | Q(is_superuser=True)
+    ).all()
     serializer_class = ProfileSerializer
 
 
