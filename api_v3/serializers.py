@@ -45,7 +45,7 @@ class TicketSerializer(serializers.ModelSerializer):
             'born_at',
             'connections',
             'sources',
-            'activities',
+            'business_activities',
             'initial_information',
             'company_name',
             'country'

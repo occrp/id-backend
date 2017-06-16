@@ -2,7 +2,6 @@ from django.db import models
 from django.conf import settings
 from activity.models import Action  # noqa
 
-from core.mixins import NotificationMixin
 from core.countries import COUNTRIES
 from accounts.models import Profile  # noqa
 from ticket.constants import REQUESTER_TYPES, TICKET_STATUS, TICKET_TYPES
@@ -18,7 +17,7 @@ class Responder(models.Model):
         unique_together = ('user', 'ticket')
 
 
-class Ticket(models.Model, NotificationMixin):
+class Ticket(models.Model):
     """Ticket model."""
 
     users = models.ManyToManyField(
@@ -52,7 +51,7 @@ class Ticket(models.Model, NotificationMixin):
     born_at = models.DateField(null=True, blank=True)
     connections = models.TextField(blank=True)
     sources = models.TextField(blank=True)
-    activities = models.TextField(blank=True, max_length=1000)
+    business_activities = models.TextField(blank=True, max_length=1000)
     initial_information = models.TextField(max_length=1000, blank=True)
 
     # Company ticket type fields
@@ -74,7 +73,7 @@ class Ticket(models.Model, NotificationMixin):
         )
 
 
-class Attachment(models.Model, NotificationMixin):
+class Attachment(models.Model):
     """Ticket attachment model."""
 
     ticket = models.ForeignKey(
@@ -101,7 +100,7 @@ class Attachment(models.Model, NotificationMixin):
         )
 
 
-class Comment(models.Model, NotificationMixin):
+class Comment(models.Model):
     """Ticket comment model."""
 
     ticket = models.ForeignKey(
