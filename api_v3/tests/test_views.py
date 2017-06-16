@@ -154,7 +154,7 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.assertEqual(Ticket.objects.count(), tickets_count + 1)
 
 
-class UsersEndpointTestCase(TestCase):
+class ProfilesEndpointTestCase(TestCase):
 
     def setUp(self):
         self.client = APIClient()

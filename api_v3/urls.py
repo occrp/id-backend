@@ -6,7 +6,7 @@ from rest_framework import routers
 from .views import(
     SessionEndpoint,
     TicketsEndpoint,
-    UsersEndpoint,
+    ProfilesEndpoint,
     AttachmentsEndpoint,
     ActivitiesEndpoint,
     CommentsEndpoint,
@@ -16,7 +16,7 @@ from .views import(
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'tickets', TicketsEndpoint)
-router.register(r'users', UsersEndpoint)
+router.register(r'profiles', ProfilesEndpoint)
 router.register(r'attachments', AttachmentsEndpoint)
 router.register(r'comments', CommentsEndpoint)
 router.register(r'activities', ActivitiesEndpoint)

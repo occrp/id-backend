@@ -69,7 +69,7 @@ class TicketsEndpoint(
             actor=self.request.user, target=ticket, verb=verb)
 
 
-class UsersEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
+class ProfilesEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
     queryset = Profile.objects.filter(
         Q(is_staff=True) | Q(is_superuser=True)
     ).all()
