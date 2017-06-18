@@ -48,7 +48,9 @@ INSTALLED_APPS = (
     'accounts',
     'core',
     'databases',
-    'ticket'
+    'ticket',
+    'api_v3',
+    'activity'
 )
 
 
@@ -408,6 +410,11 @@ REST_FRAMEWORK = {
     ),
     'PAGE_SIZE': 30
 }
+
+
+JSON_API_FORMAT_KEYS = 'dasherize'
+JSON_API_FORMAT_TYPES = 'dasherize'
+JSON_API_PLURALIZE_TYPES = True
 
 
 ##################
