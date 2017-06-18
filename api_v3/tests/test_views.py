@@ -1,3 +1,4 @@
+import io
 import json
 from datetime import datetime
 
@@ -10,7 +11,9 @@ from rest_framework_json_api.utils import(
 
 from api_v3.models import(
     Ticket, Profile, Responder, Attachment, Comment, Action)
-from api_v3.serializers import ProfileSerializer, TicketSerializer
+from api_v3.serializers import(
+    ProfileSerializer, TicketSerializer, AttachmentSerializer,
+    CommentSerializer, ResponderSerializer)
 
 
 class ApiTestCase(TestCase):
@@ -241,3 +244,290 @@ class ActivitiesEndpointTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn(self.activities[0].verb, response.content)
+
+
+class AttachmentsEndpointTestCase(ApiTestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.users = [
+            Profile.objects.create(
+                email='email1',
+                last_login=datetime.utcnow()
+            ),
+            Profile.objects.create(
+                email='email2',
+                last_login=datetime.utcnow()
+            )
+        ]
+        self.tickets = [
+            Ticket.objects.create(background='test1', requester=self.users[0])
+        ]
+        self.attachments = [
+            Attachment.objects.create(
+                user=self.users[0],
+                ticket=self.tickets[0],
+            )
+        ]
+
+    def test_list_anonymous(self):
+        response = self.client.get(reverse('attachment-list'))
+
+        self.assertEqual(response.status_code, 401)
+
+    def test_list_authenticated(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(reverse('attachment-list'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            json.loads(response.content)['data'][0]['id'],
+            str(self.attachments[0].id)
+        )
+
+    def test_detail_authenticated(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(
+            reverse('attachment-detail', args=[self.attachments[0].id]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            json.loads(response.content)['data']['id'],
+            str(self.attachments[0].id)
+        )
+
+    def test_detail_authenticated_without_access(self):
+        self.client.force_authenticate(self.users[1])
+
+        response = self.client.get(
+            reverse('attachment-detail', args=[self.attachments[0].id]))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_create_authenticated(self):
+        self.client.force_authenticate(self.users[0])
+
+        attachments_count = Attachment.objects.count()
+
+        with io.BytesIO('dummy file') as fu:
+            new_data = {
+                'ticket': json.dumps({
+                    'type': 'tickets',
+                    'id': self.tickets[0].id
+                }),
+                'upload': fu
+            }
+            response = self.client.post(
+                reverse('attachment-list'),
+                data=new_data,
+                format='multipart',
+            )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Attachment.objects.count(), attachments_count + 1)
+
+    def test_create_authenticated_without_access(self):
+        self.client.force_authenticate(self.users[1])
+
+        attachments_count = Attachment.objects.count()
+
+        with io.BytesIO('dummy file') as fu:
+            new_data = {
+                'ticket': json.dumps({
+                    'type': 'tickets',
+                    'id': self.tickets[0].id
+                }),
+                'upload': fu
+            }
+            response = self.client.post(
+                reverse('attachment-list'),
+                data=new_data,
+                format='multipart',
+            )
+
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(Attachment.objects.count(), attachments_count)
+
+
+class CommentsEndpointTestCase(ApiTestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.users = [
+            Profile.objects.create(
+                email='email1',
+                last_login=datetime.utcnow()
+            ),
+            Profile.objects.create(
+                email='email2',
+                last_login=datetime.utcnow()
+            )
+        ]
+        self.tickets = [
+            Ticket.objects.create(background='test1', requester=self.users[0])
+        ]
+        self.comments = [
+            Comment.objects.create(
+                user=self.users[0],
+                ticket=self.tickets[0],
+                body='first comment'
+            )
+        ]
+
+    def test_list_anonymous(self):
+        response = self.client.get(reverse('comment-list'))
+
+        self.assertEqual(response.status_code, 401)
+
+    def test_list_authenticated(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(reverse('comment-list'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            json.loads(response.content)['data'][0]['id'],
+            str(self.comments[0].id)
+        )
+
+    def test_detail_authenticated(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(
+            reverse('comment-detail', args=[self.comments[0].id]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            json.loads(response.content)['data']['id'],
+            str(self.comments[0].id)
+        )
+
+    def test_detail_authenticated_without_access(self):
+        self.client.force_authenticate(self.users[1])
+
+        response = self.client.get(
+            reverse('comment-detail', args=[self.comments[0].id]))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_create_authenticated(self):
+        self.client.force_authenticate(self.users[0])
+
+        comments_count = Comment.objects.count()
+
+        new_data = self.as_jsonapi_payload(
+            CommentSerializer, self.comments[0], {'body': 'new comment'})
+
+        response = self.client.post(
+            reverse('comment-list'),
+            data=json.dumps(new_data),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Comment.objects.count(), comments_count + 1)
+
+    def test_create_authenticated_without_access(self):
+        self.client.force_authenticate(self.users[1])
+
+        comments_count = Comment.objects.count()
+
+        new_data = self.as_jsonapi_payload(
+            CommentSerializer, self.comments[0], {'body': 'new comment'})
+
+        response = self.client.post(
+            reverse('comment-list'),
+            data=json.dumps(new_data),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(Comment.objects.count(), comments_count)
+
+
+class RespondersEndpointTestCase(ApiTestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.users = [
+            Profile.objects.create(
+                email='email1',
+                last_login=datetime.utcnow()
+            ),
+            Profile.objects.create(
+                email='email2',
+                last_login=datetime.utcnow()
+            ),
+            Profile.objects.create(
+                email='email3',
+                last_login=datetime.utcnow(),
+                is_superuser=True
+            )
+        ]
+        self.tickets = [
+            Ticket.objects.create(background='test1', requester=self.users[0])
+        ]
+        self.responders = [
+            Responder.objects.create(
+                ticket=self.tickets[0], user=self.users[1])
+        ]
+
+    def test_create_non_superuser(self):
+        self.client.force_authenticate(self.users[0])
+
+        new_data = self.as_jsonapi_payload(
+            ResponderSerializer, self.responders[0])
+
+        new_data['data']['attributes']['user']['id'] = self.users[2].id
+
+        response = self.client.post(
+            reverse('responder-list'),
+            data=json.dumps(new_data),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 422)
+
+    def test_create_superuser(self):
+        self.client.force_authenticate(self.users[2])
+
+        responders_count = Responder.objects.count()
+
+        new_data = self.as_jsonapi_payload(
+            ResponderSerializer, self.responders[0])
+
+        new_data['data']['attributes']['user']['id'] = self.users[0].id
+
+        response = self.client.post(
+            reverse('responder-list'),
+            data=json.dumps(new_data),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Responder.objects.count(), responders_count + 1)
+
+    def test_delete_non_superuser(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.delete(
+            reverse('responder-detail', args=[self.responders[0].id]),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_delete_non_superuser(self):
+        self.client.force_authenticate(self.users[2])
+
+        responders_count = Responder.objects.count()
+
+        response = self.client.delete(
+            reverse('responder-detail', args=[self.responders[0].id]),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(Responder.objects.count(), responders_count - 1)
