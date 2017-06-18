@@ -10,7 +10,6 @@ from accounts.manage import Statistics
 from core.auth import perm
 from core.views import NotificationSeen, NotificationStream
 from core.views import NotificationSubscriptions, home
-from accounts.views import SessionEndpoint
 
 # Instead of admin auto-discovery:
 from databases.admin import ExternalDatabaseAdmin  # noqa
@@ -29,7 +28,6 @@ urlpatterns = [
     url(r'^api/2/notifications/$', NotificationSubscriptions.as_view(), name='api_2_notifications'),
     url(r'^api/2/notifications/seen/$', NotificationSeen.as_view(), name='api_2_notifications_seen'),
     url(r'^api/2/notifications/stream/$', NotificationStream.as_view(), name='api_2_notifications_stream'),
-    url(r'^api/3/me$', SessionEndpoint.as_view(), name='api_3_me'),
 
     url(r'^admin/', admin_site.urls),
     url(r'^manage/$', perm('staff', Panel), name='manage_panel'),
@@ -48,6 +46,10 @@ urlpatterns = [
     url(r'^jsi18n/(?P<packages>\S+?)/$', javascript_catalog),
 
     url(r'^captcha/', include('captcha.urls')),
+
+    # API V3
+    url(r'^api/v3/', include('api_v3.urls')),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
