@@ -1,0 +1,44 @@
+# docker compose config
+# http://docs.docker.com/compose/
+version: "2"
+
+networks:
+  # frontend network -- serverconfig's nginx/nginxbackup
+  serverconfig_frontend:
+        external:
+            name: serverconfig_frontend
+  # utility network -- database hosts etc
+  id2internal:
+    driver: bridge
+
+services:
+  web:
+    build: .
+    command: gunicorn -w 5 -b 0.0.0.0:8000 -t 60 --keep-alive 5 --log-level info --log-file - wsgi:application
+    expose:
+      - "8000"
+    links:
+      - postgres
+    volumes:
+      - "/srv/data/live/podaci/:/data"
+      - "/srv/logs/id2/:/var/log/id2/"
+      - "/srv/data/dumps/:/dumps/"
+      - "/srv/data/live/idstatic/:/id/build/"
+    env_file:
+      - id.env
+    networks:
+      - serverconfig_frontend
+      - id2internal
+
+  # postgres
+  # TODO FIXME before we go to production with this!
+  postgres:
+    image: postgres:9.4
+    volumes:
+      - '/srv/data/live/postgres/id2/:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_USER:     id2
+      POSTGRES_PASSWORD: id2
+      POSTGRES_DATABASE: id2
+    networks:
+      - id2internal
