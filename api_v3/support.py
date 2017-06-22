@@ -2,11 +2,20 @@ import rest_framework.exceptions
 import rest_framework.parsers
 import rest_framework.renderers
 import rest_framework.response
+import rest_framework.authentication
 import rest_framework_json_api.metadata
 import rest_framework_json_api.parsers
 import rest_framework_json_api.renderers
 import rest_framework_json_api.utils
 from rest_framework.status import HTTP_422_UNPROCESSABLE_ENTITY
+
+
+class SessionAuthenticationSansCSRF(
+        rest_framework.authentication.SessionAuthentication):
+
+    def enforce_csrf(self, request):
+        import pdb; pdb.set_trace()
+        return
 
 
 class JSONApiEndpoint(object):
@@ -22,6 +31,10 @@ class JSONApiEndpoint(object):
     renderer_classes = [
         rest_framework_json_api.renderers.JSONRenderer,
         rest_framework.renderers.BrowsableAPIRenderer,
+    ]
+    authentication_classes = [
+        rest_framework.authentication.BasicAuthentication,
+        SessionAuthenticationSansCSRF
     ]
     metadata_class = rest_framework_json_api.metadata.JSONAPIMetadata
 
