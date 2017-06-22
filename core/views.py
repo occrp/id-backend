@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -11,6 +13,11 @@ from .serializers import NotificationSerializer
 def home(request):
     from databases.views import get_databases_index
     return render(request, 'home.jinja', get_databases_index())
+
+
+def tickets_home(request):
+    current_ts = datetime.utcnow().strftime('%s')
+    return render(request, 'tickets.jinja', {'current_ts': current_ts})
 
 
 class NotificationSeen(APIView):
