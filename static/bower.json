@@ -18,7 +18,8 @@
     "angular-material": ">=0.10.0",
     "angular-route": ">=1.4.1",
     "underscore": ">=1.8.3",
-    "ol3-unofficial": "~3.4.0"
+    "ol3-unofficial": "~3.4.0",
+    "id2-frontend": "https://<TOKEN>@github.com/stas/id2-frontend.git"
   },
   "resolutions": {
       "angular": "^1.4.8"
