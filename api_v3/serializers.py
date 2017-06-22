@@ -19,7 +19,20 @@ class ProfileSerializer(serializers.ModelSerializer):
         )
 
 
+class ResponderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Responder
+        fields = ('ticket', 'user')
+        resource_name = 'Responder'
+
+
 class TicketSerializer(serializers.ModelSerializer):
+
+    included_serializers = {
+        'requester': ProfileSerializer,
+        'responder': ResponderSerializer
+    }
 
     class Meta:
         model = Ticket
@@ -120,11 +133,3 @@ class ActionSerializer(serializers.ModelSerializer):
             'comment',
             'responder_user'
         )
-
-
-class ResponderSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Responder
-        fields = ('ticket', 'user')
-        resource_name = 'Responder'
