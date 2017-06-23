@@ -14,7 +14,6 @@ class SessionAuthenticationSansCSRF(
         rest_framework.authentication.SessionAuthentication):
 
     def enforce_csrf(self, request):
-        import pdb; pdb.set_trace()
         return
 
 
