@@ -57,7 +57,7 @@ class Ticket(models.Model):
     # Company ticket type fields
     company_name = models.CharField(max_length=512, blank=True)
     country = models.CharField(
-        max_length=100, choices=COUNTRIES, blank=False, db_index=True)
+        max_length=100, choices=COUNTRIES, blank=True, db_index=True)
 
     @classmethod
     def filter_by_user(cls, user, queryset=None):
