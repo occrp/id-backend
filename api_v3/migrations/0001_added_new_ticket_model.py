@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
                 ('business_activities', models.TextField(blank=True, max_length=1000)),
                 ('initial_information', models.TextField(blank=True, max_length=1000)),
                 ('company_name', models.CharField(blank=True, max_length=512)),
-                ('country', models.CharField(db_index=True, max_length=100)),
+                ('country', models.CharField(db_index=True, blank=True, max_length=100)),
                 ('requester', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='requested_tickets', to=settings.AUTH_USER_MODEL)),
                 ('users', models.ManyToManyField(db_index=True, through='api_v3.Responder', to=settings.AUTH_USER_MODEL)),
             ],
