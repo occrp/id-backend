@@ -18,8 +18,7 @@
     "angular-material": ">=0.10.0",
     "angular-route": ">=1.4.1",
     "underscore": ">=1.8.3",
-    "ol3-unofficial": "~3.4.0",
-    "id2-frontend": "git@github.com:occrp/id2-frontend.git#5f3c634"
+    "ol3-unofficial": "~3.4.0"
   },
   "resolutions": {
       "angular": "^1.4.8"
