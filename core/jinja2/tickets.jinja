@@ -17,7 +17,7 @@
       "exportApplicationGlobal": true
     }' | urlencode
   }}" >
-  <link rel="stylesheet" href="/static/id2/id2-frontend.css?{{current_ts}}">
+  <link rel="stylesheet" href="/static/id2/dist/assets/id2-frontend.css?{{current_ts}}">
 {% endblock %}
 
 /* Set page title */
@@ -32,6 +32,6 @@
 {% block content %}
   <div id="ember-app"></div>
 
-  <script src="/static/id2/vendor.js?{{current_ts}}"></script>
-  <script src="/static/id2/id2-frontend.js?{{current_ts}}"></script>
+  <script src="/static/id2/dist/assets/vendor.js?{{current_ts}}"></script>
+  <script src="/static/id2/dist/assets/id2-frontend.js?{{current_ts}}"></script>
 {% endblock %}
