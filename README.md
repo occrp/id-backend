@@ -87,6 +87,7 @@ Please consider the steps below:
 $ ssh root@woodward.occrp.org
 $ cd /srv/tools/id/
 $ git pull
+$ git submodule update --init --recursive
 $ docker-compose build # --no-cache
 $ docker-compose up -d
 $ # docker-compose logs -f
