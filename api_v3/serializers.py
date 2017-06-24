@@ -27,11 +27,40 @@ class ResponderSerializer(serializers.ModelSerializer):
         resource_name = 'Responder'
 
 
+class AttachmentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Attachment
+        read_only_fields = ('user',)
+        fields = (
+            'id',
+            'user',
+            'ticket',
+            'upload',
+            'created_at'
+        )
+
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        read_only_fields = ('user',)
+        fields = (
+            'id',
+            'user',
+            'ticket',
+            'body',
+            'created_at'
+        )
+
+
 class TicketSerializer(serializers.ModelSerializer):
 
     included_serializers = {
         'requester': ProfileSerializer,
-        'responder': ResponderSerializer
+        'responder': ResponderSerializer,
+        'attachments': AttachmentSerializer
     }
 
     class Meta:
@@ -62,34 +91,6 @@ class TicketSerializer(serializers.ModelSerializer):
             'initial_information',
             'company_name',
             'country'
-        )
-
-
-class AttachmentSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Attachment
-        read_only_fields = ('user',)
-        fields = (
-            'id',
-            'user',
-            'ticket',
-            'upload',
-            'created_at'
-        )
-
-
-class CommentSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Comment
-        read_only_fields = ('user',)
-        fields = (
-            'id',
-            'user',
-            'ticket',
-            'body',
-            'created_at'
         )
 
 
