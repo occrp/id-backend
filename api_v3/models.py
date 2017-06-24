@@ -37,8 +37,8 @@ class Ticket(models.Model):
         default=TICKET_STATUS[0][0], db_index=True)
 
     sensitive = models.BooleanField(default=False)
-    whysensitive = models.CharField(max_length=150, blank=True)
-    deadline_at = models.DateField(null=True, blank=True)
+    whysensitive = models.CharField(max_length=150, null=True)
+    deadline_at = models.DateTimeField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -46,18 +46,18 @@ class Ticket(models.Model):
     background = models.TextField(blank=False, max_length=1000)
 
     # Person ticket type fields
-    first_name = models.CharField(max_length=512, blank=True)
-    last_name = models.CharField(max_length=512, blank=True)
-    born_at = models.DateField(null=True, blank=True)
-    connections = models.TextField(blank=True)
-    sources = models.TextField(blank=True)
-    business_activities = models.TextField(blank=True, max_length=1000)
-    initial_information = models.TextField(max_length=1000, blank=True)
+    first_name = models.CharField(max_length=512, null=True)
+    last_name = models.CharField(max_length=512, null=True)
+    born_at = models.DateField(null=True)
+    connections = models.TextField(null=True)
+    sources = models.TextField(null=True)
+    business_activities = models.TextField(null=True, max_length=1000)
+    initial_information = models.TextField(max_length=1000, null=True)
 
     # Company ticket type fields
-    company_name = models.CharField(max_length=512, blank=True)
+    company_name = models.CharField(max_length=512, null=True)
     country = models.CharField(
-        max_length=100, choices=COUNTRIES, blank=True, db_index=True)
+        max_length=100, choices=COUNTRIES, null=True, db_index=True)
 
     @classmethod
     def filter_by_user(cls, user, queryset=None):
