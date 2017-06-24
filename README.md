@@ -78,6 +78,33 @@ Check the IP address of `*_id2_*` (in the case above: `investigativedashboard2_i
 
 Fire up a browser and check if everything works by visiting `http://*_id2_* IP address>:8000/`. You should see Investigative Dashboard's main page.
 
+### In Production
+
+At this moment, there's no automated deployments.
+Please consider the steps below:
+
+```bash
+$ ssh root@woodward.occrp.org
+$ cd /srv/tools/id/
+$ git pull
+$ docker-compose build # --no-cache
+$ docker-compose up -d
+$ # docker-compose logs -f
+```
+
+To see the logs:
+
+```bash
+$ ls /srv/logs/nginx/staging.occrp.org.*
+$ ls /srv/logs/id2/
+```
+
+To see the backups:
+
+```bash
+$ ls /backups/woodward/(srv|dbs)/<date>
+```
+
 ## Development accounts
 
 When running in a development environment there are several debug users available. To have these accounts set up, run:
