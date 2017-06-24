@@ -32,6 +32,7 @@ COPY . /id/
 RUN chmod -R a+rX /id/
 # && pip install -e /id
 RUN cd /id/static && bower --allow-root --quiet --config.interactive=false --force install
+RUN ID_SECRET_KEY=temp python manage.py collectstatic --noinput
 
 
 # this can be volume-mounted
