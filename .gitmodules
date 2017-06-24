@@ -1,0 +1,3 @@
+[submodule "static/id2"]
+	path = static/id2
+	url = git@github.com:occrp/id2-frontend.git
