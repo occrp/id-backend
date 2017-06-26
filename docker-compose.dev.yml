@@ -28,6 +28,5 @@ services:
       - ".build/data/live/podaci/:/data"
       - ".build/logs/id2/:/var/log/id2/"
       - ".build/data/dumps/:/dumps/"
-      - ".build/data/live/idstatic/:/id/build/"
     env_file:
       - id.env
