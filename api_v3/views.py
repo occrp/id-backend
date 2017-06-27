@@ -1,5 +1,6 @@
 from django.db.models import Q
-from rest_framework import response, viewsets, mixins, serializers, exceptions
+from rest_framework import(
+    response, viewsets, mixins, serializers, exceptions)
 
 from .support import JSONApiEndpoint
 from .models import Profile, Ticket, Action, Attachment, Comment, Responder
@@ -29,6 +30,14 @@ class TicketsEndpoint(
 
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
+    ordering_fields = ('created_at', 'deadline_at')
+    filter_fields = (
+        'created_at',
+        'deadline_at',
+        'status',
+        'requester',
+        'responders'
+    )
 
     def get_queryset(self):
         queryset = super(TicketsEndpoint, self).get_queryset()
