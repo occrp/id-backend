@@ -50,7 +50,8 @@ INSTALLED_APPS = (
     'databases',
     'ticket',
     'api_v3',
-    'activity'
+    'activity',
+    'django_filters'
 )
 
 
