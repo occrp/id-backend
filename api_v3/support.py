@@ -6,8 +6,14 @@ import rest_framework.authentication
 import rest_framework_json_api.metadata
 import rest_framework_json_api.parsers
 import rest_framework_json_api.renderers
+import rest_framework_json_api.pagination
 import rest_framework_json_api.utils
 from rest_framework.status import HTTP_422_UNPROCESSABLE_ENTITY
+
+
+class Pagination(rest_framework_json_api.pagination.PageNumberPagination):
+    page_query_param = 'page[number]'
+    paginate_by_param = 'page[size]'
 
 
 class SessionAuthenticationSansCSRF(
@@ -35,6 +41,7 @@ class JSONApiEndpoint(object):
         rest_framework.authentication.BasicAuthentication,
         SessionAuthenticationSansCSRF
     ]
+    pagination_class = Pagination
     metadata_class = rest_framework_json_api.metadata.JSONAPIMetadata
 
     def handle_exception(self, exc):
