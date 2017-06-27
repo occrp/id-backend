@@ -3,6 +3,7 @@ from datetime import datetime
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.http import JsonResponse
 
@@ -16,6 +17,9 @@ def home(request):
 
 
 def tickets_home(request):
+    user = request.user
+    if not user.is_authenticated():
+        raise PermissionDenied
     current_ts = datetime.utcnow().strftime('%s')
     return render(request, 'tickets.jinja', {'current_ts': current_ts})
 
