@@ -20,8 +20,14 @@ class DjangoFilterBackend(rest_framework.filters.DjangoFilterBackend):
         params = qs_parser.parse(request.META['QUERY_STRING'])
         params = params.get('filter') or {}
 
+        for k, v in params.items():
+            if not v:
+                params.pop(k)
+
         if filter_class:
-            return filter_class(params, queryset=queryset, request=request).qs
+            return filter_class(
+                params, queryset=queryset, request=request
+            ).qs
 
         return queryset
 
