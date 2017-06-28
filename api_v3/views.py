@@ -55,9 +55,10 @@ class TicketsEndpoint(
     def perform_create(self, serializer):
         """Make sure every new ticket is linked to current user."""
         ticket = serializer.save(requester=self.request.user)
+
         Action.objects.create(
             actor=self.request.user, target=ticket,
-            verb=self.request.method.lower())
+            verb=self.action_name())
         return ticket
 
     def perform_update(self, serializer):
@@ -68,9 +69,9 @@ class TicketsEndpoint(
         status = serializer.validated_data.get('status')
 
         if serializer.instance.status != status:
-            verb = 'status_{}'.format(status)
+            verb = '{}:status_{}'.format(self.action_name(), status)
         else:
-            verb = self.request.method.lower()
+            verb = self.action_name()
 
         ticket = serializer.save()
 
@@ -142,7 +143,7 @@ class AttachmentsEndpoint(
 
             return Action.objects.create(
                 actor=self.request.user, target=ticket, action=attachment,
-                verb=self.request.method.lower())
+                verb=self.action_name())
 
 
 class CommentsEndpoint(
@@ -181,7 +182,7 @@ class CommentsEndpoint(
 
             return Action.objects.create(
                 actor=self.request.user, target=ticket, action=comment,
-                verb=self.request.method.lower())
+                verb=self.action_name())
 
 
 class RespondersEndpoint(
@@ -221,7 +222,7 @@ class RespondersEndpoint(
 
         return Action.objects.create(
             actor=self.request.user, target=responder.ticket,
-            action=responder.user, verb=self.request.method.lower())
+            action=responder.user, verb=self.action_name())
 
     def perform_destroy(self, instance):
         """Make sure only super user or user himself can remove responders."""
@@ -231,7 +232,7 @@ class RespondersEndpoint(
 
         activity = Action.objects.create(
             actor=self.request.user, target=instance.ticket,
-            action=instance.user, verb=self.request.method.lower())
+            action=instance.user, verb=self.action_name())
 
         instance.delete()
 
