@@ -16,6 +16,21 @@ class Responder(models.Model):
     class Meta:
         unique_together = ('user', 'ticket')
 
+    @classmethod
+    def filter_by_user(cls, user, queryset=None):
+        """Returns any user responder objects.
+
+        Either related to the tickets he created or he is subscribed to.
+        """
+        return (queryset or cls.objects).filter(
+            # Allow own responder objects
+            models.Q(user=user) |
+            # Allow related to user responder tickets
+            models.Q(ticket__users=user) |
+            # Allow related to user created tickets
+            models.Q(ticket__requester=user)
+        )
+
 
 class Ticket(models.Model):
     """Ticket model."""
@@ -66,9 +81,9 @@ class Ticket(models.Model):
         Either the ones he created or he is subscribed to.
         """
         return (queryset or cls.objects).filter(
-            # Allow ticket authors to send attachments
+            # Allow ticket authors
             models.Q(requester=user) |
-            # Allow ticket responders to send attachments
+            # Allow ticket responders
             models.Q(users=user)
         )
 
@@ -118,10 +133,10 @@ class Comment(models.Model):
         Either the ones he created or he has access to through the tickets.
         """
         return (queryset or cls.objects).filter(
-            # Let ticket authors see ticket attachments
+            # Let ticket authors
             models.Q(ticket__requester=user) |
-            # Let ticket responders see tickets attachments
+            # Let ticket responders
             models.Q(ticket__users=user) |
-            # Let attachment authors see own attachments
+            # Let attachment authors
             models.Q(user=user)
         )

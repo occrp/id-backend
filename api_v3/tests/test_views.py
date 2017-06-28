@@ -12,7 +12,7 @@ from rest_framework_json_api.utils import(
 from api_v3.models import(
     Ticket, Profile, Responder, Attachment, Comment, Action)
 from api_v3.serializers import(
-    ProfileSerializer, TicketSerializer, AttachmentSerializer,
+    ProfileSerializer, TicketSerializer,
     CommentSerializer, ResponderSerializer)
 
 
@@ -183,7 +183,7 @@ class ProfilesEndpointTestCase(TestCase):
         response = self.client.get(reverse('profile-list'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.content), {'data': []})
+        self.assertEqual(json.loads(response.content)['data'], [])
 
     def test_list_authenticated(self):
         self.users[0].is_staff = True
@@ -235,7 +235,7 @@ class ActivitiesEndpointTestCase(TestCase):
         response = self.client.get(reverse('profile-list'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.content), {'data': []})
+        self.assertEqual(json.loads(response.content)['data'], [])
 
     def test_list_authenticated(self):
         self.client.force_authenticate(self.users[1])
@@ -467,11 +467,14 @@ class RespondersEndpointTestCase(ApiTestCase):
             )
         ]
         self.tickets = [
-            Ticket.objects.create(background='test1', requester=self.users[0])
+            Ticket.objects.create(background='test1', requester=self.users[0]),
+            Ticket.objects.create(background='test1', requester=self.users[1])
         ]
         self.responders = [
             Responder.objects.create(
-                ticket=self.tickets[0], user=self.users[1])
+                ticket=self.tickets[0], user=self.users[1]),
+            Responder.objects.create(
+                ticket=self.tickets[1], user=self.users[2])
         ]
 
     def test_create_non_superuser(self):
@@ -519,7 +522,7 @@ class RespondersEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 404)
 
-    def test_delete_non_superuser(self):
+    def test_delete_superuser(self):
         self.client.force_authenticate(self.users[2])
 
         responders_count = Responder.objects.count()
@@ -531,3 +534,40 @@ class RespondersEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 204)
         self.assertEqual(Responder.objects.count(), responders_count - 1)
+
+    def test_list_anonymous(self):
+        response = self.client.get(reverse('responder-list'))
+
+        self.assertEqual(response.status_code, 401)
+
+    def test_list_authenticated(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(reverse('responder-list'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(json.loads(response.content)['data']), 1)
+        self.assertEqual(
+            json.loads(response.content)['data'][0]['id'],
+            str(self.responders[0].id)
+        )
+
+    def test_get_authenticated(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(
+            reverse('responder-detail', args=[self.responders[0].id]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            json.loads(response.content)['data']['id'],
+            str(self.responders[0].id)
+        )
+
+    def test_get_authenticated_without_access(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(
+            reverse('responder-detail', args=[self.responders[1].id]))
+
+        self.assertEqual(response.status_code, 404)
