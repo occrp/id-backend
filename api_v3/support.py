@@ -73,7 +73,7 @@ class JSONApiEndpoint(object):
     ]
     pagination_class = Pagination
     metadata_class = rest_framework_json_api.metadata.JSONAPIMetadata
-    filter_fields = ('created_at', )
+    filter_fields = ('id', )
 
     def handle_exception(self, exc):
         if isinstance(exc, rest_framework.exceptions.ValidationError):
