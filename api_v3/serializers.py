@@ -116,12 +116,23 @@ class ActionRelatedField(relations.ResourceRelatedField):
 
 class ActionSerializer(serializers.ModelSerializer):
 
+    included_serializers = {
+        'user': ProfileSerializer,
+        'responder_user': ProfileSerializer,
+        'comment': CommentSerializer,
+        'attachment': AttachmentSerializer,
+    }
+
+
     user = relations.ResourceRelatedField(read_only=True, source='actor')
     ticket = relations.ResourceRelatedField(read_only=True, source='target')
 
     comment = ActionRelatedField(read_only=True, source='action')
     attachment = ActionRelatedField(read_only=True, source='action')
     responder_user = ActionRelatedField(read_only=True, source='action')
+    responder_user = ActionRelatedField(read_only=True, source='action')
+    created_at = fields.DateTimeField(
+        read_only=True, source='timestamp')
 
     class Meta:
         model = Action
@@ -132,5 +143,6 @@ class ActionSerializer(serializers.ModelSerializer):
             'ticket',
             'attachment',
             'comment',
-            'responder_user'
+            'responder_user',
+            'created_at'
         )
