@@ -48,7 +48,7 @@ class Ticket(models.Model):
     # Person ticket type fields
     first_name = models.CharField(max_length=512, null=True)
     last_name = models.CharField(max_length=512, null=True)
-    born_at = models.DateField(null=True)
+    born_at = models.DateTimeField(null=True)
     connections = models.TextField(null=True)
     sources = models.TextField(null=True)
     business_activities = models.TextField(null=True, max_length=1000)
