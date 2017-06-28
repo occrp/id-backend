@@ -75,6 +75,12 @@ class JSONApiEndpoint(object):
     metadata_class = rest_framework_json_api.metadata.JSONAPIMetadata
     filter_fields = ('id', )
 
+    def action_name(self):
+        """Simple helper to generate the current action name."""
+        template = '{}:{}'
+        resource = self.queryset.model.__name__.lower()
+        return template.format(resource, self.action)
+
     def handle_exception(self, exc):
         if isinstance(exc, rest_framework.exceptions.ValidationError):
             # some require that validation errors return 422 status
