@@ -21,6 +21,11 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class ResponderSerializer(serializers.ModelSerializer):
 
+    included_serializers = {
+        'user': ProfileSerializer,
+        'ticket': 'api_v3.serializers.TicketSerializer'
+    }
+
     class Meta:
         model = Responder
         fields = ('ticket', 'user')
@@ -28,6 +33,11 @@ class ResponderSerializer(serializers.ModelSerializer):
 
 
 class AttachmentSerializer(serializers.ModelSerializer):
+
+    included_serializers = {
+        'user': ProfileSerializer,
+        'ticket': 'api_v3.serializers.TicketSerializer'
+    }
 
     class Meta:
         model = Attachment
@@ -42,6 +52,11 @@ class AttachmentSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+
+    included_serializers = {
+        'user': ProfileSerializer,
+        'ticket': 'api_v3.serializers.TicketSerializer'
+    }
 
     class Meta:
         model = Comment
@@ -58,9 +73,11 @@ class CommentSerializer(serializers.ModelSerializer):
 class TicketSerializer(serializers.ModelSerializer):
 
     included_serializers = {
+        'users': ProfileSerializer,
         'requester': ProfileSerializer,
-        'responder': ResponderSerializer,
-        'attachments': AttachmentSerializer
+        'responders': ResponderSerializer,
+        'attachments': AttachmentSerializer,
+        'comments': AttachmentSerializer
     }
 
     class Meta:
@@ -121,8 +138,8 @@ class ActionSerializer(serializers.ModelSerializer):
         'responder_user': ProfileSerializer,
         'comment': CommentSerializer,
         'attachment': AttachmentSerializer,
+        'ticket': TicketSerializer
     }
-
 
     user = relations.ResourceRelatedField(read_only=True, source='actor')
     ticket = relations.ResourceRelatedField(read_only=True, source='target')
