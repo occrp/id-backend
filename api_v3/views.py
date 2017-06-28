@@ -188,7 +188,7 @@ class RespondersEndpoint(
         JSONApiEndpoint,
         mixins.CreateModelMixin,
         mixins.DestroyModelMixin,
-        viewsets.GenericViewSet):
+        viewsets.ReadOnlyModelViewSet):
     """Ticket responders endpoint.
 
     Use it to add or remove ticket responders.
@@ -196,6 +196,19 @@ class RespondersEndpoint(
 
     queryset = Responder.objects.all()
     serializer_class = ResponderSerializer
+
+    def get_queryset(self):
+        queryset = super(RespondersEndpoint, self).get_queryset()
+
+        if self.request.user.is_superuser:
+            return queryset
+
+        # If this is anonymous, for some reason DRF evaluates the
+        # authentication after the queryset
+        if not self.request.user.is_active:
+            return queryset.none()
+
+        return Responder.filter_by_user(self.request.user, queryset)
 
     def perform_create(self, serializer):
         """Make sure only super user can add responders."""
