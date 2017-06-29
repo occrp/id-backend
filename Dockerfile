@@ -33,7 +33,7 @@ RUN chmod -R a+rX /id/
 # && pip install -e /id
 RUN cd /id/static && bower --allow-root --quiet --config.interactive=false --force install
 RUN ID_SECRET_KEY=temp python manage.py collectstatic -v0 --noinput
-RUN ID_SECRET_KEY=temp python manage.py assets build -v0
+RUN ID_SECRET_KEY=temp python manage.py assets -v0 build
 
 
 # this can be volume-mounted
