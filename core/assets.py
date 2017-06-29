@@ -2,7 +2,6 @@ from django_assets import Bundle, register
 
 js = Bundle('jquery/dist/jquery.js',
             'bootstrap-sass/assets/javascripts/bootstrap.js',
-            filters='uglifyjs',
             output='app.js')
 register('script', js)
 
