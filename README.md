@@ -93,6 +93,13 @@ $ docker-compose up -d
 $ # docker-compose logs -f
 ```
 
+To build the static files:
+
+```
+$ docker-compose run web python manage.py collectstatic
+$ docker-compose run web python manage.py assets build
+```
+
 To see the logs:
 
 ```bash
