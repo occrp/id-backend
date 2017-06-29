@@ -6,7 +6,7 @@ js = Bundle('jquery/dist/jquery.js',
 register('script', js)
 
 css = Bundle('style/id.scss',
-             filters='scss',
+             filters='libsass',
              depends=['**/*.scss'],
              output='style.css')
 register('style', css)
