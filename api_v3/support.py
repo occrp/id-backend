@@ -17,19 +17,13 @@ class DjangoFilterBackend(rest_framework.filters.DjangoFilterBackend):
 
     def filter_queryset(self, request, queryset, view):
         filter_class = self.get_filter_class(view, queryset)
-        params = qs_parser.parse(request.META['QUERY_STRING'])
-        params = params.get('filter') or {}
 
-        for k, v in params.items():
-            if not v:
-                params.pop(k)
+        if not filter_class:
+            return queryset
 
-        if filter_class:
-            return filter_class(
-                params, queryset=queryset, request=request
-            ).qs
+        params = view.extract_filter_params(request)
 
-        return queryset
+        return filter_class(params, queryset=queryset, request=request).qs
 
 
 class OrderingFilter(rest_framework.filters.OrderingFilter):
@@ -74,6 +68,16 @@ class JSONApiEndpoint(object):
     pagination_class = Pagination
     metadata_class = rest_framework_json_api.metadata.JSONAPIMetadata
     filter_fields = ('id', )
+
+    def extract_filter_params(self, request):
+        params = qs_parser.parse(request.META['QUERY_STRING'])
+        params = params.get('filter') or {}
+
+        for k, v in params.items():
+            if not v:
+                params.pop(k)
+
+        return params
 
     def action_name(self):
         """Simple helper to generate the current action name."""
