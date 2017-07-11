@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, F, Func, Value
 from rest_framework import(
     response, viewsets, mixins, serializers, exceptions)
 
@@ -84,6 +84,19 @@ class ProfilesEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         Q(is_staff=True) | Q(is_superuser=True)
     ).all()
     serializer_class = ProfileSerializer
+
+    def get_queryset(self):
+        filters = self.extract_filter_params(self.request)
+
+        if not filters.get('name'):
+            return self.queryset
+        else:
+            return self.queryset.annotate(
+                name=Func(
+                    Value(' '), F('first_name'), F('last_name'),
+                    function='concat_ws'
+                )
+            ).filter(name__icontains=filters.pop('name'))
 
 
 class ActivitiesEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):

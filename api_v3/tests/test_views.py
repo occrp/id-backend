@@ -163,10 +163,14 @@ class ProfilesEndpointTestCase(TestCase):
         self.client = APIClient()
         self.users = [
             Profile.objects.create(
+                first_name='First',
+                last_name='User',
                 email='email1',
                 last_login=datetime.utcnow()
             ),
             Profile.objects.create(
+                first_name='Second',
+                last_name='Profile',
                 email='email2',
                 last_login=datetime.utcnow()
             )
@@ -197,6 +201,23 @@ class ProfilesEndpointTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(self.users[0].email, response.content)
         self.assertIn(self.users[1].email, response.content)
+
+    def test_list_filter_authenticated(self):
+        self.users[0].is_staff = True
+        self.users[0].save()
+        self.users[1].is_staff = True
+        self.users[1].save()
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(
+            reverse('profile-list'), {
+                'filter[name]': self.users[1].first_name[1:4]
+            }
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(self.users[1].email, response.content)
+        self.assertNotIn(self.users[0].email, response.content)
 
 
 class ActivitiesEndpointTestCase(TestCase):
