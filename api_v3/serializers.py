@@ -1,3 +1,6 @@
+import os.path
+
+import magic
 from rest_framework_json_api import serializers, relations
 from rest_framework import fields
 
@@ -39,6 +42,10 @@ class AttachmentSerializer(serializers.ModelSerializer):
         'ticket': 'api_v3.serializers.TicketSerializer'
     }
 
+    file_name = serializers.SerializerMethodField()
+    file_size = serializers.SerializerMethodField()
+    mime_type = serializers.SerializerMethodField()
+
     class Meta:
         model = Attachment
         read_only_fields = ('user',)
@@ -47,8 +54,24 @@ class AttachmentSerializer(serializers.ModelSerializer):
             'user',
             'ticket',
             'upload',
+            'file_name',
+            'file_size',
+            'mime_type',
             'created_at'
         )
+
+    def get_file_name(self, obj):
+        if obj.upload:
+            return os.path.basename(obj.upload.name)
+
+    def get_file_size(self, obj):
+        if obj.upload:
+            return obj.upload.size
+        return 0
+
+    def get_mime_type(self, obj):
+        if obj.upload:
+            return magic.from_file(obj.upload.name, mime=True)
 
 
 class CommentSerializer(serializers.ModelSerializer):
