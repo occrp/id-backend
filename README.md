@@ -93,12 +93,7 @@ $ docker-compose up -d
 $ # docker-compose logs -f
 ```
 
-To build the static files:
-
-```
-$ docker-compose run web python manage.py collectstatic
-$ docker-compose run web python manage.py assets build
-```
+Static files are build upon ever run by the `entrypoint.sh` entrypoint script, since this needs to happen after volumes are mounted (so, runtime, not buildtime).
 
 To see the logs:
 
