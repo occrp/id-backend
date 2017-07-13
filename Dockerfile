@@ -38,6 +38,7 @@ RUN ID_SECRET_KEY=temp python manage.py assets -v0 build
 
 # this can be volume-mounted
 RUN mkdir -p /var/log/id2/
+RUN chmod a+x /id/entrypoint.sh
 
+ENTRYPOINT /id/entrypoint.sh
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-# CMD ["/id/docker.sh"]
