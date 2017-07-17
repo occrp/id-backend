@@ -5,6 +5,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
+from django.contrib.postgres.fields import JSONField
 from django.core.mail import send_mail
 from django.utils import timezone
 
@@ -98,6 +99,7 @@ class Profile(AbstractBaseUser, NotificationMixin, PermissionsMixin):
     phone_number = models.CharField(blank=True, max_length=255)
     organization = models.CharField(blank=True, max_length=1024)
     country = models.CharField(blank=True, max_length=32, choices=COUNTRIES)
+    settings = JSONField(blank=True, null=True)
 
     # Django auth module settings
     USERNAME_FIELD = 'email'
