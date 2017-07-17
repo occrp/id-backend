@@ -157,7 +157,7 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.assertEqual(Ticket.objects.count(), tickets_count + 1)
 
 
-class ProfilesEndpointTestCase(TestCase):
+class ProfilesEndpointTestCase(ApiTestCase):
 
     def setUp(self):
         self.client = APIClient()
@@ -218,6 +218,54 @@ class ProfilesEndpointTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(self.users[1].email, response.content)
         self.assertNotIn(self.users[0].email, response.content)
+
+    def test_update_authenticated_not_owned_profile(self):
+        self.users[1].is_staff = True
+        self.users[1].save()
+        self.client.force_authenticate(self.users[0])
+
+        new_data = self.as_jsonapi_payload(
+            ProfileSerializer, self.users[1], {
+                'settings': {'option_one': 1}
+            }
+        )
+
+        response = self.client.patch(
+            reverse('profile-detail', args=[self.users[1].id]),
+            data=json.dumps(new_data),
+            content_type=ApiTestCase.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_update_authenticated(self):
+        self.users[0].is_staff = True
+        self.users[0].save()
+        self.client.force_authenticate(self.users[0])
+
+        email = 'ignored@email.address'
+        new_data = self.as_jsonapi_payload(
+            ProfileSerializer, self.users[0], {
+                'email': email,
+                'settings': {
+                    'option_one': 1,
+                    'suboption': {
+                        'option_two': False
+                    },
+                }
+            })
+
+        response = self.client.patch(
+            reverse('profile-detail', args=[self.users[0].id]),
+            data=json.dumps(new_data),
+            content_type=ApiTestCase.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn(email, response.content)
+        self.assertIn('suboption', response.content)
+        self.assertIn('option-one', response.content)
+        self.assertIn('option-two', response.content)
 
 
 class ActivitiesEndpointTestCase(TestCase):
