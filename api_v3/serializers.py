@@ -11,6 +11,15 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
+        read_only_fields = (
+            'id',
+            'email',
+            'first_name',
+            'last_name',
+            'is_staff',
+            'is_superuser',
+            'locale'
+        )
         fields = (
             'id',
             'email',
@@ -18,6 +27,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'last_name',
             'is_staff',
             'is_superuser',
+            'settings',
             'locale'
         )
 
