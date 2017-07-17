@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from activity.models import Action  # noqa
+from django.contrib.postgres.fields import JSONField
 
 from core.countries import COUNTRIES
 from accounts.models import Profile  # noqa
@@ -50,6 +51,7 @@ class Ticket(models.Model):
     status = models.CharField(
         max_length=70, choices=TICKET_STATUS,
         default=TICKET_STATUS[0][0], db_index=True)
+    settings = JSONField(blank=True, null=True)
 
     sensitive = models.BooleanField(default=False)
     whysensitive = models.CharField(max_length=150, null=True)
