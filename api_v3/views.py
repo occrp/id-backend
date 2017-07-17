@@ -79,11 +79,29 @@ class TicketsEndpoint(
             actor=self.request.user, target=ticket, verb=verb)
 
 
-class ProfilesEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
+class ProfilesEndpoint(
+        JSONApiEndpoint,
+        mixins.UpdateModelMixin,
+        viewsets.ReadOnlyModelViewSet):
+
     queryset = Profile.objects.filter(
         Q(is_staff=True) | Q(is_superuser=True)
     ).all()
+
     serializer_class = ProfileSerializer
+
+    def perform_update(self, serializer):
+        """Allow users to update only own profile."""
+
+        if self.request.user != serializer.instance:
+            raise exceptions.NotFound()
+
+        settings = serializer.validated_data.get('settings') or {}
+        serializer.instance.settings = serializer.instance.settings or {}
+        serializer.instance.settings.update(settings)
+        serializer.instance.save()
+
+        return serializer
 
     def get_queryset(self):
         filters = self.extract_filter_params(self.request)
