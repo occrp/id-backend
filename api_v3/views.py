@@ -96,9 +96,7 @@ class ProfilesEndpoint(
         if self.request.user != serializer.instance:
             raise exceptions.NotFound()
 
-        settings = serializer.validated_data.get('settings') or {}
-        serializer.instance.settings = serializer.instance.settings or {}
-        serializer.instance.settings.update(settings)
+        serializer.instance.bio = serializer.validated_data.get('bio')
         serializer.instance.save()
 
         return serializer
