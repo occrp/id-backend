@@ -56,6 +56,7 @@ class Ticket(models.Model):
     deadline_at = models.DateTimeField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    sent_notifications_at = models.DateTimeField(null=True)
 
     # Other ticket type fields, also common to all other types
     background = models.TextField(blank=False, max_length=1000)
