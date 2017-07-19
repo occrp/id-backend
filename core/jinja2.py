@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from jinja2 import Environment, Template
 from django_assets.env import get_env
 from django.template import RequestContext
-from django.utils.translation import to_locale, get_language
+from django.utils.translation import to_locale, get_language, activate
 from django.core.urlresolvers import resolve, reverse
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.messages import get_messages
@@ -61,8 +61,9 @@ class ContextTemplate(Template):
             context['ROUTE_NAME'] = resolve(request.path_info).url_name
 
         lang = get_language()
-        if lang.startswith("en-"):
+        if not lang or lang.startswith("en-"):
             lang = "en"
+        activate(lang)
         context['LOCALE'] = to_locale(get_language())
         context['LOCALE_LC'] = to_locale(get_language()).lower()
         context['LANGUAGE_LC'] = lang.lower()
