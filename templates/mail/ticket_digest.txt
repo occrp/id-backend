@@ -1,0 +1,11 @@
+Hello {{ name }},
+below is a digest of the tickets you are subscribed to:
+
+{% for item in actions -%}
+ * {{ item }}
+{% endfor %}
+
+Thank you for using Investigative Dashboard!
+
+--
+The OCCRP ID team
