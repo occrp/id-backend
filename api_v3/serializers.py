@@ -27,7 +27,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'last_name',
             'is_staff',
             'is_superuser',
-            'settings',
+            'bio',
             'locale'
         )
 

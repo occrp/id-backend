@@ -225,10 +225,7 @@ class ProfilesEndpointTestCase(ApiTestCase):
         self.client.force_authenticate(self.users[0])
 
         new_data = self.as_jsonapi_payload(
-            ProfileSerializer, self.users[1], {
-                'settings': {'option_one': 1}
-            }
-        )
+            ProfileSerializer, self.users[1], {'bio': 'Short Bio'})
 
         response = self.client.patch(
             reverse('profile-detail', args=[self.users[1].id]),
@@ -246,14 +243,7 @@ class ProfilesEndpointTestCase(ApiTestCase):
         email = 'ignored@email.address'
         new_data = self.as_jsonapi_payload(
             ProfileSerializer, self.users[0], {
-                'email': email,
-                'settings': {
-                    'option_one': 1,
-                    'suboption': {
-                        'option_two': False
-                    },
-                }
-            })
+                'email': email, 'bio': 'Short Bio'})
 
         response = self.client.patch(
             reverse('profile-detail', args=[self.users[0].id]),
@@ -263,9 +253,7 @@ class ProfilesEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertNotIn(email, response.content)
-        self.assertIn('suboption', response.content)
-        self.assertIn('option-one', response.content)
-        self.assertIn('option-two', response.content)
+        self.assertIn('Short Bio', response.content)
 
 
 class ActivitiesEndpointTestCase(TestCase):
