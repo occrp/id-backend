@@ -1,4 +1,5 @@
 from datetime import datetime
+from collections import defaultdict
 
 from django.db import models
 from django.core.mail import send_mass_mail
@@ -12,12 +13,14 @@ from settings.settings import DEFAULT_FROM_EMAIL
 class Command(BaseCommand):
     help = 'Sends relevant ticket notifications'
 
-    SUBJECT = 'Daily digest for ticket ID: {}'
+    SUBJECT = 'Daily digest for your ID tickets'
     # Email item template. Example:
-    #   John updated the status to ticket ID: 99
-    ITEM_TEMPLATE = '{name} {action} {thing} to ticket ID: {ticket}'
+    #   (01.12.1987 22:01): John updated the status to ticket ID: 99
+    ITEM_TEMPLATE = '({date}): {name} {action} {thing} to ticket ID: {ticket}'
 
     def handle(self, *args, **options):
+        """Runs the digest for tickets."""
+        user_digests = {}
         tickets = Ticket.objects.filter(
             models.Q(
                 sent_notifications_at__gte=models.Func(function='now')
@@ -29,49 +32,63 @@ class Command(BaseCommand):
         self.stdout.write('Processing {} tickets.'.format(tickets.count()))
 
         for ticket in tickets:
-            mail_status, processed = self.process_ticket(ticket)
+            digest = self.digest(ticket)
+
+            if not digest:
+                continue
+
+            for user in (list(ticket.users.all()) + [ticket.requester]):
+                user_digests[user.id] = user_digests.get(user.id) or {
+                    'user': user,
+                    'digests': digest
+                }
+                user_digests[user.id]['digests'] += digest
 
             ticket.sent_notifications_at = datetime.utcnow()
             ticket.save()
 
-            if mail_status:
-                color = self.style.SUCCESS
-            else:
-                color = self.style.ERROR
+        if user_digests:
+            status, count = self.email(user_digests)
+        else:
+            status, count = True, 0
 
-            self.stdout.write(color('Sent {} notifications.'.format(processed)))
+        if status:
+            color = self.style.SUCCESS
+        else:
+            color = self.style.ERROR
 
-    def process_ticket(self, ticket):
+        self.stdout.write(color('Sent {} notifications.'.format(count)))
+
+    def digest(self, ticket):
+        """Generates a digest for a ticket."""
         actions = Action.objects.filter(
             target_object_id=str(ticket.id),
             timestamp__gte=(ticket.sent_notifications_at or datetime.min)
         )
+        return filter(None, map(self.generate_text, actions))
 
+    def email(self, user_digests):
+        """Generates and emails the user digests."""
         emails = []
-        items = map(self.generate_text, actions)
-        subject = self.SUBJECT.format(ticket.id)
 
-        for user in (list(ticket.users.all()) + [ticket.requester]):
+        for _, user_digest in user_digests.items():
             emails.append([
-                subject,
-                render_to_string(
-                    'mail/ticket_digest.txt', {
-                        'actions': items,
-                        'name': user.display_name
-                    }
-                ),
+                self.SUBJECT,
+                render_to_string('mail/ticket_digest.txt', user_digest),
                 DEFAULT_FROM_EMAIL,
-                [user.email]
+                [user_digest['user'].email]
             ])
 
-        return send_mass_mail(emails, fail_silently=True), len(items)
+        return send_mass_mail(emails, fail_silently=True), len(user_digests)
 
     def generate_text(self, action):
+        """Generates a human readable version of the ticket activity."""
         verb = action.verb.split(':')
         data = {
             'name': action.actor.display_name,
             'ticket': action.target.id,
             'thing': verb[0],
+            'date': action.timestamp.strftime('%x %X'),
             'action': 'added a'
         }
 
@@ -88,5 +105,8 @@ class Command(BaseCommand):
             data['action'] = 'added'
             data['thing'] = '{} as a responder'.format(
                 action.action.display_name)
+        # If a ticket was created, do not include in the digest
+        elif data['thing'] == 'ticket':
+            return None
 
         return self.ITEM_TEMPLATE.format(**data)
