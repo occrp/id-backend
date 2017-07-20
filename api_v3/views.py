@@ -42,6 +42,8 @@ class TicketsEndpoint(
         'responders'
     )
 
+    EMAIL_SUBJECT = 'A new ticket was requested, ID: {}'
+
     def get_queryset(self):
         queryset = super(TicketsEndpoint, self).get_queryset()
 
@@ -62,6 +64,9 @@ class TicketsEndpoint(
         Action.objects.create(
             actor=self.request.user, target=ticket,
             verb=self.action_name())
+
+        self.email_notify(ticket)
+
         return ticket
 
     def perform_update(self, serializer):
@@ -80,6 +85,28 @@ class TicketsEndpoint(
 
         return Action.objects.create(
             actor=self.request.user, target=ticket, verb=verb)
+
+    def email_notify(self, ticket):
+        """Sends an email to editors about the new ticket."""
+        emails = []
+        subject = self.EMAIL_SUBJECT.format(ticket.id)
+        users = Profile.objects.filter(is_superuser=True, is_active=True)
+
+        for user in users:
+            emails.append([
+                subject,
+                render_to_string(
+                    'mail/ticket_created.txt', {
+                        'ticket': ticket,
+                        'name': user.display_name,
+                        'request_host': self.request.get_host()
+                    }
+                ),
+                DEFAULT_FROM_EMAIL,
+                [user.email]
+            ])
+
+        return send_mass_mail(emails, fail_silently=True)
 
 
 class ProfilesEndpoint(
@@ -221,6 +248,7 @@ class CommentsEndpoint(
             return comment
 
     def email_notify(self, comment):
+        """Sends an email to ticket users about the new comment."""
         emails = []
         subject = self.EMAIL_SUBJECT.format(comment.ticket.id)
         users = list(comment.ticket.users.all()) + [comment.ticket.requester]
