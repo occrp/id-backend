@@ -1,0 +1,9 @@
+Hello {{ name }},
+{{ comment.user.display_name }} left a comment to the ticket with ID: {{ comment.ticket.id }}:
+
+
+{{ comment.body }}
+
+
+--
+The OCCRP ID team
