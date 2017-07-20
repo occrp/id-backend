@@ -1,7 +1,7 @@
-Hello {{ name }},
+Hello {{ user.display_name }},
 below is a digest of the tickets you are subscribed to:
 
-{% for item in actions -%}
+{% for item in digests -%}
  * {{ item }}
 {% endfor %}
 
