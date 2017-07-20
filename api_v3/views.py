@@ -1,7 +1,10 @@
 from django.db.models import Q, F, Func, Value
+from django.core.mail import send_mass_mail
+from django.template.loader import render_to_string
 from rest_framework import(
     response, viewsets, mixins, serializers, exceptions)
 
+from settings.settings import DEFAULT_FROM_EMAIL
 from .support import JSONApiEndpoint
 from .models import Profile, Ticket, Action, Attachment, Comment, Responder
 from .serializers import(
@@ -182,6 +185,7 @@ class CommentsEndpoint(
 
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    EMAIL_SUBJECT = 'A new comment for ticket ID: {}'
 
     def get_queryset(self):
         queryset = super(CommentsEndpoint, self).get_queryset()
@@ -208,10 +212,37 @@ class CommentsEndpoint(
             )
         else:
             comment = serializer.save(user=self.request.user)
-
-            return Action.objects.create(
+            Action.objects.create(
                 actor=self.request.user, target=ticket, action=comment,
                 verb=self.action_name())
+
+            self.email_notify(comment)
+
+            return comment
+
+    def email_notify(self, comment):
+        emails = []
+        subject = self.EMAIL_SUBJECT.format(comment.ticket.id)
+        users = list(comment.ticket.users.all()) + [comment.ticket.requester]
+
+        for user in users:
+
+            if user == comment.user:
+                continue
+
+            emails.append([
+                subject,
+                render_to_string(
+                    'mail/ticket_comment.txt', {
+                        'comment': comment,
+                        'name': user.display_name
+                    }
+                ),
+                DEFAULT_FROM_EMAIL,
+                [user.email]
+            ])
+
+        return send_mass_mail(emails, fail_silently=True)
 
 
 class RespondersEndpoint(
