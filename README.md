@@ -37,47 +37,6 @@ Now you can start the application:
  ./manage.py runserver
 ```
 
-### Running with Docker and Docker Compose
-
-You can run Investigative Dashboard under Docker. Here's how.
-
-#### Prerequisites
-
-Obviously, you'll need [Docker](http://docker.io/). [Go here](https://docs.docker.com/installation/#installation), ask questions later. For debian-based distros usually:
-
-```
- apt-get install docker.io
-```
-
-Also, if setting up for production use (i.e. not volume-mounting the code directory in the container, but rather relying on the code COPY'ed at build time; and running as non-root user within the container), **remember to `chmod -R a+rX ./` in the code directory before build** -- otherwise on some `docker` or `aufs` versions the permissions might be broken within the container which will cause `id2` not to run.
-
-#### Set-up and run with docker-compose
-
-You should use [docker-compose](http://docs.docker.com/compose/) to have all the images built, containers run and linked and `id2` started for you. Nice of you to ask. It's actually easier that way. **Caveat: you need at least docker 1.3 for that!**
-
-```
- cd /path/to/investigative-dashboard-2
- docker-compose up id2dev
-```
-
-Get some info on the containers being run:
-```
- $ ../docker-compose ps
-                    Name                                Command               State          Ports
- -------------------------------------------------------------------------------------------------------
- investigativedashboard2_elasticsearch_1    /docker-entrypoint.sh elas ...   Up       9200/tcp, 9300/tcp
- investigativedashboard2_id2_1              python manage.py runserver ...   Up       8000/tcp
- investigativedashboard2_postgres_1         /docker-entrypoint.sh postgres   Up       5432/tcp
-```
-
-Check the IP address of `*_id2_*` (in the case above: `investigativedashboard2_id2_1`) container:
-
-```
- docker inspect -f '{{.NetworkSettings.IPAddress}}' investigativedashboard2_id2dev_1
-```
-
-Fire up a browser and check if everything works by visiting `http://*_id2_* IP address>:8000/`. You should see Investigative Dashboard's main page.
-
 ### In Production
 
 At this moment, there's no automated deployments.
@@ -110,7 +69,8 @@ $ ls /backups/woodward/(srv|dbs)/<date>
 
 ## Development accounts
 
-When running in a development environment there are several debug users available. To have these accounts set up, run:
+When running in a development environment there are several debug users available.
+To have these accounts set up, run:
 
 ```
  ./manage.py loaddata accounts/fixtures/*
