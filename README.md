@@ -67,6 +67,16 @@ To see the backups:
 $ ls /backups/woodward/(srv|dbs)/<date>
 ```
 
+#### Daily email digests
+
+To run daily email digests a cron installation or other schedule is required.
+
+The command to run the digests is:
+
+```cron
+docker-compose run web python manage.py email_ticket_digest
+```
+
 ## Development accounts
 
 When running in a development environment there are several debug users available.
