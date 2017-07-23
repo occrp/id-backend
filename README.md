@@ -82,6 +82,12 @@ The command to run the digests is:
 docker-compose run web python manage.py email_ticket_digest
 ```
 
+It can also be triggered via a web request at:
+
+```bash
+$ curl http://investigativedashboard.org/api/v3/ops/email_ticket_digest
+```
+
 ## Development accounts
 
 When running in a development environment there are several debug users available.
