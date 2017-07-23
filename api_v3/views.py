@@ -2,11 +2,12 @@ from django.db.models import Q, F, Func, Value
 from django.core.mail import send_mass_mail
 from django.template.loader import render_to_string
 from rest_framework import(
-    response, viewsets, mixins, serializers, exceptions)
+    response, viewsets, mixins, serializers, exceptions, permissions)
 
 from settings.settings import DEFAULT_FROM_EMAIL
 from .support import JSONApiEndpoint
 from .models import Profile, Ticket, Action, Attachment, Comment, Responder
+from .management.commands.email_ticket_digest import Command
 from .serializers import(
     ProfileSerializer,
     TicketSerializer,
@@ -23,6 +24,24 @@ class SessionEndpoint(viewsets.GenericViewSet):
     def list(self, request, *args, **kwargs):
         serializer = self.get_serializer(request.user)
         return response.Response(serializer.data)
+
+
+class OpsEndpoint(viewsets.ViewSet):
+    """Triggers internal operations."""
+
+    permission_classes = (permissions.AllowAny,)
+
+    def retrieve(self, request, pk=None):
+        data = {'operation': None}
+
+        if pk == 'email_ticket_digest':
+            cmd = Command()
+            status, notifications_count = cmd.handle()
+            data['operation'] = pk
+            data['status'] = status
+            data['notifications_count'] = notifications_count
+
+        return response.Response(data)
 
 
 class TicketsEndpoint(
