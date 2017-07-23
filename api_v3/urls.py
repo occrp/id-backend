@@ -10,7 +10,8 @@ from .views import(
     AttachmentsEndpoint,
     ActivitiesEndpoint,
     CommentsEndpoint,
-    RespondersEndpoint
+    RespondersEndpoint,
+    OpsEndpoint
 )
 
 
@@ -22,6 +23,7 @@ router.register(r'comments', CommentsEndpoint)
 router.register(r'activities', ActivitiesEndpoint)
 router.register(r'responders', RespondersEndpoint)
 router.register(r'me', SessionEndpoint, base_name='me')
+router.register(r'ops', OpsEndpoint, base_name='ops')
 
 urlpatterns = [
     urls.url(r'^', urls.include(router.urls)),

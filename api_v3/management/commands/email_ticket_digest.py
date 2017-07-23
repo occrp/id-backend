@@ -59,6 +59,8 @@ class Command(BaseCommand):
 
         self.stdout.write(color('Sent {} notifications.'.format(count)))
 
+        return status, count
+
     def digest(self, ticket):
         """Generates a digest for a ticket."""
         actions = Action.objects.filter(
