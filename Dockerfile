@@ -38,5 +38,5 @@ RUN cd /id/static && bower --allow-root --quiet --config.interactive=false --for
 RUN mkdir -p /var/log/id2/
 RUN chmod a+x /id/entrypoint.sh
 
-ENTRYPOINT /id/entrypoint.sh
+ENTRYPOINT ["/id/entrypoint.sh"]
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
