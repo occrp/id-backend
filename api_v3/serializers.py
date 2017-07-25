@@ -110,7 +110,7 @@ class TicketSerializer(serializers.ModelSerializer):
         'requester': ProfileSerializer,
         'responders': ResponderSerializer,
         'attachments': AttachmentSerializer,
-        'comments': AttachmentSerializer
+        'comments': CommentSerializer
     }
 
     class Meta:
