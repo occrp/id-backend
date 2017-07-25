@@ -33,7 +33,7 @@ class OrderingFilter(rest_framework.filters.OrderingFilter):
 
 class Pagination(rest_framework_json_api.pagination.PageNumberPagination):
     page_query_param = 'page[number]'
-    paginate_by_param = 'page[size]'
+    page_size_query_param = 'page[size]'
 
 
 class SessionAuthenticationSansCSRF(
