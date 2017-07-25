@@ -5,7 +5,7 @@ below is a digest of the tickets you are subscribed to:
  * {{ item }}
 {% endfor %}
 
-Thank you for using Investigative Dashboard!
+Thank you for using the Investigative Dashboard!
 
 --
 The OCCRP ID team
