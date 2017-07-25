@@ -53,13 +53,13 @@ class TicketsEndpoint(
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
     ordering_fields = ('created_at', 'deadline_at')
-    filter_fields = (
-        'created_at',
-        'deadline_at',
-        'status',
-        'requester',
-        'responders'
-    )
+    filter_fields = {
+        'created_at': ['range'],
+        'deadline_at': ['range'],
+        'status': ['in'],
+        'requester': ['exact'],
+        'responders': ['exact']
+    }
 
     EMAIL_SUBJECT = 'A new ticket was requested, ID: {}'
 
