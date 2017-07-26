@@ -144,43 +144,44 @@ class TicketSerializer(serializers.ModelSerializer):
         )
 
 
-class ActionRelatedField(relations.ResourceRelatedField):
+class ActionRelatedField(relations.PolymorphicResourceRelatedField):
     """Custom polymorphic serializer for action types."""
 
     def get_attribute(self, instance):
-        not_comment = (
-            self.field_name == 'comment' and
-            not isinstance(instance.action, Comment))
-        not_attachment = (
-            self.field_name == 'attachment' and
-            not isinstance(instance.action, Attachment))
-        not_responder_user = (
-            self.field_name == 'responder_user' and
-            not isinstance(instance.action, Profile))
+        obj = instance.action
+        self.source = 'action'
 
-        if not_comment or not_attachment or not_responder_user:
-            raise fields.SkipField()
+        is_comment = self.field_name == 'comment' and isinstance(obj, Comment)
+        is_attachment = (
+            self.field_name == 'attachment' and isinstance(obj, Attachment))
+        is_responder_user = (
+            self.field_name == 'responder_user' and isinstance(obj, Profile))
 
-        return super(ActionRelatedField, self).get_attribute(instance)
+        if is_comment or is_attachment or is_responder_user:
+            try:
+                return super(ActionRelatedField, self).get_attribute(instance)
+            except AttributeError:
+                return obj
+
+        raise fields.SkipField()
 
 
 class ActionSerializer(serializers.ModelSerializer):
 
     included_serializers = {
         'user': ProfileSerializer,
-        'responder_user': ProfileSerializer,
-        'comment': CommentSerializer,
         'attachment': AttachmentSerializer,
+        'comment': CommentSerializer,
+        'responder_user': ProfileSerializer,
         'ticket': TicketSerializer
     }
 
     user = relations.ResourceRelatedField(read_only=True, source='actor')
     ticket = relations.ResourceRelatedField(read_only=True, source='target')
 
-    comment = ActionRelatedField(read_only=True, source='action')
-    attachment = ActionRelatedField(read_only=True, source='action')
-    responder_user = ActionRelatedField(read_only=True, source='action')
-    responder_user = ActionRelatedField(read_only=True, source='action')
+    comment = ActionRelatedField(CommentSerializer, read_only=True)
+    attachment = ActionRelatedField(AttachmentSerializer, read_only=True)
+    responder_user = ActionRelatedField(ProfileSerializer, read_only=True)
     created_at = fields.DateTimeField(
         read_only=True, source='timestamp')
 

@@ -12,6 +12,8 @@ import rest_framework_json_api.utils
 from rest_framework.status import HTTP_422_UNPROCESSABLE_ENTITY
 from querystring_parser import parser as qs_parser
 
+from .models import Profile, Attachment, Comment
+
 
 class DjangoFilterBackend(rest_framework.filters.DjangoFilterBackend):
 
@@ -43,6 +45,27 @@ class SessionAuthenticationSansCSRF(
         return
 
 
+class Renderer(rest_framework_json_api.renderers.JSONRenderer):
+
+    @classmethod
+    def extract_relation_instance(
+            cls, field_name, field, resource_instance, serializer):
+        obj = resource_instance.action
+
+        is_comment = (
+            field_name == 'comment' and isinstance(obj, Comment))
+        is_attachment = (
+            field_name == 'attachment' and isinstance(obj, Attachment))
+        is_responder_user = (
+            field_name == 'responder_user' and isinstance(obj, Profile))
+
+        if is_comment or is_attachment or is_responder_user:
+            return super(Renderer, cls).extract_relation_instance(
+                field_name, field, resource_instance, serializer)
+        else:
+            return None
+
+
 class JSONApiEndpoint(object):
     """Generic mixin for our endpoints to enable JSON API format.
 
@@ -54,7 +77,7 @@ class JSONApiEndpoint(object):
         rest_framework.parsers.MultiPartParser,
     ]
     renderer_classes = [
-        rest_framework_json_api.renderers.JSONRenderer,
+        Renderer,
         rest_framework.renderers.BrowsableAPIRenderer,
     ]
     authentication_classes = [
