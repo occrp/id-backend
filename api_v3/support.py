@@ -12,7 +12,7 @@ import rest_framework_json_api.utils
 from rest_framework.status import HTTP_422_UNPROCESSABLE_ENTITY
 from querystring_parser import parser as qs_parser
 
-from .models import Profile, Attachment, Comment
+from .models import Profile, Attachment, Comment, Action
 
 
 class DjangoFilterBackend(rest_framework.filters.DjangoFilterBackend):
@@ -50,6 +50,12 @@ class Renderer(rest_framework_json_api.renderers.JSONRenderer):
     @classmethod
     def extract_relation_instance(
             cls, field_name, field, resource_instance, serializer):
+
+        if not isinstance(resource_instance, Action):
+            return super(Renderer, cls).extract_relation_instance(
+                field_name, field, resource_instance, serializer)
+
+        # Special case for polymorphic relationships we have
         obj = resource_instance.action
 
         is_comment = (
