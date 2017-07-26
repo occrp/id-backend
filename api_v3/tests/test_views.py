@@ -117,6 +117,15 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(self.tickets[0].background, response.content)
 
+    def test_list_authenticated_with_includes(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(
+            reverse('ticket-list'), {'include': 'requester'})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('included', response.content)
+
     def test_get_authenticated(self):
         self.client.force_authenticate(self.users[0])
 
@@ -337,7 +346,6 @@ class ActivitiesEndpointTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn('included', response.content)
-        self.assertIn(self.activities[0].verb, response.content)
 
 
 class AttachmentsEndpointTestCase(ApiTestCase):
