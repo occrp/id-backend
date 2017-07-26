@@ -293,10 +293,17 @@ class ActivitiesEndpointTestCase(TestCase):
         self.tickets = [
             Ticket.objects.create(background='test1', requester=self.users[1])
         ]
+        self.attachments = [
+            Attachment.objects.create(
+                user=self.users[0],
+                ticket=self.tickets[0],
+            )
+        ]
         self.activities = [
             Action.objects.create(
                 actor=self.users[1],
                 target=self.tickets[0],
+                action=self.attachments[0],
                 verb='test-action'
             )
         ]
@@ -320,6 +327,16 @@ class ActivitiesEndpointTestCase(TestCase):
         response = self.client.get(reverse('action-list'))
 
         self.assertEqual(response.status_code, 200)
+        self.assertIn(self.activities[0].verb, response.content)
+
+    def test_list_authenticated_with_includes(self):
+        self.client.force_authenticate(self.users[1])
+
+        response = self.client.get(
+            reverse('action-list'), {'include': 'attachment'})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('included', response.content)
         self.assertIn(self.activities[0].verb, response.content)
 
 
