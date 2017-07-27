@@ -11,6 +11,7 @@ import rest_framework_json_api.pagination
 import rest_framework_json_api.utils
 from rest_framework.status import HTTP_422_UNPROCESSABLE_ENTITY
 from querystring_parser import parser as qs_parser
+from django.utils.six.moves.urllib.parse import unquote as url_unquote
 
 from .models import Profile, Attachment, Comment, Action
 
@@ -36,6 +37,12 @@ class OrderingFilter(rest_framework.filters.OrderingFilter):
 class Pagination(rest_framework_json_api.pagination.PageNumberPagination):
     page_query_param = 'page[number]'
     page_size_query_param = 'page[size]'
+
+    def build_link(self, index):
+        link = super(Pagination, self).build_link(index)
+        if link:
+            link = url_unquote(link)
+        return link
 
 
 class SessionAuthenticationSansCSRF(
