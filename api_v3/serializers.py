@@ -9,6 +9,8 @@ from .models import Profile, Ticket, Action, Attachment, Comment, Responder
 
 class ProfileSerializer(serializers.ModelSerializer):
 
+    tickets_count = fields.SerializerMethodField()
+
     class Meta:
         model = Profile
         read_only_fields = (
@@ -28,8 +30,12 @@ class ProfileSerializer(serializers.ModelSerializer):
             'is_staff',
             'is_superuser',
             'bio',
-            'locale'
+            'locale',
+            'tickets_count'
         )
+
+    def get_tickets_count(self, obj):
+        return Ticket.filter_by_user(obj).count()
 
 
 class ResponderSerializer(serializers.ModelSerializer):
