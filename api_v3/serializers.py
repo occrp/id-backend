@@ -4,7 +4,8 @@ import magic
 from rest_framework_json_api import serializers, relations
 from rest_framework import fields
 
-from .models import Profile, Ticket, Action, Attachment, Comment, Responder
+from .models import(
+    Profile, Ticket, Action, Attachment, Comment, Responder, TICKET_STATUS)
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -148,6 +149,49 @@ class TicketSerializer(serializers.ModelSerializer):
             'company_name',
             'country'
         )
+
+    def get_request_filters(self):
+        """Returns the request filters based on the ticket profiles."""
+        view = self.context.get('view') if self.context else None
+        request = self.context.get('request') if self.context else None
+
+        filters = {}
+        filter_params = {}
+
+        if view and request:
+            filter_params = view.extract_filter_params(request)
+
+        for filter_param in ('requester', 'responders'):
+            profile_id = filter_params.get(filter_param) or None
+
+            profiles = Profile.objects.filter(
+                id=profile_id).values('first_name', 'last_name')
+
+            if profiles:
+                filters[filter_param] = profiles[0]
+
+        return filters
+
+    def get_ticket_totals(self):
+        """Returns the ticket totals based on the status."""
+        total = {}
+
+        for status in TICKET_STATUS:
+            status = status[0]
+            total[status] = Ticket.objects.filter(
+                status=status).count()
+
+        return total
+
+    def get_root_meta(self, obj, many):
+        """Adds extra root meta details."""
+        if many:
+            return {
+                'total': self.get_ticket_totals(),
+                'filters': self.get_request_filters()
+            }
+        else:
+            return {'total': self.get_ticket_totals()}
 
 
 class ActionRelatedField(relations.PolymorphicResourceRelatedField):
