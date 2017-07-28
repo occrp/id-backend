@@ -40,8 +40,9 @@ class Command(BaseCommand):
             for user in (list(ticket.users.all()) + [ticket.requester]):
                 user_digests[user.id] = user_digests.get(user.id) or {
                     'user': user,
-                    'digests': digest
+                    'digests': []
                 }
+
                 user_digests[user.id]['digests'] += digest
 
             ticket.sent_notifications_at = datetime.utcnow()
