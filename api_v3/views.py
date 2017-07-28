@@ -167,6 +167,11 @@ class ProfilesEndpoint(
 class ActivitiesEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
     queryset = Action.objects.all()
     serializer_class = ActionSerializer
+    filter_fields = {
+        'timestamp': ['range'],
+        'target_object_id': ['exact'],
+        'actor_object_id': ['exact']
+    }
 
     def get_queryset(self):
         queryset = super(ActivitiesEndpoint, self).get_queryset()
