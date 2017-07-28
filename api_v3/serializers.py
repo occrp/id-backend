@@ -116,8 +116,7 @@ class TicketSerializer(serializers.ModelSerializer):
         'users': ProfileSerializer,
         'requester': ProfileSerializer,
         'responders': ResponderSerializer,
-        'attachments': AttachmentSerializer,
-        'comments': CommentSerializer
+        'attachments': AttachmentSerializer
     }
 
     class Meta:
@@ -147,7 +146,8 @@ class TicketSerializer(serializers.ModelSerializer):
             'business_activities',
             'initial_information',
             'company_name',
-            'country'
+            'country',
+            'attachments'
         )
 
     def get_request_filters(self):
