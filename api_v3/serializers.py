@@ -164,8 +164,8 @@ class TicketSerializer(serializers.ModelSerializer):
         for filter_param in ('requester', 'responders'):
             profile_id = filter_params.get(filter_param) or None
 
-            profiles = Profile.objects.filter(
-                id=profile_id).values('first_name', 'last_name')
+            profiles = Profile.objects.filter(id=profile_id).values(
+                'first_name', 'last_name', 'email')
 
             if profiles:
                 filters[filter_param] = profiles[0]
