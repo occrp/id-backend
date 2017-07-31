@@ -138,6 +138,7 @@ class ProfilesEndpoint(
     ).all()
 
     serializer_class = ProfileSerializer
+    filter_fields = ('is_superuser', 'is_staff')
 
     def perform_update(self, serializer):
         """Allow users to update only own profile."""
