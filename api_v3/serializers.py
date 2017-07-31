@@ -49,7 +49,7 @@ class ResponderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Responder
         fields = ('ticket', 'user')
-        resource_name = 'Responder'
+        resource_name = 'responders'
 
 
 class AttachmentSerializer(serializers.ModelSerializer):
@@ -237,7 +237,7 @@ class ActionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Action
-        resource_name = 'Activity'
+        resource_name = 'activities'
         fields = (
             'user',
             'verb',
