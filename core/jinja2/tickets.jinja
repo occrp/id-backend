@@ -1,4 +1,4 @@
-{% extends "layout/default.jinja" %}
+{% extends "layout/spa.jinja" %}
 
 /* Add extra assets into HTML head */
 {% block head_extra %}
@@ -9,9 +9,6 @@
 {% block title %}
   {% trans -%}Dig for the facts{%- endtrans %}
 {% endblock %}
-
-/* Hide header title */
-{% block header %}{% endblock %}
 
 /* Load the Ember.js application */
 {% block content %}
