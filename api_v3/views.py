@@ -57,6 +57,7 @@ class TicketsEndpoint(
         'created_at': ['range'],
         'deadline_at': ['range'],
         'status': ['in'],
+        'kind': ['exact'],
         'requester': ['exact'],
         'responders': ['exact']
     }
