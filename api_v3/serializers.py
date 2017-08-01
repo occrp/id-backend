@@ -121,7 +121,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ticket
-        read_only_fields = ('requester', 'responders', 'users')
+        read_only_fields = ('requester', 'responders', 'users', 'attachments')
         fields = (
             'id',
             'responders',
