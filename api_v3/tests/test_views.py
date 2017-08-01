@@ -248,6 +248,17 @@ class ProfilesEndpointTestCase(ApiTestCase):
         self.assertIn(self.users[1].email, response.content)
         self.assertNotIn(self.users[0].email, response.content)
 
+    def test_list_filter_authenticated_by_responders(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(
+            reverse('profile-list'), {
+                'filter[responders]': 'none'
+            }
+        )
+
+        self.assertEqual(response.status_code, 200)
+
     def test_update_authenticated_not_owned_profile(self):
         self.users[1].is_staff = True
         self.users[1].save()
