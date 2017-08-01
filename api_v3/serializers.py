@@ -162,7 +162,8 @@ class TicketSerializer(serializers.ModelSerializer):
             filter_params = view.extract_filter_params(request)
 
         for filter_param in ('requester', 'responders'):
-            profile_id = filter_params.get(filter_param) or None
+            profile_id = filter_params.get(filter_param) or ''
+            profile_id = int(profile_id) if profile_id.isdigit() else None
 
             profiles = Profile.objects.filter(id=profile_id).values(
                 'first_name', 'last_name', 'email')
