@@ -90,10 +90,16 @@ class TicketsEndpoint(
         return ticket
 
     def perform_update(self, serializer):
-        """Allow only super users and ticket authors to update the ticket."""
+        """Allow only super users and ticket authors to update the ticket.
+
+        There's an undocumented attribute ``reopen_reason``. Passing this
+        attribute will create and attach a comment with it's value to the
+        relevant activity.
+        """
         if not self.request.user.is_superuser:
             raise exceptions.NotFound()
 
+        comment = None
         status = serializer.validated_data.get('status')
 
         if serializer.instance.status != status:
@@ -103,8 +109,15 @@ class TicketsEndpoint(
 
         ticket = serializer.save()
 
+        if serializer.initial_data.get('reopen_reason'):
+            comment = Comment.objects.create(
+                ticket=ticket,
+                user=self.request.user,
+                body=serializer.initial_data.get('reopen_reason')
+            )
+
         return Action.objects.create(
-            actor=self.request.user, target=ticket, verb=verb)
+            actor=self.request.user, target=ticket, verb=verb, action=comment)
 
     def email_notify(self, ticket):
         """Sends an email to editors about the new ticket."""
