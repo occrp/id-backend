@@ -182,7 +182,7 @@ class TicketsEndpointTestCase(ApiTestCase):
                 'reopen_reason': the_reason
             })
 
-        response = self.client.put(
+        response = self.client.patch(
             reverse('ticket-detail', args=[ticket.id]),
             data=json.dumps(new_data),
             content_type=self.JSON_API_CONTENT_TYPE
