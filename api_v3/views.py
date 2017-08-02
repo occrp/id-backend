@@ -240,9 +240,14 @@ class AttachmentsEndpoint(
         else:
             attachment = serializer.save(user=self.request.user)
 
-            return Action.objects.create(
-                actor=self.request.user, target=ticket, action=attachment,
-                verb=self.action_name())
+            Action.objects.create(
+                action=attachment,
+                actor=self.request.user,
+                target=attachment.ticket,
+                verb=self.action_name()
+            )
+
+            return attachment
 
 
 class CommentsEndpoint(
@@ -268,7 +273,7 @@ class CommentsEndpoint(
         return Comment.filter_by_user(self.request.user, queryset)
 
     def perform_create(self, serializer):
-        """Make sure every new attachment is linked to current user."""
+        """Make sure every new comment is linked to current user."""
         ticket = Ticket.filter_by_user(self.request.user).filter(
             id=getattr(serializer.validated_data['ticket'], 'id', None)
         ).first()
@@ -279,9 +284,13 @@ class CommentsEndpoint(
             )
         else:
             comment = serializer.save(user=self.request.user)
+
             Action.objects.create(
-                actor=self.request.user, target=ticket, action=comment,
-                verb=self.action_name())
+                action=comment,
+                target=comment.ticket,
+                actor=self.request.user,
+                verb=self.action_name()
+            )
 
             self.email_notify(comment)
 
