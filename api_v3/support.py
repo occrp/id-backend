@@ -119,7 +119,7 @@ class JSONApiEndpoint(object):
         """Simple helper to generate the current action name."""
         template = '{}:{}'
         resource = self.queryset.model.__name__.lower()
-        return template.format(resource, self.action)
+        return template.format(resource, self.action).replace('partial_', '')
 
     def handle_exception(self, exc):
         if isinstance(exc, rest_framework.exceptions.ValidationError):
