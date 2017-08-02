@@ -454,7 +454,10 @@ class AttachmentsEndpointTestCase(ApiTestCase):
     def test_create_authenticated(self):
         self.client.force_authenticate(self.users[0])
 
+        ticket = self.tickets[0]
         attachments_count = Attachment.objects.count()
+        actions_count = Action.objects.filter(
+            target_object_id=ticket.id).count()
 
         with io.BytesIO('dummy file') as fu:
             new_data = {
@@ -472,6 +475,13 @@ class AttachmentsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Attachment.objects.count(), attachments_count + 1)
+        self.assertEqual(
+            Action.objects.filter(
+                target_object_id=ticket.id,
+                verb='attachment:create'
+            ).count(),
+            actions_count + 1
+        )
 
     def test_create_authenticated_without_access(self):
         self.client.force_authenticate(self.users[1])
@@ -560,7 +570,10 @@ class CommentsEndpointTestCase(ApiTestCase):
     def test_create_authenticated(self):
         self.client.force_authenticate(self.users[0])
 
+        ticket = self.comments[0].ticket
         comments_count = Comment.objects.count()
+        actions_count = Action.objects.filter(
+            target_object_id=ticket.id).count()
 
         new_data = self.as_jsonapi_payload(
             CommentSerializer, self.comments[0], {'body': 'new comment'})
@@ -573,6 +586,13 @@ class CommentsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Comment.objects.count(), comments_count + 1)
+        self.assertEqual(
+            Action.objects.filter(
+                target_object_id=ticket.id,
+                verb='comment:create'
+            ).count(),
+            actions_count + 1
+        )
 
     def test_create_authenticated_without_access(self):
         self.client.force_authenticate(self.users[1])
