@@ -110,6 +110,7 @@ class TicketsEndpoint(
         ticket = serializer.save()
 
         if serializer.initial_data.get('reopen_reason'):
+            verb = '{}:reopen'.format(self.action_name())
             comment = Comment.objects.create(
                 ticket=ticket,
                 user=self.request.user,

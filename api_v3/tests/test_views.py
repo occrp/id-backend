@@ -197,7 +197,7 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.assertEqual(ticket.status, 'in-progress')
         self.assertEqual(ticket.comments.count(), 1)
         self.assertEqual(comment.body, the_reason)
-        self.assertEqual(action.verb, 'ticket:update:status_in-progress')
+        self.assertEqual(action.verb, 'ticket:update:reopen')
         self.assertEqual(action.action, comment)
 
     def test_create_authenticated(self):
