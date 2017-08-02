@@ -119,9 +119,17 @@ class TicketSerializer(serializers.ModelSerializer):
         'attachments': AttachmentSerializer
     }
 
+    reopen_reason = serializers.SerializerMethodField()
+
     class Meta:
         model = Ticket
-        read_only_fields = ('requester', 'responders', 'users', 'attachments')
+        read_only_fields = (
+            'requester',
+            'responders',
+            'users',
+            'attachments',
+            'reopen_reason'
+        )
         fields = (
             'id',
             'responders',
@@ -147,8 +155,14 @@ class TicketSerializer(serializers.ModelSerializer):
             'initial_information',
             'company_name',
             'country',
-            'attachments'
+            'attachments',
+
+            'reopen_reason'
         )
+
+    def get_reopen_reason(self, obj):
+        """Just to make the attribute present."""
+        return None
 
     def get_request_filters(self):
         """Returns the request filters based on the ticket profiles."""
