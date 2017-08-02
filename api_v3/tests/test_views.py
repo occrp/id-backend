@@ -168,6 +168,38 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('new-background', response.content)
 
+    def test_update_authenticated_superuser_reopen_reason(self):
+        ticket = self.tickets[0]
+        user = self.users[0]
+        user.is_superuser = True
+        self.client.force_authenticate(user)
+
+        the_reason = 'The reason...'
+
+        new_data = self.as_jsonapi_payload(
+            TicketSerializer, ticket, {
+                'status': 'in-progress',
+                'reopen_reason': the_reason
+            })
+
+        response = self.client.put(
+            reverse('ticket-detail', args=[ticket.id]),
+            data=json.dumps(new_data),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        ticket = Ticket.objects.get(id=ticket.id)
+        comment = ticket.comments.first()
+        action = Action.objects.filter(target_object_id=str(ticket.id)).first()
+
+        self.assertEqual(ticket.status, 'in-progress')
+        self.assertEqual(ticket.comments.count(), 1)
+        self.assertEqual(comment.body, the_reason)
+        self.assertEqual(action.verb, 'ticket:update:status_in-progress')
+        self.assertEqual(action.action, comment)
+
     def test_create_authenticated(self):
         ticket = self.tickets[0]
         tickets_count = Ticket.objects.count()
