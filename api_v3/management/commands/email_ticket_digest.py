@@ -16,7 +16,8 @@ class Command(BaseCommand):
     SUBJECT = 'Daily digest for your ID tickets'
     # Email item template. Example:
     #   (01.12.1987 22:01): John updated the status to ticket ID: 99
-    ITEM_TEMPLATE = '({date}): {name} {action} {thing} to ticket ID: {ticket}'
+    ITEM_TEMPLATE = (
+        '({date}): {name} {action} {thing} {prep} ticket ID: {ticket}')
 
     def handle(self, *args, **options):
         """Runs the digest for tickets."""
@@ -91,15 +92,20 @@ class Command(BaseCommand):
             'name': action.actor.display_name,
             'ticket': action.target.id,
             'thing': verb[0],
+            'prep': 'to',
             'date': action.timestamp.strftime('%x %X'),
             'action': 'added a'
         }
 
         # If it's a ticket update
-        if len(verb) == 3:
+        if len(verb) == 3 and '_' in verb[2]:
             attr_name, attr_val = verb[2].split('_')
             data['action'] = 'updated'
             data['thing'] = '{} to {}'.format(attr_name, attr_val)
+        elif len(verb) == 3:
+            data['action'] = 'did'
+            data['thing'] = 'reopen'
+            data['prep'] = 'the'
         # If a new attachment was added
         elif data['thing'] == 'attachment':
             data['action'] = 'added an'
