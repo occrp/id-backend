@@ -27,7 +27,4 @@ router.register(r'ops', OpsEndpoint, base_name='ops')
 
 urlpatterns = [
     urls.url(r'^', urls.include(router.urls)),
-] + urls.static.static(
-    'attachments/data/',
-    document_root=os.path.abspath(settings.DOCUMENT_PATH)
-)
+]

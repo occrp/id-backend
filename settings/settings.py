@@ -232,7 +232,8 @@ DATABASES = {
 }
 
 # Location for uploaded ticket attachments.
-DOCUMENT_PATH = os.environ.get('ID_DOCUMENT_PATH', '/data')
+MEDIA_ROOT = os.path.abspath(os.environ.get('ID_DOCUMENT_PATH', '/data'))
+MEDIA_URL = '/media/'
 
 # 500mb upload limit:
 MAX_UPLOAD_SIZE = 1024 * 1024 * 500
