@@ -59,7 +59,7 @@ class TicketsEndpoint(
         'status': ['in'],
         'kind': ['exact'],
         'requester': ['exact'],
-        'responders__user': ['exact']
+        'responders__user': ['exact', 'isnull']
     }
 
     EMAIL_SUBJECT = 'A new ticket was requested, ID: {}'
