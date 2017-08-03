@@ -126,6 +126,17 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('included', response.content)
 
+    def test_list_filter_authenticated_by_responders(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(
+            reverse('ticket-list'), {
+                'filter[users]': 'none'
+            }
+        )
+
+        self.assertEqual(response.status_code, 200)
+
     def test_get_authenticated(self):
         self.client.force_authenticate(self.users[0])
 
@@ -279,17 +290,6 @@ class ProfilesEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(self.users[1].email, response.content)
         self.assertNotIn(self.users[0].email, response.content)
-
-    def test_list_filter_authenticated_by_responders(self):
-        self.client.force_authenticate(self.users[0])
-
-        response = self.client.get(
-            reverse('profile-list'), {
-                'filter[responders]': 'none'
-            }
-        )
-
-        self.assertEqual(response.status_code, 200)
 
     def test_update_authenticated_not_owned_profile(self):
         self.users[1].is_staff = True
