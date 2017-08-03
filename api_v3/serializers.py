@@ -88,7 +88,7 @@ class AttachmentSerializer(serializers.ModelSerializer):
 
     def get_mime_type(self, obj):
         if obj.upload:
-            return magic.from_file(obj.upload.name, mime=True)
+            return magic.from_file(obj.upload.path, mime=True)
 
 
 class CommentSerializer(serializers.ModelSerializer):
