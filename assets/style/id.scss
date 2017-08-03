@@ -12,6 +12,9 @@ $font-family-sans-serif: 'Open Sans', sans-serif !default;
 $font-family-serif: 'Georgia', serif !default;
 $input-border-focus: $brand-primary;
 
+// Mods for SPA. #yolo
+$input-border: hsl(204, 15%, 80%);
+$input-border-focus: #00BCD4;
 
 @import "../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 
