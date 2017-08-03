@@ -51,7 +51,10 @@ urlpatterns = [
     # API V3
     url(r'^api/v3/', include('api_v3.urls')),
 
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + (
+    static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) +
+    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)
 
 
 handler403 = 'core.errors.redirect_403'

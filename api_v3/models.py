@@ -96,8 +96,7 @@ class Attachment(models.Model):
         Ticket, blank=False, related_name='attachments', db_index=True)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, blank=False, db_index=True)
-    upload = models.FileField(
-        upload_to='{}/attachments/%Y/%m/%d'.format(settings.DOCUMENT_PATH))
+    upload = models.FileField(upload_to='attachments/%Y/%m/%d')
     created_at = models.DateTimeField(auto_now_add=True)
 
     @classmethod
