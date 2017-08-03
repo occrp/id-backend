@@ -171,11 +171,15 @@ class TicketSerializer(serializers.ModelSerializer):
 
         filters = {}
         filter_params = {}
+        filter_name_map = {
+            'requester': 'requester',
+            'responders__user': 'responder'
+        }
 
         if view and request:
             filter_params = view.extract_filter_params(request)
 
-        for filter_param in ('requester', 'responders'):
+        for filter_param, meta_name in filter_name_map.items():
             profile_id = filter_params.get(filter_param) or ''
             profile_id = int(profile_id) if profile_id.isdigit() else None
 
@@ -183,7 +187,7 @@ class TicketSerializer(serializers.ModelSerializer):
                 'first_name', 'last_name', 'email')
 
             if profiles:
-                filters[filter_param] = profiles[0]
+                filters[meta_name] = profiles[0]
 
         return filters
 
