@@ -2,7 +2,7 @@
 
 /* Add extra assets into HTML head */
 {% block head_extra %}
-  <link rel="stylesheet" href="/static/id2/dist/assets/id2-frontend.css?{{current_ts}}">
+  <link rel="stylesheet" href="/static/frontend/dist/assets/id.css?{{current_ts}}">
 {% endblock %}
 
 /* Set page title */
@@ -14,6 +14,6 @@
 {% block content %}
   <div id="ember-app"></div>
 
-  <script src="/static/id2/dist/assets/vendor.js?{{current_ts}}"></script>
-  <script src="/static/id2/dist/assets/id2-frontend.js?{{current_ts}}"></script>
+  <script src="/static/frontend/dist/assets/vendor.js?{{current_ts}}"></script>
+  <script src="/static/frontend/dist/assets/id.js?{{current_ts}}"></script>
 {% endblock %}
