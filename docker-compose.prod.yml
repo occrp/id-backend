@@ -3,11 +3,9 @@
 version: "2"
 
 networks:
-  # frontend network -- serverconfig's nginx/nginxbackup
   serverconfig_frontend:
         external:
             name: serverconfig_frontend
-  # utility network -- database hosts etc
   id2internal:
     driver: bridge
 
@@ -30,8 +28,6 @@ services:
       - serverconfig_frontend
       - id2internal
 
-  # postgres
-  # TODO FIXME before we go to production with this!
   postgres:
     image: postgres:9.4
     volumes:
