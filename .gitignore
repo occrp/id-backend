@@ -4,6 +4,7 @@ venv/
 build/
 dist/
 data/
+.build/
 static/.webassets-cache/
 static/bower_components/
 static_out/
