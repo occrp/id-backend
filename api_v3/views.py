@@ -357,10 +357,15 @@ class RespondersEndpoint(
             )
 
         responder = serializer.save()
+        # Set the next-in-workflow ticket status
+        responder.ticket.status = Ticket.STATUSES[1][0]
+        responder.ticket.save()
 
-        return Action.objects.create(
+        Action.objects.create(
             actor=self.request.user, target=responder.ticket,
             action=responder.user, verb=self.action_name())
+
+        return responder
 
     def perform_destroy(self, instance):
         """Make sure only super user or user himself can remove responders."""
