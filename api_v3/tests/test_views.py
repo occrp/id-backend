@@ -661,6 +661,10 @@ class RespondersEndpointTestCase(ApiTestCase):
     def test_create_superuser(self):
         self.client.force_authenticate(self.users[2])
 
+        # Set to initial ticket status
+        self.tickets[0].status = Ticket.STATUSES[0][0]
+        self.tickets[0].save()
+
         responders_count = Responder.objects.count()
 
         new_data = self.as_jsonapi_payload(
@@ -676,6 +680,10 @@ class RespondersEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Responder.objects.count(), responders_count + 1)
+        self.assertEqual(
+            Ticket.objects.get(id=self.tickets[0].id).status,
+            Ticket.STATUSES[1][0]
+        )
 
     def test_delete_non_superuser(self):
         self.client.force_authenticate(self.users[0])

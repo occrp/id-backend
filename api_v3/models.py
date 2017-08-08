@@ -35,6 +35,8 @@ class Responder(models.Model):
 class Ticket(models.Model):
     """Ticket model."""
 
+    STATUSES = TICKET_STATUS
+
     users = models.ManyToManyField(
         settings.AUTH_USER_MODEL, through=Responder, db_index=True)
     requester = models.ForeignKey(
