@@ -82,12 +82,12 @@ class AttachmentSerializer(serializers.ModelSerializer):
             return os.path.basename(obj.upload.name)
 
     def get_file_size(self, obj):
-        if obj.upload:
+        if obj.upload and os.path.exists(obj.upload.path):
             return obj.upload.size
         return 0
 
     def get_mime_type(self, obj):
-        if obj.upload:
+        if obj.upload and os.path.exists(obj.upload.path):
             return magic.from_file(obj.upload.path, mime=True)
 
 
