@@ -12,6 +12,7 @@ class Responder(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, db_index=True)
     ticket = models.ForeignKey(
         'Ticket', related_name='responders', db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('user', 'ticket')
@@ -98,7 +99,7 @@ class Attachment(models.Model):
         Ticket, blank=False, related_name='attachments', db_index=True)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, blank=False, db_index=True)
-    upload = models.FileField(upload_to='attachments/%Y/%m/%d')
+    upload = models.FileField(upload_to='attachments/%Y/%m/%d', max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
     @classmethod
