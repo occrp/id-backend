@@ -17,7 +17,7 @@
   </li>
   {% if user.is_authenticated() %}
     <li class="{% if url('tickets_home') in request.path %}active{% endif %}">
-      <a href="{{ url('tickets_home') }}">
+      <a id="nav-id-spa" href="{{ url('tickets_home') }}">
         <i class="fa fa-comments-o"></i>
         {% trans %}Research Requests{% endtrans %}
       </a>

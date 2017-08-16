@@ -29,5 +29,12 @@
   {% assets "script" %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
   {% endassets %}
+  <script type="text/javascript">
+    var navLink = document.getElementById('nav-id-spa');
+    navLink.addEventListener('click', function (e) {
+      e.preventDefault();
+      IdFrontend.__container__.lookup('router:main').transitionTo('index');
+    });
+  </script>
 </body>
 </html>
