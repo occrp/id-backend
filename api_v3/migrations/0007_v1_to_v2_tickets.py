@@ -252,5 +252,50 @@ class Migration(migrations.Migration):
             name='upload',
             field=models.CharField(max_length=255)
         ),
+        migrations.AlterField(
+            model_name='ticket',
+            name='whysensitive',
+            field=models.CharField(max_length=150, null=True, blank=True)
+        ),
+        migrations.AlterField(
+            model_name='ticket',
+            name='first_name',
+            field=models.CharField(max_length=512, null=True, blank=True)
+        ),
+        migrations.AlterField(
+            model_name='ticket',
+            name='last_name',
+            field=models.CharField(max_length=512, null=True, blank=True)
+        ),
+        migrations.AlterField(
+            model_name='ticket',
+            name='connections',
+            field=models.TextField(max_length=1000, null=True, blank=True)
+        ),
+        migrations.AlterField(
+            model_name='ticket',
+            name='sources',
+            field=models.TextField(max_length=1000, null=True, blank=True)
+        ),
+        migrations.AlterField(
+            model_name='ticket',
+            name='business_activities',
+            field=models.TextField(max_length=1000, null=True, blank=True)
+        ),
+        migrations.AlterField(
+            model_name='ticket',
+            name='initial_information',
+            field=models.TextField(max_length=1000, null=True, blank=True)
+        ),
+        migrations.AlterField(
+            model_name='ticket',
+            name='company_name',
+            field=models.CharField(max_length=512, null=True, blank=True)
+        ),
+        migrations.AlterField(
+            model_name='ticket',
+            name='country',
+            field=models.CharField(max_length=100, null=True, blank=True)
+        ),
         migrations.RunSQL(SQL)
     ]
