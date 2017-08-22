@@ -93,11 +93,13 @@ class TicketsEndpoint(
     def perform_update(self, serializer):
         """Allow only super users and ticket authors to update the ticket.
 
-        There's an undocumented attribute ``reopen_reason``. Passing this
-        attribute will create and attach a comment with it's value to the
-        relevant activity.
+        There're undocumented attributes: ``reopen_reason`` and
+        ``pending_reason``. Passing these attributes will create and attach a
+        comment with it's value to the relevant activity.
         """
-        if not self.request.user.is_superuser:
+        if (not self.request.user.is_superuser) and (
+            self.request.user not in serializer.instance.users.all()
+        ):
             raise exceptions.NotFound()
 
         comment = None

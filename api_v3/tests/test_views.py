@@ -104,6 +104,11 @@ class TicketsEndpointTestCase(ApiTestCase):
             Ticket.objects.create(background='test2', requester=self.users[1])
         ]
 
+        self.responders = [
+            Responder.objects.create(
+                ticket=self.tickets[0], user=self.users[1])
+        ]
+
     def test_list_anonymous(self):
         response = self.client.get(reverse('ticket-list'))
 
@@ -211,10 +216,9 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.assertEqual(action.verb, 'ticket:update:reopen')
         self.assertEqual(action.action, comment)
 
-    def test_update_authenticated_superuser_pending_reason(self):
+    def test_update_authenticated_responder_pending_reason(self):
         ticket = self.tickets[0]
-        user = self.users[0]
-        user.is_superuser = True
+        user = self.users[1]
         self.client.force_authenticate(user)
 
         the_reason = 'The reason...'
