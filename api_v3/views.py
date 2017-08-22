@@ -109,13 +109,21 @@ class TicketsEndpoint(
             verb = self.action_name()
 
         ticket = serializer.save()
+        init_data = serializer.initial_data
 
-        if serializer.initial_data.get('reopen_reason'):
+        if init_data.get('reopen_reason'):
             verb = '{}:reopen'.format(self.action_name())
+        elif init_data.get('pending_reason'):
+            verb = '{}:pending'.format(self.action_name())
+
+        if init_data.get('reopen_reason') or init_data.get('pending_reason'):
             comment = Comment.objects.create(
                 ticket=ticket,
                 user=self.request.user,
-                body=serializer.initial_data.get('reopen_reason')
+                body=(
+                    init_data.get('reopen_reason') or
+                    init_data.get('pending_reason')
+                )
             )
 
         return Action.objects.create(

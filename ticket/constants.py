@@ -86,6 +86,7 @@ TICKET_UPDATE_TYPES = (
 TICKET_STATUS = (
     ('new', _('New')),
     ('in-progress', _('In Progress')),
+    ('pending', _('Pending')),
     ('closed', _('Closed')),
     ('cancelled', _('Cancelled'))
 )
