@@ -3,20 +3,9 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-from django.contrib.contenttypes.models import ContentType
-
-from api_v3.models import Profile, Comment, Ticket, Responder, Attachment
 
 
 class Migration(migrations.Migration):
-    CONTENT_TYPES = {
-        'profile_ct_id': ContentType.objects.get_for_model(Profile).id,
-        'comment_ct_id': ContentType.objects.get_for_model(Comment).id,
-        'ticket_ct_id': ContentType.objects.get_for_model(Ticket).id,
-        'responder_ct_id': ContentType.objects.get_for_model(Responder).id,
-        'attachment_ct_id': ContentType.objects.get_for_model(Attachment).id
-    }
-
     SQL = """
     --- Migrating v1 tickets.
 
@@ -145,9 +134,15 @@ class Migration(migrations.Migration):
     )
     select
         author_id,
-        {profile_ct_id},
+        (select id
+            from django_content_type
+            where app_label='accounts' and model='profile'
+         ),
         ticket_id,
-        {ticket_ct_id},
+        (select id
+            from django_content_type
+            where app_label='api_v3' and model='ticket'
+         ),
         case
             when (update_type='close') then 'ticket:update:status_closed'
             when (update_type='cancel') then 'ticket:update:status_cancelled'
@@ -179,11 +174,20 @@ class Migration(migrations.Migration):
     )
     select
         user_id,
-        {profile_ct_id},
+        (select id
+            from django_content_type
+            where app_label='accounts' and model='profile'
+         ),
         ticket_id,
-        {ticket_ct_id},
+        (select id
+            from django_content_type
+            where app_label='api_v3' and model='ticket'
+         ),
         id,
-        {comment_ct_id},
+        (select id
+            from django_content_type
+            where app_label='api_v3' and model='comment'
+         ),
         'comment:create',
         't',
         created_at
@@ -221,11 +225,20 @@ class Migration(migrations.Migration):
     )
     select
         user_id,
-        {profile_ct_id},
+        (select id
+            from django_content_type
+            where app_label='accounts' and model='profile'
+         ),
         ticket_id,
-        {ticket_ct_id},
+        (select id
+            from django_content_type
+            where app_label='api_v3' and model='ticket'
+         ),
         id,
-        {attachment_ct_id},
+        (select id
+            from django_content_type
+            where app_label='api_v3' and model='attachment'
+         ),
         'attachment:create',
         't',
         created_at
@@ -239,10 +252,10 @@ class Migration(migrations.Migration):
             (select max(id)+1 from api_v3_ticket),
             false
         );
-
-    """.format(**CONTENT_TYPES)
+    """
 
     dependencies = [
+        ('ticket', '0001_clean'),
         ('api_v3', '0006_add_created_at_to_new_responder'),
     ]
 
