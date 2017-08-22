@@ -3,15 +3,18 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
+from django.contrib.contenttypes.models import ContentType
+
+from api_v3.models import Profile, Comment, Ticket, Responder, Attachment
 
 
 class Migration(migrations.Migration):
     CONTENT_TYPES = {
-        'profile_ct_id': 52,
-        'comment_ct_id': 55,
-        'ticket_ct_id': 56,
-        'responder_ct_id': 57,
-        'attachment_ct_id': 58
+        'profile_ct_id': ContentType.objects.get_for_model(Profile).id,
+        'comment_ct_id': ContentType.objects.get_for_model(Comment).id,
+        'ticket_ct_id': ContentType.objects.get_for_model(Ticket).id,
+        'responder_ct_id': ContentType.objects.get_for_model(Responder).id,
+        'attachment_ct_id': ContentType.objects.get_for_model(Attachment).id
     }
 
     SQL = """
