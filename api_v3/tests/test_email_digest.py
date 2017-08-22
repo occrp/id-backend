@@ -50,6 +50,11 @@ class TicketDigestTestCase(TestCase):
                 actor=self.users[1]
             ),
             Action.objects.create(
+                verb='ticket:update:pending',
+                target=self.tickets[1],
+                actor=self.users[1]
+            ),
+            Action.objects.create(
                 verb='responder:create',
                 target=self.tickets[0],
                 actor=self.users[0],
@@ -83,10 +88,15 @@ class TicketDigestTestCase(TestCase):
             'email1 added email2 as a responder to ticket ID', str(digest1))
 
         self.assertEqual(email[self.users[1].id]['user'], self.users[1])
-        self.assertEqual(len(digest2), 4)
+        self.assertEqual(len(digest2), 5)
         self.assertIn('email1 added a comment to ticket ID', str(digest1))
         self.assertIn(
             'email1 added email2 as a responder to ticket ID', str(digest2))
         self.assertIn(
             'email2 updated status to in-progress to ticket ID', str(digest2))
         self.assertIn('email2 did reopen the ticket ID', str(digest2))
+        self.assertIn(
+            'email2 marked pending (waiting for third-party actions) '
+            'the ticket ID',
+            str(digest2)
+        )

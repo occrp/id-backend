@@ -120,6 +120,7 @@ class TicketSerializer(serializers.ModelSerializer):
     }
 
     reopen_reason = serializers.SerializerMethodField()
+    pending_reason = serializers.SerializerMethodField()
 
     class Meta:
         model = Ticket
@@ -157,10 +158,15 @@ class TicketSerializer(serializers.ModelSerializer):
             'country',
             'attachments',
 
-            'reopen_reason'
+            'reopen_reason',
+            'pending_reason'
         )
 
     def get_reopen_reason(self, obj):
+        """Just to make the attribute present."""
+        return None
+
+    def get_pending_reason(self, obj):
         """Just to make the attribute present."""
         return None
 

@@ -102,9 +102,13 @@ class Command(BaseCommand):
             attr_name, attr_val = verb[2].split('_')
             data['action'] = 'updated'
             data['thing'] = '{} to {}'.format(attr_name, attr_val)
-        elif len(verb) == 3:
+        elif len(verb) == 3 and 'reopen' in verb:
             data['action'] = 'did'
             data['thing'] = 'reopen'
+            data['prep'] = 'the'
+        elif len(verb) == 3 and 'pending' in verb:
+            data['action'] = 'marked'
+            data['thing'] = 'pending (waiting for third-party actions)'
             data['prep'] = 'the'
         # If a new attachment was added
         elif data['thing'] == 'attachment':
