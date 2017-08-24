@@ -44,6 +44,12 @@ class Pagination(rest_framework_json_api.pagination.PageNumberPagination):
             link = url_unquote(link)
         return link
 
+    def get_paginated_response(self, data):
+        """Remove pagination from meta. Not needed, handled by links."""
+        response = super(Pagination, self).get_paginated_response(data)
+        response.data['meta'].pop('pagination', None)
+        return response
+
 
 class SessionAuthenticationSansCSRF(
         rest_framework.authentication.SessionAuthentication):
