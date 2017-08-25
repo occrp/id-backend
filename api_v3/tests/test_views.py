@@ -1,13 +1,16 @@
 import io
 import json
+import os.path
 from datetime import datetime
 
 from django.conf import settings
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework.test import APIClient
 from rest_framework_json_api.utils import(
     get_resource_type_from_serializer, format_keys)
+
 
 from api_v3.models import(
     Ticket, Profile, Responder, Attachment, Comment, Action)
@@ -61,6 +64,57 @@ class SessionsEndpointTestCase(TestCase):
         self.assertEqual(
             json.loads(response.content),
             ProfileSerializer(self.users[0]).data
+        )
+
+
+class DownloadEndpointTestCase(TestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.users = [
+            Profile.objects.create(
+                email='email1',
+                last_login=datetime.utcnow()
+            ),
+            Profile.objects.create(
+                email='email2',
+                last_login=datetime.utcnow()
+            )
+        ]
+        self.tickets = [
+            Ticket.objects.create(background='test1', requester=self.users[0])
+        ]
+
+        self.attachment = Attachment.objects.create(
+            user=self.users[0],
+            ticket=self.tickets[0],
+            upload=SimpleUploadedFile('test.txt', 'test')
+        )
+
+    def test_retrieve_anonymous(self):
+        response = self.client.get(
+            reverse('download-detail', args=[self.attachment.id]))
+
+        self.assertEqual(response.status_code, 401)
+
+    def test_retrieve_auth_not_ticket_user(self):
+        self.client.force_authenticate(self.users[1])
+
+        response = self.client.get(
+            reverse('download-detail', args=[self.attachment.id]))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_retrieve_auth_ticket_user(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(
+            reverse('download-detail', args=[self.attachment.id]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEquals(
+            response.get('Content-Disposition'),
+            'filename={}'.format(os.path.basename(self.attachment.upload.name))
         )
 
 
@@ -444,10 +498,12 @@ class AttachmentsEndpointTestCase(ApiTestCase):
         self.tickets = [
             Ticket.objects.create(background='test1', requester=self.users[0])
         ]
+
         self.attachments = [
             Attachment.objects.create(
                 user=self.users[0],
                 ticket=self.tickets[0],
+                upload=SimpleUploadedFile('test.txt', 'test')
             )
         ]
 
@@ -465,6 +521,11 @@ class AttachmentsEndpointTestCase(ApiTestCase):
         self.assertEqual(
             json.loads(response.content)['data'][0]['id'],
             str(self.attachments[0].id)
+        )
+
+        self.assertIn(
+            reverse('download-detail', args=[self.attachments[0].id]),
+            response.content
         )
 
     def test_detail_authenticated(self):

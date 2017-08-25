@@ -1,6 +1,7 @@
 import os.path
 
 import magic
+from django.urls import reverse
 from rest_framework_json_api import serializers, relations
 from rest_framework import fields
 
@@ -62,6 +63,7 @@ class AttachmentSerializer(serializers.ModelSerializer):
     file_name = serializers.SerializerMethodField()
     file_size = serializers.SerializerMethodField()
     mime_type = serializers.SerializerMethodField()
+    upload = serializers.SerializerMethodField()
 
     class Meta:
         model = Attachment
@@ -89,6 +91,12 @@ class AttachmentSerializer(serializers.ModelSerializer):
     def get_mime_type(self, obj):
         if obj.upload and os.path.exists(obj.upload.path):
             return magic.from_file(obj.upload.path, mime=True)
+
+    def get_upload(self, obj):
+        if obj.upload:
+            return self.context['request'].build_absolute_uri(
+                reverse('download-detail', args=[obj.id])
+            )
 
 
 class CommentSerializer(serializers.ModelSerializer):

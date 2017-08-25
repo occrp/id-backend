@@ -1,6 +1,9 @@
+import os.path
+
 from django.db.models import Q, F, Func, Value
 from django.core.mail import send_mass_mail
 from django.template.loader import render_to_string
+from django.http import FileResponse
 from rest_framework import(
     response, viewsets, mixins, serializers, exceptions, permissions)
 
@@ -260,6 +263,35 @@ class AttachmentsEndpoint(
             )
 
             return attachment
+
+
+class DownloadEndpoint(viewsets.ViewSet):
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def retrieve(self, request, pk=None):
+        user_ticket_ids = Ticket.filter_by_user(
+            self.request.user).values_list('id', flat=True)
+
+        if self.request.user.is_superuser:
+            attachment = Attachment.objects.get(id=pk)
+        else:
+            attachment = Attachment.objects.filter(
+                id=pk, ticket=user_ticket_ids).first()
+
+        if not attachment:
+            raise exceptions.NotFound()
+
+        try:
+            resp = FileResponse(attachment.upload.file)
+        except IOError:
+            raise exceptions.NotFound()
+
+        resp['Content-Type'] = 'application/octet-stream'
+        resp['Content-Disposition'] = 'filename={}'.format(
+            os.path.basename(attachment.upload.name))
+
+        return resp
 
 
 class CommentsEndpoint(
