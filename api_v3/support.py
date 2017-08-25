@@ -13,6 +13,8 @@ from rest_framework.status import HTTP_422_UNPROCESSABLE_ENTITY
 from querystring_parser import parser as qs_parser
 from django.utils.six.moves.urllib.parse import unquote as url_unquote
 
+from settings.settings import DEBUG
+
 from .models import Profile, Attachment, Comment, Action
 
 
@@ -95,10 +97,10 @@ class JSONApiEndpoint(object):
         rest_framework.parsers.FormParser,
         rest_framework.parsers.MultiPartParser,
     ]
-    renderer_classes = [
+    renderer_classes = set([
         Renderer,
-        rest_framework.renderers.BrowsableAPIRenderer,
-    ]
+        rest_framework.renderers.BrowsableAPIRenderer if DEBUG else Renderer
+    ])
     authentication_classes = [
         rest_framework.authentication.BasicAuthentication,
         SessionAuthenticationSansCSRF
