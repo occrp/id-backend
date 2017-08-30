@@ -4,9 +4,10 @@ services: postgresql
 before_script:
   - psql -c 'create database id_test;' -U postgres
 env:
-  - ID_SECRET_KEY=`openssl rand -hex 24`
-  - ID_DATABASE_URL=postgresql://postgres@localhost/id_test
-  - ID_DOCUMENT_PATH=/tmp/
+  global:
+    - ID_SECRET_KEY=`openssl rand -hex 24`
+    - ID_DATABASE_URL=postgresql://postgres@localhost/id_test
+    - ID_DOCUMENT_PATH=/tmp/
 install:
   - 'pip install -r requirements.txt'
   - 'python manage.py migrate'
