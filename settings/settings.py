@@ -136,8 +136,8 @@ os.environ['SASS_PATH'] = os.path.join(BASE_DIR, "assets/style")
 
 SECRET_KEY = os.environ.get("ID_SECRET_KEY")
 
-if TESTING:
-    SECRET_KEY = os.urandom(8)
+if DEBUG:
+    SECRET_KEY = SECRET_KEY or os.urandom(8)
 
 assert SECRET_KEY, 'You need to specify ID_SECRET_KEY in the env!'
 
