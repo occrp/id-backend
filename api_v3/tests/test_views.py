@@ -82,6 +82,7 @@ class DownloadEndpointTestCase(TestCase):
             )
         ]
         self.tickets = [
+            Ticket.objects.create(background='test1', requester=self.users[0]),
             Ticket.objects.create(background='test1', requester=self.users[0])
         ]
 

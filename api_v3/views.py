@@ -277,7 +277,7 @@ class DownloadEndpoint(viewsets.ViewSet):
             attachment = Attachment.objects.get(id=pk)
         else:
             attachment = Attachment.objects.filter(
-                id=pk, ticket=user_ticket_ids).first()
+                id=pk, ticket__in=user_ticket_ids).first()
 
         if not attachment:
             raise exceptions.NotFound()
