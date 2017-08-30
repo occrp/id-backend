@@ -1,5 +1,7 @@
 # Investigative Dashboard Project
 
+[![Build Status](https://travis-ci.org/occrp/id-backend.svg?branch=master)](https://travis-ci.org/occrp/id-backend)
+
 This is our research desk ticket software.
 
 ## Testing
