@@ -186,7 +186,7 @@ class TicketsEndpointTestCase(ApiTestCase):
     def test_list_anonymous(self):
         response = self.client.get(reverse('ticket-list'))
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 403)
 
     def test_list_authenticated(self):
         self.client.force_authenticate(self.users[0])
@@ -361,7 +361,7 @@ class ProfilesEndpointTestCase(ApiTestCase):
     def test_list_anonymous(self):
         response = self.client.get(reverse('profile-list'))
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 403)
 
     def test_list_authenticated_no_staff_or_superuser(self):
         self.client.force_authenticate(self.users[0])
@@ -473,7 +473,7 @@ class ActivitiesEndpointTestCase(TestCase):
     def test_list_anonymous(self):
         response = self.client.get(reverse('action-list'))
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 403)
 
     def test_list_authenticated_no_tickets(self):
         self.client.force_authenticate(self.users[0])
@@ -530,7 +530,7 @@ class AttachmentsEndpointTestCase(ApiTestCase):
     def test_list_anonymous(self):
         response = self.client.get(reverse('attachment-list'))
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 403)
 
     def test_list_authenticated(self):
         self.client.force_authenticate(self.users[0])
@@ -657,7 +657,7 @@ class CommentsEndpointTestCase(ApiTestCase):
     def test_list_anonymous(self):
         response = self.client.get(reverse('comment-list'))
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 403)
 
     def test_list_authenticated(self):
         self.client.force_authenticate(self.users[0])
@@ -834,7 +834,7 @@ class RespondersEndpointTestCase(ApiTestCase):
     def test_list_anonymous(self):
         response = self.client.get(reverse('responder-list'))
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 403)
 
     def test_list_authenticated(self):
         self.client.force_authenticate(self.users[0])
