@@ -3,6 +3,8 @@
 
 # cf. https://12factor.net/config
 import os
+import sys
+
 import dj_database_url
 from django.conf.global_settings import DATE_INPUT_FORMATS
 
@@ -11,6 +13,7 @@ BASE_DIR = os.path.join(os.path.realpath(os.path.dirname(__file__)), '../')
 ID_VERSION = "2.4.0"
 ID_ENVIRONMENT = os.environ.get('ID_ENVIRONMENT', 'debug')
 DEBUG = ID_ENVIRONMENT == 'debug'
+TESTING = sys.argv[1:2] == ['test']
 ID_SITE_NAME = 'Investigative Dashboard'
 ID_FAVICON_URL = 'https://cdn.occrp.org/common/favicon/large.png'
 ALEPH_URL = 'https://data.occrp.org'
