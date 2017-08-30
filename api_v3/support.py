@@ -9,6 +9,7 @@ import rest_framework_json_api.parsers
 import rest_framework_json_api.renderers
 import rest_framework_json_api.pagination
 import rest_framework_json_api.utils
+from oauth2_provider.ext.rest_framework import OAuth2Authentication
 from rest_framework.status import HTTP_422_UNPROCESSABLE_ENTITY
 from querystring_parser import parser as qs_parser
 from django.utils.six.moves.urllib.parse import unquote as url_unquote
@@ -106,8 +107,8 @@ class JSONApiEndpoint(object):
         renderer_classes.remove(rest_framework.renderers.BrowsableAPIRenderer)
 
     authentication_classes = [
-        rest_framework.authentication.BasicAuthentication,
-        SessionAuthenticationSansCSRF
+        SessionAuthenticationSansCSRF,
+        OAuth2Authentication
     ]
     filter_backends = [
         OrderingFilter,
