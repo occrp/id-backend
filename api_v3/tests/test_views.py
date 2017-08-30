@@ -570,7 +570,13 @@ class AttachmentsEndpointTestCase(ApiTestCase):
                 format='multipart',
             )
 
+        serializer_data = json.loads(response.content)['data']
+
         self.assertEqual(response.status_code, 201)
+        self.assertIn(
+            reverse('download-detail', args=[serializer_data['id']]),
+            serializer_data['attributes']['upload']
+        )
         self.assertEqual(Attachment.objects.count(), attachments_count + 1)
         self.assertEqual(
             Action.objects.filter(

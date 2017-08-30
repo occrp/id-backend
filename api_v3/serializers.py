@@ -53,6 +53,15 @@ class ResponderSerializer(serializers.ModelSerializer):
         resource_name = 'responders'
 
 
+class AttachmentFileField(serializers.FileField):
+
+    def to_representation(self, obj):
+        if obj.instance.upload and self.context.get('request', None):
+            return self.context['request'].build_absolute_uri(
+                reverse('download-detail', args=[obj.instance.id])
+            )
+
+
 class AttachmentSerializer(serializers.ModelSerializer):
 
     included_serializers = {
@@ -63,7 +72,7 @@ class AttachmentSerializer(serializers.ModelSerializer):
     file_name = serializers.SerializerMethodField()
     file_size = serializers.SerializerMethodField()
     mime_type = serializers.SerializerMethodField()
-    upload = serializers.SerializerMethodField()
+    upload = AttachmentFileField()
 
     class Meta:
         model = Attachment
@@ -91,12 +100,6 @@ class AttachmentSerializer(serializers.ModelSerializer):
     def get_mime_type(self, obj):
         if obj.upload and os.path.exists(obj.upload.path):
             return magic.from_file(obj.upload.path, mime=True)
-
-    def get_upload(self, obj):
-        if obj.upload:
-            return self.context['request'].build_absolute_uri(
-                reverse('download-detail', args=[obj.id])
-            )
 
 
 class CommentSerializer(serializers.ModelSerializer):
