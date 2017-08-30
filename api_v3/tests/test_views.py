@@ -79,6 +79,10 @@ class DownloadEndpointTestCase(TestCase):
             Profile.objects.create(
                 email='email2',
                 last_login=datetime.utcnow()
+            ),
+            Profile.objects.create(
+                email='email3',
+                last_login=datetime.utcnow()
             )
         ]
         self.tickets = [
@@ -86,8 +90,11 @@ class DownloadEndpointTestCase(TestCase):
             Ticket.objects.create(background='test1', requester=self.users[0])
         ]
 
+        self.responder = Responder.objects.create(
+            ticket=self.tickets[0], user=self.users[1])
+
         self.attachment = Attachment.objects.create(
-            user=self.users[0],
+            user=self.users[1],
             ticket=self.tickets[0],
             upload=SimpleUploadedFile('test.txt', 'test')
         )
@@ -99,15 +106,27 @@ class DownloadEndpointTestCase(TestCase):
         self.assertEqual(response.status_code, 401)
 
     def test_retrieve_auth_not_ticket_user(self):
-        self.client.force_authenticate(self.users[1])
+        self.client.force_authenticate(self.users[2])
 
         response = self.client.get(
             reverse('download-detail', args=[self.attachment.id]))
 
         self.assertEqual(response.status_code, 404)
 
-    def test_retrieve_auth_ticket_user(self):
+    def test_retrieve_auth_ticket_requester(self):
         self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(
+            reverse('download-detail', args=[self.attachment.id]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEquals(
+            response.get('Content-Disposition'),
+            'filename={}'.format(os.path.basename(self.attachment.upload.name))
+        )
+
+    def test_retrieve_auth_ticket_responder(self):
+        self.client.force_authenticate(self.users[1])
 
         response = self.client.get(
             reverse('download-detail', args=[self.attachment.id]))

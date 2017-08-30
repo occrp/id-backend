@@ -279,15 +279,12 @@ class DownloadEndpoint(viewsets.ViewSet):
             attachment = Attachment.objects.filter(
                 id=pk, ticket__in=user_ticket_ids).first()
 
-        if not attachment:
+        if not attachment or not attachment.upload:
             raise exceptions.NotFound()
 
-        try:
-            resp = FileResponse(attachment.upload.file)
-        except IOError:
-            raise exceptions.NotFound()
-
-        resp['Content-Type'] = 'application/octet-stream'
+        resp = FileResponse(
+            attachment.upload.file, content_type='application/octet-stream')
+        resp['Content-Length'] = os.path.getsize(attachment.upload.path)
         resp['Content-Disposition'] = 'filename={}'.format(
             os.path.basename(attachment.upload.name))
 
