@@ -1,14 +1,13 @@
 language: python
 python: '2.7'
 services: postgresql
-before_script:
-  - psql -c 'create database id_test;' -U postgres
 env:
   global:
     - ID_DATABASE_URL=postgresql://postgres@localhost/id_test
     - ID_DOCUMENT_PATH=/tmp/
 install:
-  - 'pip install -r requirements.txt'
+  - pip install -r requirements.txt
 before_script:
-  - 'python manage.py migrate'
-script: 'python manage.py test api_v3.tests'
+  - psql -c 'create database id_test;' -U postgres
+  - python manage.py migrate
+script: python manage.py test api_v3.tests
