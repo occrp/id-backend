@@ -111,10 +111,8 @@ class Attachment(models.Model):
         Either the ones he created or he has access to through the tickets.
         """
         return (queryset or cls.objects).filter(
-            # Let ticket authors see ticket attachments
-            models.Q(ticket__requester=user) |
-            # Let ticket responders see tickets attachments
-            models.Q(ticket__users=user) |
+            # Let ticket authors and responders see ticket attachments
+            models.Q(ticket__in=Ticket.filter_by_user(user)) |
             # Let attachment authors see own attachments
             models.Q(user=user)
         )
@@ -138,10 +136,8 @@ class Comment(models.Model):
         Either the ones he created or he has access to through the tickets.
         """
         return (queryset or cls.objects).filter(
-            # Let ticket authors
-            models.Q(ticket__requester=user) |
-            # Let ticket responders
-            models.Q(ticket__users=user) |
+            # Let ticket authors and responders see ticket attachments
+            models.Q(ticket__in=Ticket.filter_by_user(user)) |
             # Let attachment authors
             models.Q(user=user)
         )
