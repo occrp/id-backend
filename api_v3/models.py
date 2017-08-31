@@ -91,7 +91,7 @@ class Ticket(models.Model):
             models.Q(requester=user) |
             # Allow ticket responders
             models.Q(users=user)
-        )
+        ).distinct()
 
 
 class Attachment(models.Model):

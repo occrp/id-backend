@@ -170,17 +170,24 @@ class TicketsEndpointTestCase(ApiTestCase):
             Profile.objects.create(
                 email='email2',
                 last_login=datetime.utcnow()
+            ),
+            Profile.objects.create(
+                email='email3',
+                last_login=datetime.utcnow()
             )
         ]
 
         self.tickets = [
             Ticket.objects.create(background='test1', requester=self.users[0]),
-            Ticket.objects.create(background='test2', requester=self.users[1])
+            Ticket.objects.create(background='test2', requester=self.users[0]),
+            Ticket.objects.create(background='test3', requester=self.users[1])
         ]
 
         self.responders = [
             Responder.objects.create(
-                ticket=self.tickets[0], user=self.users[1])
+                ticket=self.tickets[0], user=self.users[1]),
+            Responder.objects.create(
+                ticket=self.tickets[0], user=self.users[2])
         ]
 
     def test_list_anonymous(self):
