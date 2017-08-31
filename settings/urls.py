@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls import include, url
 from django.views.generic import TemplateView
+from django.views.generic.base import RedirectView
 from django.views.i18n import javascript_catalog
 from django.conf.urls.static import static
 
@@ -39,7 +40,9 @@ urlpatterns = [
     url(r'^notifications/seen/(?P<pk>([\d]+|all))/', perm('user', NotificationSeen), name='notification_seen'),
     url(r'^notifications/stream/', perm('user', NotificationStream), name='notification_stream'),
 
-    url(r'^ticket/', include('ticket.urls')),
+    # url(r'^ticket/', include('ticket.urls')),
+    url(r'^ticket/', RedirectView.as_view(
+        url='/tickets/', permanent=True), name='old_ticket_redirect'),
     url(r'^databases/', include('databases.urls')),
 
     # url(r'^i18n/', include('django.conf.urls.i18n')),
