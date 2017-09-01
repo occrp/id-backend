@@ -10,7 +10,7 @@ from django.conf.global_settings import DATE_INPUT_FORMATS
 
 BASE_DIR = os.path.join(os.path.realpath(os.path.dirname(__file__)), '../')
 
-ID_VERSION = "2.4.0"
+ID_VERSION = "2.5.0"
 ID_ENVIRONMENT = os.environ.get('ID_ENVIRONMENT', 'debug')
 DEBUG = ID_ENVIRONMENT == 'debug'
 TESTING = sys.argv[1:2] == ['test']
