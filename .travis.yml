@@ -9,7 +9,7 @@ install:
   - pip install -r requirements.txt
   - npm --quiet --silent install -g bower
   - npm install --quiet --silent --unsafe-perm
-  - cd static && bower --allow-root --quiet --config.interactive=false --force install
+  - pushd static && bower --allow-root --quiet --config.interactive=false --force install && popd
 before_script:
   - psql -c 'create database id_test;' -U postgres
   - python manage.py migrate
