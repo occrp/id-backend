@@ -1,17 +1,20 @@
-from core.tests import UserTestCase
+from django.test import TestCase
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AnonymousUser
 
 
-class ProfileFunctions(UserTestCase):
-    def test_name_fetching(self):
-        self.normal_user.get_full_name()
-        self.normal_user.display_name
-        self.normal_user.get_short_name()
+class ProfileFunctions(TestCase):
 
-    def test_email_user(self):
-        self.normal_user.email_user('test', 'test')
+    def setUp(self):
+        user_model = get_user_model()
 
-    def test_get_notifications(self):
-        self.normal_user.get_notifications()
+        self.anonymous_user = AnonymousUser()
+        self.normal_user = user_model.objects.create_user(
+            'testuser@occrp.org', password='top_secret')
+        self.staff_user = user_model.objects.create_user(
+            'teststaff@occrp.org', password='top_secret', is_staff=True)
+        self.admin_user = user_model.objects.create_user(
+            'testsuperuser@occrp.org', password='top_secret', is_superuser=True)
 
     def test_tickets(self):
         o = self.normal_user.tickets_assigned_open()

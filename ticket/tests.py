@@ -1,13 +1,30 @@
-from core.tests import UserTestCase
+import unittest
+
+from django.test import TestCase
 from core.testclient import TestClient
 # from settings.settings import *
 from django.core.urlresolvers import reverse
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AnonymousUser
 
 from ticket.models import PersonTicket, CompanyTicket, OtherTicket
 from ticket.models import TicketUpdate
 
 
-class TicketsTest(UserTestCase):
+@unittest.skip('Disabled')
+class TicketsTest(TestCase):
+
+    def setUp(self):
+        user_model = get_user_model()
+
+        self.anonymous_user = AnonymousUser()
+        self.normal_user = user_model.objects.create_user(
+            'testuser@occrp.org', password='top_secret')
+        self.staff_user = user_model.objects.create_user(
+            'teststaff@occrp.org', password='top_secret', is_staff=True)
+        self.admin_user = user_model.objects.create_user(
+            'testsuperuser@occrp.org', password='top_secret', is_superuser=True)
+
     def test_create_person_ticket(self):
         client = TestClient()
         client.login_user(self.normal_user)
