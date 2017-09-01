@@ -22,7 +22,23 @@ js_info_dict = {
 
 urlpatterns = [
     url(r'^$', home, name='home'),
+
     url(r'^tickets', tickets_home, name='tickets_home'),
+    # Redirects
+    url(
+        r'^tickets/view/(?P<ticket_id>[0-9]+)',
+        tickets_home,
+        name='tickets_ticket'
+    ),
+    url(
+        r'^ticket/$',
+        RedirectView.as_view(pattern_name='tickets_home', permanent=True)
+    ),
+    url(
+        r'^ticket/manage/(?P<ticket_id>[0-9]+)/details/$',
+        RedirectView.as_view(pattern_name='tickets_ticket', permanent=True)
+    ),
+
     url(r'^about/id2/$', perm('any', TemplateView, template_name="about_id.jinja"), name='about_id'),
     url(r'^about/occrp/$', perm('any', TemplateView, template_name="about_us.jinja"), name='about_us'),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
@@ -32,9 +48,8 @@ urlpatterns = [
     url(r'^statistics/$', perm('admin', Statistics), name='statistics'),
 
     url(r'^accounts/', include('accounts.urls')),
+    # url(r'^ticket/', include('ticket.urls')),
 
-    url(r'^ticket/', RedirectView.as_view(
-        url='/tickets/', permanent=True), name='old_ticket_redirect'),
     url(r'^databases/', include('databases.urls')),
 
     # url(r'^i18n/', include('django.conf.urls.i18n')),
