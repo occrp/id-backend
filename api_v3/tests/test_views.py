@@ -203,6 +203,25 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(self.tickets[0].background, response.content)
 
+        body = json.loads(response.content)
+
+        self.assertEqual(body['meta']['total']['all'], 2)
+
+    def test_list_authenticated_superuser(self):
+        self.users[0].is_superuser = True
+        self.users[0].save()
+
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(reverse('ticket-list'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(self.tickets[0].background, response.content)
+
+        body = json.loads(response.content)
+
+        self.assertEqual(body['meta']['total']['all'], 3)
+
     def test_list_authenticated_with_includes(self):
         self.client.force_authenticate(self.users[0])
 
