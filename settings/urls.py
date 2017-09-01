@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^notifications/seen/(?P<pk>([\d]+|all))/', perm('user', NotificationSeen), name='notification_seen'),
     url(r'^notifications/stream/', perm('user', NotificationStream), name='notification_stream'),
 
-    # url(r'^ticket/', include('ticket.urls')),
+    url(r'^old-ticket/', include('ticket.urls')),
     url(r'^ticket/', RedirectView.as_view(
         url='/tickets/', permanent=True), name='old_ticket_redirect'),
     url(r'^databases/', include('databases.urls')),
