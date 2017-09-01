@@ -7,6 +7,8 @@ env:
     - ID_DOCUMENT_PATH=/tmp/
 install:
   - pip install -r requirements.txt
+  - npm install --unsafe-perm
+  - cd static && bower --allow-root --quiet --config.interactive=false --force install
 before_script:
   - psql -c 'create database id_test;' -U postgres
   - python manage.py migrate
