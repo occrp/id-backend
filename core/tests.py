@@ -20,6 +20,15 @@ class PagesTestCase(TestCase):
             response.content.decode('utf-8', 'escape')
         )
 
+    def test_databases_homepage_anonymous(self):
+        response = self.client.get(reverse('databases:index'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(
+            reverse('tickets_home') + '/new',
+            response.content.decode('utf-8', 'escape')
+        )
+
     def test_tickets_homepage_anonymous(self):
         response = self.client.get(reverse('tickets_home'))
 
