@@ -17,6 +17,7 @@ from api_v3.models import(
 from api_v3.serializers import(
     ProfileSerializer, TicketSerializer,
     CommentSerializer, ResponderSerializer)
+from api_v3.views import CommentsEndpoint, render_to_string, DEFAULT_FROM_EMAIL
 
 
 class ApiTestCase(TestCase):
@@ -667,14 +668,28 @@ class CommentsEndpointTestCase(ApiTestCase):
             Profile.objects.create(
                 email='email2',
                 last_login=datetime.utcnow()
+            ),
+            Profile.objects.create(
+                email='email3',
+                last_login=datetime.utcnow()
+            ),
+            Profile.objects.create(
+                email='email4',
+                last_login=datetime.utcnow()
             )
         ]
         self.tickets = [
             Ticket.objects.create(background='test1', requester=self.users[0])
         ]
+        self.responders = [
+            Responder.objects.create(
+                ticket=self.tickets[0], user=self.users[2]),
+            Responder.objects.create(
+                ticket=self.tickets[0], user=self.users[3])
+        ]
         self.comments = [
             Comment.objects.create(
-                user=self.users[0],
+                user=self.users[3],
                 ticket=self.tickets[0],
                 body='first comment'
             )
@@ -759,6 +774,30 @@ class CommentsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 422)
         self.assertEqual(Comment.objects.count(), comments_count)
+
+    def test_email_notify(self):
+        controller = CommentsEndpoint()
+        count, emails = controller.email_notify(self.comments[0])
+
+        self.assertEqual(count, 2)
+        self.assertEqual(emails[0], [
+            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+            render_to_string(
+                'mail/ticket_comment.txt',
+                dict(comment=self.comments[0], name='email3')
+            ),
+            DEFAULT_FROM_EMAIL,
+            ['email3']
+        ])
+        self.assertEqual(emails[1], [
+            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+            render_to_string(
+                'mail/ticket_comment.txt',
+                dict(comment=self.comments[0], name='email1')
+            ),
+            DEFAULT_FROM_EMAIL,
+            ['email1']
+        ])
 
 
 class RespondersEndpointTestCase(ApiTestCase):
