@@ -62,7 +62,7 @@ class Ticket(models.Model):
     sent_notifications_at = models.DateTimeField(null=True)
 
     # Other ticket type fields, also common to all other types
-    background = models.TextField(blank=False, max_length=1000)
+    background = models.TextField(blank=False)
 
     # Person ticket type fields
     first_name = models.CharField(max_length=512, null=True, blank=True)
