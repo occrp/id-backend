@@ -1,5 +1,10 @@
 Hello {{ name }},
-{{ comment.user.display_name }} left a comment to the ticket with ID: {{ comment.ticket.id }}:
+There's a new comment to the ticket from {{ comment.ticket.requester.display_name }}.
+
+To see the comment, please visit:
+http://{{ request_host }}/tickets/view/{{ comment.ticket.id }}
+
+{{ comment.user.display_name }} wrote:
 
 
 {{ comment.body }}
