@@ -71,32 +71,34 @@ class TicketDigestTestCase(TestCase):
     def test_emails(self):
         command = Command()
         email = {}
+        request_host = 'test.host'
 
         with mock.patch.object(
                 command, 'email', lambda x: (email.update(x), 1)):
-            status, count = command.handle()
+            status = command.handle(request_host=request_host)
 
         digest1 = email[self.users[0].id]['digests']
         digest2 = email[self.users[1].id]['digests']
 
-        self.assertIsNone(status)
-        self.assertEqual(count, 1)
+        self.assertIn('Sent 1 notifications', status)
         self.assertEqual(email[self.users[0].id]['user'], self.users[0])
         self.assertEqual(len(digest1), 2)
-        self.assertIn('email1 added a comment to ticket ID', str(digest1))
+        self.assertIn(request_host, str(digest1))
+        self.assertIn(request_host, str(digest2))
+        self.assertIn('email1 added a comment to ticket', str(digest1))
         self.assertIn(
-            'email1 added email2 as a responder to ticket ID', str(digest1))
+            'email1 added email2 as a responder to ticket', str(digest1))
 
         self.assertEqual(email[self.users[1].id]['user'], self.users[1])
         self.assertEqual(len(digest2), 5)
-        self.assertIn('email1 added a comment to ticket ID', str(digest1))
+        self.assertIn('email1 added a comment to ticket', str(digest1))
         self.assertIn(
-            'email1 added email2 as a responder to ticket ID', str(digest2))
+            'email1 added email2 as a responder to ticket', str(digest2))
         self.assertIn(
-            'email2 updated status to in-progress to ticket ID', str(digest2))
-        self.assertIn('email2 did reopen the ticket ID', str(digest2))
+            'email2 updated status to in-progress to ticket', str(digest2))
+        self.assertIn('email2 did reopen the ticket', str(digest2))
         self.assertIn(
             'email2 marked pending (waiting for third-party actions) '
-            'the ticket ID',
+            'the ticket',
             str(digest2)
         )

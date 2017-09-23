@@ -39,10 +39,11 @@ class OpsEndpoint(viewsets.ViewSet):
 
         if pk == 'email_ticket_digest':
             cmd = Command()
-            status, notifications_count = cmd.handle()
+            status = cmd.handle(
+                request_host=self.request.get_host()
+            )
             data['operation'] = pk
             data['status'] = status
-            data['notifications_count'] = notifications_count
 
         return response.Response(data)
 
@@ -342,6 +343,10 @@ class CommentsEndpoint(
         emails = []
         subject = self.EMAIL_SUBJECT.format(comment.ticket.id)
         users = list(comment.ticket.users.all()) + [comment.ticket.requester]
+        request_host = ''
+
+        if hasattr(self, 'request'):
+            request_host = self.request.get_host()
 
         for user in users:
 
@@ -353,7 +358,8 @@ class CommentsEndpoint(
                 render_to_string(
                     'mail/ticket_comment.txt', {
                         'comment': comment,
-                        'name': user.display_name
+                        'name': user.display_name,
+                        'request_host': request_host
                     }
                 ),
                 DEFAULT_FROM_EMAIL,

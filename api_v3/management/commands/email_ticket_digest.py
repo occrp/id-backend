@@ -1,5 +1,4 @@
 from datetime import datetime
-from collections import defaultdict
 
 from django.db import models
 from django.core.mail import send_mass_mail
@@ -17,11 +16,18 @@ class Command(BaseCommand):
     # Email item template. Example:
     #   (01.12.1987 22:01): John updated the status to ticket ID: 99
     ITEM_TEMPLATE = (
-        '({date}): {name} {action} {thing} {prep} ticket ID: {ticket}')
+        '({date}): {name} {action} {thing} {prep} ticket '
+        'http://{request_host}/tickets/view/{ticket}'
+    )
+
+
+    def add_arguments(self, parser):
+        parser.add_argument('request_host', help='Hostname to use in emails.')
 
     def handle(self, *args, **options):
         """Runs the digest for tickets."""
         user_digests = {}
+        self.request_host = options.get('request_host')
         tickets = Ticket.objects.filter(
             models.Q(
                 sent_notifications_at__gte=models.Func(function='now')
@@ -59,9 +65,7 @@ class Command(BaseCommand):
         else:
             color = self.style.ERROR
 
-        self.stdout.write(color('Sent {} notifications.'.format(count)))
-
-        return status, count
+        return color('Sent {} notifications.'.format(count))
 
     def digest(self, ticket):
         """Generates a digest for a ticket."""
@@ -90,6 +94,7 @@ class Command(BaseCommand):
         verb = action.verb.split(':')
         data = {
             'name': action.actor.display_name,
+            'request_host': self.request_host,
             'ticket': action.target.id,
             'thing': verb[0],
             'prep': 'to',
