@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from activity.models import Action  # noqa
 
 from core.countries import COUNTRIES
@@ -141,3 +143,10 @@ class Comment(models.Model):
             # Let attachment authors
             models.Q(user=user)
         )
+
+
+@receiver(post_save, sender=Action)
+def touch_ticket_updated(instance, **kwargs):
+    if isinstance(instance.target, Ticket):
+        instance.target.updated_at = instance.timestamp
+        instance.target.save()
