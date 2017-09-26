@@ -7,7 +7,7 @@ http://{{ request_host }}/tickets/view/{{ comment.ticket.id }}
 {{ comment.user.display_name }} wrote:
 
 
-{{ comment.body }}
+{{ comment.body | safe }}
 
 
 --
