@@ -382,6 +382,8 @@ class RespondersEndpoint(
     queryset = Responder.objects.all()
     serializer_class = ResponderSerializer
 
+    EMAIL_SUBJECT = 'You were added to the ticket ID: {}'
+
     def get_queryset(self):
         queryset = super(RespondersEndpoint, self).get_queryset()
 
@@ -407,9 +409,11 @@ class RespondersEndpoint(
         responder.ticket.status = Ticket.STATUSES[1][0]
         responder.ticket.save()
 
-        Action.objects.create(
+        action = Action.objects.create(
             actor=self.request.user, target=responder.ticket,
             action=responder.user, verb=self.action_name())
+
+        self.email_notify(action)
 
         return responder
 
@@ -426,3 +430,24 @@ class RespondersEndpoint(
         instance.delete()
 
         return activity
+
+    def email_notify(self, activity):
+        """Sends an email to the responder about the new ticket."""
+        subject = self.EMAIL_SUBJECT.format(activity.target.id)
+        emails = [
+            [
+                subject,
+                render_to_string(
+                    'mail/responder_created.txt', {
+                        'ticket': activity.target,
+                        'name': activity.action.display_name,
+                        'request_host': self.request.get_host()
+                    }
+                ),
+                DEFAULT_FROM_EMAIL,
+                [activity.action.email]
+            ]
+        ]
+        print emails
+
+        return send_mass_mail(emails, fail_silently=True)
