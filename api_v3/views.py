@@ -198,7 +198,7 @@ class ProfilesEndpoint(
 class ActivitiesEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
     queryset = Action.objects.all()
     serializer_class = ActionSerializer
-    ordering_fields = ('-timestamp',)
+    ordering_fields = ('timestamp',)
     filter_fields = {
         'timestamp': ['range'],
         'target_object_id': ['exact'],
