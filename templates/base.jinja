@@ -64,15 +64,15 @@
               </a>
             </li>
             {% if user.is_authenticated() %}
-              <li class="{% if url('ticket_list') in request.path %}active{% endif %}">
-                <a href="{{ url('ticket_list') }}">
+              <li class="{% if url('tickets_home') in request.path %}active{% endif %}">
+                <a href="{{ url('tickets_home') }}">
                   <i class="fa fa-comments-o"></i>
                   {% trans %}My Requests{% endtrans %}
                 </a>
               </li>
             {% else %}
               <li>
-                <a href="{{ url('login') }}?next={{ url('ticket_list') }}">
+                <a href="{{ url('login') }}?next={{ url('tickets_home') }}">
                   <i class="fa fa-comments-o"></i>
                   {% trans %}My Requests{% endtrans %}</a>
               </li>

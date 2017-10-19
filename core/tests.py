@@ -20,6 +20,20 @@ class PagesTestCase(TestCase):
             response.content.decode('utf-8', 'escape')
         )
 
+    def test_about_id(self):
+        response = self.client.get(reverse('about_id'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(
+            reverse('about_us'),
+            response.content.decode('utf-8', 'escape')
+        )
+
+    def test_about_us(self):
+        response = self.client.get(reverse('about_us'))
+
+        self.assertEqual(response.status_code, 200)
+
     def test_databases_homepage_anonymous(self):
         response = self.client.get(reverse('databases:index'))
 

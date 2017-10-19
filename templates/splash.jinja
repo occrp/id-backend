@@ -41,9 +41,9 @@
 
         <div class="splash-item">
             <p class="desc">{% trans %}Ask our researchers to help you find information.{% endtrans %}</p>
-            <div class="button-holder">            
+            <div class="button-holder">
                 {% if user.is_authenticated() %}
-                    <a href="{{ url('ticket_list') }}" class="btn btn-large btn-primary">
+                    <a href="{{ url('tickets_home') }}" class="btn btn-large btn-primary">
                         <i class="fa fa-ticket"></i>
                         {% trans %}My Requests{% endtrans %}
                     </a>
@@ -53,7 +53,7 @@
                         {% trans %}Ask an Expert{% endtrans %}
                     </a>
                 {% endif %}
-                
+
             </div>
         </div>
 
