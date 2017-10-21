@@ -1,4 +1,5 @@
 FROM node:slim
+ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 
 # you will need need these docker images too:
