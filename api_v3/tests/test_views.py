@@ -589,7 +589,7 @@ class AttachmentsEndpointTestCase(ApiTestCase):
             Attachment.objects.create(
                 user=self.users[0],
                 ticket=self.tickets[0],
-                upload=SimpleUploadedFile('test.txt', b'test')
+                upload=SimpleUploadedFile(u'tesț.txt', b'tesț')
             )
         ]
 
@@ -611,7 +611,7 @@ class AttachmentsEndpointTestCase(ApiTestCase):
 
         self.assertIn(
             reverse('download-detail', args=[self.attachments[0].id]),
-            response.content
+            response.content.decode('utf-8')
         )
 
     def test_detail_authenticated(self):
