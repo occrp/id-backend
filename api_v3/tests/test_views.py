@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import io
 import json
 import os.path
@@ -97,7 +99,7 @@ class DownloadEndpointTestCase(TestCase):
         self.attachment = Attachment.objects.create(
             user=self.users[1],
             ticket=self.tickets[0],
-            upload=SimpleUploadedFile('test.txt', 'test')
+            upload=SimpleUploadedFile('test.txt', b'test')
         )
 
     def test_retrieve_anonymous(self):
@@ -411,7 +413,7 @@ class ProfilesEndpointTestCase(ApiTestCase):
         self.assertIn(self.users[0].email, response.content)
         self.assertIn(self.users[1].email, response.content)
 
-    def test_list_filter_authenticated(self):
+    def test_list_search_authenticated(self):
         self.users[0].is_staff = True
         self.users[0].save()
         self.users[1].is_staff = True
@@ -427,6 +429,43 @@ class ProfilesEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(self.users[1].email, response.content)
         self.assertNotIn(self.users[0].email, response.content)
+
+    def test_list_search_unicode_authenticated(self):
+        self.users[0].first_name = u'Станислав'
+        self.users[0].is_staff = True
+        self.users[0].save()
+        self.users[1].last_name = u'Sușcov'
+        self.users[1].is_staff = True
+        self.users[1].save()
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(
+            reverse('profile-list'), {
+                'filter[name]': self.users[0].first_name[1:4]
+            }
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        content = response.content.decode('utf8')
+
+        self.assertIn(self.users[0].email, content)
+        self.assertIn(self.users[0].first_name, content)
+        self.assertNotIn(self.users[1].email, content)
+
+        response = self.client.get(
+            reverse('profile-list'), {
+                'filter[name]': self.users[1].last_name[1:4]
+            }
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        content = response.content.decode('utf8')
+
+        self.assertIn(self.users[1].email, content)
+        self.assertIn(self.users[1].last_name, content)
+        self.assertNotIn(self.users[0].email, content)
 
     def test_update_authenticated_not_owned_profile(self):
         self.users[1].is_staff = True
@@ -550,7 +589,7 @@ class AttachmentsEndpointTestCase(ApiTestCase):
             Attachment.objects.create(
                 user=self.users[0],
                 ticket=self.tickets[0],
-                upload=SimpleUploadedFile('test.txt', 'test')
+                upload=SimpleUploadedFile('test.txt', b'test')
             )
         ]
 
@@ -603,7 +642,7 @@ class AttachmentsEndpointTestCase(ApiTestCase):
         actions_count = Action.objects.filter(
             target_object_id=ticket.id).count()
 
-        with io.BytesIO('dummy file') as fu:
+        with io.BytesIO(b'dummy file') as fu:
             new_data = {
                 'ticket': json.dumps({
                     'type': 'tickets',
@@ -638,7 +677,7 @@ class AttachmentsEndpointTestCase(ApiTestCase):
 
         attachments_count = Attachment.objects.count()
 
-        with io.BytesIO('dummy file') as fu:
+        with io.BytesIO(b'dummy file') as fu:
             new_data = {
                 'ticket': json.dumps({
                     'type': 'tickets',
