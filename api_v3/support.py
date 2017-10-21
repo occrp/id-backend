@@ -9,6 +9,7 @@ import rest_framework_json_api.parsers
 import rest_framework_json_api.renderers
 import rest_framework_json_api.pagination
 import rest_framework_json_api.utils
+import django_filters.rest_framework
 from oauth2_provider.ext.rest_framework import OAuth2Authentication
 from rest_framework.status import HTTP_422_UNPROCESSABLE_ENTITY
 from querystring_parser import parser as qs_parser
@@ -19,7 +20,7 @@ from settings.settings import DEBUG, TESTING
 from .models import Profile, Attachment, Comment, Action
 
 
-class DjangoFilterBackend(rest_framework.filters.DjangoFilterBackend):
+class DjangoFilterBackend(django_filters.rest_framework.DjangoFilterBackend):
 
     def filter_queryset(self, request, queryset, view):
         filter_class = self.get_filter_class(view, queryset)
@@ -40,6 +41,7 @@ class OrderingFilter(rest_framework.filters.OrderingFilter):
 class Pagination(rest_framework_json_api.pagination.PageNumberPagination):
     page_query_param = 'page[number]'
     page_size_query_param = 'page[size]'
+    page_size = 30
 
     def build_link(self, index):
         link = super(Pagination, self).build_link(index)

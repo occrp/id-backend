@@ -8,7 +8,7 @@ django-oauth-toolkit==0.10.0
 django-registration-redux==1.4
 django-simple-captcha
 django_select2==5.8.9
-djangorestframework==3.6.3
+djangorestframework==3.7.1
 https://github.com/django-json-api/django-rest-framework-json-api/archive/develop.zip#egg=djangorestframework-jsonapi
 django-simple-activity==1.0.0
 django-filter==1.0.4
