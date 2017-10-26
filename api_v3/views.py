@@ -184,6 +184,10 @@ class ProfilesEndpoint(
     def get_queryset(self):
         filters = self.extract_filter_params(self.request)
 
+        # If not a super-user, do not allow access
+        if self.request.user and not self.request.user.is_superuser:
+            return self.queryset.filter(pk=self.request.user.pk)
+
         if not filters.get('name'):
             return self.queryset
         else:

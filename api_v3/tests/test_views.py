@@ -229,10 +229,12 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.client.force_authenticate(self.users[0])
 
         response = self.client.get(
-            reverse('ticket-list'), {'include': 'requester'})
+            reverse('ticket-list'), {'include': 'requester,responders.user'})
 
         self.assertEqual(response.status_code, 200)
         self.assertIn('included', response.content)
+        self.assertNotIn(self.responders[0].user.email, response.content)
+        self.assertNotIn(self.responders[1].user.email, response.content)
 
     def test_list_filter_authenticated_by_responders(self):
         self.client.force_authenticate(self.users[0])
@@ -384,6 +386,13 @@ class ProfilesEndpointTestCase(ApiTestCase):
                 last_name='Profile',
                 email='email2',
                 last_login=datetime.utcnow()
+            ),
+            Profile.objects.create(
+                first_name='Super',
+                last_name='User',
+                email='email3',
+                last_login=datetime.utcnow(),
+                is_superuser=True
             )
         ]
 
@@ -400,7 +409,7 @@ class ProfilesEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content)['data'], [])
 
-    def test_list_authenticated(self):
+    def test_list_authenticated_not_superuser(self):
         self.users[0].is_staff = True
         self.users[0].save()
         self.users[1].is_superuser = True
@@ -410,15 +419,31 @@ class ProfilesEndpointTestCase(ApiTestCase):
         response = self.client.get(reverse('profile-list'))
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(self.users[0].email, response.content)
+        self.assertNotIn(self.users[1].email, response.content)
+        self.assertNotIn(self.users[2].email, response.content)
+
+    def test_list_authenticated_superuser(self):
+        self.users[0].is_staff = True
+        self.users[0].save()
+        self.users[1].is_superuser = True
+        self.users[1].save()
+        self.client.force_authenticate(self.users[2])
+
+        response = self.client.get(reverse('profile-list'))
+
+        self.assertEqual(response.status_code, 200)
         self.assertIn(self.users[0].email, response.content)
         self.assertIn(self.users[1].email, response.content)
+        self.assertIn(self.users[2].email, response.content)
 
     def test_list_search_authenticated(self):
         self.users[0].is_staff = True
         self.users[0].save()
         self.users[1].is_staff = True
         self.users[1].save()
-        self.client.force_authenticate(self.users[0])
+        self.client.force_authenticate(self.users[2])
 
         response = self.client.get(
             reverse('profile-list'), {
@@ -429,6 +454,7 @@ class ProfilesEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(self.users[1].email, response.content)
         self.assertNotIn(self.users[0].email, response.content)
+        self.assertNotIn(self.users[2].email, response.content)
 
     def test_list_search_unicode_authenticated(self):
         self.users[0].first_name = u'Станислав'
@@ -437,7 +463,7 @@ class ProfilesEndpointTestCase(ApiTestCase):
         self.users[1].last_name = u'Sușcov'
         self.users[1].is_staff = True
         self.users[1].save()
-        self.client.force_authenticate(self.users[0])
+        self.client.force_authenticate(self.users[2])
 
         response = self.client.get(
             reverse('profile-list'), {
