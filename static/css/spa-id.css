@@ -1,4 +1,3 @@
-
 .container-fluid, .id-page-header {
   margin-right: auto;
   margin-left: auto;
@@ -762,4 +761,12 @@
 
 .nav {
   font-size: 14px;
+}
+
+footer {
+  margin: 40px 0;
+}
+footer p {
+  color: silver;
+  text-align: center;
 }
