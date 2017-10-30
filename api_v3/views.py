@@ -163,9 +163,7 @@ class ProfilesEndpoint(
         mixins.UpdateModelMixin,
         viewsets.ReadOnlyModelViewSet):
 
-    queryset = Profile.objects.filter(
-        Q(is_staff=True) | Q(is_superuser=True)
-    ).all()
+    queryset = Profile.objects.filter(Q(is_active=True)).all()
 
     serializer_class = ProfileSerializer
     filter_fields = ('is_superuser', 'is_staff')

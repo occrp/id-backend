@@ -407,7 +407,9 @@ class ProfilesEndpointTestCase(ApiTestCase):
         response = self.client.get(reverse('profile-list'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.content)['data'], [])
+        self.assertIn(self.users[0].email, response.content)
+        self.assertNotIn(self.users[1].email, response.content)
+        self.assertNotIn(self.users[2].email, response.content)
 
     def test_list_authenticated_not_superuser(self):
         self.users[0].is_staff = True
@@ -570,7 +572,7 @@ class ActivitiesEndpointTestCase(TestCase):
     def test_list_authenticated_no_tickets(self):
         self.client.force_authenticate(self.users[0])
 
-        response = self.client.get(reverse('profile-list'))
+        response = self.client.get(reverse('action-list'))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content)['data'], [])
