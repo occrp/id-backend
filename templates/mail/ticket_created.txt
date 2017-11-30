@@ -7,4 +7,4 @@ http://{{ request_host }}/tickets/view/{{ ticket.id }}
 
 
 --
-The OCCRP ID team
+The OCCRP ID team.

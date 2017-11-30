@@ -11,4 +11,6 @@ http://{{ request_host }}/tickets/view/{{ comment.ticket.id }}
 
 
 --
-The OCCRP ID team
+Do not reply to this email!
+
+The OCCRP ID team.
