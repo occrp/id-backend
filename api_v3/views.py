@@ -1,3 +1,4 @@
+from datetime import datetime
 import os.path
 
 from django.db.models import Q, F, Func, Value
@@ -105,6 +106,14 @@ class TicketsEndpoint(
             self.request.user not in serializer.instance.users.all()
         ):
             raise exceptions.NotFound()
+
+        deadline_at = serializer.validated_data.get('deadline_at')
+
+        if deadline_at and deadline_at < datetime.utcnow():
+            raise serializers.ValidationError([{
+                'data/attributes/deadline_at':
+                'The date can not be in the past.'
+            }])
 
         comment = None
         status = serializer.validated_data.get('status')
