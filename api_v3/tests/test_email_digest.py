@@ -23,7 +23,8 @@ class TicketDigestTestCase(TestCase):
 
         self.tickets = [
             Ticket.objects.create(
-                requester=self.users[0], background='ticket1'),
+                requester=self.users[0], background='ticket1',
+                deadline_at=datetime.utcnow()),
             Ticket.objects.create(
                 requester=self.users[1], background='ticket2')
         ]
@@ -79,6 +80,12 @@ class TicketDigestTestCase(TestCase):
 
         digest1 = email[self.users[0].id]['digests']
         digest2 = email[self.users[1].id]['digests']
+        upcoming1 = email[self.users[0].id]['upcoming']
+        upcoming2 = email[self.users[1].id]['upcoming']
+
+        self.assertEqual(len(upcoming1), 0)
+        self.assertEqual(len(upcoming2), 1)
+        self.assertIn(self.tickets[0], upcoming2)
 
         self.assertIn('Sent 1 notifications', status)
         self.assertEqual(email[self.users[0].id]['user'], self.users[0])

@@ -1,5 +1,14 @@
 Hello {{ user.display_name }},
-below is a digest of the tickets you are subscribed to:
+your ID tickets digest is below.
+
+{% if upcoming -%}
+You have tickets with upcoming deadlines:
+
+{% for ticket in upcoming -%}
+ * ({{ticket.deadline_at.strftime('%x') }}): http://{{request_host}}/tickets/view/{{ticket.id}}
+{% endfor %}
+{% endif -%}
+Below is a report of latest activities for the tickets you are subscribed to:
 
 {% for item in digests -%}
  * {{ item }}

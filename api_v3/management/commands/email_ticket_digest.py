@@ -12,6 +12,9 @@ from settings.settings import DEFAULT_FROM_EMAIL
 class Command(BaseCommand):
     help = 'Sends relevant ticket notifications'
 
+    # Days left until deadline
+    UPCOMING_DAYS_LEFT = [-1, 0, 1]
+
     SUBJECT = 'Daily digest for your ID tickets'
     # Email item template. Example:
     #   (01.12.1987 22:01): John updated the status to ticket ID: 99
@@ -19,7 +22,6 @@ class Command(BaseCommand):
         '({date}): {name} {action} {thing} {prep} ticket '
         'http://{request_host}/tickets/view/{ticket}'
     )
-
 
     def add_arguments(self, parser):
         parser.add_argument('request_host', help='Hostname to use in emails.')
@@ -45,12 +47,21 @@ class Command(BaseCommand):
                 continue
 
             for user in (list(ticket.users.all()) + [ticket.requester]):
+                upcoming_in = 'never'
                 user_digests[user.id] = user_digests.get(user.id) or {
+                    'request_host': self.request_host,
                     'user': user,
-                    'digests': []
+                    'digests': [],
+                    'upcoming': set()
                 }
 
                 user_digests[user.id]['digests'] += digest
+
+                if ticket.deadline_at and user != ticket.requester:
+                    upcoming_in = (ticket.deadline_at - datetime.utcnow()).days
+
+                if upcoming_in in self.UPCOMING_DAYS_LEFT:
+                    user_digests[user.id]['upcoming'].add(ticket)
 
             ticket.sent_notifications_at = datetime.utcnow()
             ticket.save()
@@ -82,7 +93,10 @@ class Command(BaseCommand):
         for _, user_digest in user_digests.items():
             emails.append([
                 self.SUBJECT,
-                render_to_string('mail/ticket_digest.txt', user_digest),
+                render_to_string(
+                    'mail/ticket_digest.txt',
+                    user_digest
+                ),
                 DEFAULT_FROM_EMAIL,
                 [user_digest['user'].email]
             ])
