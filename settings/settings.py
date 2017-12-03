@@ -7,6 +7,7 @@ import sys
 
 import dj_database_url
 from django.conf.global_settings import DATE_INPUT_FORMATS
+import raven
 
 BASE_DIR = os.path.join(os.path.realpath(os.path.dirname(__file__)), '../')
 
@@ -54,7 +55,8 @@ INSTALLED_APPS = (
     'ticket',
     'api_v3',
     'activity',
-    'django_filters'
+    'django_filters',
+    'raven.contrib.django.raven_compat',
 )
 
 
@@ -424,6 +426,17 @@ JSON_API_FORMAT_KEYS = 'dasherize'
 JSON_API_FORMAT_TYPES = 'dasherize'
 JSON_API_PLURALIZE_TYPES = True
 
+##################
+#
+#   Raven/Sentry
+#
+##################
+
+if os.environ.get('ID_SENTRY_DSN'):
+    RAVEN_CONFIG = {
+        'dsn': os.environ.get('ID_SENTRY_DSN'),
+        'release': raven.fetch_git_sha(os.path.abspath('.')),
+    }
 
 ##################
 #
