@@ -116,7 +116,9 @@ class Attachment(models.Model):
             # Let ticket authors and responders see ticket attachments
             models.Q(ticket__in=Ticket.filter_by_user(user)) |
             # Let attachment authors see own attachments
-            models.Q(user=user)
+            models.Q(user=user) |
+            # Let ticket users see superuser attachments
+            models.Q(user__is_superuser=True)
         )
 
 
@@ -141,7 +143,9 @@ class Comment(models.Model):
             # Let ticket authors and responders see ticket attachments
             models.Q(ticket__in=Ticket.filter_by_user(user)) |
             # Let attachment authors
-            models.Q(user=user)
+            models.Q(user=user) |
+            # Let ticket users see superuser comments
+            models.Q(user__is_superuser=True)
         )
 
 

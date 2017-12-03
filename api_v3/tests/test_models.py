@@ -106,20 +106,22 @@ class TicketAttachmentCommentFilterByUserRequesterTestCase(
     def test_attachment_filter_by_user(self):
         attachments = Attachment.filter_by_user(self.users[0])
 
-        self.assertEqual(attachments.count(), 4)
+        self.assertEqual(attachments.count(), 5)
         self.assertIn(self.attachments[0], attachments)
         self.assertIn(self.attachments[1], attachments)
         self.assertIn(self.attachments[2], attachments)
         self.assertIn(self.attachments[4], attachments)
+        self.assertIn(self.attachments[5], attachments)
 
     def test_comment_filter_by_user(self):
         comments = Comment.filter_by_user(self.users[0])
 
-        self.assertEqual(comments.count(), 4)
+        self.assertEqual(comments.count(), 5)
         self.assertIn(self.comments[0], comments)
         self.assertIn(self.comments[1], comments)
         self.assertIn(self.comments[2], comments)
         self.assertIn(self.comments[4], comments)
+        self.assertIn(self.comments[5], comments)
 
 
 class TicketAttachmentCommentFilterByUserResponderTestCase(
