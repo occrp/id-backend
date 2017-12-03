@@ -177,6 +177,10 @@ class TicketsEndpointTestCase(ApiTestCase):
             Profile.objects.create(
                 email='email3',
                 last_login=datetime.utcnow()
+            ),
+            Profile.objects.create(
+                email='email4',
+                last_login=datetime.utcnow()
             )
         ]
 
@@ -258,7 +262,7 @@ class TicketsEndpointTestCase(ApiTestCase):
 
     def test_update_authenticated(self):
         ticket = self.tickets[0]
-        self.client.force_authenticate(self.users[0])
+        self.client.force_authenticate(self.users[3])
 
         new_data = self.as_jsonapi_payload(
             TicketSerializer, ticket, {'background': 'new-background'})
@@ -270,6 +274,40 @@ class TicketsEndpointTestCase(ApiTestCase):
         )
 
         self.assertEqual(response.status_code, 404)
+
+    def test_update_authenticated_author(self):
+        ticket = self.tickets[0]
+        self.client.force_authenticate(self.tickets[0].requester)
+
+        new_data = self.as_jsonapi_payload(
+            TicketSerializer, ticket, {'status': 'closed'})
+
+        response = self.client.put(
+            reverse('ticket-detail', args=[ticket.id]),
+            data=json.dumps(new_data),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            Ticket.objects.get(id=self.tickets[0].id).status, 'closed')
+
+    def test_update_authenticated_responder(self):
+        ticket = self.tickets[0]
+        self.client.force_authenticate(self.users[2])
+
+        new_data = self.as_jsonapi_payload(
+            TicketSerializer, ticket, {'status': 'closed'})
+
+        response = self.client.put(
+            reverse('ticket-detail', args=[ticket.id]),
+            data=json.dumps(new_data),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            Ticket.objects.get(id=self.tickets[0].id).status, 'closed')
 
     def test_update_authenticated_superuser(self):
         ticket = self.tickets[0]

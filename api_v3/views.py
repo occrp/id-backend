@@ -104,6 +104,8 @@ class TicketsEndpoint(
         """
         if (not self.request.user.is_superuser) and (
             self.request.user not in serializer.instance.users.all()
+        ) and (
+            self.request.user != serializer.instance.requester
         ):
             raise exceptions.NotFound()
 
