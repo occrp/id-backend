@@ -3,7 +3,7 @@
 import io
 import json
 import os.path
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.test import TestCase
@@ -1073,3 +1073,113 @@ class RespondersEndpointTestCase(ApiTestCase):
             reverse('responder-detail', args=[self.responders[1].id]))
 
         self.assertEqual(response.status_code, 404)
+
+
+class TicketStatsEndpointTestCase(ApiTestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.users = [
+            Profile.objects.create(
+                email='email1',
+                last_login=datetime.utcnow()
+            ),
+            Profile.objects.create(
+                email='email2',
+                last_login=datetime.utcnow(),
+                is_staff=True
+            ),
+        ]
+
+        self.tickets = [
+            Ticket.objects.create(
+                background='test1',
+                requester=self.users[0],
+                status='cancelled',
+            ),
+            Ticket.objects.create(background='test2', requester=self.users[0]),
+            Ticket.objects.create(background='test3', requester=self.users[0]),
+            Ticket.objects.create(background='test4', requester=self.users[0]),
+            Ticket.objects.create(background='test5', requester=self.users[0]),
+        ]
+
+        self.tickets[0].created_at=(datetime.utcnow() - timedelta(days=3))
+        self.tickets[0].save()
+
+        self.responders = [
+            Responder.objects.create(
+                ticket=self.tickets[0], user=self.users[1]),
+            Responder.objects.create(
+                ticket=self.tickets[1], user=self.users[1])
+        ]
+
+    def test_list_anonymous(self):
+        response = self.client.get(reverse('ticket_stats-list'))
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_list_user(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(reverse('ticket_stats-list'))
+
+        self.assertEqual(response.status_code, 200)
+
+        body = json.loads(response.content)
+
+        self.assertEqual(len(body['data']), 0)
+
+    def test_list_superuser(self):
+        self.users[0].is_superuser = True
+        self.users[0].save()
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(reverse('ticket_stats-list'))
+
+        self.assertEqual(response.status_code, 200)
+
+        body = json.loads(response.content)
+
+        self.assertEqual(body['meta']['staff-profile-ids'], [self.users[1].id])
+        self.assertEqual(len(body['data']), 2)
+
+        self.assertEqual(body['data'][0]['attributes']['count'], 1)
+        self.assertEqual(body['data'][0]['attributes']['status'], 'cancelled')
+        self.assertEqual(body['data'][0]['attributes']['avg-time'], 3)
+        self.assertEqual(
+            body['data'][0]['attributes']['date'], '2017-12-01T00:00:00')
+
+        self.assertEqual(body['data'][1]['attributes']['count'], 4)
+        self.assertEqual(body['data'][1]['attributes']['status'], 'new')
+        self.assertEqual(body['data'][1]['attributes']['avg-time'], 0)
+        self.assertEqual(
+            body['data'][1]['attributes']['date'], '2017-12-01T00:00:00')
+
+    def test_list_superuser_filter_by_responder(self):
+        self.users[0].is_superuser = True
+        self.users[0].save()
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(
+            reverse('ticket_stats-list') +
+            '?filter[responders__user]={}'.format(self.users[1].id)
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        body = json.loads(response.content)
+
+        self.assertNotIn('meta', body)
+        self.assertEqual(len(body['data']), 2)
+
+        self.assertEqual(body['data'][0]['attributes']['count'], 1)
+        self.assertEqual(body['data'][0]['attributes']['status'], 'cancelled')
+        self.assertEqual(body['data'][0]['attributes']['avg-time'], 3)
+        self.assertEqual(
+            body['data'][0]['attributes']['date'], '2017-12-01T00:00:00')
+
+        self.assertEqual(body['data'][1]['attributes']['count'], 1)
+        self.assertEqual(body['data'][1]['attributes']['status'], 'new')
+        self.assertEqual(body['data'][1]['attributes']['avg-time'], 0)
+        self.assertEqual(
+            body['data'][1]['attributes']['date'], '2017-12-01T00:00:00')

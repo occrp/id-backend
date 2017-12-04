@@ -1,7 +1,9 @@
+from collections import namedtuple
 from datetime import datetime
 import os.path
 
-from django.db.models import Q, F, Func, Value
+from django.db.models import Q, F, Func, Value, Count, Avg
+from django.db.models.functions import Trunc
 from django.core.mail import send_mass_mail
 from django.template.loader import render_to_string
 from django.http import FileResponse
@@ -18,7 +20,8 @@ from .serializers import(
     AttachmentSerializer,
     ActionSerializer,
     CommentSerializer,
-    ResponderSerializer
+    ResponderSerializer,
+    TicketStatSerializer
 )
 
 
@@ -464,3 +467,54 @@ class RespondersEndpoint(
         ]
 
         return send_mass_mail(emails, fail_silently=True)
+
+
+class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
+    queryset = Ticket.objects.all()
+    serializer_class = TicketStatSerializer
+    filter_fields = {
+        'created_at': ['range'],
+        'status': ['in'],
+        'kind': ['exact'],
+        'country': ['exact'],
+        'responders__user': ['exact', 'isnull']
+    }
+
+    class TicketStat(dict):
+        __getattr__ = dict.__getitem__
+        __setattr__ = dict.__setitem__
+
+    def get_queryset(self):
+        queryset = super(TicketStatsEndpoint, self).get_queryset()
+
+        if not self.request.user.is_superuser:
+            return queryset.none()
+
+        queryset = queryset.annotate(
+            date=Trunc('created_at', 'month'),
+            count=Count('id'),
+            ticket_status=F('status'),
+            avg_time=Avg((F('updated_at') - F('created_at')))
+        ).values('date', 'count', 'ticket_status', 'avg_time')
+
+        # Do not group by all the aggregations
+        queryset.query.group_by = queryset.query.group_by[-2:]
+
+        return queryset
+
+    def get_serializer(self, queryset, *args, **kwargs):
+        profile = None
+        params = self.extract_filter_params(self.request)
+
+        if params.get('responders__user'):
+            profile = Profile.objects.get(id=params.get('responders__user'))
+
+        stats = map(
+            lambda s: self.TicketStat(s, profile=profile, params=params, pk=None),
+            list(queryset)
+        )
+
+        serializer = super(TicketStatsEndpoint, self).get_serializer(
+            stats, *args, **kwargs)
+
+        return response.Response(serializer.data)

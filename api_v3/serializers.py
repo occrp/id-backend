@@ -1,4 +1,5 @@
 import os.path
+import hashlib
 
 import magic
 from django.urls import reverse
@@ -308,3 +309,33 @@ class ActionSerializer(serializers.ModelSerializer):
             'responder_user',
             'created_at'
         )
+
+
+class TicketStatSerializer(serializers.Serializer):
+
+    id = fields.SerializerMethodField()
+    date = serializers.DateTimeField()
+    count = serializers.IntegerField()
+    status = serializers.CharField(source='ticket_status')
+    avg_time = fields.SerializerMethodField()
+    profile = ProfileSerializer()
+
+    def get_id(self, data):
+        pk = hashlib.sha256(str(data.get('params'))).hexdigest()
+        # Leave this mocked pk, or DRF will complain
+        data.pk = pk
+        return pk
+
+    def get_avg_time(self, data):
+        """Returns the avg. time in days."""
+        return data.get('avg_time').days
+
+    def get_root_meta(self, data, many):
+        """Adds extra root meta details."""
+
+        if self.instance and self.instance[0].get('profile'):
+            return {}
+
+        ids = Profile.objects.filter(is_staff=True).values_list('id', flat=1)
+
+        return {'staff_profile_ids': ids}

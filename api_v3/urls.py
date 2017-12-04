@@ -12,7 +12,8 @@ from .views import(
     CommentsEndpoint,
     RespondersEndpoint,
     DownloadEndpoint,
-    OpsEndpoint
+    OpsEndpoint,
+    TicketStatsEndpoint
 )
 
 
@@ -26,6 +27,7 @@ router.register(r'responders', RespondersEndpoint)
 router.register(r'me', SessionEndpoint, base_name='me')
 router.register(r'download', DownloadEndpoint, base_name='download')
 router.register(r'ops', OpsEndpoint, base_name='ops')
+router.register(r'ticket-stats', TicketStatsEndpoint, base_name='ticket_stats')
 
 urlpatterns = [
     urls.url(r'^', urls.include(router.urls)),

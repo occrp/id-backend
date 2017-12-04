@@ -11,7 +11,7 @@ django_select2==5.8.9
 djangorestframework==3.7.1
 https://github.com/django-json-api/django-rest-framework-json-api/archive/develop.zip#egg=djangorestframework-jsonapi
 django-simple-activity==1.0.0
-django-filter==1.0.4
+django-filter==1.1.0
 querystring-parser==1.2.3
 gunicorn==19.7.1
 mock
