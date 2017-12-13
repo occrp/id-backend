@@ -99,7 +99,7 @@ class DownloadEndpointTestCase(TestCase):
         self.attachment = Attachment.objects.create(
             user=self.users[1],
             ticket=self.tickets[0],
-            upload=SimpleUploadedFile('test.txt', b'test')
+            upload=SimpleUploadedFile(u'țеșт.txt', b'test')
         )
 
     def test_retrieve_anonymous(self):
@@ -125,7 +125,9 @@ class DownloadEndpointTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEquals(
             response.get('Content-Disposition'),
-            'filename={}'.format(os.path.basename(self.attachment.upload.name))
+            'filename={}'.format(os.path.basename(
+                self.attachment.upload.name.encode('utf-8', 'replace')
+            ))
         )
 
     def test_retrieve_auth_ticket_responder(self):
@@ -137,7 +139,9 @@ class DownloadEndpointTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEquals(
             response.get('Content-Disposition'),
-            'filename={}'.format(os.path.basename(self.attachment.upload.name))
+            'filename={}'.format(os.path.basename(
+                self.attachment.upload.name.encode('utf-8', 'ignore')
+            ))
         )
 
 
