@@ -39,6 +39,8 @@ class Ticket(models.Model):
     """Ticket model."""
 
     STATUSES = TICKET_STATUS
+    KINDS = TICKET_TYPES
+    TYPES = REQUESTER_TYPES
 
     users = models.ManyToManyField(
         settings.AUTH_USER_MODEL, through=Responder, db_index=True)
