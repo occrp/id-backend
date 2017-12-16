@@ -14,7 +14,6 @@ django-simple-activity==1.0.0
 django-filter==1.1.0
 querystring-parser==1.2.3
 gunicorn==19.7.1
-mock
 oauth2client==3.0.0
 oauthlib==1.0.3
 psycopg2

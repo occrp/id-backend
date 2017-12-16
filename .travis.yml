@@ -6,7 +6,7 @@ env:
     - ID_DATABASE_URL=postgresql://postgres@localhost/id_test
     - ID_DOCUMENT_PATH=/tmp/
 install:
-  - pip install -r requirements.txt
+  - pip install -r requirements-testing.txt
   - npm --quiet --silent install -g bower
   - npm install --quiet --silent --unsafe-perm
   - pushd static && bower --allow-root --quiet --config.interactive=false --force install && popd
