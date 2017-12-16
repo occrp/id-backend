@@ -3,35 +3,27 @@ from datetime import datetime
 import mock
 from django.test import TestCase
 
-from api_v3.models import Action, Profile, Comment, Ticket, Responder
+from api_v3.models import Action, Responder
 from api_v3.management.commands.email_ticket_digest import Command
+from api_v3.factories import TicketFactory, CommentFactory
 
 
 class TicketDigestTestCase(TestCase):
 
     def setUp(self):
-        self.users = [
-            Profile.objects.create(
-                email='email1',
-                last_login=datetime.utcnow()
-            ),
-            Profile.objects.create(
-                email='email2',
-                last_login=datetime.utcnow()
-            )
+        self.tickets = [
+            TicketFactory.create(deadline_at=datetime.utcnow()),
+            TicketFactory.create(),
         ]
 
-        self.tickets = [
-            Ticket.objects.create(
-                requester=self.users[0], background='ticket1',
-                deadline_at=datetime.utcnow()),
-            Ticket.objects.create(
-                requester=self.users[1], background='ticket2')
+        self.users = [
+            self.tickets[0].requester,
+            self.tickets[1].requester
         ]
 
         self.responder = Responder.objects.create(
             user=self.users[1], ticket=self.tickets[0])
-        self.comment = Comment.objects.create(
+        self.comment = CommentFactory.create(
             ticket=self.tickets[0], user=self.users[0])
 
         self.actions = [
@@ -92,20 +84,41 @@ class TicketDigestTestCase(TestCase):
         self.assertEqual(len(digest1), 2)
         self.assertIn(request_host, str(digest1))
         self.assertIn(request_host, str(digest2))
-        self.assertIn('email1 added a comment to ticket', str(digest1))
         self.assertIn(
-            'email1 added email2 as a responder to ticket', str(digest1))
+            u'{} added a comment to ticket'.format(self.users[0].display_name),
+            u' '.join(digest1)
+        )
+        self.assertIn(
+            u'{} added {} as a responder to ticket'.format(
+                self.users[0].display_name, self.users[1].display_name
+            ),
+            u' '.join(digest1)
+        )
 
         self.assertEqual(email[self.users[1].id]['user'], self.users[1])
         self.assertEqual(len(digest2), 5)
-        self.assertIn('email1 added a comment to ticket', str(digest1))
         self.assertIn(
-            'email1 added email2 as a responder to ticket', str(digest2))
+            u'{} added a comment to ticket'.format(self.users[0].display_name),
+            u' '.join(digest1)
+        )
         self.assertIn(
-            'email2 updated status to in-progress to ticket', str(digest2))
-        self.assertIn('email2 did reopen the ticket', str(digest2))
+            u'{} added {} as a responder to ticket'.format(
+                self.users[0].display_name, self.users[1].display_name
+            ),
+            u' '.join(digest2)
+        )
         self.assertIn(
-            'email2 marked pending (waiting for third-party actions) '
-            'the ticket',
-            str(digest2)
+            u'{} updated status to in-progress to ticket'.format(
+                self.users[1].display_name
+            ),
+            u' '.join(digest2)
+        )
+        self.assertIn(
+            u'{} did reopen the ticket'.format(self.users[1].display_name),
+            u' '.join(digest2)
+        )
+        self.assertIn(
+            u'{} marked pending (waiting for third-party actions) '
+            u'the ticket'.format(self.users[1].display_name),
+            u' '.join(digest2)
         )

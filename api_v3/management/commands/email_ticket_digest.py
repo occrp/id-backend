@@ -19,8 +19,8 @@ class Command(BaseCommand):
     # Email item template. Example:
     #   (01.12.1987 22:01): John updated the status to ticket ID: 99
     ITEM_TEMPLATE = (
-        '({date}): {name} {action} {thing} {prep} ticket '
-        'http://{request_host}/tickets/view/{ticket}'
+        u'({date}): {name} {action} {thing} {prep} ticket '
+        u'http://{request_host}/tickets/view/{ticket}'
     )
 
     def add_arguments(self, parser):
@@ -120,7 +120,7 @@ class Command(BaseCommand):
         if len(verb) == 3 and '_' in verb[2]:
             attr_name, attr_val = verb[2].split('_')
             data['action'] = 'updated'
-            data['thing'] = '{} to {}'.format(attr_name, attr_val)
+            data['thing'] = u'{} to {}'.format(attr_name, attr_val)
         elif len(verb) == 3 and 'reopen' in verb:
             data['action'] = 'did'
             data['thing'] = 'reopen'
@@ -135,7 +135,7 @@ class Command(BaseCommand):
         # If a new responder was added
         elif data['thing'] == 'responder':
             data['action'] = 'added'
-            data['thing'] = '{} as a responder'.format(
+            data['thing'] = u'{} as a responder'.format(
                 action.action.display_name)
         # If a ticket was created, do not include in the digest
         elif data['thing'] == 'ticket':
