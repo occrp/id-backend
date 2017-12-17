@@ -471,8 +471,17 @@ class RespondersEndpoint(
 
 
 class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
+
+    class Pagination(JSONApiEndpoint.pagination_class):
+        page_size = None
+
+    class TicketStat(dict):
+        __getattr__ = dict.__getitem__
+        __setattr__ = dict.__setitem__
+
     queryset = Ticket.objects.all()
     serializer_class = TicketStatSerializer
+    pagination_class = Pagination
     filter_fields = {
         'created_at': ['gte', 'lte'],
         'country': ['exact'],
@@ -481,10 +490,6 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         'country': ['exact'],
         'responders__user': ['exact', 'isnull']
     }
-
-    class TicketStat(dict):
-        __getattr__ = dict.__getitem__
-        __setattr__ = dict.__setitem__
 
     def get_queryset(self):
         queryset = super(TicketStatsEndpoint, self).get_queryset()
