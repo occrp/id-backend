@@ -313,6 +313,13 @@ class ActionSerializer(serializers.ModelSerializer):
 
 class TicketStatSerializer(serializers.Serializer):
 
+    included_serializers = {
+        'profile': ProfileSerializer,
+    }
+
+    class Meta:
+        resource_name = 'ticket-stats'
+
     id = fields.SerializerMethodField()
     date = serializers.DateTimeField()
     count = serializers.IntegerField()
