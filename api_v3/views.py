@@ -474,7 +474,8 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
     queryset = Ticket.objects.all()
     serializer_class = TicketStatSerializer
     filter_fields = {
-        'created_at': ['range'],
+        'created_at': ['gte', 'lte'],
+        'country': ['exact'],
         'status': ['in'],
         'kind': ['exact'],
         'country': ['exact'],
