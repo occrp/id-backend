@@ -515,9 +515,10 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         queryset = self.filter_queryset(self.get_queryset())
 
         if not params.get('responders__user') and not params.get('country'):
-            responder_ids = Responder.objects.values_list(
-                'user_id', flat=1).distinct()
-            countries = Ticket.objects.filter(
+            responder_ids = queryset.filter(
+                responders__user__isnull=False
+            ).values_list('responders__user', flat=1).distinct()
+            countries = queryset.filter(
                 country__isnull=False
             ).values_list('country', flat=1).distinct()
         elif params.get('responders__user'):
