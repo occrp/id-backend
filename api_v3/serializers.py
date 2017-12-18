@@ -344,19 +344,19 @@ class TicketStatSerializer(serializers.Serializer):
         params = self.context.get('params')
 
         # Do not include meta on when no data, profile or countries included.
-        if(not self.instance
-           or params.get('responders__user')
-           or params.get('country')
+        if(not self.instance or
+           params.get('responders__user') or
+           params.get('country')
            ):
                 return {}
 
         return {
-            'totals': self.context.get('totals'),
+            'total': self.context.get('totals'),
             'countries': self.context.get('countries'),
             'staff_profile_ids': self.context.get('responder_ids'),
             'start_date': params.get('created_at__gte'),
             'end_date': (
-                params.get('created_at__lte')
-                or datetime.utcnow().isoformat()
+                params.get('created_at__lte') or
+                datetime.utcnow().isoformat()
             )
         }
