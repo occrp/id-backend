@@ -492,15 +492,14 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
     }
 
     def list(self, request, *args, **kwargs):
-        queryset = super(TicketStatsEndpoint, self).get_queryset()
-
         if not request.user.is_superuser:
-            return queryset.none()
+            return response.Response(self.serializer_class([], many=True).data)
 
         profile = None
         countries = []
         responder_ids = []
         params = self.extract_filter_params(self.request)
+        queryset = self.filter_queryset(self.get_queryset())
 
         if not params.get('responders__user') and not params.get('country'):
             responder_ids = Responder.objects.values_list(
