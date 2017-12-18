@@ -345,5 +345,11 @@ class TicketStatSerializer(serializers.Serializer):
             return {}
 
         ids = Responder.objects.values_list('user_id', flat=1).distinct()
+        countries = Ticket.objects.filter(
+            country__isnull=False
+        ).values_list('country', flat=1).distinct()
 
-        return {'staff_profile_ids': ids}
+        return {
+            'staff_profile_ids': ids,
+            'countries': countries
+        }

@@ -1149,6 +1149,10 @@ class TicketStatsEndpointTestCase(ApiTestCase):
             sorted(body['meta']['staff-profile-ids']),
             sorted([self.users[1].id, self.users[2].id])
         )
+        self.assertEqual(
+            sorted(body['meta']['countries']),
+            sorted(set(map(lambda t: t.country, self.tickets)))
+        )
         self.assertEqual(len(body['data']), 2)
 
         self.assertEqual(body['data'][0]['attributes']['count'], 1)
