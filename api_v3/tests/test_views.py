@@ -14,6 +14,7 @@ from rest_framework_json_api.utils import(
     get_resource_type_from_serializer, format_keys)
 
 
+from api_v3.factories import ProfileFactory, TicketFactory
 from api_v3.models import(
     Ticket, Profile, Responder, Attachment, Comment, Action)
 from api_v3.serializers import(
@@ -1084,37 +1085,37 @@ class TicketStatsEndpointTestCase(ApiTestCase):
     def setUp(self):
         self.client = APIClient()
         self.users = [
-            Profile.objects.create(
-                email='email1',
-                last_login=datetime.utcnow()
-            ),
-            Profile.objects.create(
-                email='email2',
-                last_login=datetime.utcnow(),
-                is_staff=True
-            ),
+            ProfileFactory.create(),
+            ProfileFactory.create(is_staff=True),
+            ProfileFactory.create(is_staff=True),
         ]
 
         self.tickets = [
-            Ticket.objects.create(
-                background='test1',
+            TicketFactory.create(
                 requester=self.users[0],
                 status='cancelled',
+                deadline_at=(datetime.utcnow() - timedelta(days=3))
             ),
-            Ticket.objects.create(background='test2', requester=self.users[0]),
-            Ticket.objects.create(background='test3', requester=self.users[0]),
-            Ticket.objects.create(background='test4', requester=self.users[0]),
-            Ticket.objects.create(background='test5', requester=self.users[0]),
+            TicketFactory.create(
+                requester=self.users[0], deadline_at=None, status='new'),
+            TicketFactory.create(
+                requester=self.users[0], deadline_at=None, status='new'),
+            TicketFactory.create(
+                requester=self.users[0], deadline_at=None, status='new'),
+            TicketFactory.create(
+                requester=self.users[0], deadline_at=None, status='new'),
         ]
 
-        self.tickets[0].created_at=(datetime.utcnow() - timedelta(days=3))
+        self.tickets[0].created_at=(datetime.utcnow() - timedelta(days=5))
         self.tickets[0].save()
 
         self.responders = [
             Responder.objects.create(
                 ticket=self.tickets[0], user=self.users[1]),
             Responder.objects.create(
-                ticket=self.tickets[1], user=self.users[1])
+                ticket=self.tickets[1], user=self.users[1]),
+            Responder.objects.create(
+                ticket=self.tickets[1], user=self.users[2])
         ]
 
     def test_list_anonymous(self):
@@ -1144,18 +1145,23 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         body = json.loads(response.content)
 
-        self.assertEqual(body['meta']['staff-profile-ids'], [self.users[1].id])
+        self.assertEqual(
+            sorted(body['meta']['staff-profile-ids']),
+            sorted([self.users[1].id, self.users[2].id])
+        )
         self.assertEqual(len(body['data']), 2)
 
         self.assertEqual(body['data'][0]['attributes']['count'], 1)
         self.assertEqual(body['data'][0]['attributes']['status'], 'cancelled')
-        self.assertEqual(body['data'][0]['attributes']['avg-time'], 3)
+        self.assertEqual(body['data'][0]['attributes']['avg-time'], 5)
+        self.assertEqual(body['data'][0]['attributes']['past-deadline'], 1)
         self.assertEqual(
             body['data'][0]['attributes']['date'], '2017-12-01T00:00:00')
 
         self.assertEqual(body['data'][1]['attributes']['count'], 4)
         self.assertEqual(body['data'][1]['attributes']['status'], 'new')
         self.assertEqual(body['data'][1]['attributes']['avg-time'], 0)
+        self.assertEqual(body['data'][1]['attributes']['past-deadline'], 0)
         self.assertEqual(
             body['data'][1]['attributes']['date'], '2017-12-01T00:00:00')
 
@@ -1178,12 +1184,14 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(body['data'][0]['attributes']['count'], 1)
         self.assertEqual(body['data'][0]['attributes']['status'], 'cancelled')
-        self.assertEqual(body['data'][0]['attributes']['avg-time'], 3)
+        self.assertEqual(body['data'][0]['attributes']['avg-time'], 5)
+        self.assertEqual(body['data'][0]['attributes']['past-deadline'], 1)
         self.assertEqual(
             body['data'][0]['attributes']['date'], '2017-12-01T00:00:00')
 
         self.assertEqual(body['data'][1]['attributes']['count'], 1)
         self.assertEqual(body['data'][1]['attributes']['status'], 'new')
         self.assertEqual(body['data'][1]['attributes']['avg-time'], 0)
+        self.assertEqual(body['data'][1]['attributes']['past-deadline'], 0)
         self.assertEqual(
             body['data'][1]['attributes']['date'], '2017-12-01T00:00:00')

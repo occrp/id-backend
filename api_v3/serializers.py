@@ -325,6 +325,7 @@ class TicketStatSerializer(serializers.Serializer):
     count = serializers.IntegerField()
     status = serializers.CharField(source='ticket_status')
     avg_time = fields.SerializerMethodField()
+    past_deadline = fields.IntegerField()
     profile = ProfileSerializer()
 
     def get_id(self, data):
@@ -343,6 +344,6 @@ class TicketStatSerializer(serializers.Serializer):
         if self.instance and self.instance[0].get('profile'):
             return {}
 
-        ids = Profile.objects.filter(is_staff=True).values_list('id', flat=1)
+        ids = Responder.objects.values_list('user_id', flat=1).distinct()
 
         return {'staff_profile_ids': ids}

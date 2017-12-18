@@ -1,8 +1,8 @@
-from collections import namedtuple
 from datetime import datetime
 import os.path
 
-from django.db.models import Q, F, Func, Value, Count, Avg
+from django.db.models import(
+    Q, F, Func, Value, Count, Avg, Sum, Case, IntegerField, When)
 from django.db.models.functions import Trunc
 from django.core.mail import send_mass_mail
 from django.template.loader import render_to_string
@@ -501,8 +501,16 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
             date=Trunc('created_at', 'month'),
             count=Count('id'),
             ticket_status=F('status'),
-            avg_time=Avg((F('updated_at') - F('created_at')))
-        ).values('date', 'count', 'ticket_status', 'avg_time')
+            avg_time=Avg((F('updated_at') - F('created_at'))),
+            past_deadline=Sum(
+                Case(
+                    When(updated_at__gt=F('deadline_at'), then=1),
+                    When(updated_at__lt=F('deadline_at'), then=0),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            )
+        ).values('date', 'count', 'ticket_status', 'avg_time', 'past_deadline')
 
         # Do not group by all the aggregations
         queryset.query.group_by = queryset.query.group_by[-2:]
@@ -517,7 +525,12 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
             profile = Profile.objects.get(id=params.get('responders__user'))
 
         stats = map(
-            lambda s: self.TicketStat(s, profile=profile, params=params, pk=None),
+            lambda stat: self.TicketStat(
+                stat,
+                profile=profile,
+                params=params,
+                pk=None
+            ),
             list(queryset)
         )
 
