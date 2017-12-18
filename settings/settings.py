@@ -395,10 +395,6 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False,
         },
-        'django.db.backends': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-        },
         '': {  # root logger defined by empty string
             'handlers': ['console', 'file', 'mail_admins'],
             'level': 'DEBUG',
