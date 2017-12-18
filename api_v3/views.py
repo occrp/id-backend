@@ -520,7 +520,7 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
             ).values_list('responders__user', flat=1).distinct()
             countries = queryset.filter(
                 country__isnull=False
-            ).values_list('country', flat=1).distinct()
+            ).values_list('country', flat=1).order_by('country').distinct()
         elif params.get('responders__user'):
             profile = Profile.objects.get(id=params.get('responders__user'))
 
