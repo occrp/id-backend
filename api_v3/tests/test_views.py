@@ -1145,6 +1145,12 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         body = json.loads(response.content)
 
+        self.assertEqual(len(body['meta']['totals']), 9)
+        self.assertEqual(body['meta']['totals']['new'], 4)
+        self.assertEqual(body['meta']['totals']['open'], 4)
+        self.assertEqual(body['meta']['totals']['cancelled'], 1)
+        self.assertEqual(body['meta']['totals']['resolved'], 1)
+
         self.assertEqual(
             sorted(body['meta']['staff-profile-ids']),
             sorted([self.users[1].id, self.users[2].id])
@@ -1160,14 +1166,20 @@ class TicketStatsEndpointTestCase(ApiTestCase):
         self.assertEqual(body['data'][0]['attributes']['avg-time'], 5)
         self.assertEqual(body['data'][0]['attributes']['past-deadline'], 1)
         self.assertEqual(
-            body['data'][0]['attributes']['date'], '2017-12-01T00:00:00')
+            body['data'][0]['attributes']['date'],
+            datetime.utcnow().replace(
+                day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
+        )
 
         self.assertEqual(body['data'][1]['attributes']['count'], 4)
         self.assertEqual(body['data'][1]['attributes']['status'], 'new')
         self.assertEqual(body['data'][1]['attributes']['avg-time'], 0)
         self.assertEqual(body['data'][1]['attributes']['past-deadline'], 0)
         self.assertEqual(
-            body['data'][1]['attributes']['date'], '2017-12-01T00:00:00')
+            body['data'][1]['attributes']['date'],
+            datetime.utcnow().replace(
+                day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
+        )
 
     def test_list_superuser_filter_by_start_end_dates(self):
         self.users[0].is_superuser = True
@@ -1209,11 +1221,17 @@ class TicketStatsEndpointTestCase(ApiTestCase):
         self.assertEqual(body['data'][0]['attributes']['avg-time'], 5)
         self.assertEqual(body['data'][0]['attributes']['past-deadline'], 1)
         self.assertEqual(
-            body['data'][0]['attributes']['date'], '2017-12-01T00:00:00')
+            body['data'][0]['attributes']['date'],
+            datetime.utcnow().replace(
+                day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
+        )
 
         self.assertEqual(body['data'][1]['attributes']['count'], 1)
         self.assertEqual(body['data'][1]['attributes']['status'], 'new')
         self.assertEqual(body['data'][1]['attributes']['avg-time'], 0)
         self.assertEqual(body['data'][1]['attributes']['past-deadline'], 0)
         self.assertEqual(
-            body['data'][1]['attributes']['date'], '2017-12-01T00:00:00')
+            body['data'][1]['attributes']['date'],
+            datetime.utcnow().replace(
+                day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
+        )
