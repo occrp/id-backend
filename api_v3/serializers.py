@@ -343,12 +343,9 @@ class TicketStatSerializer(serializers.Serializer):
         """Adds extra root meta details."""
         params = self.context.get('params')
 
-        # Do not include meta on when no data, profile or countries included.
-        if(not self.instance or
-           params.get('responders__user') or
-           params.get('country')
-           ):
-                return {}
+        # Do not include meta on when no data.
+        if not self.instance:
+            return {}
 
         return {
             'total': self.context.get('totals'),

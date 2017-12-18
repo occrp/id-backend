@@ -1220,7 +1220,15 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         body = json.loads(response.content)
 
-        self.assertNotIn('meta', body)
+        self.assertEqual(len(body['meta']['total']), 9)
+        self.assertEqual(body['meta']['total']['new'], 1)
+        self.assertEqual(body['meta']['total']['open'], 1)
+        self.assertEqual(body['meta']['total']['cancelled'], 1)
+        self.assertEqual(body['meta']['total']['resolved'], 1)
+
+        self.assertEqual(body['meta']['staff-profile-ids'], [])
+        self.assertEqual(body['meta']['countries'], [])
+
         self.assertEqual(len(body['data']), 2)
 
         self.assertEqual(body['data'][0]['attributes']['count'], 1)
