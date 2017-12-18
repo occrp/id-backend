@@ -491,13 +491,86 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         'responders__user': ['exact', 'isnull']
     }
 
-    def get_queryset(self):
+    def list(self, request, *args, **kwargs):
         queryset = super(TicketStatsEndpoint, self).get_queryset()
 
-        if not self.request.user.is_superuser:
+        if not request.user.is_superuser:
             return queryset.none()
 
-        queryset = queryset.annotate(
+        profile = None
+        countries = []
+        responder_ids = []
+        params = self.extract_filter_params(self.request)
+
+        if not params.get('responders__user') and not params.get('country'):
+            responder_ids = Responder.objects.values_list(
+                'user_id', flat=1).distinct()
+            countries = Ticket.objects.filter(
+                country__isnull=False
+            ).values_list('country', flat=1).distinct()
+        elif params.get('responders__user'):
+            profile = Profile.objects.get(id=params.get('responders__user'))
+
+        totals = queryset.aggregate(
+            all=Count('id'),
+            new=Sum(
+                Case(
+                    When(status='new', then=1), default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            in_progress=Sum(
+                Case(
+                    When(status='in-progress', then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            pending=Sum(
+                Case(
+                    When(status='pending', then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            closed=Sum(
+                Case(
+                    When(status='closed', then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            cancelled=Sum(
+                Case(
+                    When(status='cancelled', then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            open=Sum(
+                Case(
+                    When(status__in=['new', 'in-progress', 'pending'], then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            resolved=Sum(
+                Case(
+                    When(status__in=['closed', 'cancelled'], then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            past_deadline=Sum(
+                Case(
+                    When(updated_at__gt=F('deadline_at'), then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            )
+        )
+
+        aggregated = queryset.annotate(
             date=Trunc('created_at', 'month'),
             count=Count('id'),
             ticket_status=F('status'),
@@ -505,36 +578,25 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
             past_deadline=Sum(
                 Case(
                     When(updated_at__gt=F('deadline_at'), then=1),
-                    When(updated_at__lt=F('deadline_at'), then=0),
                     default=0,
                     output_field=IntegerField()
                 )
             )
         ).values('date', 'count', 'ticket_status', 'avg_time', 'past_deadline')
 
-        # Do not group by all the aggregations
-        queryset.query.group_by = queryset.query.group_by[-2:]
-
-        return queryset
-
-    def get_serializer(self, queryset, *args, **kwargs):
-        profile = None
-        params = self.extract_filter_params(self.request)
-
-        if params.get('responders__user'):
-            profile = Profile.objects.get(id=params.get('responders__user'))
+        # Do not group by automatically.
+        aggregated.query.group_by = aggregated.query.group_by[-2:]
 
         stats = map(
-            lambda stat: self.TicketStat(
-                stat,
-                profile=profile,
-                params=params,
-                pk=None
-            ),
-            list(queryset)
+            lambda stat: self.TicketStat(stat, profile=profile, pk=None),
+            list(aggregated)
         )
 
-        serializer = super(TicketStatsEndpoint, self).get_serializer(
-            stats, *args, **kwargs)
+        serializer = self.serializer_class(stats, many=True, context={
+            'params': params,
+            'totals': totals,
+            'countries': countries,
+            'responder_ids': responder_ids,
+        })
 
         return response.Response(serializer.data)
