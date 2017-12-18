@@ -1231,6 +1231,8 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(len(body['data']), 2)
 
+        self.assertNotEqual(body['data'][0]['id'], body['data'][1]['id'])
+
         self.assertEqual(body['data'][0]['attributes']['count'], 1)
         self.assertEqual(body['data'][0]['attributes']['status'], 'cancelled')
         self.assertEqual(body['data'][0]['attributes']['avg-time'], 5)

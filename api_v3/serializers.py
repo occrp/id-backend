@@ -330,7 +330,12 @@ class TicketStatSerializer(serializers.Serializer):
     profile = ProfileSerializer()
 
     def get_id(self, data):
-        pk = hashlib.sha256(str(data.get('params'))).hexdigest()
+        pk = hashlib.sha256(
+            str(self.context.get('params')) +
+            str(data.get('date')) +
+            data.get('ticket_status') +
+            str(data.profile.id if data.get('profile') else '')
+        ).hexdigest()
         # Leave this mocked pk, or DRF will complain
         data.pk = pk
         return pk
