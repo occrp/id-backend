@@ -341,21 +341,16 @@ class TicketStatSerializer(serializers.Serializer):
 
     def get_root_meta(self, data, many):
         """Adds extra root meta details."""
-        if self.instance and self.instance[0].get('profile'):
+        params = self.context['params']
+
+        # Do not include meta when profile or countries are included.
+        if params.get('responders__user') or params.get('country'):
             return {}
 
-        params = {}
-        ids = Responder.objects.values_list('user_id', flat=1).distinct()
-        countries = Ticket.objects.filter(
-            country__isnull=False
-        ).values_list('country', flat=1).distinct()
-
-        if self.instance:
-            params = self.instance[0].params
-
         return {
-            'staff_profile_ids': ids,
-            'countries': countries,
+            'totals': self.context.get('totals'),
+            'countries': self.context.get('countries'),
+            'staff_profile_ids': self.context.get('responder_ids'),
             'start_date': params.get('created_at__gte'),
             'end_date': (
                 params.get('created_at__lte')
