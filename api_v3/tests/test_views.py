@@ -1195,12 +1195,13 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         body = json.loads(response.content)
 
-        one_month_ago = datetime.utcnow() - timedelta(days=31)
+        three_months_ago = (
+            datetime.utcnow().replace(day=1) - timedelta(days=28*3))
 
         self.assertEqual(body['meta']['end-date'], '3000-01-01T00:00:00')
         self.assertEqual(
             body['meta']['start-date'],
-            one_month_ago.replace(
+            three_months_ago.replace(
                 day=1, hour=0, minute=0, second=0, microsecond=0
             ).isoformat()
         )

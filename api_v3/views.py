@@ -497,8 +497,9 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
             TicketStatsEndpoint, self).extract_filter_params(request)
 
         if not params.get('created_at__gte'):
-            one_month_ago = datetime.utcnow() - timedelta(days=31)
-            params['created_at__gte'] = one_month_ago.replace(
+            three_months_ago = (
+                datetime.utcnow().replace(day=1) - timedelta(days=28*3))
+            params['created_at__gte'] = three_months_ago.replace(
                 day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
 
         return params
