@@ -1169,6 +1169,24 @@ class TicketStatsEndpointTestCase(ApiTestCase):
         self.assertEqual(
             body['data'][1]['attributes']['date'], '2017-12-01T00:00:00')
 
+    def test_list_superuser_filter_by_start_end_dates(self):
+        self.users[0].is_superuser = True
+        self.users[0].save()
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(
+            reverse('ticket_stats-list') +
+            '?filter[created_at__gte]=1900-01-01T00:00:00'
+            '&filter[created_at__lte]=3000-01-01T00:00:00'
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        body = json.loads(response.content)
+
+        self.assertEqual(body['meta']['start-date'], '1900-01-01T00:00:00')
+        self.assertEqual(body['meta']['end-date'], '3000-01-01T00:00:00')
+
     def test_list_superuser_filter_by_responder(self):
         self.users[0].is_superuser = True
         self.users[0].save()

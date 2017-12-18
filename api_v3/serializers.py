@@ -1,5 +1,6 @@
 import os.path
 import hashlib
+from datetime import datetime
 
 import magic
 from django.urls import reverse
@@ -340,16 +341,24 @@ class TicketStatSerializer(serializers.Serializer):
 
     def get_root_meta(self, data, many):
         """Adds extra root meta details."""
-
         if self.instance and self.instance[0].get('profile'):
             return {}
 
+        params = {}
         ids = Responder.objects.values_list('user_id', flat=1).distinct()
         countries = Ticket.objects.filter(
             country__isnull=False
         ).values_list('country', flat=1).distinct()
 
+        if self.instance:
+            params = self.instance[0].params
+
         return {
             'staff_profile_ids': ids,
-            'countries': countries
+            'countries': countries,
+            'start_date': params.get('created_at__gte'),
+            'end_date': (
+                params.get('created_at__lte')
+                or datetime.utcnow().isoformat()
+            )
         }
