@@ -1188,16 +1188,22 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         response = self.client.get(
             reverse('ticket_stats-list') +
-            '?filter[created_at__gte]=1900-01-01T00:00:00'
-            '&filter[created_at__lte]=3000-01-01T00:00:00'
+            '?filter[created_at__lte]=3000-01-01T00:00:00'
         )
 
         self.assertEqual(response.status_code, 200)
 
         body = json.loads(response.content)
 
-        self.assertEqual(body['meta']['start-date'], '1900-01-01T00:00:00')
+        one_month_ago = datetime.utcnow() - timedelta(days=31)
+
         self.assertEqual(body['meta']['end-date'], '3000-01-01T00:00:00')
+        self.assertEqual(
+            body['meta']['start-date'],
+            one_month_ago.replace(
+                day=1, hour=0, minute=0, second=0, microsecond=0
+            ).isoformat()
+        )
 
     def test_list_superuser_filter_by_responder(self):
         self.users[0].is_superuser = True

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import os.path
 
 from django.db.models import(
@@ -490,6 +490,18 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         'country': ['exact'],
         'responders__user': ['exact', 'isnull']
     }
+
+    def extract_filter_params(self, request):
+        """Set default filter values."""
+        params = super(
+            TicketStatsEndpoint, self).extract_filter_params(request)
+
+        if not params.get('created_at__gte'):
+            one_month_ago = datetime.utcnow() - timedelta(days=31)
+            params['created_at__gte'] = one_month_ago.replace(
+                day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
+
+        return params
 
     def list(self, request, *args, **kwargs):
         if not request.user.is_superuser:
