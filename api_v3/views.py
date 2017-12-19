@@ -3,7 +3,7 @@ import os.path
 
 from django.db.models import(
     Q, F, Func, Value, Count, Avg, Sum, Case, IntegerField, When)
-from django.db.models.functions import Trunc
+from django.db.models.functions import Trunc, Extract
 from django.core.mail import send_mass_mail
 from django.template.loader import render_to_string
 from django.http import FileResponse
@@ -12,7 +12,8 @@ from rest_framework import(
 
 from settings.settings import DEFAULT_FROM_EMAIL
 from .support import JSONApiEndpoint
-from .models import Profile, Ticket, Action, Attachment, Comment, Responder
+from .models import(
+    Profile, Ticket, Action, Attachment, Comment, Responder)
 from .management.commands.email_ticket_digest import Command
 from .serializers import(
     ProfileSerializer,
@@ -567,9 +568,35 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
                     output_field=IntegerField()
                 )
             ),
+            avg_time_open=Avg(
+                Case(
+                    When(
+                        status__in=['new', 'in-progress', 'pending'],
+                        then=Extract(
+                            (F('updated_at') - F('created_at')) / (60 * 60),
+                            lookup_name='epoch'
+                        )
+                    ),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
             resolved=Sum(
                 Case(
                     When(status__in=['closed', 'cancelled'], then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            avg_time_resolved=Avg(
+                Case(
+                    When(
+                        status__in=['closed', 'cancelled'],
+                        then=Extract(
+                            (F('updated_at') - F('created_at')) / (60 * 60),
+                            lookup_name='epoch'
+                        )
+                    ),
                     default=0,
                     output_field=IntegerField()
                 )
@@ -587,7 +614,12 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
             date=Trunc('created_at', 'month'),
             count=Count('id'),
             ticket_status=F('status'),
-            avg_time=Avg((F('updated_at') - F('created_at'))),
+            avg_time=Avg(
+                Extract(
+                    (F('updated_at') - F('created_at')) / (60 * 60),
+                    lookup_name='epoch'
+                )
+            ),
             past_deadline=Sum(
                 Case(
                     When(updated_at__gt=F('deadline_at'), then=1),

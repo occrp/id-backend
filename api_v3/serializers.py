@@ -325,7 +325,7 @@ class TicketStatSerializer(serializers.Serializer):
     date = serializers.DateTimeField()
     count = serializers.IntegerField()
     status = serializers.CharField(source='ticket_status')
-    avg_time = fields.SerializerMethodField()
+    avg_time = fields.IntegerField()
     past_deadline = fields.IntegerField()
     profile = ProfileSerializer()
 
@@ -339,10 +339,6 @@ class TicketStatSerializer(serializers.Serializer):
         # Leave this mocked pk, or DRF will complain
         data.pk = pk
         return pk
-
-    def get_avg_time(self, data):
-        """Returns the avg. time in hours."""
-        return int(data.get('avg_time').total_seconds() // (60 * 60))
 
     def get_root_meta(self, data, many):
         """Adds extra root meta details."""

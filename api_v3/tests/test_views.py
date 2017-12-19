@@ -1145,7 +1145,8 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         body = json.loads(response.content)
 
-        self.assertEqual(len(body['meta']['total']), 9)
+        self.assertEqual(len(body['meta']['total']), 11)
+
         self.assertEqual(body['meta']['total']['new'], 4)
         self.assertEqual(body['meta']['total']['open'], 4)
         self.assertEqual(body['meta']['total']['cancelled'], 1)
@@ -1220,11 +1221,14 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         body = json.loads(response.content)
 
-        self.assertEqual(len(body['meta']['total']), 9)
+        self.assertEqual(len(body['meta']['total']), 11)
+
         self.assertEqual(body['meta']['total']['new'], 1)
         self.assertEqual(body['meta']['total']['open'], 1)
+        self.assertEqual(body['meta']['total']['avg-time-open'], 0.0)
         self.assertEqual(body['meta']['total']['cancelled'], 1)
         self.assertEqual(body['meta']['total']['resolved'], 1)
+        self.assertEqual(body['meta']['total']['avg-time-resolved'], 60.0)
 
         self.assertEqual(body['meta']['staff-profile-ids'], [])
         self.assertEqual(body['meta']['countries'], [])
