@@ -341,8 +341,8 @@ class TicketStatSerializer(serializers.Serializer):
         return pk
 
     def get_avg_time(self, data):
-        """Returns the avg. time in days."""
-        return data.get('avg_time').days
+        """Returns the avg. time in hours."""
+        return int(data.get('avg_time').total_seconds() // (60 * 60))
 
     def get_root_meta(self, data, many):
         """Adds extra root meta details."""

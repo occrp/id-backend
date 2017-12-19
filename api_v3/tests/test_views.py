@@ -1163,7 +1163,7 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(body['data'][0]['attributes']['count'], 1)
         self.assertEqual(body['data'][0]['attributes']['status'], 'cancelled')
-        self.assertEqual(body['data'][0]['attributes']['avg-time'], 5)
+        self.assertEqual(body['data'][0]['attributes']['avg-time'], 120)
         self.assertEqual(body['data'][0]['attributes']['past-deadline'], 1)
         self.assertEqual(
             body['data'][0]['attributes']['date'],
@@ -1235,7 +1235,7 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(body['data'][0]['attributes']['count'], 1)
         self.assertEqual(body['data'][0]['attributes']['status'], 'cancelled')
-        self.assertEqual(body['data'][0]['attributes']['avg-time'], 5)
+        self.assertEqual(body['data'][0]['attributes']['avg-time'], 120)
         self.assertEqual(body['data'][0]['attributes']['past-deadline'], 1)
         self.assertEqual(
             body['data'][0]['attributes']['date'],
