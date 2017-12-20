@@ -243,6 +243,7 @@ class ActivitiesEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
 class AttachmentsEndpoint(
         JSONApiEndpoint,
         mixins.CreateModelMixin,
+        mixins.DestroyModelMixin,
         viewsets.ReadOnlyModelViewSet):
 
     queryset = Attachment.objects.all()
@@ -282,6 +283,20 @@ class AttachmentsEndpoint(
             )
 
             return attachment
+
+    def perform_destroy(self, instance):
+        """Make sure only super user or author can remove the attachment."""
+        if not self.request.user.is_superuser and (
+                self.request.user != instance.user):
+            raise exceptions.NotFound()
+
+        activity = Action.objects.create(
+            actor=self.request.user, target=instance.ticket,
+            action=instance.user, verb=self.action_name())
+
+        instance.delete()
+
+        return activity
 
 
 class DownloadEndpoint(viewsets.ViewSet):

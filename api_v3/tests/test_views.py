@@ -793,6 +793,65 @@ class AttachmentsEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 422)
         self.assertEqual(Attachment.objects.count(), attachments_count)
 
+    def test_delete_non_superuser(self):
+        self.client.force_authenticate(self.users[1])
+
+        response = self.client.delete(
+            reverse('attachment-detail', args=[self.attachments[0].id]),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_delete_superuser(self):
+        self.users[1].is_superuser = True
+        self.users[1].save()
+        attachments_count = Attachment.objects.count()
+        actions_count = Action.objects.filter(
+            target_object_id=self.tickets[0].id,
+            verb='attachment:destroy'
+        ).count()
+
+        self.client.force_authenticate(self.users[1])
+
+        response = self.client.delete(
+            reverse('attachment-detail', args=[self.attachments[0].id]),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(Attachment.objects.count(), attachments_count - 1)
+        self.assertEqual(
+            Action.objects.filter(
+                target_object_id=self.tickets[0].id,
+                verb='attachment:destroy'
+            ).count(),
+            actions_count + 1
+        )
+
+    def test_delete_attachment_author(self):
+        attachments_count = Attachment.objects.count()
+        actions_count = Action.objects.filter(
+            target_object_id=self.tickets[0].id,
+            verb='attachment:destroy'
+        ).count()
+
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.delete(
+            reverse('attachment-detail', args=[self.attachments[0].id]),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(Attachment.objects.count(), attachments_count - 1)
+        self.assertEqual(
+            Action.objects.filter(
+                target_object_id=self.tickets[0].id,
+                verb='attachment:destroy'
+            ).count(),
+            actions_count + 1
+        )
 
 class CommentsEndpointTestCase(ApiTestCase):
 
