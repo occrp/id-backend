@@ -113,16 +113,18 @@ class TicketsEndpoint(
         ):
             raise exceptions.NotFound()
 
+        comment = None
+        status = serializer.validated_data.get('status')
         deadline_at = serializer.validated_data.get('deadline_at')
 
-        if deadline_at and deadline_at < datetime.utcnow():
+        if status == Ticket.STATUSES[3][0]:
+            # If we're closing the ticket, we do not check for the deadline.
+            pass
+        elif deadline_at and deadline_at < datetime.utcnow():
             raise serializers.ValidationError([{
                 'data/attributes/deadline_at':
                 'The date can not be in the past.'
             }])
-
-        comment = None
-        status = serializer.validated_data.get('status')
 
         if serializer.instance.status != status:
             verb = '{}:status_{}'.format(self.action_name(), status)
