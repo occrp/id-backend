@@ -1,10 +1,10 @@
 [run]
-omit =
-    test*.py
-
-[report]
-exclude_lines =
-    pragma: no cover
-    def __repr__
-    raise NotImplementedError
-    if __name__ == .__main__.:
+branch = True
+omit = *migrations*,
+       *urls*,
+       *test*,
+       *admin*,
+       ./manage.py,
+       ./api_v3/config/*,
+       *wsgi.py,
+       *__init__*
