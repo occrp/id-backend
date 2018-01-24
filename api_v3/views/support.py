@@ -10,15 +10,14 @@ import rest_framework_json_api.renderers
 import rest_framework_json_api.pagination
 import rest_framework_json_api.utils
 import django_filters.rest_framework
-from oauth2_provider.ext.rest_framework import OAuth2Authentication
 from rest_framework.status import HTTP_422_UNPROCESSABLE_ENTITY
 from querystring_parser import parser as qs_parser
 from django.utils.six.moves.urllib.parse import unquote as url_unquote
 from django.utils.encoding import force_unicode
 
-from settings.settings import DEBUG, TESTING
+from django.conf import settings
 
-from .models import Profile, Attachment, Comment, Action
+from api_v3.models import Profile, Attachment, Comment, Action
 
 
 class DjangoFilterBackend(django_filters.rest_framework.DjangoFilterBackend):
@@ -106,12 +105,11 @@ class JSONApiEndpoint(object):
         rest_framework.renderers.BrowsableAPIRenderer
     ])
 
-    if (not DEBUG) or TESTING:
+    if (not settings.DEBUG):
         renderer_classes.remove(rest_framework.renderers.BrowsableAPIRenderer)
 
     authentication_classes = [
         SessionAuthenticationSansCSRF,
-        OAuth2Authentication
     ]
     filter_backends = [
         OrderingFilter,

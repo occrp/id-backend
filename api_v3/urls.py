@@ -1,23 +1,22 @@
-import os.path
+from django.conf.urls import include, url
+from rest_framework.routers import DefaultRouter
 
-from django.conf import urls, settings
-from rest_framework import routers
-
-from .views import(
-    SessionEndpoint,
-    TicketsEndpoint,
-    ProfilesEndpoint,
-    AttachmentsEndpoint,
-    ActivitiesEndpoint,
-    CommentsEndpoint,
-    RespondersEndpoint,
-    DownloadEndpoint,
-    OpsEndpoint,
-    TicketStatsEndpoint
-)
+from .views.auth import LoginEndpoint, LogoutEndpoint
+from .views.attachments import AttachmentsEndpoint
+from .views.activities import ActivitiesEndpoint
+from .views.comments import CommentsEndpoint
+from .views.download import DownloadEndpoint
+from .views.ops import OpsEndpoint
+from .views.profiles import ProfilesEndpoint
+from .views.responders import RespondersEndpoint
+from .views.session import SessionEndpoint
+from .views.tickets import TicketsEndpoint
+from .views.ticket_stats import TicketStatsEndpoint
 
 
-router = routers.DefaultRouter(trailing_slash=False)
+router = DefaultRouter()
+router.register(r'login', LoginEndpoint, base_name='login')
+router.register(r'logout', LogoutEndpoint, base_name='login')
 router.register(r'tickets', TicketsEndpoint)
 router.register(r'profiles', ProfilesEndpoint)
 router.register(r'attachments', AttachmentsEndpoint)
@@ -30,5 +29,6 @@ router.register(r'ops', OpsEndpoint, base_name='ops')
 router.register(r'ticket-stats', TicketStatsEndpoint, base_name='ticket_stats')
 
 urlpatterns = [
-    urls.url(r'^', urls.include(router.urls)),
+    url('api/v3/', include(router.urls)),
+    url('', include('social_django.urls', namespace='social'))
 ]
