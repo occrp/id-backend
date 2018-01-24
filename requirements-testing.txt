@@ -1,4 +1,11 @@
 -r requirements.txt
 
-mock
-factory_boy
+# Developer Tools
+django-extensions==1.9.9
+ipython==5.5.0
+flake8==3.5.0
+
+# Testing
+mock==2.0.0
+factory-boy==2.9.2
+coverage==4.4.2
