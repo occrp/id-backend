@@ -1,3 +1,0 @@
-[submodule "static/frontend"]
-	path = static/frontend
-	url = https://github.com/occrp/id-frontend.git
