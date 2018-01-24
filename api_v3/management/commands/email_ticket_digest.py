@@ -1,12 +1,12 @@
 from datetime import datetime
 
 from django.db import models
+from django.conf import settings
 from django.core.mail import send_mass_mail
 from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
 
 from api_v3.models import Ticket, Action
-from settings.settings import DEFAULT_FROM_EMAIL
 
 
 class Command(BaseCommand):
@@ -97,7 +97,7 @@ class Command(BaseCommand):
                     'mail/ticket_digest.txt',
                     user_digest
                 ),
-                DEFAULT_FROM_EMAIL,
+                settings.DEFAULT_FROM_EMAIL,
                 [user_digest['user'].email]
             ])
 

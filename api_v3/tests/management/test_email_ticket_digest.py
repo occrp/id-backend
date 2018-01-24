@@ -1,7 +1,7 @@
 from datetime import datetime
 
-import mock
 from django.test import TestCase
+import mock
 
 from api_v3.models import Action, Responder
 from api_v3.management.commands.email_ticket_digest import Command
