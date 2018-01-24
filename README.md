@@ -1,65 +1,24 @@
-# Investigative Dashboard Project
+# The Investigative Dashboard Project
 
 [![Build Status](https://travis-ci.org/occrp/id-backend.svg?branch=master)](https://travis-ci.org/occrp/id-backend)
+OCCRP research desk application. Check out the project's [documentation](http://occrp.github.io/id-backend/).
 
-This is our research desk ticket software.
+# Prerequisites
 
-## Testing
+- [Docker](https://docs.docker.com/docker-for-mac/install/)
+- [Travis CLI](http://blog.travis-ci.com/2013-01-14-new-client/)
 
-Manually run tests with:
-```
- ./manage.py test
-```
+# Initialize the project
 
-## Running
-
-You can run the project either with `docker`, or standalone.
-
-Before you begin, copy the `id.env.tmpl` file and edit the settings in it.
-
-This files is used by Docker, in order to run the application locally,
-you will have to export the settings to environment variables manually.
-
-If you are running the application for the first time, you will need to
-run the migrations:
-```
-python manage.py migrate
-```
-
-Now you can start the application:
-
-```
- ./manage.py runserver
-```
-
-### In Production
-
-At this moment, there's no automated deployments.
-Please consider the steps below:
+Create a superuser to login to the admin:
 
 ```bash
-$ (your-production-server) git pull
-$ (your-production-server) git submodule update --init --recursive
-$ (your-production-server) docker-compose build # --no-cache
-$ (your-production-server) docker-compose up -d
-$ (your-production-server) # docker-compose logs -f
+docker-compose run --rm web ./manage.py createsuperuser
 ```
 
-Static files are build upon ever run by the Docker *entrypoint* script,
-since this needs to happen after volumes are mounted.
-
-#### Daily email digests
-
-To run daily email digests a cron installation or other schedule is required.
-
-The command to run the digests is:
-
-```cron
-docker-compose run web python manage.py email_ticket_digest
-```
-
-It can also be triggered via a web request at:
-
+Start the dev server for local development:
 ```bash
-$ curl https://your-id-host.tld/api/v3/ops/email_ticket_digest
+docker-compose up
 ```
+
+You're now ready to continuously ship! ✨ 💅 🛳
