@@ -255,7 +255,7 @@ class Migration(migrations.Migration):
     """
 
     dependencies = [
-        ('ticket', '0001_clean'),
+        # ('ticket', '0001_clean'),
         ('api_v3', '0006_add_created_at_to_new_responder'),
     ]
 
@@ -310,5 +310,5 @@ class Migration(migrations.Migration):
             name='country',
             field=models.CharField(max_length=100, null=True, blank=True)
         ),
-        migrations.RunSQL(SQL)
+        # migrations.RunSQL(SQL)
     ]

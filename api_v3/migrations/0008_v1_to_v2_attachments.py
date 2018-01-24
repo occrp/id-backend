@@ -5,16 +5,23 @@ import os.path
 
 from django.db import migrations
 
-from settings.settings import MEDIA_ROOT
-from ticket.models import TicketAttachment
+from django.conf import settings
+
 from api_v3.models import Attachment
+try:
+    from ticket.models import TicketAttachment
+except ImportError:
+    TicketAttachment = None
 
 
 def generate_and_copy_old_file_names(apps, schema_editor):
+    if not TicketAttachment:
+        return
+
     old_attachments = TicketAttachment.objects.all()
 
     for att in old_attachments:
-        new_path = att.local_path.replace(MEDIA_ROOT + '/', '')
+        new_path = att.local_path.replace(settings.MEDIA_ROOT + '/', '')
 
         if 'attachments/' in new_path:
             continue

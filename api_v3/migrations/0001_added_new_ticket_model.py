@@ -9,9 +9,8 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    initial = True
-
     dependencies = [
+        ('api_v3', '0000_squashed_profile'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
