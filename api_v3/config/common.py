@@ -1,12 +1,13 @@
 import os.path
+import tempfile
 
 from configurations import Configuration, values
-import raven
+from raven import fetch_git_sha
 
 
 class Common(Configuration):
 
-    GIT_SHA = raven.fetch_git_sha('./')
+    GIT_SHA = fetch_git_sha('./')
     VERSION = '2.7.0 ({})'.format(GIT_SHA[:8])
     SITE_NAME = values.Value('Investigative Dashboard', environ_prefix='ID')
 
@@ -81,10 +82,8 @@ class Common(Configuration):
     USE_L10N = False
     USE_TZ = False
 
-    # Media files
-    MEDIA_ROOT = values.Value('./.build', environ_name='MEDIA_ROOT')
-    MEDIA_URL = '/media/'
-    # ~ 500MB
+    # Media files: max. size of 500MB
+    MEDIA_ROOT = values.Value(tempfile.gettempdir(), environ_name='MEDIA_ROOT')
     MAX_UPLOAD_SIZE = 1024 * 1024 * 500
 
     DEBUG = values.BooleanValue(False)
