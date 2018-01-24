@@ -1,16 +1,27 @@
 language: python
 python: '2.7'
-services: postgresql
+
+services:
+  - docker
+  - postgresql
+
 env:
   global:
     - ID_DATABASE_URL=postgresql://postgres@localhost/id_test
     - ID_DOCUMENT_PATH=/tmp/
-install:
-  - pip install -r requirements-testing.txt
-  - npm --quiet --silent install -g bower
-  - npm install --quiet --silent --unsafe-perm
-  - pushd static && bower --allow-root --quiet --config.interactive=false --force install && popd
+
 before_script:
+  - docker-compose build
   - psql -c 'create database id_test;' -U postgres
   - python manage.py migrate
-script: python manage.py test
+
+install:
+  - pip install -r requirements-testing.txt
+
+script: flake8 . && ./manage.py test
+
+notifications:
+  email: false
+
+cache:
+  pip: true
