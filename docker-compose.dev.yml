@@ -1,30 +1,20 @@
-version: "2"
+version: '2'
 
 services:
-  resolvable:
-    image: mgood/resolvable
-    volumes:
-      - "/var/run/docker.sock:/tmp/docker.sock"
-      - "/etc/resolv.conf:/tmp/resolv.conf"
-
   postgres:
     image: postgres:9.4
-    volumes:
-      - ".build/data/postgres:/var/lib/postgresql/data"
-      - ".build/logs/postgres:/var/log"
-    environment:
-      POSTGRES_USER:     id2
-      POSTGRES_PASSWORD: id2
-      POSTGRES_DATABASE: id2
-
   web:
-    build: .
-    command: gunicorn -w 5 -b 0.0.0.0:8000 -t 60 --keep-alive 5 --log-level info --log-file - wsgi:application
-    expose:
-      - "8000"
-    links:
-      - postgres
+    restart: always
+    environment:
+      - DJANGO_SECRET_KEY=local
+    image: web
+    build: ./
+    command: >
+      sh -c "pip install -r requirements-testing.txt &&
+             python manage.py runserver 0.0.0.0:8000"
     volumes:
-      - ".build/dumps/:/dumps/"
-    env_file:
-      - id.env
+      - ./:/id
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
