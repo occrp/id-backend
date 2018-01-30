@@ -3,7 +3,7 @@ import os.path
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from api_v3.factories import(
+from api_v3.factories import (
     AttachmentFactory,
     ProfileFactory,
     ResponderFactory,

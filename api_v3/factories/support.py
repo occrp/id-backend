@@ -1,5 +1,5 @@
-from factory import Faker, SubFactory #  noqa
-from factory.django import DjangoModelFactory, FileField # noqa
+from factory import Faker, SubFactory  # noqa
+from factory.django import DjangoModelFactory, FileField  # noqa
 
 
 # Use a locale with unicodes

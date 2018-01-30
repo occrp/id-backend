@@ -1,8 +1,8 @@
 from django.conf import settings
-from django.core.urlresolvers import reverse #  noqa
+from django.core.urlresolvers import reverse  # noqa
 from django.test import TestCase
-from rest_framework.test import APIClient #  noqa
-from rest_framework_json_api.utils import(
+from rest_framework.test import APIClient  # noqa
+from rest_framework_json_api.utils import (
     get_resource_type_from_serializer, format_keys)
 
 

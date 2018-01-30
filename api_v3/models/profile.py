@@ -33,4 +33,3 @@ class Profile(AbstractUser):
 
     def get_full_name(self):
         return self.display_name
-

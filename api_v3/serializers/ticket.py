@@ -96,7 +96,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
         try:
             user = self.context.get('request').user
-        except:
+        except Exception:
             user = None
 
         if user and user.is_superuser:

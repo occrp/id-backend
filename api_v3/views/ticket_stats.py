@@ -26,7 +26,6 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         'country': ['exact'],
         'status': ['in'],
         'kind': ['exact'],
-        'country': ['exact'],
         'responders__user': ['exact', 'isnull']
     }
 

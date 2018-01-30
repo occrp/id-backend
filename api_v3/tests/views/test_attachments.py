@@ -9,7 +9,6 @@ from api_v3.models import Attachment, Action
 from .support import ApiTestCase, APIClient, reverse
 
 
-
 class AttachmentsEndpointTestCase(ApiTestCase):
 
     def setUp(self):
