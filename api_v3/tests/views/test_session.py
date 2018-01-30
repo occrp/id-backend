@@ -1,5 +1,3 @@
-import json
-
 from api_v3.factories import ProfileFactory
 from api_v3.serializers import ProfileSerializer
 from .support import TestCase, APIClient, reverse

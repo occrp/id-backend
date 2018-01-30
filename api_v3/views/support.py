@@ -11,8 +11,7 @@ import rest_framework_json_api.pagination
 import rest_framework_json_api.utils
 import rest_framework_json_api.exceptions
 import django_filters.rest_framework
-from rest_framework.status import (
-    HTTP_422_UNPROCESSABLE_ENTITY, HTTP_401_UNAUTHORIZED)
+from rest_framework.status import HTTP_422_UNPROCESSABLE_ENTITY
 from querystring_parser import parser as qs_parser
 from django.utils.six.moves.urllib.parse import unquote as url_unquote
 from django.utils.encoding import force_unicode
