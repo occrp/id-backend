@@ -21,9 +21,9 @@ class CommentsEndpointTestCase(ApiTestCase):
     def setUp(self):
         self.client = APIClient()
         self.users = [
-            ProfileFactory.create(email='email1'),
+            ProfileFactory.create(email=u'email1'),
             ProfileFactory.create(),
-            ProfileFactory.create(email='email3'),
+            ProfileFactory.create(email=u'email3'),
             ProfileFactory.create()
         ]
         self.tickets = [
@@ -42,7 +42,7 @@ class CommentsEndpointTestCase(ApiTestCase):
     def test_list_anonymous(self):
         response = self.client.get(reverse('comment-list'))
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
     def test_list_authenticated(self):
         self.client.force_authenticate(self.users[0])
@@ -132,11 +132,12 @@ class CommentsEndpointTestCase(ApiTestCase):
         count, emails = controller.email_notify(self.comments[0])
 
         self.assertEqual(count, 2)
+
         self.assertEqual(emails[0], [
             controller.EMAIL_SUBJECT.format(self.tickets[0].id),
             render_to_string(
                 'mail/ticket_comment.txt',
-                dict(comment=self.comments[0], name='email3')
+                dict(comment=self.comments[0], name=self.users[2].display_name)
             ),
             settings.DEFAULT_FROM_EMAIL,
             ['email3']
@@ -145,7 +146,7 @@ class CommentsEndpointTestCase(ApiTestCase):
             controller.EMAIL_SUBJECT.format(self.tickets[0].id),
             render_to_string(
                 'mail/ticket_comment.txt',
-                dict(comment=self.comments[0], name='email1')
+                dict(comment=self.comments[0], name=self.users[0].display_name)
             ),
             settings.DEFAULT_FROM_EMAIL,
             ['email1']

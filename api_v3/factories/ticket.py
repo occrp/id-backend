@@ -1,4 +1,5 @@
 from api_v3.models import Ticket
+from api_v3.models.countries import COUNTRIES
 from .profile import ProfileFactory
 from .support import DjangoModelFactory, SubFactory, Faker
 
@@ -30,4 +31,4 @@ class TicketFactory(DjangoModelFactory):
     business_activities = Faker('catch_phrase')
 
     company_name = Faker('company')
-    country = Faker('country')
+    country = Faker('random_element', elements=map(lambda c: c[0], COUNTRIES))

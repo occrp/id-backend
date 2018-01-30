@@ -37,7 +37,7 @@ class TicketsEndpointTestCase(ApiTestCase):
     def test_list_anonymous(self):
         response = self.client.get(reverse('ticket-list'))
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
     def test_list_authenticated(self):
         self.client.force_authenticate(self.users[0])
@@ -45,7 +45,7 @@ class TicketsEndpointTestCase(ApiTestCase):
         response = self.client.get(reverse('ticket-list'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn(self.tickets[0].background, response.content)
+        self.assertContains(response, self.tickets[0].background)
 
         body = json.loads(response.content)
 
@@ -60,7 +60,7 @@ class TicketsEndpointTestCase(ApiTestCase):
         response = self.client.get(reverse('ticket-list'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn(self.tickets[0].background, response.content)
+        self.assertContains(response, self.tickets[0].background)
 
         body = json.loads(response.content)
 
@@ -73,9 +73,9 @@ class TicketsEndpointTestCase(ApiTestCase):
             reverse('ticket-list'), {'include': 'requester,responders.user'})
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn('included', response.content)
-        self.assertNotIn(self.responders[0].user.email, response.content)
-        self.assertNotIn(self.responders[1].user.email, response.content)
+        self.assertContains(response, 'included')
+        self.assertNotContains(response, self.responders[0].user.email)
+        self.assertNotContains(response, self.responders[1].user.email)
 
     def test_list_filter_authenticated_by_responders(self):
         self.client.force_authenticate(self.users[0])
@@ -95,7 +95,7 @@ class TicketsEndpointTestCase(ApiTestCase):
             reverse('ticket-detail', args=[self.tickets[0].id]))
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn(self.tickets[0].background, response.content)
+        self.assertContains(response, self.tickets[0].background)
 
     def test_update_authenticated(self):
         ticket = self.tickets[0]
@@ -162,7 +162,7 @@ class TicketsEndpointTestCase(ApiTestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn('new-background', response.content)
+        self.assertContains(response, 'new-background')
 
     def test_update_authenticated_superuser_reopen_reason(self):
         ticket = self.tickets[0]

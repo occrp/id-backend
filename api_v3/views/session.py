@@ -1,9 +1,10 @@
 from rest_framework import response, viewsets
 
 from api_v3.serializers import ProfileSerializer
+from .support import JSONApiEndpoint
 
 
-class SessionEndpoint(viewsets.GenericViewSet):
+class SessionEndpoint(JSONApiEndpoint, viewsets.GenericViewSet):
     serializer_class = ProfileSerializer
 
     def list(self, request, *args, **kwargs):

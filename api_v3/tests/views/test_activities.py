@@ -32,7 +32,7 @@ class ActivitiesEndpointTestCase(TestCase):
     def test_list_anonymous(self):
         response = self.client.get(reverse('action-list'))
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
     def test_list_authenticated_no_tickets(self):
         self.client.force_authenticate(self.users[0])

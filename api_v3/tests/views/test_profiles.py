@@ -19,7 +19,7 @@ class ProfilesEndpointTestCase(ApiTestCase):
     def test_list_anonymous(self):
         response = self.client.get(reverse('profile-list'))
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
     def test_list_authenticated_no_staff_or_superuser(self):
         self.client.force_authenticate(self.users[0])
@@ -27,9 +27,9 @@ class ProfilesEndpointTestCase(ApiTestCase):
         response = self.client.get(reverse('profile-list'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn(self.users[0].email, response.content)
-        self.assertNotIn(self.users[1].email, response.content)
-        self.assertNotIn(self.users[2].email, response.content)
+        self.assertContains(response, self.users[0].email)
+        self.assertNotContains(response, self.users[1].email)
+        self.assertNotContains(response, self.users[2].email)
 
     def test_list_authenticated_not_superuser(self):
         self.users[0].is_staff = True
@@ -42,9 +42,9 @@ class ProfilesEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.status_code, 200)
-        self.assertIn(self.users[0].email, response.content)
-        self.assertNotIn(self.users[1].email, response.content)
-        self.assertNotIn(self.users[2].email, response.content)
+        self.assertContains(response, self.users[0].email)
+        self.assertNotContains(response, self.users[1].email)
+        self.assertNotContains(response, self.users[2].email)
 
     def test_list_authenticated_superuser(self):
         self.users[0].is_staff = True
@@ -56,9 +56,9 @@ class ProfilesEndpointTestCase(ApiTestCase):
         response = self.client.get(reverse('profile-list'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn(self.users[0].email, response.content)
-        self.assertIn(self.users[1].email, response.content)
-        self.assertIn(self.users[2].email, response.content)
+        self.assertContains(response, self.users[0].email)
+        self.assertContains(response, self.users[1].email)
+        self.assertContains(response, self.users[2].email)
 
     def test_list_search_authenticated(self):
         self.users[0].is_staff = True
@@ -74,9 +74,9 @@ class ProfilesEndpointTestCase(ApiTestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn(self.users[1].email, response.content)
-        self.assertNotIn(self.users[0].email, response.content)
-        self.assertNotIn(self.users[2].email, response.content)
+        self.assertContains(response, self.users[1].email)
+        self.assertNotContains(response, self.users[0].email)
+        self.assertNotContains(response, self.users[2].email)
 
     def test_list_search_unicode_authenticated(self):
         self.users[0].first_name = u'Станислав'
@@ -148,5 +148,5 @@ class ProfilesEndpointTestCase(ApiTestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertNotIn(email, response.content)
-        self.assertIn('Short Bio', response.content)
+        self.assertNotContains(response, email)
+        self.assertContains(response, 'Short Bio')

@@ -4,9 +4,10 @@ from django.http import FileResponse
 from rest_framework import viewsets, exceptions, permissions
 
 from api_v3.models import Attachment, Ticket
+from .support import JSONApiEndpoint
 
 
-class DownloadEndpoint(viewsets.ViewSet):
+class DownloadEndpoint(JSONApiEndpoint, viewsets.ViewSet):
 
     permission_classes = (permissions.IsAuthenticated,)
 

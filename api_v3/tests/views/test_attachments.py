@@ -32,7 +32,7 @@ class AttachmentsEndpointTestCase(ApiTestCase):
     def test_list_anonymous(self):
         response = self.client.get(reverse('attachment-list'))
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
     def test_list_authenticated(self):
         self.client.force_authenticate(self.users[0])

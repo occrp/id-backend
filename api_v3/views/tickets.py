@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from django.core.mail import send_mass_mail
 from django.conf import settings
