@@ -9,8 +9,10 @@ import rest_framework_json_api.parsers
 import rest_framework_json_api.renderers
 import rest_framework_json_api.pagination
 import rest_framework_json_api.utils
+import rest_framework_json_api.exceptions
 import django_filters.rest_framework
-from rest_framework.status import HTTP_422_UNPROCESSABLE_ENTITY
+from rest_framework.status import (
+    HTTP_422_UNPROCESSABLE_ENTITY, HTTP_401_UNAUTHORIZED)
 from querystring_parser import parser as qs_parser
 from django.utils.six.moves.urllib.parse import unquote as url_unquote
 from django.utils.encoding import force_unicode
@@ -136,13 +138,12 @@ class JSONApiEndpoint(object):
         return template.format(resource, self.action).replace('partial_', '')
 
     def handle_exception(self, exc):
-        if isinstance(exc, rest_framework.exceptions.ValidationError):
-            # some require that validation errors return 422 status
-            # for example ember-data (isInvalid method on adapter)
-            exc.status_code = HTTP_422_UNPROCESSABLE_ENTITY
-        # exception handler can't be set on class so you have to
-        # override the error response in this method
-        response = super(JSONApiEndpoint, self).handle_exception(exc)
         context = self.get_exception_handler_context()
-        return rest_framework_json_api.utils.format_drf_errors(
-            response, context, exc)
+        response = rest_framework_json_api.exceptions.exception_handler(
+            exc, context)
+
+        if isinstance(exc, rest_framework.exceptions.ValidationError):
+            # For ember-data validation errors (isInvalid method on adapter)
+            response.status_code = HTTP_422_UNPROCESSABLE_ENTITY
+
+        return response
