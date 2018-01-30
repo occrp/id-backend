@@ -26,6 +26,6 @@ class SessionsEndpointTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            json.loads(response.content),
+            response.data,
             ProfileSerializer(self.users[0]).data
         )
