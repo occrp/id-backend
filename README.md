@@ -21,4 +21,12 @@ Start the dev server for local development:
 docker-compose up
 ```
 
+# Preparing a release
+
+To build the production-ready images run:
+
+```bash
+docker build --build-arg=ID_VERSION=$(git describe --always) -t occrp/id-backend ./
+```
+
 You're now ready to continuously ship! ✨ 💅 🛳

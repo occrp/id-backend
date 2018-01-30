@@ -2,13 +2,11 @@ import os.path
 import tempfile
 
 from configurations import Configuration, values
-from raven import fetch_git_sha
 
 
 class Common(Configuration):
 
-    GIT_SHA = fetch_git_sha('./')
-    VERSION = '2.7.0 ({})'.format(GIT_SHA[:8])
+    VERSION = values.Value('0.0.0-x', environ_prefix='ID')
     SITE_NAME = values.Value('Investigative Dashboard', environ_prefix='ID')
 
     INSTALLED_APPS = (
@@ -69,7 +67,7 @@ class Common(Configuration):
     # Sentry
     RAVEN_CONFIG = {
         'dsn': values.Value('', environ_name='SENTRY_DSN'),
-        'release': GIT_SHA,
+        'release': VERSION,
     }
 
     # General

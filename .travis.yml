@@ -1,27 +1,14 @@
-language: python
-python: '2.7'
-
-services:
-  - docker
-  - postgresql
-
-env:
-  global:
-    - ID_DATABASE_URL=postgresql://postgres@localhost/id_test
-    - ID_DOCUMENT_PATH=/tmp/
-
-before_script:
-  - docker-compose build
-  - psql -c 'create database id_test;' -U postgres
-  - python manage.py migrate
-
-install:
-  - pip install -r requirements-testing.txt
-
-script: flake8 . && ./manage.py test
-
 notifications:
   email: false
 
-cache:
-  pip: true
+services:
+  - docker
+
+before_script:
+  - ln -s docker-compose.dev.yml docker-compose.yml
+  - docker-compose build --build-arg=ID_VERSION=$(git describe --always) web
+  - docker-compose up -d
+  - docker-compose exec web sh -c "while ! nc -z postgres 5432; do sleep 0.1 ; done"
+  - docker-compose exec web python manage.py migrate --configuration=Production
+
+script: docker-compose exec web sh -c "pip install --no-cache-dir -r requirements-testing.txt && flake8 && python manage.py test"
