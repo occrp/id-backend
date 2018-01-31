@@ -51,9 +51,7 @@ class Common(Configuration):
     DEFAULT_FROM_EMAIL = values.EmailValue('id@occprp.org', environ_prefix='ID')
     DEFAULT_FROM = '{} <{}>'.format(SITE_NAME, DEFAULT_FROM_EMAIL)
 
-    ADMINS = (
-        (SITE_NAME, 'id@occrp.org'),
-    )
+    ADMINS = []
 
     # Postgres
     DATABASES = values.DatabaseURLValue(
