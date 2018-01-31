@@ -1,4 +1,5 @@
 import json
+import random
 
 from api_v3.models import Ticket, Action
 from api_v3.factories import (
@@ -196,15 +197,19 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.assertEqual(action.verb, 'ticket:update:reopen')
         self.assertEqual(action.action, comment)
 
-    def test_update_authenticated_closing_with_deadline_passed(self):
+    def test_update_authenticated_any_status_with_deadline_passed(self):
         ticket = self.tickets[0]
         user = self.users[1]
         self.client.force_authenticate(user)
 
+        statuses = map(lambda s: s[0], Ticket.STATUSES)
+        statuses.remove(ticket.status)
+        new_status = random.choice(statuses)
+
         new_data = self.as_jsonapi_payload(
             TicketSerializer, ticket, {
                 'deadline_at': '1900-01-01T00:00',
-                'status': Ticket.STATUSES[3][0]
+                'status': new_status
             })
 
         response = self.client.patch(
@@ -217,7 +222,7 @@ class TicketsEndpointTestCase(ApiTestCase):
 
         reloaded_ticket = Ticket.objects.get(id=ticket.id)
 
-        self.assertEqual(reloaded_ticket.status, 'closed')
+        self.assertEqual(reloaded_ticket.status, new_status)
         self.assertEqual(
             reloaded_ticket.deadline_at.isoformat(),
             '1900-01-01T00:00:00'
