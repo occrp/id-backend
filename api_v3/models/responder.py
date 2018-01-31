@@ -3,7 +3,8 @@ from django.db import models
 
 
 class Responder(models.Model):
-    """Intermediate model for ticket responders (M2M)."""
+    """Model for ticket responders."""
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, db_index=True)
     ticket = models.ForeignKey(
         'Ticket', related_name='responders', db_index=True)

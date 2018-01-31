@@ -9,6 +9,7 @@ class TicketSerializer(serializers.ModelSerializer):
         'users': 'api_v3.serializers.ProfileSerializer',
         'requester': 'api_v3.serializers.ProfileSerializer',
         'responders': 'api_v3.serializers.ResponderSerializer',
+        'subscribers': 'api_v3.serializers.SubscriberSerializer',
         'attachments': 'api_v3.serializers.AttachmentSerializer'
     }
 
@@ -20,6 +21,7 @@ class TicketSerializer(serializers.ModelSerializer):
         read_only_fields = (
             'requester',
             'responders',
+            'subscribers',
             'users',
             'attachments',
             'reopen_reason'
@@ -27,6 +29,7 @@ class TicketSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'responders',
+            'subscribers',
             'requester',
             'users',
 
