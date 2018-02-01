@@ -106,27 +106,29 @@ class TicketsEndpoint(
         ``pending_reason``. Passing these attributes will create and attach a
         comment with it's value to the relevant activity.
         """
+        instance = serializer.instance
+
         if (not self.request.user.is_superuser) and (
-            self.request.user not in serializer.instance.users.all()
+            self.request.user not in instance.users.all()
         ) and (
-            self.request.user != serializer.instance.requester
+            self.request.user != instance.requester
         ):
             raise exceptions.NotFound()
 
         comment = None
         status = serializer.validated_data.get('status')
         deadline_at = serializer.validated_data.get('deadline_at')
+        status_changed = instance.status != status
+        deadline_changed = deadline_at and instance.deadline_at != deadline_at
+        deadline_passed = deadline_changed and deadline_at < datetime.utcnow()
 
-        if status == Ticket.STATUSES[3][0]:
-            # If we're closing the ticket, we do not check for the deadline.
-            pass
-        elif deadline_at and deadline_at < datetime.utcnow():
+        if not status_changed and deadline_passed:
             raise serializers.ValidationError([{
                 'data/attributes/deadline_at':
                 'The date can not be in the past.'
             }])
 
-        if serializer.instance.status != status:
+        if status_changed:
             verb = '{}:status_{}'.format(self.action_name(), status)
         else:
             verb = self.action_name()
