@@ -98,7 +98,7 @@ class TicketStatsEndpointTestCase(ApiTestCase):
         self.assertEqual(cancelled_data['attributes']['past-deadline'], 1)
         self.assertEqual(
             cancelled_data['attributes']['date'],
-            datetime.utcnow().replace(
+            self.tickets[0].created_at.replace(
                 day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
         )
 
@@ -108,7 +108,7 @@ class TicketStatsEndpointTestCase(ApiTestCase):
         self.assertEqual(new_data['attributes']['past-deadline'], 0)
         self.assertEqual(
             new_data['attributes']['date'],
-            datetime.utcnow().replace(
+            self.tickets[1].created_at.replace(
                 day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
         )
 
@@ -173,7 +173,7 @@ class TicketStatsEndpointTestCase(ApiTestCase):
         self.assertEqual(body['data'][0]['attributes']['past-deadline'], 1)
         self.assertEqual(
             body['data'][0]['attributes']['date'],
-            datetime.utcnow().replace(
+            self.tickets[0].created_at.replace(
                 day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
         )
 

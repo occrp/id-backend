@@ -137,7 +137,11 @@ class CommentsEndpointTestCase(ApiTestCase):
             controller.EMAIL_SUBJECT.format(self.tickets[0].id),
             render_to_string(
                 'mail/ticket_comment.txt',
-                dict(comment=self.comments[0], name=self.users[2].display_name)
+                dict(
+                    comment=self.comments[0],
+                    name=self.users[2].display_name,
+                    site_name=settings.SITE_NAME
+                )
             ),
             settings.DEFAULT_FROM_EMAIL,
             ['email3']
@@ -146,7 +150,11 @@ class CommentsEndpointTestCase(ApiTestCase):
             controller.EMAIL_SUBJECT.format(self.tickets[0].id),
             render_to_string(
                 'mail/ticket_comment.txt',
-                dict(comment=self.comments[0], name=self.users[0].display_name)
+                dict(
+                    comment=self.comments[0],
+                    name=self.users[0].display_name,
+                    site_name=settings.SITE_NAME
+                )
             ),
             settings.DEFAULT_FROM_EMAIL,
             ['email1']
