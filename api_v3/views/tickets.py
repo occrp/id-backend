@@ -124,7 +124,8 @@ class TicketsEndpoint(
                     'mail/ticket_created.txt', {
                         'ticket': ticket,
                         'name': user.display_name,
-                        'request_host': self.request.get_host()
+                        'request_host': self.request.get_host(),
+                        'site_name': settings.SITE_NAME
                     }
                 ),
                 settings.DEFAULT_FROM_EMAIL,

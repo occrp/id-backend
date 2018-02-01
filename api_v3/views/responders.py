@@ -80,7 +80,8 @@ class RespondersEndpoint(
                     'mail/responder_created.txt', {
                         'ticket': activity.target,
                         'name': activity.action.display_name,
-                        'request_host': self.request.get_host()
+                        'request_host': self.request.get_host(),
+                        'site_name': settings.SITE_NAME
                     }
                 ),
                 settings.DEFAULT_FROM_EMAIL,

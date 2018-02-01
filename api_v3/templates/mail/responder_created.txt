@@ -7,4 +7,6 @@ http://{{ request_host }}/tickets/view/{{ ticket.id }}
 
 
 --
-The OCCRP ID team
+Do not reply to this automated email.
+
+The {{ site_name }} Team.

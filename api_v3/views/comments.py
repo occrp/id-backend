@@ -75,7 +75,8 @@ class CommentsEndpoint(
                     'mail/ticket_comment.txt', {
                         'comment': comment,
                         'name': user.display_name,
-                        'request_host': request_host
+                        'request_host': request_host,
+                        'site_name': settings.SITE_NAME
                     }
                 ),
                 settings.DEFAULT_FROM_EMAIL,
