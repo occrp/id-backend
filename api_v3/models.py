@@ -112,15 +112,10 @@ class Attachment(models.Model):
     def filter_by_user(cls, user, queryset=None):
         """Returns any user accessible attachments.
 
-        Either the ones he created or he has access to through the tickets.
+        Ones he has access to through the tickets.
         """
         return (queryset or cls.objects).filter(
-            # Let ticket authors and responders see ticket attachments
-            models.Q(ticket__in=Ticket.filter_by_user(user)) |
-            # Let attachment authors see own attachments
-            models.Q(user=user) |
-            # Let ticket users see superuser attachments
-            models.Q(user__is_superuser=True)
+            ticket__in=Ticket.filter_by_user(user)
         )
 
 
@@ -139,15 +134,10 @@ class Comment(models.Model):
     def filter_by_user(cls, user, queryset=None):
         """Returns any user accessible comments.
 
-        Either the ones he created or he has access to through the tickets.
+        Ones he has access to through the tickets.
         """
         return (queryset or cls.objects).filter(
-            # Let ticket authors and responders see ticket attachments
-            models.Q(ticket__in=Ticket.filter_by_user(user)) |
-            # Let attachment authors
-            models.Q(user=user) |
-            # Let ticket users see superuser comments
-            models.Q(user__is_superuser=True)
+            ticket__in=Ticket.filter_by_user(user)
         )
 
 

@@ -26,7 +26,8 @@ class TicketAttachmentCommentFactoryMixin(TestCase):
 
         self.tickets = [
             Ticket.objects.create(background='test1', requester=self.users[0]),
-            Ticket.objects.create(background='test2', requester=self.users[1])
+            Ticket.objects.create(background='test2', requester=self.users[1]),
+            Ticket.objects.create(background='test3', requester=self.users[2])
         ]
 
         self.attachments = [
@@ -53,6 +54,10 @@ class TicketAttachmentCommentFactoryMixin(TestCase):
             Attachment.objects.create(
                 ticket=self.tickets[1],
                 user=self.users[2]
+            ),
+            Attachment.objects.create(
+                ticket=self.tickets[2],
+                user=self.users[1]
             ),
         ]
 
@@ -87,6 +92,10 @@ class TicketAttachmentCommentFactoryMixin(TestCase):
                 ticket=self.tickets[1],
                 user=self.users[2]
             ),
+            Comment.objects.create(
+                ticket=self.tickets[2],
+                user=self.users[1]
+            ),
         ]
 
 
@@ -106,22 +115,18 @@ class TicketAttachmentCommentFilterByUserRequesterTestCase(
     def test_attachment_filter_by_user(self):
         attachments = Attachment.filter_by_user(self.users[0])
 
-        self.assertEqual(attachments.count(), 5)
+        self.assertEqual(attachments.count(), 3)
         self.assertIn(self.attachments[0], attachments)
         self.assertIn(self.attachments[1], attachments)
-        self.assertIn(self.attachments[2], attachments)
         self.assertIn(self.attachments[4], attachments)
-        self.assertIn(self.attachments[5], attachments)
 
     def test_comment_filter_by_user(self):
         comments = Comment.filter_by_user(self.users[0])
 
-        self.assertEqual(comments.count(), 5)
+        self.assertEqual(comments.count(), 3)
         self.assertIn(self.comments[0], comments)
         self.assertIn(self.comments[1], comments)
-        self.assertIn(self.comments[2], comments)
         self.assertIn(self.comments[4], comments)
-        self.assertIn(self.comments[5], comments)
 
 
 class TicketAttachmentCommentFilterByUserResponderTestCase(
@@ -145,7 +150,7 @@ class TicketAttachmentCommentFilterByUserResponderTestCase(
 
         self.assertEqual(attachments.count(), 6)
 
-        for attachment in self.attachments:
+        for attachment in self.attachments[:6]:
             self.assertIn(attachment, attachments)
 
     def test_comment_filter_by_user(self):
@@ -153,5 +158,5 @@ class TicketAttachmentCommentFilterByUserResponderTestCase(
 
         self.assertEqual(comments.count(), 6)
 
-        for comment in self.comments:
+        for comment in self.comments[:6]:
             self.assertIn(comment, comments)
