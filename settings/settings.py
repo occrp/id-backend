@@ -11,7 +11,7 @@ import raven
 
 BASE_DIR = os.path.join(os.path.realpath(os.path.dirname(__file__)), '../')
 
-ID_VERSION = "2.7.1"
+ID_VERSION = "2.7.2"
 ID_ENVIRONMENT = os.environ.get('ID_ENVIRONMENT', 'debug')
 DEBUG = ID_ENVIRONMENT == 'debug'
 TESTING = sys.argv[1:2] == ['test']
