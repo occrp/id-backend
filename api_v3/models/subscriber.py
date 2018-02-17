@@ -17,6 +17,10 @@ class Subscriber(models.Model):
     def filter_by_user(cls, user, queryset=None):
         """Returns any user subscriber objects.
 
+        A subscriber is very much similar to a responder, but:
+            * it can not do ticket updates
+            * it can not add other people to a ticket.
+
         Either related to the tickets he created or he is subscribed to.
         """
         return (queryset or cls.objects).filter(

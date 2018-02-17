@@ -4,7 +4,7 @@ from .support import DjangoModelFactory, SubFactory
 from .ticket import TicketFactory
 
 
-class ResponderFactory(DjangoModelFactory):
+class SubscriberFactory(DjangoModelFactory):
 
     class Meta:
         model = Subscriber

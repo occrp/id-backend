@@ -10,22 +10,24 @@ from .views.ops import OpsEndpoint
 from .views.profiles import ProfilesEndpoint
 from .views.responders import RespondersEndpoint
 from .views.session import SessionEndpoint
+from .views.subscribers import SubscribersEndpoint
 from .views.tickets import TicketsEndpoint
 from .views.ticket_stats import TicketStatsEndpoint
 
 
 router = DefaultRouter()
+router.register(r'attachments', AttachmentsEndpoint)
+router.register(r'activities', ActivitiesEndpoint)
+router.register(r'comments', CommentsEndpoint)
+router.register(r'download', DownloadEndpoint, base_name='download')
 router.register(r'login', LoginEndpoint, base_name='login')
 router.register(r'logout', LogoutEndpoint, base_name='login')
-router.register(r'tickets', TicketsEndpoint)
-router.register(r'profiles', ProfilesEndpoint)
-router.register(r'attachments', AttachmentsEndpoint)
-router.register(r'comments', CommentsEndpoint)
-router.register(r'activities', ActivitiesEndpoint)
-router.register(r'responders', RespondersEndpoint)
 router.register(r'me', SessionEndpoint, base_name='me')
-router.register(r'download', DownloadEndpoint, base_name='download')
 router.register(r'ops', OpsEndpoint, base_name='ops')
+router.register(r'profiles', ProfilesEndpoint)
+router.register(r'responders', RespondersEndpoint)
+router.register(r'subscribers', SubscribersEndpoint)
+router.register(r'tickets', TicketsEndpoint)
 router.register(r'ticket-stats', TicketStatsEndpoint, base_name='ticket_stats')
 
 urlpatterns = [
