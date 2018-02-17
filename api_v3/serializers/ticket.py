@@ -68,10 +68,19 @@ class TicketSerializer(serializers.ModelSerializer):
 
     def get_request_filters(self):
         """Returns the request filters based on the ticket profiles."""
+        filters = {}
+
+        try:
+            user = self.context.get('request').user
+        except Exception:
+            user = None
+
+        if not (user and user.is_superuser):
+            return filters
+
         view = self.context.get('view') if self.context else None
         request = self.context.get('request') if self.context else None
 
-        filters = {}
         filter_params = {}
         filter_name_map = {
             'requester': 'requester',

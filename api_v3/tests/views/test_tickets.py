@@ -78,16 +78,42 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.assertNotContains(response, self.responders[0].user.email)
         self.assertNotContains(response, self.responders[1].user.email)
 
-    def test_list_filter_authenticated_by_responders(self):
-        self.client.force_authenticate(self.users[0])
+    def test_list_filter_authenticated_by_requester(self):
+        user = self.users[1]
+        user.is_superuser = True
+        self.client.force_authenticate(user)
 
         response = self.client.get(
             reverse('ticket-list'), {
-                'filter[users]': 'none'
+                'filter[requester]': self.users[2].id
             }
         )
 
         self.assertEqual(response.status_code, 200)
+
+        body = json.loads(response.content)
+        self.assertEqual(
+            body['meta']['filters']['requester'],
+            {
+                'first-name': self.users[2].first_name,
+                'last-name': self.users[2].last_name,
+                'email': self.users[2].email
+            }
+        )
+
+    def test_list_filter_superuser_by_requester(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(
+            reverse('ticket-list'), {
+                'filter[requester]': 'none'
+            }
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        body = json.loads(response.content)
+        self.assertEqual(body['meta']['filters'], {})
 
     def test_get_authenticated(self):
         self.client.force_authenticate(self.users[0])
