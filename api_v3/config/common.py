@@ -60,7 +60,7 @@ class Common(Configuration):
     # CORS
     CORS_ALLOW_CREDENTIALS = True
     CORS_ORIGIN_WHITELIST = values.ListValue(
-        ['localhost:8000'], environ_prefix='ID')
+        ['localhost:8080'], environ_prefix='ID')
 
     # Sentry
     RAVEN_CONFIG = {

@@ -10,11 +10,11 @@ RUN pip install --no-cache-dir -r /requirements.txt
 COPY . /id/
 WORKDIR /id/
 
-EXPOSE 8000
+EXPOSE 8080
 
 ARG ID_VERSION=0.0.0-x
 ENV ID_VERSION=$ID_VERSION
 
 LABEL VERSION=$ID_VERSION
 
-CMD gunicorn --bind 0.0.0.0:8000  --log-file - api_v3.wsgi:application
+CMD gunicorn --bind 0.0.0.0:8080  --log-file - api_v3.wsgi:application
