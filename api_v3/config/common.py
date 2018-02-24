@@ -81,12 +81,14 @@ class Common(Configuration):
     # Media files: max. size of 500MB
     MEDIA_ROOT = values.Value(tempfile.gettempdir(), environ_name='MEDIA_ROOT')
     MAX_UPLOAD_SIZE = 1024 * 1024 * 500
+    STATIC_URL = '/api/static/'
 
     DEBUG = values.BooleanValue(False)
 
     TEMPLATES = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'APP_DIRS': True,
             'DIRS': [
                 os.path.abspath(
                     os.path.join(os.path.dirname(__file__), '..', 'templates')

@@ -18,5 +18,6 @@ class Local(Common):
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
     INSTALLED_APPS = Common.INSTALLED_APPS + (
+        'django.contrib.staticfiles',
         'django_extensions',
     )
