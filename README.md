@@ -5,20 +5,30 @@ OCCRP research desk application. Check out the project's [documentation](http://
 
 # Prerequisites
 
-- [Docker](https://docs.docker.com/docker-for-mac/install/)
-- [Travis CLI](http://blog.travis-ci.com/2013-01-14-new-client/)
+- [Docker](https://docs.docker.com/docker-for-mac/install/) (to run just the API)
+- [ID Front-end](https://github.com/occrp/id-frontend) (to run the whole application)
+- [Jekyll Website](https://github.com/occrp/investigativedashboard.org/)
+(the homepage of investigativedashboard.org)
 
-# Initialize the project
+# Setup
 
 Create a superuser to login to the admin:
-
 ```bash
-docker-compose run --rm web ./manage.py createsuperuser
+docker-compose run --rm api ./manage.py createsuperuser
 ```
 
-Start the dev server for local development:
+Start the dev server for local development or production:
 ```bash
 docker-compose up
+```
+
+Please see the `docker-compose.prod.yml` for production ready deployments.
+
+# Running the tests
+
+To run the tests, use the `docker-compose.dev.yml` configuration and run:
+```bash
+docker-compose run --rm api ./manage.py test
 ```
 
 # Preparing a release
