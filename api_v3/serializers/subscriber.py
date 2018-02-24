@@ -1,11 +1,10 @@
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import empty
-from rest_framework_json_api import serializers, relations
+from rest_framework_json_api import serializers
 from rest_framework.settings import api_settings
 from rest_framework.validators import UniqueTogetherValidator
 
-from api_v3.models import Subscriber, Responder, Profile
-from api_v3.serializers.profile import ProfileSerializer
+from api_v3.models import Subscriber, Responder
 
 
 class SubscriberSerializer(serializers.ModelSerializer):
@@ -19,7 +18,7 @@ class SubscriberSerializer(serializers.ModelSerializer):
         model = Subscriber
         fields = ('ticket', 'user')
         resource_name = 'subscribers'
-        validators=[
+        validators = [
             UniqueTogetherValidator(
                 queryset=Subscriber.objects.all(),
                 fields=('user', 'ticket'),
