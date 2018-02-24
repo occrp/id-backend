@@ -17,4 +17,4 @@ ENV ID_VERSION=$ID_VERSION
 
 LABEL VERSION=$ID_VERSION
 
-CMD gunicorn --bind 0.0.0.0:$PORT  --log-file - api_v3.wsgi:application
+CMD gunicorn --bind 0.0.0.0:8000  --log-file - api_v3.wsgi:application
