@@ -25,7 +25,7 @@ services:
     restart: always
     image: api
     build: ./
-    command: gunicorn -w 5 -b 0.0.0.0:8000 -t 60 --keep-alive 5 --log-level info --log-file - wsgi:application
+    command: gunicorn -w 5 -b 0.0.0.0:8000 -t 60 --keep-alive 5 --log-level info --log-file - api_v3.wsgi:application
     volumes:
       - "/srv/data/live/podaci/:/id/data"
       - "/srv/logs/id2/:/var/log/id2/"
