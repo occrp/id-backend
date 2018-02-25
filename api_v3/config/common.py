@@ -39,6 +39,8 @@ class Common(Configuration):
     SECRET_KEY = values.SecretValue()
     WSGI_APPLICATION = 'api_v3.wsgi.application'
 
+    ROUTER_CLASS = 'rest_framework.routers.DefaultRouter'
+
     # Email
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST_USER = values.Value('localhost', environ_prefix='ID')
