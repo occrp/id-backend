@@ -9,6 +9,6 @@ before_script:
   - docker-compose build --build-arg=ID_VERSION=$(git describe --always) api
   - docker-compose up -d
   - docker-compose exec api sh -c "while ! nc -z postgres 5432; do sleep 0.1 ; done"
-  - docker-compose exec -e DJANGO_SECRET_KEY=_ api python manage.py migrate --configuration=Production
+  - docker-compose exec api python manage.py migrate --configuration=Production
 
-script: docker-compose exec -e DJANGO_SECRET_KEY=_ api sh -c "pip install --no-cache-dir -r requirements-testing.txt && flake8 && python manage.py test"
+script: docker-compose exec api sh -c "pip install --no-cache-dir -r requirements-testing.txt && flake8 && python manage.py test"
