@@ -12,6 +12,8 @@ OCCRP research desk application. Check out the project's [documentation](http://
 
 # Setup
 
+Please refer to the `id.env.tmpl` for the full list of settings.
+
 Create a superuser to login to the admin:
 ```bash
 docker-compose run --rm api ./manage.py createsuperuser

@@ -7,6 +7,9 @@ gunicorn==19.7.1
 psycopg2==2.7.3.2
 dj-database-url==0.4.2
 
+# Email
+dj-email-url==0.0.10
+
 # Auth
 social-auth-app-django==2.1.0
 

@@ -5,8 +5,6 @@ services:
     image: postgres:9.4-alpine
   api:
     restart: always
-    environment:
-      - DJANGO_SECRET_KEY=local
     image: api
     build: ./
     command: >

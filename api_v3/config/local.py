@@ -12,12 +12,19 @@ class Local(Common):
     # Testing
     INSTALLED_APPS = Common.INSTALLED_APPS
 
-    # Mail
-    EMAIL_HOST = 'localhost'
-    EMAIL_PORT = 1025
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
     INSTALLED_APPS = Common.INSTALLED_APPS + (
         'django.contrib.staticfiles',
         'django_extensions',
     )
+
+    KEYCLOAK_BASE = Common.KEYCLOAK_BASE
+    KEYCLOAK_BASE.environ_required = False
+    KEYCLOAK_KEY = Common.KEYCLOAK_KEY
+    KEYCLOAK_KEY.environ_required = False
+    KEYCLOAK_SECRET = Common.KEYCLOAK_SECRET
+    KEYCLOAK_SECRET.environ_required = False
+
+    EMAIL_RECIPIENT = Common.EMAIL_RECIPIENT
+    EMAIL_RECIPIENT.environ_required = False
+    DEFAULT_FROM_EMAIL = Common.DEFAULT_FROM_EMAIL
+    DEFAULT_FROM_EMAIL.environ_required = False

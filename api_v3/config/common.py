@@ -42,15 +42,12 @@ class Common(Configuration):
     ROUTER_CLASS = 'rest_framework.routers.DefaultRouter'
 
     # Email
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST_USER = values.Value('localhost', environ_prefix='ID')
-    EMAIL_HOST_PASSWORD = values.Value('', environ_prefix='ID')
-    EMAIL_HOST = values.Value('smtp.gmail.com', environ_prefix='ID')
-    EMAIL_PORT = values.IntegerValue(587, environ_prefix='ID')
-    EMAIL_USE_TLS = EMAIL_PORT == 587
+    EMAIL = values.EmailURLValue('console://')
     EMAIL_RECIPIENT_NAME = '{} Team'.format(SITE_NAME)
-    EMAIL_RECIPIENT = values.EmailValue('tech@occrp.org', environ_prefix='ID')
-    DEFAULT_FROM_EMAIL = values.EmailValue('id@occprp.org', environ_prefix='ID')
+    EMAIL_RECIPIENT = values.EmailValue(
+        '', environ_prefix='ID', environ_required=True)
+    DEFAULT_FROM_EMAIL = values.EmailValue(
+        '', environ_prefix='ID', environ_required=True)
     DEFAULT_FROM = '{} <{}>'.format(SITE_NAME, DEFAULT_FROM_EMAIL)
 
     ADMINS = []
@@ -61,8 +58,8 @@ class Common(Configuration):
 
     # CORS
     CORS_ALLOW_CREDENTIALS = True
-    CORS_ORIGIN_WHITELIST = values.ListValue(
-        ['localhost:8080'], environ_prefix='ID')
+    CORS_ORIGIN_WHITELIST = values.ListValue(['localhost:8000'])
+    CORS_ORIGIN_ALLOW_ALL = values.BooleanValue(False)
 
     # Sentry
     RAVEN_CONFIG = {
@@ -127,15 +124,18 @@ class Common(Configuration):
     AUTH_USER_MODEL = 'api_v3.Profile'
 
     # Authentication
-    KEYCLOAK_BASE = values.Value('', environ_name='KEYCLOAK_BASE')
-    KEYCLOAK_KEY = values.Value('', environ_name='KEYCLOAK_KEY')
-    KEYCLOAK_SECRET = values.Value('', environ_name='KEYCLOAK_SECRET')
-    # SPA_REDIRECT_URI = values.Value('/app', environ_prefix='ID')
-
-    AUTHENTICATION_BACKENDS = (
-        'api_v3.misc.oauth2.KeycloakOAuth2',
-        'django.contrib.auth.backends.ModelBackend',
+    AUTHENTICATION_BACKENDS = values.ListValue(
+        [
+            'api_v3.misc.oauth2.KeycloakOAuth2',
+            'django.contrib.auth.backends.ModelBackend',
+        ]
     )
+    KEYCLOAK_BASE = values.Value(
+        '', environ_prefix='SOCIAL_AUTH', environ_required=True)
+    KEYCLOAK_KEY = values.Value(
+        '', environ_prefix='SOCIAL_AUTH', environ_required=True)
+    KEYCLOAK_SECRET = values.Value(
+        '', environ_prefix='SOCIAL_AUTH', environ_required=True)
 
     SOCIAL_AUTH_PIPELINE = (
         # 'social.pipeline.social_auth.social_details',
