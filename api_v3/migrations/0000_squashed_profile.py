@@ -12,6 +12,17 @@ class Migration(migrations.Migration):
 
     initial = True
 
+    replaces = [
+        ('accounts', '0001_initial'),
+        ('accounts', '0002_initial'),
+        ('accounts', '0003_network'),
+        ('accounts', '0004_rename_id_profile'),
+        ('accounts', '0005_fake_initial'),
+        ('accounts', '0006_remove_requests'),
+        ('accounts', '0007_profile_cleanup'),
+        ('accounts', '0008_added_bio_field'),
+    ]
+
     dependencies = [
         ('auth', '__latest__'),
     ]

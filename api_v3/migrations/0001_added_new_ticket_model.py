@@ -10,7 +10,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api_v3', '0000_squashed_profile'),
+        ('accounts', '0008_added_bio_field'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
