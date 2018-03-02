@@ -43,9 +43,6 @@ class Common(Configuration):
 
     # Email
     EMAIL = values.EmailURLValue('console://')
-    EMAIL_RECIPIENT_NAME = '{} Team'.format(SITE_NAME)
-    EMAIL_RECIPIENT = values.EmailValue(
-        '', environ_prefix='ID', environ_required=True)
     DEFAULT_FROM_EMAIL = values.EmailValue(
         '', environ_prefix='ID', environ_required=True)
     DEFAULT_FROM = '{} <{}>'.format(SITE_NAME, DEFAULT_FROM_EMAIL)
@@ -130,12 +127,12 @@ class Common(Configuration):
             'django.contrib.auth.backends.ModelBackend',
         ]
     )
-    KEYCLOAK_BASE = values.Value(
-        '', environ_prefix='SOCIAL_AUTH', environ_required=True)
-    KEYCLOAK_KEY = values.Value(
-        '', environ_prefix='SOCIAL_AUTH', environ_required=True)
-    KEYCLOAK_SECRET = values.Value(
-        '', environ_prefix='SOCIAL_AUTH', environ_required=True)
+    SOCIAL_AUTH_KEYCLOAK_BASE = values.Value(
+        '', environ_prefix='', environ_required=True)
+    SOCIAL_AUTH_KEYCLOAK_KEY = values.Value(
+        '', environ_prefix='', environ_required=True)
+    SOCIAL_AUTH_KEYCLOAK_SECRET = values.Value(
+        '', environ_prefix='', environ_required=True)
 
     SOCIAL_AUTH_PIPELINE = (
         # 'social.pipeline.social_auth.social_details',
