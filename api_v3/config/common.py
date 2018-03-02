@@ -38,6 +38,7 @@ class Common(Configuration):
     ROOT_URLCONF = 'api_v3.urls'
     SECRET_KEY = values.SecretValue()
     WSGI_APPLICATION = 'api_v3.wsgi.application'
+    USE_X_FORWARDED_HOST = True
 
     ROUTER_CLASS = 'rest_framework.routers.DefaultRouter'
 
