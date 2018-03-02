@@ -145,7 +145,7 @@ class Common(Configuration):
         'social_core.pipeline.user.create_user',
         'social_core.pipeline.social_auth.associate_user',
         'social_core.pipeline.user.user_details',
-        'api_v3.misc.oauth2.KeycloakOAuth2.activate_user',
+        'api_v3.misc.oauth2.activate_user',
     )
 
     # Django Rest Framework

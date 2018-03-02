@@ -34,7 +34,7 @@ class KeycloakOAuth2(BaseOAuth2):
     def user_data(self, access_token, *args, **kwargs):
         return jwt.decode(access_token, verify=False)
 
-    @classmethod
-    def activate_user(cls, backend, user, response, *args, **kwargs):
-        user.is_active = True
-        user.save()
+
+def activate_user(backend, user, response, *args, **kwargs):
+    user.is_active = True
+    user.save()
