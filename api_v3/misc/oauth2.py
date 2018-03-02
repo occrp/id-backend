@@ -1,6 +1,8 @@
+from urlparse import urljoin
+
 from django.conf import settings
-from social_core.backends.oauth import BaseOAuth2
 import jwt
+from social_core.backends.oauth import BaseOAuth2
 
 
 class KeycloakOAuth2(BaseOAuth2):
@@ -9,14 +11,15 @@ class KeycloakOAuth2(BaseOAuth2):
     name = 'keycloak'
 
     ID_KEY = 'email'
-    USERINFO_URL = settings.KEYCLOAK_BASE + 'protocol/openid-connect/userinfo'
-    AUTHORIZATION_URL = settings.KEYCLOAK_BASE + 'protocol/openid-connect/auth'
-    ACCESS_TOKEN_URL = settings.KEYCLOAK_BASE, 'protocol/openid-connect/token'
+    BASE_URL = settings.SOCIAL_AUTH_KEYCLOAK_BASE
+    USERINFO_URL = urljoin(BASE_URL, 'protocol/openid-connect/userinfo')
+    AUTHORIZATION_URL = urljoin(BASE_URL, 'protocol/openid-connect/auth')
+    ACCESS_TOKEN_URL = urljoin(BASE_URL, 'protocol/openid-connect/token')
     ACCESS_TOKEN_METHOD = 'POST'
 
     def get_user_details(self, response):
         clients = response.get('resource_access', {})
-        client = clients.get(settings.KEYCLOAK_KEY, {})
+        client = clients.get(settings.SOCIAL_AUTH_KEYCLOAK_KEY, {})
         roles = set(client.get('roles', []))
 
         return {
