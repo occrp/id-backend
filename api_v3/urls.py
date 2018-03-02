@@ -18,7 +18,7 @@ from .views.tickets import TicketsEndpoint
 from .views.ticket_stats import TicketStatsEndpoint
 
 
-router = locate(settings.ROUTER_CLASS)()
+router = locate(settings.ROUTER_CLASS)(trailing_slash=False)
 router.register(r'attachments', AttachmentsEndpoint)
 router.register(r'activities', ActivitiesEndpoint)
 router.register(r'comments', CommentsEndpoint)
@@ -31,9 +31,9 @@ router.register(r'subscribers', SubscribersEndpoint)
 router.register(r'tickets', TicketsEndpoint)
 router.register(r'ticket-stats', TicketStatsEndpoint, base_name='ticket_stats')
 
-auth_router = locate(settings.ROUTER_CLASS)()
+auth_router = locate(settings.ROUTER_CLASS)(trailing_slash=False)
 auth_router.register(r'login', LoginEndpoint, base_name='login')
-auth_router.register(r'logout', LogoutEndpoint, base_name='login')
+auth_router.register(r'logout', LogoutEndpoint, base_name='logout')
 
 urlpatterns = [
     url('api/v3/', include(router.urls)),
