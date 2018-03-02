@@ -136,13 +136,16 @@ class Common(Configuration):
     SOCIAL_AUTH_KEYCLOAK_SECRET = values.Value(
         '', environ_prefix='', environ_required=True)
 
+    # See: http://python-social-auth.readthedocs.io/en/latest/pipeline.html
     SOCIAL_AUTH_PIPELINE = (
-        # 'social.pipeline.social_auth.social_details',
-        # 'social.pipeline.social_auth.auth_allowed',
-        # 'social.pipeline.social_auth.associate_by_email',
-        # 'social.pipeline.user.create_user',
-        # 'social.pipeline.user.user_details',
-        'api_v3.misc.oauth2.KeycloakOAuth2.activate_user'
+        'social_core.pipeline.social_auth.social_details',
+        'social_core.pipeline.social_auth.social_uid',
+        'social_core.pipeline.social_auth.social_user',
+        'social_core.pipeline.social_auth.associate_by_email',
+        'social_core.pipeline.user.create_user',
+        'social_core.pipeline.social_auth.associate_user',
+        'social_core.pipeline.user.user_details',
+        'api_v3.misc.oauth2.KeycloakOAuth2.activate_user',
     )
 
     # Django Rest Framework
