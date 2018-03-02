@@ -39,6 +39,7 @@ class Common(Configuration):
     SECRET_KEY = values.SecretValue()
     WSGI_APPLICATION = 'api_v3.wsgi.application'
     USE_X_FORWARDED_HOST = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
     ROUTER_CLASS = 'rest_framework.routers.DefaultRouter'
 
