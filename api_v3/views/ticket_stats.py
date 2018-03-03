@@ -170,7 +170,12 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         aggregated.query.group_by = aggregated.query.group_by[-2:]
 
         stats = map(
-            lambda stat: self.TicketStat(stat, profile=profile, pk=None),
+            lambda stat: self.TicketStat(
+                stat,
+                profile_id=getattr(profile, 'id', None),
+                profile=profile,
+                pk=None
+            ),
             list(aggregated)
         )
 
