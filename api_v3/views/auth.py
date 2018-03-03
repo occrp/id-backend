@@ -19,13 +19,12 @@ class LoginEndpoint(viewsets.GenericViewSet):
     permission_classes = (permissions.AllowAny,)
 
     def list(self, request, *args, **kwargs):
-        redirect_location = urllib.quote(request.GET.get('next') or '/')
+        next = urllib.quote(request.GET.get('next') or '/')
 
         if request.user.is_authenticated():
-            return HttpResponseRedirect(redirect_location)
+            return HttpResponseRedirect(next)
 
-        url_params = {'backend': 'keycloak'}
-        url = reverse('social:begin', kwargs=url_params)
-        url = '{}?{}'.format(url, urllib.urlencode({'next': redirect_location}))
+        path = reverse('social:begin', kwargs={'backend': 'keycloak'})
+        path = '{}?{}'.format(path, urllib.urlencode({'next': next}))
 
-        return HttpResponseRedirect(redirect_location)
+        return HttpResponseRedirect(path)
