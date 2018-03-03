@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 try:
     from django.conf import settings
     from django.core.exceptions import ImproperlyConfigured
+    from django.contrib.contenttypes.models import ContentType
     from django.db import DEFAULT_DB_ALIAS, connections, migrations, models
     from django.db.migrations.recorder import MigrationRecorder
     import django.db.models.deletion
@@ -31,6 +32,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunPython(
+            lambda _a, _s: ContentType.objects.filter(
+                app_label='accounts', model='profile'
+            ).update(app_label='api_v3')
+        ),
         migrations.CreateModel(
             name='Subscriber',
             fields=[
