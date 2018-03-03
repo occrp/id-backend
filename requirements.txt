@@ -14,7 +14,6 @@ dj-email-url==0.0.10
 social-auth-app-django==2.1.0
 
 # Model Tools
-#django_unique_upload==0.2.1
 django-simple-activity==1.0.0
 
 # Rest apis
