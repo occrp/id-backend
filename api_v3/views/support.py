@@ -141,6 +141,9 @@ class JSONApiEndpoint(object):
         response = rest_framework_json_api.exceptions.exception_handler(
             exc, context)
 
+        if response is None:
+            self.raise_uncaught_exception(exc)
+
         if isinstance(exc, rest_framework.exceptions.ValidationError):
             # For ember-data validation errors (isInvalid method on adapter)
             response.status_code = HTTP_422_UNPROCESSABLE_ENTITY
