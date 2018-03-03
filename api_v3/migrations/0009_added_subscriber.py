@@ -18,7 +18,7 @@ try:
     recorder = MigrationRecorder(connections[DEFAULT_DB_ALIAS])
     applied = recorder.applied_migrations()
 
-    if BAD_MIGRATION not in applied:
+    if applied and (BAD_MIGRATION not in applied):
         recorder.record_applied(*BAD_MIGRATION)
 except (NameError, ImproperlyConfigured) as error:
     print(error)
