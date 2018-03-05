@@ -1,18 +1,16 @@
 Hello {{ user.display_name }},
 your ID tickets digest is below.
 
-{% if upcoming -%}
+{% if upcoming %}
 You have tickets with upcoming deadlines:
+{% for ticket in upcoming %}
+ * ({{ticket.deadline_at|date:'SHORT_DATE_FORMAT' }}): http://{{request_host}}/tickets/view/{{ticket.id}}
+{% endfor %}{% endif %}
 
-{% for ticket in upcoming -%}
- * ({{ticket.deadline_at.strftime('%x') }}): http://{{request_host}}/tickets/view/{{ticket.id}}
-{% endfor %}
-{% endif -%}
 Below is a report of latest activities for the tickets you are subscribed to:
+{% for item in digests %}
+ * {{ item }}{% endfor %}
 
-{% for item in digests -%}
- * {{ item }}
-{% endfor %}
 
 Thank you for using the Investigative Dashboard!
 

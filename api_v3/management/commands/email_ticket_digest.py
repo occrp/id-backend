@@ -50,6 +50,7 @@ class Command(BaseCommand):
                 upcoming_in = 'never'
                 user_digests[user.id] = user_digests.get(user.id) or {
                     'request_host': self.request_host,
+                    'site_name': settings.SITE_NAME,
                     'user': user,
                     'digests': [],
                     'upcoming': set()

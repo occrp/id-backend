@@ -4,7 +4,7 @@ from django.test import TestCase
 import mock
 
 from api_v3.models import Action, Responder
-from api_v3.management.commands.email_ticket_digest import Command
+from api_v3.management.commands import email_ticket_digest
 from api_v3.factories import TicketFactory, CommentFactory
 
 
@@ -61,8 +61,24 @@ class TicketDigestTestCase(TestCase):
             )
         ]
 
+    def test_email_rendering(self):
+        command = email_ticket_digest.Command()
+        emails = []
+        request_host = 'test.host'
+
+        with mock.patch.object(
+            email_ticket_digest,
+            'send_mass_mail',
+            lambda x, fail_silently: (emails.extend(x), 1)
+        ):
+            command.handle(request_host=request_host)
+
+        self.assertEqual(len(emails), 2)
+        self.assertEqual(len(emails[0]), 4)
+        self.assertEqual(len(emails[1]), 4)
+
     def test_emails(self):
-        command = Command()
+        command = email_ticket_digest.Command()
         email = {}
         request_host = 'test.host'
 
