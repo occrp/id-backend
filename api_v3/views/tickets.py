@@ -1,9 +1,7 @@
-from datetime import datetime
-
 from django.core.mail import send_mass_mail
 from django.conf import settings
 from django.template.loader import render_to_string
-from rest_framework import exceptions, mixins, serializers, viewsets
+from rest_framework import exceptions, mixins, viewsets
 
 from api_v3.models import Action, Comment, Profile, Ticket
 from api_v3.serializers import TicketSerializer
@@ -74,16 +72,7 @@ class TicketsEndpoint(
 
         comment = None
         status = serializer.validated_data.get('status')
-        deadline_at = serializer.validated_data.get('deadline_at')
         status_changed = instance.status != status
-        deadline_changed = deadline_at and instance.deadline_at != deadline_at
-        deadline_passed = deadline_changed and deadline_at < datetime.utcnow()
-
-        if not status_changed and deadline_passed:
-            raise serializers.ValidationError([{
-                'data/attributes/deadline_at':
-                'The date can not be in the past.'
-            }])
 
         if status_changed:
             verb = '{}:status_{}'.format(self.action_name(), status)

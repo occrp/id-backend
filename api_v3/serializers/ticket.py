@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from rest_framework_json_api import serializers
 
 from api_v3.models import Profile, Ticket
@@ -65,6 +67,30 @@ class TicketSerializer(serializers.ModelSerializer):
             'reopen_reason',
             'pending_reason'
         )
+
+    def validate_deadline_at(self, value):
+        """Deadline validation."""
+        error = serializers.ValidationError([{
+            'data/attributes/deadline_at': 'The date can not be in the past.'
+        }])
+
+        if not value:
+            return value
+
+        if not self.instance and value < datetime.utcnow():
+            raise error
+        elif not self.instance:
+            return value
+
+        status = self.initial_data.get('status')
+        status_changed = self.instance.status != status
+        deadline_changed = self.instance.deadline_at != value
+        deadline_passed = deadline_changed and value < datetime.utcnow()
+
+        if not status_changed and deadline_passed:
+            raise error
+
+        return value
 
     def get_reopen_reason(self, obj):
         """Just to make the attribute present."""
