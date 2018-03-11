@@ -1,6 +1,6 @@
 import json
 
-from api_v3.factories import(
+from api_v3.factories import (
     ProfileFactory, TicketFactory, ResponderFactory, SubscriberFactory)
 from api_v3.models import Ticket, Responder
 from api_v3.serializers import ResponderSerializer

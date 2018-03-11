@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.test import TestCase
 
-from api_v3.models import(
+from api_v3.models import (
     Ticket, Profile, Responder, Attachment, Comment, Subscriber
 )
 
