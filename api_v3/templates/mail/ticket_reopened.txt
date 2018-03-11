@@ -1,0 +1,12 @@
+Hello {{ name }},
+{{ user.display_name }} reopened the ticket with ID: {{ ticket.id }}
+
+To see the ticket, please visit:
+
+http://{{ request_host }}/tickets/view/{{ ticket.id }}
+
+
+--
+Do not reply to this automated email.
+
+The {{ site_name }} Team.

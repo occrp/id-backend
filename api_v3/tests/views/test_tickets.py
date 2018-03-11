@@ -1,14 +1,18 @@
 import json
 import random
 
+from django.conf import settings
+from django.template.loader import render_to_string
+
 from api_v3.models import Ticket, Action
 from api_v3.factories import (
     ProfileFactory,
     ResponderFactory,
     TicketFactory
 )
-from api_v3.serializers import TicketSerializer
 from .support import ApiTestCase, APIClient, reverse
+from api_v3.serializers import TicketSerializer
+from api_v3.views.tickets import TicketsEndpoint
 
 
 class TicketsEndpointTestCase(ApiTestCase):
@@ -329,3 +333,60 @@ class TicketsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Ticket.objects.count(), tickets_count + 1)
+
+    def test_email_notify_when_ticket_created(self):
+        self.users[0].is_superuser = True
+        self.users[0].save()
+
+        controller = TicketsEndpoint()
+        count, emails = controller.email_notify(self.tickets[0])
+
+        self.assertEqual(count, 1)
+
+        self.assertEqual(emails[0], [
+            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+            render_to_string(
+                'mail/ticket_created.txt',
+                dict(
+                    ticket=self.tickets[0],
+                    name=self.users[0].display_name,
+                    site_name=settings.SITE_NAME
+                )
+            ),
+            settings.DEFAULT_FROM_EMAIL,
+            [self.users[0].email]
+        ])
+
+    def test_email_notify(self):
+        controller = TicketsEndpoint()
+        count, emails = controller.email_notify(
+            self.tickets[0], template='mail/ticket_reopened.txt')
+
+        self.assertEqual(count, 2)
+
+        self.assertEqual(emails[0], [
+            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+            render_to_string(
+                'mail/ticket_reopened.txt',
+                dict(
+                    ticket=self.tickets[0],
+                    name=self.users[2].display_name,
+                    site_name=settings.SITE_NAME
+                )
+            ),
+            settings.DEFAULT_FROM_EMAIL,
+            [self.users[2].email]
+        ])
+        self.assertEqual(emails[1], [
+            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+            render_to_string(
+                'mail/ticket_reopened.txt',
+                dict(
+                    ticket=self.tickets[0],
+                    name=self.users[1].display_name,
+                    site_name=settings.SITE_NAME
+                )
+            ),
+            settings.DEFAULT_FROM_EMAIL,
+            [self.users[1].email]
+        ])

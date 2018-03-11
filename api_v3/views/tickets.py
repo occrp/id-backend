@@ -84,6 +84,7 @@ class TicketsEndpoint(
 
         if init_data.get('reopen_reason'):
             verb = '{}:reopen'.format(self.action_name())
+            self.email_notify(ticket, template='mail/ticket_reopened.txt')
         elif init_data.get('pending_reason'):
             verb = '{}:pending'.format(self.action_name())
 
@@ -100,25 +101,31 @@ class TicketsEndpoint(
         return Action.objects.create(
             actor=self.request.user, target=ticket, verb=verb, action=comment)
 
-    def email_notify(self, ticket):
+    def email_notify(self, ticket, template='mail/ticket_created.txt'):
         """Sends an email to editors about the new ticket."""
         emails = []
         subject = self.EMAIL_SUBJECT.format(ticket.id)
-        users = Profile.objects.filter(is_superuser=True, is_active=True)
+        request_host = ''
+
+        if hasattr(self, 'request'):
+            request_host = self.request.get_host()
+
+        if template == 'mail/ticket_created.txt':
+            users = Profile.objects.filter(is_superuser=True, is_active=True)
+        else:
+            users = ticket.users
 
         for user in users:
             emails.append([
                 subject,
-                render_to_string(
-                    'mail/ticket_created.txt', {
-                        'ticket': ticket,
-                        'name': user.display_name,
-                        'request_host': self.request.get_host(),
-                        'site_name': settings.SITE_NAME
-                    }
-                ),
+                render_to_string(template, {
+                    'ticket': ticket,
+                    'name': user.display_name,
+                    'request_host': request_host,
+                    'site_name': settings.SITE_NAME
+                }),
                 settings.DEFAULT_FROM_EMAIL,
                 [user.email]
             ])
 
-        return send_mass_mail(emails, fail_silently=True)
+        return send_mass_mail(emails, fail_silently=True), emails
