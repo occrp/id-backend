@@ -364,7 +364,9 @@ class TicketsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(count, 2)
 
-        self.assertEqual(emails[0], [
+        email = filter(lambda e: e[3][0] == self.users[2].email, emails)
+
+        self.assertEqual(email[0], [
             controller.EMAIL_SUBJECT.format(self.tickets[0].id),
             render_to_string(
                 'mail/ticket_reopened.txt',
@@ -377,7 +379,10 @@ class TicketsEndpointTestCase(ApiTestCase):
             settings.DEFAULT_FROM_EMAIL,
             [self.users[2].email]
         ])
-        self.assertEqual(emails[1], [
+
+        email = filter(lambda e: e[3][0] == self.users[1].email, emails)
+
+        self.assertEqual(email[0], [
             controller.EMAIL_SUBJECT.format(self.tickets[0].id),
             render_to_string(
                 'mail/ticket_reopened.txt',
