@@ -26,8 +26,10 @@ class Subscriber(models.Model):
         return (queryset or cls.objects).filter(
             # Allow own subscriber objects
             models.Q(user=user) |
-            # Allow related to user subscriber tickets
-            models.Q(ticket__users=user) |
+            # Allow related to user responder tickets
+            models.Q(ticket__responder_users=user) |
+            # Allow related to user subscribed tickets
+            models.Q(ticket__subscriber_users=user) |
             # Allow related to user created tickets
             models.Q(ticket__requester=user)
         )

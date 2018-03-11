@@ -2,7 +2,9 @@ from datetime import datetime
 
 from django.test import TestCase
 
-from api_v3.models import Ticket, Profile, Responder, Attachment, Comment
+from api_v3.models import(
+    Ticket, Profile, Responder, Attachment, Comment, Subscriber
+)
 
 
 class TicketAttachmentCommentFactoryMixin(TestCase):
@@ -138,6 +140,39 @@ class TicketAttachmentCommentFilterByUserResponderTestCase(
             TicketAttachmentCommentFilterByUserResponderTestCase, self).setUp()
 
         Responder.objects.create(ticket=self.tickets[1], user=self.users[0])
+
+    def test_tickets_filter_by_user(self):
+        tickets = Ticket.filter_by_user(self.users[0])
+
+        self.assertEqual(tickets.count(), 2)
+        self.assertIn(self.tickets[0], tickets)
+        self.assertIn(self.tickets[1], tickets)
+
+    def test_attachment_filter_by_user(self):
+        attachments = Attachment.filter_by_user(self.users[0])
+
+        self.assertEqual(attachments.count(), 6)
+
+        for attachment in self.attachments[:6]:
+            self.assertIn(attachment, attachments)
+
+    def test_comment_filter_by_user(self):
+        comments = Comment.filter_by_user(self.users[0])
+
+        self.assertEqual(comments.count(), 6)
+
+        for comment in self.comments[:6]:
+            self.assertIn(comment, comments)
+
+
+class TicketAttachmentCommentFilterByUserSubscriberTestCase(
+        TicketAttachmentCommentFactoryMixin):
+
+    def setUp(self):
+        super(
+            TicketAttachmentCommentFilterByUserSubscriberTestCase, self).setUp()
+
+        Subscriber.objects.create(ticket=self.tickets[1], user=self.users[0])
 
     def test_tickets_filter_by_user(self):
         tickets = Ticket.filter_by_user(self.users[0])

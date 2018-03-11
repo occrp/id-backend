@@ -1,12 +1,15 @@
 from rest_framework_json_api import serializers
 
 from api_v3.models import Profile, Ticket
+from .profile import ProfileSerializer
 
 
 class TicketSerializer(serializers.ModelSerializer):
 
     included_serializers = {
         'users': 'api_v3.serializers.ProfileSerializer',
+        'responder_users': 'api_v3.serializers.ProfileSerializer',
+        'subscriber_users': 'api_v3.serializers.ProfileSerializer',
         'requester': 'api_v3.serializers.ProfileSerializer',
         'responders': 'api_v3.serializers.ResponderSerializer',
         'subscribers': 'api_v3.serializers.SubscriberSerializer',
@@ -15,6 +18,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
     reopen_reason = serializers.SerializerMethodField()
     pending_reason = serializers.SerializerMethodField()
+    users = ProfileSerializer(many=True, read_only=True)
 
     class Meta:
         model = Ticket
@@ -23,6 +27,8 @@ class TicketSerializer(serializers.ModelSerializer):
             'responders',
             'subscribers',
             'users',
+            'responder_users',
+            'subscriber_users',
             'attachments',
             'reopen_reason'
         )
@@ -32,6 +38,8 @@ class TicketSerializer(serializers.ModelSerializer):
             'subscribers',
             'requester',
             'users',
+            'responder_users',
+            'subscriber_users',
 
             'kind',
             'request_type',

@@ -3,6 +3,7 @@ from django.db import models
 
 from .countries import COUNTRIES
 from .responder import Responder
+from .subscriber import Subscriber
 
 
 class Ticket(models.Model):
@@ -31,8 +32,12 @@ class Ticket(models.Model):
         ('other', 'Any other question')
     )
 
-    users = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, through=Responder, db_index=True)
+    responder_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, through=Responder,
+        related_name='responder_tickets')
+    subscriber_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, through=Subscriber,
+        related_name='subscriber_tickets')
     requester = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='requested_tickets',
         db_index=True)
@@ -73,6 +78,10 @@ class Ticket(models.Model):
     country = models.CharField(
         max_length=100, choices=COUNTRIES, null=True, db_index=True, blank=True)
 
+    @property
+    def users(self):
+        return self.responder_users.all() | self.subscriber_users.all()
+
     @classmethod
     def filter_by_user(cls, user, queryset=None):
         """Returns any user tickets.
@@ -83,5 +92,7 @@ class Ticket(models.Model):
             # Allow ticket authors
             models.Q(requester=user) |
             # Allow ticket responders
-            models.Q(users=user)
+            models.Q(responder_users=user) |
+            # Allow ticket subscribers
+            models.Q(subscriber_users=user)
         ).distinct()

@@ -23,7 +23,9 @@ class Responder(models.Model):
             # Allow own responder objects
             models.Q(user=user) |
             # Allow related to user responder tickets
-            models.Q(ticket__users=user) |
+            models.Q(ticket__responder_users=user) |
+            # Allow related to user subscribed tickets
+            models.Q(ticket__subscriber_users=user) |
             # Allow related to user created tickets
             models.Q(ticket__requester=user)
         )
