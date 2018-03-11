@@ -1,6 +1,7 @@
 import json
 
-from api_v3.factories import ProfileFactory, TicketFactory, ResponderFactory
+from api_v3.factories import(
+    ProfileFactory, TicketFactory, ResponderFactory, SubscriberFactory)
 from api_v3.models import Ticket, Responder
 from api_v3.serializers import ResponderSerializer
 from .support import ApiTestCase, APIClient, reverse
@@ -13,7 +14,8 @@ class RespondersEndpointTestCase(ApiTestCase):
         self.users = [
             ProfileFactory.create(),
             ProfileFactory.create(),
-            ProfileFactory.create(is_superuser=True)
+            ProfileFactory.create(is_superuser=True),
+            ProfileFactory.create(),
         ]
         self.tickets = [
             TicketFactory.create(requester=self.users[0]),
@@ -23,6 +25,9 @@ class RespondersEndpointTestCase(ApiTestCase):
             ResponderFactory.create(ticket=self.tickets[0], user=self.users[1]),
             ResponderFactory.create(ticket=self.tickets[1], user=self.users[2])
         ]
+
+        self.subscriber = SubscriberFactory.create(
+            ticket=self.tickets[0], user=self.users[3])
 
     def test_create_non_superuser(self):
         self.client.force_authenticate(self.users[0])
@@ -39,6 +44,37 @@ class RespondersEndpointTestCase(ApiTestCase):
         )
 
         self.assertEqual(response.status_code, 422)
+
+        response = json.loads(response.content)
+        self.assertEqual(
+            response['errors'][0]['detail']['data/attributes/ticket'],
+            'Ticket not found.'
+        )
+
+    def test_create_superuser_user_is_responder(self):
+        self.client.force_authenticate(self.users[2])
+
+        new_data = self.as_jsonapi_payload(
+            ResponderSerializer, self.responders[0])
+
+        new_data['data']['attributes']['user']['id'] = self.subscriber.user.id
+
+        response = self.client.post(
+            reverse('responder-list'),
+            data=json.dumps(new_data),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+        self.assertEqual(response.status_code, 422)
+
+        response = json.loads(response.content)
+        self.assertEqual(
+            response['errors'][0]['source']['pointer'],
+            '/data/attributes/user'
+        )
+        self.assertEqual(
+            response['errors'][0]['detail'],
+            'Subscriber already exists.'
+        )
 
     def test_create_superuser(self):
         self.client.force_authenticate(self.users[2])

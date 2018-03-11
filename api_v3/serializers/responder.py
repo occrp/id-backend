@@ -1,9 +1,8 @@
-from rest_framework_json_api import serializers
-
 from api_v3.models import Responder
+from .mixins import ResponderSubscriberSerializer
 
 
-class ResponderSerializer(serializers.ModelSerializer):
+class ResponderSerializer(ResponderSubscriberSerializer):
 
     included_serializers = {
         'user': 'api_v3.serializers.ProfileSerializer',
@@ -14,3 +13,4 @@ class ResponderSerializer(serializers.ModelSerializer):
         model = Responder
         fields = ('ticket', 'user')
         resource_name = 'responders'
+        validators = ResponderSubscriberSerializer.UNIQUENESS_VALIDATORS
