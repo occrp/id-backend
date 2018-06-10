@@ -11,6 +11,7 @@ class ActivitiesEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
     ordering_fields = ('timestamp',)
     ordering = ('-timestamp',)
     filter_fields = {
+        'id': ['exact', 'lt', 'gt'],
         'timestamp': ['range'],
         'target_object_id': ['exact'],
         'actor_object_id': ['exact']
