@@ -1,15 +1,8 @@
 # The Investigative Dashboard Project 🕵️
 
-[![Build Status](https://travis-ci.org/occrp/id-backend.svg?branch=master)](https://travis-ci.org/occrp/id-backend)
+[![Build Status](https://travis-ci.org/occrp/id-backend.svg?branch=master)](https://travis-ci.org/occrp/id-backend)[![Translation status](https://hosted.weblate.org/widgets/occrp/-/investigative-dashboard/svg-badge.svg)](https://hosted.weblate.org/engage/occrp/?utm_source=widget)
+
 [OCCRP](https://tech.occrp.org/projects/) research desk application.
-
-The web client for this API is available at:
-
-https://github.com/occrp/id-frontend
-
-To help with the translations, please create an account on Weblate:
-
-https://hosted.weblate.org/projects/occrp/investigative-dashboard/
 
 # Prerequisites
 
