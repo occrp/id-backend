@@ -60,3 +60,15 @@ class ActionSerializer(serializers.ModelSerializer):
             'responder_user',
             'created_at'
         )
+
+    def get_root_meta(self, obj, many):
+        """Adds extra root meta details."""
+        view = self.context.get('view') if self.context else None
+
+        if not many or not view or not view.queryset.exists():
+            return {}
+
+        return {
+            'latest_id': view.queryset.latest('id').id,
+            'earliest_id': view.queryset.earliest('id').id
+        }

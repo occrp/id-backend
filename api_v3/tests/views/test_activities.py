@@ -49,6 +49,8 @@ class ActivitiesEndpointTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn(self.activities[0].verb, response.content)
+        self.assertIn('latest-id', response.content)
+        self.assertIn('earliest-id', response.content)
 
     def test_list_authenticated_with_includes(self):
         self.client.force_authenticate(self.users[1])
