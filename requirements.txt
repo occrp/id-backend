@@ -1,14 +1,14 @@
 # Core
-django==1.11.9
+django==1.11.13
 django-configurations==2.0
-gunicorn==19.7.1
+gunicorn==19.8.1
 
 # Database
-psycopg2==2.7.3.2
-dj-database-url==0.4.2
+psycopg2==2.7.4
+dj-database-url==0.5
 
 # Email
-dj-email-url==0.0.10
+dj-email-url==0.1
 
 # Auth
 social-auth-app-django==2.1.0
@@ -17,12 +17,12 @@ social-auth-app-django==2.1.0
 django-simple-activity==1.1.0
 
 # Rest apis
-djangorestframework==3.7.7
+djangorestframework==3.8.2
 djangorestframework-jsonapi==2.4.0
-django-cors-headers==2.1.0
+django-cors-headers==2.2.0
 django-filter==1.1.0
 querystring-parser==1.2.3
 
 # Misc
-filetype==1.0.0
-raven==6.4.0
+filetype==1.0.1
+raven==6.9.0
