@@ -17,7 +17,7 @@ social-auth-app-django==2.1.0
 django-simple-activity==1.1.0
 
 # Rest apis
-djangorestframework==3.8.2
+djangorestframework==3.7.7
 djangorestframework-jsonapi==2.4.0
 django-cors-headers==2.2.0
 django-filter==1.1.0
