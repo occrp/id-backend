@@ -14,7 +14,8 @@ class ActivitiesEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         'id': ['exact', 'lt', 'gt'],
         'timestamp': ['range'],
         'target_object_id': ['exact'],
-        'actor_object_id': ['exact']
+        'actor_object_id': ['exact'],
+        'verb': ['exact']
     }
 
     def get_queryset(self):
