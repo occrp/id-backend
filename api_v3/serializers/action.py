@@ -64,11 +64,12 @@ class ActionSerializer(serializers.ModelSerializer):
     def get_root_meta(self, obj, many):
         """Adds extra root meta details."""
         view = self.context.get('view') if self.context else None
+        queryset = view.filter_queryset(view.get_queryset()) if view else None
 
-        if not many or not view or not view.queryset.exists():
+        if not many or not queryset or not queryset.exists():
             return {}
 
         return {
-            'latest_id': view.queryset.latest('id').id,
-            'earliest_id': view.queryset.earliest('id').id
+            'last_id': str(queryset.last().id),
+            'first_id': str(queryset.first().id)
         }
