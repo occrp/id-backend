@@ -23,7 +23,6 @@ class KeycloakOAuth2(BaseOAuth2):
         roles = set(client.get('roles', []))
 
         return {
-            'username': response.get('preferred_username'),
             'email': response.get('email'),
             'first_name': response.get('given_name'),
             'last_name': response.get('family_name'),
