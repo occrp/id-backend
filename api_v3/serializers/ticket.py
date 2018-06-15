@@ -139,22 +139,18 @@ class TicketSerializer(serializers.ModelSerializer):
     def get_ticket_totals(self):
         """Returns the ticket totals based on the status."""
         total = {}
+        view = self.context.get('view') if self.context else None
 
-        try:
-            user = self.context.get('request').user
-        except Exception:
-            user = None
+        if not view:
+            return total
 
-        if user and user.is_superuser:
-            tickets = Ticket.objects.all()
-        else:
-            tickets = Ticket.filter_by_user(user)
+        queryset = view.filter_queryset(view.get_queryset())
 
         for status in Ticket.STATUSES:
             status = status[0]
-            total[status] = tickets.filter(status=status).count()
+            total[status] = queryset.filter(status=status).count()
 
-        total['all'] = tickets.count()
+        total['all'] = queryset.count()
 
         return total
 

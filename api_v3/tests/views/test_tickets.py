@@ -89,19 +89,20 @@ class TicketsEndpointTestCase(ApiTestCase):
 
         response = self.client.get(
             reverse('ticket-list'), {
-                'filter[requester]': self.users[2].id
+                'filter[requester]': self.users[0].id
             }
         )
 
         self.assertEqual(response.status_code, 200)
 
         body = json.loads(response.content)
+        self.assertEqual(body['meta']['total']['all'], 2)
         self.assertEqual(
             body['meta']['filters']['requester'],
             {
-                'first-name': self.users[2].first_name,
-                'last-name': self.users[2].last_name,
-                'email': self.users[2].email
+                'first-name': self.users[0].first_name,
+                'last-name': self.users[0].last_name,
+                'email': self.users[0].email
             }
         )
 
