@@ -1,7 +1,7 @@
 from django.core.mail import send_mass_mail
 from django.conf import settings
 from django.template.loader import render_to_string
-from rest_framework import exceptions, mixins, viewsets
+from rest_framework import exceptions, mixins, viewsets, response
 
 from api_v3.models import Action, Comment, Profile, Ticket
 from api_v3.serializers import TicketSerializer
@@ -41,6 +41,23 @@ class TicketsEndpoint(
             return queryset.none()
 
         return Ticket.filter_by_user(self.request.user, queryset)
+
+    def list(self, request, *args, **kwargs):
+        filters = self.extract_filter_params(self.request)
+        queryset = self.filter_queryset(self.get_queryset())
+
+        if filters.get('search'):
+            queryset = Ticket.search_for(filters.pop('search'), queryset)
+
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+
+        return Response(serializer.data)
 
     def perform_create(self, serializer):
         """Make sure every new ticket is linked to current user."""

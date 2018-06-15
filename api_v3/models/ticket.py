@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.db import models
 
 from .countries import COUNTRIES
@@ -31,6 +32,18 @@ class Ticket(models.Model):
         ('company_ownership', 'Determine company ownership'),
         ('other', 'Any other question')
     )
+
+    SEARCH_WEIGHT_MAP = {
+        'first_name': 'A',
+        'last_name': 'A',
+        'company_name': 'A',
+        'background': 'B',
+        'connections': 'C',
+        'sources': 'C',
+        'business_activities': 'C',
+        'initial_information': 'C',
+        'whysensitive': 'C',
+    }
 
     responder_users = models.ManyToManyField(
         settings.AUTH_USER_MODEL, through=Responder,
@@ -96,3 +109,23 @@ class Ticket(models.Model):
             # Allow ticket subscribers
             models.Q(subscriber_users=user)
         ).distinct()
+
+    @classmethod
+    def search_for(cls, keywords, queryset=None):
+        """Full text ticket search.
+
+        Returns an annotated query set.
+        """
+        query = SearchQuery(keywords)
+        queryset = queryset or cls.objects
+        vector = None
+
+        for field, weight in cls.SEARCH_WEIGHT_MAP.items():
+            if not vector:
+                vector = SearchVector(field, weight=weight)
+            else:
+                vector += SearchVector(field, weight=weight)
+
+        return queryset.annotate(
+            rank=SearchRank(vector, query)
+        ).filter(rank__gte=0.3).order_by('rank')

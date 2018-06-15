@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import random
 
@@ -119,6 +120,23 @@ class TicketsEndpointTestCase(ApiTestCase):
 
         body = json.loads(response.content)
         self.assertEqual(body['meta']['filters'], {})
+
+    def test_list_search(self):
+        self.client.force_authenticate(self.users[0])
+        ticket = self.tickets[0]
+        keywords = u'Investigative Dashboard Proj€ct'
+        ticket.background += keywords
+        ticket.save()
+
+        response = self.client.get(
+            reverse('ticket-list'), {'filter[search]': keywords}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        body = json.loads(response.content)
+        self.assertEqual(len(body['data']), 1)
+        self.assertEqual(body['data'][0]['id'], str(ticket.id))
 
     def test_get_authenticated(self):
         self.client.force_authenticate(self.users[0])
