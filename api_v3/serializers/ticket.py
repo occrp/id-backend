@@ -146,6 +146,9 @@ class TicketSerializer(serializers.ModelSerializer):
 
         queryset = view.filter_queryset(view.get_queryset())
 
+        # Reset status filters to gather proper counts.
+        queryset = queryset | queryset.filter(status=Ticket.STATUSES)
+
         for status in Ticket.STATUSES:
             status = status[0]
             total[status] = queryset.filter(status=status).count()
