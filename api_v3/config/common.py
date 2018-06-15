@@ -136,6 +136,9 @@ class Common(Configuration):
     SOCIAL_AUTH_KEYCLOAK_SECRET = values.Value(
         '', environ_prefix='', environ_required=True)
 
+    # Username is not used.
+    SOCIAL_AUTH_USER_FIELDS = ['email']
+
     # See: http://python-social-auth.readthedocs.io/en/latest/pipeline.html
     SOCIAL_AUTH_PIPELINE = (
         'social_core.pipeline.social_auth.social_details',
