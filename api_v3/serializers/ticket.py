@@ -151,7 +151,7 @@ class TicketSerializer(serializers.ModelSerializer):
             try:
                 if clause.lhs.field.name == 'status':
                     queryset.query.where.children.remove(clause)
-            except:
+            except Exception:
                 pass
 
         for status in Ticket.STATUSES:
