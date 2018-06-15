@@ -32,12 +32,10 @@ class ProfileSerializer(serializers.ModelSerializer):
         )
 
     def get_tickets_count(self, obj):
-        view = self.context.get('view') if self.context else None
-
-        if not view:
-            return 0
+        if obj.is_superuser:
+            return Ticket.objects.count()
         else:
-            return view.filter_queryset(view.get_queryset()).count()
+            return Ticket.filter_by_user(obj).count()
 
     def to_representation(self, obj):
         request = self.context.get('request', None)
