@@ -47,7 +47,7 @@ class TicketsEndpoint(
         queryset = self.filter_queryset(self.get_queryset())
 
         if filters.get('search'):
-            queryset = Ticket.search_for(filters.pop('search'), queryset)
+            queryset = Ticket.search_for(filters.get('search'), queryset)
 
         page = self.paginate_queryset(queryset)
 
