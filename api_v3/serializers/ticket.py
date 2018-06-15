@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from django.db.models import Q
 from rest_framework_json_api import serializers
 
 from api_v3.models import Profile, Ticket
