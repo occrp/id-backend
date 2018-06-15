@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.db.models import Q
 from rest_framework_json_api import serializers
 
 from api_v3.models import Profile, Ticket
@@ -147,7 +148,12 @@ class TicketSerializer(serializers.ModelSerializer):
         queryset = view.filter_queryset(view.get_queryset())
 
         # Reset status filters to gather proper counts.
-        queryset = queryset | queryset.filter(status=Ticket.STATUSES)
+        for clause in queryset.query.where.children:
+            try:
+                if clause.lhs.field.name == 'status':
+                    queryset.query.where.children.remove(clause)
+            except:
+                pass
 
         for status in Ticket.STATUSES:
             status = status[0]

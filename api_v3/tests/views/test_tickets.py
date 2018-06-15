@@ -61,16 +61,27 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.users[0].is_superuser = True
         self.users[0].save()
 
+        status1 = self.tickets[0].status
+        status2 = Ticket.STATUSES[1][0]
+        cancelled = Ticket.STATUSES[4][0]
+        self.tickets[1].status = cancelled
+        self.tickets[1].save()
+
         self.client.force_authenticate(self.users[0])
 
-        response = self.client.get(reverse('ticket-list'))
+        response = self.client.get(
+            reverse('ticket-list'),
+            {'filter[status__in]': ','.join([status1, status2])}
+        )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.tickets[0].background)
 
         body = json.loads(response.content)
 
         self.assertEqual(body['meta']['total']['all'], 3)
+        self.assertNotEqual(body['meta']['total'][cancelled], 0)
+
+        self.assertContains(response, self.tickets[0].background)
 
     def test_list_authenticated_with_includes(self):
         self.client.force_authenticate(self.users[0])

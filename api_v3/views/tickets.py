@@ -57,7 +57,7 @@ class TicketsEndpoint(
 
         serializer = self.get_serializer(queryset, many=True)
 
-        return Response(serializer.data)
+        return response.Response(serializer.data)
 
     def perform_create(self, serializer):
         """Make sure every new ticket is linked to current user."""
