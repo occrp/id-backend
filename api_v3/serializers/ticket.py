@@ -140,19 +140,22 @@ class TicketSerializer(serializers.ModelSerializer):
         """Returns the ticket totals based on the status."""
         total = {}
         view = self.context.get('view') if self.context else None
+        request = self.context.get('request') if self.context else None
 
-        if not view:
+        if not view and not request:
             return total
 
         queryset = view.filter_queryset(view.get_queryset())
+        filters = view.extract_filter_params(request)
 
-        # Reset status filters to gather proper counts.
-        for clause in queryset.query.where.children:
-            try:
-                if clause.lhs.field.name == 'status':
-                    queryset.query.where.children.remove(clause)
-            except Exception:
-                pass
+        # Reset status filters to gather proper counts if it is the only filter.
+        if len(filter(None, filters)) == 1 and filters.get('status__in'):
+            for clause in queryset.query.where.children:
+                try:
+                    if clause.lhs.field.name == 'status':
+                        queryset.query.where.children.remove(clause)
+                except Exception:
+                    pass
 
         for status in Ticket.STATUSES:
             status = status[0]
