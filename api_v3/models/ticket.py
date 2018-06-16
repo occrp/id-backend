@@ -33,6 +33,8 @@ class Ticket(models.Model):
         ('other', 'Any other question')
     )
 
+    MIN_SEARCH_RANK = 0.3
+
     SEARCH_WEIGHT_MAP = {
         'first_name': 'A',
         'last_name': 'A',
@@ -128,4 +130,6 @@ class Ticket(models.Model):
 
         return queryset.annotate(
             rank=SearchRank(vector, query)
-        ).filter(rank__gte=0.3).order_by('rank')
+        ).filter(
+            rank__gte=cls.MIN_SEARCH_RANK
+        ).order_by('rank')
