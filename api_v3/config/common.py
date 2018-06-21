@@ -1,5 +1,4 @@
 import os.path
-import tempfile
 
 from configurations import Configuration, values
 
@@ -62,7 +61,7 @@ class Common(Configuration):
 
     # Sentry
     RAVEN_CONFIG = {
-        'dsn': values.Value('', environ_name='SENTRY_DSN'),
+        'dsn': values.Value('', environ_name='SENTRY_DSN', environ_prefix=''),
         'release': VERSION,
     }
 
@@ -77,7 +76,8 @@ class Common(Configuration):
     USE_TZ = False
 
     # Media files: max. size of 500MB
-    MEDIA_ROOT = values.Value(tempfile.gettempdir(), environ_name='MEDIA_ROOT')
+    MEDIA_ROOT = values.Value(
+        environ_name='MEDIA_ROOT', environ_prefix='', environ_required=True)
     MAX_UPLOAD_SIZE = 1024 * 1024 * 500
     STATIC_URL = '/api/static/'
 
