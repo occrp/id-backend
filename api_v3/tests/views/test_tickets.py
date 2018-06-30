@@ -148,6 +148,7 @@ class TicketsEndpointTestCase(ApiTestCase):
         body = json.loads(response.content)
         self.assertEqual(len(body['data']), 1)
         self.assertEqual(body['data'][0]['id'], str(ticket.id))
+        self.assertEqual(body['meta']['total']['all'], 1)
 
     def test_get_authenticated(self):
         self.client.force_authenticate(self.users[0])

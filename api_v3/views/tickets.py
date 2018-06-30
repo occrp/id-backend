@@ -42,22 +42,15 @@ class TicketsEndpoint(
 
         return Ticket.filter_by_user(self.request.user, queryset)
 
-    def list(self, request, *args, **kwargs):
+    def filter_queryset(self, queryset):
+        """Patch filtering method to use the search implementation."""
         filters = self.extract_filter_params(self.request)
-        queryset = self.filter_queryset(self.get_queryset())
+        filtered = super(TicketsEndpoint, self).filter_queryset(queryset)
 
         if filters.get('search'):
-            queryset = Ticket.search_for(filters.get('search'), queryset)
+            filtered = Ticket.search_for(filters.get('search'), filtered)
 
-        page = self.paginate_queryset(queryset)
-
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-
-        return response.Response(serializer.data)
+        return filtered
 
     def perform_create(self, serializer):
         """Make sure every new ticket is linked to current user."""
