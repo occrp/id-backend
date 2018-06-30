@@ -34,7 +34,7 @@ class SubscribersEndpoint(
         if not self.request.user.is_active:
             return queryset.none()
 
-        return Subscriber.filter_by_user(self.request.user, queryset)
+        return Subscriber.filter_by_user(self.request.user, queryset).distinct()
 
     def perform_create(self, serializer):
         """Only super user or ticket responders can add subscribers."""

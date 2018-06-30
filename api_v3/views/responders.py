@@ -34,7 +34,7 @@ class RespondersEndpoint(
         if not self.request.user.is_active:
             return queryset.none()
 
-        return Responder.filter_by_user(self.request.user, queryset)
+        return Responder.filter_by_user(self.request.user, queryset).distinct()
 
     def perform_create(self, serializer):
         """Make sure only super user can add responders."""
