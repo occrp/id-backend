@@ -33,13 +33,13 @@ class SubscribersEndpointTestCase(ApiTestCase):
             ticket=self.tickets[0], user=self.users[0]
         )
 
-    def test_create_non_superuser(self):
-        self.client.force_authenticate(self.users[0])
+    def test_create_arbitrary_user(self):
+        self.client.force_authenticate(self.users[3])
 
         new_data = self.as_jsonapi_payload(
             SubscriberSerializer, self.subscriber)
 
-        new_data['data']['attributes']['user']['id'] = self.users[2].id
+        new_data['data']['attributes']['user_email'] = self.users[3].email
 
         response = self.client.post(
             reverse('subscriber-list'),
@@ -61,7 +61,7 @@ class SubscribersEndpointTestCase(ApiTestCase):
         new_data = self.as_jsonapi_payload(
             SubscriberSerializer, self.subscriber)
 
-        new_data['data']['attributes']['user']['id'] = self.users[0].id
+        new_data['data']['attributes']['user_email'] = self.users[0].email
 
         response = self.client.post(
             reverse('subscriber-list'),
@@ -87,7 +87,7 @@ class SubscribersEndpointTestCase(ApiTestCase):
         new_data = self.as_jsonapi_payload(
             SubscriberSerializer, self.subscriber)
 
-        new_data['data']['attributes']['user']['id'] = self.users[1].id
+        new_data['data']['attributes']['user_email'] = self.users[1].email
 
         response = self.client.post(
             reverse('subscriber-list'),
@@ -114,7 +114,26 @@ class SubscribersEndpointTestCase(ApiTestCase):
         new_data = self.as_jsonapi_payload(
             SubscriberSerializer, self.subscriber)
 
-        new_data['data']['attributes']['user']['id'] = self.users[2].id
+        new_data['data']['attributes']['user-email'] = self.users[2].email
+
+        response = self.client.post(
+            reverse('subscriber-list'),
+            data=json.dumps(new_data),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Subscriber.objects.count(), subscribers_count + 1)
+
+    def test_create_non_superuser(self):
+        self.client.force_authenticate(self.users[0])
+
+        subscribers_count = Subscriber.objects.count()
+
+        new_data = self.as_jsonapi_payload(
+            SubscriberSerializer, self.subscriber)
+
+        new_data['data']['attributes']['user_email'] = self.users[3].email
 
         response = self.client.post(
             reverse('subscriber-list'),

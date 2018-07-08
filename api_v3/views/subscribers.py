@@ -3,7 +3,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from rest_framework import exceptions, mixins, serializers, viewsets
 
-from api_v3.models import Action, Subscriber
+from api_v3.models import Action, Subscriber, Ticket, Profile
 from api_v3.serializers import SubscriberSerializer
 from .support import JSONApiEndpoint
 
@@ -36,11 +36,25 @@ class SubscribersEndpoint(
 
         return Subscriber.filter_by_user(self.request.user, queryset).distinct()
 
+    def create(self, request, *args, **kwargs):
+        """Validate user before it hits the serializer."""
+        subscriber_user = Profile.objects.filter(
+            email=request.data.pop('user_email', None)).first()
+
+        request.data['user'] = {}
+
+        if subscriber_user:
+            request.data['user']['id'] = subscriber_user.id
+            request.data['user']['type'] = 'profiles'
+
+        return super(SubscribersEndpoint, self).create(request, *args, **kwargs)
+
     def perform_create(self, serializer):
         """Only super user or ticket responders can add subscribers."""
         user = self.request.user
+        is_ticket_user = user in serializer.validated_data['ticket'].users
 
-        if not user.is_superuser:
+        if not user.is_superuser and not is_ticket_user:
             raise serializers.ValidationError(
                 [{'data/attributes/ticket': 'Ticket not found.'}]
             )
