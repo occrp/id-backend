@@ -3,7 +3,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from rest_framework import exceptions, mixins, serializers, viewsets
 
-from api_v3.models import Action, Subscriber, Ticket, Profile
+from api_v3.models import Action, Subscriber, Profile
 from api_v3.serializers import SubscriberSerializer
 from .support import JSONApiEndpoint
 

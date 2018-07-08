@@ -1,7 +1,7 @@
 from django.core.mail import send_mass_mail
 from django.conf import settings
 from django.template.loader import render_to_string
-from rest_framework import exceptions, mixins, viewsets, response
+from rest_framework import exceptions, mixins, viewsets
 
 from api_v3.models import Action, Comment, Profile, Ticket
 from api_v3.serializers import TicketSerializer
