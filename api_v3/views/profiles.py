@@ -17,10 +17,17 @@ class ProfilesEndpoint(
     filter_fields = ('is_superuser', 'is_staff')
 
     def perform_update(self, serializer):
-        """Allow users to update only own profile."""
+        """Allow users to update only own profile.
 
-        if self.request.user != serializer.instance:
+        Superusers can update the staff flags.
+        """
+        user = self.request.user
+
+        if user != serializer.instance and not user.is_superuser:
             raise exceptions.NotFound()
+
+        if user.is_superuser:
+            serializer.instance.is_staff = self.request.data.get('is_staff')
 
         serializer.instance.bio = serializer.validated_data.get('bio')
         serializer.instance.save()

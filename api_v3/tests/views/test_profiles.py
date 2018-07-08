@@ -116,8 +116,6 @@ class ProfilesEndpointTestCase(ApiTestCase):
         self.assertNotIn(self.users[0].email, content)
 
     def test_update_authenticated_not_owned_profile(self):
-        self.users[1].is_staff = True
-        self.users[1].save()
         self.client.force_authenticate(self.users[0])
 
         new_data = self.as_jsonapi_payload(
@@ -132,14 +130,14 @@ class ProfilesEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_update_authenticated(self):
-        self.users[0].is_staff = True
+        self.users[0].is_staff = False
         self.users[0].save()
         self.client.force_authenticate(self.users[0])
 
         email = 'ignored@email.address'
         new_data = self.as_jsonapi_payload(
             ProfileSerializer, self.users[0], {
-                'email': email, 'bio': 'Short Bio'})
+                'email': email, 'bio': 'Short Bio', 'is_staff': True})
 
         response = self.client.patch(
             reverse('profile-detail', args=[self.users[0].id]),
@@ -148,5 +146,33 @@ class ProfilesEndpointTestCase(ApiTestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, email)
-        self.assertContains(response, 'Short Bio')
+
+        data = json.loads(response.content)['data']
+
+        self.assertNotEqual(data['attributes']['email'], email)
+        self.assertEqual(data['attributes']['bio'], u'Short Bio')
+        self.assertFalse(data['attributes']['is-staff'])
+
+    def test_update_authenticated_superuser(self):
+        self.users[0].is_staff = False
+        self.users[0].save()
+        self.client.force_authenticate(self.users[2])
+
+        email = 'ignored@email.address'
+        new_data = self.as_jsonapi_payload(
+            ProfileSerializer, self.users[0], {
+                'email': email, 'bio': 'Short Bio', 'is_staff': True})
+
+        response = self.client.patch(
+            reverse('profile-detail', args=[self.users[0].id]),
+            data=json.dumps(new_data),
+            content_type=ApiTestCase.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        data = json.loads(response.content)['data']
+
+        self.assertNotEqual(data['attributes']['email'], email)
+        self.assertEqual(data['attributes']['bio'], u'Short Bio')
+        self.assertTrue(data['attributes']['is-staff'])
