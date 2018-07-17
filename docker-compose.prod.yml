@@ -9,6 +9,11 @@ networks:
   id2internal:
     driver: bridge
 
+  # for kuvert-supported encrypted/signed e-mails
+  postar_default:
+    external:
+      name: postar_default
+
 services:
   postgres:
     image: postgres:9.4
@@ -41,6 +46,7 @@ services:
       - postgres
     networks:
       - id2internal
+      - postar_default
 
   web:
     image: nginx:alpine
