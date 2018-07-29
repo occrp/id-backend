@@ -5,8 +5,10 @@ from django.template.loader import render_to_string
 
 from api_v3.factories import (
     ProfileFactory, TicketFactory, ResponderFactory, SubscriberFactory)
+from api_v3.factories.support import Faker
 from api_v3.models import Subscriber, Action
 from api_v3.serializers import SubscriberSerializer
+from api_v3.serializers.mixins import ResponderSubscriberSerializer
 from api_v3.views.subscribers import SubscribersEndpoint
 from .support import ApiTestCase, APIClient, reverse
 
@@ -39,7 +41,7 @@ class SubscribersEndpointTestCase(ApiTestCase):
         new_data = self.as_jsonapi_payload(
             SubscriberSerializer, self.subscriber)
 
-        new_data['data']['attributes']['user_email'] = self.users[3].email
+        new_data['data']['attributes']['email'] = self.users[3].email
 
         response = self.client.post(
             reverse('subscriber-list'),
@@ -61,7 +63,7 @@ class SubscribersEndpointTestCase(ApiTestCase):
         new_data = self.as_jsonapi_payload(
             SubscriberSerializer, self.subscriber)
 
-        new_data['data']['attributes']['user_email'] = self.users[0].email
+        new_data['data']['attributes']['email'] = self.subscriber.user.email
 
         response = self.client.post(
             reverse('subscriber-list'),
@@ -87,7 +89,7 @@ class SubscribersEndpointTestCase(ApiTestCase):
         new_data = self.as_jsonapi_payload(
             SubscriberSerializer, self.subscriber)
 
-        new_data['data']['attributes']['user_email'] = self.users[1].email
+        new_data['data']['attributes']['email'] = self.users[1].email
 
         response = self.client.post(
             reverse('subscriber-list'),
@@ -114,7 +116,7 @@ class SubscribersEndpointTestCase(ApiTestCase):
         new_data = self.as_jsonapi_payload(
             SubscriberSerializer, self.subscriber)
 
-        new_data['data']['attributes']['user-email'] = self.users[2].email
+        new_data['data']['attributes']['email'] = self.users[2].email
 
         response = self.client.post(
             reverse('subscriber-list'),
@@ -133,7 +135,7 @@ class SubscribersEndpointTestCase(ApiTestCase):
         new_data = self.as_jsonapi_payload(
             SubscriberSerializer, self.subscriber)
 
-        new_data['data']['attributes']['user_email'] = self.users[3].email
+        new_data['data']['attributes']['email'] = self.users[3].email
 
         response = self.client.post(
             reverse('subscriber-list'),
@@ -143,6 +145,62 @@ class SubscribersEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Subscriber.objects.count(), subscribers_count + 1)
+
+    def test_create_non_superuser_arbitrary_email(self):
+        self.client.force_authenticate(self.users[0])
+
+        subscribers_count = Subscriber.objects.count()
+
+        new_data = self.as_jsonapi_payload(
+            SubscriberSerializer, self.subscriber)
+
+        new_email = Faker('email').generate({})
+        new_data['data']['attributes']['user'] = {}
+        new_data['data']['attributes']['email'] = new_email
+
+        response = self.client.post(
+            reverse('subscriber-list'),
+            data=json.dumps(new_data),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Subscriber.objects.count(), subscribers_count + 1)
+        self.assertEqual(Subscriber.objects.last().email, new_email)
+
+    def test_create_non_superuser_arbitrary_email_exists(self):
+        self.client.force_authenticate(self.users[0])
+
+        new_email = Faker('email').generate({})
+        Subscriber.objects.create(
+            ticket=self.subscriber.ticket, email=new_email)
+
+        subscribers_count = Subscriber.objects.count()
+
+        new_data = self.as_jsonapi_payload(
+            SubscriberSerializer, self.subscriber)
+        new_data['data']['attributes'].pop('user')
+        new_data['data']['attributes']['email'] = new_email
+
+        response = self.client.post(
+            reverse('subscriber-list'),
+            data=json.dumps(new_data),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(Subscriber.objects.count(), subscribers_count)
+
+        data = json.loads(response.content)
+
+        self.assertEqual(
+            data['errors'][0]['source']['pointer'],
+            '/data/attributes/email'
+        )
+        self.assertEqual(
+            data['errors'][0]['detail'],
+            ResponderSubscriberSerializer.EMAIL_SUBSCRIBER_ERROR_MESSAGE
+        )
 
     def test_delete_non_superuser(self):
         self.client.force_authenticate(self.users[3])
@@ -233,13 +291,13 @@ class SubscribersEndpointTestCase(ApiTestCase):
         controller = SubscribersEndpoint()
 
         activity = Action(
-            actor=self.users[1],
+            actor=self.subscriber.user,
             action=self.users[0],
-            target=self.tickets[0],
+            target=self.subscriber.ticket,
             verb='test-subscriber-added'
         )
 
-        count, emails = controller.email_notify(activity)
+        count, emails = controller.email_notify(activity, self.subscriber)
 
         self.assertEqual(count, 1)
 

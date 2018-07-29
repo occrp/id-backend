@@ -11,13 +11,12 @@ class SubscriberSerializer(ResponderSubscriberSerializer):
         'ticket': 'api_v3.serializers.TicketSerializer'
     }
 
-    user_email = serializers.SerializerMethodField()
-
     class Meta:
         model = Subscriber
-        fields = ('ticket', 'user', 'user_email',)
-        validators = ResponderSubscriberSerializer.UNIQUENESS_VALIDATORS
+        fields = ('ticket', 'user', 'email',)
+        validators = (
+            ResponderSubscriberSerializer.UNIQUENESS_VALIDATORS +
+            ResponderSubscriberSerializer.EMAIL_UNIQUENESS_VALIDATORS
+        )
 
-    def get_user_email(self, obj):
-        """Just to make the attribute present."""
-        return None
+    email = serializers.CharField(required=False, default=None)

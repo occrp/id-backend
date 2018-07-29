@@ -5,13 +5,16 @@ from django.db import models
 class Subscriber(models.Model):
     """Ticket subscriber."""
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, db_index=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, db_index=True, null=True)
     ticket = models.ForeignKey(
         'Ticket', related_name='subscribers', db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    email = models.CharField(max_length=512, blank=True, null=True)
 
     class Meta:
-        unique_together = ('user', 'ticket')
+        unique_together = (
+            ('user', 'email', 'ticket')
+        )
 
     @classmethod
     def filter_by_user(cls, user, queryset=None):

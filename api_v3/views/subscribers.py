@@ -38,14 +38,16 @@ class SubscribersEndpoint(
 
     def create(self, request, *args, **kwargs):
         """Validate user before it hits the serializer."""
-        subscriber_user = Profile.objects.filter(
-            email=request.data.pop('user_email', None)).first()
-
-        request.data['user'] = {}
+        email = request.data.pop('email', None)
+        subscriber_user = Profile.objects.filter(email=email).first()
 
         if subscriber_user:
+            request.data['user'] = {}
             request.data['user']['id'] = subscriber_user.id
             request.data['user']['type'] = 'profiles'
+        else:
+            request.data['user'] = None
+            request.data['email'] = email
 
         return super(SubscribersEndpoint, self).create(request, *args, **kwargs)
 
@@ -65,7 +67,7 @@ class SubscribersEndpoint(
             actor=user, target=subscriber.ticket,
             action=subscriber.user, verb=self.action_name())
 
-        self.email_notify(action)
+        self.email_notify(action, subscriber=subscriber)
 
         return subscriber
 
@@ -86,13 +88,17 @@ class SubscribersEndpoint(
 
         return activity
 
-    def email_notify(self, activity):
+    def email_notify(self, activity, subscriber):
         """Sends an email to the subscriber about the new ticket."""
         subject = self.EMAIL_SUBJECT.format(activity.target.id)
         request_host = ''
+        name = subscriber.email
 
         if hasattr(self, 'request'):
             request_host = self.request.get_host()
+
+        if subscriber.user:
+            name = subscriber.user.display_name
 
         emails = [
             [
@@ -100,13 +106,15 @@ class SubscribersEndpoint(
                 render_to_string(
                     'mail/subscriber_added.txt', {
                         'ticket': activity.target,
-                        'name': activity.action.display_name,
                         'request_host': request_host,
-                        'site_name': settings.SITE_NAME
+                        'site_name': settings.SITE_NAME,
+                        'name': (
+                            subscriber.email or subscriber.user.display_name
+                        )
                     }
                 ),
                 settings.DEFAULT_FROM_EMAIL,
-                [activity.action.email]
+                [subscriber.email or subscriber.user.email]
             ]
         ]
 

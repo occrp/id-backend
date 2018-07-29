@@ -9,17 +9,28 @@ from api_v3.models import Responder, Subscriber
 
 class ResponderSubscriberSerializer(serializers.ModelSerializer):
 
+    EMAIL_SUBSCRIBER_ERROR_MESSAGE = 'Email already subscribed.'
+    SUBSCRIBER_ERROR_MESSAGE = 'Subscriber already exists.'
+    RESPONDER_ERROR_MESSAGE = 'User is a responder.'
+
     UNIQUENESS_VALIDATORS = [
         UniqueTogetherValidator(
             queryset=Subscriber.objects.all(),
             fields=('user', 'ticket'),
-            message='Subscriber already exists.'
+            message=SUBSCRIBER_ERROR_MESSAGE
         ),
         UniqueTogetherValidator(
             queryset=Responder.objects.all(),
             fields=('user', 'ticket'),
-            message='User is a responder.'
+            message=RESPONDER_ERROR_MESSAGE
         )
+    ]
+    EMAIL_UNIQUENESS_VALIDATORS = [
+        UniqueTogetherValidator(
+            queryset=Subscriber.objects.all(),
+            fields=('ticket', 'email'),
+            message=EMAIL_SUBSCRIBER_ERROR_MESSAGE
+        ),
     ]
 
     def run_validation(self, data=empty):
@@ -29,7 +40,11 @@ class ResponderSubscriberSerializer(serializers.ModelSerializer):
                 ResponderSubscriberSerializer, self
             ).run_validation(data)
         except ValidationError as error:
-            error.detail['user'] = error.detail.pop(
-                api_settings.NON_FIELD_ERRORS_KEY, None
-            )
+            messages = error.detail.pop(api_settings.NON_FIELD_ERRORS_KEY, None)
+
+            if messages and self.EMAIL_SUBSCRIBER_ERROR_MESSAGE in messages:
+                error.detail['email'] = messages
+            else:
+                error.detail['user'] = messages
+
             raise error
