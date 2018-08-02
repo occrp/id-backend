@@ -92,13 +92,9 @@ class SubscribersEndpoint(
         """Sends an email to the subscriber about the new ticket."""
         subject = self.EMAIL_SUBJECT.format(activity.target.id)
         request_host = ''
-        name = subscriber.email
 
         if hasattr(self, 'request'):
             request_host = self.request.get_host()
-
-        if subscriber.user:
-            name = subscriber.user.display_name
 
         emails = [
             [
