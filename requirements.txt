@@ -1,5 +1,5 @@
 # Core
-django==1.11.13
+django==1.11.15
 django-configurations==2.0
 gunicorn==19.8.1
 
@@ -17,8 +17,8 @@ social-auth-app-django==2.1.0
 django-simple-activity==1.1.0
 
 # Rest apis
-djangorestframework==3.7.7
-djangorestframework-jsonapi==2.4.0
+djangorestframework==3.8.2
+djangorestframework-jsonapi==2.5.0
 django-cors-headers==2.2.0
 django-filter==1.1.0
 querystring-parser==1.2.3
