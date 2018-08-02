@@ -9,6 +9,7 @@ from api_v3.factories import (
     CommentFactory,
     ProfileFactory,
     ResponderFactory,
+    SubscriberFactory,
     TicketFactory
 )
 from api_v3.serializers import CommentSerializer
@@ -24,16 +25,22 @@ class CommentsEndpointTestCase(ApiTestCase):
             ProfileFactory.create(email=u'email1'),
             ProfileFactory.create(),
             ProfileFactory.create(email=u'email3'),
-            ProfileFactory.create()
+            ProfileFactory.create(),
+            ProfileFactory.create(email=u'email4')
         ]
         self.tickets = [
             TicketFactory.create(requester=self.users[0])
         ]
         self.responders = [
             ResponderFactory.create(
-                ticket=self.tickets[0], user=self.users[2]),
-            ResponderFactory.create(
-                ticket=self.tickets[0], user=self.users[3])
+                ticket=self.tickets[0], user=self.users[2])
+        ]
+        self.subscribed_email = 'subscribed_email'
+        self.subscribers = [
+            SubscriberFactory.create(
+                ticket=self.tickets[0], user=self.users[4]),
+            SubscriberFactory.create(
+                ticket=self.tickets[0], email=self.subscribed_email)
         ]
         self.comments = [
             CommentFactory.create(user=self.users[3], ticket=self.tickets[0])
@@ -131,22 +138,18 @@ class CommentsEndpointTestCase(ApiTestCase):
         controller = CommentsEndpoint()
         count, emails = controller.email_notify(self.comments[0])
 
-        self.assertEqual(count, 2)
+        self.assertEqual(count, 5)
 
-        self.assertEqual(emails[0], [
-            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
-            render_to_string(
-                'mail/ticket_comment.txt',
-                dict(
-                    comment=self.comments[0],
-                    name=self.users[2].display_name,
-                    site_name=settings.SITE_NAME
-                )
-            ),
-            settings.DEFAULT_FROM_EMAIL,
-            ['email3']
-        ])
-        self.assertEqual(emails[1], [
+        requester_email = filter(
+            lambda e: e[3][0] == self.users[0].email, emails)
+        sub_email = filter(
+            lambda e: e[3][0] == self.subscribed_email, emails)
+        sub1 = filter(
+            lambda e: e[3][0] == self.subscribers[0].user.email, emails)
+        res1 = filter(
+            lambda e: e[3][0] == self.responders[0].user.email, emails)
+
+        self.assertEqual(requester_email[0], [
             controller.EMAIL_SUBJECT.format(self.tickets[0].id),
             render_to_string(
                 'mail/ticket_comment.txt',
@@ -158,4 +161,44 @@ class CommentsEndpointTestCase(ApiTestCase):
             ),
             settings.DEFAULT_FROM_EMAIL,
             ['email1']
+        ])
+        self.assertEqual(sub_email[0], [
+            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+            render_to_string(
+                'mail/ticket_comment.txt',
+                dict(
+                    comment=self.comments[0],
+                    name=' ',
+                    site_name=settings.SITE_NAME
+                )
+            ),
+            settings.DEFAULT_FROM_EMAIL,
+            [self.subscribed_email]
+        ])
+        self.assertEqual(sub1[0], [
+            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+            render_to_string(
+                'mail/ticket_comment.txt',
+                dict(
+                    comment=self.comments[0],
+                    name=self.subscribers[0].user.display_name,
+                    site_name=settings.SITE_NAME
+                )
+            ),
+            settings.DEFAULT_FROM_EMAIL,
+            [self.subscribers[0].user.email]
+        ])
+
+        self.assertEqual(res1[0], [
+            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+            render_to_string(
+                'mail/ticket_comment.txt',
+                dict(
+                    comment=self.comments[0],
+                    name=self.users[2].display_name,
+                    site_name=settings.SITE_NAME
+                )
+            ),
+            settings.DEFAULT_FROM_EMAIL,
+            ['email3']
         ])

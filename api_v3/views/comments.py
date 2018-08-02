@@ -58,15 +58,26 @@ class CommentsEndpoint(
         """Sends an email to ticket users about the new comment."""
         emails = []
         subject = self.EMAIL_SUBJECT.format(comment.ticket.id)
-        users = list(comment.ticket.users.all()) + [comment.ticket.requester]
-        request_host = ''
+        to_notify = [comment.ticket.requester.__dict__]
+        to_notify += (
+            comment.ticket.subscribers
+            .filter(email__isnull=False).distinct('email')
+            .values('email')
+        )[:]
+        to_notify += (
+            comment.ticket.users
+            .filter(email__isnull=False).distinct('email')
+            .values('email', 'first_name', 'last_name')
+        )
 
         if hasattr(self, 'request'):
             request_host = self.request.get_host()
+        else:
+            request_host = ''
 
-        for user in users:
+        for entry in to_notify:
 
-            if user == comment.user:
+            if entry['email'] == comment.user.email:
                 continue
 
             emails.append([
@@ -74,13 +85,16 @@ class CommentsEndpoint(
                 render_to_string(
                     'mail/ticket_comment.txt', {
                         'comment': comment,
-                        'name': user.display_name,
+                        'name': u'{} {}'.format(
+                            (entry.get('first_name', '')),
+                            (entry.get('last_name', ''))
+                        ),
                         'request_host': request_host,
                         'site_name': settings.SITE_NAME
                     }
                 ),
                 settings.DEFAULT_FROM_EMAIL,
-                [user.email]
+                [entry['email']]
             ])
 
         return send_mass_mail(emails, fail_silently=True), emails
