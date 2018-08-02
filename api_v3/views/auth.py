@@ -7,24 +7,29 @@ from rest_framework import viewsets, permissions
 
 
 class LogoutEndpoint(viewsets.GenericViewSet):
+    permission_classes = (permissions.AllowAny,)
 
     def list(self, request, *args, **kwargs):
-        django_logout(request)
         redirect_location = urllib.quote(request.GET.get('next') or '/')
+
+        if request.user.is_authenticated():
+            django_logout(request)
+
         return HttpResponseRedirect(redirect_location)
 
 
 class LoginEndpoint(viewsets.GenericViewSet):
-
     permission_classes = (permissions.AllowAny,)
 
     def list(self, request, *args, **kwargs):
-        next = urllib.quote(request.GET.get('next') or '/')
+        redirect_location = urllib.quote(request.GET.get('next') or '/')
 
         if request.user.is_authenticated():
-            return HttpResponseRedirect(next)
+            return HttpResponseRedirect(redirect_location)
 
         path = reverse('social:begin', kwargs={'backend': 'keycloak'})
-        path = '{}?{}'.format(path, urllib.urlencode({'next': next}))
+        path = '{}?{}'.format(
+            path, urllib.urlencode({'next': redirect_location})
+        )
 
         return HttpResponseRedirect(path)
