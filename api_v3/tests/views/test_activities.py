@@ -69,3 +69,6 @@ class ActivitiesEndpointTestCase(TestCase):
             data['data'][0]['relationships']['attachment']['data']['id'],
             str(self.attachments[0].id)
         )
+        self.assertEqual(
+            data['data'][0]['relationships']['comment']['data'], None
+        )

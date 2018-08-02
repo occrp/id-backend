@@ -1,10 +1,34 @@
 from rest_framework import fields
 from rest_framework_json_api import serializers, relations
 
-from api_v3.models import Action
+from api_v3.models import Action, Attachment, Comment, Profile
 from .attachment import AttachmentSerializer
 from .comment import CommentSerializer
 from .profile import ProfileSerializer
+
+
+class ActionRelatedField(relations.PolymorphicResourceRelatedField):
+    """Custom polymorphic serializer for action types.
+
+    Otherwise it will generate a relationship for every possible type.
+    """
+
+    def get_attribute(self, instance):
+        obj = instance.action
+
+        is_comment = self.field_name == 'comment' and isinstance(obj, Comment)
+        is_attachment = (
+            self.field_name == 'attachment' and isinstance(obj, Attachment))
+        is_responder_user = (
+            self.field_name == 'responder_user' and isinstance(obj, Profile))
+
+        if is_comment or is_attachment or is_responder_user:
+            try:
+                return super(ActionRelatedField, self).get_attribute(instance)
+            except AttributeError:
+                return obj
+
+        raise fields.SkipField()
 
 
 class ActionPolymorphicSerializer(serializers.PolymorphicModelSerializer):
@@ -28,9 +52,9 @@ class ActionSerializer(serializers.ModelSerializer):
     user = relations.ResourceRelatedField(read_only=True, source='actor')
     ticket = relations.ResourceRelatedField(read_only=True, source='target')
 
-    comment = relations.PolymorphicResourceRelatedField(
+    comment = ActionRelatedField(
         ActionPolymorphicSerializer, source='action', read_only=True)
-    attachment = relations.PolymorphicResourceRelatedField(
+    attachment = ActionRelatedField(
         ActionPolymorphicSerializer, source='action', read_only=True)
     responder_user = relations.PolymorphicResourceRelatedField(
         ActionPolymorphicSerializer, source='action', read_only=True)
