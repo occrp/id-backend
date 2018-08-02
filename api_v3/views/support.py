@@ -103,6 +103,7 @@ class Renderer(rest_framework_json_api.renderers.JSONRenderer):
 
         # Special case for polymorphic relationships we have
         obj = resource_instance.action
+        field_name = None
 
         if isinstance(obj, Comment):
             field_name = 'comment'
@@ -111,7 +112,8 @@ class Renderer(rest_framework_json_api.renderers.JSONRenderer):
         if isinstance(obj, Profile):
             field_name = 'responder_user'
 
-        resource[field_name] = {'type': field_name, 'id': obj.id}
+        if field_name:
+            resource[field_name] = {'type': field_name, 'id': obj.id}
 
         return super(Renderer, cls).extract_included(
             fields, resource, resource_instance,
