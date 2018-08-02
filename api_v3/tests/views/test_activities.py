@@ -34,7 +34,7 @@ class ActivitiesEndpointTestCase(TestCase):
 
         self.assertEqual(response.status_code, 401)
 
-    def test_list_authenticated_no_tickets(self):
+    def test_list_authenticated_no_activities(self):
         self.client.force_authenticate(self.users[0])
 
         response = self.client.get(reverse('action-list'))
@@ -59,4 +59,13 @@ class ActivitiesEndpointTestCase(TestCase):
             reverse('action-list'), {'include': 'attachment'})
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn('included', response.content)
+
+        data = json.loads(response.content)
+        self.assertEqual(data['included'][0]['type'], 'attachments')
+        self.assertEqual(data['included'][0]['id'], str(self.attachments[0].id))
+
+        print data['data'][0]['relationships']['attachment']
+        self.assertEqual(
+            data['data'][0]['relationships']['attachment']['data']['id'],
+            str(self.attachments[0].id)
+        )
