@@ -64,7 +64,6 @@ class ActivitiesEndpointTestCase(TestCase):
         self.assertEqual(data['included'][0]['type'], 'attachments')
         self.assertEqual(data['included'][0]['id'], str(self.attachments[0].id))
 
-        print data['data'][0]['relationships']['attachment']
         self.assertEqual(
             data['data'][0]['relationships']['attachment']['data']['id'],
             str(self.attachments[0].id)

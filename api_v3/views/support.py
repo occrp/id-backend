@@ -18,6 +18,7 @@ from django.utils.encoding import force_unicode
 
 from django.conf import settings
 
+from api_v3.models import Action, Attachment, Comment, Profile
 
 class DjangoFilterBackend(django_filters.rest_framework.DjangoFilterBackend):
 
@@ -62,6 +63,38 @@ class SessionAuthenticationSansCSRF(
         return
 
 
+class Renderer(rest_framework_json_api.renderers.JSONRenderer):
+    @classmethod
+    def extract_included(
+        cls, fields, resource, resource_instance,
+        included_resources, included_cache
+    ):
+        if not isinstance(resource_instance, Action):
+            return super(Renderer, cls).extract_included(
+                fields, resource, resource_instance,
+                included_resources, included_cache
+            )
+
+        # Special case for polymorphic relationships we have
+        obj = resource_instance.action
+        field_name = None
+
+        if isinstance(obj, Comment):
+            field_name = 'comment'
+        if isinstance(obj, Attachment):
+            field_name = 'attachment'
+        if isinstance(obj, Profile):
+            field_name = 'responder_user'
+
+        if field_name:
+            resource[field_name] = {'type': field_name, 'id': obj.id}
+
+        return super(Renderer, cls).extract_included(
+            fields, resource, resource_instance,
+            included_resources, included_cache
+        )
+
+
 class JSONApiEndpoint(object):
     """Generic mixin for our endpoints to enable JSON API format.
 
@@ -73,7 +106,7 @@ class JSONApiEndpoint(object):
         rest_framework.parsers.MultiPartParser,
     ]
     renderer_classes = set([
-        rest_framework_json_api.renderers.JSONRenderer,
+        Renderer,
         rest_framework.renderers.BrowsableAPIRenderer
     ])
 
