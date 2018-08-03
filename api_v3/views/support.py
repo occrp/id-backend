@@ -18,7 +18,6 @@ from django.utils.encoding import force_unicode
 
 from django.conf import settings
 
-from api_v3.models import Action, Attachment, Comment, Profile
 
 class DjangoFilterBackend(django_filters.rest_framework.DjangoFilterBackend):
 
