@@ -56,7 +56,7 @@ class ActionSerializer(serializers.ModelSerializer):
         ActionPolymorphicSerializer, source='action', read_only=True)
     attachment = ActionRelatedField(
         ActionPolymorphicSerializer, source='action', read_only=True)
-    responder_user = relations.PolymorphicResourceRelatedField(
+    responder_user = ActionRelatedField(
         ActionPolymorphicSerializer, source='action', read_only=True)
     created_at = fields.DateTimeField(
         read_only=True, source='timestamp')
