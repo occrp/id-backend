@@ -4,6 +4,8 @@ from django.conf import settings
 import jwt
 from social_core.backends.oauth import BaseOAuth2
 
+from ..models import Subscriber, Action
+
 
 class KeycloakOAuth2(BaseOAuth2):
     """Keycloak OAuth authentication backend"""
@@ -34,6 +36,21 @@ class KeycloakOAuth2(BaseOAuth2):
         return jwt.decode(access_token, verify=False)
 
 
-def activate_user(backend, user, response, *args, **kwargs):
-    user.is_active = True
-    user.save()
+def activate_user(backend, user, *args, **kwargs):
+    """This will activate an user account, unless it is not active."""
+    if not user.is_active:
+        user.is_active = True
+        user.save()
+
+
+def map_email_to_subscriber(backend, user, *args, **kwargs):
+    """This will map new users email to existing subscriber records."""
+    for subscriber in Subscriber.objects.filter(email=user.email):
+        subscriber.user = user
+        subscriber.email = None
+        subscriber.save()
+
+        Action.objects.create(
+            actor=user, target=subscriber.ticket,
+            action=subscriber.user, verb='subscriber:update:joined'
+        )

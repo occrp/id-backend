@@ -135,7 +135,6 @@ class Common(Configuration):
     SOCIAL_AUTH_KEYCLOAK_SECRET = values.Value(
         '', environ_prefix='', environ_required=True)
 
-
     # Username is not used.
     SOCIAL_AUTH_USER_FIELDS = ['email']
 
@@ -149,6 +148,7 @@ class Common(Configuration):
         'social_core.pipeline.social_auth.associate_user',
         'social_core.pipeline.user.user_details',
         'api_v3.misc.oauth2.activate_user',
+        'api_v3.misc.oauth2.map_email_to_subscriber',
     )
 
     # Django Rest Framework
