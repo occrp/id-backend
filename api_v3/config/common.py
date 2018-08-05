@@ -126,7 +126,6 @@ class Common(Configuration):
     AUTHENTICATION_BACKENDS = values.ListValue(
         [
             'api_v3.misc.oauth2.KeycloakOAuth2',
-            'django.contrib.auth.backends.ModelBackend',
         ]
     )
     SOCIAL_AUTH_KEYCLOAK_BASE = values.Value(
@@ -135,6 +134,7 @@ class Common(Configuration):
         '', environ_prefix='', environ_required=True)
     SOCIAL_AUTH_KEYCLOAK_SECRET = values.Value(
         '', environ_prefix='', environ_required=True)
+
 
     # Username is not used.
     SOCIAL_AUTH_USER_FIELDS = ['email']
