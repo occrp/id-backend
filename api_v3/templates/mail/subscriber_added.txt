@@ -7,6 +7,9 @@ http://{{ request_host }}/tickets/view/{{ ticket.id }}
 
 
 --
+The webpage requires an account, please register to be able to comment and
+download attachments.
+
 Do not reply to this automated email.
 
 The {{ site_name }} Team.
