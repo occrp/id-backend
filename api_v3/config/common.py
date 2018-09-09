@@ -128,12 +128,12 @@ class Common(Configuration):
             'api_v3.misc.oauth2.KeycloakOAuth2',
         ]
     )
-    SOCIAL_AUTH_KEYCLOAK_BASE = values.Value(
-        '', environ_prefix='', environ_required=True)
-    SOCIAL_AUTH_KEYCLOAK_KEY = values.Value(
-        '', environ_prefix='', environ_required=True)
-    SOCIAL_AUTH_KEYCLOAK_SECRET = values.Value(
-        '', environ_prefix='', environ_required=True)
+    SOCIAL_AUTH_KEYCLOAK_BASE = values.Value('', environ_prefix='')
+    SOCIAL_AUTH_KEYCLOAK_KEY = values.Value('', environ_prefix='')
+    SOCIAL_AUTH_KEYCLOAK_SECRET = values.Value('', environ_prefix='')
+
+    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = values.Value('', environ_prefix='')
+    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = values.Value('', environ_prefix='')
 
     # Username is not used.
     SOCIAL_AUTH_USER_FIELDS = ['email']
