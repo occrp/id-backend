@@ -1,31 +1,31 @@
 # Core
-django==1.11.15
-django-configurations==2.0
-gunicorn==19.8.1
+django==1.11.18
+django-configurations==2.1
+gunicorn==19.9.0
 
 # Database
-psycopg2==2.7.4
+psycopg2==2.7.7
 dj-database-url==0.5
 
 # Email
 dj-email-url==0.1
 
 # Auth
-social-auth-app-django==2.1.0
+social-auth-app-django==3.1.0
 
 # Model Tools
 django-simple-activity==1.1.0
 
 # Rest apis
-djangorestframework==3.8.2
+djangorestframework==3.9.1
 # DRF JSONAPI has a bug in their polymorphic related field. Use the fork atm.
 # djangorestframework-jsonapi==2.5.0
 https://github.com/stas/django-rest-framework-json-api/archive/master.zip
 
-django-cors-headers==2.2.0
+django-cors-headers==2.4.0
 django-filter==1.1.0
 querystring-parser==1.2.3
 
 # Misc
-filetype==1.0.1
-raven==6.9.0
+filetype==1.0.3
+raven==6.10.0
