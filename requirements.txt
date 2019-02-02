@@ -19,7 +19,7 @@ django-simple-activity==1.1.0
 # Rest apis
 djangorestframework==3.9.1
 # DRF JSONAPI has a bug in their polymorphic related field. Use the fork atm.
-# djangorestframework-jsonapi==2.5.0
+# djangorestframework-jsonapi==2.7.0
 https://github.com/stas/django-rest-framework-json-api/archive/master.zip
 
 django-cors-headers==2.4.0

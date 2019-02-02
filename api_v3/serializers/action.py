@@ -14,7 +14,7 @@ class ActionRelatedField(relations.PolymorphicResourceRelatedField):
     """
 
     def get_attribute(self, instance):
-        obj = instance.action
+        obj = super(ActionRelatedField, self).get_attribute(instance)
 
         is_comment = self.field_name == 'comment' and isinstance(obj, Comment)
         is_attachment = (
@@ -23,10 +23,7 @@ class ActionRelatedField(relations.PolymorphicResourceRelatedField):
             self.field_name == 'responder_user' and isinstance(obj, Profile))
 
         if is_comment or is_attachment or is_responder_user:
-            try:
-                return super(ActionRelatedField, self).get_attribute(instance)
-            except AttributeError:
-                return obj
+            return obj
 
         raise fields.SkipField()
 
