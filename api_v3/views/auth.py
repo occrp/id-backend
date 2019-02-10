@@ -1,22 +1,9 @@
 import urllib
 
 from django.http import HttpResponseRedirect
-from django.contrib.auth.views import logout as django_logout
 from django.core.urlresolvers import reverse
 from rest_framework import viewsets, permissions
 from social_django.utils import BACKENDS, module_member
-
-
-class LogoutEndpoint(viewsets.GenericViewSet):
-    permission_classes = (permissions.AllowAny,)
-
-    def list(self, request, *args, **kwargs):
-        redirect_location = urllib.quote(request.GET.get('next') or '/')
-
-        if request.user.is_authenticated():
-            django_logout(request)
-
-        return HttpResponseRedirect(redirect_location)
 
 
 class LoginEndpoint(viewsets.GenericViewSet):
