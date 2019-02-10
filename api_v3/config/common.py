@@ -10,7 +10,6 @@ class Common(Configuration):
 
     INSTALLED_APPS = (
         'django.contrib.contenttypes',
-        'django.contrib.sessions',
         'django.contrib.auth',
 
         # Third party apps
@@ -27,10 +26,8 @@ class Common(Configuration):
 
     MIDDLEWARE = (
         'django.middleware.security.SecurityMiddleware',
-        'django.contrib.sessions.middleware.SessionMiddleware',
         'corsheaders.middleware.CorsMiddleware',
         'django.middleware.common.CommonMiddleware',
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
     )
 
     ALLOWED_HOSTS = ["*"]
