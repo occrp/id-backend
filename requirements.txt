@@ -1,5 +1,5 @@
 # Core
-django==1.11.27
+django==1.11.28
 django-configurations==2.1
 gunicorn==19.9.0
 
