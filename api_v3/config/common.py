@@ -53,7 +53,7 @@ class Common(Configuration):
 
     # CORS
     CORS_ALLOW_CREDENTIALS = True
-    CORS_ORIGIN_WHITELIST = values.ListValue(['localhost:8000'])
+    CORS_ORIGIN_WHITELIST = values.ListValue(['http://localhost:8000'])
     CORS_ORIGIN_ALLOW_ALL = values.BooleanValue(False)
 
     # Sentry
@@ -159,6 +159,6 @@ class Common(Configuration):
     }
 
     # JSON API DRF
-    JSON_API_FORMAT_KEYS = 'dasherize'
+    JSON_API_FORMAT_FIELD_NAMES = 'dasherize'
     JSON_API_FORMAT_TYPES = 'dasherize'
     JSON_API_PLURALIZE_TYPES = True

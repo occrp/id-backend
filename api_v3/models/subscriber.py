@@ -5,9 +5,12 @@ from django.db import models
 class Subscriber(models.Model):
     """Ticket subscriber."""
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, db_index=True, null=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, db_index=True, null=True,
+        on_delete=models.DO_NOTHING)
     ticket = models.ForeignKey(
-        'Ticket', related_name='subscribers', db_index=True)
+        'Ticket', related_name='subscribers', db_index=True,
+        on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True)
     email = models.CharField(max_length=512, blank=True, null=True)
 

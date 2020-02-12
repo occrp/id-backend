@@ -55,7 +55,7 @@ class Ticket(models.Model):
         related_name='subscriber_tickets')
     requester = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='requested_tickets',
-        db_index=True)
+        db_index=True, on_delete=models.DO_NOTHING)
 
     kind = models.CharField(
         blank=False, max_length=70, choices=KINDS,

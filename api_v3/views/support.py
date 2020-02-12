@@ -13,8 +13,8 @@ import rest_framework_json_api.exceptions
 import django_filters.rest_framework
 from rest_framework.status import HTTP_422_UNPROCESSABLE_ENTITY
 from querystring_parser import parser as qs_parser
-from django.utils.six.moves.urllib.parse import unquote as url_unquote
-from django.utils.encoding import force_unicode
+from urllib.parse import unquote as url_unquote
+from django.utils.encoding import force_text
 
 from django.conf import settings
 
@@ -46,7 +46,7 @@ class Pagination(rest_framework_json_api.pagination.PageNumberPagination):
         link = super(Pagination, self).build_link(index)
         if link:
             link = url_unquote(link)
-        return force_unicode(link)
+        return force_text(link)
 
     def get_paginated_response(self, data):
         """Remove pagination from meta. Not needed, handled by links."""
