@@ -1,0 +1,19 @@
+name: ID
+
+on: [push]
+
+jobs:
+  ci:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@master
+
+    - name: Prepares the Docker Compose config
+      run: ln -s docker-compose.dev.yml docker-compose.yml
+
+    - name: Builds the Docker image
+      run: docker-compose run api sh -c 'python manage.py migrate --configuration=Production'
+
+    - name: Runs code QA and tests
+      run: docker-compose run api sh -c 'pip install -q --no-cache-dir -r requirements-testing.txt && flake8 && python manage.py test'
