@@ -1,4 +1,4 @@
-FROM python:2.7.15-alpine
+FROM python:3.9-rc-alpine
 
 RUN apk add --no-cache build-base postgresql-dev
 

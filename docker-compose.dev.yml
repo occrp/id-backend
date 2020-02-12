@@ -2,13 +2,18 @@ version: '3'
 
 services:
   postgres:
-    image: postgres:10.5-alpine
+    image: postgres:11.6-alpine
+    volumes:
+      - ".build/data/postgres:/var/lib/postgresql/data"
+      - ".build/logs/postgres:/var/log"
+    environment:
+      POSTGRES_PASSWORD: ''
   api:
     restart: always
     environment:
       - DJANGO_SECRET_KEY=local
       - MEDIA_ROOT=/tmp
-    image: api
+    image: id/api
     build: ./
     command: >
       sh -c "pip install -r requirements-testing.txt &&
