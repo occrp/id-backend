@@ -8,9 +8,11 @@ class Attachment(models.Model):
     """Ticket attachment model."""
 
     ticket = models.ForeignKey(
-        Ticket, blank=False, related_name='attachments', db_index=True)
+        Ticket, blank=False, related_name='attachments', db_index=True,
+        on_delete=models.DO_NOTHING)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, blank=False, db_index=True)
+        settings.AUTH_USER_MODEL, blank=False, db_index=True,
+        on_delete=models.DO_NOTHING)
     upload = models.FileField(upload_to='attachments/%Y/%m/%d', max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 

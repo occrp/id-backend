@@ -22,17 +22,17 @@ router = locate(settings.ROUTER_CLASS)(trailing_slash=False)
 router.register(r'attachments', AttachmentsEndpoint)
 router.register(r'activities', ActivitiesEndpoint)
 router.register(r'comments', CommentsEndpoint)
-router.register(r'download', DownloadEndpoint, base_name='download')
-router.register(r'me', SessionEndpoint, base_name='me')
-router.register(r'ops', OpsEndpoint, base_name='ops')
+router.register(r'download', DownloadEndpoint, basename='download')
+router.register(r'me', SessionEndpoint, basename='me')
+router.register(r'ops', OpsEndpoint, basename='ops')
 router.register(r'profiles', ProfilesEndpoint)
 router.register(r'responders', RespondersEndpoint)
 router.register(r'subscribers', SubscribersEndpoint)
 router.register(r'tickets', TicketsEndpoint)
-router.register(r'ticket-stats', TicketStatsEndpoint, base_name='ticket_stats')
+router.register(r'ticket-stats', TicketStatsEndpoint, basename='ticket_stats')
 
 auth_router = locate(settings.ROUTER_CLASS)(trailing_slash=False)
-auth_router.register(r'login', LoginEndpoint, base_name='login')
+auth_router.register(r'login', LoginEndpoint, basename='login')
 
 urlpatterns = [
     url('api/v3/', include(router.urls)),

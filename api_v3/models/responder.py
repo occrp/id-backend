@@ -5,9 +5,12 @@ from django.db import models
 class Responder(models.Model):
     """Model for ticket responders."""
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, db_index=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, db_index=True,
+        on_delete=models.DO_NOTHING)
     ticket = models.ForeignKey(
-        'Ticket', related_name='responders', db_index=True)
+        'Ticket', related_name='responders', db_index=True,
+        on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
