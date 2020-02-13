@@ -32,4 +32,4 @@ class ActivitiesEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         user_ticket_ids = Ticket.filter_by_user(
             self.request.user).values_list('id', flat=True)
         return Action.objects.filter(
-            target_object_id__in=map(str, user_ticket_ids))
+            target_object_id__in=list(map(str, user_ticket_ids)))

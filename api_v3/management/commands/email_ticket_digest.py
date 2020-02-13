@@ -19,8 +19,8 @@ class Command(BaseCommand):
     # Email item template. Example:
     #   (01.12.1987 22:01): John updated the status to ticket ID: 99
     ITEM_TEMPLATE = (
-        u'({date}): {name} {action} {thing} {prep} ticket '
-        u'http://{request_host}/tickets/view/{ticket}'
+        '({date}): {name} {action} {thing} {prep} ticket '
+        'http://{request_host}/tickets/view/{ticket}'
     )
 
     def add_arguments(self, parser):
@@ -85,13 +85,13 @@ class Command(BaseCommand):
             target_object_id=str(ticket.id),
             timestamp__gte=(ticket.sent_notifications_at or datetime.min)
         )
-        return filter(None, map(self.generate_text, actions))
+        return [_f for _f in list(map(self.generate_text, actions)) if _f]
 
     def email(self, user_digests):
         """Generates and emails the user digests."""
         emails = []
 
-        for _, user_digest in user_digests.items():
+        for _, user_digest in list(user_digests.items()):
             emails.append([
                 self.SUBJECT,
                 render_to_string(
@@ -121,7 +121,7 @@ class Command(BaseCommand):
         if len(verb) == 3 and '_' in verb[2]:
             attr_name, attr_val = verb[2].split('_')
             data['action'] = 'updated'
-            data['thing'] = u'{} to {}'.format(attr_name, attr_val)
+            data['thing'] = '{} to {}'.format(attr_name, attr_val)
         elif len(verb) == 3 and 'reopen' in verb:
             data['action'] = 'did'
             data['thing'] = 'reopen'
@@ -136,7 +136,7 @@ class Command(BaseCommand):
         # If a new responder was added
         elif data['thing'] == 'responder':
             data['action'] = 'added'
-            data['thing'] = u'{} as a responder'.format(
+            data['thing'] = '{} as a responder'.format(
                 action.action.display_name)
         # If a ticket was created, do not include in the digest
         elif data['thing'] == 'ticket':

@@ -22,11 +22,11 @@ class CommentsEndpointTestCase(ApiTestCase):
     def setUp(self):
         self.client = APIClient()
         self.users = [
-            ProfileFactory.create(email=u'email1'),
+            ProfileFactory.create(email='email1'),
             ProfileFactory.create(),
-            ProfileFactory.create(email=u'email3'),
+            ProfileFactory.create(email='email3'),
             ProfileFactory.create(),
-            ProfileFactory.create(email=u'email4')
+            ProfileFactory.create(email='email4')
         ]
         self.tickets = [
             TicketFactory.create(requester=self.users[0])
@@ -140,14 +140,10 @@ class CommentsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(count, 5)
 
-        requester_email = filter(
-            lambda e: e[3][0] == self.users[0].email, emails)
-        sub_email = filter(
-            lambda e: e[3][0] == self.subscribed_email, emails)
-        sub1 = filter(
-            lambda e: e[3][0] == self.subscribers[0].user.email, emails)
-        res1 = filter(
-            lambda e: e[3][0] == self.responders[0].user.email, emails)
+        requester_email = [e for e in emails if e[3][0] == self.users[0].email]
+        sub_email = [e for e in emails if e[3][0] == self.subscribed_email]
+        sub1 = [e for e in emails if e[3][0] == self.subscribers[0].user.email]
+        res1 = [e for e in emails if e[3][0] == self.responders[0].user.email]
 
         self.assertEqual(requester_email[0], [
             controller.EMAIL_SUBJECT.format(self.tickets[0].id),

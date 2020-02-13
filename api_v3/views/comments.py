@@ -85,7 +85,7 @@ class CommentsEndpoint(
                 render_to_string(
                     'mail/ticket_comment.txt', {
                         'comment': comment,
-                        'name': u'{} {}'.format(
+                        'name': '{} {}'.format(
                             (entry.get('first_name', '')),
                             (entry.get('last_name', ''))
                         ),

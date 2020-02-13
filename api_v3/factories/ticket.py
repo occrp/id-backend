@@ -12,11 +12,11 @@ class TicketFactory(DjangoModelFactory):
     requester = SubFactory(ProfileFactory)
 
     status = Faker(
-        'random_element', elements=map(lambda s: s[0], Ticket.STATUSES))
+        'random_element', elements=[s[0] for s in Ticket.STATUSES])
     kind = Faker(
-        'random_element', elements=map(lambda k: k[0], Ticket.KINDS))
+        'random_element', elements=[k[0] for k in Ticket.KINDS])
     request_type = Faker(
-        'random_element', elements=map(lambda t: t[0], Ticket.TYPES))
+        'random_element', elements=[t[0] for t in Ticket.TYPES])
     sensitive = Faker('random_element', elements=[True, False])
     whysensitive = Faker('catch_phrase')
     deadline_at = Faker('future_datetime', end_date='+30d')
@@ -31,4 +31,4 @@ class TicketFactory(DjangoModelFactory):
     business_activities = Faker('catch_phrase')
 
     company_name = Faker('company')
-    country = Faker('random_element', elements=map(lambda c: c[0], COUNTRIES))
+    country = Faker('random_element', elements=[c[0] for c in COUNTRIES])

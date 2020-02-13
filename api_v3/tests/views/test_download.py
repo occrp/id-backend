@@ -32,7 +32,7 @@ class DownloadEndpointTestCase(TestCase):
         self.attachment = AttachmentFactory.create(
             user=self.users[1],
             ticket=self.tickets[0],
-            upload=SimpleUploadedFile(u'țеșт.txt', b'test')
+            upload=SimpleUploadedFile('țеșт.txt', b'test')
         )
 
     def test_retrieve_anonymous(self):
@@ -56,7 +56,7 @@ class DownloadEndpointTestCase(TestCase):
             reverse('download-detail', args=[self.attachment.id]))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEquals(
+        self.assertEqual(
             response.get('Content-Disposition'),
             'filename={}'.format(os.path.basename(
                 self.attachment.upload.name.encode('utf-8', 'replace')
@@ -70,7 +70,7 @@ class DownloadEndpointTestCase(TestCase):
             reverse('download-detail', args=[self.attachment.id]))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEquals(
+        self.assertEqual(
             response.get('Content-Disposition'),
             'filename={}'.format(os.path.basename(
                 self.attachment.upload.name.encode('utf-8', 'ignore')

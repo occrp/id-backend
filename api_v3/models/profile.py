@@ -59,7 +59,7 @@ class Profile(AbstractUser):
     @property
     def display_name(self):
         if self.first_name or self.last_name:
-            return u' '.join((self.first_name, self.last_name)).strip()
+            return ' '.join((self.first_name, self.last_name)).strip()
         return self.email
 
     def get_full_name(self):

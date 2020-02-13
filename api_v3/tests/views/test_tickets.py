@@ -135,7 +135,7 @@ class TicketsEndpointTestCase(ApiTestCase):
     def test_list_search(self):
         self.client.force_authenticate(self.users[0])
         ticket = self.tickets[0]
-        keywords = u'Investigative Dashboard Proj€ct'
+        keywords = 'Investigative Dashboard Proj€ct'
         ticket.background += keywords
         ticket.save()
 
@@ -263,7 +263,7 @@ class TicketsEndpointTestCase(ApiTestCase):
         user = self.users[1]
         self.client.force_authenticate(user)
 
-        statuses = map(lambda s: s[0], Ticket.STATUSES)
+        statuses = [s[0] for s in Ticket.STATUSES]
         statuses.remove(ticket.status)
         new_status = random.choice(statuses)
 
@@ -395,7 +395,7 @@ class TicketsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(count, 2)
 
-        email = filter(lambda e: e[3][0] == self.users[2].email, emails)
+        email = [e for e in emails if e[3][0] == self.users[2].email]
 
         self.assertEqual(email[0], [
             controller.EMAIL_SUBJECT.format(self.tickets[0].id),
@@ -411,7 +411,7 @@ class TicketsEndpointTestCase(ApiTestCase):
             [self.users[2].email]
         ])
 
-        email = filter(lambda e: e[3][0] == self.users[1].email, emails)
+        email = [e for e in emails if e[3][0] == self.users[1].email]
 
         self.assertEqual(email[0], [
             controller.EMAIL_SUBJECT.format(self.tickets[0].id),

@@ -122,7 +122,7 @@ class Ticket(models.Model):
         queryset = queryset or cls.objects
         vector = None
 
-        for field, weight in cls.SEARCH_WEIGHT_MAP.items():
+        for field, weight in list(cls.SEARCH_WEIGHT_MAP.items()):
             if not vector:
                 vector = SearchVector(field, weight=weight)
             else:

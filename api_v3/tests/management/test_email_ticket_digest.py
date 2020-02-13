@@ -101,40 +101,40 @@ class TicketDigestTestCase(TestCase):
         self.assertIn(request_host, str(digest1))
         self.assertIn(request_host, str(digest2))
         self.assertIn(
-            u'{} added a comment to ticket'.format(self.users[0].display_name),
-            u' '.join(digest1)
+            '{} added a comment to ticket'.format(self.users[0].display_name),
+            ' '.join(digest1)
         )
         self.assertIn(
-            u'{} added {} as a responder to ticket'.format(
+            '{} added {} as a responder to ticket'.format(
                 self.users[0].display_name, self.users[1].display_name
             ),
-            u' '.join(digest1)
+            ' '.join(digest1)
         )
 
         self.assertEqual(email[self.users[1].id]['user'], self.users[1])
         self.assertEqual(len(digest2), 5)
         self.assertIn(
-            u'{} added a comment to ticket'.format(self.users[0].display_name),
-            u' '.join(digest1)
+            '{} added a comment to ticket'.format(self.users[0].display_name),
+            ' '.join(digest1)
         )
         self.assertIn(
-            u'{} added {} as a responder to ticket'.format(
+            '{} added {} as a responder to ticket'.format(
                 self.users[0].display_name, self.users[1].display_name
             ),
-            u' '.join(digest2)
+            ' '.join(digest2)
         )
         self.assertIn(
-            u'{} updated status to in-progress to ticket'.format(
+            '{} updated status to in-progress to ticket'.format(
                 self.users[1].display_name
             ),
-            u' '.join(digest2)
+            ' '.join(digest2)
         )
         self.assertIn(
-            u'{} did reopen the ticket'.format(self.users[1].display_name),
-            u' '.join(digest2)
+            '{} did reopen the ticket'.format(self.users[1].display_name),
+            ' '.join(digest2)
         )
         self.assertIn(
-            u'{} marked pending (waiting for third-party actions) '
-            u'the ticket'.format(self.users[1].display_name),
-            u' '.join(digest2)
+            '{} marked pending (waiting for third-party actions) '
+            'the ticket'.format(self.users[1].display_name),
+            ' '.join(digest2)
         )

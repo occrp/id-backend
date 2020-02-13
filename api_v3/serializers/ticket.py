@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from rest_framework_json_api import serializers
+from rest_framework_json_api.utils import format_field_names
 
 from api_v3.models import Profile, Ticket
 from .profile import ProfileSerializer
@@ -124,7 +125,7 @@ class TicketSerializer(serializers.ModelSerializer):
         if view and request:
             filter_params = view.extract_filter_params(request)
 
-        for filter_param, meta_name in filter_name_map.items():
+        for filter_param, meta_name in list(filter_name_map.items()):
             profile_id = filter_params.get(filter_param) or ''
             profile_id = int(profile_id) if profile_id.isdigit() else None
 
@@ -132,7 +133,7 @@ class TicketSerializer(serializers.ModelSerializer):
                 'first_name', 'last_name', 'email')
 
             if profiles:
-                filters[meta_name] = profiles[0]
+                filters[meta_name] = format_field_names(profiles[0])
 
         return filters
 
