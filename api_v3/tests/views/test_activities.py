@@ -48,9 +48,9 @@ class ActivitiesEndpointTestCase(TestCase):
         response = self.client.get(reverse('action-list'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn(self.activities[0].verb, response.content)
-        self.assertIn('last-id', response.content)
-        self.assertIn('first-id', response.content)
+        self.assertIn(self.activities[0].verb, str(response.content))
+        self.assertIn('last-id', str(response.content))
+        self.assertIn('first-id', str(response.content))
 
     def test_list_authenticated_with_includes(self):
         self.client.force_authenticate(self.users[1])

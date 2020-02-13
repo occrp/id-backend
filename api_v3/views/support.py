@@ -7,10 +7,10 @@ import rest_framework.filters
 import rest_framework_json_api.metadata
 import rest_framework_json_api.parsers
 import rest_framework_json_api.renderers
-import rest_framework_json_api.pagination
 import rest_framework_json_api.utils
 import rest_framework_json_api.exceptions
 import django_filters.rest_framework
+from rest_framework_json_api.pagination import JsonApiPageNumberPagination
 from rest_framework.status import HTTP_422_UNPROCESSABLE_ENTITY
 from querystring_parser import parser as qs_parser
 from urllib.parse import unquote as url_unquote
@@ -37,7 +37,7 @@ class OrderingFilter(rest_framework.filters.OrderingFilter):
     ordering_fields = ('created_at', )
 
 
-class Pagination(rest_framework_json_api.pagination.PageNumberPagination):
+class Pagination(JsonApiPageNumberPagination):
     page_query_param = 'page[number]'
     page_size_query_param = 'page[size]'
     page_size = 30
@@ -95,7 +95,7 @@ class JSONApiEndpoint(object):
         params = qs_parser.parse(request.META['QUERY_STRING'])
         params = params.get('filter') or {}
 
-        for k, v in params.items():
+        for k, v in list(params.items()):
             if not v:
                 params.pop(k)
 

@@ -25,7 +25,9 @@ class AttachmentsEndpointTestCase(ApiTestCase):
             AttachmentFactory.create(
                 user=self.users[0],
                 ticket=self.tickets[0],
-                upload=SimpleUploadedFile('tesț.txt', 'tesț')
+                upload=SimpleUploadedFile(
+                    'tesț.txt', bytes('tesț', encoding='utf-8')
+                )
             )
         ]
 

@@ -83,14 +83,16 @@ class TicketStatsEndpointTestCase(ApiTestCase):
         )
         self.assertEqual(
             body['meta']['countries'],
-            sorted(set(map(lambda t: t.country, self.tickets)))
+            sorted(set([t.country for t in self.tickets]))
         )
         self.assertEqual(len(body['data']), 2)
 
-        new_data = filter(
-            lambda b: b['attributes']['status'] == 'new', body['data'])[0]
-        cancelled_data = filter(
-            lambda b: b['attributes']['status'] == 'cancelled', body['data'])[0]
+        new_data = [
+            b for b in body['data'] if b['attributes']['status'] == 'new'
+        ][0]
+        cancelled_data = [
+            b for b in body['data'] if b['attributes']['status'] == 'cancelled'
+        ][0]
 
         self.assertEqual(cancelled_data['attributes']['count'], 1)
         self.assertEqual(cancelled_data['attributes']['status'], 'cancelled')
@@ -165,10 +167,12 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(len(body['data']), 2)
 
-        new_data = filter(
-            lambda b: b['attributes']['status'] == 'new', body['data'])[0]
-        cancelled_data = filter(
-            lambda b: b['attributes']['status'] == 'cancelled', body['data'])[0]
+        new_data = [
+            b for b in body['data'] if b['attributes']['status'] == 'new'
+        ][0]
+        cancelled_data = [
+            b for b in body['data'] if b['attributes']['status'] == 'cancelled'
+        ][0]
 
         self.assertEqual(cancelled_data['attributes']['count'], 1)
         self.assertEqual(cancelled_data['attributes']['status'], 'cancelled')

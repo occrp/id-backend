@@ -169,15 +169,14 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         # Do not group by automatically.
         aggregated.query.group_by = aggregated.query.group_by[-2:]
 
-        stats = map(
-            lambda stat: self.TicketStat(
+        stats = [
+            self.TicketStat(
                 stat,
                 profile_id=getattr(profile, 'id', None),
                 profile=profile,
                 pk=None
-            ),
-            list(aggregated)
-        )
+            ) for stat in list(aggregated)
+        ]
 
         serializer = self.serializer_class(stats, many=True, context={
             'params': params,

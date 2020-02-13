@@ -79,10 +79,10 @@ class ProfilesEndpointTestCase(ApiTestCase):
         self.assertNotContains(response, self.users[2].email)
 
     def test_list_search_unicode_authenticated(self):
-        self.users[0].first_name = u'Станислав'
+        self.users[0].first_name = 'Станислав'
         self.users[0].is_staff = True
         self.users[0].save()
-        self.users[1].last_name = u'Sușcov'
+        self.users[1].last_name = 'Sușcov'
         self.users[1].is_staff = True
         self.users[1].save()
         self.client.force_authenticate(self.users[2])
@@ -150,7 +150,7 @@ class ProfilesEndpointTestCase(ApiTestCase):
         data = json.loads(response.content)['data']
 
         self.assertNotEqual(data['attributes']['email'], email)
-        self.assertEqual(data['attributes']['bio'], u'Short Bio')
+        self.assertEqual(data['attributes']['bio'], 'Short Bio')
         self.assertFalse(data['attributes']['is-staff'])
 
     def test_update_authenticated_superuser(self):
@@ -174,5 +174,5 @@ class ProfilesEndpointTestCase(ApiTestCase):
         data = json.loads(response.content)['data']
 
         self.assertNotEqual(data['attributes']['email'], email)
-        self.assertEqual(data['attributes']['bio'], u'Short Bio')
+        self.assertEqual(data['attributes']['bio'], 'Short Bio')
         self.assertTrue(data['attributes']['is-staff'])

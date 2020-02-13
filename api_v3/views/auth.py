@@ -1,4 +1,4 @@
-import urllib
+import urllib.parse
 
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -10,20 +10,20 @@ class LoginEndpoint(viewsets.GenericViewSet):
     permission_classes = (permissions.AllowAny,)
 
     def list(self, request, *args, **kwargs):
-        redirect_location = urllib.quote(request.GET.get('next') or '/')
+        redirect_location = urllib.parse.quote(request.GET.get('next') or '/')
 
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return HttpResponseRedirect(redirect_location)
 
-        backend = u'NOT-CONFIGURED'
-        backends = map(lambda b: module_member(b), BACKENDS)
+        backend = 'NOT-CONFIGURED'
+        backends = [module_member(b) for b in BACKENDS]
 
         if backends:
             backend = backends[0].name
 
         path = '?'.join([
             reverse('social:begin', kwargs={'backend': backend}),
-            urllib.urlencode({'next': redirect_location})
+            urllib.parse.urlencode({'next': redirect_location})
         ])
 
         return HttpResponseRedirect(path)

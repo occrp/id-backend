@@ -13,4 +13,4 @@ class AttachmentFactory(DjangoModelFactory):
 
     ticket = SubFactory(TicketFactory)
     user = SubFactory(ProfileFactory)
-    upload = FileField(filename=u'țеșт.txt')
+    upload = FileField(filename='țеșт.txt')

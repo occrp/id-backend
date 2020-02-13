@@ -3,6 +3,7 @@ import hashlib
 
 from rest_framework import fields
 from rest_framework_json_api import serializers
+from rest_framework_json_api.utils import format_field_names
 
 from .profile import ProfileSerializer
 
@@ -26,10 +27,12 @@ class TicketStatSerializer(serializers.Serializer):
 
     def get_id(self, data):
         pk = hashlib.sha256(
-            str(self.context.get('params')) +
-            str(data.get('date')) +
-            data.get('ticket_status') +
-            str(data.profile.id if data.get('profile') else '')
+            (
+                str(self.context.get('params')) +
+                str(data.get('date')) +
+                data.get('ticket_status') +
+                str(data.profile.id if data.get('profile') else '')
+            ).encode('utf-8')
         ).hexdigest()
         # Leave this mocked pk, or DRF will complain
         data.pk = pk
@@ -44,7 +47,7 @@ class TicketStatSerializer(serializers.Serializer):
             return {}
 
         return {
-            'total': self.context.get('totals'),
+            'total': format_field_names(self.context.get('totals')),
             'countries': self.context.get('countries'),
             'staff_profile_ids': self.context.get('responder_ids'),
             'start_date': params.get('created_at__gte'),
