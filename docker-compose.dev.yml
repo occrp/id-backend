@@ -25,7 +25,7 @@ services:
     depends_on:
       - postgres
   web:
-    image: nginx:1.15.3-alpine
+    image: nginx:1.17.8-alpine
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
