@@ -125,6 +125,7 @@ class Common(Configuration):
             'api_v3.misc.oauth2.KeycloakOAuth2',
         ]
     )
+    SOCIAL_AUTH_STRATEGY = 'api_v3.misc.strategy.Strategy'
     SOCIAL_AUTH_KEYCLOAK_BASE = values.Value('', environ_prefix='')
     SOCIAL_AUTH_KEYCLOAK_KEY = values.Value('', environ_prefix='')
     SOCIAL_AUTH_KEYCLOAK_SECRET = values.Value('', environ_prefix='')
