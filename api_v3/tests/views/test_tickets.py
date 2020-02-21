@@ -11,7 +11,7 @@ from api_v3.factories import (
     ResponderFactory,
     TicketFactory
 )
-from .support import ApiTestCase, APIClient, reverse
+from .support import ApiTestCase, APIClient, reverse, mail, queue
 from api_v3.serializers import TicketSerializer
 from api_v3.views.tickets import TicketsEndpoint
 
@@ -369,60 +369,74 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.users[0].is_superuser = True
         self.users[0].save()
 
-        controller = TicketsEndpoint()
-        count, emails = controller.email_notify(self.tickets[0])
+        TicketsEndpoint.email_notify(self.tickets[0].id, 'host.tld')
+        queue.work(burst=True)
+        emails = mail.outbox
+        self.assertEqual(len(emails), 1)
 
-        self.assertEqual(count, 1)
-
-        self.assertEqual(emails[0], [
-            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+        self.assertEqual(
+            emails[0].subject,
+            TicketsEndpoint.EMAIL_SUBJECT.format(self.tickets[0].id)
+        )
+        self.assertEqual(emails[0].from_email, settings.DEFAULT_FROM_EMAIL)
+        self.assertEqual(emails[0].to, [self.users[0].email])
+        self.assertEqual(
+            emails[0].body,
             render_to_string(
                 'mail/ticket_created.txt',
                 dict(
                     ticket=self.tickets[0],
                     name=self.users[0].display_name,
+                    request_host='host.tld',
                     site_name=settings.SITE_NAME
                 )
-            ),
-            settings.DEFAULT_FROM_EMAIL,
-            [self.users[0].email]
-        ])
+            )
+        )
 
     def test_email_notify(self):
-        controller = TicketsEndpoint()
-        count, emails = controller.email_notify(
-            self.tickets[0], template='mail/ticket_reopened.txt')
+        TicketsEndpoint.email_notify(
+            self.tickets[0].id, 'host.tld', template='mail/ticket_reopened.txt')
 
-        self.assertEqual(count, 2)
+        queue.work(burst=True)
+        emails = mail.outbox
+        self.assertEqual(len(emails), 2)
 
-        email = [e for e in emails if e[3][0] == self.users[2].email]
+        email = [e for e in emails if e.to[0] == self.users[2].email][0]
 
-        self.assertEqual(email[0], [
-            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+        self.assertEqual(
+            email.subject,
+            TicketsEndpoint.EMAIL_SUBJECT.format(self.tickets[0].id)
+        )
+        self.assertEqual(email.from_email, settings.DEFAULT_FROM_EMAIL)
+        self.assertEqual(
+            email.body,
             render_to_string(
                 'mail/ticket_reopened.txt',
                 dict(
                     ticket=self.tickets[0],
                     name=self.users[2].display_name,
+                    request_host='host.tld',
                     site_name=settings.SITE_NAME
                 )
-            ),
-            settings.DEFAULT_FROM_EMAIL,
-            [self.users[2].email]
-        ])
+            )
+        )
 
-        email = [e for e in emails if e[3][0] == self.users[1].email]
+        email = [e for e in emails if e.to[0] == self.users[1].email][0]
 
-        self.assertEqual(email[0], [
-            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+        self.assertEqual(
+            email.subject,
+            TicketsEndpoint.EMAIL_SUBJECT.format(self.tickets[0].id)
+        )
+        self.assertEqual(email.from_email, settings.DEFAULT_FROM_EMAIL)
+        self.assertEqual(
+            email.body,
             render_to_string(
                 'mail/ticket_reopened.txt',
                 dict(
                     ticket=self.tickets[0],
                     name=self.users[1].display_name,
+                    request_host='host.tld',
                     site_name=settings.SITE_NAME
                 )
-            ),
-            settings.DEFAULT_FROM_EMAIL,
-            [self.users[1].email]
-        ])
+            )
+        )

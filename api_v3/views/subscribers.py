@@ -4,6 +4,7 @@ from django.template.loader import render_to_string
 from rest_framework import exceptions, mixins, serializers, viewsets
 
 from api_v3.models import Action, Subscriber, Profile
+from api_v3.misc.queue import queue
 from api_v3.serializers import SubscriberSerializer
 from .support import JSONApiEndpoint
 
@@ -67,7 +68,7 @@ class SubscribersEndpoint(
             actor=user, target=subscriber.ticket,
             action=subscriber.user, verb=self.action_name())
 
-        self.email_notify(action, subscriber=subscriber)
+        self.email_notify(action.id, subscriber.id, self.request.get_host())
 
         return subscriber
 
@@ -88,13 +89,13 @@ class SubscribersEndpoint(
 
         return activity
 
-    def email_notify(self, activity, subscriber):
+    @staticmethod
+    @queue.task()
+    def email_notify(activity_id, subscriber_id, request_host):
         """Sends an email to the subscriber about the new ticket."""
-        subject = self.EMAIL_SUBJECT.format(activity.target.id)
-        request_host = ''
-
-        if hasattr(self, 'request'):
-            request_host = self.request.get_host()
+        activity = Action.objects.get(id=activity_id)
+        subscriber = Subscriber.objects.get(id=subscriber_id)
+        subject = SubscribersEndpoint.EMAIL_SUBJECT.format(activity.target.id)
 
         emails = [
             [

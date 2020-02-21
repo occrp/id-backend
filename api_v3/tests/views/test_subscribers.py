@@ -10,7 +10,7 @@ from api_v3.models import Subscriber, Action
 from api_v3.serializers import SubscriberSerializer
 from api_v3.serializers.mixins import ResponderSubscriberSerializer
 from api_v3.views.subscribers import SubscribersEndpoint
-from .support import ApiTestCase, APIClient, reverse
+from .support import ApiTestCase, APIClient, reverse, mail, queue
 
 
 class SubscribersEndpointTestCase(ApiTestCase):
@@ -288,28 +288,36 @@ class SubscribersEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_email_notify(self):
-        controller = SubscribersEndpoint()
-
-        activity = Action(
+        activity = Action.objects.create(
             actor=self.subscriber.user,
             action=self.users[0],
             target=self.subscriber.ticket,
             verb='test-subscriber-added'
         )
 
-        count, emails = controller.email_notify(activity, self.subscriber)
+        SubscribersEndpoint.email_notify(
+            activity.id,
+            self.subscriber.id,
+            'host.tld'
+        )
+        queue.work(burst=True)
+        emails = mail.outbox
 
-        self.assertEqual(count, 1)
+        self.assertEqual(len(emails), 1)
 
-        self.assertEqual(emails[0], [
-            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+        self.assertEqual(emails[0].to[0], self.users[0].email)
+        self.assertEqual(emails[0].from_email, settings.DEFAULT_FROM_EMAIL)
+        self.assertEqual(
+            emails[0].subject,
+            SubscribersEndpoint.EMAIL_SUBJECT.format(self.tickets[0].id))
+        self.assertEqual(
+            emails[0].body,
             render_to_string(
                 'mail/subscriber_added.txt', {
                     'ticket': self.tickets[0],
                     'name': self.users[0].display_name,
+                    'request_host': 'host.tld',
                     'site_name': settings.SITE_NAME
                 }
-            ),
-            settings.DEFAULT_FROM_EMAIL,
-            [self.users[0].email]
-        ])
+            )
+        )

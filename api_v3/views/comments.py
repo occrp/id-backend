@@ -4,6 +4,7 @@ from django.template.loader import render_to_string
 from rest_framework import mixins, serializers, viewsets
 
 from api_v3.models import Action, Comment, Ticket
+from api_v3.misc.queue import queue
 from api_v3.serializers import CommentSerializer
 from .support import JSONApiEndpoint
 
@@ -50,14 +51,17 @@ class CommentsEndpoint(
                 verb=self.action_name()
             )
 
-            self.email_notify(comment)
+            self.email_notify(comment.id, self.request.get_host())
 
             return comment
 
-    def email_notify(self, comment):
+    @staticmethod
+    @queue.task()
+    def email_notify(comment_id, request_host):
         """Sends an email to ticket users about the new comment."""
         emails = []
-        subject = self.EMAIL_SUBJECT.format(comment.ticket.id)
+        comment = Comment.objects.get(id=comment_id)
+        subject = CommentsEndpoint.EMAIL_SUBJECT.format(comment.ticket.id)
         to_notify = [comment.ticket.requester.__dict__]
         to_notify += (
             comment.ticket.subscribers
@@ -69,11 +73,6 @@ class CommentsEndpoint(
             .filter(email__isnull=False).distinct('email')
             .values('email', 'first_name', 'last_name')
         )
-
-        if hasattr(self, 'request'):
-            request_host = self.request.get_host()
-        else:
-            request_host = ''
 
         for entry in to_notify:
 
