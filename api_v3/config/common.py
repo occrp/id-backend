@@ -39,8 +39,8 @@ class Common(Configuration):
 
     ROUTER_CLASS = 'rest_framework.routers.DefaultRouter'
 
-    # Email
-    EMAIL = values.EmailURLValue('console://')
+    # Email, defaults to in-memory backend, switch to `console` for development
+    EMAIL = values.EmailURLValue('locmem://')
     DEFAULT_FROM_EMAIL = values.EmailValue(
         '', environ_prefix='ID', environ_required=True)
     DEFAULT_FROM = '{} <{}>'.format(SITE_NAME, DEFAULT_FROM_EMAIL)
@@ -163,3 +163,6 @@ class Common(Configuration):
     JSON_API_FORMAT_FIELD_NAMES = 'dasherize'
     JSON_API_FORMAT_TYPES = 'dasherize'
     JSON_API_PLURALIZE_TYPES = True
+
+    # Default job queue name
+    QUEUE_NAME = values.Value('default', environ_prefix='')

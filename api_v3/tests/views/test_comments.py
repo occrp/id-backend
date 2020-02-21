@@ -4,7 +4,6 @@ from datetime import datetime
 from django.conf import settings
 from django.template.loader import render_to_string
 
-from api_v3.models import Action, Ticket, Comment
 from api_v3.factories import (
     CommentFactory,
     ProfileFactory,
@@ -12,9 +11,10 @@ from api_v3.factories import (
     SubscriberFactory,
     TicketFactory
 )
+from api_v3.models import Action, Ticket, Comment
 from api_v3.serializers import CommentSerializer
 from api_v3.views.comments import CommentsEndpoint
-from .support import ApiTestCase, APIClient, reverse
+from .support import ApiTestCase, APIClient, reverse, mail, queue
 
 
 class CommentsEndpointTestCase(ApiTestCase):
@@ -135,66 +135,74 @@ class CommentsEndpointTestCase(ApiTestCase):
         self.assertEqual(Comment.objects.count(), comments_count)
 
     def test_email_notify(self):
-        controller = CommentsEndpoint()
-        count, emails = controller.email_notify(self.comments[0])
+        CommentsEndpoint.email_notify(self.comments[0].id, 'host.tld')
+        queue.work(burst=True)
 
-        self.assertEqual(count, 5)
+        emails = mail.outbox
+        self.assertEqual(len(emails), 5)
 
-        requester_email = [e for e in emails if e[3][0] == self.users[0].email]
-        sub_email = [e for e in emails if e[3][0] == self.subscribed_email]
-        sub1 = [e for e in emails if e[3][0] == self.subscribers[0].user.email]
-        res1 = [e for e in emails if e[3][0] == self.responders[0].user.email]
+        requester_email = [e for e in emails if e.to[0] == self.users[0].email]
+        sub_email = [e for e in emails if e.to[0] == self.subscribed_email]
+        sub1 = [e for e in emails if e.to[0] == self.subscribers[0].user.email]
+        res1 = [e for e in emails if e.to[0] == self.responders[0].user.email]
 
-        self.assertEqual(requester_email[0], [
-            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+        self.assertEqual(requester_email[0].to[0], 'email1')
+        self.assertEqual(
+            requester_email[0].subject,
+            CommentsEndpoint.EMAIL_SUBJECT.format(self.tickets[0].id))
+        self.assertEqual(
+            requester_email[0].from_email, settings.DEFAULT_FROM_EMAIL)
+        self.assertEqual(
+            requester_email[0].body,
             render_to_string(
                 'mail/ticket_comment.txt',
                 dict(
                     comment=self.comments[0],
                     name=self.users[0].display_name,
+                    request_host='host.tld',
                     site_name=settings.SITE_NAME
                 )
-            ),
-            settings.DEFAULT_FROM_EMAIL,
-            ['email1']
-        ])
-        self.assertEqual(sub_email[0], [
-            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+            )
+        )
+
+        self.assertEqual(sub_email[0].to[0], self.subscribed_email)
+        self.assertEqual(
+            sub_email[0].body,
             render_to_string(
                 'mail/ticket_comment.txt',
                 dict(
                     comment=self.comments[0],
                     name=' ',
+                    request_host='host.tld',
                     site_name=settings.SITE_NAME
                 )
-            ),
-            settings.DEFAULT_FROM_EMAIL,
-            [self.subscribed_email]
-        ])
-        self.assertEqual(sub1[0], [
-            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+            )
+        )
+
+        self.assertEqual(sub1[0].to[0], self.subscribers[0].user.email)
+        self.assertEqual(
+            sub1[0].body,
             render_to_string(
                 'mail/ticket_comment.txt',
                 dict(
                     comment=self.comments[0],
                     name=self.subscribers[0].user.display_name,
+                    request_host='host.tld',
                     site_name=settings.SITE_NAME
                 )
-            ),
-            settings.DEFAULT_FROM_EMAIL,
-            [self.subscribers[0].user.email]
-        ])
+            )
+        )
 
-        self.assertEqual(res1[0], [
-            controller.EMAIL_SUBJECT.format(self.tickets[0].id),
+        self.assertEqual(res1[0].to[0], 'email3')
+        self.assertEqual(
+            res1[0].body,
             render_to_string(
                 'mail/ticket_comment.txt',
                 dict(
                     comment=self.comments[0],
                     name=self.users[2].display_name,
+                    request_host='host.tld',
                     site_name=settings.SITE_NAME
                 )
-            ),
-            settings.DEFAULT_FROM_EMAIL,
-            ['email3']
-        ])
+            )
+        )

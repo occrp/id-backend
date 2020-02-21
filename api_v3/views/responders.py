@@ -4,6 +4,7 @@ from django.template.loader import render_to_string
 from rest_framework import exceptions, mixins, serializers, viewsets
 
 from api_v3.models import Action, Responder, Ticket
+from api_v3.misc.queue import queue
 from api_v3.serializers import ResponderSerializer
 from .support import JSONApiEndpoint
 
@@ -52,7 +53,7 @@ class RespondersEndpoint(
             actor=self.request.user, target=responder.ticket,
             action=responder.user, verb=self.action_name())
 
-        self.email_notify(action)
+        self.email_notify(action.id, self.request.get_host())
 
         return responder
 
@@ -70,9 +71,12 @@ class RespondersEndpoint(
 
         return activity
 
-    def email_notify(self, activity):
+    @staticmethod
+    @queue.task()
+    def email_notify(action_id, request_host):
         """Sends an email to the responder about the new ticket."""
-        subject = self.EMAIL_SUBJECT.format(activity.target.id)
+        activity = Action.objects.get(id=action_id)
+        subject = RespondersEndpoint.EMAIL_SUBJECT.format(activity.target.id)
         emails = [
             [
                 subject,
@@ -80,7 +84,7 @@ class RespondersEndpoint(
                     'mail/responder_created.txt', {
                         'ticket': activity.target,
                         'name': activity.action.display_name,
-                        'request_host': self.request.get_host(),
+                        'request_host': request_host,
                         'site_name': settings.SITE_NAME
                     }
                 ),

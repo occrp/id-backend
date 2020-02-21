@@ -4,6 +4,7 @@ from django.template.loader import render_to_string
 from rest_framework import exceptions, mixins, viewsets
 
 from api_v3.models import Action, Comment, Profile, Ticket
+from api_v3.misc.queue import queue
 from api_v3.serializers import TicketSerializer
 from .support import JSONApiEndpoint
 
@@ -60,7 +61,7 @@ class TicketsEndpoint(
             actor=self.request.user, target=ticket,
             verb=self.action_name())
 
-        self.email_notify(ticket)
+        self.email_notify(ticket.id, self.request.get_host())
 
         return ticket
 
@@ -94,7 +95,11 @@ class TicketsEndpoint(
 
         if init_data.get('reopen_reason'):
             verb = '{}:reopen'.format(self.action_name())
-            self.email_notify(ticket, template='mail/ticket_reopened.txt')
+            self.email_notify(
+                ticket.id,
+                self.request.get_host(),
+                template='mail/ticket_reopened.txt'
+            )
         elif init_data.get('pending_reason'):
             verb = '{}:pending'.format(self.action_name())
 
@@ -111,14 +116,14 @@ class TicketsEndpoint(
         return Action.objects.create(
             actor=self.request.user, target=ticket, verb=verb, action=comment)
 
-    def email_notify(self, ticket, template='mail/ticket_created.txt'):
+    @staticmethod
+    @queue.task()
+    def email_notify(ticket_id, request_host, template=None):
         """Sends an email to editors about the new ticket."""
+        ticket = Ticket.objects.get(pk=ticket_id)
         emails = []
-        subject = self.EMAIL_SUBJECT.format(ticket.id)
-        request_host = ''
-
-        if hasattr(self, 'request'):
-            request_host = self.request.get_host()
+        template = template or 'mail/ticket_created.txt'
+        subject = TicketsEndpoint.EMAIL_SUBJECT.format(ticket.id)
 
         if template == 'mail/ticket_created.txt':
             users = Profile.objects.filter(is_superuser=True, is_active=True)
@@ -138,4 +143,4 @@ class TicketsEndpoint(
                 [user.email]
             ])
 
-        return send_mass_mail(emails, fail_silently=True), emails
+        send_mass_mail(emails, fail_silently=True)

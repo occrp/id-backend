@@ -1,9 +1,11 @@
 from django.conf import settings
 from django.urls import reverse  # noqa
+from django.core import mail  # noqa
 from django.test import TestCase
 from rest_framework.test import APIClient  # noqa
 from rest_framework_json_api.utils import (
     get_resource_type_from_serializer, format_field_names)
+from api_v3.misc.queue import queue  # noqa
 
 
 class ApiTestCase(TestCase):
