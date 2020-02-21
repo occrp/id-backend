@@ -1,6 +1,7 @@
 # Core
 django==3.0.3
 django-configurations==2.2
+pq==1.8.1
 gunicorn==20.0.4
 
 # Database
