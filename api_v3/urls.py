@@ -9,7 +9,6 @@ from .views.attachments import AttachmentsEndpoint
 from .views.activities import ActivitiesEndpoint
 from .views.comments import CommentsEndpoint
 from .views.download import DownloadEndpoint
-from .views.ops import OpsEndpoint
 from .views.profiles import ProfilesEndpoint
 from .views.responders import RespondersEndpoint
 from .views.session import SessionEndpoint
@@ -24,7 +23,6 @@ router.register(r'activities', ActivitiesEndpoint)
 router.register(r'comments', CommentsEndpoint)
 router.register(r'download', DownloadEndpoint, basename='download')
 router.register(r'me', SessionEndpoint, basename='me')
-router.register(r'ops', OpsEndpoint, basename='ops')
 router.register(r'profiles', ProfilesEndpoint)
 router.register(r'responders', RespondersEndpoint)
 router.register(r'subscribers', SubscribersEndpoint)
