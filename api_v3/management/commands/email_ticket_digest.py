@@ -7,6 +7,7 @@ from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
 
 from api_v3.models import Ticket, Action
+from api_v3.misc.queue import queue
 
 
 class Command(BaseCommand):
@@ -22,6 +23,18 @@ class Command(BaseCommand):
         '({date}): {name} {action} {thing} {prep} ticket '
         'http://{request_host}/tickets/view/{ticket}'
     )
+
+    @staticmethod
+    @queue.task(schedule_at='1d')
+    def schedule(request_host):
+        """Task job handler.
+
+        Run it manually once and it will reschedule itself on a daily basis.
+        """
+        Command().handle(request_host=request_host)
+
+        # Reschedule...
+        Command.schedule(request_host)
 
     def add_arguments(self, parser):
         parser.add_argument('request_host', help='Hostname to use in emails.')
