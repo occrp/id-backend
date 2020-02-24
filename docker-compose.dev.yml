@@ -8,6 +8,19 @@ services:
       - ".build/logs/postgres:/var/log"
     environment:
       POSTGRES_PASSWORD: ''
+  queue:
+    restart: always
+    environment:
+      - DJANGO_SECRET_KEY=local
+      - MEDIA_ROOT=/tmp
+    image: id/api
+    build: ./
+    command: >
+      sh -c "pip install -r requirements-testing.txt && python manage.py queue"
+    volumes:
+      - ./:/id
+    depends_on:
+      - postgres
   api:
     restart: always
     environment:
