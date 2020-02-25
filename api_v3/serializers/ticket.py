@@ -3,8 +3,17 @@ from datetime import datetime
 from rest_framework_json_api import serializers
 from rest_framework_json_api.utils import format_field_names
 
-from api_v3.models import Profile, Ticket
+from api_v3.models import Profile, Ticket, countries
 from .profile import ProfileSerializer
+
+
+class ListChoiceField(serializers.MultipleChoiceField):
+    """Patched field to always return a list not a set."""
+    def to_internal_value(self, data):
+        return list(super(ListChoiceField, self).to_internal_value(data))
+
+    def to_representation(self, data):
+        return list(super(ListChoiceField, self).to_representation(data))
 
 
 class TicketSerializer(serializers.ModelSerializer):
@@ -22,6 +31,10 @@ class TicketSerializer(serializers.ModelSerializer):
     reopen_reason = serializers.SerializerMethodField()
     pending_reason = serializers.SerializerMethodField()
     users = ProfileSerializer(many=True, read_only=True)
+    countries = ListChoiceField(
+        countries.COUNTRIES, allow_blank=False, required=False)
+    tags = serializers.ListField(
+        child=serializers.CharField(), allow_empty=True, required=False)
 
     class Meta:
         model = Ticket
@@ -52,6 +65,10 @@ class TicketSerializer(serializers.ModelSerializer):
             'deadline_at',
             'created_at',
             'updated_at',
+            'member_center',
+            'identifier',
+            'countries',
+            'tags',
 
             'background',
             'first_name',
