@@ -17,9 +17,13 @@ class TicketFactory(DjangoModelFactory):
         'random_element', elements=[k[0] for k in Ticket.KINDS])
     request_type = Faker(
         'random_element', elements=[t[0] for t in Ticket.TYPES])
+    priority = Faker(
+        'random_element', elements=[t[0] for t in Ticket.PRIORITIES])
     sensitive = Faker('random_element', elements=[True, False])
     whysensitive = Faker('catch_phrase')
     deadline_at = Faker('future_datetime', end_date='+30d')
+    countries = Faker(
+        'random_sample', elements=[t[0] for t in COUNTRIES], length=3)
 
     background = Faker('bs')
 

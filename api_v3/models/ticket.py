@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from .countries import COUNTRIES
@@ -27,9 +28,17 @@ class Ticket(models.Model):
         ('cancelled', 'Cancelled')
     )
 
+    PRIORITIES = (
+        ('low', 'Low'),
+        ('default', 'Default'),
+        ('high', 'High'),
+    )
+
     KINDS = (
         ('person_ownership', 'Identify what a person owns'),
         ('company_ownership', 'Determine company ownership'),
+        ('vehicle_tracking', 'Vehicle tracking'),
+        ('data_request', 'Data request'),
         ('other', 'Any other question')
     )
 
@@ -66,6 +75,9 @@ class Ticket(models.Model):
     status = models.CharField(
         max_length=70, choices=STATUSES,
         default=STATUSES[0][0], db_index=True)
+    priority = models.CharField(
+        max_length=70, choices=PRIORITIES,
+        default=PRIORITIES[1][0], db_index=True)
 
     sensitive = models.BooleanField(default=False)
     whysensitive = models.CharField(max_length=150, null=True, blank=True)
@@ -73,6 +85,16 @@ class Ticket(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     sent_notifications_at = models.DateTimeField(null=True)
+    member_center = models.CharField(max_length=512, null=True, blank=False)
+    identifier = models.CharField(max_length=512, null=True, blank=False)
+    countries = ArrayField(
+        models.CharField(max_length=255, null=True, blank=False),
+        default=list,
+        db_index=True)
+    tags = ArrayField(
+        models.CharField(max_length=255, null=True, blank=False),
+        default=list,
+        db_index=True)
 
     # Other ticket type fields, also common to all other types
     background = models.TextField(blank=False)
