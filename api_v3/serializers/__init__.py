@@ -3,6 +3,7 @@ from .patches import *  # noqa
 from .action import ActionSerializer  # noqa
 from .attachment import AttachmentSerializer  # noqa
 from .comment import CommentSerializer  # noqa
+from .expense import ExpenseSerializer  # noqa
 from .profile import ProfileSerializer  # noqa
 from .responder import ResponderSerializer  # noqa
 from .subscriber import SubscriberSerializer  # noqa

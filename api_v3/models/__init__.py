@@ -4,6 +4,7 @@ from django.dispatch import receiver
 
 from .attachment import Attachment  # noqa
 from .comment import Comment  # noqa
+from .expense import Expense  # noqa
 from .profile import Profile  # noqa
 from .responder import Responder  # noqa
 from .subscriber import Subscriber  # noqa
