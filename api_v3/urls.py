@@ -9,6 +9,7 @@ from .views.attachments import AttachmentsEndpoint
 from .views.activities import ActivitiesEndpoint
 from .views.comments import CommentsEndpoint
 from .views.download import DownloadEndpoint
+from .views.expenses import ExpensesEndpoint
 from .views.profiles import ProfilesEndpoint
 from .views.responders import RespondersEndpoint
 from .views.session import SessionEndpoint
@@ -27,6 +28,7 @@ router.register(r'me', SessionEndpoint, basename='me')
 router.register(r'profiles', ProfilesEndpoint)
 router.register(r'responders', RespondersEndpoint)
 router.register(r'subscribers', SubscribersEndpoint)
+router.register(r'expenses', ExpensesEndpoint)
 router.register(r'tickets', TicketsEndpoint)
 router.register(r'ticket-stats', TicketStatsEndpoint, basename='ticket_stats')
 router.register(
