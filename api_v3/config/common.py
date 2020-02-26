@@ -18,6 +18,7 @@ class Common(Configuration):
         'django_filters',
         'social_django',
         'activity',
+        'djmoney',
 
         # Your apps
         'api_v3',
