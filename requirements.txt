@@ -29,4 +29,4 @@ querystring-parser==1.2.4
 # Misc
 iso3166==1.0.1
 filetype==1.0.5
-raven==6.10.0
+sentry-sdk==0.14.2

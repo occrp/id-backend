@@ -57,12 +57,6 @@ class Common(Configuration):
     CORS_ORIGIN_WHITELIST = values.ListValue(['http://localhost:8000'])
     CORS_ORIGIN_ALLOW_ALL = values.BooleanValue(False)
 
-    # Sentry
-    RAVEN_CONFIG = {
-        'dsn': values.Value('', environ_name='SENTRY_DSN', environ_prefix=''),
-        'release': VERSION,
-    }
-
     # General
     APPEND_SLASH = False
     TIME_ZONE = 'UTC'
