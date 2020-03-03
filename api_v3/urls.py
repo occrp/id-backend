@@ -16,6 +16,7 @@ from .views.session import SessionEndpoint
 from .views.subscribers import SubscribersEndpoint
 from .views.tickets import TicketsEndpoint
 from .views.ticket_stats import TicketStatsEndpoint
+from .views.ticket_exports import TicketExportsEndpoint
 
 
 router = locate(settings.ROUTER_CLASS)(trailing_slash=False)
@@ -30,6 +31,10 @@ router.register(r'subscribers', SubscribersEndpoint)
 router.register(r'expenses', ExpensesEndpoint)
 router.register(r'tickets', TicketsEndpoint)
 router.register(r'ticket-stats', TicketStatsEndpoint, basename='ticket_stats')
+router.register(
+    r'ticket-exports',
+    TicketExportsEndpoint,
+    basename='ticket_exports')
 
 auth_router = locate(settings.ROUTER_CLASS)(trailing_slash=False)
 auth_router.register(r'login', LoginEndpoint, basename='login')
