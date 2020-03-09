@@ -51,6 +51,9 @@ class Common(Configuration):
     # Postgres
     DATABASES = values.DatabaseURLValue(
         'postgres://postgres:@postgres:5432/postgres')
+    QUEUE_DATABASE_URL = values.Value(
+        'postgres://postgres:@postgres:5432/postgres',
+        environ_name='QUEUE_DATABASE_URL', environ_prefix='')
 
     # CORS
     CORS_ALLOW_CREDENTIALS = True
