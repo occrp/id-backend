@@ -1,3 +1,4 @@
+import collections.abc
 from urllib.parse import urljoin
 
 from django.conf import settings
@@ -5,6 +6,10 @@ import jwt
 from social_core.backends.oauth import BaseOAuth2
 
 from ..models import Subscriber, Action
+
+# Patch `social-core` for Python 3.9 compatibility:
+#   See: https://github.com/python-social-auth/social-core/pull/424/files
+setattr(collections, 'Callable', collections.abc.Callable)
 
 
 class KeycloakOAuth2(BaseOAuth2):

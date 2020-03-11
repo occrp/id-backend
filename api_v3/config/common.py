@@ -11,6 +11,7 @@ class Common(Configuration):
     INSTALLED_APPS = (
         'django.contrib.contenttypes',
         'django.contrib.auth',
+        'django.contrib.sessions',
 
         # Third party apps
         'rest_framework',
@@ -29,6 +30,8 @@ class Common(Configuration):
         'django.middleware.security.SecurityMiddleware',
         'corsheaders.middleware.CorsMiddleware',
         'django.middleware.common.CommonMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
     )
 
     ALLOWED_HOSTS = ["*"]
@@ -123,7 +126,6 @@ class Common(Configuration):
             'api_v3.misc.oauth2.KeycloakOAuth2',
         ]
     )
-    SOCIAL_AUTH_STRATEGY = 'api_v3.misc.strategy.Strategy'
     SOCIAL_AUTH_KEYCLOAK_BASE = values.Value('', environ_prefix='')
     SOCIAL_AUTH_KEYCLOAK_KEY = values.Value('', environ_prefix='')
     SOCIAL_AUTH_KEYCLOAK_SECRET = values.Value('', environ_prefix='')
