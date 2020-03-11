@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls import include, url
 
 
-from .views.auth import LoginEndpoint
+from .views.auth import LoginEndpoint, LogoutEndpoint
 from .views.attachments import AttachmentsEndpoint
 from .views.activities import ActivitiesEndpoint
 from .views.comments import CommentsEndpoint
@@ -38,6 +38,7 @@ router.register(
 
 auth_router = locate(settings.ROUTER_CLASS)(trailing_slash=False)
 auth_router.register(r'login', LoginEndpoint, basename='login')
+auth_router.register(r'logout', LogoutEndpoint, basename='logout')
 
 urlpatterns = [
     url('api/v3/', include(router.urls)),

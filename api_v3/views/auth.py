@@ -1,12 +1,27 @@
 import urllib.parse
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.urls import reverse
+from django.contrib.auth.views import auth_logout
 from rest_framework import viewsets, permissions
 from social_django.utils import BACKENDS, module_member
 
 
-class LoginEndpoint(viewsets.GenericViewSet):
+class LogoutEndpoint(viewsets.ViewSet):
+    permission_classes = (permissions.AllowAny,)
+
+    def retrieve(self, request, pk=None):
+        redirect_location = urllib.parse.quote(request.GET.get('next') or '/')
+        response_factory = HttpResponsePermanentRedirect
+
+        if str(request.user.id) == pk and request.user.is_authenticated:
+            response_factory = HttpResponseRedirect
+            auth_logout(request)
+
+        return response_factory(redirect_location)
+
+
+class LoginEndpoint(viewsets.ViewSet):
     permission_classes = (permissions.AllowAny,)
 
     def list(self, request, *args, **kwargs):
