@@ -1,0 +1,10 @@
+# testing environment
+# 
+master-compose-deploy:
+  stage: deploy
+  script:
+  - ssh compose@composesshd /srv/tools/id-compose/
+  only:
+  - master
+  tags:
+  - master
