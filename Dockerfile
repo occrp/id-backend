@@ -1,6 +1,6 @@
 FROM python:3.9-rc-alpine
 
-RUN apk add --no-cache build-base postgresql-dev
+RUN apk add --no-cache libffi-dev build-base postgresql-dev
 
 # Allows docker to cache installed dependencies between builds
 COPY ./requirements.txt /requirements.txt
