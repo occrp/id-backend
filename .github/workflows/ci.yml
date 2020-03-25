@@ -9,9 +9,6 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - name: Prepares the Docker Compose config
-      run: ln -s docker-compose.dev.yml docker-compose.yml
-
     - name: Builds the Docker image
       run: docker-compose run api sh -c 'python manage.py migrate --configuration=Production'
 

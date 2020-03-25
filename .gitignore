@@ -106,6 +106,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-docker-compose.yml
-
 .build
