@@ -19,6 +19,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
             'ticket',
             'amount',
             'amount_currency',
+            'rating',
             'notes',
             'scope',
             'payment_method',

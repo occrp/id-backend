@@ -22,6 +22,7 @@ class Expense(models.Model):
         max_digits=19, decimal_places=4, null=True,
         default_currency=CURRENCIES['USD'].code)
 
+    rating = models.IntegerField(default=0)
     scope = models.CharField(max_length=255, blank=False, null=False)
     payment_method = models.CharField(max_length=255)
     notes = models.TextField()

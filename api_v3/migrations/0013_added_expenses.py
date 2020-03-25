@@ -19,6 +19,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('amount_currency', CurrencyField(choices=CURRENCY_CHOICES, default='USD', editable=False, max_length=3)),
                 ('amount', MoneyField(decimal_places=4, default_currency='USD', max_digits=19, null=True)),
+                ('rating', models.IntegerField(default=0)),
                 ('notes', models.TextField()),
                 ('scope', models.CharField(max_length=255, null=False, blank=False)),
                 ('payment_method', models.CharField(max_length=255)),
