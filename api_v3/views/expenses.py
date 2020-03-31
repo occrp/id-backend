@@ -8,6 +8,7 @@ from .support import JSONApiEndpoint
 class ExpensesEndpoint(
         JSONApiEndpoint,
         mixins.CreateModelMixin,
+        mixins.DestroyModelMixin,
         mixins.UpdateModelMixin,
         viewsets.ReadOnlyModelViewSet):
 
@@ -30,36 +31,15 @@ class ExpensesEndpoint(
     def perform_create(self, serializer):
         """Make sure every new expense is linked to current user."""
         ticket = Ticket.objects.filter(
-            responder_users=self.request.user,
             id=getattr(serializer.validated_data['ticket'], 'id', None)
         ).first()
 
-        if not ticket and not self.request.user.is_superuser:
+        if not ticket or not self.request.user.is_superuser:
             raise serializers.ValidationError(
                 [{'data/attributes/ticket': 'Ticket not found.'}]
             )
-        else:
-            expense = serializer.save(user=self.request.user)
 
-            Action.objects.create(
-                action=expense,
-                target=expense.ticket,
-                actor=self.request.user,
-                verb=self.action_name()
-            )
-
-            return expense
-
-    def perform_update(self, serializer):
-        """Allow only super users and ticket responders to update the expense"""
-        expense = serializer.instance
-
-        if (not self.request.user.is_superuser) and (
-            self.request.user not in expense.ticket.responder_users.all()
-        ):
-            raise exceptions.NotFound()
-
-        expense = serializer.save()
+        expense = serializer.save(user=self.request.user)
 
         Action.objects.create(
             action=expense,
@@ -69,3 +49,23 @@ class ExpensesEndpoint(
         )
 
         return expense
+
+    def perform_update(self, serializer):
+        """Allow only super users and ticket responders to update the expense"""
+        expense = serializer.instance
+
+        if not self.request.user.is_superuser:
+            raise exceptions.NotFound()
+
+        return serializer.save()
+
+    def perform_destroy(self, instance):
+        """Make sure only super user or author can remove the expense."""
+        if not self.request.user.is_superuser:
+            raise exceptions.NotFound()
+
+        Action.objects.create(
+            actor=self.request.user, target=instance.ticket,
+            action=instance.user, verb=self.action_name())
+
+        return instance.delete()

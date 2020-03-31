@@ -18,15 +18,11 @@ class ExpensesEndpointTestCase(ApiTestCase):
         self.client = APIClient()
         self.users = [
             ProfileFactory.create(),
-            ProfileFactory.create(),
+            ProfileFactory.create(is_superuser=True),
             ProfileFactory.create()
         ]
         self.tickets = [
             TicketFactory.create(requester=self.users[0])
-        ]
-        self.responders = [
-            ResponderFactory.create(
-                ticket=self.tickets[0], user=self.users[1])
         ]
         self.expenses = [
             ExpenseFactory.create(user=self.users[2], ticket=self.tickets[0])
@@ -48,7 +44,7 @@ class ExpensesEndpointTestCase(ApiTestCase):
             []
         )
 
-    def test_list_authenticated_responder(self):
+    def test_list_authenticated_superuser(self):
         self.client.force_authenticate(self.users[1])
 
         response = self.client.get(reverse('expense-list'))
@@ -67,7 +63,7 @@ class ExpensesEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 404)
 
-    def test_detail_authenticated_responder(self):
+    def test_detail_authenticated_superuser(self):
         self.client.force_authenticate(self.users[1])
 
         response = self.client.get(
@@ -99,7 +95,7 @@ class ExpensesEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 422)
         self.assertEqual(Expense.objects.count(), expenses_count)
 
-    def test_create_authenticated_responder(self):
+    def test_create_authenticated_superuser(self):
         self.client.force_authenticate(self.users[1])
 
         ticket = self.expenses[0].ticket
@@ -145,14 +141,12 @@ class ExpensesEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 404)
 
-    def test_update_authenticated_responder(self):
+    def test_update_authenticated_superuser(self):
         self.client.force_authenticate(self.users[1])
 
         ticket = self.expenses[0].ticket
 
         expenses_count = Expense.objects.count()
-        actions_count = Action.objects.filter(
-            target_object_id=ticket.id).count()
 
         new_date = datetime.utcnow()
         new_data = self.as_jsonapi_payload(
@@ -169,14 +163,38 @@ class ExpensesEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Expense.objects.count(), expenses_count)
-        self.assertEqual(
-            Action.objects.filter(
-                target_object_id=ticket.id,
-                verb='expense:update'
-            ).count(),
-            actions_count + 1
-        )
 
         expense = Expense.objects.get(id=self.expenses[0].id)
         self.assertEqual(expense.notes, 'update notes')
         self.assertEqual(expense.created_at, new_date)
+
+    def test_delete_authenticated(self):
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.delete(
+            reverse('expense-detail', args=[self.expenses[0].id])
+        )
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_delete_authenticated_superuser(self):
+        self.client.force_authenticate(self.users[1])
+
+        actions_count = Action.objects.filter(
+            target_object_id=self.expenses[0].ticket.id).count()
+
+        response = self.client.delete(
+            reverse('expense-detail', args=[self.expenses[0].id])
+        )
+
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(
+            Expense.objects.filter(id=self.expenses[0].id).count(), 0
+        )
+        self.assertEqual(
+            Action.objects.filter(
+                target_object_id=self.tickets[0].id,
+                verb='expense:destroy'
+            ).count(),
+            actions_count + 1
+        )
