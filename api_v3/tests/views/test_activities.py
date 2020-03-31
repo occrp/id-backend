@@ -57,17 +57,15 @@ class ActivitiesEndpointTestCase(TestCase):
 
         response = self.client.get(
             reverse('action-list'),
-            {'include': 'comment,responder-user,user,attachment'}
+            {'include': 'comment,responder-user,user'}
         )
 
         self.assertEqual(response.status_code, 200)
 
         data = json.loads(response.content)
-        self.assertEqual(len(data['included']), 2)
-        self.assertEqual(data['included'][0]['type'], 'attachments')
-        self.assertEqual(data['included'][0]['id'], str(self.attachments[0].id))
-        self.assertEqual(data['included'][1]['type'], 'profiles')
-        self.assertEqual(data['included'][1]['id'], str(self.users[1].id))
+        self.assertEqual(len(data['included']), 1)
+        self.assertEqual(data['included'][0]['type'], 'profiles')
+        self.assertEqual(data['included'][0]['id'], str(self.users[1].id))
 
         self.assertEqual(
             data['data'][0]['relationships']['attachment']['data']['id'],

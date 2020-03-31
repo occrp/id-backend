@@ -1,9 +1,10 @@
 from rest_framework import fields
 from rest_framework_json_api import serializers, relations
 
-from api_v3.models import Action, Attachment, Comment, Profile
+from api_v3.models import Action, Attachment, Comment, Expense, Profile
 from .attachment import AttachmentSerializer
 from .comment import CommentSerializer
+from .expense import ExpenseSerializer
 from .profile import ProfileSerializer
 
 
@@ -17,12 +18,13 @@ class ActionRelatedField(relations.PolymorphicResourceRelatedField):
         obj = super(ActionRelatedField, self).get_attribute(instance)
 
         is_comment = self.field_name == 'comment' and isinstance(obj, Comment)
+        is_expense = self.field_name == 'expense' and isinstance(obj, Expense)
         is_attachment = (
             self.field_name == 'attachment' and isinstance(obj, Attachment))
         is_responder_user = (
             self.field_name == 'responder_user' and isinstance(obj, Profile))
 
-        if is_comment or is_attachment or is_responder_user:
+        if is_comment or is_expense or is_attachment or is_responder_user:
             return obj
 
         raise fields.SkipField()
@@ -31,7 +33,6 @@ class ActionRelatedField(relations.PolymorphicResourceRelatedField):
 class ActionPolymorphicSerializer(serializers.PolymorphicModelSerializer):
     polymorphic_serializers = [
         ProfileSerializer,
-        AttachmentSerializer,
         CommentSerializer
     ]
 
@@ -40,7 +41,6 @@ class ActionSerializer(serializers.ModelSerializer):
 
     included_serializers = {
         'user': 'api_v3.serializers.ProfileSerializer',
-        'attachment': 'api_v3.serializers.AttachmentSerializer',
         'comment': 'api_v3.serializers.CommentSerializer',
         'responder_user': 'api_v3.serializers.ProfileSerializer',
         'ticket': 'api_v3.serializers.TicketSerializer'
@@ -50,6 +50,8 @@ class ActionSerializer(serializers.ModelSerializer):
     ticket = relations.ResourceRelatedField(read_only=True, source='target')
 
     comment = ActionRelatedField(
+        ActionPolymorphicSerializer, source='action', read_only=True)
+    expense = ActionRelatedField(
         ActionPolymorphicSerializer, source='action', read_only=True)
     attachment = ActionRelatedField(
         ActionPolymorphicSerializer, source='action', read_only=True)
@@ -67,6 +69,7 @@ class ActionSerializer(serializers.ModelSerializer):
             'ticket',
             'attachment',
             'comment',
+            'expense',
             'responder_user',
             'created_at'
         )

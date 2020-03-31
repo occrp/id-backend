@@ -24,8 +24,7 @@ class TicketSerializer(serializers.ModelSerializer):
         'subscriber_users': 'api_v3.serializers.ProfileSerializer',
         'requester': 'api_v3.serializers.ProfileSerializer',
         'responders': 'api_v3.serializers.ResponderSerializer',
-        'subscribers': 'api_v3.serializers.SubscriberSerializer',
-        'attachments': 'api_v3.serializers.AttachmentSerializer'
+        'subscribers': 'api_v3.serializers.SubscriberSerializer'
     }
 
     reopen_reason = serializers.SerializerMethodField()
@@ -45,7 +44,6 @@ class TicketSerializer(serializers.ModelSerializer):
             'users',
             'responder_users',
             'subscriber_users',
-            'attachments',
             'reopen_reason'
         )
         fields = (
@@ -80,7 +78,6 @@ class TicketSerializer(serializers.ModelSerializer):
             'initial_information',
             'company_name',
             'country',
-            'attachments',
 
             'reopen_reason',
             'pending_reason'
