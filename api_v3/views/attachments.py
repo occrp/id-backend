@@ -13,6 +13,12 @@ class AttachmentsEndpoint(
 
     queryset = Attachment.objects.all()
     serializer_class = AttachmentSerializer
+    ordering_fields = ('created_at',)
+    filter_fields = {
+        'created_at': ['range'],
+        'ticket': ['exact'],
+        'user': ['exact']
+    }
 
     def get_queryset(self):
         queryset = super(AttachmentsEndpoint, self).get_queryset()

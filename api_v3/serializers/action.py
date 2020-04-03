@@ -2,9 +2,7 @@ from rest_framework import fields
 from rest_framework_json_api import serializers, relations
 
 from api_v3.models import Action, Attachment, Comment, Expense, Profile
-from .attachment import AttachmentSerializer
 from .comment import CommentSerializer
-from .expense import ExpenseSerializer
 from .profile import ProfileSerializer
 
 

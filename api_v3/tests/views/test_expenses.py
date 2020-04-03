@@ -4,7 +4,6 @@ from datetime import datetime
 from api_v3.factories import (
     ExpenseFactory,
     ProfileFactory,
-    ResponderFactory,
     TicketFactory
 )
 from api_v3.models import Action, Expense
@@ -144,7 +143,7 @@ class ExpensesEndpointTestCase(ApiTestCase):
     def test_update_authenticated_superuser(self):
         self.client.force_authenticate(self.users[1])
 
-        ticket = self.expenses[0].ticket
+        self.expenses[0].ticket
 
         expenses_count = Expense.objects.count()
 

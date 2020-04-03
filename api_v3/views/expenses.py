@@ -14,6 +14,14 @@ class ExpensesEndpoint(
 
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
+    ordering_fields = ('created_at', 'updated_at')
+    filter_fields = {
+        'created_at': ['range'],
+        'scope': ['exact'],
+        'payment_method': ['exact'],
+        'ticket': ['exact'],
+        'user': ['exact']
+    }
 
     def get_queryset(self):
         queryset = super(ExpensesEndpoint, self).get_queryset()
@@ -52,8 +60,6 @@ class ExpensesEndpoint(
 
     def perform_update(self, serializer):
         """Allow only super users and ticket responders to update the expense"""
-        expense = serializer.instance
-
         if not self.request.user.is_superuser:
             raise exceptions.NotFound()
 
