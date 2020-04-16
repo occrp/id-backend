@@ -63,6 +63,10 @@ class Common(Configuration):
     CORS_ORIGIN_WHITELIST = values.ListValue(['http://localhost:8000'])
     CORS_ORIGIN_ALLOW_ALL = values.BooleanValue(False)
 
+    # Misc
+    EXPENSE_SCOPES = values.ListValue([])
+    MEMBER_CENTERS = values.ListValue([])
+
     # General
     APPEND_SLASH = False
     TIME_ZONE = 'UTC'

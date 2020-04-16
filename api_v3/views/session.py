@@ -14,3 +14,8 @@ class SessionEndpoint(JSONApiEndpoint, viewsets.GenericViewSet):
     def list(self, request, *args, **kwargs):
         serializer = self.get_serializer(request.user)
         return response.Response(serializer.data)
+
+    def get_serializer_context(self):
+        context = super(SessionEndpoint, self).get_serializer_context()
+        context['add_misc'] = True
+        return context

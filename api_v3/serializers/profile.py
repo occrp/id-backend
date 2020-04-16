@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import fields
 from rest_framework_json_api import serializers
 
@@ -50,3 +51,13 @@ class ProfileSerializer(serializers.ModelSerializer):
             data.pop('email')
 
         return data
+
+    # Adds extra application related metas.
+    def get_root_meta(self, resource, many):
+        if not self.context.get('add_misc', None):
+            return {}
+
+        return {
+            'member_centers': settings.MEMBER_CENTERS,
+            'expense_scopes': settings.EXPENSE_SCOPES
+        }

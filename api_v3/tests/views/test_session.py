@@ -1,5 +1,7 @@
 import json
 
+from django.conf import settings
+
 from api_v3.factories import ProfileFactory, TicketFactory
 from api_v3.serializers import ProfileSerializer
 from .support import TestCase, APIClient, reverse
@@ -38,6 +40,13 @@ class SessionsEndpointTestCase(TestCase):
         body = json.loads(response.content)
 
         self.assertEqual(body['data']['attributes']['tickets-count'], 1)
+        self.assertEqual(
+            body['meta'],
+            {
+                'member-centers': settings.MEMBER_CENTERS,
+                'expense-scopes': settings.EXPENSE_SCOPES
+            }
+        )
 
     def test_me_authenticated_superuser(self):
         self.client.force_authenticate(self.users[1])
