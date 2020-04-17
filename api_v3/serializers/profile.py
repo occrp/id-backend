@@ -58,6 +58,6 @@ class ProfileSerializer(serializers.ModelSerializer):
             return {}
 
         return {
-            'member_centers': settings.MEMBER_CENTERS,
-            'expense_scopes': settings.EXPENSE_SCOPES
+            'member_centers': sorted(settings.MEMBER_CENTERS),
+            'expense_scopes': sorted(settings.EXPENSE_SCOPES)
         }
