@@ -64,8 +64,8 @@ class Common(Configuration):
     CORS_ORIGIN_ALLOW_ALL = values.BooleanValue(False)
 
     # Misc
-    EXPENSE_SCOPES = values.ListValue([])
-    MEMBER_CENTERS = values.ListValue([])
+    EXPENSE_SCOPES = values.ListValue([], environ_prefix='ID')
+    MEMBER_CENTERS = values.ListValue([], environ_prefix='ID')
 
     # General
     APPEND_SLASH = False
