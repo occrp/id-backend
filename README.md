@@ -1,16 +1,14 @@
 # The Investigative Dashboard Project API 🕵️
 
-[![Build Status](https://travis-ci.org/occrp/id-backend.svg?branch=master)](https://travis-ci.org/occrp/id-backend)
- [![Translation status](https://hosted.weblate.org/widgets/occrp/-/investigative-dashboard/svg-badge.svg)](https://hosted.weblate.org/engage/occrp/?utm_source=widget)
+[![Translation status](https://hosted.weblate.org/widgets/occrp/-/investigative-dashboard/svg-badge.svg)](https://hosted.weblate.org/engage/occrp/?utm_source=widget)
 
 [OCCRP](https://tech.occrp.org/projects/) research desk application API.
 
 # Prerequisites
 
-- [Docker](https://docs.docker.com/docker-for-mac/install/) (to run just the API)
-- [id-frontend](https://github.com/occrp/id-frontend) (to run the whole application)
-- [Jekyll Website](https://github.com/occrp/investigativedashboard.org/)
-(the homepage of investigativedashboard.org)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [ID Web App](https://git.occrp.org/libre/id-frontend) (optional)
+- [InvestigativeDashboard.org homepage](https://git.occrp.org/libre/investigativedashboard.org)
 
 # Setup
 
