@@ -24,8 +24,8 @@ class Expense(models.Model):
 
     rating = models.IntegerField(default=0)
     scope = models.CharField(max_length=255, blank=False, null=False)
-    payment_method = models.CharField(max_length=255, blank=True)
-    notes = models.TextField(blank=True)
+    payment_method = models.CharField(max_length=255, null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(default=datetime.utcnow)
     updated_at = models.DateTimeField(auto_now=True)
 
