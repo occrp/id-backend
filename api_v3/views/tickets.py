@@ -55,7 +55,17 @@ class TicketsEndpoint(
 
     def perform_create(self, serializer):
         """Make sure every new ticket is linked to current user."""
-        ticket = serializer.save(requester=self.request.user)
+        # Add by default any country to the countries list
+        country = serializer.initial_data['country']
+        countries = serializer.initial_data['countries']
+
+        if country and (country not in countries):
+            countries.append(country)
+            countries = list(set(countries))
+
+        ticket = serializer.save(
+            requester=self.request.user, countries=countries
+        )
 
         Action.objects.create(
             actor=self.request.user, target=ticket,
@@ -84,6 +94,7 @@ class TicketsEndpoint(
         comment = None
         status = serializer.validated_data.get('status')
         status_changed = instance.status != status
+        instance.countries = list(set(instance.countries))
 
         if status_changed:
             verb = '{}:status_{}'.format(self.action_name(), status)

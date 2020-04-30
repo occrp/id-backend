@@ -354,7 +354,9 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.client.force_authenticate(self.users[0])
 
         new_data = self.as_jsonapi_payload(
-            TicketSerializer, ticket, {'background': 'ticket-background'})
+            TicketSerializer, ticket,
+            {'background': 'ticket-background', 'country': 'MD'}
+        )
 
         response = self.client.post(
             reverse('ticket-list'),
@@ -363,6 +365,8 @@ class TicketsEndpointTestCase(ApiTestCase):
         )
 
         self.assertEqual(response.status_code, 201)
+        self.assertEqual(
+            Ticket.objects.filter(countries__contains=['MD']).count(), 1)
         self.assertEqual(Ticket.objects.count(), tickets_count + 1)
 
     def test_email_notify_when_ticket_created(self):
