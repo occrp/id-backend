@@ -35,7 +35,7 @@ Please see the `docker-compose.yml` for production ready deployments.
 
 To run the tests, use the `docker-compose.yml` configuration and run:
 ```bash
-$ docker-compose run --rm api ./manage.py test
+$ docker-compose run --rm api sh -c 'pip install -q --no-cache-dir -r requirements-testing.txt && flake8 && python manage.py test'
 ```
 
 # Preparing a release
