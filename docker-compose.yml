@@ -1,4 +1,15 @@
-version: '3'
+version: '3.4'
+
+x-build:
+  &default-build
+  image: id/api
+  build:
+    context: .
+    args:
+      - "ID_VERSION=${ID_VERSION}"
+  environment:
+    - DJANGO_SECRET_KEY=local
+    - MEDIA_ROOT=/tmp
 
 services:
   postgres:
@@ -8,26 +19,20 @@ services:
       - ".build/logs/postgres:/var/log"
     environment:
       POSTGRES_PASSWORD: ''
+
   queue:
+    << : *default-build
     restart: always
-    environment:
-      - DJANGO_SECRET_KEY=local
-      - MEDIA_ROOT=/tmp
-    image: id/api
-    build: ./
     command: >
       sh -c "pip install -r requirements-testing.txt && python manage.py queue"
     volumes:
       - ./:/id
     depends_on:
       - postgres
+
   api:
+    << : *default-build
     restart: always
-    environment:
-      - DJANGO_SECRET_KEY=local
-      - MEDIA_ROOT=/tmp
-    image: id/api
-    build: ./
     command: >
       sh -c "pip install -r requirements-testing.txt &&
              python manage.py runserver 0.0.0.0:8080"
@@ -37,6 +42,7 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+
   web:
     image: nginx:1.17.8-alpine
     volumes:

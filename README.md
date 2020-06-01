@@ -16,29 +16,34 @@ Please refer to the `id.env.tmpl` for the full list of settings.
 
 Create a superuser to login to the admin:
 ```bash
-docker-compose run --rm api ./manage.py createsuperuser
+$ docker-compose run --rm api ./manage.py createsuperuser
 ```
 
 Start the dev server for local development or production:
 ```bash
-docker-compose up
+$ docker-compose up
 ```
 
-Please see the `docker-compose.prod.yml` for production ready deployments.
+You might need to run migrations at times, to do that, run:
+```bash
+$ docker-compose run -e DJANGO_CONFIGURATION=Production api python manage.py migrate
+```
+
+Please see the `docker-compose.yml` for production ready deployments.
 
 # Running the tests
 
-To run the tests, use the `docker-compose.dev.yml` configuration and run:
+To run the tests, use the `docker-compose.yml` configuration and run:
 ```bash
-docker-compose run --rm api ./manage.py test
+$ docker-compose run --rm api ./manage.py test
 ```
 
 # Preparing a release
 
-To build the production-ready images run:
+Before building the image set the version environment variable value:
 
 ```bash
-docker build --build-arg=ID_VERSION=$(git describe --always) -t occrp/id-backend ./
+$ export ID_VERSION=$(git describe --always)
 ```
 
 You're now ready to continuously ship! ✨ 💅 🛳
