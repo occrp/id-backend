@@ -62,42 +62,8 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         elif params.get('responders__user'):
             profile = Profile.objects.get(id=params.get('responders__user'))
 
-        totals = queryset.aggregate(
+        totals_open = queryset.aggregate(
             all=Count('id'),
-            new=Sum(
-                Case(
-                    When(status='new', then=1), default=0,
-                    output_field=IntegerField()
-                )
-            ),
-            in_progress=Sum(
-                Case(
-                    When(status='in-progress', then=1),
-                    default=0,
-                    output_field=IntegerField()
-                )
-            ),
-            pending=Sum(
-                Case(
-                    When(status='pending', then=1),
-                    default=0,
-                    output_field=IntegerField()
-                )
-            ),
-            closed=Sum(
-                Case(
-                    When(status='closed', then=1),
-                    default=0,
-                    output_field=IntegerField()
-                )
-            ),
-            cancelled=Sum(
-                Case(
-                    When(status='cancelled', then=1),
-                    default=0,
-                    output_field=IntegerField()
-                )
-            ),
             open=Sum(
                 Case(
                     When(status__in=['new', 'in-progress', 'pending'], then=1),
@@ -118,6 +84,22 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
                     output_field=IntegerField()
                 )
             ),
+            past_deadline=Sum(
+                Case(
+                    When(updated_at__gt=F('deadline_at'), then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            )
+        )
+
+        # Switch filtering to be done by `updated_at` for closed tickets...
+        updated_at_queryset = queryset.all()
+        updated_at_queryset.query.where.children[0].lhs.target = (
+            Ticket.updated_at.field
+        )
+
+        totals_closed = updated_at_queryset.aggregate(
             resolved=Sum(
                 Case(
                     When(status__in=['closed', 'cancelled'], then=1),
@@ -134,13 +116,6 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
                             lookup_name='epoch'
                         )
                     ),
-                    default=0,
-                    output_field=IntegerField()
-                )
-            ),
-            past_deadline=Sum(
-                Case(
-                    When(updated_at__gt=F('deadline_at'), then=1),
                     default=0,
                     output_field=IntegerField()
                 )
@@ -180,7 +155,7 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
 
         serializer = self.serializer_class(stats, many=True, context={
             'params': params,
-            'totals': totals,
+            'totals': { **totals_open, **totals_closed },
             'countries': countries,
             'responder_ids': responder_ids,
         })

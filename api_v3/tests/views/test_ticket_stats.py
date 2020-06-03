@@ -70,11 +70,9 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         body = json.loads(response.content)
 
-        self.assertEqual(len(body['meta']['total']), 11)
+        self.assertEqual(len(body['meta']['total']), 6)
 
-        self.assertEqual(body['meta']['total']['new'], 4)
         self.assertEqual(body['meta']['total']['open'], 4)
-        self.assertEqual(body['meta']['total']['cancelled'], 1)
         self.assertEqual(body['meta']['total']['resolved'], 1)
 
         self.assertEqual(
@@ -96,11 +94,11 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(cancelled_data['attributes']['count'], 1)
         self.assertEqual(cancelled_data['attributes']['status'], 'cancelled')
-        self.assertEqual(cancelled_data['attributes']['avg-time'], 120)
+        self.assertEqual(cancelled_data['attributes']['avg-time'], 0)
         self.assertEqual(cancelled_data['attributes']['past-deadline'], 1)
         self.assertEqual(
             cancelled_data['attributes']['date'][:19],
-            self.tickets[0].created_at.replace(
+            self.tickets[0].updated_at.replace(
                 day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
         )
 
@@ -153,14 +151,12 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         body = json.loads(response.content)
 
-        self.assertEqual(len(body['meta']['total']), 11)
+        self.assertEqual(len(body['meta']['total']), 6)
 
-        self.assertEqual(body['meta']['total']['new'], 1)
         self.assertEqual(body['meta']['total']['open'], 1)
         self.assertEqual(body['meta']['total']['avg-time-open'], 0.0)
-        self.assertEqual(body['meta']['total']['cancelled'], 1)
         self.assertEqual(body['meta']['total']['resolved'], 1)
-        self.assertEqual(body['meta']['total']['avg-time-resolved'], 60.0)
+        self.assertEqual(body['meta']['total']['avg-time-resolved'], 0.0)
 
         self.assertEqual(body['meta']['staff-profile-ids'], [])
         self.assertEqual(body['meta']['countries'], [])
@@ -176,11 +172,11 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(cancelled_data['attributes']['count'], 1)
         self.assertEqual(cancelled_data['attributes']['status'], 'cancelled')
-        self.assertEqual(cancelled_data['attributes']['avg-time'], 120)
+        self.assertEqual(cancelled_data['attributes']['avg-time'], 0)
         self.assertEqual(cancelled_data['attributes']['past-deadline'], 1)
         self.assertEqual(
             cancelled_data['attributes']['date'][:19],
-            self.tickets[0].created_at.replace(
+            self.tickets[0].updated_at.replace(
                 day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
         )
 
