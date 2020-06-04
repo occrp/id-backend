@@ -81,7 +81,7 @@ class TicketStatsEndpointTestCase(ApiTestCase):
         )
         self.assertEqual(
             body['meta']['countries'],
-            sorted(set([t.country for t in self.tickets]))
+            sorted(set(sum([t.countries for t in self.tickets], [])))
         )
         self.assertEqual(len(body['data']), 2)
 

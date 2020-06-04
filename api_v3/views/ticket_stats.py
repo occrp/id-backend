@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from django.db.models import Avg, Count, Case, F, IntegerField, Sum, When
+from django.db.models import Avg, Count, Case, F, Func, IntegerField, Sum, When
 from django.db.models.functions import Trunc, Extract
 from rest_framework import viewsets, response
 
@@ -56,9 +56,12 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
             responder_ids = queryset.filter(
                 responders__user__isnull=False
             ).values_list('responders__user', flat=1).distinct()
-            countries = queryset.filter(
-                country__isnull=False
-            ).values_list('country', flat=1).order_by('country').distinct()
+
+            countries = queryset.filter(country__isnull=False).values_list(
+                Func(F('countries'), function='unnest'), flat=True
+            ).order_by(
+                Func(F('countries'), function='unnest')
+            ).distinct()
         elif params.get('responders__user'):
             profile = Profile.objects.get(id=params.get('responders__user'))
 
@@ -155,8 +158,8 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
 
         serializer = self.serializer_class(stats, many=True, context={
             'params': params,
-            'totals': { **totals_open, **totals_closed },
-            'countries': countries,
+            'totals': {**totals_open, **totals_closed},
+            'countries': list(filter(None, countries)),
             'responder_ids': responder_ids,
         })
 
