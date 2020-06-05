@@ -8,3 +8,14 @@ master-compose-deploy:
   - master
   tags:
   - master
+
+master-tagged-compose-deploy:
+  stage: deploy
+  script:
+  - ssh compose@composesshd /srv/tools/id-compose/
+  only:
+  - tags
+  except:
+  - branches
+  tags:
+  - production
