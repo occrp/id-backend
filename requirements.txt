@@ -1,11 +1,11 @@
 # Core
-django==3.0.3
+django==3.0.7
 django-configurations==2.2
 pq==1.8.1
 gunicorn==20.0.4
 
 # Database
-psycopg2==2.8.4
+psycopg2==2.8.5
 dj-database-url==0.5
 
 # Email
@@ -29,4 +29,4 @@ querystring-parser==1.2.4
 # Misc
 iso3166==1.0.1
 filetype==1.0.5
-sentry-sdk==0.14.2
+sentry-sdk==0.14.4
