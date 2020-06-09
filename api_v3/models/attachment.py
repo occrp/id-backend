@@ -22,6 +22,7 @@ class Attachment(models.Model):
 
         Ones he has access to through the tickets.
         """
-        return (queryset or cls.objects).filter(
-            ticket__in=Ticket.filter_by_user(user)
-        )
+        if queryset is None:
+            queryset = cls.objects
+
+        return queryset.filter(ticket__in=Ticket.filter_by_user(user))

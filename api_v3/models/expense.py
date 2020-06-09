@@ -35,6 +35,7 @@ class Expense(models.Model):
 
         Only ticket responders have access to the expenses.
         """
-        return (queryset or cls.objects).filter(
-            ticket__responder_users=user
-        )
+        if queryset is None:
+            queryset = cls.objects
+
+        return queryset.filter(ticket__responder_users=user)

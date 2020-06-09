@@ -125,7 +125,10 @@ class Ticket(models.Model):
 
         Either the ones he created or he is subscribed to.
         """
-        return (queryset or cls.objects).filter(
+        if queryset is None:
+            queryset = cls.objects
+
+        return queryset.filter(
             # Allow ticket authors
             models.Q(requester=user) |
             # Allow ticket responders
@@ -141,8 +144,10 @@ class Ticket(models.Model):
         Returns an annotated query set.
         """
         query = SearchQuery(keywords)
-        queryset = queryset or cls.objects
         vector = None
+
+        if queryset is None:
+            queryset = cls.objects
 
         for field, weight in list(cls.SEARCH_WEIGHT_MAP.items()):
             if not vector:

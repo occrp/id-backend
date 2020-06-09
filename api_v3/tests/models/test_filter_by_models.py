@@ -27,7 +27,9 @@ class TicketAttachmentCommentFactoryMixin(TestCase):
         ]
 
         self.tickets = [
-            Ticket.objects.create(background='test1', requester=self.users[0]),
+            Ticket.objects.create(
+                first_name='fname', background='test1', requester=self.users[0]
+            ),
             Ticket.objects.create(background='test2', requester=self.users[1]),
             Ticket.objects.create(background='test3', requester=self.users[2])
         ]
@@ -115,6 +117,18 @@ class TicketAttachmentCommentFilterByUserRequesterTestCase(
         self.assertEqual(tickets.count(), 1)
         self.assertIn(self.tickets[0], tickets)
 
+        tickets = Ticket.filter_by_user(self.users[0], Ticket.objects.none())
+        self.assertEqual(tickets.count(), 0)
+
+    def test_tickets_search_for(self):
+        tickets = Ticket.search_for('fname')
+
+        self.assertEqual(tickets.count(), 1)
+        self.assertIn(self.tickets[0], tickets)
+
+        tickets = Ticket.search_for('fname', Ticket.objects.none())
+        self.assertEqual(tickets.count(), 0)
+
     def test_attachment_filter_by_user(self):
         attachments = Attachment.filter_by_user(self.users[0])
 
@@ -123,6 +137,10 @@ class TicketAttachmentCommentFilterByUserRequesterTestCase(
         self.assertIn(self.attachments[1], attachments)
         self.assertIn(self.attachments[4], attachments)
 
+        attachments = Attachment.filter_by_user(
+            self.users[0], Attachment.objects.none())
+        self.assertEqual(attachments.count(), 0)
+
     def test_comment_filter_by_user(self):
         comments = Comment.filter_by_user(self.users[0])
 
@@ -130,6 +148,9 @@ class TicketAttachmentCommentFilterByUserRequesterTestCase(
         self.assertIn(self.comments[0], comments)
         self.assertIn(self.comments[1], comments)
         self.assertIn(self.comments[4], comments)
+
+        comments = Comment.filter_by_user(self.users[0], Comment.objects.none())
+        self.assertEqual(comments.count(), 0)
 
 
 class TicketAttachmentCommentFilterByUserResponderTestCase(

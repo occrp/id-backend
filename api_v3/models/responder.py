@@ -22,7 +22,10 @@ class Responder(models.Model):
 
         Either related to the tickets he created or he is subscribed to.
         """
-        return (queryset or cls.objects).filter(
+        if queryset is None:
+            queryset = cls.objects
+
+        return queryset.filter(
             # Allow own responder objects
             models.Q(user=user) |
             # Allow related to user responder tickets
