@@ -133,6 +133,9 @@ class Common(Configuration):
     SOCIAL_AUTH_KEYCLOAK_BASE = values.Value('', environ_prefix='')
     SOCIAL_AUTH_KEYCLOAK_KEY = values.Value('', environ_prefix='')
     SOCIAL_AUTH_KEYCLOAK_SECRET = values.Value('', environ_prefix='')
+    SOCIAL_AUTH_NO_DEFAULT_PROTECTED_USER_FIELDS = values.BooleanValue(
+        True, environ_prefix='')
+    SOCIAL_AUTH_PROTECTED_USER_FIELDS = values.ListValue([], environ_prefix='')
 
     SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = values.Value('', environ_prefix='')
     SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = values.Value('', environ_prefix='')
