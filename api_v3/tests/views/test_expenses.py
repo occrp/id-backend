@@ -1,4 +1,5 @@
 import json
+import random
 from datetime import datetime
 
 from api_v3.factories import (
@@ -14,10 +15,15 @@ from .support import ApiTestCase, APIClient, reverse
 class ExpensesEndpointTestCase(ApiTestCase):
 
     def setUp(self):
+        superuser_or_staff = random.choice([True, False])
+
         self.client = APIClient()
         self.users = [
             ProfileFactory.create(),
-            ProfileFactory.create(is_superuser=True),
+            ProfileFactory.create(
+                is_superuser=superuser_or_staff,
+                is_staff=(not superuser_or_staff)
+            ),
             ProfileFactory.create()
         ]
         self.tickets = [
@@ -43,7 +49,7 @@ class ExpensesEndpointTestCase(ApiTestCase):
             []
         )
 
-    def test_list_authenticated_superuser(self):
+    def test_list_authenticated_superuser_or_staff(self):
         self.client.force_authenticate(self.users[1])
 
         response = self.client.get(reverse('expense-list'))
@@ -62,7 +68,7 @@ class ExpensesEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 404)
 
-    def test_detail_authenticated_superuser(self):
+    def test_detail_authenticated_superuser_or_staff(self):
         self.client.force_authenticate(self.users[1])
 
         response = self.client.get(
@@ -94,7 +100,7 @@ class ExpensesEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 422)
         self.assertEqual(Expense.objects.count(), expenses_count)
 
-    def test_create_authenticated_superuser(self):
+    def test_create_authenticated_superuser_or_staff(self):
         self.client.force_authenticate(self.users[1])
 
         ticket = self.expenses[0].ticket
@@ -140,7 +146,7 @@ class ExpensesEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 404)
 
-    def test_update_authenticated_superuser(self):
+    def test_update_authenticated_superuser_or_staff(self):
         self.client.force_authenticate(self.users[1])
 
         self.expenses[0].ticket
@@ -176,7 +182,7 @@ class ExpensesEndpointTestCase(ApiTestCase):
 
         self.assertEqual(response.status_code, 404)
 
-    def test_delete_authenticated_superuser(self):
+    def test_delete_authenticated_superuser_or_staff(self):
         self.client.force_authenticate(self.users[1])
 
         actions_count = Action.objects.filter(
