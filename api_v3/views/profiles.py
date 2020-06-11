@@ -26,9 +26,6 @@ class ProfilesEndpoint(
         if user != serializer.instance and not user.is_superuser:
             raise exceptions.NotFound()
 
-        if user.is_superuser:
-            serializer.instance.is_staff = self.request.data.get('is_staff')
-
         serializer.instance.bio = serializer.validated_data.get('bio')
         serializer.instance.save()
 

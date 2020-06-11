@@ -130,8 +130,6 @@ class ProfilesEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_update_authenticated(self):
-        self.users[0].is_staff = False
-        self.users[0].save()
         self.client.force_authenticate(self.users[0])
 
         email = 'ignored@email.address'
@@ -153,8 +151,8 @@ class ProfilesEndpointTestCase(ApiTestCase):
         self.assertEqual(data['attributes']['bio'], 'Short Bio')
         self.assertFalse(data['attributes']['is-staff'])
 
-    def test_update_authenticated_superuser(self):
-        self.users[0].is_staff = False
+    def test_update_authenticated_staff(self):
+        self.users[0].is_staff = True
         self.users[0].save()
         self.client.force_authenticate(self.users[2])
 

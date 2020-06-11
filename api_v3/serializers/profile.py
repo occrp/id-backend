@@ -43,7 +43,9 @@ class ProfileSerializer(serializers.ModelSerializer):
 
         data = super(ProfileSerializer, self).to_representation(obj)
 
-        if request and request.user and request.user.is_superuser:
+        if request and request.user and (
+            request.user.is_staff or request.user.is_superuser
+        ):
             return data
 
         # For regular users, make sure others email is not displayed
