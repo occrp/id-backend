@@ -96,4 +96,4 @@ class CommentsEndpoint(
                 [entry['email']]
             ])
 
-        return send_mass_mail(emails, fail_silently=True), emails
+        return send_mass_mail(emails), emails

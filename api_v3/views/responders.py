@@ -93,4 +93,4 @@ class RespondersEndpoint(
             ]
         ]
 
-        return send_mass_mail(emails, fail_silently=True)
+        return send_mass_mail(emails)

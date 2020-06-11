@@ -69,7 +69,7 @@ class TicketDigestTestCase(TestCase):
         with mock.patch.object(
             email_ticket_digest,
             'send_mass_mail',
-            lambda x, fail_silently: (emails.extend(x), 1)
+            lambda x: (emails.extend(x), 1)
         ):
             command.handle(request_host=request_host)
 

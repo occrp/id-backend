@@ -115,7 +115,7 @@ class Command(BaseCommand):
                 [user_digest['user'].email]
             ])
 
-        return send_mass_mail(emails, fail_silently=True), len(user_digests)
+        return send_mass_mail(emails), len(user_digests)
 
     def generate_text(self, action):
         """Generates a human readable version of the ticket activity."""

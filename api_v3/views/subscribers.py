@@ -55,7 +55,9 @@ class SubscribersEndpoint(
     def perform_create(self, serializer):
         """Only super user or ticket responders can add subscribers."""
         user = self.request.user
-        is_ticket_user = user in serializer.validated_data['ticket'].users
+        is_ticket_user = (
+            user in serializer.validated_data['ticket'].users
+        ) or user == serializer.validated_data['ticket'].requester
 
         if not user.is_superuser and not is_ticket_user:
             raise serializers.ValidationError(
@@ -115,4 +117,4 @@ class SubscribersEndpoint(
             ]
         ]
 
-        return send_mass_mail(emails, fail_silently=True), emails
+        return send_mass_mail(emails), emails

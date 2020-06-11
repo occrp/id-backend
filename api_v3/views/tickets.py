@@ -154,4 +154,4 @@ class TicketsEndpoint(
                 [user.email]
             ])
 
-        send_mass_mail(emails, fail_silently=True)
+        send_mass_mail(emails)
