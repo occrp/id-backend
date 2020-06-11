@@ -127,7 +127,27 @@ class SubscribersEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Subscriber.objects.count(), subscribers_count + 1)
 
-    def test_create_non_superuser(self):
+    def test_create_requester(self):
+        self.subscriber.delete()
+        self.client.force_authenticate(self.users[0])
+
+        subscribers_count = Subscriber.objects.count()
+
+        new_data = self.as_jsonapi_payload(
+            SubscriberSerializer, self.subscriber)
+
+        new_data['data']['attributes']['email'] = self.users[3].email
+
+        response = self.client.post(
+            reverse('subscriber-list'),
+            data=json.dumps(new_data),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Subscriber.objects.count(), subscribers_count + 1)
+
+    def test_create_subscriber(self):
         self.client.force_authenticate(self.users[0])
 
         subscribers_count = Subscriber.objects.count()
@@ -211,6 +231,22 @@ class SubscribersEndpointTestCase(ApiTestCase):
         )
 
         self.assertEqual(response.status_code, 404)
+
+    def test_delete_requester(self):
+        subscriber = SubscriberFactory.create(
+            ticket=self.tickets[0], user=self.users[3]
+        )
+        self.client.force_authenticate(self.users[0])
+
+        subscribers_count = Subscriber.objects.count()
+
+        response = self.client.delete(
+            reverse('subscriber-detail', args=[subscriber.id]),
+            content_type=self.JSON_API_CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(Subscriber.objects.count(), subscribers_count - 1)
 
     def test_delete_self_subscriber(self):
         self.client.force_authenticate(self.users[0])

@@ -78,7 +78,8 @@ class SubscribersEndpoint(
         """Only super user, subscriber or responders can remove subscribers."""
         user = self.request.user
         is_responder = (user in instance.ticket.users.all())
-        is_subscriber = (user == instance.user)
+        is_requester = (user == instance.ticket.requester)
+        is_subscriber = is_requester or (user == instance.user)
 
         if not user.is_superuser and not is_subscriber and not is_responder:
             raise exceptions.NotFound()
