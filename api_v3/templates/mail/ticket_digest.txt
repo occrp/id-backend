@@ -4,7 +4,7 @@ your ID tickets digest is below.
 {% if upcoming %}
 You have tickets with upcoming deadlines:
 {% for ticket in upcoming %}
- * ({{ticket.deadline_at|date:'SHORT_DATE_FORMAT' }}): http://{{request_host}}/tickets/view/{{ticket.id}}
+ * ({{ticket.deadline_at|date:'SHORT_DATE_FORMAT' }}): https://{{request_host}}/tickets/view/{{ticket.id}}
 {% endfor %}{% endif %}
 
 Below is a report of latest activities for the tickets you are subscribed to:

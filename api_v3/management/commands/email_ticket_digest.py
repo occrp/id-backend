@@ -21,7 +21,7 @@ class Command(BaseCommand):
     #   (01.12.1987 22:01): John updated the status to ticket ID: 99
     ITEM_TEMPLATE = (
         '({date}): {name} {action} {thing} {prep} ticket '
-        'http://{request_host}/tickets/view/{ticket}'
+        'https://{request_host}/tickets/view/{ticket}'
     )
 
     @staticmethod
