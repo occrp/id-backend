@@ -46,4 +46,13 @@ Before building the image set the version environment variable value:
 $ export ID_VERSION=$(git describe --always)
 ```
 
+## Enabling the daily digest
+
+ID provides a daily digest email which can be executed and it will
+self-schedule by running:
+
+```
+$ docker-compose run --rm api ./manage.py email_ticket_digest id.domain.tld
+```
+
 You're now ready to continuously ship! ✨ 💅 🛳
