@@ -86,7 +86,7 @@ class Ticket(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     sent_notifications_at = models.DateTimeField(null=True)
     member_center = models.CharField(max_length=512, null=True, blank=False)
-    identifier = models.CharField(max_length=512, null=True, blank=False)
+    identifier = models.CharField(max_length=512, null=True, blank=True)
     countries = ArrayField(
         models.CharField(max_length=255, null=True, blank=False),
         default=list,
