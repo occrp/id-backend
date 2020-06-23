@@ -15,4 +15,4 @@ from .ticket import Ticket  # noqa
 def touch_ticket_updated(instance, **kwargs):
     if isinstance(instance.target, Ticket):
         instance.target.updated_at = instance.timestamp
-        instance.target.save()
+        instance.target.save(update_fields=['updated_at'])

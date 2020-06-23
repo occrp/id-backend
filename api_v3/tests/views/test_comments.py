@@ -89,6 +89,7 @@ class CommentsEndpointTestCase(ApiTestCase):
         Ticket.objects.filter(pk=ticket.id).update(updated_at=datetime.min)
         ticket.refresh_from_db()
         old_ticket_updated_at = ticket.updated_at
+        old_ticket_created_at = ticket.created_at
 
         comments_count = Comment.objects.count()
         actions_count = Action.objects.filter(
@@ -116,6 +117,7 @@ class CommentsEndpointTestCase(ApiTestCase):
         ticket.refresh_from_db()
 
         self.assertGreater(ticket.updated_at, old_ticket_updated_at)
+        self.assertEqual(ticket.created_at, old_ticket_created_at)
 
     def test_create_authenticated_without_access(self):
         self.client.force_authenticate(self.users[1])
