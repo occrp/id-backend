@@ -24,11 +24,10 @@ class DownloadEndpoint(JSONApiEndpoint, viewsets.ViewSet):
         if not attachment or not attachment.upload:
             raise exceptions.NotFound()
 
-        resp = FileResponse(
-            attachment.upload.file, content_type='application/octet-stream')
-        resp['Content-Length'] = os.path.getsize(attachment.upload.path)
-        resp['Content-Disposition'] = 'filename={}'.format(os.path.basename(
-            attachment.upload.name.encode('utf-8', 'ignore')
-        ))
+        return FileResponse(
+            attachment.upload.file,
+            content_type='application/octet-stream',
+            as_attachment=True
+        )
 
         return resp

@@ -56,12 +56,7 @@ class DownloadEndpointTestCase(TestCase):
             reverse('download-detail', args=[self.attachment.id]))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.get('Content-Disposition'),
-            'filename={}'.format(os.path.basename(
-                self.attachment.upload.name.encode('utf-8', 'replace')
-            ))
-        )
+        self.assertNotIn(response.get('Content-Disposition'), 'inline')
 
     def test_retrieve_auth_ticket_responder(self):
         self.client.force_authenticate(self.users[1])
@@ -70,9 +65,4 @@ class DownloadEndpointTestCase(TestCase):
             reverse('download-detail', args=[self.attachment.id]))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.get('Content-Disposition'),
-            'filename={}'.format(os.path.basename(
-                self.attachment.upload.name.encode('utf-8', 'ignore')
-            ))
-        )
+        self.assertNotIn(response.get('Content-Disposition'), 'inline')
