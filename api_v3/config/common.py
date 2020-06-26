@@ -48,6 +48,7 @@ class Common(Configuration):
     DEFAULT_FROM_EMAIL = values.EmailValue(
         '', environ_prefix='ID', environ_required=True)
     DEFAULT_FROM = '{} <{}>'.format(SITE_NAME, DEFAULT_FROM_EMAIL)
+    DEFAULT_NOTIFY_EMAILS = values.ListValue([], environ_prefix='ID')
 
     ADMINS = []
 

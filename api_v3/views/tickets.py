@@ -137,7 +137,9 @@ class TicketsEndpoint(
         subject = TicketsEndpoint.EMAIL_SUBJECT.format(ticket.id)
 
         if template == 'mail/ticket_created.txt':
-            users = Profile.objects.filter(is_superuser=True, is_active=True)
+            users = Profile.objects.filter(
+                email__in=settings.DEFAULT_NOTIFY_EMAILS
+            )
         else:
             users = ticket.users
 

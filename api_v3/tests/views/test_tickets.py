@@ -370,6 +370,8 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.assertEqual(Ticket.objects.count(), tickets_count + 1)
 
     def test_email_notify_when_ticket_created(self):
+        settings.DEFAULT_NOTIFY_EMAILS.append(self.users[0].email)
+
         self.users[0].is_superuser = True
         self.users[0].save()
 
@@ -396,6 +398,8 @@ class TicketsEndpointTestCase(ApiTestCase):
                 )
             )
         )
+
+        settings.DEFAULT_NOTIFY_EMAILS.remove(self.users[0].email)
 
     def test_email_notify(self):
         TicketsEndpoint.email_notify(
