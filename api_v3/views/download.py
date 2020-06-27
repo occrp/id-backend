@@ -1,5 +1,3 @@
-import os.path
-
 from django.http import FileResponse
 from rest_framework import viewsets, exceptions, permissions
 
@@ -29,5 +27,3 @@ class DownloadEndpoint(JSONApiEndpoint, viewsets.ViewSet):
             content_type='application/octet-stream',
             as_attachment=True
         )
-
-        return resp
