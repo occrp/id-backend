@@ -1,6 +1,6 @@
 from rest_framework import exceptions, mixins, serializers, viewsets
 
-from api_v3.models import Action, Expense, Ticket
+from api_v3.models import Action, Expense
 from api_v3.serializers import ExpenseSerializer
 from .support import JSONApiEndpoint
 
