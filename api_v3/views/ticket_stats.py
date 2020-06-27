@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
-from django.db.models import Avg, Count, Case, F, Func, IntegerField, Sum, When
+from django.db.models import (
+    Avg, Count, Case, F, Func, IntegerField, DateTimeField, Sum, When, Q)
 from django.db.models.functions import Trunc, Extract
 from rest_framework import viewsets, response
 
@@ -98,9 +99,8 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
 
         # Switch filtering to be done by `updated_at` for closed tickets...
         updated_at_queryset = queryset.all()
-        updated_at_queryset.query.where.children[0].lhs.target = (
-            Ticket.updated_at.field
-        )
+        updated_at_queryset.query.where = Ticket.objects.filter(
+            updated_at__gte=queryset.query.where.children[0].rhs).query.where
 
         totals_closed = updated_at_queryset.aggregate(
             resolved=Sum(
@@ -126,7 +126,14 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         )
 
         aggregated = queryset.annotate(
-            date=Trunc('created_at', 'month'),
+            date=Case(
+                When(
+                    ~Q(status=Ticket.STATUSES[0][0]),
+                    then=Trunc('updated_at', 'month'),
+                ),
+                default=Trunc('created_at', 'month'),
+                output_field=DateTimeField()
+            ),
             count=Count('id'),
             ticket_status=F('status'),
             avg_time=Avg(

@@ -31,7 +31,8 @@ class TicketStatsEndpointTestCase(ApiTestCase):
                 requester=self.users[0], deadline_at=None, status='new'),
         ]
 
-        self.tickets[0].created_at = datetime.utcnow() - timedelta(days=5)
+        self.tickets[0].created_at = datetime.utcnow() - timedelta(days=70)
+        self.tickets[0].updated_at = datetime.utcnow() - timedelta(days=31)
         self.tickets[0].save()
 
         self.responders = [
@@ -94,7 +95,7 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(cancelled_data['attributes']['count'], 1)
         self.assertEqual(cancelled_data['attributes']['status'], 'cancelled')
-        self.assertEqual(cancelled_data['attributes']['avg-time'], 0)
+        self.assertNotEqual(cancelled_data['attributes']['avg-time'], 0)
         self.assertEqual(cancelled_data['attributes']['past-deadline'], 1)
         self.assertEqual(
             cancelled_data['attributes']['date'][:19],
@@ -156,7 +157,7 @@ class TicketStatsEndpointTestCase(ApiTestCase):
         self.assertEqual(body['meta']['total']['open'], 1)
         self.assertEqual(body['meta']['total']['avg-time-open'], 0.0)
         self.assertEqual(body['meta']['total']['resolved'], 1)
-        self.assertEqual(body['meta']['total']['avg-time-resolved'], 0.0)
+        self.assertNotEqual(body['meta']['total']['avg-time-resolved'], 0.0)
 
         self.assertEqual(body['meta']['staff-profile-ids'], [])
         self.assertEqual(body['meta']['countries'], [])
@@ -172,7 +173,7 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(cancelled_data['attributes']['count'], 1)
         self.assertEqual(cancelled_data['attributes']['status'], 'cancelled')
-        self.assertEqual(cancelled_data['attributes']['avg-time'], 0)
+        self.assertNotEqual(cancelled_data['attributes']['avg-time'], 0)
         self.assertEqual(cancelled_data['attributes']['past-deadline'], 1)
         self.assertEqual(
             cancelled_data['attributes']['date'][:19],
