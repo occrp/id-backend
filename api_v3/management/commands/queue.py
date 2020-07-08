@@ -11,8 +11,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            'inspect',
-            default=False,
+            '--inspect',
             help='If provided will show queue stats.'
         )
 
