@@ -1,4 +1,5 @@
 import logging
+from distutils.util import strtobool
 
 from django.core.management.base import BaseCommand
 from django.conf import settings
@@ -12,7 +13,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument(
             '--inspect',
-            help='Shows the queue stats.'
+            help='Shows pending jobs in queue (includes processed on `True`).'
         )
         parser.add_argument(
             '--clean',
@@ -30,12 +31,17 @@ class Command(BaseCommand):
 
             return None
 
-        if options['inspect']:
-            for qj in QueueJob.objects.filter(dequeued_at=None).values():
+        if options['inspect'] is not None:
+            jobs = QueueJob.objects.filter(
+                dequeued_at__isnull=bool(strtobool(options['inspect'])))
+
+            for qj in jobs.values():
                 for colname, colvalue in qj.items():
                     row = '{0}\t{1}'.format(colname, colvalue)
                     self.stdout.write(row.expandtabs(15))
                 self.stdout.write('⬛' * 15)
+
+            self.stdout.write('Found {0} jobs.'.format(jobs.count()))
 
             return None
 

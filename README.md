@@ -57,9 +57,9 @@ $ docker-compose run --rm api ./manage.py email_ticket_digest id.domain.tld
 
 ## Inspecting the queue
 
-ID tasks use a little jobs queue. To see the jobs in the queue, run:
+ID tasks use a little jobs queue. To see just the pending jobs in queue, run:
 ```
-$ docker-compose run --rm api ./manage.py queue --inspect=True
+$ docker-compose run --rm api ./manage.py queue --inspect=False
 ```
 
 To delete old processed jobs, run:
