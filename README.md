@@ -52,7 +52,7 @@ ID provides a daily digest email which can be executed and it will
 self-schedule by running:
 
 ```
-$ docker-compose run --rm api ./manage.py email_ticket_digest id.domain.tld
+$ docker-compose run --rm api ./manage.py email_ticket_digest id.domain.tld --schedule=True
 ```
 
 ## Inspecting the queue

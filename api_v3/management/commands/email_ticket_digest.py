@@ -38,11 +38,18 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('request_host', help='Hostname to use in emails.')
+        parser.add_argument('--schedule', help='Schedules the daily digest.')
 
     def handle(self, *args, **options):
         """Runs the digest for tickets."""
         user_digests = {}
         self.request_host = options.get('request_host')
+
+        if options['schedule']:
+            Command.schedule(self.request_host)
+            self.stdout.write('Digest scheduled...')
+            return None
+
         tickets = Ticket.objects.filter(
             models.Q(
                 sent_notifications_at__gte=models.Func(function='now')
