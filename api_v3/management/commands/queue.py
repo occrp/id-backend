@@ -3,7 +3,6 @@ from distutils.util import strtobool
 
 from django.core.management.base import BaseCommand
 from django.conf import settings
-from django.db import connection
 from api_v3.models.queue_job import QueueJob, queue
 
 
