@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.db.models import (
-    Avg, Count, Case, F, Func, IntegerField, DateTimeField, Sum, When, Q)
+    Avg, Count, Case, F, Func, IntegerField, Sum, When)
 from django.db.models.functions import Trunc, Extract
 from rest_framework import viewsets, response
 
@@ -47,86 +47,13 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         if not request.user.is_superuser:
             return response.Response(self.serializer_class([], many=True).data)
 
-        profile = None
-        countries = []
-        responder_ids = []
-        params = self.extract_filter_params(self.request)
         queryset = self.filter_queryset(self.get_queryset())
+        group_by = None
 
-        if not params.get('responders__user') and not params.get('country'):
-            responder_ids = queryset.filter(
-                responders__user__isnull=False
-            ).values_list('responders__user', flat=1).distinct()
-
-            countries = queryset.filter(country__isnull=False).values_list(
-                Func(F('countries'), function='unnest'), flat=True
-            ).order_by(
-                Func(F('countries'), function='unnest')
-            ).distinct()
-        elif params.get('responders__user'):
-            profile = Profile.objects.get(id=params.get('responders__user'))
-
-        totals_open = queryset.aggregate(
-            all=Count('id'),
-            open=Sum(
-                Case(
-                    When(status__in=['new', 'in-progress', 'pending'], then=1),
-                    default=0,
-                    output_field=IntegerField()
-                )
-            ),
-            avg_time_open=Avg(
-                Case(
-                    When(
-                        status__in=['new', 'in-progress', 'pending'],
-                        then=Extract(
-                            (F('updated_at') - F('created_at')) / (60 * 60),
-                            lookup_name='epoch'
-                        )
-                    ),
-                    default=0,
-                    output_field=IntegerField()
-                )
-            ),
-            past_deadline=Sum(
-                Case(
-                    When(updated_at__gt=F('deadline_at'), then=1),
-                    default=0,
-                    output_field=IntegerField()
-                )
-            )
-        )
-
-        # Switch filtering to be done by `updated_at` for closed tickets...
-        updated_at_queryset = queryset.all()
-        updated_at_queryset.query.where = Ticket.objects.filter(
-            updated_at__gte=queryset.query.where.children[0].rhs).query.where
-
-        totals_closed = updated_at_queryset.aggregate(
-            resolved=Sum(
-                Case(
-                    When(status__in=['closed', 'cancelled'], then=1),
-                    default=0,
-                    output_field=IntegerField()
-                )
-            ),
-            avg_time_resolved=Avg(
-                Case(
-                    When(
-                        status__in=['closed', 'cancelled'],
-                        then=Extract(
-                            (F('updated_at') - F('created_at')) / (60 * 60),
-                            lookup_name='epoch'
-                        )
-                    ),
-                    default=0,
-                    output_field=IntegerField()
-                )
-            )
-        )
-
-        aggregated = queryset.annotate(
+        annotations = dict(
             date=Trunc('created_at', 'month'),
+            responder_id=F('responders__user_id'),
+            ticket_country=Func(F('countries'), function='unnest'),
             count=Count('id'),
             ticket_status=F('status'),
             avg_time=Avg(
@@ -142,25 +69,36 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
                     output_field=IntegerField()
                 )
             )
-        ).values('date', 'count', 'ticket_status', 'avg_time', 'past_deadline')
+        )
 
-        # Do not group by automatically.
-        aggregated.query.group_by = ('date', 'status')
+        if request.GET.get('by') == 'country':
+            group_by = ('ticket_country', 'status')
+            del annotations['date']
+            del annotations['responder_id']
+        elif request.GET.get('by') == 'responder':
+            group_by = ('responder_id', 'status')
+            del annotations['date']
+            del annotations['ticket_country']
+        else:
+            group_by = ('date', 'status')
+            del annotations['responder_id']
+            del annotations['ticket_country']
+
+        aggregated = queryset.annotate(**annotations).values(
+            *annotations.keys())
+        aggregated.query.group_by = group_by
 
         stats = [
             self.TicketStat(
                 stat,
-                profile_id=getattr(profile, 'id', None),
-                profile=profile,
+                responder_id=stat.get('responder_id'),
+                responder=Profile.objects.filter(
+                    id=stat.get('responder_id')
+                ).first(),
                 pk=None
             ) for stat in list(aggregated)
         ]
 
-        serializer = self.serializer_class(stats, many=True, context={
-            'params': params,
-            'totals': {**totals_open, **totals_closed},
-            'countries': list(filter(None, countries)),
-            'responder_ids': responder_ids,
-        })
+        serializer = self.serializer_class(stats, many=True)
 
         return response.Response(serializer.data)

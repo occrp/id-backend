@@ -1,9 +1,7 @@
-from datetime import datetime
 import hashlib
 
 from rest_framework import fields
 from rest_framework_json_api import serializers
-from rest_framework_json_api.utils import format_field_names
 
 from .profile import ProfileSerializer
 
@@ -11,48 +9,30 @@ from .profile import ProfileSerializer
 class TicketStatSerializer(serializers.Serializer):
 
     included_serializers = {
-        'profile': 'api_v3.serializers.ProfileSerializer',
+        'responder': 'api_v3.serializers.ProfileSerializer',
     }
 
     class Meta:
         resource_name = 'ticket-stats'
 
     id = fields.SerializerMethodField()
-    date = serializers.DateTimeField()
+    date = serializers.DateTimeField(required=False)
     count = serializers.IntegerField()
     status = serializers.CharField(source='ticket_status')
+    country = serializers.CharField(source='ticket_country', required=False)
     avg_time = fields.IntegerField()
     past_deadline = fields.IntegerField()
-    profile = ProfileSerializer()
+    responder = ProfileSerializer(required=False)
 
     def get_id(self, data):
         pk = hashlib.sha256(
             (
-                str(self.context.get('params')) +
-                str(data.get('date')) +
                 data.get('ticket_status') +
-                str(data.profile.id if data.get('profile') else '')
+                str(data.get('date') or '') +
+                str(data.get('responder_id') or '') +
+                str(data.get('country') or '')
             ).encode('utf-8')
         ).hexdigest()
         # Leave this mocked pk, or DRF will complain
         data.pk = pk
         return pk
-
-    def get_root_meta(self, data, many):
-        """Adds extra root meta details."""
-        params = self.context.get('params')
-
-        # Do not include meta on when no data.
-        if not self.instance:
-            return {}
-
-        return {
-            'total': format_field_names(self.context.get('totals')),
-            'countries': self.context.get('countries'),
-            'staff_profile_ids': self.context.get('responder_ids'),
-            'start_date': params.get('created_at__gte'),
-            'end_date': (
-                params.get('created_at__lte') or
-                datetime.utcnow().isoformat()
-            )
-        }
