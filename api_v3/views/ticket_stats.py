@@ -126,14 +126,7 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         )
 
         aggregated = queryset.annotate(
-            date=Case(
-                When(
-                    ~Q(status=Ticket.STATUSES[0][0]),
-                    then=Trunc('updated_at', 'month'),
-                ),
-                default=Trunc('created_at', 'month'),
-                output_field=DateTimeField()
-            ),
+            date=Trunc('created_at', 'month'),
             count=Count('id'),
             ticket_status=F('status'),
             avg_time=Avg(
@@ -152,7 +145,7 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         ).values('date', 'count', 'ticket_status', 'avg_time', 'past_deadline')
 
         # Do not group by automatically.
-        aggregated.query.group_by = aggregated.query.group_by[-2:]
+        aggregated.query.group_by = ('date', 'status')
 
         stats = [
             self.TicketStat(

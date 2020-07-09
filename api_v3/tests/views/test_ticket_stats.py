@@ -1,6 +1,7 @@
 import json
 from datetime import datetime, timedelta
 
+from api_v3.models import Ticket
 from api_v3.factories import ProfileFactory, ResponderFactory, TicketFactory
 from .support import ApiTestCase, APIClient, reverse
 
@@ -19,7 +20,7 @@ class TicketStatsEndpointTestCase(ApiTestCase):
             TicketFactory.create(
                 requester=self.users[0],
                 status='cancelled',
-                deadline_at=(datetime.utcnow() - timedelta(days=3))
+                deadline_at=datetime(2020, 10, 15)
             ),
             TicketFactory.create(
                 requester=self.users[0], deadline_at=None, status='new'),
@@ -31,10 +32,6 @@ class TicketStatsEndpointTestCase(ApiTestCase):
                 requester=self.users[0], deadline_at=None, status='new'),
         ]
 
-        self.tickets[0].created_at = datetime.utcnow() - timedelta(days=70)
-        self.tickets[0].updated_at = datetime.utcnow() - timedelta(days=31)
-        self.tickets[0].save()
-
         self.responders = [
             ResponderFactory.create(
                 ticket=self.tickets[0], user=self.users[1]),
@@ -43,6 +40,16 @@ class TicketStatsEndpointTestCase(ApiTestCase):
             ResponderFactory.create(
                 ticket=self.tickets[1], user=self.users[2])
         ]
+
+        Ticket.objects.filter(
+            id__in=map(lambda t: t.id, self.tickets)
+        ).update(
+            created_at=datetime(2020, 10, 20),
+            updated_at=datetime(2020, 11, 10)
+        )
+
+        # Refresh the tickets...
+        list(map(lambda t: t.refresh_from_db(), self.tickets))
 
     def test_list_anonymous(self):
         response = self.client.get(reverse('ticket_stats-list'))
@@ -99,13 +106,13 @@ class TicketStatsEndpointTestCase(ApiTestCase):
         self.assertEqual(cancelled_data['attributes']['past-deadline'], 1)
         self.assertEqual(
             cancelled_data['attributes']['date'][:19],
-            self.tickets[0].updated_at.replace(
+            self.tickets[0].created_at.replace(
                 day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
         )
 
         self.assertEqual(new_data['attributes']['count'], 4)
         self.assertEqual(new_data['attributes']['status'], 'new')
-        self.assertEqual(new_data['attributes']['avg-time'], 0)
+        self.assertEqual(new_data['attributes']['avg-time'], 504)
         self.assertEqual(new_data['attributes']['past-deadline'], 0)
         self.assertEqual(
             new_data['attributes']['date'][:19],
@@ -155,7 +162,7 @@ class TicketStatsEndpointTestCase(ApiTestCase):
         self.assertEqual(len(body['meta']['total']), 6)
 
         self.assertEqual(body['meta']['total']['open'], 1)
-        self.assertEqual(body['meta']['total']['avg-time-open'], 0.0)
+        self.assertEqual(body['meta']['total']['avg-time-open'], 252.0)
         self.assertEqual(body['meta']['total']['resolved'], 1)
         self.assertNotEqual(body['meta']['total']['avg-time-resolved'], 0.0)
 
@@ -177,16 +184,16 @@ class TicketStatsEndpointTestCase(ApiTestCase):
         self.assertEqual(cancelled_data['attributes']['past-deadline'], 1)
         self.assertEqual(
             cancelled_data['attributes']['date'][:19],
-            self.tickets[0].updated_at.replace(
+            self.tickets[0].created_at.replace(
                 day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
         )
 
         self.assertEqual(new_data['attributes']['count'], 1)
         self.assertEqual(new_data['attributes']['status'], 'new')
-        self.assertEqual(new_data['attributes']['avg-time'], 0)
+        self.assertEqual(new_data['attributes']['avg-time'], 504)
         self.assertEqual(new_data['attributes']['past-deadline'], 0)
         self.assertEqual(
             new_data['attributes']['date'][:19],
-            datetime.utcnow().replace(
+            self.tickets[1].created_at.replace(
                 day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
         )
