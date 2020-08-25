@@ -16,11 +16,14 @@ class DummyBuffer:
 
 
 class TicketExportsEndpoint(TicketsEndpoint):
+    TICKET_URI = 'https://{}/tickets/view/'
+
     permission_classes = (permissions.IsAdminUser, )
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        ticket_url = 'https://{}/tickets/view/'.format(self.request.get_host())
+        ticket_url = self.TICKET_URI.format(self.request.get_host())
+
         qdata = queryset.values(
             Link=Concat(models.Value(ticket_url), models.F('id')),
             Date=models.F('created_at'),
