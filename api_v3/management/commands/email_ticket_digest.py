@@ -45,7 +45,7 @@ class Command(BaseCommand):
         user_digests = {}
         self.request_host = options.get('request_host')
 
-        if options['schedule']:
+        if 'schedule' in options:
             Command.schedule(self.request_host)
             self.stdout.write('Digest scheduled...')
             return None
