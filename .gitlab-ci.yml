@@ -15,7 +15,5 @@ master-tagged-compose-deploy:
   - ssh compose@composesshd /srv/tools/id-compose/
   only:
   - tags
-  except:
-  - branches
   tags:
   - production
