@@ -19,8 +19,8 @@ class TicketsEndpoint(
     serializer_class = TicketSerializer
     ordering_fields = ('created_at', 'deadline_at')
     filter_fields = {
-        'created_at': ['range'],
-        'deadline_at': ['range'],
+        'created_at': ['range', 'gte', 'lte'],
+        'deadline_at': ['range', 'gte', 'lte'],
         'status': ['in'],
         'kind': ['exact'],
         'country': ['exact'],
