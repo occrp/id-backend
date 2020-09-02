@@ -1,5 +1,6 @@
 from csv import DictWriter
 from datetime import datetime
+from itertools import chain
 
 from django.db import models
 from django.db.models.functions import Concat
@@ -24,7 +25,7 @@ class TicketExportsEndpoint(TicketsEndpoint):
         queryset = self.filter_queryset(self.get_queryset())
         ticket_url = self.TICKET_URI.format(self.request.get_host())
 
-        qdata = queryset.values(
+        cols = dict(
             Link=Concat(models.Value(ticket_url), models.F('id')),
             Date=models.F('created_at'),
             Deadline=models.F('deadline_at'),
@@ -47,9 +48,16 @@ class TicketExportsEndpoint(TicketsEndpoint):
             )
         )
 
-        writer = DictWriter(DummyBuffer(), fieldnames=qdata.first().keys())
+        writer = DictWriter(DummyBuffer(), fieldnames=cols.keys())
+        header_with_rows = chain(
+            [dict(zip(cols.keys(), cols.keys()))],
+            queryset.values(**cols)
+        )
+
         response = StreamingHttpResponse(
-            (writer.writerow(row) for row in qdata), content_type='text/csv')
+            streaming_content=(writer.writerow(row) for row in header_with_rows),
+            content_type='text/csv'
+        )
 
         response['Content-Disposition'] = (
             'attachment; filename="tickets-{}.csv"'.format(

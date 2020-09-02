@@ -46,6 +46,7 @@ class ExpenseExportsEndpointTestCase(TestCase):
 
         csv_data = str(response.getvalue())
 
+        self.assertIn('Currency,Rating', csv_data)
         self.assertIn(str(self.tickets[0].id), csv_data)
         self.assertIn(str(self.expenses[0].scope), csv_data)
         self.assertIn(str(self.tickets[1].id), csv_data)

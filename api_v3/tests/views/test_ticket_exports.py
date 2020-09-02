@@ -41,5 +41,6 @@ class TicketExportsEndpointTestCase(TestCase):
 
         csv_data = str(response.getvalue())
 
+        self.assertIn('RequestType,Priority', csv_data)
         self.assertIn(str(self.tickets[0].id), csv_data)
         self.assertIn(str(self.tickets[1].id), csv_data)
