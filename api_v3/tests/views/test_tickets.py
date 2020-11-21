@@ -260,7 +260,8 @@ class TicketsEndpointTestCase(ApiTestCase):
 
     def test_update_authenticated_any_status_with_deadline_passed(self):
         ticket = self.tickets[0]
-        user = self.users[1]
+        user = self.users[0]
+        user.is_superuser = True
         self.client.force_authenticate(user)
 
         statuses = [s[0] for s in Ticket.STATUSES]
@@ -327,11 +328,13 @@ class TicketsEndpointTestCase(ApiTestCase):
         self.client.force_authenticate(user)
 
         the_reason = 'The reason...'
+        old_whysensitive = ticket.whysensitive
 
         new_data = self.as_jsonapi_payload(
             TicketSerializer, ticket, {
                 'status': 'pending',
-                'pending_reason': the_reason
+                'pending_reason': the_reason,
+                'whysensitive': 'Removed'
             })
 
         response = self.client.patch(
@@ -347,6 +350,8 @@ class TicketsEndpointTestCase(ApiTestCase):
         action = Action.objects.filter(target_object_id=str(ticket.id)).first()
 
         self.assertEqual(ticket.status, 'pending')
+        self.assertEqual(ticket.whysensitive, old_whysensitive)
+        self.assertNotEqual(ticket.whysensitive, 'Removed')
         self.assertEqual(ticket.comments.count(), 1)
         self.assertEqual(comment.body, the_reason)
         self.assertEqual(action.verb, 'ticket:update:pending')

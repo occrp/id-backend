@@ -92,6 +92,8 @@ class TicketsEndpoint(
             raise exceptions.NotFound()
 
         comment = None
+        ticket = serializer.instance
+        init_data = serializer.initial_data
         status = serializer.validated_data.get('status')
         status_changed = instance.status != status
         instance.countries = list(set(instance.countries))
@@ -101,8 +103,11 @@ class TicketsEndpoint(
         else:
             verb = self.action_name()
 
-        ticket = serializer.save()
-        init_data = serializer.initial_data
+        if self.request.user.is_superuser:
+            ticket = serializer.save()
+        elif ticket.pk is not None:
+            ticket.status = serializer.validated_data.get('status')
+            ticket.save()
 
         if init_data.get('reopen_reason'):
             verb = '{}:reopen'.format(self.action_name())
