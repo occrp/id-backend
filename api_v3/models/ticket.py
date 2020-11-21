@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from django_bleach.models import BleachField
 
 from .countries import COUNTRIES
 from .responder import Responder
@@ -80,13 +81,13 @@ class Ticket(models.Model):
         default=PRIORITIES[1][0], db_index=True)
 
     sensitive = models.BooleanField(default=False)
-    whysensitive = models.CharField(max_length=150, null=True, blank=True)
+    whysensitive = BleachField(max_length=150, null=True, blank=True)
     deadline_at = models.DateTimeField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     sent_notifications_at = models.DateTimeField(null=True)
-    member_center = models.CharField(max_length=512, null=True, blank=False)
-    identifier = models.CharField(max_length=512, null=True, blank=True)
+    member_center = BleachField(max_length=512, null=True, blank=False)
+    identifier = BleachField(max_length=512, null=True, blank=True)
     countries = ArrayField(
         models.CharField(max_length=255, null=True, blank=False),
         default=list,
@@ -97,21 +98,19 @@ class Ticket(models.Model):
         db_index=True)
 
     # Other ticket type fields, also common to all other types
-    background = models.TextField(blank=False)
+    background = BleachField(blank=False)
 
     # Person ticket type fields
-    first_name = models.CharField(max_length=512, null=True, blank=True)
-    last_name = models.CharField(max_length=512, null=True, blank=True)
+    first_name = BleachField(max_length=512, null=True, blank=True)
+    last_name = BleachField(max_length=512, null=True, blank=True)
     born_at = models.DateTimeField(null=True)
-    connections = models.TextField(max_length=1000, null=True, blank=True)
-    sources = models.TextField(max_length=1000, null=True, blank=True)
-    business_activities = models.TextField(
-        null=True, max_length=1000, blank=True)
-    initial_information = models.TextField(
-        max_length=1000, null=True, blank=True)
+    connections = BleachField(max_length=1000, null=True, blank=True)
+    sources = BleachField(max_length=1000, null=True, blank=True)
+    business_activities = BleachField(null=True, max_length=1000, blank=True)
+    initial_information = BleachField(max_length=1000, null=True, blank=True)
 
     # Company ticket type fields
-    company_name = models.CharField(max_length=512, null=True, blank=True)
+    company_name = BleachField(max_length=512, null=True, blank=True)
     country = models.CharField(
         max_length=100, choices=COUNTRIES, null=True, db_index=True, blank=True)
 

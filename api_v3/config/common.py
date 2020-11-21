@@ -20,6 +20,7 @@ class Common(Configuration):
         'social_django',
         'activity',
         'djmoney',
+        'django_bleach',
 
         # Your apps
         'api_v3',
@@ -77,6 +78,12 @@ class Common(Configuration):
     USE_I18N = False
     USE_L10N = False
     USE_TZ = False
+
+    # Sanitization
+    BLEACH_ALLOWED_TAGS = []
+    BLEACH_ALLOWED_ATTRIBUTES = []
+    BLEACH_STRIP_TAGS = True
+    BLEACH_STRIP_COMMENTS = True
 
     # Media files: max. size of 500MB
     MEDIA_ROOT = values.Value(

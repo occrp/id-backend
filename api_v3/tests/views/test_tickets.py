@@ -232,7 +232,7 @@ class TicketsEndpointTestCase(ApiTestCase):
         user.is_superuser = True
         self.client.force_authenticate(user)
 
-        the_reason = 'The reason...'
+        the_reason = 'The reason... <a href="javascript: alert(Date)">.</a>'
 
         new_data = self.as_jsonapi_payload(
             TicketSerializer, ticket, {
@@ -254,7 +254,7 @@ class TicketsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(ticket.status, 'in-progress')
         self.assertEqual(ticket.comments.count(), 1)
-        self.assertEqual(comment.body, the_reason)
+        self.assertEqual(comment.body, 'The reason... .')
         self.assertEqual(action.verb, 'ticket:update:reopen')
         self.assertEqual(action.action, comment)
 

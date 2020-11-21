@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django_bleach.models import BleachField
 
 from .ticket import Ticket
 
@@ -14,7 +15,7 @@ class Comment(models.Model):
         settings.AUTH_USER_MODEL, blank=False, db_index=True,
         on_delete=models.DO_NOTHING)
 
-    body = models.TextField(blank=False)
+    body = BleachField(blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     @classmethod
