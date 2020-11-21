@@ -94,7 +94,7 @@ class SubscribersEndpoint(
 
     @staticmethod
     @queue.task()
-    def email_notify(activity_id, subscriber_id, request_host):
+    def email_notify(_job_id, activity_id, subscriber_id, request_host):
         """Sends an email to the subscriber about the new ticket."""
         activity = Action.objects.get(id=activity_id)
         subscriber = Subscriber.objects.get(id=subscriber_id)

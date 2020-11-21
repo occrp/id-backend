@@ -98,7 +98,6 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
                 pk=None
             ) for stat in list(aggregated)
         ]
-
         serializer = self.serializer_class(stats, many=True)
 
         return response.Response(serializer.data)

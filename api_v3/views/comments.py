@@ -57,7 +57,7 @@ class CommentsEndpoint(
 
     @staticmethod
     @queue.task()
-    def email_notify(comment_id, request_host):
+    def email_notify(_job_id, comment_id, request_host):
         """Sends an email to ticket users about the new comment."""
         emails = []
         comment = Comment.objects.get(id=comment_id)

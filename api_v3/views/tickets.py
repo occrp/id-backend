@@ -129,7 +129,7 @@ class TicketsEndpoint(
 
     @staticmethod
     @queue.task()
-    def email_notify(ticket_id, request_host, template=None):
+    def email_notify(_job_id, ticket_id, request_host, template=None):
         """Sends an email to editors about the new ticket."""
         ticket = Ticket.objects.get(pk=ticket_id)
         emails = []

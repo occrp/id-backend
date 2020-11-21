@@ -73,7 +73,7 @@ class RespondersEndpoint(
 
     @staticmethod
     @queue.task()
-    def email_notify(action_id, request_host):
+    def email_notify(_job_id, action_id, request_host):
         """Sends an email to the responder about the new ticket."""
         activity = Action.objects.get(id=action_id)
         subject = RespondersEndpoint.EMAIL_SUBJECT.format(activity.target.id)
