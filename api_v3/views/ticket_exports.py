@@ -27,6 +27,7 @@ class TicketExportsEndpoint(TicketsEndpoint):
 
         cols = dict(
             Link=Concat(models.Value(ticket_url), models.F('id')),
+            Email=models.F('requester__email'),
             Date=models.F('created_at'),
             Deadline=models.F('deadline_at'),
             Status=models.F('status'),
