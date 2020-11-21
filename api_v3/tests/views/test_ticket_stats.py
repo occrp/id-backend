@@ -20,7 +20,7 @@ class TicketStatsEndpointTestCase(ApiTestCase):
             TicketFactory.create(
                 requester=self.users[0],
                 status='cancelled',
-                deadline_at=datetime(2020, 10, 15)
+                deadline_at=datetime(2030, 10, 15)
             ),
             TicketFactory.create(
                 requester=self.users[0], deadline_at=None, status='new'),
@@ -36,8 +36,8 @@ class TicketStatsEndpointTestCase(ApiTestCase):
             id__in=map(lambda t: t.id, self.tickets)
         ).update(
             countries=['MD'],
-            created_at=datetime(2020, 10, 20),
-            updated_at=datetime(2020, 11, 10)
+            created_at=datetime(2030, 10, 20),
+            updated_at=datetime(2030, 11, 10)
         )
 
         # Refresh the tickets...
@@ -201,10 +201,7 @@ class TicketStatsEndpointTestCase(ApiTestCase):
         self.assertEqual(new_data['attributes']['status'], 'new')
         self.assertEqual(new_data['attributes']['avg-time'], 504)
         self.assertEqual(new_data['attributes']['past-deadline'], 0)
-        self.assertEqual(
-            new_data['relationships']['responder']['data'],
-            None
-        )
+        self.assertIsNone(new_data['relationships']['responder']['data'])
 
     def test_list_superuser_group_by_country(self):
         self.users[0].is_superuser = True

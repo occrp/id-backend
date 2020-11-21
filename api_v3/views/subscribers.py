@@ -61,7 +61,7 @@ class SubscribersEndpoint(
 
         if not user.is_superuser and not is_ticket_user:
             raise serializers.ValidationError(
-                [{'data/attributes/ticket': 'Ticket not found.'}]
+                [{'attributes/ticket': {'detail': 'Ticket not found.'}}]
             )
 
         subscriber = serializer.save()

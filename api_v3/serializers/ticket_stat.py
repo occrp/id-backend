@@ -2,8 +2,9 @@ import hashlib
 
 from rest_framework import fields
 from rest_framework_json_api import serializers
+from rest_framework_json_api import relations
 
-from .profile import ProfileSerializer
+from api_v3.models import Profile
 
 
 class TicketStatSerializer(serializers.Serializer):
@@ -22,7 +23,12 @@ class TicketStatSerializer(serializers.Serializer):
     country = serializers.CharField(source='ticket_country', required=False)
     avg_time = fields.IntegerField()
     past_deadline = fields.IntegerField()
-    responder = ProfileSerializer(required=False)
+    responder = relations.SerializerMethodResourceRelatedField(
+        required=False, model=Profile
+    )
+
+    def get_responder(self, instance):
+        return instance.responder
 
     def get_id(self, data):
         pk = hashlib.sha256(

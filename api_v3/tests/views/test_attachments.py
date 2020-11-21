@@ -130,6 +130,15 @@ class AttachmentsEndpointTestCase(ApiTestCase):
             )
 
         self.assertEqual(response.status_code, 422)
+
+        response = response.json()
+
+        self.assertEqual(response['errors'][0]['detail'], 'Ticket not found.')
+        self.assertEqual(
+            response['errors'][0]['source']['pointer'],
+            '/data/attributes/ticket'
+        )
+
         self.assertEqual(Attachment.objects.count(), attachments_count)
 
     def test_delete_non_superuser(self):

@@ -85,9 +85,9 @@ class TicketSerializer(serializers.ModelSerializer):
 
     def validate_deadline_at(self, value):
         """Deadline validation."""
-        error = serializers.ValidationError([{
-            'data/attributes/deadline_at': 'The date can not be in the past.'
-        }])
+        error = serializers.ValidationError(
+            detail='The date can not be in the past.'
+        )
 
         if not value:
             return value

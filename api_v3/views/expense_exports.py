@@ -44,7 +44,9 @@ class ExpenseExportsEndpoint(ExpensesEndpoint):
         )
 
         response = StreamingHttpResponse(
-            streaming_content=(writer.writerow(row) for row in header_with_rows),
+            streaming_content=(
+                writer.writerow(row) for row in header_with_rows
+            ),
             content_type='text/csv'
         )
 

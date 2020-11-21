@@ -26,7 +26,7 @@ class Command(BaseCommand):
 
     @staticmethod
     @queue.task(schedule_at='1d')
-    def schedule(request_host):
+    def schedule(_job_id, request_host):
         """Task job handler.
 
         Run it manually once and it will reschedule itself on a daily basis.

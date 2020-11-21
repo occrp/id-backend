@@ -35,7 +35,7 @@ class ExpensesEndpoint(
         """Make sure every new expense is linked to current user."""
         if not (self.request.user.is_staff or self.request.user.is_superuser):
             raise serializers.ValidationError(
-                [{'data/attributes/ticket': 'Ticket not found.'}]
+                [{'attributes/ticket': {'detail': 'Ticket not found.'}}]
             )
 
         expense = serializer.save(user=self.request.user)

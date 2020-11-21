@@ -46,9 +46,10 @@ class RespondersEndpointTestCase(ApiTestCase):
         self.assertEqual(response.status_code, 422)
 
         response = json.loads(response.content)
+        self.assertEqual(response['errors'][0]['detail'], 'Ticket not found.')
         self.assertEqual(
-            response['errors'][0]['detail']['data/attributes/ticket'],
-            'Ticket not found.'
+            response['errors'][0]['source']['pointer'],
+            '/data/attributes/ticket'
         )
 
     def test_create_superuser_user_is_responder(self):

@@ -41,7 +41,7 @@ class AttachmentsEndpoint(
 
         if not ticket and not self.request.user.is_superuser:
             raise serializers.ValidationError(
-                [{'data/attributes/ticket': 'Ticket not found.'}]
+                [{'attributes/ticket': {'detail': 'Ticket not found.'}}]
             )
         else:
             attachment = serializer.save(user=self.request.user)

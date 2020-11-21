@@ -313,8 +313,12 @@ class TicketsEndpointTestCase(ApiTestCase):
 
         response = json.loads(response.content)
         self.assertEqual(
-            response['errors'][0]['detail']['data/attributes/deadline_at'],
+            response['errors'][0]['detail'],
             'The date can not be in the past.'
+        )
+        self.assertEqual(
+            response['errors'][0]['source']['pointer'],
+            '/data/attributes/deadline-at'
         )
 
     def test_update_authenticated_responder_pending_reason(self):
