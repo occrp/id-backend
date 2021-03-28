@@ -104,10 +104,10 @@ class Ticket(models.Model):
     first_name = BleachField(max_length=512, null=True, blank=True)
     last_name = BleachField(max_length=512, null=True, blank=True)
     born_at = models.DateTimeField(null=True)
-    connections = BleachField(max_length=1000, null=True, blank=True)
-    sources = BleachField(max_length=1000, null=True, blank=True)
-    business_activities = BleachField(null=True, max_length=1000, blank=True)
-    initial_information = BleachField(max_length=1000, null=True, blank=True)
+    connections = BleachField(null=True, blank=True)
+    sources = BleachField(null=True, blank=True)
+    business_activities = BleachField(null=True, blank=True)
+    initial_information = BleachField(null=True, blank=True)
 
     # Company ticket type fields
     company_name = BleachField(max_length=512, null=True, blank=True)
