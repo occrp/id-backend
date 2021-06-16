@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 
 from django.db.models import (
-    Avg, Count, Case, F, Func, IntegerField, Sum, When)
+    Avg, Count, Case, F, Func, DurationField, ExpressionWrapper,
+    IntegerField, Sum, When)
 from django.db.models.functions import Trunc, Extract
 from rest_framework import viewsets, response
 
@@ -58,7 +59,12 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
             ticket_status=F('status'),
             avg_time=Avg(
                 Extract(
-                    (F('updated_at') - F('created_at')) / (60 * 60),
+                    ExpressionWrapper(
+                        (
+                            (F('updated_at') - F('created_at')) / (60 * 60)
+                        ),
+                        output_field=DurationField()
+                    ),
                     lookup_name='epoch'
                 )
             ),

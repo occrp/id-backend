@@ -2,6 +2,7 @@ import logging
 
 from factory import Faker, SubFactory  # noqa
 from factory.django import DjangoModelFactory, FileField  # noqa
+from factory.faker import faker # noqa
 
 
 # Silence noisy third-party loggers...

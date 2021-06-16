@@ -21,7 +21,11 @@ class ExpenseExportsEndpoint(ExpensesEndpoint):
             TicketExportsEndpoint.TICKET_URI.format(self.request.get_host())
 
         cols = dict(
-            Link=Concat(models.Value(ticket_url), models.F('ticket_id')),
+            Link=Concat(
+                models.Value(ticket_url),
+                models.F('ticket_id'),
+                output_field=models.CharField()
+            ),
             Date=models.F('created_at'),
             Status=models.F('ticket__status'),
             Amount=models.F('amount'),
@@ -33,7 +37,8 @@ class ExpenseExportsEndpoint(ExpensesEndpoint):
             ExtraCountries=models.Func(
                 models.F('ticket__countries'),
                 models.Value(','),
-                function='ARRAY_TO_STRING'
+                function='ARRAY_TO_STRING',
+                output_field=models.CharField()
             )
         )
 

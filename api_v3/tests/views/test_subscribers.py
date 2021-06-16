@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 
 from api_v3.factories import (
     ProfileFactory, TicketFactory, ResponderFactory, SubscriberFactory)
-from api_v3.factories.support import Faker
+from api_v3.factories.support import faker
 from api_v3.models import Subscriber, Action
 from api_v3.serializers import SubscriberSerializer
 from api_v3.serializers.mixins import ResponderSubscriberSerializer
@@ -175,7 +175,7 @@ class SubscribersEndpointTestCase(ApiTestCase):
         new_data = self.as_jsonapi_payload(
             SubscriberSerializer, self.subscriber)
 
-        new_email = Faker('email').generate({})
+        new_email = faker.Faker().email()
         new_data['data']['attributes']['user'] = {}
         new_data['data']['attributes']['email'] = new_email
 
@@ -192,7 +192,7 @@ class SubscribersEndpointTestCase(ApiTestCase):
     def test_create_non_superuser_arbitrary_email_exists(self):
         self.client.force_authenticate(self.users[0])
 
-        new_email = Faker('email').generate({})
+        new_email = faker.Faker().email()
         Subscriber.objects.create(
             ticket=self.subscriber.ticket, email=new_email)
 

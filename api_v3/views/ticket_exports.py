@@ -26,7 +26,11 @@ class TicketExportsEndpoint(TicketsEndpoint):
         ticket_url = self.TICKET_URI.format(self.request.get_host())
 
         cols = dict(
-            Link=Concat(models.Value(ticket_url), models.F('id')),
+            Link=Concat(
+                models.Value(ticket_url),
+                models.F('id'),
+                output_field=models.CharField()
+            ),
             Email=models.F('requester__email'),
             Date=models.F('created_at'),
             Deadline=models.F('deadline_at'),
@@ -39,13 +43,15 @@ class TicketExportsEndpoint(TicketsEndpoint):
             ExtraCountries=models.Func(
                 models.F('countries'),
                 models.Value(','),
-                function='ARRAY_TO_STRING'
+                function='ARRAY_TO_STRING',
+                output_field=models.CharField()
             ),
             MemberCenter=models.F('member_center'),
             Tags=models.Func(
                 models.F('tags'),
                 models.Value(','),
-                function='ARRAY_TO_STRING'
+                function='ARRAY_TO_STRING',
+                output_field=models.CharField()
             )
         )
 
