@@ -13,12 +13,12 @@ x-build:
 
 services:
   postgres:
-    image: postgres:11.6-alpine
+    image: postgres:13-alpine
     volumes:
       - ".build/data/postgres:/var/lib/postgresql/data"
       - ".build/logs/postgres:/var/log"
     environment:
-      POSTGRES_PASSWORD: ''
+      POSTGRES_PASSWORD: 'postgres'
 
   queue:
     << : *default-build
