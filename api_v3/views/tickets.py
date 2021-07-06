@@ -6,6 +6,7 @@ from rest_framework import exceptions, mixins, viewsets
 from api_v3.models import Action, Comment, Profile, Ticket
 from api_v3.misc.queue import queue
 from api_v3.serializers import TicketSerializer
+from .reviews import ReviewsEndpoint
 from .support import JSONApiEndpoint
 
 
@@ -82,21 +83,20 @@ class TicketsEndpoint(
         ``pending_reason``. Passing these attributes will create and attach a
         comment with it's value to the relevant activity.
         """
-        instance = serializer.instance
+        ticket = serializer.instance
 
         if (not self.request.user.is_superuser) and (
-            self.request.user not in instance.users.all()
+            self.request.user not in ticket.users.all()
         ) and (
-            self.request.user != instance.requester
+            self.request.user != ticket.requester
         ):
             raise exceptions.NotFound()
 
         comment = None
-        ticket = serializer.instance
         init_data = serializer.initial_data
         status = serializer.validated_data.get('status')
-        status_changed = instance.status != status
-        instance.countries = list(set(instance.countries))
+        status_changed = ticket.status != status
+        ticket.countries = list(set(ticket.countries))
 
         if status_changed:
             verb = '{}:status_{}'.format(self.action_name(), status)
@@ -106,8 +106,12 @@ class TicketsEndpoint(
         if self.request.user.is_superuser:
             ticket = serializer.save()
         elif ticket.pk is not None:
-            ticket.status = serializer.validated_data.get('status')
+            ticket.status = status
             ticket.save()
+
+        # If closed, send an email next day to file a review...
+        if status == Ticket.STATUSES[3][0]:
+            ReviewsEndpoint.email_notify(ticket.id, self.request.get_host())
 
         if init_data.get('reopen_reason'):
             verb = '{}:reopen'.format(self.action_name())

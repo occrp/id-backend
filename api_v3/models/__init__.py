@@ -7,6 +7,7 @@ from .comment import Comment  # noqa
 from .expense import Expense  # noqa
 from .profile import Profile  # noqa
 from .responder import Responder  # noqa
+from .review import Review  # noqa
 from .subscriber import Subscriber  # noqa
 from .ticket import Ticket  # noqa
 

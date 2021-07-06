@@ -6,6 +6,7 @@ from .comment import CommentSerializer  # noqa
 from .expense import ExpenseSerializer  # noqa
 from .profile import ProfileSerializer  # noqa
 from .responder import ResponderSerializer  # noqa
+from .review import ReviewSerializer  # noqa
 from .subscriber import SubscriberSerializer  # noqa
 from .ticket import TicketSerializer  # noqa
 from .ticket_stat import TicketStatSerializer  # noqa

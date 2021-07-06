@@ -1,0 +1,14 @@
+Hello {{ name }},
+We'd appreciate you take some time and leave a review on how was your
+experience collaborating with us.
+
+Please submit the anonymous short form within next {{ days_to_respond }} days:
+https://{{ request_host }}/tickets/review/{{ ticket.id }}?token={{ token }}
+
+Thank you in advance!
+
+
+--
+Do not reply to this automated email.
+
+The {{ site_name }} Team.
