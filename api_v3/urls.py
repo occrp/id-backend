@@ -14,6 +14,7 @@ from .views.expense_exports import ExpenseExportsEndpoint
 from .views.profiles import ProfilesEndpoint
 from .views.responders import RespondersEndpoint
 from .views.reviews import ReviewsEndpoint
+from .views.review_stats import ReviewStatsEndpoint
 from .views.session import SessionEndpoint
 from .views.subscribers import SubscribersEndpoint
 from .views.tickets import TicketsEndpoint
@@ -30,6 +31,7 @@ router.register(r'me', SessionEndpoint, basename='me')
 router.register(r'profiles', ProfilesEndpoint)
 router.register(r'responders', RespondersEndpoint)
 router.register(r'reviews', ReviewsEndpoint)
+router.register(r'review-stats', ReviewStatsEndpoint, basename='review_stats')
 router.register(r'subscribers', SubscribersEndpoint)
 router.register(r'expenses', ExpensesEndpoint)
 router.register(
