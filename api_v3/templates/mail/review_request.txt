@@ -3,7 +3,7 @@ We'd appreciate you take some time and leave a review on how was your
 experience collaborating with us.
 
 Please submit the anonymous short form within next {{ days_to_respond }} days:
-https://{{ request_host }}/tickets/review/{{ ticket.id }}?token={{ token }}
+https://{{ request_host }}/tickets/{{ ticket.id }}/review?token={{ token }}
 
 Thank you in advance!
 

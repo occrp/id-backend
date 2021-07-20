@@ -48,7 +48,6 @@ class ReviewStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         group_by = None
 
         annotations = dict(
-            date=Trunc('created_at', 'month'),
             t_id=F('ticket_id'),
             responder_id=F('ticket__responders__user_id'),
             count=Count('id'),
@@ -56,10 +55,10 @@ class ReviewStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         )
 
         if request.GET.get('by') == 'responder':
-            group_by = ('date', 'responder_id')
+            group_by = ('responder_id',)
             del annotations['t_id']
         else:
-            group_by = ('date', 't_id')
+            group_by = ('t_id',)
             del annotations['responder_id']
 
         aggregated = queryset.annotate(**annotations).values(

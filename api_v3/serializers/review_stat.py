@@ -13,7 +13,6 @@ class ReviewStatSerializer(serializers.Serializer):
         resource_name = 'review-stats'
 
     id = fields.SerializerMethodField()
-    date = serializers.DateTimeField(required=False)
     count = serializers.IntegerField()
     ratings = serializers.IntegerField()
     ticket = relations.SerializerMethodResourceRelatedField(
@@ -32,7 +31,6 @@ class ReviewStatSerializer(serializers.Serializer):
     def get_id(self, data):
         pk = hashlib.sha256(
             (
-                str(data.get('date') or '') +
                 str(data.get('responder_id') or '') +
                 str(data.get('ticket_id') or '')
             ).encode('utf-8')
