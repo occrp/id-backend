@@ -1,4 +1,4 @@
-FROM python:3.10-rc-alpine
+FROM python:3.10.0rc2-alpine
 
 RUN apk add --no-cache libffi-dev build-base postgresql-dev rust cargo
 
