@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 from django.db.models import Count, F, Sum
-from django.db.models.functions import Trunc
 from rest_framework import viewsets, response
 
 from api_v3.models import Profile, Review, Ticket
