@@ -1,4 +1,4 @@
-Dear {{ name }},
+Dear user,
 
 Thank you for filing a request with OCCRP ID. We want to know more about your experience and how our research was ultimately used.
 

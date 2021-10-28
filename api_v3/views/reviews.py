@@ -64,10 +64,6 @@ class ReviewsEndpoint(
             ticket.subscribers.filter(email__isnull=False).distinct('email')
             .values('email')
         )[:]
-        to_notify += (
-            ticket.users.filter(email__isnull=False).distinct('email')
-            .values('email', 'first_name', 'last_name')
-        )
 
         for entry in to_notify:
             emails.append([
@@ -77,10 +73,6 @@ class ReviewsEndpoint(
                         'ticket': ticket,
                         'token': Review.ticket_to_token(ticket),
                         'days_to_respond': Review.MAX_DAYS_TO_RESPOND,
-                        'name': '{} {}'.format(
-                            (entry.get('first_name', '')),
-                            (entry.get('last_name', ''))
-                        ),
                         'request_host': request_host,
                         'site_name': settings.SITE_NAME
                     }
