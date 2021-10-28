@@ -1,14 +1,11 @@
-Hello {{ name }},
-We'd appreciate you take some time and leave a review on how was your
-experience collaborating with us.
+Dear {{ name }},
 
-Please submit the anonymous short form within next {{ days_to_respond }} days:
+Thank you for filing a request with OCCRP ID. We want to know more about your experience and how our research was ultimately used.
+
+Please take a moment to answer the three short questions in this form within the next {{ days_to_respond }} days:
 https://{{ request_host }}/tickets/{{ ticket.id }}/review?token={{ token }}
 
-Thank you in advance!
+Thank you in advance,
 
-
---
-Do not reply to this automated email.
-
-The {{ site_name }} Team.
+Karina Shedrofsky
+Head of Research
