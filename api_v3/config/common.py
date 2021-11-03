@@ -181,3 +181,6 @@ class Common(Configuration):
 
     # Default job queue name
     QUEUE_NAME = values.Value('default', environ_prefix='')
+
+    # Allows disabling the review emails
+    REVIEWS_DISABLED = values.BooleanValue(False, environ_prefix='ID')

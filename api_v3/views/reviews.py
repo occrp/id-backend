@@ -51,6 +51,9 @@ class ReviewsEndpoint(
     @queue.task(schedule_at='7d')
     def email_notify(_job_id, ticket_id, request_host):
         """Sends an email to ticket users to leave a review."""
+        if settings.REVIEWS_DISABLED:
+            return
+
         emails = []
         ticket = Ticket.objects.get(pk=ticket_id)
         subject = ReviewsEndpoint.EMAIL_SUBJECT.format(ticket_id)
