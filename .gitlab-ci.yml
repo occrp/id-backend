@@ -1,19 +1,37 @@
-# testing environment
+stages:
+  - build
+  - migrate
+  - deploy
 
-master-compose-deploy:
+build:
+  stage: build
+  script:
+    - sudo -E /occrp/scripts/id/build.sh
+  tags:
+    - zam
+
+deploy-test:
   stage: deploy
   script:
-  - ssh compose@composesshd /srv/tools/id-compose/
-  only:
-  - master
+    - sudo -E /occrp/scripts/id/migrate.sh
+    - sudo -E /occrp/scripts/id/deploy.sh
+  environment:
+    name: test-id
+    url: https://test.id.occrp.org
+  when: manual
   tags:
-  - master
+    - zam
 
-master-tagged-compose-deploy:
-  stage: deploy
-  script:
-  - ssh compose@composesshd /srv/tools/id-compose/
-  only:
-  - tags
-  tags:
-  - production
+# deploy-prod:
+#   stage: deploy
+#   script:
+#     - sudo -E /occrp/scripts/id/migrate.sh
+#     - sudo -E /occrp/scripts/id/deploy.sh
+#   environment:
+#     name: id
+#     url: https://id.occrp.org
+#   only:
+#     - master
+#   when: manual
+#   tags:
+#     - zam
