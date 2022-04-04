@@ -13,7 +13,7 @@ build:
 deploy-test:
   stage: deploy
   script:
-    - sudo -E /occrp/scripts/id/migrate.sh
+    # - sudo -E /occrp/scripts/id/migrate.sh
     - sudo -E /occrp/scripts/id/deploy.sh
   environment:
     name: test-id
@@ -22,16 +22,16 @@ deploy-test:
   tags:
     - zam
 
-# deploy-prod:
-#   stage: deploy
-#   script:
-#     - sudo -E /occrp/scripts/id/migrate.sh
-#     - sudo -E /occrp/scripts/id/deploy.sh
-#   environment:
-#     name: id
-#     url: https://id.occrp.org
-#   only:
-#     - master
-#   when: manual
-#   tags:
-#     - zam
+deploy-prod:
+  stage: deploy
+  script:
+    # - sudo -E /occrp/scripts/id/migrate.sh
+    - sudo -E /occrp/scripts/id/deploy.sh
+  environment:
+    name: id
+    url: https://id-2.occrp.org
+  only:
+    - master
+  when: manual
+  tags:
+    - zam
