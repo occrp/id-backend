@@ -6,7 +6,7 @@ from configurations import Configuration, values
 class Common(Configuration):
 
     VERSION = values.Value('0.0.0-x', environ_prefix='ID')
-    SITE_NAME = values.Value('Investigative Dashboard', environ_prefix='ID')
+    SITE_NAME = values.Value('OCCRP ID', environ_prefix='ID')
 
     INSTALLED_APPS = (
         'django.contrib.contenttypes',
