@@ -4,11 +4,6 @@ There's a new comment to the ticket from {{ comment.ticket.requester.display_nam
 To see the comment, please visit:
 https://{{ request_host }}/tickets/view/{{ comment.ticket.id }}
 
-{{ comment.user.display_name }} wrote:
-======================================
-{{ comment.body | safe }}
-======================================
-
 
 --
 The webpage requires an account, please register to be able to comment and
