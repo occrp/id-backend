@@ -44,7 +44,7 @@ class ExpenseExportsEndpointTestCase(TestCase):
             response.get('Content-Disposition')
         )
 
-        csv_data = str(response.getvalue())
+        csv_data = str(response.getvalue(), encoding='utf-8', errors='ignore')
 
         self.assertIn('Currency,Rating', csv_data)
         self.assertIn(str(self.tickets[0].id), csv_data)

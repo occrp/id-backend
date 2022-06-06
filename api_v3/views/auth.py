@@ -1,10 +1,11 @@
 import urllib.parse
 
+from django.conf import settings
 from django.http import HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.urls import reverse
 from django.contrib.auth.views import auth_logout
 from rest_framework import viewsets, permissions
-from social_django.utils import BACKENDS, module_member
+from social_django.utils import module_member
 
 
 class LogoutEndpoint(viewsets.ViewSet):
@@ -31,7 +32,7 @@ class LoginEndpoint(viewsets.ViewSet):
             return HttpResponseRedirect(redirect_location)
 
         backend = 'NOT-CONFIGURED'
-        backends = [module_member(b) for b in BACKENDS]
+        backends = [module_member(b) for b in settings.AUTHENTICATION_BACKENDS]
 
         if backends:
             backend = backends[0].name

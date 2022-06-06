@@ -1,7 +1,7 @@
 from pydoc import locate
 
 from django.conf import settings
-from django.conf.urls import include, url
+from django.urls import include, path
 
 
 from .views.auth import LoginEndpoint, LogoutEndpoint
@@ -56,7 +56,7 @@ auth_router.register(r'login', LoginEndpoint, basename='login')
 auth_router.register(r'logout', LogoutEndpoint, basename='logout')
 
 urlpatterns = [
-    url('api/v3/', include(router.urls)),
-    url('accounts/', include(auth_router.urls)),
-    url('accounts/social/', include('social_django.urls', namespace='social'))
+    path('api/v3/', include(router.urls)),
+    path('accounts/', include(auth_router.urls)),
+    path('accounts/social/', include('social_django.urls', namespace='social'))
 ]

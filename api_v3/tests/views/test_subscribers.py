@@ -77,7 +77,7 @@ class SubscribersEndpointTestCase(ApiTestCase):
         response = json.loads(response.content)
         self.assertEqual(
             response['errors'][0]['source']['pointer'],
-            '/data/attributes/user'
+            '/data/relationships/user'
         )
         self.assertEqual(
             response['errors'][0]['detail'],
@@ -102,7 +102,7 @@ class SubscribersEndpointTestCase(ApiTestCase):
         response = json.loads(response.content)
         self.assertEqual(
             response['errors'][0]['source']['pointer'],
-            '/data/attributes/user'
+            '/data/relationships/user'
         )
         self.assertEqual(
             response['errors'][0]['detail'],

@@ -14,7 +14,7 @@ from rest_framework_json_api.pagination import JsonApiPageNumberPagination
 from rest_framework.status import HTTP_422_UNPROCESSABLE_ENTITY
 from querystring_parser import parser as qs_parser
 from urllib.parse import unquote as url_unquote
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 from django.conf import settings
 
@@ -46,7 +46,7 @@ class Pagination(JsonApiPageNumberPagination):
         link = super(Pagination, self).build_link(index)
         if link:
             link = url_unquote(link)
-        return force_text(link)
+        return force_str(link)
 
     def get_paginated_response(self, data):
         """Remove pagination from meta. Not needed, handled by links."""

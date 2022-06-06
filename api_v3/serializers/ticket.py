@@ -31,7 +31,7 @@ class TicketSerializer(serializers.ModelSerializer):
     pending_reason = serializers.SerializerMethodField()
     users = ProfileSerializer(many=True, read_only=True)
     countries = ListChoiceField(
-        countries.COUNTRIES, allow_blank=False, required=False)
+        choices=countries.COUNTRIES, allow_blank=False, required=False)
     tags = serializers.ListField(
         child=serializers.CharField(), allow_empty=True, required=False)
 
