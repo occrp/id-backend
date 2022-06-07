@@ -43,8 +43,8 @@ class SessionsEndpointTestCase(TestCase):
         self.assertEqual(
             body['meta'],
             {
-                'member-centers': settings.MEMBER_CENTERS,
-                'expense-scopes': settings.EXPENSE_SCOPES
+                'member-centers': sorted(settings.MEMBER_CENTERS),
+                'expense-scopes': sorted(settings.EXPENSE_SCOPES)
             }
         )
 
