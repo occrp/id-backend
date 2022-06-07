@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
   - migrate
   - deploy
 
@@ -7,6 +8,13 @@ build:
   stage: build
   script:
     - sudo -E /occrp/scripts/id/build.sh
+  tags:
+    - zam
+
+build:
+  stage: test
+  script:
+    - sudo -E /occrp/scripts/id/test.sh
   tags:
     - zam
 
