@@ -3,8 +3,8 @@ FROM python:3.10.0rc2-alpine
 RUN apk add --no-cache libffi-dev build-base postgresql-dev rust cargo
 
 # Allows docker to cache installed dependencies between builds
-COPY ./requirements-testing.txt /requirements-testing.txt
-RUN pip install --no-cache-dir -r /requirements-testing.txt
+COPY ./requirements-testing.txt /requirements.txt
+RUN pip install --no-cache-dir -r /requirements.txt
 
 # Adds our application code to the image
 COPY . /id/
