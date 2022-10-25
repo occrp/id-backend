@@ -2,7 +2,7 @@ Dear user,
 
 Thank you for filing a request with OCCRP ID. We want to know more about your experience and how our support was ultimately used.
 Please take a moment to answer the three short questions in this form:
-https://{{ request_host }}/tickets/{{ ticket.id }}/review?token={{ token }}
+https://{{ request_host }}/tickets/view/{{ ticket.id }}/review?token={{ token }}
 
 Thank you in advance,
 
