@@ -87,7 +87,7 @@ class ReviewesEndpointTestCase(ApiTestCase):
         self.assertEqual(
             requester_email[0].from_email, settings.DEFAULT_FROM_EMAIL)
         self.assertIn(
-            '{request_host}/tickets/{ticket.id}/review?token='.format(
+            '{request_host}/tickets/view/{ticket.id}/review?token='.format(
                 request_host='host.tld',
                 ticket=self.tickets[0]
             ),
