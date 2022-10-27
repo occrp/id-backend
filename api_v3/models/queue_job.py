@@ -1,7 +1,21 @@
 from django.db import models
-from django.db.models import JSONField
 
 from api_v3.misc.queue import queue
+
+
+class PatchedJSONField(models.JSONField):
+    def from_db_value(self, value, *args, **kwargs):
+        if value is None:
+            return value
+
+        # PATCH: Native JSON field could return a dict already...
+        if isinstance(value, dict):
+            return value
+
+        # Deal with the rest...
+        return super(PatchedJSONField, self).from_db_value(
+            value, *args, **kwargs
+        )
 
 
 class QueueJob(models.Model):
@@ -12,7 +26,7 @@ class QueueJob(models.Model):
     expected_at = models.DateTimeField()
     schedule_at = models.DateTimeField()
     q_name = models.TextField(blank=False)
-    data = JSONField()
+    data = PatchedJSONField()
 
     class Meta:
         managed = False
