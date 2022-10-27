@@ -9,6 +9,11 @@ from api_v3.models import Profile, Ticket
 
 class ReviewStatSerializer(serializers.Serializer):
 
+    included_serializers = {
+        'responder': 'api_v3.serializers.ProfileSerializer',
+        'ticket': 'api_v3.serializers.TicketSerializer'
+    }
+
     class Meta:
         resource_name = 'review-stats'
 
