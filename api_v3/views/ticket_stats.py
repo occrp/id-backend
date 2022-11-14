@@ -4,7 +4,7 @@ from django.db.models import (
     Avg, Count, Case, F, Func, DurationField, ExpressionWrapper,
     IntegerField, Sum, When)
 from django.db.models.functions import Trunc, Extract
-from rest_framework import viewsets, response
+from rest_framework import viewsets, response, permissions
 
 from api_v3.models import Profile, Ticket
 from api_v3.serializers import TicketStatSerializer
@@ -20,6 +20,7 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         __getattr__ = dict.__getitem__
         __setattr__ = dict.__setitem__
 
+    permission_classes = (permissions.IsAdminUser, )
     queryset = Ticket.objects.all()
     serializer_class = TicketStatSerializer
     pagination_class = Pagination
@@ -45,9 +46,6 @@ class TicketStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         return params
 
     def list(self, request, *args, **kwargs):
-        if not request.user.is_superuser:
-            return response.Response(self.serializer_class([], many=True).data)
-
         queryset = self.filter_queryset(self.get_queryset())
         group_by = None
 

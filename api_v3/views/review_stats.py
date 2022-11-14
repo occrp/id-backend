@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.db.models import Count, F, Sum
-from rest_framework import viewsets, response
+from rest_framework import viewsets, response, permissions
 
 from api_v3.models import Profile, Review, Ticket
 from api_v3.serializers import ReviewStatSerializer
@@ -17,6 +17,7 @@ class ReviewStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         __getattr__ = dict.__getitem__
         __setattr__ = dict.__setitem__
 
+    permission_classes = (permissions.IsAdminUser, )
     queryset = Review.objects.all()
     serializer_class = ReviewStatSerializer
     pagination_class = Pagination
@@ -40,9 +41,6 @@ class ReviewStatsEndpoint(JSONApiEndpoint, viewsets.ReadOnlyModelViewSet):
         return params
 
     def list(self, request, *args, **kwargs):
-        if not request.user.is_superuser:
-            return response.Response(self.serializer_class([], many=True).data)
-
         queryset = self.filter_queryset(self.get_queryset())
         group_by = None
 

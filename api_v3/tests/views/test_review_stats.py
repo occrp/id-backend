@@ -11,7 +11,7 @@ class ReviewStatsEndpointTestCase(ApiTestCase):
         self.client = APIClient()
         self.users = [
             ProfileFactory.create(),
-            ProfileFactory.create(is_superuser=True)
+            ProfileFactory.create(is_staff=True)
         ]
 
         review = ReviewFactory.create(
@@ -42,13 +42,19 @@ class ReviewStatsEndpointTestCase(ApiTestCase):
 
         response = self.client.get(reverse('review_stats-list'))
 
-        self.assertEqual(response.status_code, 200)
-
-        body = json.loads(response.content)
-
-        self.assertEqual(len(body['data']), 0)
+        self.assertEqual(response.status_code, 403)
 
     def test_list_superuser(self):
+        self.users[1].is_staff = False
+        self.users[1].is_superuser = True
+        self.users[1].save()
+        self.client.force_authenticate(self.users[1])
+
+        response = self.client.get(reverse('review_stats-list'))
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_list_staff(self):
         self.client.force_authenticate(self.users[1])
 
         response = self.client.get(reverse('review_stats-list'))
@@ -74,7 +80,7 @@ class ReviewStatsEndpointTestCase(ApiTestCase):
         self.assertEqual(ticket_2_data['attributes']['ratings'], 1)
         self.assertEqual(ticket_2_data['attributes']['count'], 1)
 
-    def test_list_superuser_filter_by_start_end_dates(self):
+    def test_list_staff_filter_by_start_end_dates(self):
         self.client.force_authenticate(self.users[1])
 
         response = self.client.get(
@@ -88,7 +94,7 @@ class ReviewStatsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(len(body['data']), 0)
 
-    def test_list_superuser_group_by_responder(self):
+    def test_list_staff_group_by_responder(self):
         ResponderFactory.create(
             ticket=self.reviews[0].ticket, user=self.users[1])
 

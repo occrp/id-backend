@@ -53,14 +53,19 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         response = self.client.get(reverse('ticket_stats-list'))
 
-        self.assertEqual(response.status_code, 200)
-
-        body = json.loads(response.content)
-
-        self.assertEqual(len(body['data']), 0)
+        self.assertEqual(response.status_code, 403)
 
     def test_list_superuser(self):
         self.users[0].is_superuser = True
+        self.users[0].save()
+        self.client.force_authenticate(self.users[0])
+
+        response = self.client.get(reverse('ticket_stats-list'))
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_list_staff(self):
+        self.users[0].is_staff = True
         self.users[0].save()
         self.client.force_authenticate(self.users[0])
 
@@ -99,8 +104,8 @@ class TicketStatsEndpointTestCase(ApiTestCase):
                 day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
         )
 
-    def test_list_superuser_filter_by_start_end_dates(self):
-        self.users[0].is_superuser = True
+    def test_list_staff_filter_by_start_end_dates(self):
+        self.users[0].is_staff = True
         self.users[0].save()
         self.client.force_authenticate(self.users[0])
 
@@ -115,8 +120,8 @@ class TicketStatsEndpointTestCase(ApiTestCase):
 
         self.assertEqual(len(body['data']), 0)
 
-    def test_list_superuser_filter_by_responder(self):
-        self.users[0].is_superuser = True
+    def test_list_staff_filter_by_responder(self):
+        self.users[0].is_staff = True
         self.users[0].save()
 
         ResponderFactory.create(ticket=self.tickets[0], user=self.users[1])
@@ -163,8 +168,8 @@ class TicketStatsEndpointTestCase(ApiTestCase):
                 day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
         )
 
-    def test_list_superuser_group_by_responder(self):
-        self.users[0].is_superuser = True
+    def test_list_staff_group_by_responder(self):
+        self.users[0].is_staff = True
         self.users[0].save()
 
         ResponderFactory.create(ticket=self.tickets[0], user=self.users[1])
@@ -203,8 +208,8 @@ class TicketStatsEndpointTestCase(ApiTestCase):
         self.assertEqual(new_data['attributes']['past-deadline'], 0)
         self.assertIsNone(new_data['relationships']['responder']['data'])
 
-    def test_list_superuser_group_by_country(self):
-        self.users[0].is_superuser = True
+    def test_list_staff_group_by_country(self):
+        self.users[0].is_staff = True
         self.users[0].save()
 
         self.tickets[0].countries = ['RO']
