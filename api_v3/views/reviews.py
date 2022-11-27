@@ -17,7 +17,7 @@ class ReviewsEndpoint(
     permission_classes = (permissions.AllowAny,)
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    EMAIL_SUBJECT = 'Please review ticket ID: {}'
+    EMAIL_SUBJECT = 'Tell us how you used our research!'
 
     def get_queryset(self):
         queryset = super(ReviewsEndpoint, self).get_queryset()
@@ -56,7 +56,6 @@ class ReviewsEndpoint(
 
         emails = []
         ticket = Ticket.objects.get(pk=ticket_id)
-        subject = ReviewsEndpoint.EMAIL_SUBJECT.format(ticket_id)
 
         # If the ticket status changed in the meantime, do not request reviews.
         if ticket.status != Ticket.STATUSES[3][0]:
@@ -70,7 +69,7 @@ class ReviewsEndpoint(
 
         for entry in to_notify:
             emails.append([
-                subject,
+                ReviewsEndpoint.EMAIL_SUBJECT,
                 render_to_string(
                     'mail/review_request.txt', {
                         'ticket': ticket,
