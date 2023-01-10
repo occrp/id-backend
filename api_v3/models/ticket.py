@@ -116,7 +116,10 @@ class Ticket(models.Model):
 
     @property
     def users(self):
-        return self.responder_users.all() | self.subscriber_users.all()
+        return (
+            self.responder_users.all() |
+            self.subscriber_users.all()
+        ).distinct()
 
     @classmethod
     def filter_by_user(cls, user, queryset=None):
