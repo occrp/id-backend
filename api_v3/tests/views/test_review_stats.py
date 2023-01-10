@@ -75,9 +75,9 @@ class ReviewStatsEndpointTestCase(ApiTestCase):
             ticket_2_data = body['data'][0]
             ticket_1_data = body['data'][1]
 
-        self.assertEqual(ticket_1_data['attributes']['ratings'], 2)
+        self.assertEqual(ticket_1_data['attributes']['ratings'], 4)
         self.assertEqual(ticket_1_data['attributes']['count'], 2)
-        self.assertEqual(ticket_2_data['attributes']['ratings'], 1)
+        self.assertEqual(ticket_2_data['attributes']['ratings'], 2)
         self.assertEqual(ticket_2_data['attributes']['count'], 1)
 
     def test_list_staff_filter_by_start_end_dates(self):
@@ -117,7 +117,7 @@ class ReviewStatsEndpointTestCase(ApiTestCase):
             responder_data = body['data'][1]
             non_responder_data = body['data'][0]
 
-        self.assertEqual(responder_data['attributes']['ratings'], 2)
+        self.assertEqual(responder_data['attributes']['ratings'], 4)
         self.assertEqual(responder_data['attributes']['count'], 2)
-        self.assertEqual(non_responder_data['attributes']['ratings'], 1)
+        self.assertEqual(non_responder_data['attributes']['ratings'], 2)
         self.assertEqual(non_responder_data['attributes']['count'], 1)

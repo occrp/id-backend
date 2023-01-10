@@ -14,10 +14,12 @@ class Review(models.Model):
 
     MAX_DAYS_TO_RESPOND = 7
 
+    # Was our response helpful?
     RATINGS = (
-        (-1, 'No'),
-        (0, 'Neutral'),
-        (1, 'Yes')
+        (0, 'Not at all'),
+        (1, 'Partly'),
+        (2, 'Yes'),
+        (3, 'Exceeded expectations')
     )
 
     ticket = models.ForeignKey(
