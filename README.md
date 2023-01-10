@@ -4,6 +4,54 @@
 
 [OCCRP](https://tech.occrp.org/projects/) research desk application API.
 
+## Introduction
+
+The ID is an ongoing project for many years. It started as a simple Django
+web app and it was migrated to become a pure API with it's own SPA written
+in Ember.js.
+
+Both codebases are regularly updated and monitored for security
+concerns. While making changes, it is important to keep in mind that this is
+as much a security oriented project as it is functional.
+
+The scope of this API is handle users authentication and securely serve the
+API clients/SPA the data the users have access to. Users authentication is
+handled via the Keycloak oAuth.
+
+In order to ensure the email delivery, we also use a background processing
+queue. This queue handles an automated weekly digest for active submissions.
+The digest is an email with the breakdown of the user submissions/subscriptions.
+
+### The Data Model
+
+ID uses the standard Django user implementation under a `profile`.
+
+The users get their roles based on their Keycloak role mappings. Some users
+are mapped via the configuration file to receive notifications for new
+submissions. A `staff` role user is allowed to triage/manage submissions and has
+access to the reports.
+
+The `ticket` is where the submissions are stored. A `ticket` has a requester
+`profile` and is usually assigned a responder and there could be subscriber
+`profiles`. The responder is the main submission researcher. Subscribers
+can be attached to a `profile` or just a simple email address.
+
+The `ticket` can represent one of the multiple kinds, eg. person, company, or
+a simple data request. These kinds do not enforce a specific data model layout,
+meaning that a ticket implements the idea of a _polymorphic_ data type.
+
+The `ticket` allows `comments` and `attachments`. Both these create an `activity`
+timeline.
+
+The submission responder can add an `expense` to a ticket in order to keep
+track of the payments required to provide a resolution. Once closed, there's
+an automated email that is being sent to the `ticket` requester in order to
+provide a `review` of the response they received.
+
+Staff `profiles` can anytime access and export as CSVs, the `reviews`, along
+with the `ticket` and the `expenses`. Staff has access to the stats for all of
+these.
+
 # Prerequisites
 
 - [Docker Compose](https://docs.docker.com/compose/install/)
