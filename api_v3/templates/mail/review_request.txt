@@ -1,7 +1,8 @@
 Dear user,
 
-We responded to your research request a week ago. We want to know how
-our support was ultimately used. Please let us know using this form:
+It's been a while since we responded to your research request on OCCRP ID. We
+want to know how our support was ultimately used. Please let us know using this
+form:
 
 https://{{ request_host }}/tickets/view/{{ ticket.id }}/review?token={{ token }}
 
