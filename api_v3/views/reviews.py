@@ -48,7 +48,7 @@ class ReviewsEndpoint(
             return review
 
     @staticmethod
-    @queue.task(schedule_at='1d')
+    @queue.task(schedule_at='60d')
     def email_notify(_job_id, ticket_id, request_host):
         """Sends an email to ticket users to leave a review."""
         if settings.REVIEWS_DISABLED:
