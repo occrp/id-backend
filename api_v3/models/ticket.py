@@ -49,6 +49,10 @@ class Ticket(models.Model):
         'first_name': 'A',
         'last_name': 'A',
         'company_name': 'A',
+        'comments__body': 'A',
+        'comments__user__email': 'A',
+        'comments__user__first_name': 'A',
+        'comments__user__last_name': 'A',
         'background': 'B',
         'connections': 'C',
         'sources': 'C',
@@ -161,4 +165,4 @@ class Ticket(models.Model):
             rank=SearchRank(vector, query)
         ).filter(
             rank__gte=cls.MIN_SEARCH_RANK
-        ).order_by('rank')
+        ).distinct().order_by('rank')
