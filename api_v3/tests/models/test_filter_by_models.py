@@ -151,6 +151,11 @@ class TicketAttachmentCommentFilterByUserRequesterTestCase(
 
         comments = Comment.filter_by_user(self.users[0], Comment.objects.none())
         self.assertEqual(comments.count(), 0)
+    
+    def test_tickets_search_comments_body(self):
+        tickets_searched = Ticket.search_for('body2')
+        self.assertIn(self.tickets[0], tickets)
+        self.assertEqual(tickets.count(), 1)
 
 
 class TicketAttachmentCommentFilterByUserResponderTestCase(

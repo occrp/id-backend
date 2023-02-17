@@ -8,7 +8,6 @@ from .countries import COUNTRIES
 from .responder import Responder
 from .subscriber import Subscriber
 
-
 class Ticket(models.Model):
     """Ticket model."""
 
@@ -49,6 +48,8 @@ class Ticket(models.Model):
         'first_name': 'A',
         'last_name': 'A',
         'company_name': 'A',
+        'comments__body': 'A',
+        'comments__user__email': 'B',
         'background': 'B',
         'connections': 'C',
         'sources': 'C',
@@ -161,4 +162,4 @@ class Ticket(models.Model):
             rank=SearchRank(vector, query)
         ).filter(
             rank__gte=cls.MIN_SEARCH_RANK
-        ).order_by('rank')
+        ).distinct().order_by('rank') #Adding distinct() to remove duplicates. 
