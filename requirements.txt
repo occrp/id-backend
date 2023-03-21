@@ -30,5 +30,5 @@ querystring-parser==1.2.4
 # Misc
 iso3166==2.0.2
 filetype==1.0.13
-sentry-sdk==1.5.12
+sentry-sdk==1.14.0
 pyjwt==2.4.0
